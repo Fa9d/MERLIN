@@ -4,3 +4,10 @@ deploy/certbot/www/.well-known/
 nginx/certs/
 tmp_ssl_fix.sh
 merlin-deploy.tar.gz
+06_IMPORTS_MESANGE/
+07_EXPORTS/
+08_EMPLOI/
+_ARCHIVES_IMPORT/
+deploy/certbot/www/
+memory/
+nginx/certbot/
