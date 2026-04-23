@@ -65,6 +65,24 @@ def list_derived_documents(
     return list(db.scalars(statement))
 
 
+@router.get("/public/client/{public_client_code}", response_model=list[DerivedDocumentRead])
+def list_public_client_derived_documents(
+    public_client_code: str,
+    db: Session = Depends(get_db),
+) -> list[DerivedDocument]:
+    client = db.scalar(select(Client).where(Client.public_client_code == public_client_code))
+    if client is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Reference client introuvable.")
+
+    statement = (
+        select(DerivedDocument)
+        .where(DerivedDocument.client_id == client.id)
+        .where(DerivedDocument.client_visible.is_(True))
+        .order_by(DerivedDocument.created_at.desc())
+    )
+    return list(db.scalars(statement))
+
+
 @router.get("/{derived_document_id}", response_model=DerivedDocumentRead)
 def get_derived_document(
     derived_document_id: str,

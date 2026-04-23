@@ -427,6 +427,14 @@ export async function listDerivedDocuments(
   });
 }
 
+export async function listPublicDerivedDocuments(
+  publicClientCode: string,
+): Promise<DerivedDocumentRecord[]> {
+  return request<DerivedDocumentRecord[]>(
+    `/api/v1/derived-documents/public/client/${encodeURIComponent(publicClientCode)}`,
+  );
+}
+
 export async function createSession(
   payload: SessionPayload,
   token: string,

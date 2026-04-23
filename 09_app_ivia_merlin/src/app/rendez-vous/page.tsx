@@ -298,6 +298,10 @@ export default function RendezVousPage() {
                   Nous reprendrons contact a partir des coordonnees transmises pour
                   la suite du parcours.
                 </p>
+                <p>
+                  Vous pourrez consulter les syntheses diffusees plus tard dans{" "}
+                  <Link href={`/suivi?code=${submissionState.clientCode}`}>votre espace de suivi</Link>.
+                </p>
               </div>
             ) : null}
           </form>

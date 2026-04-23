@@ -184,6 +184,7 @@ def test_core_flow_smoke() -> None:
         )
             assert client_resp.status_code == 201
             client_id = client_resp.json()["id"]
+            client_public_code = client_resp.json()["public_client_code"]
 
             public_consent_resp = client.post(
             "/api/v1/consents",
@@ -390,6 +391,13 @@ def test_core_flow_smoke() -> None:
             assert list_derived_documents_resp.status_code == 200
             assert len(list_derived_documents_resp.json()) == 1
             assert list_derived_documents_resp.json()[0]["source_note_id"] == close_payload["generated_note"]["id"]
+
+            public_derived_documents_resp = client.get(
+            f"/api/v1/derived-documents/public/client/{client_public_code}",
+        )
+            assert public_derived_documents_resp.status_code == 200
+            assert len(public_derived_documents_resp.json()) == 1
+            assert public_derived_documents_resp.json()[0]["client_visible"] is True
 
             validate_note_resp = client.patch(
                 f"/api/v1/session-notes/{close_payload['generated_note']['id']}/validate",
