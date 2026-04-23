@@ -1,0 +1,3286 @@
+       in the
+Narragansett Language
+             ✜
+
+
+
+
+   Second Edition
+             ✜
+   Dr. Frank Waabu O’Brien
+   Aquidneck Indian Council
+Facsimile of page 7, Roger Williams’ A Key into the Language of
+America, 1643. [Courtesy of Annenberg Rare Book and Manuscript
+Library, University of Pennsylvania].
+                                            ✜
+Library of Congress Cataloging-in-Publication Data
+
+O’Brien, Francis Joseph, Jr.
+      Grammatical Studies in the Narragansett Language (2nd ed.)
+          p. cm.
+      Includes bibliographical references.
+      1. Narragansett Indians. 2. Language of Narragansett Indians.
+      3. Grammar.
+      I. The Massachusett-Narragansett Language Revival Project.
+      Library of Congress Catalog Card Number:
+
+The Massachusett- Narragansett Language Revival Project was made possible [in part] by a
+grant from the Rhode Island Committee for the Humanities, a state program of the National
+Endowment for the Humanities.
+
+
+
+
+The views expressed in this book do not necessarily reflect the views of either the Rhode
+Island Committee for the Humanities or the National Endowment for the Humanities. The
+Aquidneck Indian Council is solely responsible for its contents.
+
+This project was also funded [in part] by National Historical Publications and Records
+Commission, National Archives and Records Administration, Washington, D.C., The Rhode
+Island Indian Council, and The Aquidneck Indian Council, Newport, RI.
+
+
+                                             
+
+
+Copyright © 2005, 2009 by Francis J. O’Brien, Jr., 12 Curry Avenue, Newport, RI 02840-
+1412, USA. All rights reserved. No part of this publication may be reproduced, stored in
+retrieval system, or transmitted, in any form or by any means, electronic, mechanical,
+photocopying, recording, or otherwise, without the written permission of the author, except as
+permitted under Sections 107 or 108 of the 1976 United States Copyright Act. Printed in the
+United States of America.
+                  Grammatical Studies
+                         in the
+                 Narragansett Language
+                                    ▄
+
+                            Second Edition
+                               August, 2009
+                 Massachusett-Narragansett Revival Program
+A project for the reconstruction of the extinct American Indian Languages of
+                          Southeastern New England
+
+                        Dr. Frank Waabu O’Brien
+                          Historical Consultant
+             Former President, Aquidneck Indian Council, Inc.
+                            12 Curry Avenue
+                        Newport, RI 02840-1412
+              http://www.docstoc.com/profile/waabu
+
+                           Wunnohteaonk
+
+                                    ☼
+
+               MAY PEACE BE IN YOUR HEARTS
+
+
+                                   ✜
+                       TABLE OF CONTENTS
+
+Preface…..7
+Introduction…..11
+Narragansett Grammar…..14
+     Background…..14
+     Grammatical Studies…..15
+           Nouns…..15
+           Pronouns…..22
+           Verbs…..28
+              Narragansett Verb Structure…..32
+           Particles…..57
+Appendix A, Type I (-am ending) Verbs…..60
+Appendix B, Glossary of Grammatical Terms, Symbols & Abbreviations…..64
+References and Sources…..82
+
+About the author…..88
+
+
+
+LIST OF ILLUSTRATIONS
+
+Chart 1. Fundamental Parts of Speech in Algonquian Languages…..14
+Chart 2. Structure of Nouns in Massachusett Language…..16
+Chart 3. Definition of Terms for Noun Inflections…..16
+Chart 4. Summary of Noun Inflections for All Possible Forms…..20
+Chart 5. Actual and Reconstructed Example of Inflected Nouns…..21
+Chart 6. Structure of Pronouns in Massachusett Language…..22
+Chart 7. Definition of Terms for Pronoun Inflections…..23
+Chart 8. Natick-Massachusett Pronouns…..27
+Chart 9. Verb Inflections for Nominal, Pronominal, and Verbal Categories…..29
+Chart 10. Classes of Particles…..57
+Chart 11. Examples of Particles…..57
+Table 1.   Four Basic Verb Classes, Algonquian Languages…..30
+Table 2.   Basic Verb Structure in Narragansett…..31
+Table 3.   Summary of Narragansett Verb Forms by Type and Mode…..33
+Table 4.   Counts of Inflectional Modal/Type Forms In Narragansett …..38
+Table 5.   Frequency Distribution of Narragansett Verb Types…..39
+Table 6.   Distribution of Inflectional Morphemes of Narragansett Verb Types …..39
+Table 7.   Non-Inflectional Morphemes …..40
+Table 8. Sample Conjugation of Narragansett Verb…..45
+Table 9. Independent Indicative, Transitive Inanimate (Class 3)…..47
+Table 10. Independent Indicative Transitive Inanimate (Class 1a)…..49
+Table 11. Independent Indicative Intransitive Animate (Central Participant Markers)…..51
+Table 12. Imperative Mode, Transitive Inanimate…..53
+Table 13. Independent Indicative Transitive Animate…..54
+Table 14. Adverbs in Eliot’s Grammar…..58
+                                                                                                                  7
+
+
+
+
+                                              PREFACE
+
+
+                                                    ⊗
+   This report stems from the ongoing research of the Massachusett-Narragansett Revival
+Program, a project of the Aquidneck Indian Council, for the reconstruction of the extinct
+American Indian languages of southeastern New England. Our intention is to make these
+works available to a wide audience. Other related language works of the Aquidneck Indian
+Council in the series are1:
+
+   •   The Word ‘Squaw’ in Historical and Modern Sources
+   •   Spirits and Family Relations
+   •   Animals & Insects
+   •   Birds & Fowl
+   •   Muhhog: the Human Body
+   •   Fish & Aquatic Animals
+   •   Corn & Fruits & Berries & Trees &c
+   •   The Heavens, Weather, Winds, Time &c
+   •   Algonquian Prayers And Other Miscellaneous Algonquian Indian Texts
+   •   Prolegomena to Nukkône Manittówock
+   •   Guide to Historical Spellings & Sounds in the Extinct New England American Indian
+       Languages, Narragansett-Massachusett
+   •   Bringing Back our Lost Language: Geistod in That Part of America Called New-
+       England
+   •   At the Powwow
+
+       The above works were later captured in the Council’s book—American Indian Studies
+   in the Extinct Languages of Southeastern New England (submitted for copyrighting, 2005).
+   Newport, RI: Aquidneck Indian Council.
+
+       The Council also provides free websites relating to the Indian place names in Rhode
+   Island, and a bibliographic compilation of regional Indian studies in the following works:
+
+   American Indian Place Names in Rhode Island: Past & Present
+      [http://www.rootsweb.com/~rigenweb/IndianPlaceNames.html]
+   Bibliography for Studies of American Indians in and Around Rhode Island, 16th -21st
+      Centuries. [[http://www.rootsweb.com/~rigenweb/IndianBibliography.html]
+
+   1
+     These works have been donated to various historical societies and universities in and around Rhode Island,
+   principally the Rhode Island Historical Society Library, Providence, RI. Look for many of these articles on
+   the Internet at http://www.native-languages.org/ & http://www.docstoc.com/profile/waabu.
+                                                                                                    8
+
+
+
+
+       The fore-named Bibliography contains about 1600 related publications including other
+Council works under authors “Strong Woman [Julianne Jennings]”, and “Frank Waabu
+O’Brien [Moondancer]”.
+       A forthcoming volume is Understanding Indian Place Names in Southern New
+England (Bäuu Press, Colarado). In addition, recently the Council began listing all of its
+publications on the Internet at http://www.docstoc.com/profile/waabu.
+
+                                               ╬
+
+        The author has worked as a lone wolf for 15 years on the reconstruction and revival of
+the lost and sleeping American Indian languages of southeastern New England. The
+Aquidneck Indian Council in Newport, RI, was founded, formed, and governed by aboriginal
+peoples of North America.
+        The Council realized that no American Indian language annihilated by the harsh
+lessons of American History could possibly be regenerated in toto no matter how much IQ
+from the natural realm descended on this bloodless ghost. We felt the preternatural and
+supernatural metaphysical realms could once again speak, or that one could turn up the volume
+of the voices always there.
+        A language gives the ability of human beings to do anything within possibility. The
+capability to Pray, Sing, Name and Speak forms the multidimensional quartrad of all audible
+and inaudible human communication within and between the natural, preternatural and
+supernatural realms of Being and Doing. To say it another way—Praying, Singing, Naming
+and Speaking are the gifts of the Creator available to men, woman and children of this land.
+
+                                               ╬
+
+        In this treatise we provide a second edition of a brief grammatical sketch of the
+Narragansett language as preserved by Roger Williams in his 1643 classic, A Key into the
+Language of America. The audience is not the professional Algonquian linguist scholar. That
+is, we do not use or intend to use the technical linguistics terminology one sees in the standard
+work, Native Writings in Massachusett by Goddard & Bragdon. Rather we cite and define the
+analogous technical forms in Goddard and Bragdon for readers who wish to learn the structure
+of this extinct language in that format. The Aquidneck Indian Council “retranslated” A Key
+(essentially we rearranged the material and pointed out printers errors, etc.) and wrote a brief
+dictionary to support the retranslated text. The dictionary is keyed to page numbers in A Key
+for the vocabulary and grammatical terms cited. Introduction to the Narragansett Language
+(2001) and Indian Grammar Dictionary (2000) form the core of language revitalization efforts
+for this unique language. The present paper provides a roadmap for navigating these works.
+We compare the data and information in Narragansett to its sister dialect, Natick-Massachusett.
+Thereby one sees vividly the paucity of nouns, verbs &c existent in Narragansett as well as the
+potential for partial regeneration.
+        I have taught elementary Narragansett from A Key to tribal members at the Rhode
+Island Indian Council in Providence. The greatest stumbling block was the unavailability of an
+adequate language text from which to teach. It is hoped that this small treatise may serve in
+assisting in the generation of an adequate text.
+                                                                                    9
+
+
+
+
+For my loving daughter, Miss Lily-Rae O’Brien [Little White Flower, Wâmpâshâwése]
+
+                                          And
+
+                             The Narragansett Tribal Nation
+                                 10
+
+
+
+
+ Grammatical Studies
+       in the
+Narragansett Language
+        Second Edition
+
+                ╬
+       Frank Waabu O’Brien
+      Aquidneck Indian Council
+            Newport, RI
+
+                
+                                                                                                    11
+
+
+
+
+INTRODUCTION
+        The only known significant work which recorded elementary aspects of the oral
+language system of the Narragansett American Indians in the present-day State of Rhode
+Island and Providence Plantations, is the 1643 English language book written by the British
+missionary, Mr. Roger Williams (ca. 1603 - ca. 1683). The full title of this work is shown on
+facsimile of the title page, following:
+
+
+
+
+                          Facsimile of A Key into the Language of America,
+                          1643, by Roger Williams.
+                          [Courtesy of Annenberg Rare Book and
+                          Manuscript Library, University of Pennsylvania].
+
+
+                                                ╬
+
+       This long title, so characteristic of Colonial era books, is often abbreviated A Key or
+Key, in reference. In Algonquian the Narragansett people are called Nanhigganêuck (“the
+people of the point”, in and near the Point Judith area in Narragansett, Rhode Island originally,
+where a large village existed)
+       A capsule summary of the Narragansett Tribe is from Swanton (1952):
+                                                                                                                      12
+
+
+
+
+                  The Narragansett occupied the greater part of Rhode Island west of
+                  Narragansett Bay, between Providence and Pawcatuck Rivers. At one time
+                  they dominated the Coweset (see Nipmuc) north of them and the Eastern
+                  Niantic, and they drove the Wampanoag from the island [i.e., Aquidneck]
+                  which gives its name to the State of Rhode Island and the Pequot from some
+                  territory they held in the west.
+
+
+        This Narragansett language, once spoken by untold numbers of God’s First Children on
+this Land for tens of thousands of years in and around the present-day State of Rhode Island
+and Providence Plantations, is now extinct. This ancient tongue was silenced 1-2 centuries
+ago by the forces of European colonialization, warfare, conquest and domination, and
+subsequent historical assimilation and acculturation of the First Peoples2. The author is
+perhaps one of the few people in the world who can approximate accurately the reconstructed
+sounds of this silent tongue given to Nnínnuock by Kiehtan, the Great Creator, aeons ago
+when Nanhigganêuck burst forth from beneath the ground “like the very trees of the
+wildernesse”. (A Key, 1643, To the Reader, n.p.).
+        Regrettably, A Key contains only about 2,100 lines of Algonquian, with 2-3 “words”
+per line, on average, containing about 820 verbs, based on about 320 verb roots or stems
+(Hagenau, 1962)3. A Key contains several interrelated Algonquian languages/dialects
+including Coweset, Nipmuck, Abenaki, Pequot, &c (see Ives Goddard, 1996).
+        Narragansett is quite similar to the extinct Massachusett language of its neighbors, the
+Wampanoag. Mainland dialects of their language were recorded by several missionaries,
+principally John Eliot (translator of the Bible & grammar book, Natick dialect), and Josiah
+Cotton (vocabulary, Plymouth-region dialect). Revitalization work on the Massachusett
+language is headed by the Mashpee Tribe linguist, Jessie Little doe Fermino (see Strong
+Woman & Moondancer, 1998). She wrote a Master’s Thesis on her ancestor’s language,
+
+         Little doe Fermino, Jessie (2000). An Introduction to Wampanoag Grammar. Cambridge,
+         Mass.: Massachusetts Institute of Technology. (Unpublished Masters Thesis.)
+
+        In 2000 & 2001 the Council re-translated the entire Key, and provided a brief
+dictionary of verb stems, nouns &c, based on the works of Hagenau, Aubin, Goddard (1981),
+Goddard and Bragdon (1988), Trumbull (1866, 1876, 1903), and miscellaneous other sources
+(See Moondancer, et al., 2000/2001).
+        According to Aubin (1972), linguists and other scholars over the years have largely
+ignored this outstanding text as a linguistic treatise. Many have treated A Key as a mere
+historical curiosity with many printers’ errors and other anomalies, such as significant
+
+
+
+
+2
+ Language loss is one defining property of the phenomenon of Geistod ( def. as “Death of the Spirit”), from
+Moondancer, Neologisms: A Compilation Of New Words Suggested For Incorporation Into The English
+Language. RI: Aquidneck Indian Council, 1996. Some have suggested to add a second t (Geisttod), but I prefer
+only one for personal reasons.
+3
+ Contrarily, the primary usefulness of A Key is two-fold: actual Native speech patterns in a dialogue-based format
+with accented vocabulary words; hence, it is imperative to analyze it for the possible and perhaps probable rebirth
+of any of the lost and sleeping languages of this region.
+                                                                                                                 13
+
+
+
+
+orthographic variability4. In addition the English translations of Narragansett provided by
+Roger Williams are often ambiguous or lack the specificity required for a grammatical
+analysis. The deficiencies of the corpus as a linguistic record on the Narragansett language
+have been documented. Two major scholarly works, both from the Brown University
+linguistics department, are by Hagenau (M.A. thesis, 1962, verb morphology) and Aubin
+(Ph.D. dissertation, 1972, historical phonology). The works of Dr. Ives Goddard and others are
+also noteworthy.
+        The author was also assisted by comments of two anonymous Reviewers of the
+International Journal of American Linguistics for a paper submitted in 2005.
+
+                                                        ▄
+        Understanding the technical intricacies of the English language is a prerequisite for
+understanding a foreign language. A good English-language handbook is the Harbrace
+College Handbook (Hodges, et al.)—especially “The Glossary of Grammatical Terms” at the
+rear of the book.
+
+                                                    ▄ ▄
+       Pronunciation is not attempted in this volume for extinct Narragansett. How to do it
+cannot be committed to paper. Contrary to popular (and academic belief), one rarely learns
+native pronunciation of a foreign language from reading it on paper. For a rough idea of
+speech sounds and other issue, refer to O’Brien, “Guide to Historical Spellings & Sounds in the
+Extinct New England American Indian Languages, Narragansett-Massachusett”. We do not
+address the areas of phonology or Proto-algonquian. The reader is referred to the works of
+Prof. Aubin.
+
+
+
+
+4
+    As an extreme example, one Narr. word trans. as “why” enjoys 7 different spellings in A Key (Aubin, 1972).
+                                                                                                  14
+
+
+
+
+                 NARRAGANSETT GRAMMAR
+BACKGROUND
+        Scholars classify Algonquian Indian languages into four major categories of speech:
+Verbs, Nouns, Pronouns and Particles. These major parts of speech, in turn, are further
+subdivided into types, classes, and other subsets. For ex., adverbs, adjectives, prepositions,
+interjections and conjunctions are subsumed under the global categories as “modifiers,” each
+of which enjoys its own technical Algonquian linguistic term (prenoun, preverb, locative, &c).
+        Appendix B provides a glossary of common grammatical terms, symbols &
+abbreviations, some of which pertain directly to studies in Narragansett or Massachusett.
+        General references are included for readers interested in historical and cultural
+information on the Narragansett Tribe. All technical linguistic references will be found in the
+Smithsonian handbooks, vols. 15 & 17, Trigger (1978) & Goddard (1996).
+        Chart 1 shows the four basic parts of speech for reference. Each of the four parts of
+speech will be taken up in turn. Verbs are the most complicated and least understood in A
+Key.
+
+Chart 1. Fundamental Parts of Speech in Algonquian Languages
+
+                                  PARTS OF SPEECH
+
+           Nouns            Pronouns             Verbs             Particles
+
+
+
+
+        We now turn to details of the parts of speech evident in the Narragansett language, in
+comparison to the parent language Massachusett, recorded primarily by the 17th & 18th
+century Colonial missionaries John Eliot & Josiah Cotton, and summarized partly in the 1903
+Trumbull Natick Dictionary. Massachusett grammar was documented recently in the
+outstanding work by Dr. I. Goddard and Professor K. Bragdon (1988) who derived their
+“grammatical sketch” partly from analysis of writings of fluent speakers (but not always fluent
+writers) of that language and its regional dialects. This work, while technical, has provided
+researchers vocabulary and grammar not available in the Colonial missionary works. The
+present revitalization program for Massachusett is based largely on the grammatical summary
+in Native Writings in Massachusett (Part I & Part II).
+                                                                                                                    15
+
+
+
+
+GRAMMATICAL STUDIES
+
+        Nouns
+
+Let us cite the best grammatical treatment, from Goddard & Bragdon (G & B), on the
+Algonquian languages of this region for an overview of noun structure:
+
+                 Nouns in Massachusett are of animate or inanimate gender and are inflected for
+                 several types of categories. The nominal categories in addition to gender are
+                 number (singular or plural), obviation (proximate or obviative), and the
+                 absentative. There are two locatives (locative and second locative), which are
+                 quasi-inflectional but can also be regarded as derived particles. Possession is
+                 indicated by inflecting the noun for the pronominal category of the possessor.
+                 (Goddard & Bragdon, p. 486).
+
+        Other nominal categories could be listed, as indicated below.
+
+        Chart 2 summarizes the basic inflectional5 structure of nouns in southeastern
+New England Algonquian languages. Chart 3 provides basic definitions of the
+categories in the second chart, many of which are relevant to other speech parts.
+Examples are selected from A Key, reconstructed NR (Narragansett), and Massachusett.
+Chart 4 provides a general and theoretical summary of the structure of noun inflections.
+Chart 5 provides actual and reconstructed examples of an inflected noun for the noun
+“tree,” from the related Massachusett language.
+
+
+
+
+5
+  We define three important terms. Inflection means a change in the form of a word (noun, pronoun, verb) to
+change meaning of word; e.g., an inflection of the noun-word mĕtah (“the heart“) is nuttah (“my heart“) by the
+inflectional rule for possessive nouns. Only particles are uninflected. Roger Williams (1643, chap. VII, pp. 48-
+52) provides many example of inflected nouns for human body parts. Verb inflections refer to changes to the
+stem. Declension means inflected form for a noun or pronoun by animate/inanimate reference or singular/plural
+reference; e.g., an inanimate form (declension) for plural nouns is given by the suffix -ash such as: hussan
+(“stone“, singular) and hussanash (“stones”, plural). Stem, definition—the part of an inflected word that remains
+unchanged except by phonetic changes or variations throughout an inflection; that is, the stem is the part in a
+word that carries the basic meaning. Earlier grammarians—called philologists— (like J. H. Trumbull) spoke
+instead of “roots” or “radicals” or “etymons” to denote the irreducible essential meaning of word elements
+(etymology).
+                                                                                                                                                                       16
+
+
+
+
+                                      Chart 2. Structure of Nouns in Massachusett Language
+              Sources: Goddard and Bragdon (1988); Moondancer & Strong Woman (2000, 2001); Ministry of Education, Ontario (2003)
+
+                                                             NOMINAL CATEGORIES (NOUNS)
+               Number         Gender         Obviation       Absentative Locative Personal Diminutive                            Abstract         Vocative
+                 ▼              ▼               ▼                ▼         ▼         ▼        ▼                                    ▼                ▼
+                singular       animate        proximate          persons          primary       possessed         primary
+                 plural       inanimate       obviative        possessions      secondary?      dependent        secondary
+                     • Yellow highlighted areas are similar features present in the Narragansett Language explicitly or by secondary (reconstructive) analysis.
+                     • Vocative is rare.
+
+
+                                                   Chart. 3. Definition of Terms for Noun Inflections
+                                                             Recon. = reconstructed ; NR = Narragansett
+  Noun                                     Definition                                                               Narragansett Example
+  Term                                           ▼                                                                                  ▼
+    ▼
+Absentative     “Absentative” refers to “absent” (deceased) persons (my          Not seen in a key; see O’Brien (2003), “Spirits and Family Relations”
+               late [deceased] father) or lost possessions [our former land].    e.g., from NR
+                                                                                     • nókace = “my mother” (A Key, p. 28)6
+                                                                                             o nókaci = “my late deceased mother” (recon.); rule: add
+                                                                                                “i”to basic noun stem, nókac (“NAH-kuhs”)
+Abstract       Nouns ending in -unck, -onck, -onckon –onk are typically          • Wunnaumwâuonck = Faithfulness, truthfulness
+               abstract nouns (indicating a collection or classification,        • Wèsuonck = a name
+               state of being or action or abstract ideas <justice, love, truth, • Nteatámmowonck = my opinion
+
+      6
+       In the term nókace, the final e is probably silent because similar dialects don’t have an e for this type of word. Why Williams wrote words with letters not
+      pronounced, we can only guess at, but in English a number of words have final e not said (drove, home, gone, etc.). A silent e also occurs on other words that
+      end in -ese such as nipèwese ("a little water"). Words like wuttòne (said "wuh-DOON") have silent e. But other words (usually adjectives and other modifiers)
+      do say final e such as wâme ("WAH-mee") & aquie ("ah-KWEE"). We think many (most?) words do not say the final e, except for adjectives, adverbs and one
+      Objective-Indicative verb. This problem of "silent e" is one of the issues challenging us in the recovery of the language.
+                                                                                                                                                                      17
+
+
+
+
+               strength, foods &c>.)                                                    •    Wussaumpatámoonck = a prospect or view
+                                                                                        •    Sachimaûonck7 = A kingdom or monarchy, the system of Indian
+                                                                                             government headed by a Sachem (“Chief” or tribal leader)
+Diminutive     Indicates things small in size and a secondary diminutive                •    otanès = small village (recon.)
+               means “very small”, analogous in English to diminutive                   •    otanèmes = very small village (recon.)
+               suffixes –er and/or –est.                                                •    nipéwese = Give me some water, a little water
+               Forms: -es, -s, -ese & -emes                                             •    squásese = a little girl (“little squaw”)
+Gender         An important declension of a noun and other speech parts,
+              gender does not refer to “masculine/feminine” as in European               See Number, below, for examples.
+              Romance languages. The distinction relates to Animate &
+              Inanimate. Animate nouns refers usually to human beings,
+              spirits, people (not body parts), animals & birds & fish,
+              some trees, and others things but this is sometimes arbitrary,
+              and you can’t always be sure. Inanimate means not alive or
+              moving (some exceptions) and includes things like stones,
+              tools, plants, water, virtues & vices, some trees, body parts,
+              etc. & some exceptions; see G & B.
+                  • The plural form (when it exists) of a noun determines
+                       the gender
+                           o Eliot’s Grammar (1666) has more extensive
+                                 classification for Massachusett ~ NR
+Locative          • Location words, “in, at, on, near, by, where, place                 •    Qunnihticut = on the long tidal river (Connecticut)
+                       of”, etc., as in—“in the village,” “by the seashore,”            •    Kautántowit = where the Great Spirit is (or dwells)
+                       “place where we catch salmon” &c. Constructed by                 •    Wékick = In his wetu, at his wetu
+                       stem + suffix with suffix variants -uck, -ick, -eck,             •    Wetuómuck = At home (in the wetu)
+                       -eg, -it, -ut.                                                   •    Aquidneck = at, on the island
+                  • Relationship words, Lordut = “in the Lord” (not seen                •    Otânick notéshem = I came from the village
+      7
+        Akin to “presidency”; -onck &c is used for such abstract nouns. The sachemdom was an hereditary boundary controlled by the ruling families. (see Bragdon,
+      1996). The regions of Narragansett Country in present-day Rhode Island bore the names of local tribal subgroups such as Coweset, Narragansett, Niantic, etc.,
+      and included areas in the Washington, Kent counties, Dutch & Cananicut Islands. A number of other regions throughout present-day RI were controlled by the
+      Narragansetts, the largest and most powerful group in this region up until the King Philip’s War (1675-1676). See Simmons (1978) for overview of history,
+      language and culture of the Narragansett Indians. Sekatau, Ella W.T. et al. tell their story from the Native perspective.
+                                                                                                                                              18
+
+
+
+
+                     in NR?)                                                • Keesuckuíu = heavenward
+                 • Also directionality suffixes: –eiu, -uiu, -iu (var.      • Sowwaníu = south, or southwest, a sacred direction where lives
+                     spellings)                                               the Great Spirit .
+Number        Quantity of things or persons, one item (singular) or more    Wómpatuck = swan         ⎫
+              than one (plural); e.g., “a stone, “many stones.” Plural                               ⎬ animate
+                                                                            Wómpatuckquâuog = swans⎭
+              suffix forms of nouns (var. spellings exist):
+                 • –og (animate)                                            Mihtúck = tree      ⎫
+                                                                                                ⎬ inanimate
+                 • –ash ( inanimate)                                        Mihtúckquash = trees⎭
+Obviation        -oh, -ah, -uh endings on 3rd person nouns and verbs       Roger Williams’ elementary phrase book does not give examples of
+(proximate,                                                                 obviation; following are hypothetical & recon.
+obviative)    An important grammatical feature—called OBVIATION— ¾ Nish askug. = I kill a snake.
+              is seen in Algonquian sentences when:                                         o NOT OBVIATIVE CASE—not in third person
+              •       Two nouns (or a pronoun and an animate noun)          ¾ Weemat nishuh askugah. = His brother kills a snake
+                              rd                                                            o Obviation on verb kills and object snake (askug)
+              •       In the 3 person (he/him, she/her, or they/their, or a
+                      person’s name) are used in the same sentence with a ¾ Moowanum nishuh askugah. = Black Dog kills a snake.
+                      verb so that,                                                         o Obviation on verb kills and object snake (askug)
+              •       The animate noun or pronoun which is the object of    ¾ Moowanum togkuh Peterah anum??. = Black Dog struck Peter’s
+                        a verb, and the verb                                   dog. (Black Dog he-struck him-Peter’s dog)
+              •       Take the obviative endings -ah, -oh, -uh                              o 3-third person obviation—one pronoun and 2 nouns
+                      ¾ Inanimate nouns do not take the obviative                              in 3rd person but we don’t know the grammar for
+                           ending.                                                             our dialect (see Trumbull article, 1876, for use in
+              Two-third-persons-obviation is only the simplest form of                         other dialects)
+              obviation involving two third persons. One third person is    ¾  John  brought  Mary’s  brother’s dog a bone
+              seen as the proximate person (the closest one of interest to                  o A 4-third person obviation sentence (John he-
+              the speaker), and the other third person is the secondary or                     brought her-Mary he-her brother him-the dog a
+              obviative one. Another form of obviation occurs when three                       bone)
+              third-person nouns or pronouns are used in a sentence; e.g.,                          No idea how to translate into NR!
+              “Basil struck Pierre’s dog” (He-Basil, he-struck his-Pierre’s A simple phrase like “the brother of him” is usually said with the
+              dog— with obviative endings on struck, Pierre & dog).         obviative endings -ah, -oh, -uh:
+              As an example of simple two-third-persons obviation, we       ¾ weematoh = the brother of him (oh is the obviative ending);
+              present a reconstructed sentence (not taught or given in A       linguists distinguish obviative by translating “the brother of him”;
+              Key)—the obviative endings are italicized.                       we don’t say “his brother” (weemat) in the obviative context
+                                                                                                                                              19
+
+
+
+
+                             Mesh nishuh attuckah, “He killed a deer”           ¾ ooshooah = their father (the father of them);
+                      •    We use preverb “mesh” to show past tense (“did ¾ …papaume wutche unmissoomissoh wuttahkuh …
+                           kill”) as Roger Williams uses it. In “He killed a        [concerning about his grandfather’s land (concerning/about his-
+                           deer,” we have a pronoun he as part of the verb, an      grandfather his-land)] 8
+                           animate noun deer (attuck) and a verb killed (in 3rd             o Notice the obviative endings (-oh, -uh) attached to
+                           person). Obviation is on verb killed and animate                     “his grandfather” (unmissoomiss) and “his land”
+                           noun deer (deer is the second “third-person” in the                  (wuttahke). No verb is in this phrase.
+                           sentence.).
+
+Personal         •    Possessed Nouns are nouns which indicate possession,                        •   wépit = his tooth;
+                      either of other persons or things such as “my tooth” or                             o wépitteash = his teeth
+                      “my valuables”; possessed nouns may be singular or                          •   nitteaûguash = my “money”9 (plural)
+                      plural                                                                      •   nókace = my mother
+                 •    Dependent Nouns are typically nouns related to body
+                      parts, family relatives & one’s intimate possessions
+
+                  A possessed noun has the following structure:
+
+                  Personal        NOUN           possessive       personal        basic
+                              +              +                +              +
+                  Prefix       STEM        suffix         suffix       suffix
+Vocative           Used in formal speech, addressing a person or a group, as                 No examples known in A Key
+                  in “my sons,” “O, my fellow countrymen”. A rare form
+                  probably not found in A Key.
+
+             NOTE: G & B (1988) have an important section titled STEM DERIVATION (pp. 578 ff.) which discusses other classes of
+             nouns not evident in A Key.
+
+
+
+
+      8
+          Selected from G & B, p. 591.
+      9
+          That is, “my valuables (things)”—such as furs, skins, blankets, scalps, flintlock, wampum, tobacco, etc.
+                                                                                                                                          20
+
+
+
+
+                         Chart 4. Summary of Noun Inflections for All Possible Forms
+                                            Source: Ministry of Education, Ontario (2003), p. 20
+
+                                    TYPICAL ORDER FOR NOUN INFLECTIONS
+Personal          NOUN           diminutive          possessive         personal         basic          vocative        absentative
+            +              +                     +                 +                +              or              or
+Prefix            STEM             suffix            suffix             suffix           suffix          suffix         suffix
+
+a↑                  b↑              c↑                 d ↑                e ↑              f ↑            g ↑             h ↑
+•    NOTEs: not all terms are used for noun constructions. The basic term is the NOUN STEM which is modified with elements
+     a, c through h, as appropriate. See next chart for example, based on elements a & b NOUN for tree (Massachusett Language); in
+     NR “tree” = mihtuck, mihtuk, mihtuch (variant spellings throughout A Key).
+•    As pointed out in the Canadian tutorial on Delaware (p. 20), for a non-dependent noun, only the base noun stem is required to form
+     a word. For a dependent noun, the personal prefix is required to be affixed to the noun stem. The other elements are required
+     depending on the meaning intended.
+                                                                                                                                                                           21
+
+
+
+
+                            Chart 5. Actual and Reconstructed Example of Inflected Nouns
+                                                        Source: A Massachusett Language Book, vol. 1.
+
+        ENGLISH                             MASSACHUSETT                                                         GRAMMAR RULE
+                                               ∞ = oo as in mood
+
+tree, a tree, the tree                mehtugq                                          noun10 = tugq
+trees                                 mehtugquash                                      noun + plural
+small tree                            mehtugquēs                                       noun + es (diminutive)
+very small tree                       mehtugquēmēs                                     noun + emes (more diminutive)
+large tree                            massatugq                                        adjective11 + noun
+great tree                            mogkunk                                          adjective + noun [-unk is alternative stem for “tree”; Aubin, 1972]
+my tree                               nummehtugk∞m                                     personal prefix + noun + possessive ending
+my small tree                         nummehtugk∞mquēs                                 personal prefix + noun + possessive ending + diminutive
+my small trees                        nummehtugk∞mquēsquash                            personal prefix + noun + possessive ending + diminutive + plural
+
+NOTE: in NR stem for “tree” is spelled variously as: tuck, tuk, tuch.
+
+
+
+
+10
+   In mehtugq , stem = tugq and prefix m’ is an article “the, a”. The article m’ is seen in only some nouns; e.g., it is used extensively for body parts; e.g., “tah” is
+the stem/root for mĕtah (“the heart“) and nuttah (“my heart“).
+11
+   Adjectives are called prenouns (noun modifier).
+                                                                                                          22
+
+
+
+
+       Pronouns
+
+Let us cite G & B on an overview of pronominal structure:
+
+               The pronouns are personal pronouns, demonstrative pronouns, and
+               interrogative-indefinite pronouns; the word for ‘other, another’ patterns in
+               part like a pronoun and is also listed here. There are two types of
+               pronouns, independent and objective. (Goddard & Bragdon, p. 507).
+
+        Chart 6. Structure of Pronouns in Massachusett Language
+                   Source: Goddard and Bragdon (1988), pp. 507-510
+                    NOMINAL CATEGORIES (PRONOUNS)
+      Personal   Demonstrative       Interrogative-indefinite  Other, another
+         ▼              ▼                        ▼                     ▼
+    independent nearer deictic                                absolute
+    objective   farther deictic                               attributative
+                deictic anaphoric
+                                    Quantifiers
+                                         ▼
+                                  cardinal numbers
+                                 invariant particles
+
+   •   Yellow highlighted areas are pronominal features present in the Narragansett Language explicitly
+       or by secondary (reconstructive) analysis.
+   •   Grey highlighted (deictic anaphoric) only found in “documents from the islands” (G &B, p. 509)
+
+        Chart 6 summarizes the basic inflectional structure of pronouns in
+southeastern New England Algonquian languages. Chart 7 provides definitions of
+the categories in the first chart. Examples are selected from A Key, reconstructed
+NR (Narragansett), and Massachusett. Chart 8 is a summary of pronouns from
+John Eliot’s 1666 Grammar (EL).
+                                                                                                                                                                     23
+
+
+
+
+                                         Chart 7. Definition of Terms for Pronoun Inflections
+                                recon. = reconstructed; sg. = singular; pl = plural; incl. = inclusive we; excl. = exclusive we
+                                                                      *** means a stem
+
+          Term                                    Definition                                                     Narragansett Example12
+       ▼                                           ▼                                                          ▼
+Anaphoric                 Anaphoric is a repetition of a word at the         These, those, that
+                          beginning of a successive clause; words like,      • Ne = that
+                          “these, those, that”                                    o Taûbotne anawáyean13 = I thank you (for that)
+Deictic,                  G & B’s term for demonstrative nouns; deictic      • Yo = these, this, that (nearer deictic)
+(nearer, further,         means having the function of pointing out or                 o Yò commíttamus = Is this your wife ?
+anaphoric)                specifying, and being determined in context.                 o Teàg yo augwháttick = What (is this thing) that hangs
+                          Pronouns of this class can be sg., pl.,                           there ?
+                          animate/inanim. The words “this, that, those,      • Ne = that (farther deictic)
+                          these” are deictic because they specify a                    o Taûbotne anawáyean14 = I thank you for that—your
+                          reference. Nearer deictic pronouns are of form                    words
+                          “this, these”; farther deictic pronouns are of
+                          form “those, that”; deictic anaphoric [not seen in
+                          NR] are of form “these, those (mentioned)” and
+                          “this, that (mentioned)”; see G & B, pp. 508-9.
+
+
+
+     12
+        Examples from A Key and the author’s Intro. To the Narr. Lang. (2001); the translations have been modified occasionally to highlight function of pronouns.
+     13
+        We seem to see the root/stem -anawa- for “speak, words”, so Taûbotne anawáyean might mean “Thanks for your words” in the context of the dialogue.
+     Mode is Subjunctive, of form ***ean [Table 3, below]. “I thank you” in Natick is written kuttabotomish (Objective-Indicative, k'***ish). In Pequot, “TAW-
+     buht-nee” is “thank you” (or “thanks for that” where ne= “that”). See Prince & Speck for Mohegan-Pequot glossary.
+     14
+        We seem to see the root/stem -anawa- for “speak, words”, so Taûbotne anawáyean might mean “Thanks for your words” in the context of the dialogue.
+     Mode is Subjunctive, of form ***ean. “I thank you” in Natick is written kuttabotomish (Objective-Indicative, k'***ish). In Pequot, “TAW-buht-nee” is
+     “thank you” (or “thanks for that” where ne= “that”). See Prince & Speck for Mohegan-Pequot glossary
+                                                                                                                                                   24
+
+
+
+
+Demonstrative              Demonstrative pronouns are used to specify or         • Yo= this, that
+                           designate (or ask a question about) a specific           o Yo comméish = This I give you
+                           thing or person, using words “this” & “that”             o Yò aûnta15 = That way—let’s go!
+                                                                                 • Anama = this ?
+                                                                                     o Anamakéesuck16 sókenun = It will rain today
+                                                                                     o Anamakéesuck17, 18 = This day
+
+Independent                Independent pronouns are possessed forms of           • I = neen (precedes a verb)
+                           dependent nouns (ordinary pronouns of person).        • You (sg.) = keen (precedes a verb)
+                           Pronouns are sometimes used for emphasis with         • s/he = ewo (follows a verb)
+                           verbs & nouns and in verbless predications, and       • he, him, himself = naûgum, naugom ?
+                           as objects of prepositions.                           • we (incl.) = keenouwin ?
+                                                                                 • we (excl.)= neenouwin (recon.)
+                                                                                 • you (pl.) = keenouwin ?
+                                                                                 • they = naûgum ?
+Interrogative-             Interrogative pronouns are (sing. or plural)          •   Awaùn = Who (sg.)
+indefinite                 pronouns that question (interrogate) a situation or              o Awaùn ewò ?19 = Who is that ?
+                           person with pronouns such as -- “who, what,           • Awânick= Who (pl.)
+                           someone, anyone, something, anything”                            o Awânick20 ûchick ? = Who are these (people)?
+                                                                                 • Teaqun, teaguun, teaqua, teaug = what, (this) thing
+                                                                                                o Teáqua ? = What is this?”
+                                                                                                o Teàg yo augwháttick = What is (this thing) that
+                                                                                                    hangs there ?
+                                                                                 • Tah, ta, taa, tou = what, where
+                                                                                            o Tahéna21 = What is his name? [How is he called?, or Who
+                                                                                               is he?]
+
+     15
+        Imperative (Us).
+     16
+        “This day”. Anama may mean “this”.
+     17
+        Keesuck is related to “gives life to”.
+     18
+        Anima = “this”?
+                                                                                                                                                                     25
+
+
+
+
+Number                    Quantity of things or persons, one item (singular)           See A Key, Chapter IV, “Of Their Numbers, ” for numbers, sg./pl.,
+                          or more than one (plural); e.g., “a stone, “many             and animate/inanim. forms
+                          stones.” Plural of animate nouns is –og with
+                          variant spellings; plural of inanimate is –ash with
+                          variant spellings.
+Other, Another            Pronouns of “other, another” of something, or                •    Wònck = More, another (animate sg.), written, “more, again” in
+                          attribute or condition; forms exist in either                     A Key
+                          gender and number                                                    o Teâno wonck nippeamé = I will be here again by and by
+                                                                                                   (another time)
+                                                                                       •    Wónckatack = More, another (animate pl.), written, “more,
+                                                                                            again” in A Key
+                                                                                               o Wónckatack = more and more
+                                                                                       •    Wonckataganash = more another (inanimate pl.)
+                                                                                               o Wonckataganash nàus ! = more, more, you—fetch !
+Particle                  Particles are uninflected forms consisting of                •    Wame = all
+                          several categories. “Invariant particles” refer to                       o Wame naûmakiaûog = They all go to Hell (“the
+                          terms like “all” or “one” ( unique class or entity).                         deep”)
+                           • See Chart 10                                              •    Paúsuck = one (unique identification--a singular entity)
+                           • Indian place names use “inseperable                                   o Paúsuck naûnt manìt22 = There is only one God23
+                              particles” such as –amaug = “fishing place”,                         o Pâwsuck = number 1 (anim. & inanim. plural)
+                              terms not used as independent words but as               •    Qunosugamaug = the pickerel-fishing place
+                              affixes which specify a meaning when used.
+
+
+
+     19
+        The pronoun ewò (“he, she”) usually said after the verb or noun. The pronouns neèn (“I”) and keèn (“you”) usually said before the verb or noun. Keén nétop
+     = “Is it you friend?” Sometimes the pronouns are added just for emphasis or clarification.
+     20
+        Plural for “who”. Ûchick seems to mean “these men” (yeug in Natick).
+     21
+        Ta means “what” with variant spellings.
+     22
+        Notice how Williams is using the Narragansett word for “spirit” to explain “God”. It must have been very confusing to the Native peoples. Very few Indians
+     converted to Christianity in this period.
+     23
+        The Christian meaning.
+                                                                                                                                                          26
+
+
+
+
+Pronoun                      Words that substitute for (proper or improper)                See Chart 8 infra for full listing from Eliot’s Grammar (EL)
+                             nouns. They agree with the noun in gender,
+                             number, and/or person.
+Quantifiers                  • Numbers or quantity—examples: one man,                      • For numbers, see A Key, Chapter IV, “Of Their Numbers”
+                                some, half a basketful, few people, all of                 • Wame = All, every
+                                them, anyone &c.                                           • Paúsuck, pawsuck = one, a singular entity
+                                    o Cardinal numbers—1, 2, 3,                               o Paúsuck naûnt manit = There is only one God
+                                    o Invariant particles—one, all                            o Nquitpawsuck nepaûus24 = 1 month (“one moon”)
+                                    o Words for “many,” “few, ” “half” or                  • Paúshe = (it is) half;
+                                       “whole”                                                o Poquêsu = He is half (referring to a deer)
+                                                                                           • Missêsu = (it) is whole
+                                                                                           • Maunaûog = they are many (animate)
+                                                                                           • Máunetash = they are many (inanimate)
+                                                                                           • Tashe= Many, so many, how many, how much
+                                                                                                     o tahsuog = how many (animate, plural)
+                                                                                                     o Tashecautúmmo = How many years?
+                                                                                                     o tashínash = how many (inanimate, plural)
+                                                                                                               Tashínash papónash25 = How many winters?
+
+
+
+
+     24
+          Original text reads Nqnitpawsuckenpaûus.
+     25
+          Note inflection of “How many” & “winters”; both require the inanimate plural suffix -ash.
+                                                                                        27
+
+
+
+
+                 Chart 8. Natick-Massachusett Pronouns
+                         Source: John Eliot, Grammar (1666)
+                SINGULAR                                     PLURAL
+                     ▼                                          ▼
+                                  Personal Pronouns
+Neen I                                      Neenawun We (exclusive)
+                                            Kenawun We (inclusive)
+Ken Thou                                     Kenaau Ye
+Noh or nagum He                              Nahoh or nagoh, They
+                               Interrogative of Persons
+Howan who                                    Howanig Who
+                                Interrogative of things
+Uttiyeu, or tanyeu which                     Uttiyeush which
+                             Demonstratives of persons
+Yeuoh, This or that man Noh                 Yeug, These men Nag or neg, They
+                              Demonstratives of things
+Yeu This                                    Yeush These
+Ne This                                     Nish These
+                                     Distributives
+Nawhutche, some                             Monaog, many (animate)
+                                            Tohsuog     How many (animate)
+                                            Tohsunash many (inanimate)
+                                    Other, another
+Onkatog = other, another                    Onkatogash, Onkatoganash = other, another
+                                                                                                                        28
+
+
+
+
+         Verbs
+
+Let us cite the best grammatical treatment on the Algonquian languages of this region on an
+overview of the very detailed and complicated verb structure:
+
+                  Verbs in Massachusett are inflected for the nominal categories … and pronominal
+                  categories (person) of the participants (subject, object, and secondary object) and
+                  the verbal categories of mode, tense and the negative. Person is always indicated
+                  for all participants, but the nominal categories of number, gender obviative and
+                  absentative are not distinguished in some forms. (Goddard & Bragdon, p. 510).
+
+
+        Chart 9 (below) summarizes the basic structure of verbs in southeastern New England
+Algonquian languages. Not all verb features in G & B are given. The verbal categories are
+problematic to work with for NR since so much confusion arises from the English translations
+and variable word-spellings available in A Key. Following this Chart, Table 1 shows the basic
+four classes that verbs are sorted into, based on the stem types in the verbs (i.e., combining verb
+type & gender—not discussed in Hagenau).
+        Chart 9 and Table 1 comprise a general summary of the structure (morphology) of verbs
+based on the data and information collected since the 17th century on the Massachusett language
+of which Narragansett is a related subset. Not all definitions or examples are provided since they
+do not appear in NR26, but see Chart 3 for many terms such as gender, number, obviation and
+absentative, as well as Appendix B (Glossary of Terms). The reader is referred to G & B (pp.
+510-583) for a more extensive, well exemplified, tutorial on forms and features in Massachusett,
+many of which would probably pertain to NR, were they recorded. Table 2 shows the verb
+structure in NR (Narragansett) as documented by Hagenau from Roger Williams’ A Key.
+        Compared to Massachusett and living Algonquian languages, the verb structure in NR is
+relatively simple as written by Roger Williams in his elementary phrase book. A typical
+indicative mode verb in present tense in A Key consists merely of a prefix, stem and suffix,
+examples      of    which     are     shown     in    Table     Notes,    following     Table    3.
+
+
+
+
+26
+   A more detailed analysis of NR verbs is possible using G & B’s verbal categories in Chart 9. While many verbs
+were analyzed morphologically by Hagenau, a good many were not (i.e., his large list of U type verbs
+[unclassifiable]). For ex., there is some evidence of the Conjunct Order (preterite) in A Key; e.g., câwit = while he
+slept (chap. XXI , p. 134).
+                                                                                                                                                                               29
+
+
+
+
+                     Chart 9. Verb Inflections for Nominal, Pronominal, and Verbal Categories
+                                             in Massachusett Language
+
+                                                             SOURCE: Goddard & Bragdon, pp. 510 ff.
+
+                                                                                     NOMINAL
+                                           Number                  Gender             Obviation Absentative                Participant
+                                             ▼                       ▼                   ▼          ▼                          ▼
+                                             singular               animate            proximate           persons             subject
+                                              plural               inanimate           obviative         possessions            object
+                                                                                                                           secondary obj.
+                                                                               PRONOMINAL
+                                                     Person ►                First                 2nd                   3rd
+                                                                                 VERBAL
+                                                                            Mode, Tense, Negative
+Mode (Mood)
+       ▼
+ Independent Order►                  indicative            subordinate         t- subordinate      interrogative       subordinate interrogative   optative    optative preterite
+                                                         (subjunctive27)
+  Conjunct Order           ►         changed                changed              iterative ?       participle ?                negative ?          preterite   others
+                                    conjunct ?           subjunctive ?
+  Imperative Order ►                 ordinary             prohibitive
+Tense ►                              present             past (preterite)            future
+Negative ►
+          NOTEs:
+          • Yellow highlighted areas are verbal features that seem to be present in the Narragansett Language explicitly or by secondary (reconstructive)
+             analysis. A question mark indicates not sure due to ambiguous English translations and variable orthography in A Key.
+          • Except for the terms highlighted, which are developed in this paper, the remaining terms are defined in G & B (1988). Appendix B defines certain
+             Algonquian verb terms.
+          • Other features such as VOICE (active/passive), CASE (subject/object) & TYPE (intransitive/transitive) may be included.
+
+
+
+
+   27
+        Eliot (1666) uses a third term, “suppositive.”
+                                                                                                                                                    30
+
+
+
+
+                               Table 1. Four Basic Verb Classes, Algonquian Languages
+                                                     Source Goddard & Bragdon (1988), p. 511
+
+               ENGLISH                       STEM TYPE                        SUBJECT                 OBJECT                  GENDER
+               EXAMPLE                                                       FUNCTION                FUNCTION
+               He runs            animate intransitive           AI        animate                no object                 of   subjects
+               It melts           inanimate intransitive         II        inanimate              no object                 of   subjects
+               I see it           transitive inanimate           TI        animate (usu.)         inanimate objects         of   objects
+               I see her          transitive animate             TA        animate (usu.)         animate objects           of   objects
+               NOTES:
+                 • Transitive/intransitive refers to the verb type. Intransitive verbs have no objects while trans. verbs
+                    do. Animate/inanimate refer to “gender” of subjects and objects as specified in table28. Thus AI
+                    verbs have animate subjects but no objects (e.g., He runs), and TA verbs have both animate subjects
+                    and objects (e.g., I see her).
+                 • Subject /object termed the “case”.
+
+               See G & B, p. 511, for other stem types:
+                  •    TI-O = TI stems without (“minus”) objects,
+                  •    AI+O = AI stems with (“plus”) objects,
+                  •    TA+O = TA with (“plus”) objects,
+                        where O indicates object
+
+
+
+
+28
+  “Animate/inanimate” have slightly different meanings when applied to nouns. Animate nouns are things that are alive and move (with exceptions).
+Respecting verbs, “animate” refers to a pronoun or proper name as the subject/object.
+                                                                                                                                                          31
+
+
+
+
+                                           Table 2. Basic Verb Structure in Narragansett
+                                                       Source: Hagenau, 1962
+          TYPE               MOOD/                PERSON             NUMBER             VOICE          TENSE           NEGATIVE               GENDER29
+           ▼                 MODE                   ▼                  ▼                  ▼              ▼                ▼                      ▼
+                              ▼
+       I                 infinitive             first               singular           active          present                                animate
+       II                indicative             second              plural             passive         past30                                 inanimate
+       III               imperative             third                                                  future
+       IV                subjunctive
+       V                 interrogative
+       Regular
+       Mixed
+       Unclass.
+
+
+         NOTE: This table seems sparse in comparison to the details worked out by G & B (Chart 9 and Table 1). One must remember that A
+       Key is prevalent with ambiguity in translations and contains variant spellings. In addition, Hagenau did not have available the native
+       writings, so he relied on John Eliot’s Bible & Grammar as his principal sources.
+
+
+
+
+29
+     Not explicitly documented by Hagenau.
+30
+     Past and future tenses are expressed by adverbs mainly by use of preverbs “mesh” (past tense) and “pitch” (future tense); see Table 9.
+                                                                                              32
+
+
+
+
+                Narragansett Verb Structure
+
+        To my knowledge, the Narragansett language has not been analyzed extensively
+by the basic verb classes of Table 1. In this paper we follow the paradigms from G & B
+(1988) and exemplify the verb forms by modal category and verb type. The formation of
+verbs (inflectional morphology) is based on applying appropriate syntactical and phonetic
+rules for combinations of the nominal, pronominal, and verbal categories to the basic
+stem types to which they belong. This is what gives Indian verbs their power.
+
+       …[T]he Indian aimed at extreme precision. His words were so constructed as to be
+       thoroughly self-defining and immediately intelligible to the hearer.
+        —J. H. Trumbull, “On the Best Method of Studying the North American Languages,”
+       1869-1870, p. 78.
+
+        The remainder of this chapter is devoted to
+
+   •    providing other non-inflectional data and
+   •    exemplifying the type/modal categories existent in Narragansett, and providing
+        examples from NR (Narragansett).
+
+        The primary source for verb morphology in Narragansett has been Hagenau’s
+1962 Brown University M.A. thesis. However, he did not analyze verbs in the rich
+schema presented by Ives Goddard and Kathleen J. Bragdon (1988). At this point we can
+only try to show evidence that Hagenau’s work, which is based primarily on modal
+categories in the present tense, can be recast into the four classes of Table 1, thereby
+inviting researchers and tribal peoples to conjugate many NR verbs.
+        Table 3 is a summary of the structure of Narragansett verbs as provided by
+Hagenau. The data are presented, using his labels, by verb Type and Mode (Indicative,
+Imperative and Subjunctive), and combined Animate/Inanimate form. G & B use
+different, more precise terminology (e.g., Imperative Mode vs. Imperative Order in G &
+B). We have filled in some missing inflectional forms from G & B (indicated in italic
+font). One can see that the transitive animate verb forms are quite sparse due to the
+dearth of data in A Key. Asterisks *** indicate any appropriate stem. The apostrophe
+indicates the “normalized” form requiring a vowel sound to complete the verbal
+statement. Variant spellings of the affix are given in parentheses.
+        Tables 4 through 6 show certain distributional data based on Hagenau’s thesis
+(which are of little theoretical interest). Table 7 lists non-inflectional morphemes useful
+in understanding verbal structure. Tables 9 through 13 present selected NR verbs recast
+into AI, II, TI, TA classifications. Appendix A lists all Type I (-am) NR verbs in A Key.
+The reader may attempt to reconstruct conjugations similar to Table 8.
+                                                                                                                                                 33
+
+
+
+
+              Table 3 : Summary of Narragansett Verb Forms by Type and Mode
+                                      (Present Tense)
+
+                            I. INTRANSITIVE: ANIMATE & INANIMATE
+TYPE ►                  I                               II                                 III                          IV                       V
+MODE (MOOD)
+     ▼
+INFINITIVE     ***am (um)             ***men (min, mun)                    ***em (un ?)                      ***iwin (in, iin, ouin,     ***
+                                                                                                             ouwin, owin)
+INDICATIVE
+I              n'***am (um)           n'***men (min, mun)                  n'***em (im)                      n'***iwin (in, iin, ouin,   n'***
+                                                                                                             ouwin, owin)
+You (sg.)      k'***am (um)           k'***men (min, mun, ø)               k'***em (im)                      k***iwin (in, iin, ouin,    k'***
+                                                                                                             ouwin, owin)
+He, she        (w')***am (um)         (w')***wi (i, o, eu, u, su, wa, ø)   (w', u’)***aui (a, au, aw, aun,   (w')***iwin (in, iin,       (w')***o (ø)
+                                                                           ayi, ø)                           ouin, ouwin, owin, es)
+We (excl.)     n'***amumun            n'***men (min, mun)                  n'***amun                         n'***awunan                 n'***umun
+We (incl. )    k'***amumun            k'***men (min)                       k'***amun                         k'***awunan                 k'***umun
+You (pl.)      k'***amumwoo           k'***amwoo                                                             k'***awunan                 k'***umwoo
+They           (w')***amwock          (w')***wock (og, uog, uck, uock)     (w')***auock (aug, ouoog, auog)   (w')***awunan               (w')***umwock
+                                                                                                                                         (uwock, wock)
+Indefinite     ***am (?)              ***men (min, mun)                    ***em(un ?)                       ***awun                     ***uwock
+                                                                                                                                         (wock)
+IMPERATIVE
+Me             ***ti                  ***ti                                ***ti                                 ***ti                   ***ti
+You (sg.)      ***ash (as, ass, sh)   ***ish (sh, s)                       ***esh (ash, es, ess, ø)              ***ous                  ***
+Him, her       ***atch                ***itch (tch)                        ***atch
+Us             ***amutta              ***ituck (iteuck, tuck, etuck)       ***auta (aunta, aunto)
+                                                                                                            34
+
+
+
+
+You (pl.)     ***amoke       ***ike (eke)           ***unk                       ***auock (auog)   ***oke
+Them          ***amhettich   ***hettitch            ***auhettitch (auhetti)
+Indefinite    ***nach        ***nach                ***nach                      ***nach           ***nach
+It            ***ch          ***ch                  ***ch                        ***ch             ***ch
+SUBJUNCTIVE
+I             ***amon        ***ean (yean, un, n)   ***auean (ayean, ouean)
+You (sg.)     ***aman        ***ean (ayean, an)     ***auean (ayean, ouean)                        ***oan
+He, she, it   ***ock         ***ont                 ***auean (ayean, ouean)
+We            ***amock
+You (pl.)     ***amóck
+They          ***hettit      ***hettit              ***auhettit
+Indefinite                   ***itch (utch, etch)   ***itch
+
+                                                                              CONTINUED
+                                                                                                                                                              35
+
+
+
+
+                                                              II. TRANSITIVE: ANIMATE
+TYPE ►                         I                       II                         III                  IV                V                  REGULAR
+MODE (MOOD)
+      ▼
+OBJECTIVE
+INDICATIVE
+I-You (sg.)          k'***ous (aunsh)       k'***ous (aunch, aunsh,   k'***ous                  k'***ous    k'***ous (aunsh, ish, Ø)   k'***ous (ish, oush,
+                                                 ish, oush, itch)                                                                         aunsh, aunch)
+I-Him, her           n'***                                                                                                             n'***au
+I-Them               n'***oock              n'***auock (auog)         n'***auock (ouoog)                                               n'***auock
+You (sg.)-Me         k'***i (e)             k'***i (e)                                                      k'***i (e)                 k'***i (e)
+You (sg.)-Them       k'***ook                                                                                                          k'***auock
+He, she-Me           n'***uck (unck, eug,   n'***uck (unck, uckqun)                                         n'***uck (uckqun)          n'***uck
+                          qun)
+He, she-You (sg.)    k'***uck               k'***uck (uckqun)         k'***uck (qun)                        k'***uck (ickqun)          k'***uck
+He, she-Us                                                                                                                             n’***uckqun (ickqun)
+They-You (sg.)       k'***uckwock                                                                           k'***uckwock (ickquock)    k'***uckwock
+They-Us              n'***uckwunonock       n'***uckwock              n'***uckwock (uckquock)
+They-Them            ***auhettuock                                                                                                     ***auhettuock
+OBJECTIVE
+IMPERATIVE
+You (sg.)-Me         ***amiinnea            ***iinnea                 ***iinnea (iin)           ***iinnea                              ***iinnea
+You (sg.)-Him,her    ***inish               ***inish
+You (pl.) - Us       ***iinnean             ***(i)innean
+We-Us                ***auhettemina         ***itea                   ***auhettitea
+OBJECTIVE
+SUBJUNCT.
+You (sg.)-Me                                k'***ean (iean)                                                                            k'***ean
+
+ NOTEs:
+   • Yellow-highlight is used to show forms not derived or reconstructed due to lack of sufficient data (see TABLE NOTE 10, infra).
+   • Table 13 may be used to reconstruct some transitive animate verbs in NR (Independent Indicative).
+   • G & B describe indic. verbs as –m, -n & -w endings, which does not seem to fit NR, as clearly the NR –m ending verbs (Types I & III) and the –n ending
+      Verbs (Types II & IV) are not identical in morphology.
+   • The author treats past tense verbs in “Preterite Verbs in the Narragansett Language” (unpub.)
+                                                                                                                                                   36
+
+
+
+
+Table NOTES—
+1)   The Table is derived primarily from Hagenau’s distributional forms. The modern classification of Transitive Animate &c
+     of Goddard & Bragdon (1988) will be developed in the text.
+2) INFINITIVE Mode is the form “to___” (for example, “To plant corn”).
+3) INDICATIVE Mode refers to simple statements or questions (“I am tired”; “When did you come?”, etc.).
+4) IMPERATIVE Mode refers to simple commands or pleadings (“Sit!”, “ Come!”, “Help me!” ).
+5) SUBJUNCT. (SUBJUNCTIVE), (or “Suppositive”) refers to subordinate mode of conditional statements (“If you poured out”;
+    “Being that he has come”; “When it snows”).
+6) sg. means “singular”; pl. means “plural”.
+7) Excl. means “exclusive” (“we, but not you”); Incl. means “inclusive” (“all of us”).
+8) *** indicates the root or stem word in a verb. The prefixes n', k' & w' are “normalized” forms; the apostrophe representing a
+     vowel sound such as n'***am (first person indicative Type I verb).
+9) The symbol Ø is the “null symbol” meaning nothing goes there.
+10) Some forms are (a) conjectured, (b) reconstructed or (c) taken from different dialects of the Massachusett language (listed in
+     italic—as in n'***amumun). They may not conform to Narragansett proper.
+11) The forms given in parentheses are variant forms for a prefix or suffix; for example, (um) in Type I or (min, mun) in Type II or
+     (w') in all types.
+12) A t is often inserted before a root/stem beginning with vowel, and after a root/stem ending in a vowel (e.g. nittauke is form n'***, Type V,
+     with the stem being auke). Some forms involve adding or deleting other letters—such as “glides” or “reduced vowels” — before adding the
+     prefix or suffix (e.g., taquatchowash is Imperative, Type II with stem taquatchowau; the form is ***ish and the u has been dropped before
+     adding suffix sh). See Ind. Gram. Dict (Appendix).
+13) OBJECTIVE INDICATIVE Mode refers to transitive verbs denoting a subject-object relation (“I love you”; “He asks me”,
+      etc.). The suffixes uckqun, ickqun for the forms He, she-Me & He, she-You (sg.) may not be grammatically correct. Those
+       suffixes perhaps belong to the form, He, She-Us.
+14) OBJECTIVE IMPERATIVE Mode refers to transitive verb commands or pleadings (“You show me the way!”, etc.).
+15) OBJECTIVE SUBJUNCT. (SUBJUNCTIVE) refers to “subordinate” mode involving a subject and object.
+16) REGULAR refers to the normal or most common Verb Type.
+
+
+  Examples:
+  (1) Nowaûtam = “I understand” is a first person singular Indicative Type I verb. Table form is: n'***am. The stem or root word is
+      wau(t) (to understand, know, believe), indicated by ***. The “t” may be accommodating as wau is the stem in Massachusett.
+                                                                                                                                    37
+
+
+
+
+(2) Tokêtuck! = “Let us waken!” is an Imperative Type II verb (first person plural). Table form is: ***ituck (etuck). The stem
+      word is toke (to awaken), indicated by ***.
+(3) Tawhich mat mechóan? = “Why do you not eat”? is a second person singular Type V Subjunctive verb. Table form is: ***oan.
+     The stem is mech (to eat), indicated by ***.
+(4) Sóchepwutch = “When it snows” is a Type II Subjunctive (indefinite) verb. Table form is: ***itch (utch, etch). The stem is
+     sochep (snow), indicated by ***.
+(5) Cowâutous = “I understand you” is Objective Indicative of the form I - You (sg.). Table form is: k'***ous. The
+      stem or root word is waut (to understand), indicated by ***. Note that the word is spelled with a c and the form is spelled
+      with a k.
+(6) Kokotemíinnea méyi! =“Show me the way!” is an Objective Imperative Type I verb of form You (sg.)-Me. Table form is:
+    ***amiinnea. The stem or root word is kokot (to show), indicated by ***.
+(7) Mequanamiínnean = “You (pl.) remember us” is Objective Imperative Type II verb. Table form is ***iinnean. The stem is
+    mequanam (to remember), indicated by ***.
+
+References for Grammar I, II
+     •   Hagenau (1962)
+     •   Goddard & Bragdon (1988)
+                                                                   38
+
+
+Table 4. Counts of Inflectional Modal/Type Forms in Narragansett
+Source: Hagenau, 1962
+                                                                                                   39
+
+
+    Table 5. Frequency Distribution of Narragansett Verb Types
+                                         (Present tense)
+
+                            SOURCE: Hagenau (1962; pp. 12-13)
+                                    Verb Forms                Verb Stems
+                   TYPE (suffix)   Forms     %             Stems         %
+                         ▼
+                      I (-am)      137       16.7            52           16.0
+                     II (-men)     286       34.9            111          34.5
+                     III (-em)     111       13.6             21          11.5
+                    IV (-iwin)      52        6.4             21           6.3
+                       V (Ø)       27        3.3              7            2.2
+                      Regular      85        10.4             48          15.0
+                      Mixed        46         5.6             15           4.7
+                     Unclass.       75        9.1             30           9.3
+                       Total       819      100.00           322          100.0
+
+                  Mixed: Types A through E (see Ind. Gram. Dict.)
+
+
+
+                                          Table 6.
+Distribution of Inflectional Morphemes of Narragansett Verb Types
+                              Types I-V & Regular (Present tense)
+                  SOURCE: NR, Hagenau (1962; pp. 10-11) and *NR, author
+
+                  INTRANSITIVE                        TRANSITIVE
+                      Forms                             Forms
+  TYPE (suffix)                       Total                                       Total    Grand
+                  NR         *NR                     NR             *NR
+        ▼                            Intrans.                                     Trans.   Total
+     I (-am)        9        12         21             8             6              14      35
+    II (-men)      16         4         20             10            2              12       32
+    III (-em)      13         6         19             6             --              6       25
+   IV (-iwin)       6         5         11              2            --              2       13
+      V (Ø)        5         6          11             5             --              5       16
+     Regular       11        1          12             --            --              -       12
+    TOTAL          --        --         94             --            --             39      133
+
+ Numbers are derived from the form counts in Table 3.
+ NR = Narragansett <> *NR = Reconstructed Narragansett (italicized forms in Table 3)
+                                                                                                                                   40
+
+
+
+
+                                 Table 7. Non-inflectional Morphemes
+Form                   Narr.                            Meaning                                       Narragansett Example
+
+NEGATIVE
+               aquie             A prohibitive (“do not do” indicator), used often in         aquie kunníckatshash ! = you—do not leave
+                                 imperative mode                                                                 me !
+                                                                                              Ntaquìe = I stop (doing something)
+               machage           never, not, nothing, & not at all.                           machage nowâutam = I do not understand
+               (mateàg & other                                                                [nothing I understand]
+               spellings)
+
+
+               mat               not, bad                                                     mat nowetuómeno = I have no wetu [not—I
+                                                                                              have none, a wetu]
+
+
+               matta             same as “mat,” but seems to be used to further indicate      matta niccattuppúmmin = I am not hungry
+                                 displeasure, unhappiness, annoyance, unpleasantness
+
+
+TENSE MARKER
+               mes, mesh         The usual past-tense (preterite) marker in NR for            mesh nomishoonhómmin = I came by boat
+                                 independent order (Indicative mode), a feature not seen      (canoe) [“I come by boat—did”?]
+                                 in Massachusett. Other past-tense markers, of which          peéyup = He/she was present (recon.)
+                                 there are several (see G & B):                               katitonckquêban = Many are dead and gone
+                                                                                              sachimaûpan = He that was the Prince here
+                                 •   –(u, a, i)p , -pan, -pah-, -ban(a) (independent
+                                                                                              yo aspapan = He that was here
+                                     indicative, subordinate preterite, conjunct preterite,
+                                                                                              saséquacup = When it used to be Spring
+                                     & others)
+                                                                                              mittummayaucup = The way you went
+                                     o cannot always be distinguished in NR due to            before
+                                       English trans. ambiguity and variant spellings         eataúbana = old traps (preterite?)
+                                                                                                                                                                               41
+
+
+
+
+                               pitch                      Future-tense marker                                                   pitch nowáuwon = I shall know the truth
+COMPOUND                       ▼Note: G & B (1988) have an important section titled STEM DERIVATION (pp. 578 ff.) which discusses additional
+STEMS &                        stem types pertaining to verbal structure not evident in A Key.
+PREVERBS,
+PARTICLES &C
+                               achie                      Very (used when “wunna” inappropriate)                                achie nonâumwem = I speak very truly
+                               acouwe, ackowwe            In vain, for no purpose (verb modifier)                               ntackówwepeyaùn31 = I have lost my labor
+                                                                                                                                [“I—in vain—come”]
+
+
+                               as                         Yet, still, before (used with verbs)                                  as cowequassunnúmmis32= good morrow (a
+                                                                                                                                greeting)
+                                eiu, iu, uiu              Directionality                                                        sowwaníu = southward
+                                it                        verb modifier for motion (movement) into an enclosure, petiteaûta = let us go in !
+                                                          like a wetu.
+
+                               ma, man, mano              None of, cannot, not                                                  mannippêno ? = have you no water ?, ma
+                               [often coupled with                                                                              means “no, not, none”. When prefixed to
+                               suffix –uo, &c]                                                                                  nouns (nippe), ma is often accompanied by
+                                                                                                                                a suffix ( no, uo, &c.) to mean, “have you
+                                                                                                                                any ____?” See Ind. Gram. Dict., Pt. II
+                                                                                                                                (alphabetical by Narragansett listing).
+
+
+                                moua, mau,                Verb modifier, “completes action,” “ceases action”                    nummouaquômen33 = I will lodge abroad
+                                maua, moue
+
+
+
+
+31
+  N + (t)(ackowwe)(peyau) + un. The “t” preceding stem ackowwe is acccommodating .
+32
+  The ending -mis may be the question form; perhaps meaning “Is your light (spirit) still shining?” It may also indicate the Passive Voice (see the Ind. Gram. Dict.), or possibly past
+tense subjunctive. In Pequot (co)wequassin, translated “good morning,” seems to mean “may you live happily” (from week = “sweet”). So, As cowequássin may mean “may you
+continue to live happily ('sweetly')”. As may be related to the Mass. word asq (“yet, not yet, still, before that”).
+                                                                                                                                                                                   42
+
+
+
+
+                                 panna, peno               A modifier in verbs which reverses the meaning of the                   cuppannawâutous34 = I do not believe you
+                                                           primary stem
+
+                                 sh, shau                  Inferior quality, less than; also, involuntary action                   wequáshim35 = moonlight
+                                 tauhana                   Unable (in compound verbs)                                              ntauhaunanatinnehòmmin36= I cannot look
+                                                                                                                                   or search
+
+                                tinnea, tinea, tin         Sounds with no apparent meaning, used in verbs as                       cuttineapúmmishen ?38 = will you pass by?
+                                                           “ornamentation” or perhaps as emphasis37
+
+                                uo, unno, no, o, mo        Attached to nouns, these endings ask the question, “Is                  mat nowewuttámmo = I take none [i.e., no
+                                                           there ...?”, “Have you?” or state “None of”, “There is                  tobacco, Key, p. 45]
+                                                           none of”
+                                waw, quaw                  Condition, state, status                                                segousquaw39 = widow
+                                wek, weque                 As far as, so far                                                       yo mesh nowékeshem40= I went thus far
+                                wepe                       Verb modifier, word used as an accusation or demand                     wèpe kunnishaûmis = you killed him [a
+                                                                                                                                   question?]
+
+
+
+
+33
+   This verb shows the segment moua meaning “completes action”, “ceases action” (also spelled mau & maua). It modifies the main verb quo (to sleep, lodge). On pg. 19 in this
+Chapter [Intro. Narr. Lang.], we see the verb ntunnaquômen modified by segment tunna (meaning “good” from unna or wunni [with a t inserted]) modifying the verb quo.
+There we also see verb Nummattaquômen and the segment matta (meaning “bad”).
+34
+   Panna in the verb Cuppannawâutous is a modifier that reverses the meaning of the main verb. Here the verb is wâu(t) (to understand, believe, know).
+35
+   “light-ish”. The letters -sh- often indicate something “less than, inferior, a little,” etc. For example, the light of the moon is less bright than that of the sun; could also describe
+“dull, dim or scanty moonlight” on a cloudy or overcast night perhaps.
+36
+   The segment tauhauna in ntauhaunanatinnehòmmin means “unable” and is compounded with the main verb natinneha (“search”). The following verb ntauhaunanamiteoûwin also
+has the segment used with the verb namite (“to find”).
+37
+   Eliot’s Grammar cites same feature.
+38
+   The segment -tinnea- has no meaning as far as we know. It's not part of the verb. Pummish = “pass by”. Some believe -tinnea- is merely for ornamentation, letters or words added
+without meaning or for emphasis (like we do in English when we say something like— “you know —ahh—what I mean, eh?”, etc.). This may be far-fetched and awaits further
+evidence.
+39
+   “Woman left behind”.
+40
+   -wek- (from weque), “as far as”.
+                                                                                                                                                                  43
+
+
+
+
+                             wet                     With, accompany                                                  wetapwâuwwas ! = you—sit and talk with
+                                                                                                                      us!
+                             wunna, wanna            Very, much, very much (for hunger, sleep, etc.)                  wunna kukkússaquaùm41 = you sleep much
+
+
+                             wune, wunne,            Good, pleasing, favorable                                        ntunnaquômen42 = I had a good dream
+                             unne, unna, tunna,
+                             wun
+PRONOUNS
+                                   1. neen               1.   I                                                           1. neen43 kuttánnûmous = I will help
+                                      (precedes          2.   you                                                            you
+                                      verb)              3.   s/he                                                        2. keen mèitch ! = you—I pray eat !
+                                   2. keen               4.   himself or themselves                                       3. uppansìnea ewo44 = he is innocent
+                                      (precedes          5.   who, someone, anyone (singular)                             4. noonapûock45 naûgum = they don’t
+                                      verb)              6.   who (plural)                                                   have room for themselves or they
+                                   3. ewo                                                                                    don’t have room for him
+                                      (follows                                                                            5. awaùn ewò ?46 = Who is that ?
+                                      verb)                                                                               6. awânick47 ûchick ? = “who are these
+                                   4. naûgum                                                                                 people ?
+                                   5. awan,
+                                      awaun,
+                                      awauo
+                                   6. awanick
+
+ACCOMMODATING
+t, /t/
+
+41
+   -kusse- = “very much.”
+42
+   Structure: ntunnaquômen = n + (t)(unna)quo + men, where we see “accommodating t”, compound element (unna = “good”), stem (quo = “dream, sleep”). This verb is more
+complicated than most in A Key, but not as complex as one might see in living Algonquian languages (see Pentland).
+43
+   Neen apparently used for emphasis for the verb proper contains the I-you (sg.) reference required in the grammar.
+44
+   Ewo is used for emphasis, “He is innocent—him”. The word for “innocent” has the prefix up-, a form which is rarely used by Williams for “He, she” verbs. Sometimes the
+pronouns are added just for emphasis or clarification.
+45
+   In Natick, noone = “scant measure” (not enough). The root appu (“He sits, rests, is situated”) is seen.
+46
+   The pronoun ewò (“he, she”) usually said after the verb or noun. The pronouns neèn (“I”) and keèn (“you”) usually said before the verb or noun.
+47
+   Plural for “who”. Ûchick seems to mean “these men” (yeug in Natick).
+                                                                                                                                                44
+
+
+
+
+                         t, tt                 Used with some verb stems beginning or ending in a        •      kukkowêtous = [k’ + ***(t) + ous] =
+                                               vowel.
+                                                                                                                I will lodge with you
+                                               Also used with nouns and adjectives beginning with a
+                                               vowel.                                                    •      nittake = [n’ + (t)***] = my land
+                                                                                                         the stem ake indicated by ***
+GLIDE
+
+                         w, y                  Glide consonants that are marked by a continuing          nnínnuock;
+                                               resonant sound. In Narragansett, the glides are w & y.    “nuh nin nuh wahck” with the “i” as in “hit”
+                                               Typically, falling between a stem ending in a consonant   (the stress is on the second syllable nin
+                                               and suffix beginning in a vowel, and used in              because that’s where we see the stress mark).
+                                               pronunciation as most often not written                   Often the cluster uock seems to insert a “w”
+                                                                                                         for speech (“wahck”) (called a “glide”).
+
+
+REDUPLICATION,
+FREQUENTATIVE
+                                               Repetition of a letter or syllable of noun or verb to     npepeyup = I have long been here; derived
+                                  --           indicate something that has occurred for a long time or   from the base stem/stem “pee” = “to be
+                                               is done frequently                                        present”; npépeyup seems to be a
+                                                                                                         frequentative past tense verb form of
+                                                                                                         nippeéam = “I am present” in normalized
+                                                                                                         form, npépeyup is written n’ + *** (pe)(y) +
+                                                                                                         up (*** is stem), where “(pe)(y)” seems to
+                                                                                                         be an intensive form of “be present” (present
+                                                                                                         for a long time) with a “y” glide.
+
+
+Note: additional information in Ind. Gram. Dict. and G & B (1988).
+                                                                                                  45
+
+
+               Table 8. Sample Conjugation of Narragansett Verb
+
+                             Hypothetical Narragansett Conjugation
+                                Indicative Intransitive & Transitive
+                  The stem or root (***) is wau(t)— “to understand, know, believe”
+                             Hagenau TYPE I Verb, Key pages 8, 9, 36, 56
+                (Italic forms are reconstructed or from Natick dialect with uncertain accents)
+
+
+                           Independent Indicative Intransitive Animate
+                         (Central Participant Markers), G & B (pp. 517 ff.)
+
+
+            MODE         GRAMMATICAL  CONJUGATION                                ENGLISH
+              ▼               FORM          ▼                                 TRANSLATION
+                                 ▼                                                    ▼
+        INFINITIVE       ***am (um)  wautam                             to understand
+        INDICATIVE
+        I                n'***am (um)           nowaûtam                I understand
+        You (sg.)        k'***am (um)           cowaûtam                You (sg.) understand
+        He, she          (w')***am (um)         waûtam                  He, she understands
+        We (excl.)       n'***amumun            nowaûtamumun            We (excl.) understand
+        We (incl. )      k'***amumun            cowaûtamumun            We (incl. ) understand
+        You (pl.)        k'***amumwoo           cowaûtamumwoo           You (pl.) understand
+        They             (w')***amwock          waûtamwock              They understand
+        Indefinite       ***am (um)             wautam                  Someone understands
+        IMPERATIVE
+        You (sg.)        ***ash (as, ass, sh)   waûtash                 You (sg.) understand!
+        Him, her         ***atch                waûtatch                Let him/her understand!
+        Us               ***amutta              waûtamutta              Let us understand!
+        You (pl.)        ***amoke               waûtamoke               You (pl.) understand!
+        Them             ***amhettich           waûtamhettich           Let them understand!
+        SUBJUNCT.
+        I                ***amon                waûtamon                I understanding
+        You (sg.)        ***aman                waûtaman                You (sg.) understanding
+        He, she          ***ock                 waûtock                 He, she understanding
+        We               ***amock               waûtamock               We understanding
+        You (pl.)        ***amóck               waûtamóck               You (pl.) understanding
+        They             ***hettit              waûthettit              They understanding
+        Indefinite
+
+NOTE: Stem is prob. wau with “t” accommodating by rule in Ind. Gram. Dict. (Appendix): /t/ precedes
+an affix with initial vowel. Thus wautam (“s/he understands”) = ***(t)am.
+                                                                                                 46
+
+
+
+
+                       Transitive Animate, G & B (p. 518)
+             MODE         GRAMMATICAL                   NR                      ENGLISH
+              ▼              FORM                   CONJUGATION               TRANSLATION
+                               ▼                         ▼                         ▼
+
+OBJECTIVE
+INDICATIVE
+I –You (sg.)           k'***ous (aunsh)            cowaûtous           I understand you (sg.)
+I –Him, her            n'***                       nowaût              I understand him, her
+I –You (pl.)           k’*** unumwoo               cowaûtunumwoo       I understand you (pl.)
+I - Them               n'***oock                   nowaûtoock          I understand them
+You (sg.) - Me         k'***i (e)                  cowaûti             You (sg.) understand me
+You (sg.) - Him,her    k’***                       cowaût              You (sg.) understand him,her
+You (sg.) - Us         k’***imun                   cowaûtimun          You (sg.) understand us
+You (sg.) - Them       k'***ook                    cowaûtook           You (sg.) understand them
+He, she – Me           n'***uck (unck, eug, qun)   nowaûtuck           He, she understands me
+He, she -You (sg.)     k'***uck                    cowaûtuck           He, she understands you (sg.)
+He - Him, her          oow***oh (uh)               oowaûtoh            He, she understands him, her
+He, she -You (pl.)     k’*** ukkou                 cowaûtukkou         He, she understands you (pl.)
+He, she -Us            n’***uckqun (ickqun)        nowaûtuckqun        He, she understands us
+He, she -Them          oow***oh (uh)               oowaûtoh            He, she understands them
+We -You (sg.)          k’***unumun                 cowaûtunumun        We understand you (sg.)
+We - Him, her          n’***óun                    nowaûtóun           We understand him, her
+We - You (pl.)         k’***unumun                 cowaûtunumun        We understand you (pl.)
+We - Them              n’***óunónog                nowaûtóunónog       We understand them
+You (pl.) - Me         k’***imwoo                  cowautimwoo         You (pl.) understand me
+You (pl.) - Him, her   k’***au                     cowaûtau            You (pl.) understand him, her
+You (pl.) - Us         k’***imun                   cowaûtimun          You (pl.) understand us
+You (pl.) - Them       k’***auoog                  cowaûtauoog         You (pl.) understand them
+They - Me              n’***uckwock                nowaûtuckwock       They understand me
+They -You (sg.)        k'***uckwock                cowaûtuckwock       They understand you (sg.)
+They - Him, her        oow***ouh                   oowaûtouh           They understand him, her
+They - Us              n'***uckwunonock            nowaûtuckwunonock   They understand us
+They - You (pl.)       k’***ukoooog                cowaûtukoooog       They understand you (pl.)
+They - Them            ***auhettuock               waûtauhettuock      They understand them
+
+OBJECTIVE IMPERATIVE
+You (sg.) – Me         ***amiinnea                 waûtamiinnea        You (sg.) understand me!
+You (sg.) - Him,her    ***inish                    waûtinish           You (sg.) understand him, her!
+You (sg.) - Us         ***iinnean                  waûttiinnean        You (sg.) understand us!
+We - Us                ***auhettemina              waûtauhettemina     We understand us!
+                                                                       (Let us understand each other!)
+It                     ***ch                       wauach              Let it be understood!
+Indefinite             ***nach                     waunach             Let one undetstand!
+OBJECTIVE SUBJUNCT.
+You (sg.) - Me                     ?                         ?                        ?
+
+
+NOTE: In Objective Imperative, change You (sg.) - Us to You (pl.) - Us in Column 1 and
+Column 4.
+                                                                                                     47
+
+
+
+
+Table 9. Independent Indicative, Transitive Inanimate (absolute), Class 3 (TI 3), G & B (p. 525);
+Type V (Hagenau)
+                           “I *** it”  “you *** it”  “he, she *** it”
+
+             PERSON             PRESENT         EXAMPLE            PAST FORM       EXAMPLE
+                                FORM            (eat)              (*** is stem)   (ate)
+                                (*** is stem)
+SINGULAR
+             I —(it)            n’***           nummeech           n’***up         nummeechup
+                                                I eat (it)                         I ate (it)
+
+             you—(it)           k’***           kummeech           k’***up         kummeechup
+                                                you eat (it)                       you ate (it)
+
+             he/she— (it)       (w’)***         meech              (w’)***up       meechup
+                                                he/she eats (it)                   he/she ate (it)
+
+PLURAL
+             We (excl.) —(it)   n’***umun       nummeechumun       n’***umunup     nummeechumunop
+                                                we eat (it)                        we ate (it)
+
+
+             We (incl.) —(it)   k’***umun       kummeechumun       k’***umunup     kummeechumunup
+                                                we eat (it)                        we ate (it)
+
+
+             you—(it)           k’***umwoo      kunmeechumwoo      k’***umwooup    kunmeechumwooup
+                                                you eat (it)                       you ate (it)
+
+
+             they—(it)            ***umwock     meechumwock        ***ummmuaup     meechummuáop
+                                                they eat (it)                      they ate (it)
+                                                                                                                    48
+
+
+
+
+                                           To eat ~          Type V (Hagenau
+                                                      stem
+•    For simple QUESTIONS, add –is, -mis to the verb in the table, e.g., do you (1 person) eat it? Æ kummeechis ?
+    (you eat it + -is)
+•   A more general way to ask questions (in Massachusett) is by the prefix sun, as in:
+         Do you eat it ? Æ sun kummeech ?
+
+NOTE: the standard –p suffix for preterite is not typical in A Key. R. Williams tends to use a present tense
+indicative verbal statement and then adds a prefix mes(h). This feature is not seen in Massachusett. Was this
+practice a sort of nonstandard NR, a slang or a lazy way to speak NR which Roger Williams decided to put
+into his phrase book to make it easier for the English to learn the language?
+                                                                                                        49
+
+
+
+
+           Table 10. Independent Indicative Transitive Inanimate
+ Class 1a (TI 1a) G & B (p. 525); “strong” Type U, “wise” Type I (Hagenau)
+               “I am ***”  “you are ***”  “he, she is ***”
+              PRESENT FORM                PAST FORM             PRESENT FORM               PAST FORM
+                (*** = strong)            (*** = strong)          (*** = wise)              (*** = wise)
+                 reconstructed             reconstructed           reconstructed           reconstructed
+SINGULAR
+                  nummínakese             nummenukesup             noowauontam            noowauontamup
+                   I am strong             I was strong              I am wise              I was wise
+
+                  cummínakese             cummenukesup             koowauontam            koowaunotumup
+                  you are strong          you were strong           you are wise           you were wise
+
+                    minakêsu                minakesup               waunôtam                waunôtamup
+                 he/she is strong        he/she was strong         he/she is wise          he/she was wise
+
+
+               nummínakesemun          nummínakesemunup          wauontamesumun           wauontamesumunup
+              we are strong (excl.)    we were strong (excl.)    we are wise (excl.)     we were wise (excl.)
+
+
+PLURAL
+                cummínakesemun          cummínakesemunup        noowauontamumun        noowauontamumunnónup
+               we are strong (incl.)   we were strong (incl.)    we are wise (incl.)     we were wise (incl.)
+
+
+               cummínakesemwoo         kummenuhkeesimwop        koowauontamumwoo        koowauontamúmwop
+                 you are strong          you were strong           you are wise            you were wise
+                                                                                                                     50
+
+
+
+
+                                minakêsemwock           menuhkeesimwuppanneg            wauontamwog     wauontamwuppanneg
+                                 they are strong           they were strong             they are wise     they were wise
+
+
+
+                      to be strong ~                          to be wise ~
+                                              stem                               stem
+
+ In Massachusett, to say “let me be _____”, add to the correct person the prefix pâ:
+  “Let me be wise” ÆPânoowauontam (pâ + I am wise)
+                                                                                      51
+
+
+
+
+Table 11. Independent Indicative Intransitive Animate (Central Participant Markers)
+                         G & B (p. 513), Type II Hagenau
+
+                 “I come”  “you come”  “he, she comes” & c
+                            PRESENT                            PAST
+                            (*** = come)                    (*** = came)
+                                                            reconstructed
+      SINGULAR
+                           nuppeeyaúmen                      nuppeeyauop
+                        I come, I am coming               I did come, I came
+
+                           kuppeeyaúmen                     kuppeeyauop
+                      you come, you are coming         you did come, you came
+
+                               peeyàu                          peeyauop
+                    he/she comes, he/she is coming   he/she has come, he/she came
+      PLURAL
+                           nuppeeyaúmen                 nuppeeyauâmunnonup
+                        we are coming (excl.)        we did come, we came (excl.)
+
+                          kuppeeyaúmen                  kuppeeyauâmunnonup
+                        we are coming (incl.)        we did come, we came (incl.)
+
+                          kuppeeyauâmwoo                   kuppeeyauwop
+                           you are coming              you did come, you came
+
+                             peeyauauog                     peeyauôpanneg
+                           they are coming             they did come, they came
+                                                                                                                          52
+
+
+
+
+                                                          to come ~
+                                                                        stem
+
+
+
+• NOTE: This verb is used when talking about coming from a place, or coming from where the speaker is (Trumbull, 1903).
+• A question may be asked by using the suffix -is, - mis, as in—are you coming? Æ kuppeeyaúmenis?
+                                                                                                          53
+
+
+
+
+                    Table 12. Imperative Mode, Transitive Inanimate
+                       G & B (p. 572); Type I, Hagenau, El., p. 25
+                            “Command, plead with someone”
+                        Present Tense Only (partially reconstructed)
+                                     PERSON            PRESENT                EXAMPLE
+                                                       (*** is stem)          (wisdom)
+               SINGULAR              me                NONE                   NONE (see bottom of
+                                                                              page)
+
+                                     you               ***ash                 wauntash
+                                                                              Let you be wise
+
+                                     him/her           ***atch                wauntatch
+                                                                              Let him/her be wise
+
+               PLURAL                us                ***amutta              wauntamutta
+                                                                              Let us be wise
+
+                                     you               ***amoke               wauntamoke
+                                                                              Let you be wise
+
+
+                                     them              ***amhettich           wauntamhettich
+                                                                              Let them be wise
+                                                 to be wise ~
+                                                                       stem
+
+In Massachusett, to say “let me be _____”, add the prefix Pâ to the correct person,
+“Let me be wise” Æ Pânoowauntam (Pâ + I am wise). No syntactical form exists for “me” IAW Eliot’s Gram.
+                                                                                                    54
+
+
+
+
+            Table 13. Independent Indicative Transitive Animate
+           G & B (pp. 517 ff.); Hagenau Type II, El., pp. 28, 29, 64
+              “I *** thee”  “I *** him, her”  “I***them” &c.
+                            to sleep, lodge with ~
+                                                      stem
+
+
+                                                                                       PAST
+                              PRESENT            EXAMPLE of PRESENT                (Massachusett
+             PERSON                               (*** = sleep, lodge with)
+                             (*** is stem)                                           paradigm)
+                                                                                    (*** is stem)
+           1
+SINGULAR   I —thee        k’ *** ous            kukkkowetous                  k’ *** unup
+           2
+           I — him/her    n’ ***                                              n’ *** óp
+           3
+                                                                              k’***unumwop
+           I — you        k’ *** unumwoo
+           4
+           I — them       n’ *** auock (auog)                                 n’ *** opanneg
+           1
+SINGULAR   you —me        k’***i (e)            kukkoweti                     k’ *** ip
+           2
+           you —him/her   koo ***                                             koo *** op
+           3
+           you —us        k’***’ imun                                         koo *** imunónup
+           4
+           you —them      k’ *** auock                                        koo *** opanneg
+           1
+SINGULAR   he —me         n’ *** uck                                          n’ *** ukup
+           2
+                                                                                      55
+
+
+
+
+         he —thee        koo *** uk                            koo *** ukup
+         3
+         he—him/her      oow *** oh (or) uh                    oow *** opoh
+         4
+         he —us          koo *** ukqun                         koo *** qunnónup
+         5
+         he —you         koo *** ukkou                         koo *** ukoowop
+         6
+         he —them        oow *** oh (or) ah                    oow *** opoh
+         1
+PLURAL   we — thee       koo *** unumun                        koo *** unumunónup
+         2
+         we —him/her     n’ *** óun                            n’ *** óunónup
+         3
+         we — you        koo *** unumun                        koo *** unumunónup
+         4
+         we — them       n’ *** óunónog                        n’ *** óunónuppanneg
+         1
+PLURAL   ye — me         koo *** imwoo                         koo *** imwop
+         2
+         ye — him/her    koo *** au                            koo *** auop
+         3
+         ye — us         koo *** imun                          koo *** imunónup
+         4
+         ye — them       koo *** auoog                         koo *** auopanneg
+         1
+PLURAL   they — me       n’ *** ukquog                         n’ ***ukuppanneg
+         2
+         they — thee     k’*** uckwock        kukkoweuckwock   koo *** ukuppanneg
+         3
+         they —him/her   oow *** ouh                           oow *** auopuh
+         4
+                                                                                                                                   56
+
+
+
+
+                          they — us        koo *** ukqunonog                                 k’***’ ukqunónuppanneg
+                          5
+                          they — you       koo *** ukoooog                                   koo *** ukooópanneg
+                          6
+                          they — them      ***auhettuock                                     oow *** auopoh nah
+
+
+NOTE: yellow highlight indicates forms unavailable due to insufficient data in a Key. Paradigm borrowed from Natick-Massachusett
+with no information on how close they match NR. Hagenau did some “close-match” verb morphology tests with mixed results (see
+his Appendix B, pp. 66 ff.).
+                                                                                                          57
+
+
+
+
+Particles
+       Particles are uninflected words that can be divided into several classes. The
+following chart summarizes the classes of particles.
+
+
+                         Chart 10. Classes of Particles
+
+                    NOMINAL CATEGORIES (PARTICLES)
+              Quantifiers Adverbs Conjunctions  Other
+                                               Particles
+                 numerals             time                and            prepositions
+                 quantity             place                or            interjections
+                                 circumstance                             diminutive
+                                    manner                               pluralization
+                                     cause                                 locative
+                                     degree                                  other
+             • Yellow highlighted areas are verbal features present in the Narragansett Language
+             explicitly or by secondary (reconstructive) analysis
+             • “other” includes particles for directionality, invariant particles “one” & “all” &c, and
+             “inseperable particles” in certain place name forms as in –amaug (fishing place).
+
+
+               Chart 11: Examples of Particles in Narragansett
+
+     PARTICLES                                         NR EXAMPLE
+Adverbs                           •    Many exist in Massachusett, see Table 14, below
+                                  •    See Ind. Gram Dict. (Part II) for more complete list in
+                                       NR (sample);
+                                              o tawhich = why
+                                              o anamakeesuck = today
+                                              o sauop = tomorrow
+                                              o yo= there
+                                              o tou, taa, tunna, tunnock = where
+                                              o kitummay = just now, presently, lately
+                                              o negone = in front
+                                              o aukeeaseiu = land-ward
+                                              o keesuckqui, keesucquiu = heaven-ward
+                                              o nux = yes (in speech, also said as
+                                                  “ahhe”, “ahha”)
+                                              o mes(h) = past-tense marker
+                                              o pitch = future tense marker
+                                              o mat, matta = not, no, denying
+                                              o aquie = prohibitive
+                                              o wepe = demand, accusation
+                                              o yahen = almost
+                                              o as = of continuation, yet, still
+                                                                                      58
+
+
+
+
+                                 o Shoo = of calling (cf. “chuh”, Table 14)
+Conjunctions               • ka, kah = and
+                           • tuppautea = or (?); cf. Key, p. 133)
+                                 o asuh = or (Massachusett)
+                           • where (in or at what place)
+                           • others
+Quantifiers             • For numbers & numerals, see A Key, Chapter IV, “Of
+                          Their Numbers”
+                        • Wame = All, every
+                        • Paúsuck, pawsuck = one, a singular entity
+                                     o “Invariant particles” [whole words,
+                                         unmodifiable] refer to terms like “all” or
+                                         “one” (unique class or entity).
+                        • See others in Chart 7
+Prepositions            In on, at, for, with, near &c
+Locatives               See Chart 3 & Ind. Gram. Dict.
+Pluralization,          See Chart 3 & Ind. Gram. Dict.
+Diminutives
+
+
+                  Table 14. Adverbs in Eliot’s Grammar, 1666
+
+
+1. Of Time. /Yeuyeu/, {Now}. /Wunnonkou/, {Yesterday}. /Saup/,
+   {To morrow}. /Ahquompak/, {When}. /Paswu/, {Lately}. /Nôadtuk/,
+   {A long time}. /Teanuk/, {Presently}. /Kuttumma/, {Very lately}.
+
+2. Of place. /Uttiyeu/, {Where}. /Naut/, {There}. /Anomut/, {Within}.
+    /Woskeche/, {Without}. /Onkoue/, {Beyond}. /Negonnu/, {First}.
+    /Wuttàt/, {Behinde.}
+
+3. Of Order. /Negonnu/, {First}. /Nahohteu/, {Second}. /Nishwu/,
+    {Third}, &c.
+
+4. Of Asking. /Sun/, /Sunnummatta/; {Is it?} or {Is it not?}
+    /Tohwutch/, {Why}.
+
+5. Of Calling. /Hoh/. /Chuh/.
+
+6. Affirming. /Nux/, {Yea}. /Wunnamuhkut/, {Truely}.
+
+7. Denying. /Matta/, /Matchaog/, {No}. Also /Mo/ sometimes signifieth
+    {Not}. They have no Adverbs of Swearing, nor any Oath,
+    that I can yet finde: onely we teach them to Swear before a
+    Magistrate {By the great and dreadfull Name of the Lord}. The word
+    we make for swearing, signifieth {to speak vehemently}.
+
+8. Of Exhorting or Encouraging. /Ehhoh/, /Hah/.
+
+9. Of Forbidding. /Ahque/, {Beware, Do not.}
+                                                                          59
+
+
+
+
+10. Of Wishing. /Woi/, /Napehnont/, {Oh that it were}, /Toh/.
+
+11. Of Gathering together. /Moeu/, {Together}. /Yeu nogque/, {This
+     way-ward}. /Ne nogque/, {That way-ward}. /Kesukquieu/,
+     {Heaven-ward}./Ohkeiyeu/, {Earth-ward}.
+
+12. Of Choosing. /Anue/, {More rather}. /Teaogku/, {Rather,
+     unfinished}./Nahen/, {Almost}. /Asquam/, {Not yet}.
+
+13. Of Continuation. /Ash/, {Still}.
+
+14. Of Shewing. /Kusseh/, {Behold}.
+
+15. Of Doubting. /Pagwodche/, {It may be}. /Toh/, {It may be}.
+
+16. Of Likeness. /Netatup/, {Like so}. /Nemehkuh/, {So}. /Neane/, {As}.
+
+17. Of unexpected Hap. /Tiadche/, {Vnexpectedly}.
+
+18. Of Quality. /Wunnegen/, {good}. /Matchet/, {bad}.
+    /Waantamwe/,{wise} &c.
+Of this kinde are all Virtues and Vices, &c.
+                                                                                           60
+
+
+
+
+                                        
+                      APPENDIX A
+        TYPE I (-am ending), Verb Stems in A Key
+
+
+
+Reprinted from—Moondancer, et al. (2000). Indian Grammar Dictionary for N Dialect:
+A Study of A Key into the Language of America by Roger Williams, 1643 Newport, RI:
+Aquidneck Indian Council. [pp. 1-2].
+
+The reader may attempt to reconstruct verb conjugations for this listing of “Type I”
+verbs, selected from Hagenau. Some verbs may be conjugated as both intransitive and
+transitive, while some verbs (like “consider”) may be only intransitive verbs. Few
+choices are available in comparison to “verb-rich” Massachusett.
+
+Other verb types (II, III, IV, V, Regular, Mixed, Unclass.) are contained in Ind. Gram.
+Dict. Limited conjugations for them are also possible using NR verb forms in Table 3.
+
+Conjugational exactitude is not possible (or verifiable) using this process of
+reconstruction but it can be tested against attested forms in A Key provided by Hagenau.
+                                                                                                             61
+
+
+
+
+                                VERB TYPE                           I   48
+
+
+
+
+     NARRAGANSETT                              ENGLISH                           PAGES IN
+         STEM                                  MEANING                            A KEY, RW
+          ***
+musquant                                   Angry                             182, 124
+pockun                                     Blind                             197
+tammaunt                                   Busy, take care of,               35, 169
+                                           heed
+missin                                     Captive, take                     188
+niaut                                      Carry on one's back               41, 38
+wawhush                                    Carry on one's back               41, 38
+pake                                       Cast away, divorce                150, 44, 183, 108
+pepenash!49                                Choice, take!                     42
+pee                                        Come, be present                  34, 63, 6, 44, 74
+tuppaunt                                   Consider                          189, 190
+aket                                       Count money                       164
+mish                                       Dead, name the                    202
+pannawaut                                  Disbelieve                        56
+quamph                                     Dish out, serve                   15
+sekine                                     Dislike, unwilling                166, 187
+wuttat                                     Drink                             12, 14
+potauntash!                                Fire, blow!                       34
+potawash!                                  Fire, make!                       34
+mauataun                                   Fire, tend                        19
+wannan                                     Forget                            8
+weeteant                                   Glad, be glad                     59, 136
+wecont                                     Glad, happy, have a               59, 71
+48
+   Verb Type corresponds to those used in Grammar Table [Table 3] and other types. For example, for the
+Type I stem *** = wau(t) (to understand, believe, know), we can say <1> nowaûtam (“I understand”) <2>
+Cowaûtam? (“Do you understand ?”); <3> waûtam (“s/he understands”); <4> waûtatch! (“let him, her
+understand”!), etc. Some verbs may be repeated or listed in Part II, Dictionary of Nouns, Adjectives, etc.
+The accent/stress marks must be found in A Key.
+49
+   Words with exclamation marks are complete words in imperative mood and the complete Williams
+translation (without accent/stress marks). Thus for these words, the stem/root must be hypothesized from
+rules of grammar.
+                                                                                                         62
+
+
+
+
+                                           mind to
+nickquenum                                 Go, “I am returning            31
+                                           home to my family”50
+nowant or nowaunt                          Grieve                         144, 201
+wachaun                                    Have, keep                     159, 40
+cussawontap                                Headache                       194
+anoce wenawash!                            Hire him!                      69
+paupautuckquash!                           Hold water!                    109
+niautamwock                                Laden,     “They     are       38, 41
+                                           laden”
+cuttun                                     Launch                         108
+nickat                                     Leave, depart                  44
+wekine                                     Like                           159
+mechimuash!                                Load it!                       185
+cattite                                    Long for, desire, want         15, 172
+cattaunt                                   Long for, desire, want         15
+shookekineas!                              Look at this!                  39, 164
+kekine                                     Look at, behold                39, 169, 37, 38, 39, 164
+wauwhautowash!                             Meeting, call!                 142
+qussut                                     Move residence                 36, 46
+aquie mishommoke                           Name, “Do not name             202
+                                           the dead”
+chesam,chesammat                           Pain, sore                  194, 195
+peeyaunt                                   Pray                        20, 130
+ocquash!                                   Put on!                     119
+tannot                                     Revenge, get revenge        141
+meshannant, meyaont                        Scorn, indignation          183
+nnowautum or nnowauntum                    Sorry, “I am sorry”         144, 201
+awanagusantowosh!                          Speak English!              8
+eenantowash!                               Speak Indian!               8
+mishauntowash!                             Speak out!                  142
+nanantowash!                               Speak plain!                142
+kinnequass!                                Steer (canoe)!              109
+aumaun                                     Take away                   39, 144, 150
+taubat, taup, taub                         Thank                       2, 7, 134, 14, 35,70,
+                                                                       120
+teant                                      Think                       58
+tunnant                                    Think                       58, 86, 131
+wau(t)                                     Understand,        believe, 8, 56, 36, 9
+                                           know
+askwhitteass!                              Watch!                         185
+
+50
+  English translations enclosed in quotes are the complete verb (without accent/stress marks). The
+root/stem has not been derived. Occasionally, the stem/root has been abstracted from the complete verb
+given, but should be taken as conjectural.
+                                                      63
+
+
+
+
+paumpmaunt      Well, be well, fare well   2, 3
+waunt, wauont   Wise                       190, 141
+
+
+                    <end>
+                                                                                                          64
+
+
+
+
+                             APPENDIX B                                51
+
+
+                                  ——
+                     Glossary of Grammatical Terms,
+                        Symbols & Abbreviations
+
+&c
+
+           Colonial era style symbol, meaning et ceterea (etc.)
+
+
+***
+           Stands for a stem See Stem and Table 3.
+
+’
+           Apostrophe stands for a vowel sound in a normalized form of a verb. See Table
+           3.
+
+Ø
+
+           The “null symbol” meaning nothing goes there.
+
+~
+           Stands for “similar”.
+
+
+=
+
+           Used for translations to indicate the meaning.
+
+∞
+
+           A “digraph” used to represent the letters “oh”smashed together standing for sound
+           oo in “cool”. Seen in Massachusett language only (sometimes written by scholars
+           as 8).
+
+
+
+
+51
+     Adapted [in part] from
+http://www.edu.gov.on.ca/eng/document/curricul/secondary/natlang/natlful.html#explanatory51,
+[Ministry of Education, Ontario, Canada]. Additional terminology may be found in individual charts and
+tables of the main text. Not all terms describe or pertain to the Narragansett language which was never
+recorded beyond the elementary level.
+                                                                                              65
+
+
+
+
+?        Indicates the conventional symbol for a question, or uncertainty in
+         interpretation/translation.
+
+()
+         Used to indicate variant forms for an affix.
+
+Absentative
+
+         See Chart 3.
+
+Abstract noun
+
+         See Chart 3.
+
+Accent
+
+         See Stress.
+
+Accommodating /t/
+
+         See Table 7.
+
+Active voice
+
+         A form of the verb indicating that the subject of the sentence is performing the
+         action. See also passive voice.
+
+Adjectival construction
+
+         The addition of an affix that works like an adjective to modify a noun or verb.
+
+Adverb
+
+         A word expressing a relation of place, time, circumstance, manner, cause, degree,
+         etc., e.g., quite, gently, then, and there.
+
+Affection
+
+         Affixing a noun with a pronoun by singular or plural reference. See also Affix,
+         Singular, Plural).
+
+Affix
+
+         A prefix, infix, or suffix that is added to a noun, pronoun, or verb to modify the
+         meaning.
+                                                                                          66
+
+
+
+
+Agreement
+
+       A grammatical relationship between different parts of speech indicating the same
+       number, gender, case, or person.
+
+AI verb
+
+       An intransitive verb of which the subject is animate. See Table 1.
+
+
+
+Algonquian languages
+
+       A group of about three dozen Aboriginal languages spoken from Labrador to the
+       Carolinas between the Atlantic coast and the Rocky Mountains. See Goddard
+       (1978). For many northeastern Algonquian languages, see the green-colored
+       region on the map at, http://www.docstoc.com/docs/7072941/Map-
+       AlgonquianIroquian--Langauges
+
+Anaphoric
+
+       See Chart 7.
+
+Animate, anim.
+
+       See Gender
+
+Attested
+
+       An attested form is one established as genuine.
+
+Bound locative
+
+       An affix attached to a noun that indicates location. See also locative.
+
+Cadence
+
+       The rhythm or modulation in voice, pitch, etc.; the tempo of a speaker.
+
+Case
+
+       Subject, object.
+
+Cluster
+
+       Three or more consonants that usually appear together.
+                                                                                          67
+
+
+
+
+Complex sentence
+
+      A sentence containing a main clause and one or more subordinate clauses.
+
+Compound sentence
+
+      A sentence containing two or more main clauses.
+
+
+Connective glide
+
+      See Glide.
+
+Conjugation
+
+      The inflection of a verb. The changes to the form of a verb to show person,
+      number, and time; e.g., first, second, or third person; singular or plural; past,
+      present, or future.
+
+Conjunct order of the verb
+
+      A form of the verb used in subordinate clauses or content questions; joined with
+      question words such as when, who, how, or where. See also independent order of
+      the verb.
+
+Contraction
+
+      A word resulting from the fusing of two or more words by omitting letters or
+      sounds.
+
+Conventions
+
+      Accepted practices or rules in the use of language.
+
+Correspondence rules
+
+      See Aubin, 1972 Ph.D. dissertation, for discussion of Proto-algonquian (PA)
+      “correspondence rules” pertaining to Narragansett.
+
+Cues, non-verbal/visual
+
+      Aspects of communication that convey meaning without the use of words; e.g.,
+      facial expressions, gestures, body language; illustrations, typeface, and
+      punctuation. These data are not known for Narragansett, except finger-counting
+      hand actions.
+                                                                                                    68
+
+
+
+
+Cues, verbal
+
+          Aspects of spoken language that convey meaning, e.g., intonation or emphasis.
+
+Declension
+
+          Inflected form for a noun or pronoun by animate/inanimate reference or
+          singular/plural reference; e.g., an inanimate form (declension) for plural nouns is
+          given by the suffix -ash such as: hussan (“stone“, singular) and hussanash
+          (“stones”, plural). See Inflection & Stem.
+
+Deictic
+
+          See Chart 7.
+
+Delayed imperative
+
+          A verb expressing commands or requests that are to be carried out at a later time.
+
+Dependent noun
+
+          A noun stem that requires a possessive pre-noun.
+
+Diacritical mark
+
+          A mark added to a symbol or character to alter its value; e.g., pronunciation,
+          voicing, devoicing, etc. The following table shows the main ones.
+
+Name                             Symbol                          Example
+Breve                                                            ŏ ĕ (vowels)
+                                 ˘
+Circumflex                                                       â ê î û (vowels)
+                                 ˆ
+Macron
+                                 ¯                               e i (vowels)
+Tilde                                                            ~e (vowels)
+                                 ~
+Dieresis (or Umlaut)                                             ä ë (vowels)
+                                 ¨
+Dot (or Over dot)                 •
+                                                                  •   •
+                                                                 m n (consonants, nasal sounds)
+Acute grave                                                      á é í ó ú (vowels; syllable stress)
+                                 ´
+Grave accent                                                     á è ì ò ù (vowels; syllable
+                                 `                               stress)
+Superscript                       n                               pau n tuck (n only-for guttural
+                                                                 sounds)
+                                                                                                  69
+
+
+
+
+Apostrophe                      ’                               m’tah
+
+                                                                (Pause, hesitation or breathing
+                                                                sound)
+
+        NOTE: These symbols are found in the Colonial works of J. Eliot, J. Cotton, R.
+        Williams, and others for southeastern New England. [Only the circumflex, acute
+        grave, and grave accent used in Narragansett. Most of the others are seen in the
+        vocabulary of J. Cotton (1830). Sometimes symbols are combined, as in â ]
+
+Dialect
+
+        One of the various forms of a language.
+
+Digraph
+
+        Shorthand symbol for oo -- two letters “oh” smashed together, and pronounced
+        like the oo in moody or book; e.g., as koo g. Sometimes ∞ or number 8 used for oo
+        (Massachusett language usage)
+
+Diminutive affix
+
+        An affix that indicates that the noun to which it is attached is small.
+
+EL
+
+        Abbreviation for works of Colonial grammarian John Eliot
+
+Excl.
+
+        See Exclusive
+
+Exclusive
+
+        The first person plural form of the verb indicating that the person being spoken to
+        is excluded from the action of the verb. See also inclusive.
+
+Extinct language
+
+        A language no longer spoken or understood by a descendent population.
+        Massachusett & Narragansett are extinct. (Goddard, 1978).
+
+Frequentative
+
+        See Reduplication
+                                                                                                70
+
+
+
+
+G&B
+
+          Abbreviation for Goddard and Bragdon
+
+Gender
+
+          A grammatical classification of nouns and related words that display contrasts
+          animate/inanimate. The gender of a noun often affects other parts of speech with
+          which the noun must be in agreement.
+
+Gender - animate
+
+          A grammatical classification of a noun that refers to a living thing or to a non-
+          living thing that is classified as living (typically for spiritual reasons either
+          understood or not).
+
+Gender - inanimate
+
+          A grammatical classification of a noun that refers to things that are classified as
+          non-living or to living things that are classified as non-living. See also Animate.
+
+Glide
+
+          See Table 7.
+
+Gloss
+
+          A translation of a word, phrase or sentence. For example, from Narragansett to
+          English provided by Roger Williams
+
+Grammar
+
+          The study of the forms and structures of a language; the rules for changing the
+          meaning of words and sentences in a language. See Linguistics.
+
+Hapology
+
+          Dropping one or two similar or successive syllables or sounds in a word.
+
+Incl.
+
+          See Inclusive
+
+II verb
+
+          An intransitive verb of which the subject is inanimate. See Table 1.
+                                                                                              71
+
+
+
+
+Imperative verb
+
+        The form of the verb in which commands or pleadings are given.
+
+Inanimate, inanim.
+
+        See Gender
+
+Inclusive
+
+        The first person plural form of the verb indicating that the person being spoken to
+        is included in the action of the verb. See also exclusive.
+
+Incorporation
+
+        A grammatical structure that joins two or more parts of speech in one word.
+
+Independent order of the verb
+
+        A form of the verb that expresses a complete thought without modifying clauses.
+        See also conjunct order of the verb.
+
+Indicative Mode
+
+        Form of verbs employing simple statements (indications) or questions.
+
+Infix
+
+        An affix inserted into a noun, pronoun, or verb to modify the meaning.
+
+Inflection
+
+        A change in the form of a word (noun, pronoun, verb) to change meaning of
+        word; e.g., an inflection of the noun-word mĕtah (“the heart“) is nuttah (“my
+        heart“) by the inflectional rule for possessive nouns. Roger Williams (1643,
+        chap. VII, pp. 48-52) provides many example of inflected nouns for human body
+        parts. Verb inflections refer to changes to the stem.
+
+Interactive
+
+        A prefix or an infix that refers to two or more parties involved in the action.
+
+Interrogative verb
+
+        The form of a verb that asks a question. See Table 1.
+                                                                                           72
+
+
+
+
+Intonation
+
+       The rising and falling of the voice; the extension of the sound of a word in
+       speech.
+
+Intransitive verb
+
+       A verb that does not take an object.
+
+Irregular verb
+
+       A verb that has no predictable pattern of conjugation. See also regular verb.
+
+Kinship term
+
+       A word used to identify people who are related.
+
+Language revival
+
+       The bringing back of an extinct language or parts of it to some degree.
+
+
+Locative
+
+       An affix attached to a noun or verb that indicates location and relationship. See
+       Chart 3.
+
+Linguistics
+
+       The scientific study of human language consisting of the four domains of (1)
+       Morphology (2) Phonology (3) Semantics (4) Syntax, and divided up into the
+       areas (a) descriptive, (b) historical, (c) comparative, and (d) geographical
+       linguistics.
+
+Manitou, Manit, Manitto
+
+       A Spirit. To European understanding it signified a name given to “all that
+       surpasses their understanding from a cause that they cannot trace” (Trumbull,
+       1866 ed., A Key).
+
+Mode (Mood)
+
+       Manner of conceiving and expressing action or being, as positive, possible,
+       hypothetical. Often marked by special verb forms (inflections), moods include the
+       indicative mood, the imperative mood, and the subjunctive mood. The
+       subjunctive mood’s functions vary widely. It may express doubt, possibility,
+                                                                                             73
+
+
+
+
+        necessity, desire or recommendation, or future time. The terms mode and mood
+        are synonymous.
+
+Modifier
+
+        A content word that qualifies the meaning of a noun or verb. See Prefix, Affix
+
+
+
+Modal
+
+        Of or denoting the mood/mode of a verb.
+
+Morpheme
+
+        A distinctive arrangement of phonemes having no smaller meaningful parts (as
+        the free form pin or the -s of pins). The smallest units of meaning in a word. The
+        study of is called Morphology.
+
+Morphology
+
+        A field of linguistics focused on the study of the forms and formation of words in
+        a language. Hagenau’s Thesis is the only known major work for Narragansett.
+
+
+NR
+
+        Abbreviation for the Narragansett language. NR* stands for reconstructed
+        Narragansett.
+
+Negation
+
+        A process through which meaning is contradicted by using affixes.
+
+Normalized form
+
+        A formulaic grammatical expression summarizing a Narragansett verb form
+        involving the affix(es) and stem. See Table 3.
+
+Noun
+
+        A person or animal or plant or Spirit, place, “thing”, or idea or abstraction. See
+        Chart 7.
+
+Number
+                                                                                                74
+
+
+
+
+         The distinction between singular, dual, and plural elements.
+
+Object
+
+         See Case
+
+
+Obviation
+
+         Obviation is a grammatical category affecting both nouns and verbs which
+         distinguishes among third-person participants in a sentence. See Obviative,
+         Proximate
+
+Obviative, obv.
+
+         A suffix (-ah, -oh, -uh) added to a noun or verb stem that makes a clear distinction
+         between two or more remote third persons. See also Proximate.
+
+Open-ended situations
+
+         Situations in which opinions are expressed and personal questions are answered,
+         e.g., interviews, impromptu dialogues, presentations, videos, etc.
+
+Oral language structure
+
+         A verbal structure used in speaking.
+
+Orthography
+
+         An orderly system of writing in which a symbol or character is associated with
+         each syllable.
+
+PA
+
+         See Proto-algonquian
+
+Particle
+
+         A short uninflected word or part of speech, such as an article, a preposition, an
+         interjection, a conjunction, or an adverb. (Goddard & Bragdon, pp. 582 ff.). See
+         Chart 10.
+                                                                                                 75
+
+
+
+
+Parts of Speech
+
+         In English there 8 parts—pronouns, nouns, adjectives (“adnouns”), adverbs,
+         verbs, conjunctions, interjections, and prepositions. In Algonquian four global
+         categories are studied: Nouns, Pronouns (and Quantifiers), Verbs and Particles.
+
+Passive voice
+
+         A form of the verb indicating that the subject of the sentence is receiving the
+         action. See also active voice.
+
+Pejorative
+
+         A suffix that indicates that the noun to which it is attached is unattractive or
+         undesirable.
+
+Person
+
+         The form of a pronoun and verb that distinguishes the speaker, the person or thing
+         spoken to, or the person or thing spoken of; e.g., first person, second person, third
+         person, and third person proximate and obviative.
+
+Personal Noun
+
+         See Chart 3.
+
+Phoneme
+
+         Any of the elementary units of the speech/sound system of a language that
+         correspond to a set of similar speech sounds. The smallest identifiable units of
+         sound in a word.
+
+Phonology
+
+         The study of speech sounds and speech patterns; study of pronunciation. Aubin’s
+         dissertation is only known major work on Narragansett.
+
+pl.
+
+         Abbreviation for Plural.
+
+Plural, pl.
+
+         Relative to category “Number,” a noun, pronoun, or verb form indicating “more
+         than one”.
+                                                                                              76
+
+
+
+
+Polysynthetic
+
+         Algonquian languages are described as polysynthetic (Duponceau, 1819),
+         meaning —“The manner in which words are compounded in that particular
+         mode of speech, the great number and variety of ideas which it has the power
+         of expressing in one single word; particularly by means of the verbs; all these
+         stamp its character for abundance, strength, and comprehensiveness of
+         expression, in such a manner, that those accidents must be considered as included
+         in the general descriptive term polysynthetic."
+
+
+
+Possessed Noun
+
+         See Chart 3.
+
+Possessive
+
+         A word, prefix, or suffix that indicates possession.
+
+Prefix
+
+         A letter or combination of letters added to a noun, pronoun, or verb to modify the
+         meaning; also called pre-nouns and pre-verbs in the Algonquian languages.
+
+Prenoun, preverb; see Prefix (Goddard and Bragdon, pp. 507 ff.)
+
+Pre-pronominal prefix
+
+         A prefix that precedes a pronominal prefix.
+
+Preterit, preterite
+
+         A form of a noun or verb showing action in the absolute past (past tense form).
+
+Preverb, pre-verb
+
+         See Prenoun, preverb.
+
+
+
+Prohibitive imperative
+
+         A verb expressing negative commands or requests.
+                                                                                          77
+
+
+
+
+Pronoun
+
+      See Chart 7.
+
+Pronominal prefix
+
+      A prefix that occurs on most nouns and on all verbs; such prefixes carry the
+      meaning conveyed by pronouns.
+
+Pronoun - demonstrative
+
+      A word that may be used instead of a noun or noun phrase to indicate “which”;
+      e.g., this, that, these and those.
+
+Pronoun - indefinite
+
+      A word that may be used instead of a noun or noun phrase to indicate a vague
+      “who” or “what”; e.g., someone, anyone, no one, something, anything, and
+      nothing.
+
+Pronoun - interrogative
+
+      A word that may be used instead of a noun or noun phrase to introduce a
+      question; e.g., who, whom, which, or what.
+
+Pronoun - personal
+
+      A word that may be used instead of a noun or noun phrase to indicate “who”; e.g.,
+      I, you, he, she, we inclusive, and we exclusive.
+
+Pronoun - personal - bound/dependent
+
+      A pronoun prefix that indicates person(s).
+
+Pronoun - personal - free/independent
+
+      A single word that may be used instead of a noun to indicate person(s).
+
+Pronoun - reflexive
+
+      An affix in the objective case that is identical to the subject.
+
+Proto-Algonquian (PA)
+
+      The posited parent language of all Algonquian languages and their dialects,
+      divided into three subgroups: Eastern Algonquian (a genetic subgrouping
+                                                                                              78
+
+
+
+
+         including Narragansett and Massachusett), Central Algonquian (an areal
+         grouping), and Plains Algonquian (an areal grouping). (Siebert, 1967). Aubin’s
+         dissertation used PA to verify the accuracy of Roger William’s translations.
+
+Proximate, prox.
+
+         A prefix added to a noun or verb stem that clarifies the primary third person. See
+         also obviative.
+
+Quantifier
+
+         A word that describes number or quantity.
+
+
+
+Question particle
+
+         A word used in posing simple yes/no questions.
+
+Recon.
+
+         Abbreviation for “reconstructed.”
+
+Reduced vowel
+
+         The apostrophe used in a normalized verb stands for a vowel sound and may
+         represent a “reduced vowel”. Such a vowel is a sound either like a in sofa or a
+         short “ah” sound which would have different spellings in A Key—a, i, o, u,
+         etc. See Vowel & Table 3.
+
+Reduplication
+
+         See Table 7.
+
+Regular verb
+
+         A verb that conforms to a predictable pattern of conjugation. See also irregular
+         verb.
+
+Root, Radical
+
+         See Stem
+                                                                                              79
+
+
+
+
+sg.
+
+         Abbreviation for Singular
+
+Semantics
+
+         The meaning of words, phrases, sentences (sometimes difficult philosophical
+         issues arise on meaning derived from an alien culture)
+
+Simple narrative
+
+         Information or a story using known vocabulary and phrases.
+
+Singular
+
+         Relative to category, “Number,” a noun, pronoun, or verb form indicating “one”.
+
+Stem
+
+         The part of a word to or from which prefixes and suffixes are added or removed
+         and denoted ***. (Goddard and Bragdon, pp. 576 ff.).Older authors (philologists)
+         spoke of “root”, “radical or “etymon”. In English “call” is a root while “calls,
+         called,” etc. are stems.
+
+Stress, Accent
+
+         The relative emphasis that may be given to certain syllables in a word. Stress and
+         accent are used interchangeably. In A Key three diacritical mark are used to
+         indicate stress. See Diacritical mark.
+
+Structure
+
+         The way in which a language is organized, such as morphological structure,
+         syntactic structure, phonological structure, and semantic structure.
+
+Subject
+
+         See Case.
+
+Subordinate (or Subjunctive, Suppositive Mood [Mode]) of verbs
+
+         Subordinate mode of conditional statements. See Mode.
+
+Suffix
+                                                                                            80
+
+
+
+
+         A letter or a combination of letters added to a noun, pronoun, or verb to modify
+         the meaning.
+
+Syllabic script
+
+         A writing system in which a symbol represents a syllable (unit of human speech
+         that is interpreted by the listener as a single sound).
+
+Syncope
+
+         The loss of letters or sounds from within a word; shortening of words. A
+         characteristic of languages over time. Narragansett and Massachusett are ancient
+         languages; that may explain the longer words.
+
+Syntax
+
+         Sentence structure, the grammatical arrangement of words, phrases and sentences
+         – more than just “the rules of grammar”. In Massachusett-Narragansett, the rules
+         for making new words, phrases, sentences are extremely complex and not
+         completely understood. See “Word Order” in Goddard and Bragdon (1988).
+
+TA verb
+
+         A transitive verb of which the object is animate. See Table 1.
+
+Tense
+
+         The form of a verb that indicates time, e.g., past, present, and future.
+
+TI Verb
+
+         A transitive verb of which the object is inanimate. See Table 1.
+
+Transitive/interactive pronominal prefix
+
+         A prefix that indicates two groups of people or objects, the doers and the non-
+         doers.
+
+Transitive verb
+
+         A verb that takes an object. See Table 1.
+
+Type Verb Classification
+
+         See AI Verb, II Verb, TA Verb, TI Verb. See Table 1.
+                                                                                             81
+
+
+
+
+Variant spelling
+
+        Inconsistent or variable spellings of a word. In A Key, the same word is sometime
+        spelled a number of different ways, making analysis difficult.
+
+Verb
+
+        A word that expresses an action, a state of being, or the relation between things.
+        (Goddard and Bragdon, pp. 510 ff.). See Chart 9 & Tables 1, 2, 3, & 7.
+
+Vocative noun
+
+        A noun that indicates the one being addressed.
+
+
+
+Voice
+
+        See Active voice & Passive voice
+
+Voluntative verb
+
+        The form of the verb that expresses desire, intention, or future time; also called
+        “intentive”.
+
+Vowel
+
+        In Algonquian there appears to be 6 vowel sounds. See “Guide to Historical
+        Spellings & Sounds in the Extinct New England American Indian Languages,
+        Narragansett-Massachusett”.
+
+Word pattern
+
+        The particular arrangement of a group of words that have elements in common
+        with respect to meaning, spelling, and/or sound. (See Goddard & Bragdon, pp.
+        586 ff., “Word Order”)
+
+                                        < e n d >
+                                                                                        82
+
+
+
+
+            References & Sources
+
+
+
+
+Anonymous (1870) “The Last of the Narragansetts”. New England Historical and
+Genealogical Register 24(2):192.
+
+Anonymous (2005). “Review Comments on Preterite Verbs in the Narragansett
+Language’ ”. International Journal of American Linguistics.
+
+Aquidneck Indian Council (1994 - 2004). Field Notes. Newport, Rhode Island:
+Aquidneck Indian Council. (unpub.).
+
+Aquidneck Indian Council (2008). http://www.docstoc.com/profile/waabu
+
+Aubin, George (1972). A Historical Phonology of Narragansett. Providence, RI: Brown
+University. (Ph.D. Dissertation).
+
+______ (1972a). “Roger Williams: Another View”. International Journal of American
+Linguistics 38:266-277.
+
+_______. (1975). A Proto-Algonquian Dictionary Ottawa : National Museums of
+Canada.
+
+______ (1975a). “More on Narragansett Keesuckquand”. International Journal of
+American Linguistics 41 (1975):239-40.
+
+______ (1976). “Narragansett Color Terms”. Pp. 105-114 in Papers of the 7th
+Algonquian Conference, 1975, William Cowan, ed.,. Ottawa: Carleton University.
+
+Bernard, Wilbert A., Jr. (1976). The Rise and Fall of the Narragansett Indians.
+Bridgewater, Mass.: Bridgewater State College. (Unpublished Master’s Thesis.)
+
+Bloomfield, Leonard (1946). “Algonquian.” In Linguistic Structures in Native America.
+H. Hoijer (ed.). New York: Viking Fund Publications.
+                                                                                           83
+
+
+
+
+Bragdon, Kathleen J. (1996). Native People of Southern New England, 1500-1650.
+University of Oklahoma Press.
+
+Brinley, Francis. (1900) “Francis Brinley’s Briefe Narrative of the Nanhiganset 
+Countrey”. Publications of the Rhode Island Historical Society, 8(2):69‐96. 
+Providence. 
+
+Cotton, Josiah (1707, 1825). “Vocabulary of the Massachusetts (or Natick) Indian
+Language.” Cambridge, MA: Massachusetts Historical Society Collection, Serial 3, Vol.
+II:147-257.
+
+Cowan, William. (1973). “Narragansett 126 Years After”. International Journal of
+American Linguistics 39(1):7-13.
+
+_____ (1982). “General Treat's Vocabulary of Narragansett”. In Papers of the Thirteenth
+Algonquian Conference. William Cowan, ed. Ottawa: Carleton University.
+
+Duponceau, Peter S. (1819). Report of the corresponding secretary to the committee, of
+his progress in the investigation committed to him of the general character and forms of
+the languages of the American Indians: Read, 12th Jan. 1819. In Transactions of the
+Historical & Literary Committee of the American Philosophical Society, held at
+Philadelphia, for promoting useful knowledge (Vol. 1, pp. xvii-xlvi).
+
+Eliot, John (1663). The Holy Bible: Containing the Old Testament and New Translated
+into the Indian Language by John Eliot. Cambridge, MA: Samuel Green and Marmaduke
+Johnson. (Second edition, 1685.)
+
+_____ (1666). The Indian Grammar Begun; or, an Essay to Bring The Indian Language
+into Rules for the Help of Such as Desire to Learn the Same for the Furtherance of the
+Gospel Among Them. Cambridge, MA: Marmaduke Johnson.
+
+Gatschet, Albert S. (1973). “Narragansett Vocabulary Collected in 1879”. International
+Journal of American Linguistics 39(1):14.
+
+Goddard, Ives (1978). “Eastern Algonquian Languages.” In Bruce Trigger (ed.),
+Handbook of North American Indians, Vol. 15 (Northeast). Washington, DC:
+Smithsonian Institution, pp. 70-77.
+
+______. (1981). “Massachusett Phonology: A Preliminary Look.” In Papers of the
+Twelfth Algonquian Conference, ed. William Cowan, 57-105. Ottawa: Carlton
+University.
+________ (Volume Editor, 1996). Handbook of North American Indians, Vol. 17
+(Languages). Washington, DC: Smithsonian Institution.
+                                                                                                      84
+
+
+
+
+———— (1996a). "Introduction". In Ives Goddard, ed. Vol. 17 (Languages). Handbook
+of North American Indians. Washington, D.C.: The Smithsonian Institution.
+
+Goddard, Ives and Kathleen J. Bragdon (1988). Native Writings in Massachusett (Parts
+1 & 2). American Philosophical Society Memoir 185. Philadelphia: The American
+Philosophical Society.
+
+Gookin, Daniel. (1792). Historical Collections Of The Indians Of New England: Of
+Their Several Nations, Numbers, Customs, Manners, Religion, And Government, Before
+The English Planted There. Reprinted Edition, Arno Press, 1972.
+
+Hagenau, Walter P. (1962). A Morphological Study of Narragansett Indian Verbs in
+Roger Williams’ A Key into the Language of America. Providence, RI: Brown University
+(M.A. Thesis).
+
+Hodges, John Cunyus, Suzanne S. Webb, Mary E. Whitten (1999). Harbrace College
+Handbook 10th Ed. Fort Worth, TX : Harcourt Brace College Publishers.
+
+LaFantasie, Glenn W., ed. (1988). The Correspondence of Roger Williams. 2 vols.
+Providence, Rhode Island: Brown University Press.
+
+Lewis, Nathan (1897). “The Last of the Narragansetts”. Proceedings of the Worcester
+Society of Antiquity. Vol. XLI.
+
+Little doe Fermino, Jessie (2000). An Introduction to Wampanoag Grammar.
+Cambridge, Mass.: Massachusetts Institute of Technology. (Unpublished Masters
+Thesis).
+
+Ministry of Education (2003). The Ontario Curriculum, Grades 1 to 12. Resource Guide.
+Native Languages. A Support Document for the Teaching of Language Patterns—
+Delaware. Ontario, Canada.
+http://www.edu.gov.on.ca/eng/document/curricul/delaware/delaware.pdf
+
+Mierle, Shelley and H. Christoph Wolfart (1982). Bibliography of Algonquian
+Linguistics. Winnipeg: University of Manitoba Press.
+
+Moondancer52 [Francis J. O’Brien, Jr.] & Strong Woman [Julianne Jennings].
+Understanding Algonquian Indian Words (New England). Newport, RI: Aquidneck
+Indian Council, 2001. http://www.docstoc.com/profile/waabu
+
+______ (2000). Indian Grammar Dictionary for N Dialect: A Study of A Key into the
+Language of America by Roger Williams, 1643. Newport, RI: Aquidneck Indian
+Council. http://www.docstoc.com/profile/waabu
+
+
+52
+  This author “Moondancer” and “O’Brien” is same person. “Strong Woman” and “Julianne Jennings” are
+identical.
+                                                                                        85
+
+
+
+
+______ (2001). Introduction to the Narragansett Language: A Study of Roger Williams’
+A Key into the Language of America. Newport, RI: Aquidneck Indian Council.
+http://www.docstoc.com/profile/waabu
+
+
+Narragansett Indian Tribal Nation. (1935-1936). Narragansett Dawn. [Periodical.]
+Narragansett Tribal Nation. Oakland, Rhode Island.
+
+O’Brien, Frank Waabu (2003). “Spirits and Family Relations.”
+http://www.docstoc.com/profile/waabu
+
+_______ (2003a). American Indian Place Names in Rhode Island: Past & Present.
+http://www.rootsweb.com/~rigenweb/IndianPlaceNames.html
+
+______ (2004). Bibliography for Studies of American Indians in and Around Rhode
+Island, 16th 21st Centuries.
+http://www.rootsweb.com/~rigenweb/IndianBibliography.html
+
+______ (2005). American Indian Studies in the Extinct Languages of Southeastern New
+England. Newport, RI: Aquidneck Indian Council.
+http://www.docstoc.com/profile/waabu
+
+_____ (2005a). “Preterite Verbs in the Narragansett Language.” Newport, RI:
+Aquidneck Indian Council (Unpub).
+
+“Guide to Historical Spellings & Sounds in the Extinct New England American Indian
+Languages, Narragansett-Massachusett”. http://www.docstoc.com/profile/waabu
+
+______. (2009). Understanding Indian Place Names in Southern New England. (In
+Press, Bäuu Institute).
+
+Pentland, David H. (26 Aug. 1996). "The Menominee Language in Comparison to English."
+(Internet version: http://www.menominee.com/treaty/Pentland.html)
+
+Pilling, James C. (1891). Bibliography of the Algonquian Languages. Bureau of
+American Ethnology Bulletin 13, Washington.
+
+Prince, J. Dyneley and Frank G. Speck (1904). “Glossary of the Mohegan-Pequot
+Language”. American Anthropologist, N.S., Vol. 6, No. 1, pp. 18-45.
+
+Rider, Sidney S. (1904). The Lands of Rhode Island as They Were Known to
+Caunounicus and Miatunnomu When Roger Williams Came in1636: An Indian Map of
+the Principal Locations Known to the Nahigansets, and Elaborate Historical Notes.
+Providence, Rhode Island.
+                                                                                           86
+
+
+
+
+Sekatau, Ella W.T., and B. Brown III (1993). “Narragansett Indians and Narragansett
+Bay”. In What a Difference a Bay Makes”. Albert T. Klyberg, Margaret Shea, and
+Deborah B. Brennan, eds. Providence, Rhode Island: Rhode Island Historical Society and
+Department of Library Services.
+
+Siebert Jr., Frank T. (1967). "The Original Home of the Proto-Algonquian People".
+Contributions to Anthropology: Linguistics I (Algonquian). National Museum of Canada
+Bulletin, no. 214; Anthropological Series, no. 78. Ottawa. pp. 13–47.
+
+Simmons, William S. (1978). “Narragansett.” In Bruce Trigger (ed.), Handbook of North
+American Indians, Vol. 15 (Northeast). Washington, DC: Smithsonian Institution, pp.
+190-197.
+
+Strong Woman ⊗ Moondancer. (1998). “Bringing Back Our Lost Language”.
+American Indian Culture and Research Journal, 2 (3):215-222.
+http://www.docstoc.com/profile/waabu
+
+______. (1998b). A Massachusett Language Book, Vol. I. Newport, RI: Aquidneck
+Indian Council.
+
+Swanton, John R. (1952). The Indian Tribes of North America. Bureau of American
+Ethnology Bulletin 145 Washington, D.C.
+
+Trigger, Bruce G. (Volume Editor, 1978). Handbook of North American Indians, Vol.
+15 (Northeast). Washington, DC: Smithsonian Institution.
+
+Trumbull, James H. (1871). “On the Best Method of Studying the North American
+Languages”. By J. Hammond Trumbull. Trans. Am. Phil. Assoc., 1869-70. Hartford, 8,
+pp. 55-79.
+
+_______. (1876). “The Algonkin Verb”. Transactions of the American Philological
+Association, (7):146-171.
+
+_______ (1903). Natick Dictionary, Washington, DC: Smithsonian Institution.
+
+Williams, Roger (1643). A Key into the Language of America, or, an Help to the
+Language of the Natives in that Part of America called New England. Together, with
+Briefe Observations of the Customes, Manners and Worships, &c. of the Aforesaid
+Natives, in Peace and Warre, in Life and Death. On all which are added Spirituall
+Observations, General and Particular by the Author, of chiefe and Special use (upon all
+occasions) to all the English Inhabiting those parts; yet pleasant and profitable to the
+view of all men. London: Gregory Dexter. [Reprinted, Providence: Narragansett Club,
+1866, J. H. Trumbull [Ed.] & RI Historical Society Collections, Vol. 1, 1877 & Fifth
+Edition (reprinted Applewood Books, nd.)].
+                                                                                     87
+
+
+
+
+Wojciechowski, Franz L. (1999). “The Search for an Elusive 1765 Narragansett
+Language Manuscript”. International Journal of American Linguistics 65(2):228-232.
+
+
+                                       xo
+
+                                  pakodjteau-un
+
+                         it is finished, done, completed
+                                                                                              88
+
+
+
+
+                                            F
+
+About the author—
+
+
+
+
+                          Author: Dr. Frank Waabu.
+                      Courtesy of the author at The Naval
+                     Undersea Warfare Center, Newport, RI
+
+Frank Waabu O’Brien (Dr. Francis Joseph O’Brien, Jr.) is an historical consultant. He has
+Indian Status from The Abenaki Nation (Sokoki and St. Francis Bands). Waabu is the former
+President, Aquidneck Indian Council, Inc. He is a member of and has served as Council
+Secretary, The Rhode Island Indian Council. Waabu graduated from Columbia University with a
+Ph.D. degree, doing a dissertation on applied linguistics. He is a member of the New York
+Academy of Sciences, Sigma Xi, The John Carter Brown Library at Brown University, the
+National Museum of the American Indian, and the American Name Society. Dr. O’Brien is a
+disabled veteran from The Viet Nam War Era, and makes his living as a career civil servant
+mathematician and Special Emphasis Program Manager for The Department of Defense.
+89
+

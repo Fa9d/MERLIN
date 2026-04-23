@@ -1,0 +1,4320 @@
+     BLM UBRARY
+
+
+
+
+    88001011
+
+
+
+
+                     WESTERni
+                     COLORADO
+                    PETROGLYPHS
+
+
+
+
+                     ARCHEaLOGY
+                     WC. MCKERN
+
+
+       BURHAy ©F
+     eOLORAB©
+
+
+
+\
+
+
+
+
+        ;ULTURAL
+          SOURCES
+         SERIES
+
+            N» 8
+Bureau of Land Management
+         Library
+  Denver Service Centsr
+Western Colorado Petroglyphs
+
+
+
+
+            by
+       W. C. McKern
+
+
+
+
+         edited by
+     Douglas D. Scott
+
+
+
+
+                      BUREf^U OF Lf^ND MANAGEIIENT LIBRARY
+                                        Deni.ier,   Colorado
+
+
+
+
+                                            88661011
+
+   Colorado State Office
+ Bureau of Land Management
+          1978
+
+
+
+
+                 Bureau of Land Management
+                            Library
+                   P.envjgi; Service.    Centee
+COPIES OF THIS REPORT ARE AVAILABLE FROM:
+
+
+
+
+BUREAU OF LAND MANAGEMENT
+COLORADO STATE OFFICE
+ROOM 700, COLORADO STATE BANK BUILDING
+1600 BROADWAY
+DENVER, COLORADO 80202
+                               FOREWORD
+
+
+There are thousands of petroglyphs on the public lands administered by
+the BLM.  These .artifacts of past cultures are one of the most visible
+of our cultural resources and yet one of the more neglected in the area
+of scientific study.   Petroglyphs are difficult to interpret and date,
+although they continue to draw public and professional archeologists
+interest because they are so often enigmatic
+
+This particular study of petroglyphs in western Colorado is over 50
+years old and has never been previously published.  It was produced for
+the Smithsonian Institution in 1922, but was lost not long afterward.
+The original manuscript was found in 1977 in the National Anthropological
+Archives at the Smithsonian Institution.  This early work was a pioneering
+effort in the study of prehistoric rock art.  Because much of this early
+work was done on public lands and is a pioneering effort, I feel broad
+public dissemination is in order.
+
+This and other early unpublished documents contain many fine ideas that
+deserve more than to repose in an archive and gather dust. They can and
+should be working documents for our present efforts in cultural resource
+management.
+
+I am pleased to make this eighth publication in cultural resources
+available to the public and to the professional community.
+
+
+
+
+                       ^'       C^   ,^ >^,Vo-^
+                                            KU.^h^^
+                                   DALE R. ANDRUS
+                                   State Director
+                                   Colorado
+                                   Bureau of Land Management
+      DEDICATION
+
+
+
+To:
+
+JEAN who found this
+
+         and
+
+GARY who encouraged it
+
+
+
+               The Editor
+                              Table of Contents
+
+
+
+
+                                                  Page
+Table of Contents                                   i
+
+
+
+List of Figures                                   ill
+
+List of Tables                                     vi
+
+Preface                                           vii
+
+
+
+Chapter
+   I        Introduction
+
+
+  II        Mesa Verde Petroglyphs                  5
+
+                  Sites                             5
+
+                  Techniques of Workmanship         6
+
+                  Subject Motifs                    7
+
+                  Situation                        28
+
+                  Purposes                         33
+
+                  Conclusions                     42
+
+
+
+ III        Shavano Valley Petroglyphs            46
+                  Situation                       46
+
+                  Techniques of Workmanship       51
+
+                  Classification Groups           51
+
+                  Group Differences in Motif      56
+
+                  Old Type Designs                57
+
+                  New Type Designs                74
+
+                  Conclusions                     85
+
+
+
+  IV        Craig Petroglyphs                     88
+                  Situation                       88
+
+                  Classification Groups           88
+         Gravers                       89
+
+        Motifs                         89
+
+         Old type figures              91
+
+         New type figures              96
+
+         Summary                       98
+
+         Conclusions                  101
+
+
+
+ V   Additional Petroglyph Data       102
+
+         Youghal Petroglyphs          102
+
+         Gunnison River Petroglyphs   103
+
+
+
+VI   Conclusions                      107
+
+
+
+     REFERENCES CITED                 111
+
+
+
+
+                            11
+                                        LIST OF FIGURES
+
+
+FIGURE
+  1.     Map of Western Colorado Showing Sites Discussed.
+  2.     Loose Building Stone From Far View Ruin.
+  3.     Far View Ruin.
+  4.     a.   Loose Building Stone,         b.    North Wall of Large Kiva,
+
+         c.   Wall stone Far View Ruin,           d.   Natural Surface Balcony House.
+  5.     a.   & b.    Loose Building Stones Far View Ruin,
+         c.   Loose Building Stone Pipe Shrine House.
+  6.     Pipe Shrine House.
+  7.     Exterior Southwest Corner Wall Far View Ruin.
+  8.     a.   Loose Building Stone Sun Temple,              b.    & c.    Loose Building Stones
+         Far View Ruin.
+  9.     Sun Temple.
+10.      a.   Loose Building Stone Far View Ruin,                 b.   Loose Building Stone
+         Pipe Shrine House.
+11.      Loose Building Stone, PipeSirine House.
+ 12.     a.   Wall Stone Sun Temple,         b.    Loose Building Stone Far View House.
+ 13.     Loose Building Stone Sun Temple.
+14.      Natural Surface in Cave Opposite New Fire House.
+ 15.     a.   & b.        Natural Surface Petroglyph House,              c.   Inside Wall Far View
+         Ruin.
+ 16.     a.   Natural Surface Camp Point Ruin,              b.     Natural Surface Picture
+         Cave,       c.   & d.   Natural Surface Petroglyph House.
+17.      a., b., and c.           Natural Surface Picture Cave,               d.   Natural Surface
+         Petroglyph House.
+ 18.     Natural Surface Picture Cave.
+
+ 19.     a.   Natural Surface Petroglyph House,              b.    Natural Surface Sun Point.
+20.      a.   and b.       Natural Surface Petroglyph House.
+21.      Motifs Found at Mesa Verde.
+
+
+
+
+                                                  Ill
+22.   Plan of Shavano Valley Eastern Petroglyph Site.
+23.   Shavano Valley Looking Southeast from 5MN5.
+24.   Old Type Petroglyphs from East Group Site III.
+25.   a., b., and d.          Old Type Petroglyphs from East Group Site III,
+      c.     From    E   Group Site II.
+26.   Old Type Petroglyph From East Group Site         I.
+
+27.   Picture Rock in Shavano Valley, 5MN27.
+28.   a.    and e.       Old Type Petroglyphs From East Group Site   I,
+
+      b.     Old Type Petroglyphs From East Group Site V,
+      c.    and d.       Old Type Petroglyphs From East Group Site II.
+29.   a.     Old Type Petroglyphs From Northwest Group,
+      b.     Old Type Petroglyphs From East Group Site      I.
+
+30.   Old Type Petroglyph From Northwest Group.
+31.   Old Type Petroglyph From East Group Site III.
+32.   T.    C.   McKee Photograph of Figure 31 Ca. 1922.
+      Courtesy Smithsonian Institution National Anthropological Archives,
+33.   T.    C.   McKee Photograph of Shavano Valley Petroglyphs, ca. 1922,
+      Courtesy Smithsonian Institution National Anthropological Archives,
+34.   a.,    c,     and d.    Old Type Petroglyphs From East Group Site III,
+      b.     Old Type Petroglyphs From East Group Site II.
+35.   a., b., and c.          Old Type Petroglyphs From East Group Site III,
+      d.     Natural Surface Spring House, Mesa Verde For Comparison.
+36.   Footprint Petroglyphs 5MN5, Shavano Valley.
+37.   Old Type Petroglyphs from East Group Site V.
+38.   a.    and d.       Old Type Petroglyphs From East Group Site   I.
+
+      b.     Old Type Petroglyphs From East Group Site II,
+      c.     Old Type Petroglyphs From East Group Site IV,
+      e.     Old Type Petroglyphs From East Group Site III.
+39.   a.     New Type Petroglyphs From East Group Site V,
+      b.     New Type Petroglyphs From East Group Site VI.
+40.   Motifs of Apparent Historic Rock Carvings.
+
+
+
+
+                                           IV
+                                    .
+
+
+
+
+41.   a.    New Type Petroglyphs From East Group Site VI,
+      b.   and c.    New Type Petroglyphs From East Group Site IV.
+42.   New Type Petroglyph From East Group Site III.
+43.   Photograph of Figure 42, 5MN5 Shavano Valley.
+44.   New Type Petroglyph East Group Site V.
+45.   T.   C.   McKee Photograph of Figure 44 ca. 1922, Courtesy
+      Smithsonian National Anthropological Archives.
+46.   T.   C.   McKee Photograph in Shavano Valley, ca. 1922, Courtesy
+      Smithsonian National Anthropological Archives.
+47.   Craig Old Type Petroglphys.
+48.   Craig Old Type Petroglyphs.
+49.   Craig Old Type Petroglyphs.
+50.   Craig Old Type Petroglyphs.
+51.   Craig New Type Petroglyphs.
+52.   Craig New Type Petroglyphs.
+53.   Craig New Type Petroglyphs.
+54.   Craig New Type Petroglyphs.
+55.   Craig New Type Petroglyphs.
+56.   Craig New Type Petroglyphs.
+57.   Petroglyph Near Youghal.
+58.   Petroglyphs Near Youghal
+59.   Overview of Gunnison River Petroglyphs, 5DT4.
+60.   Animal Petroglyphs at 5DT4.
+61.   Kokopelli-Like Figure     ,   5DT4.
+
+62.   Animal and Footprint Petroglyphs 5DT4.
+                               List of Tables
+
+
+
+Table
+  1.    Modern Identification of McKern's Sites.
+
+
+  2.    Motif and Order of Occurrence of Mesa Verde Petroglyphs
+
+
+  3.    Shavano Petroglyph Motifs.
+
+
+  4.    Shavano Group Differences in Motif.
+
+
+  5.    Motif Chart of Craig Petroglyphs.
+
+
+
+
+                                       VI
+                                    Preface
+
+   Fifty-six years ago between the months of June and October            a   young
+Will C. McKern traveled throughout Western Colorado (Fig.           1)   recording
+and studying petroglyph sites.          His purpose, as stated in his introduction
+to the following document, was to reach a comprehensive understanding of
+
+culture by recording every available fact.            McKern believed that one fact
+being overlooked by anthropologists at the time was the petroglyph, and
+that this type of data was as deserving of study as any other.               His study,
+which was finished in 1924, was an excellent work for its time and place.
+Unfortunately the work was never published and according to a letter from
+Mr. McKern dated February 14,         1978, the manuscript was assumed lost as no
+
+one had been able to find it since the death of Dr. Jesse Walter Fewkes.
+But it has now been found and this volume contains that study of petroglyphs,
+   McKern     's    original manuscript contained, besides the text, 544 tracings
+and drawings of petroglyphs and 33 photographs of rock art sites in Western
+Colorado.          We have not been able to publish all of the 577 figures, but we
+have included a representative sample of the tracings as they pertain to
+
+each type of petroglyph discussed.            The original figures had no scale, and
+so neither do those presented here.            We have also retained McKern   's
+
+original captions as much as possible.            The photographs included are
+recent, but are representative of the sites and panels recorded in 1922.
+The text has been left essentially intact with only minor changes in
+spelling and organization of some information in table form.
+   Given the state of the art in 1924, the reader will find many of
+McKern'   s   observations incredibly astute and perceptive.       McKern dealt with
+three different areas of Western Colorado and by chance three different
+
+cultural elements in his study.          Although some of the elements had not
+been recognized or named at the time of the study, McKern differentiated
+them on a stylistic basis and proceeded to further refine his obser-
+vations by dividing elements into old and new styles.            He was unable
+to place the petroglyphs he was working with in any sort of relative
+
+chronological framework because the information had not even been
+
+
+
+                                         Vll
+               •••
+
+
+
+
+                     T3
+                     in
+                     CO
+                     3
+                     O
+                     to
+                     'r-
+                     Q
+                     CO
+                     <U
+                     -M
+
+
+                     cn
+                     c
+                     o
+                     x:
+                     c/)
+
+                     o
+                     T3
+                     fO
+                     S-
+                     o
+                     o
+                     C_)
+
+
+
+                     o
+                     Q.
+                     03
+
+
+
+
+                     CD
+           O
+       o   O
+          <
+       >  %
+       < AQ
+       cn
+
+
+
+
+       \
+
+
+
+
+Vlll
+developed at that time.             Nevertheless, most of the comparisons made by
+McKern about the rock art of Western Colorado have held true.                  Some
+observations have not stood the test of time, but most are based on sound
+reasoning and good subjective judgment and stand on their own merits.
+In fact many of his observations have been independently developed and
+
+are the basis of current theory on rock art.
+        McKern   's    study began in Mesa Verde National Park and then moved to
+sites near Montrose and finally to sites in the vicinity of Craig
+(Table 1).        The rock art sites studied on Mesa Verde are representative
+of the Mesa Verde branch of the Anasazi cultural tradition.                  The sites
+dealt with can generally be dated to the late Pueblo II through the
+Pueblo III periods, AD 1050-1300 (Hayes 1964:88).                 McKern observed and
+identified a variety of styles and types of petroglyphs in the Mesa
+Verde.     He separated them according to their proximity to architectural
+units and discussed them accordingly.             McKern   's   discussion and identifica-
+tion of the Mesa Verde petroglyphs is clearly consistent with the more
+
+recent work of Hayes (1964:120) on Wetherill Mesa and Rohn's (1977:121-125)
+work on Chapin Mesa.          McKern originally observed that certain symbols
+(e.g.    spirals) were found correlated with structures and water control
+devices.     He suggested these elements may have been clan and/or water
+signs.     This observation becomes very perceptive when considering the
+recent work of 01 sen (1977:279-292) with rock art of the Hovenweep area.
+He has correlated groups of symbols with archeological features and
+concludes that there is         a   definite locational relationship between rock
+art symbols and archeological and agricultural features.
+        Shifting to the Montrose area, McKern        's    observations continue to be
+astute and generally correct by today's standards.                 McKern dealt with two
+petroglyph groupings that have been defined as manifestations of the
+Uncompahgre complex (Wormington and Lister 1956 and Buckles 1971).                    The
+
+Uncompahgre complex is postulated to have a 10,000 year continuum with
+the rock art having its origins as early as the beginning of the Christian
+era.     McKern   's   evaluation of the Uncompahgre area rock art correlates
+
+
+
+                                             IX
+\/ery well   with the most recent and the only in-depth study of the area's
+rock art by Buckles (1971:1058-1138).             McKern has divided the petro-
+glyph styles into an old and new type and Buckles (1971) has defined
+what he believes to be prehistoric and historic styles of the same
+petroglyphs-        Although there are minor differences the two separate
+divisions correlate fairly closely with one another.             McKern made no
+real   attempt to date the Uncompahgre petroglyphs, except to point out
+the figures including horses were probably Ute in origin.
+       McKern's evaluation of the Craig area petroglyphs has no counter-
+part in the modern literature.        Although the general consensus of opinion
+is that his evaluations of the sites are correct.             The styles of the rock
+art do not correlate with kn9wn Fremont petroglyphs in the area, but
+they do have    a    general similarity to the historic period Ute petroglyphs.
+       McKern's work is generally full of insight and based on excellent
+subjective reasoning, but there       is   one major flaw.     Throughout the text,
+but in the conclusions specifically, he falls into the trap of trying to
+explain the presence of certain types of rock art styles by diffusion.
+While the concept of diffusion is not         a    bad idea, McKern did carry it to
+an extreme by attempting to tie the Western Colorado rock art to that of
+
+the Eastern U.S.        One cannot be too critical of this viewpoint when it is
+remembered that diffusionistic principles pervaded much of anthropological
+thinking in the late 19th and early 20th centuries (Harris 1968:373-392).
+The conclusions reached by McKern are inconsistent with the level of
+knowledge at hand today, but when viewed in the context of the period in
+which these statements were made, then little fault can be found.                  It is
+
+unfair to publish this material fifty years after it was written and
+then, out of context, to be very critical of its content.             McKern produced
+an excellent study for its time and place and it is still            useful   to
+
+today's students of rock art if it is considered in the proper historical
+perspective.        There has not, in fact, been another study of rock art in
+Western Colorado that has been as broad ranging or considered the detail
+to be found here.        Jeancon (1926) and Renaud (1936) are the only two
+others to make any serious attempt at evaluating Colorado rock art.
+Their studies lack the detail found in McKern and it is unfortunate
+that McKern's earlier work was not available to them as a reference.
+    The three studies taken together form     a   good basis for further
+
+study and analysis of Colorado rock art.     The belated publication of
+McKern's work now makes available all three works to researchers, and
+it is hoped that this will   stimulate further analysis of Colorado's
+rock art heritage.
+
+
+                                        Douglas D. Scott
+
+
+
+
+                                   XI
+                                        TABLE       1
+
+                       Modern Identification of McKern's Sites
+
+
+McKern Name                          Modern Name                 Site No,
+
+
+Mesa Verde
+   Cliff Palace                         Same                     MV625
+                                         II
+   Sun Temple                                                       352
+                                         II
+   Square Tower House                                               650
+                                         II
+   Little Long House                                                647
+   Balcony House                                                    615
+   Spring House                                                    1406
+   Spruce Tree House                                                640
+   Far View House                                                   808
+   Pipe Shrine House                                                809
+   One Clan House                                                   835
+   Petroglyph House                   Not Identified
+   Camp Point Ruin
+
+
+Ruin across from New
+   Fi   rehouse                       Buried Cave                   519
+   at Sun Point                       Not Identified
+   Head of Fewkes Canyon
+   Picture Cave
+
+
+Shavano Valley
+   Eastern Petroglyphy Site
+        Group     I                   Shavano Picture Rock          5MN27
+        Group     II                  Split Rock Site               5MN66
+        Group III                     Three Bears Site              5MN5
+        Group IV                      Part of Split Rock Site       5MN66
+        Group V                                                     5MN66
+        Group VI                                                    5MN66
+        Group VII                     Part of Three Bears Site      5MN5
+
+                                              Xll
+  Group   1             Possibly Part of Frank's       5MN6
+                           Site
+  Group   2             Unrecorded                     Unrecorded
+  Group   3             Part of Three Bears Site       5MN5
+  Group 4               Part of Split Rock Site        5MN66
+  Group   5             Part of Split Rock Site        5MN66
+
+
+Northwestern Group      Shavano Falls Petroglyph Site 5MN67
+  Craig Petroglyphs     The Sand Rocks                 None as yet
+  Youghal Petroglyphs   Not identified
+Gunnison River
+ Petroglyphs            Musser Site/Escalante Crossing
+                          Petroglyph Site              5DT4
+
+
+
+
+                         Xlll
+                             INTRODUCTION
+
+
+                  The Purposes of Pictograph Study
+
+
+     The study of pictographs in North America offers        a   field of research
+whose importance has often been underestimated by students of Anthropology,
+Other records of primitive culture coexistent with stone etchings or
+other pictographs have in many ihstances seemed to overshadow the latter
+in relative importance.     This has appeared to justify failure on the
+part of the field observer to devote any great amount of time or effort
+to a work which promised such comparatively meager information for the
+
+labor involved.    A doubtfully enduring race was to be physically defined
+
+before its extermination.     Rapidly vanishing languages and customs were to
+be recorded.     Archaeological remains were to be studied and preserved
+from vandalism and the encroachment of material civilization.
+     Any comprehensive understanding of      a   culture demands, however, that
+e^ery available fact shall be included in the data considered.           It is
+
+difficult to understand why    a   knowledge of pottery designs, for instance,
+basket designs, items used for personal adornment or the methods employed
+in concocting simple preparations of food should be more important to
+
+the student of general Anthropology than that portion of a peoples' art
+
+which is represented by pictographs.
+     A careful    study of pictographs should be of value in ascertaining
+facts of a more or less varied nature.       Evidence bearing upon the extent
+of cultural diffusion may appear in the technique and subject matter of
+the drawings.     Crude portrayals of customs may be reasonably identified.
+But of even greater importance than these is the study of the pictographs
+themselves as an important branch of native art.
+                                                                            ,
+
+
+
+
+                    Sources of Information
+
+     The data upon which this paper is based were obtained during the
+months of June to October, inclusive, 1922.    The field of study included
+the Mesa Verde National   Park and sites near Montrose, Craig and Youghal
+Colorado.   Included in the data are careful tracings of as complete a
+series of petroglyphs from these districts as time and resources would
+allow, drawings of inaccessible figures, and many photographs.
+                                      Acknowledgments
+
+           I   am deeply grateful for the sympathy and hearty cooperation of
+Dr.    J.      Walter Fewkes, Mr. J. Nusbaum, Superintendent of the Mesa Verde
+National Park, Mr. John H. Carter of Sunbury, Pa., Mr. R. W. Owen of
+Mancos, Colorado, Messrs. T. M. McKee, C. A. Block, A. Monroe and
+W.    H.       Fleming of Montrose, Colorado, Mr. Robert Curtis of Cedaredge,
+Colorado, Mr.           R.   L.   White and Dr. McCandless of Craig, Colorado, and
+Mr.    F.      A.   Baker of Youghal    ,   Colorado.
+                        MESA VERDE PETROGLYPHS
+
+                                   Sites
+
+        Most of Mesa Verde petroglyphs are situated at or near cliff and
+mesa ruins.     Petroglyphs were found occurring at Cliff Palace, Sun
+Temple (Fig. 9), Square Tower House, Little Long House, Balcony House,
+Spring House, Spruce Tree House, Far View House (Fig. 3), Pipe Shrine
+House (Fig. 6), One Clan House, and at three small nameless ruins.
+One of these, termed Petroglyph House in this paper, is situated in a
+crevice in the cliff face immediately above the summit of the talus
+slope at the northern point created by the juncture of that portion of
+Navaho Canyon adjoining Spruce Tree Camp with the main canyon.            Of the
+second small ruin only    a   few stone remain in place.    It stands at the
+
+top of the talus slope at the mesa point directly south of Spruce Tree
+Camp.     Hence the name Camp Point Ruin used herein.      The third ruin
+consists of a small crib-like arrangement of stones.         It is situated
+
+in a large cave directly across the canyon from New Fire House.
+
+        Petroglyphs independent from any building were found at the head
+of Fewkes Canyon, at Sun Point, and in a large cave situated at the head
+of a small tributary branch of Little Navaho Canyon.         This cave,
+
+termed Picture Cave in this paper, is not more than one-half mile north
+of Spruce Tree Camp.
+                          Techniques of Workmanship
+
+      Figures are engraved on the rock by process of pecking, drilling,
+scratching or grooving.
+
+
+                                 Pecking
+
+      The process of pecking consisted of striking the surface of the
+rock subject to treatment with a pointed instrument to produce dots,
+lines or solid areas of rough indentation.          The tools used for this work
+on the Mesa Verde have not been definitely identified among artifacts
+
+observed from that province.     They probably consisted of pieces of
+quartz or similarly hard stone held in the hand of the artist.              The soft
+fine sandstone upon which the petroglyphs occur offers a surface easily
+marked by the crudest of instruments.          The failure to find any definitely
+shaped implement that would serve as       a   pecking tool suggests that it
+was Eolithic in type.     Many naturally shaped stones which show evidence
+of having been used and which could have served for pecking are to be
+
+found about the cliff and mesa ruins.
+
+
+                                Drilling
+
+      Small drilled holes sometimes constitute a part of the artistic
+
+motif or occur isolated singly or in more or less regularly organized
+groups.   That these were produced through the agency of        a   drill   is con-
+
+clusively shown by their symmetry of outline and continuously uniform
+diameters.   Some of these holes have convex bottoms or have small cores
+projecting upward from the bottoms.        These were evidently drilled by
+means of some hollow implement such as the wing bone of         a   bird.   Others
+were apparently made with a more sharply pointed drill.
+                                  Scratching
+
+         The technique of scratching was produced by drawing a pointed
+instrument across    a   stone surface to engrave a fine shallow line or
+to produce a solid area of design by means of a complexity of lines.
+
+
+
+                                    Grooving
+
+         Grooves differ from scratchings in that they are much deeper and
+more carefully made.      The process of scratching was a hasty and care-
+less one; that of grooving a laborous, time-consuming industry resulting
+in a clean cut and lasting figure.
+
+         No artifacts have been found that can be positively identified
+as the tools used for drilling, scratching or grooving.          On the other
+
+hand a variety of artifacts primarily adapted to other uses could have
+been adopted to serve as the gravers in the case of all three techniques.
+Some of these tools are discussed elsewhere.
+
+
+                                 Subject Motifs
+
+         Mesa Verde petroglyph designs may be classified as belonging to one
+of five groups, arranged in order from the simple to the more complex.
+They are (1) spots, dots and straight lines, (2) straight lined conven-
+tional    figures, (3) curved lined conventional figures, (4) foot and hand
+outline forms, (5) naturalistic animate figures.          A few figures appear
+to be complexes of two or more of these groups.        There remain several
+figures which are to be doubtfully identified as belonging to any
+definite classificatory group, due usually to      a   careless execution result-
+ing in a vaguely shaped product.
+
+
+
+                         Spots, Dots and Straight Lines
+
+         Spots are to be defined as differing from dots primarily in point
+of size.     Spots are normally produced through a pecking technique; dots,
+through a drilling technique.
+            Spots occur frequently but a single example will serve here to
+illustrate (Fig. 2).           Deep channels associated with, often connecting,
+spots are of common occurrence.
+            Dots normally occur in groups of two or more.            The combination
+of two dots, one larger than the other, placed very close to each
+other and independent from other figures was noted in several instances.
+            Often dots occur in loosely but definitely organized groups
+(Fig.       4a).   The primarily apparent scattered disposition of dots on a
+stone from Far View Ruin appears upon close inspection to consist of
+three small central dots in          a   horizontal    line partly enclosed by a
+surmounting arc formed of five large dots.                The remaining three dots
+do not seem to fall          so readily into an organized arrangement.         Never-
+theless the central scheme is too apparent to be accidental.
+            Not infrequently dots and spots are found associated with other
+figures (Fig. 4d).
+            Straight lines are elements with which         a   much more complex type
+of design can be produced.           They sometimes occur singly but more
+frequently are to be found in groups.               The most simple arrangement
+consists of        a   series of roughly equidistant parallels (Fig. 4c).
+Parallel lines in a relatively diagonal position affords variety.                   An
+advanced step in complexity combines            a    series of diagonal parallels
+with    a    numerically equal series of perpendicular parallels (Fig. 4b).
+This begins to involve the ideas of numerical proportion and directional
+balance necessary to simple geometrical design.
+
+
+                           Straight Lined Conventional Figures
+
+            The consideration of associated lines of diverging direction
+brings us to discuss another simple trend of progress toward geometri-
+cal    design, that offered by converging lines.
+            Simple units of design   :    If two lines converge and extend each
+
+beyond the point of convergence they form a cross, one of the most
+simple of elemental units of design.                Many crosses are found on the
+                            .
+
+
+
+
+Fig.   2.   Loose Building Stone From
+            Far View Ruin
+
+
+
+
+Fig.   3.   Far View Ruin   .
+                            a
+
+
+
+
+                                    ;.;!':   hli
+
+
+
+
+Fig.   4.   a.   Loose Building Stone, b. North Wall of Large Kiva,
+            c.   Wall Stone,  all from Far View Ruin,
+            d.   Natural Surface, Balcony House.
+
+
+
+
+                      ^
+Fig.   5.   a.   and b. Loose Building Stones, Far View Ruin,
+            c.   Loose Building Stone Pipe Shrine House.
+
+
+                                        10
+Mesa Verde,   Most of them are rectangular in type.       They range in point
+of execution from crudely pecked figures to clean lined, well balanced
+motifs.   A rather doubtful example of a double cross may rather be a
+
+crude attempt at an anthropomorphic or human figure.        The noticeable
+curve of two opposing arms on two of these crosses (Fig. 5a) would seem
+to be too regular to be explained as resulting from imperfect execution.
+
+Both of these crosses are pecked, however, and the pecking technique
+undoubtedly lent itself to straight line production with more difficulty
+than did that of grooving.
+
+      Of a simplicity similar to that of crosses are the so-called "turkey
+track" figures.   These occur plentifully and offer a considerable variety
+in organized grouping, degree of artistic execution, and form.
+
+      Not a few occur alone or associated with other figures.        Others
+are grouped in such a manner as to suggest bird tracks.        Some are
+grouped in pairs, side by side, a position which might or might not
+suggest bird tracks.     The repeated association of "turkey tracks" with
+dots, long connecting lines, or both, is worthy of note.        The heel or
+posterior toe of some of these figures seems remarkably long to conform
+to the "turkey track" interpretation.        One figure lacks the posterior toe.
+Another figure adds new lines to the common pattern of three converging
+lines and assumes quite a botanical appearance.
+
+      Poorly organized complexes    .   A great many petroglyphs consist of
+from several to many straight lines crossing each other, haphazardly in
+some cases, following a definite plan in others.
+      In some cases a few lines are compounded to form "V" shapes,          ill
+
+proportioned crosses and other line groupings that show no evidence of a
+definite aim on the part of the producer (Fig. 7).        A few more complex
+
+patterns seem to reflect a more definite idea in the mind of the artist,
+but remain decidedly lacking in finished form.
+      Checked patterns   .   A much more highly organized disposition of
+lines results in checked patterns.        In one instance the vertical    lines
+are broken to form a design suggestive of a wall of masonry (Fig. 8a).
+
+
+
+
+                                        11
+                 Fig. 6.   Pipe Shrine House.
+
+
+
+
+Fig.   7.   Exterior Stone Southwest Corner Wall, Far View Ruin,
+
+
+
+
+                               12
+It should be remembered here, however, that the stone masonry on the
+
+Mesa Verde, while excellent in many respects, does not show a builder's
+knowledge of the practical value of breaking the joints in a wall.                   A
+combination of diagonally placed checks with             a   line or series of
+parallel lines intersecting check corners results in a very pleasing
+pattern (Fig. 8b).       One type of figure, a simplified check motif,
+resembles    a   naturalistic representation of      a   ladder (Fig. 8c).
+      Quadrilaterals and T-shapes     .    A uniform checkered motif lacks design
+strength.        It possesses the quality of organization lacking in
+
+a   haphazard complex of lines, but gains this asset at the expense of
+character.       A superior order of designs shows a combination of organiza-
+
+tion and unit character.       These are quadrilaterals and similar simple
+angular forms.
+      Single quadrilaterals are not of common occurrence.              The few
+examples found show an apparent tendency to extend the sides of such
+figures beyond their points of intersection with adjoining sides.                   Only
+one positive instance was noted where the outside angles formed by such
+side extensions were closed by means of diagonal              lines (Fig.   10a).    Even
+here the perfect figure suggested lacks completion, a condition probably
+due to weathering.
+      T-shapes, suggestive of the T-doors present in many of the cliff
+houses, do not occur as frequently as one might expect.               As a rule they
+
+are very simple outline representations.           One offers the peculiarity of
+being placed in an inverted position, the broad horizontal portion of
+the figure occurring at the bottom.            It has been suggested to the author
+
+that the incomplete outline of this figure may be due to the artist's
+tardy realization of its wrong position.           This seems improbable since
+similar inverted figures have been described elsewhere from other south-
+west provinces.       Figure lOb shows an example of the T-shaped design
+which is quite superior to the others in both accuracy of proportion and
+neatness of execution.       The T-shape is here compounded with horizontal
+lines which may represent roof beams above a T-doorway (Fewkes 1922:113).
+In any case the decorative possibilities of such an              arrangement of
+figures is evident.
+                                          13
+Fig. 8   a. Loose Building Stone, Sun Temple,   b.   & c. Loose
+         Building Stones, Far View Ruin.
+
+
+
+
+                        Fig. 9   Sun Temple
+
+
+
+
+                                 14
+                    It
+
+
+Fig.   10.   a.   Loose Building Stone, Far View Ruin,
+             b.   Loose Building Stone, Pipeshrine House,
+
+
+
+
+Fig.   11.   Loose Building Stone, Pipeshrine House
+
+
+                               15
+          \\\//^^///
+
+
+
+
+Fig.   12.   a. Wall Stone Sun Temple,  b. Loose
+             Building Stone Far View Ruin.
+
+
+
+
+   Fig.      13.   Loose Building Stone, Sun Temple.
+
+                               16
+        Rectangle series   .       Complex figures with a rectangular tendency
+are due to receive attention.           They are few in number but interesting.
+One consists of a ladder-like figure with enclosed, similarly placed
+rectangles.       Beside it is a double rectangle, one enclosed within the
+other, bearing some resemblance to a highly conventionalized form of the
+Hopi friendship sign sometimes seen as a Mesa Verde pottery design
+(Fig.   11).    Another figure groups four rectangles end to end and places
+in one of these rectangles an unmistakable geometrical                conventionaliza-
+tion of the friendship sign.           A third introduces geometrically treated
+waving lines, or zigzags.           This design has a nice simplicity and
+remarkably clear-cut strength.           All       have been eliminated save those
+few lines necessary to produce a desired artistic effect, and these few
+lines are confidently bold.
+
+        Acute angle series     .    A more numerously represented series of
+straight-lined designs make exclusive use of complementary and alternating
+acute angles.      Two lines meeting to form an acute angle do not make a
+very striking figure, but two such angles of like size and direction,
+placed side by side, produce a more pleasing effect.                 This effect becomes
+more positive when many lines enter into a well balanced complex of acute
+angles (Fig. 12a).
+        Two others offer examples of           a    curious conception of artistic
+balance.       Each consists of a series of three alternating acute angles, two
+opening upwards and that one centrally placed opening downwards.                 To be
+well balanced, in conforming to the general plan of the design, each angle
+should be bisected by one of three vertical lines.                 Then the figure would
+suggest a decorative series of alternating "turkey tracks."                 But only two
+of these angles, in each case the same two, are so bisected.                 The fact that
+these two petroglyphs are identical in design, although occurring in
+different ruins, would seem to positively argue that they represent a
+definitely exact and complete design rather than a haphazard association
+of lines.
+
+        Two acute angles of like direction, one enclosed within the other,
+suggest    a   new course of development for angular complexes.            This disposition
+
+
+                                               17
+of lines constitutes a relatively important theme in Mesa Verde petroglyph
+art.     Two complementary sets of such double angles comprise the next step
+in complexity.           Then follows, in order of complexity, a compounding and
+alternating of such units of design to result in            a   cumulative pattern
+entirely covering the available surface, one face of a building stone
+(Fig.    12b).        The tendency finds its most perfect expression in a simpli-
+fied, perfectly proportioned and balanced motif suggestive of a fret.
+
+        Rectangle and acute angle complexes       .   A combination of the rectangular
+design technique with that making use of alternating acute angles results
+in a still       finer pattern introducing the triangle.         In figure 13 the
+
+fusion of the two techniques has .been quite successfully accomplished.
+
+
+                                    Curvilinear Figures
+
+        Curved lines are extensively employed in Mesa Verde petroglyphs.
+Sometimes the resultant figures are very crude (Fig. 14), but usually they
+reflect a considerable amount of care and an appreciable degree of ability
+on the part of the producer.
+
+        Waving lines      .   The simple curve may be compounded to form waving
+lines or projected to form a circle and these two forms, the waving line
+and the circle, are perhaps the most primarily apparent units of curved
+design.
+        A single example of the curved equivalent for the zigzag motif is
+found.     It consists of three waving lines closely intervaled and extend-
+
+ing parallel with the curved fluctuations in each line complementary to
+like fluctuations in the accompanying lines.
+        Circles   .    Only one single circle was found, but several examples
+of concentric circles occur (15a).
+        Spirals   .    Spirals constitute a favorite Mesa Verde motif judging from
+their numerous and widely distributed occurrence.               Most spirals consist of
+coils regularly expanding from a central dot, each coil maintaining a
+standard interval from the preceding coil (Fig. 15b).               In two instances
+
+the spiral begins with a small centrally placed circle, but this may be due
+
+to an accidental         breaking down of the interval between coils.       Spirals
+
+
+                                           18
+                                     .
+
+
+
+
+                          Q
+       Fig. 14.     Natural Surface in Cave Opposite
+                    New Fire House
+
+
+
+
+               /^
+Fig.    15.   a.   & b. Natural Surface, Petroglyph House,
+              c.   Inside Wall, Far View Ruin.
+
+
+
+                                19
+observe no apparent rule governing the direction of turn; some follow               a
+
+clockwise direction, others      a   counterclockwise direction.
+     A connected series of spirals is attempted in one case although it
+never involves more than two spiral units.         In another case the two
+
+connected spirals are clearly executed, one curved, the other geometrically
+treated.   One, despite its complex appearance, is essentially a similar
+spiral couplet.       A third figure following this pattern is additionally
+embellished with curved flourishes, one at either end.
+     The intercoiling of two curved spirals to form the "friendship sign"
+is represented in a single instance (Fig.        15c).       A geometrically treated
+"friendship sign" has been described above.
+
+
+                           Summary of Conventional Designs
+
+     In summary, conventional        designs are chiefly represented by crosses,
+"turkey track" figures, checked patterns, T-shaped figures, series of alter-
+nating acute angles, complexes of acute angles and rectangles, concentric
+circles and spirals.
+     "Turkey tracks" and T-shapes have been included with conventional
+designs, despite their possible realistic tendencies, because of their
+simple geometric treatment and undoubted decorative value.
+
+
+                           Foot and Hand Outline Forms
+
+
+     Representations of feet and hands occur at          a   few sites.   Most of
+these were found at one location.        They are all of the impression type and
+treated solidly rather than in outline.        The number of digits is in every
+case normal   (Fig.    35d).
+
+
+
+                                Animate Figures
+
+     Pictures of natural objects are relatively plentiful in this province
+but are rarely good when compared with conventional designs.              Those few
+showing a commendable amount of skill are widely separate from the average
+
+
+
+                                         20
+in both grade of workmanship and style.                  With the exception of T-shapes,
+probably the representations of house doorways and "turkey tracks," some
+of which may represent bird tracks, all those figures that can be reason-
+ably identified as naturalistic are animate in theme.
+        Snakes      .    A few snakelike figures are crudely suggested, a dot or
+circle representing the head and a waving line the body (Fig. 16a).
+        Vague animal forms           .   Some forms, representing animals in all
+probability, are too vague in outline to warrant naming.                       Fig.   16b suggests
+
+some animal with a large udder, or the sub-posterior pendants may repre-
+sent the legs of a nursing offspring.                  The ragged execution renders such
+speculation hardly profitable.                One is probably the picture of a deer,
+judging from the antler-like appendages.                  Two others, occurring side by
+side, resemble lizard-like animals.
+
+        Birds   .       Four of the five bird pictures were found at one site (Fig.
+46c).     They follow         a    very uniform plan of pattern, even as to the number
+of tail feathers represented, and are probably the work of a single
+artist.     These birds are represented as standing or walking and lack any
+indication of wings.                The emphasis so placed upon their use of feet
+rather than wings may imply a domestic bird such as the turkey.                        A fifth
+bird picture is more simply and less realistically done but emphasizes
+the same pedestrious attribute of its subject.
+        Sheep   .       Mountain sheep are pictured at      a   single site.     A large sheep
+in figure I6d is poorly executed with the front and rear legs placed so
+
+close together that the animal is made to resemble a biped,                       A small
+sheep above a larger one, which appeared upon close inspection to be a
+separate and independent drawing, is better though carelessly done.
+Though essentially a straight lined figure, it escapes from the angular
+effect dominating the larger representation.                    Another sheep is better
+than the large animal in figure 16d, but quite inferior to the smaller.
+        Anthropomorphic and human forms            .   Human figures are not always
+easily identified.                The anthropomorphic tendency probably sometimes
+supplies animal representations with human traits, especially the erect
+
+
+
+
+                                                 21
+                            °                b
+
+
+
+
+                            •
+                                          If
+Fig.   16.   a. Natural Surface, Camp Point Ruin, b. Natural Surface,
+             Picture Cave, c. & d. Natural Surfaces, Petroglyph House,
+
+
+
+
+Fig.   17.   a., b., & c. Natural Surfaces, Picture Cave,   d. Natural
+             Surface, Petroglyph House.
+
+
+
+
+                                     22
+                           .
+
+
+
+
+position.        On the other hand, figures may propose to picture humans masked
+to represent animals.
+        Some wery crude efforts portray a figure with a head, body, arms
+and legs, all of which basically resemble the physical attributes of man
+more than those of other animals.         A small hole pecked at the base of the
+body in figure 17a is graven deeper than is the remainder of the worked
+
+surface of the figure.         It may be a symbol   indicative of the female sex.*
+        Two figures, judging from the large apparent tails, seem to be
+pictures of animals, although they are closely associated with unmistakably
+human figures.
+        Two figures (17b) have the, erect position but are supplied with long
+pointed faces and prominent tail-like appendages.          The deeper indentation
+at the base of the body in each of these figures, outlined by the broken
+white line, may again serve as female sex markers.
+        Two others show more definitely pictured hands and feet.       The figure
+in 17c has an appendage falling         from the neck or shoulders which may
+represent    a    necklace or boa.   Both figures are supplied with what
+resembles the erect penis.
+        One petroglyph in figure 17d suggests violent action, such as that
+engaged in by a dancer, while figure 18 shows well -developed feet and
+hands, and feathers, tremblers or similar ornaments surmounting the
+
+head.     The appearance of clothing may rather be an angular treatment of
+the body.
+        One of the most interesting petroglyphs in the province pictures a
+seated figure with a large hump on the back (Fig. 19a).          Both hands are
+employed in holding some long slender object which projects downward from
+the head.        The interesting feature of this picture from an artistic
+standpoint is the portrayal of a human figure in profile (see also Fig.
+19b).
+
+
+
+
+* It appears to the editor that most of these male figures have phalluses
+  rather than tails and the deeper portions of the petroglyph probably
+  represent the navel
+
+
+                                          23
+             Fig.   18.   Natural Surface, Picture Cave.
+
+
+
+
+                 Natural Surface, Petroglyph House,        b.   Natural Surface,
+Fig.   19.    a.
+              Sun Point.
+
+
+                                         24
+        Two figures (18b) are uniquely prominent in that they are human
+representations done by means of the grooved technique.             Although quite
+remotely situated from each other, they are very similar in style.                   They
+are both geometrically conventionalized.           Both represent the body by a
+single line.     Both portray the limbs in rectangular position.          This
+similarity may be altogether due to the grooved technique employed.
+One is interpreted by the author to picture          a   woman, assuming the
+deeper depression at the base of the body to be a female sex marker
+and the points projecting laterally from the body to represent breasts.
+
+The lateral projections from the head suggest a form of hairdressing
+similar to the whorls commonly worn by girls in some of the existing
+southwestern tribes.     Figure 19b shows     a   human form in profile, in      a
+
+running posture.     A pointed object is held in the hand.          Below this repre-
+sentation is pictured a standing figure apparently clothed in a skirt or
+kilt.     The profile position, the portrayal of action, and the adding of
+such details as dress and breasts, providing these interpretations are
+correct, give these grooved figures superior artistic qualities.               None
+of the human figures pictorial ly present          on the Mesa Verde are so
+
+realistic as to cause grooved figures to artistically suffer because of
+their geometrical treatment.     They are equaled among human portrayals,
+possibly excelled, alone by the picture shown in figure 19a.
+
+
+                            Unclassified Figures
+
+
+        There remain for descriptive consideration certain petroglyphs which
+do not easily fall    into any logical plan of classification.          Some of
+these are vaguely outlined and carelessly done; others are radically
+
+unique in their motif and stubbornly unintelligible.             It would hardly
+be profitable to discuss each of this unclassified group of pictures.
+
+Some, however, seem worthy of attention.
+
+        One example (Fig. 20a) has one straight side, connecting rectangular
+corners, and an opposite curved side.         The whole is cut up into several
+sections.    The only importance of such      a   drawing must lie in its
+interpretation which is discussed in      a   more fitting place.
+
+                                     25
+                           Q
+
+
+
+
+Fig. 20.   a.   & b.   Natural Surface, Petroglyph House,
+
+
+
+
+                           26
+     Figure 20b approaches more closely to the maze type of petroglyph
+motif, frequently occurring in other southwestern provinces, than any
+drawing seen on the Mesa Verde.     It differs from the maze in the closed
+
+nature of so many of its compartments.     The impression persists that
+such pictographs resemble nothing so much as an attempt to fill an area
+enclosed by a circle with an unorganized series of rambling and meaning-
+less lines.     The whole might be considered to possess a certain decorative
+value.     Such figures could have been arbitrarily elected to convey a
+meaning the secret of which depends upon evidence which for the most
+part will remain hidden from the observer.
+     Another presents a remarkable complex of lines to have no particular
+meaning.     It is hard to conceive of the producer expending his time and
+
+energy at such pains without the guidance of a definite idea and purpose.
+Such an idea is not, however, readily apparent to the uninitiated eye.
+The drawing does not resemble a conventionalized design.     Its decorative
+value is indifferent.     In such cases it seems safe to assume that the
+
+recording of some purposeful meaning must have motivated production.
+     Yet another invites speculation which does not meet a ready reward.
+The apparent eyes suggest an animal subject yet all the lines do not seem
+
+to fit such a definition.     Its striking outline is in any case worthy of
+
+attention.
+     A petroglyph from Pipe Shrine House shows a figure that is interest-
+ing from two points of view:     First, the technique of workmanship is
+irrelevantly fine.    The two dots are drilled to a depth of about one
+quarter inch.    The parallel grooves are of like depth.   Dots and grooves
+are finished with elaborate care to produce very smooth surfaces gradually
+rounding from the deepest parts to meet the vertical sides.     In other
+
+words, extraordinary pains were taken to engrave the most simple of
+figures.     Second, the motif, two parallel oblongs above two dots,
+although unique among the observed petroglyphs of the Mesa Verde, is common
+elsewhere in North America.
+     A glyph from Far View House presents an outline which in the original
+confined a raised figure, an apparent attempt at bas-relief.     No other
+
+                                    27
+instance at even so crude a bas-relief was observed in this province,
+although pieces of sculptured stone have been found (Fewkes 1923:
+99-101).     The figure is extremely simple and of conjectural import.
+The raised portion offers a carefully pecked surface; the area
+surrounding it has been first pecked and then polished, since the
+deep peckings are apparent despite the polishing.          Polishing has not
+been included in a preceding paragraph regarding techniques of work-
+manship because of its single occurrence in this province in connection
+with petroglyphs and because the figure involving its use is not a
+petroglyph according to usual definitions.
+     In summary it may be said that the subject        matter of Mesa Verde
+petroglyphs is rich in conventional design and relatively poor in
+naturalistic representation, though offering       a   few comparatively good
+examples of the latter.
+
+
+                                Situation
+
+     The petroglyphs occur (1) on natural rock surfaces not associated
+with dwellings, (2) on natural rock surfaces immediately associated with
+dwellings, (3) on building stones or loose dressed stones associated with
+buildings.     Of the 176 petroglyphs herein recorded, 21 occur on natural
+rock surfaces approximate to houses and 100 on dressed stones either in
+place in the existing walls or present in the debris of ruined walls.
+From this it may be seen that the vast majority of drawings were inscribed
+on building stones.
+
+
+
+                          Technique and Location
+
+     The relation between technique of workmanship and location is
+interesting.    Twenty of the 21 figures situated away from dwelling
+sites were pecked.    The exceptional one was grooved (Fig. 19b).       Of
+
+those figures found at house sites 33 were pecked, 36 scratched and
+80 grooved.    Many, consisting exclusively of dots or of straight grooved
+
+
+
+
+                                     28
+          <u
+          -a
+          s-
+
+
+
+
+          (U
+
+          4J
+          to
+
+          oc
+          3
+          O
+          t/l
+CM
+           O
+
+
+     (D   CM
+
+
+
+
+     29
+lines, so simple that it seemed best to reproduce in this paper only
+
+a few    representative examples, were found at building sites.      Most of
+these occur on building stones.     In all, 36 petroglyphs were scratched,
+
+53 pecked, and 81 grooved.     It is therefore noteworthy that practically
+
+all drawings distant from houses were pecked, that more than half of
+
+all    the drawings associated with houses were grooved, and that nearly
+half of all the petroglyphs observed on the Mesa Verde were grooved.
+
+
+                           Motif and Location
+
+        The relation between design motif and location deserves mention.
+Dots and single grooved lines occur plentifully at house sites both on
+building stones and on nearby surfaces.      The remaining order of occurrence
+is    more clearly presented by the following chart (Table   2)   than could be
+accomplished in words.
+        A study of the above listed facts discloses the following points
+of interest.
+        No motif is exclusively situated distant from house sites.     A
+majority of the motifs, including series of parallel lines, tridents,
+checked and criss-cross patterns, quadrilaterals, T-shapes, series of
+acute angles, series of complex angles, spirals and friendship signs,
+are found exclusively associated with houses.      Only two crosses were
+found at houseless sites and they are so crudely executed that their
+definition as crosses may be far from the point.      There remain, of the
+lot of pictographs not associated with houses, one instance of concentric
+circles, one hand outline, one foot outline, two indeterminate motifs
+and fourteen animate conceptions.     Thus few motifs occur distant from
+house sites, and by far the greater part of these few are animate in
+subject.
+       Three motifs are not found on natural stone surfaces associated with
+houses.    They are series of rectangles, series of acute angles, and
+rectangle and acute angle complexes.      Animate subjects and representations
+of hands and feet are here numerically in the lead.      Grooved figures are
+rare but scratched figures numerically exceed pecked figures.        Thus
+
+
+                                     30
+                                           TABLE 2
+
+                  Motif and Order of Occurrence of Mesa Verde Petrociiyph s
+
+                                                                Associated                 On Bu ilding
+                 Location         Free Surfaces                  Surfaces                    Sto nes
+     Motif                            CD   CO        —1
+                 Technique    n>      -s   o         o
+                              n       o    -s
+                                      o    ai
+                                      <    r+
+                              a.           O
+                                      Q.
+                              P.     6.    1       T.      P.     G.    S.    T.   p.        G.   S.       T.
+
+
+
+Series of Parallel lines                                          1           1              6             6
+
+
+Crosses                       2                    2       1      1           2    2         5             7
+
+
+
+Tridents                                                   2      1     2     5             15            15
+
+
+Checked and criss-cross                                           2           2             18            18
+
+
+Quadrilaterals                                                    1           1              3             3
+
+
+
+T-shapes                                                                5     5              2             2
+
+
+Series of rectangles                                                                         3             3
+
+
+Series of acute angles                                                                      12            12
+
+
+Series of complex angles                                                                     3             3
+
+
+
+Circles and concentric
+  circles                     1                    1       2                  2    2                       2
+
+
+Spirals                                                    1            2     3    8         2    2       12
+
+
+Foot and hand forms           2                    2                    7     7
+
+
+Animals                       2                    2       3           10    13    4         1             5
+
+
+Anthropomorphous and
+  human figures              11       1           12       1      1     1     3
+
+
+Indeterminate figures         2                    2       3            7    10        4     3             7
+
+
+
+Totals                       20       1           21      13           34    54    20        73       2   95
+                                                                  7
+
+
+                                                31
+pictures on rocks adjacent to houses show a considerable variety in
+subject matter and superior workmanship when compared with the pictures
+at houseless sites.    Animate figures are again in the majority and
+display a higher degree of skill than is exhibited by other figures.
+     With two exceptions all classes of motifs are present on building
+stones.    The exceptions are representations of hands and feet and human
+figures.   Animate figures are however rare.       Of 100 pictographs found
+on building stones only 5 are animate, and these all occur at one site.
+Far View House.    Checked and criss-cross patterns outnumber all other
+motifs, with tridents, series of acute angles and spirals respectively
+following in numerical importance.        Grooving is here the usual method
+of workmanship employed.    Thus petroglyphs on building stones present
+nearly all motifs found in the province, though animate figures are
+very rare and conventional designs are given a decided preference.          The
+most elaborate conventional designs occurring on the Mesa Verde are
+exclusively found on building stones.        Grooving seems to be the usual
+method of workmanship employed to produce straight lined figures while
+curved lines are more commonly produced by means of pecking.
+
+
+                         Local Peculiarities
+
+     Three sites stand out as artistically superior to the others, judged
+on the basis of petroglyphs occurring there.       They are Sun Temple, Far
+View House and Pipe Shrine House.     The finest examples of crosses, series
+of rectangles, series of acute angles, and complexes of rectangles and acute
+angles are found at Sun Temple.     Far View House excels in simple quadri-
+laterals, checked patterns, and exhibits the best of the two examples of the
+friendship sign found occurring in the province.        It shares with Pipe
+
+Shrine House superior spirals.     Pipe Shrine House offers the best T-shaped
+
+figure, tridents and complex spirals.       Petroglyph House deserves mention
+as excelling in animate figures.
+
+     Different sites show marked individuality both in petroglyph subject
+matter and in the treatment thereof.       Practically all the Sun Temple
+pictures are carefully finished conventional designs of a decorative
+nature.    They observe a grooved technique.      Pipe Shrine House and Far
+
+                                     32
+View Kouse are alike In their presentation of checked and criss-
+cross patterns, spirals, tridents and a few good examples of acute
+angle designs..      Petroglyph House furnishes more than half of all the
+lower animal representations found in the province including the only
+likenesses of mountain sheep.          These animal conceptions are invariably
+scratched rather than pecked or grooved although many of the inanimate
+subjects at the same site are pecked.             Five of the seven T-shapes
+
+found on the Mesa Verde occur at this site.                 The only petroglyphs found
+at Spring House are representations of human feet.                   They include six
+of the total of seven foot forms occurring in the province.                   The
+
+technique of workmanship followed is that of scratching.                   At Square
+Tower House there are some long zigzags, not present elsewhere, some
+crude complexes of circles, and lines too large to be conveniently
+traced, and    a   unique representation of       a   deer.    Cliff Palace and Spruce
+Tree House are chiefly marked by         a    scarcity of petroglyphs.        The
+figures in Petroglyph Cave are crudely pecked representations of
+animate subjects insofar as they allow interpretation.                   The style of
+these pictures is noticeably different from that of other Mesa Verde
+petroglyphs.       Individuality is apparent at other less important sites.
+
+
+                                     Purposes
+
+      Primitive art need not necessarily possess               a   meaning deeper than
+is   superficially apparent.    Where there is          a   considerable series of
+drawings, representative of      a    single province, available to the student,
+the purposes underlying production may range to include haphazard
+
+scratchings, such as the irresponsible work of the unskilled novice,
+markings serving practical purposes, realistic illustrations, con-
+ventional decorations, symbolical figures, and idogramatic attempts.
+Some pictographs will readily fall into their proper places of classi-
+fication; others will remain problematical of purpose with points of
+evidence indicating one or more possible uses.                Where such points of
+
+
+
+
+                                             33
+evidence are nothing more than shreds of suspicion, it becomes
+unprofitable to lengthily debate purposes.
+       Mallery Ci893: 25-26) defines picture writing as "a mode of
+expressing thoughts or noting facts by marks which first were confined
+to the portrayal      of natural or artificial objects." But of course all
+pictographs do not rate classification under the head of picture
+writing.       The first portrayals of natural or artificial objects, for
+instance, are apt to be well interspersed between the actual attempts
+at writing or may dominate to the practical exclusion of any intended
+
+record.    The tendency to treat all primitive picturing as attempted
+chronicles or graphic symbols, where followed, has done much to dis-
+credit the scientific worth of pictograph study and has tended toward
+discouraging serious research on the part of trained archaeologists.
+
+
+
+
+                             Irresponsible Products
+
+
+       It is    impossible to determine that any pictograph is nothing more
+than the meaningless product of irresponsible effort.           It is, however,
+
+highly probable that the seriously artistic undertakings of purposeful
+men were indusive to     a   purposeless use of the artist's tools, done in
+much the same spirit as that which prompts        a   boy to test the efficiency
+of a new knife on a stick of wood.         The resultant product of such
+labor does not matter and is accidental rather than planned.           Some of
+the petroglyphs in this province very probably owe their origin to
+similar careless motives. Although they cannot be isolated and labeled
+as such, a type which may belong under an irresponsible classification
+
+is   represented in this study CFig- 7).
+
+
+
+
+                                         34
+                      Products of Practical Origin
+
+
+     Practical purposes for some figures are suggested by odds and ends
+of evidence.     A common method employed to sharpen bone and antler
+
+implements such as awls,    a    method well known in the primitive Southwest,
+consisted of rubbing the implement upon any convenient sandstone surface.
+The process resulted in straight grooves cut into the sandstone.                         Many
+of the straight grooved lines on the rocks and artificial walls of the
+Mesa Verde may owe their origin to similar practical pursuits.                       The
+extensively marked and polished nature of rock surfaces in                   a   large cave
+directly opposite New Fire House in Fewkes Canyon proves beyond                      a
+
+doubt that the inhabitants used sandstone as              a    tool   sharpening agent.
+     It is not improbable that some of the more simple compounds of
+
+straight lines may likewise be the product of such practices.                       When
+grooves become too deep to best serve the purposes of the tool sharpener,
+new grooves are started.        These may quite innocently of intent take a
+direction suggestive of design.          Carelessly associated lines have                a   way
+of suggesting forms existing in the mind of the observer.                    Such
+suggestions might have led to       a   completing of the form brought to mind
+in which case the finished product        would be    a       complex of lines resulting
+from the grinding of tools compounded with lines contributed by consciously
+artistic effort.     Such a possibility increases the difficulty which one
+
+encounters in attempting to determine the true amount of seriously
+designed preconceived material present in the total quantity of petro-
+glyphs to be observed.
+     A certain class of deeply cut grooves, channels and cup-like pits
+may have served as apparatuses used in the playing of certain games known
+to Southwest ethnologists.       The simplicity of these indentations in most
+cases would hardly warrant tracing.            They usually occur on the horizontal sur-
+faces of naturally shaped and disposed stones.                 At Square Tower House
+they were observed on one large stone disposed in regularly intervaled
+parallel rows.     These latter are not unlike the so-called cup symbols
+of petroglyph sites in various parts of the world.
+
+
+
+                                          35
+                               Count Registration
+
+     Various methods of registering count are practiced among primitive
+peoples such as notching sticks and knotting cords.             Regular series of
+parallel lines present among Mesa Verde petroglyphs in some instances
+suggest such a numerical representation CFig. 4d).             This interpretation
+is advanced    merely as   a   decidedly evident possibility.      A use of similar
+
+markings for registering count has been reported occurring at San Marcoo
+Pass, California (Mallery 1893:62).
+
+
+                               Natural   Illustrations
+
+     Attempts to illustrate natural objects are more numerously repre-
+sented.   They include pictures of anthropomorphic forms, animal forms,
+and representations of turkey or other bird tracks and of T-doorways are
+
+possibly to be included.         Figure 20a may be the plan of     a   D-shaped build-
+ing such as Sun Temple.        Other figures which are not easily interpreted
+may be attempts at natural illustration.           Any of these shapes may be
+intended to signify something not at all apparent to the uninstructed eye,
+but it seems sensible to suppose that at least some have no peculiar
+symbolical or other significance.
+
+
+                       Conventional Decorations
+
+     Conventional decorations are plentiful.             They have been listed above
+as crosses, checked and criss-crossed patterns, quadrilaterals, rectangle
+
+series, acute angle series, acute and rectangle complexes, circles and
+concentric circles, spirals, and friendship signs.             Some of these may have
+been executed to convey a meaning now lost to us, but in any case their
+decorative value is evident.         Many of these figures are in fact so
+positively ornamental in character and so doubtfully of any additional
+importance that this paper will treat them exclusively as conventional
+decorations.    These include some checked patterns (Fig. 8a), some criss-
+crossed patterns, all rectangle series, all acute angle series, all
+
+
+
+                                          36
+acute and rectangle complexes, and one spiral.           These have been
+selected because they share common peculiarities which tend to group
+them as decorations.   They all occur on building stones.          Each
+
+completely dominates one entire surface of the stone it decorates.
+Each consists of a more or less complicated motif whose apparent
+purpose is to beautify the surface it covers.
+     There are other figures which comply with one or two of the
+conditions but are lacking in some particular which excludes them from
+being listed with reasonable certainty in the above group.
+     Perhaps the most prominent feature of wall decorations, aside from
+their ornamental traits, is their dependence upon the shape and size of
+the surface they decorate.       In some instances the design has no
+
+independent completeness but is cut off from further expansion by
+surface boundary lines.       Here the purely decorative tendency to avoid
+blank spaces is paramount.       The design itself must suffer if necessary
+
+to conform to the limitations of the decorated area.           Perhaps the most
+remarkable instance of this is shown on        a   loose building stone from
+Pipe Shrine House where   a    spiral   is made to cover a given surface at
+
+the expense of sacrificing a good portion of its lineation.
+     While the remaining figures in this group are more or less complete
+within the boundary limits, their general shapes are largely determined
+thereby and the central dominance of each over its ascribed surface is
+pronounced.
+
+
+                       Picture Writing and Mnemonics
+
+
+     A paucity of evidence prevents any intelligent discussion of Mesa
+
+Verde picture writing as revealed in its petroglyphs, or in regard to
+picturing for mnemonic purposes; to register chronology, titles, names,
+religious or ceremonial symbols, shamanistic signs, exploits; to post
+notices, warnings, directions; to portray routine habits and customs;
+to record notable events in local        history, mythology or tradition.
+Picturing designed to fulfill one or all of these purposes may be present
+
+
+                                        37
+on the Mesa Verde, but the interpreter is gone.       A careful comparative
+study of these pictographs and of more modern pictographs of known
+import which are situated in near neighboring provinces would undoubtedly
+shed some light upon the matter.     However the means of making such           a
+
+study have not been afforded the author and are in any case rather
+obscure.
+
+
+                                  Symbolism
+
+        It would be extraordinary if a symbolical   use of petroglyph art
+were proven to be entirely lacking in this province when its cultural
+affinity to the existing Southwest culture area and the importance of
+graphic symbolism in that area are taken into consideration.            However,
+with but a few exceptions, we can only discuss possibilities.
+        Totemic symbols are of an order which one might expect to be more
+easily identified than others, and yet there is no certain proof that
+an animal    picture has totemic significance.
+        Certain figures that might be totemic are more or less localized
+in their distribution.     Thus nearly all of the "turkey track" figures
+are situated at Far View House.     Pictures of turkey-like birds occur
+exclusively at Far View House and at Petroglyph House.         Representations
+of mountain sheep have been found only at Petroglyph House.         Other
+animal figures of smaller numerical      representation are of similarly
+localized occurrence.     This evidence, such as it is, supported by        a
+
+comparative survey of totemic symbolism among near neighboring peoples,
+is at least suggestive of clan centers or stongholds, such as a turkey
+
+clan at Petroglyph House and at Far View House and      a   sheep clan at Petro-
+glyph House.
+        A certain figure which in the above pages has been classified with
+"turkey tracks" because of its similarity thereto, is due for considera-
+tion.     Like the "turkey tracks" this trident is the result of three
+converging straight lines but the posterior toe, adhering to        a   turkey
+track terminology, is radically prolonged and is sometimes extended to
+
+connect with like posteriorations of other tridents.
+
+
+                                    38
+        In two marked instances such figures are grouped with              more or less
+regular arranged drilled dots.         In figure 5b these dots, to the number
+
+of seven, are arranged to form a curved line extending through a series
+
+of three tridents.       The broken nature of the stone base entirely cuts off
+the stems or posterior toes of two of the figures; the third has the
+prolonged toe.       None of these figures have the balanced proportion of the
+
+more usual form of "turkey track."           On another Far View stone a form is
+pictured which most certainly does not represent               a   bird track.   The
+associated dots are present and from one of them shoots up                 a   long pro-
+
+jection.     If the usual     trident form resembles      a   bird track we may be
+excused in suggesting that this second type of trident suggests plant
+life, the prongs representing leaves or stems separating from the stock.
+
+One is tempted to go so far as to infer that the dots represent seeds.
+The apparent sprouting seed in the second case encourages this assumpt-
+tion.
+
+        On a wall   stone at Far View House    a     fourth prong is added which
+definitely removes it from the bird track classification.                  Figure 5c
+certainly represents      a   botanical form much resembling grass, corn or
+pinon needles.
+        A staid uniformity of concept and execution, an abbreviated
+
+simplicity would seem to remove these plant-like figures from the illus-
+trative or casual classes.         They could hardly be classified as primarily
+decorative.     They are therefore more probably to be relegated to the
+classof the symbolical.        The importance of corn in Southwestern symbolism
+removes the improbability of botanical motifs being employed symbolically
+in any Southwestern pictographic art.           In   fact Mallery (1893:746 and 329)
+refers to vegetable motifs among so-called Moki petroglyphs, citing
+squash and mellon blossoms and other good vegetable pictures.                    In any
+
+case no greater stretch of imagination is required to recognize such
+figures as corn tassels than to assume that they represent turkey
+tracks.
+        One stone from Pipe Shrine House and discussed earlier is unique
+among Mesa Verde petroglyphs.         Its simplicity is no indication of small
+
+
+
+                                        39
+importance.       On the other hand two elements of fact make it quite
+worthy of deliberate examination.            In the first place it is most
+
+carefully executed.       Few petroglyphs in the province have received
+the detailed attention of skilled handicraft and show the perfect
+finish that distinguish this figure.           The care taken in its produc-
+tion argues for a considerable importance pertaining thereto.              In
+
+the second place this identical motif is a yery common character
+among the petroglyphs of the Shavano Valley near Montrose, Colorado.
+Variations of this form found in the latter province greatly resemble
+the tracks of indigenous ungulates.           Such is the bit of evidence
+available bearing upon      a   possible interpretation of the Mesa Verde
+figure.       If in either case a hoof print is represented, the question
+
+of a class or society figure again arises.
+        Representations of human feet or footprints are rare in the
+province.       Out of a total of seven examples six are found grouped at
+Spring House (Fig. 35d).         If this localized distribution is of any
+
+importance it would seem to place the human foot or footprint among
+social group symbols.
+
+        An apparent localized distribution of T-shaped doorway figures
+constitutes the basis for       a   similar argument regarding their use in
+social group symbolism.
+        In this connection it is an interesting fact that in all          those
+ruins on the Mesa Verde which came under the writer's observations and
+which possessed T-shaped doorways, a yery definite disposition of this
+type of doorway was noticeable.          In eyery instance, and investigation
+
+was directed to be as inclusive as possible, T-shaped doorways were
+found to exclusively offer ingress and egress to and from rooms
+immediately adjoining kivas and towers, or situated in towers.              More-
+over these rooms are in all instances of          a    relatively large and well
+built type and are yery often embellished with wall paintings of a
+recognized identified symbolical nature.              To reverse the latter state-
+ment,    I   have no recollection of a room on the Mesa Verde, with walls
+
+
+
+
+                                        40
+remaining complete or entirely restored, that possesses wall paintings
+and not at least one T-shaped doorway.              In sum, there is some evidence
+
+to support an opinion that T-shaped doorways were present only in
+
+ceremonial chambers or rooms used by shamans, priests, or similar
+personages, and that a peculiar significance must therefore have
+attached itself to such passageways.            Such a significance would give
+a   corresponding symbolical meaning to         a   pictographic representation of
+the T-shaped doorway.
+
+        Certain petroglyphs from Balcony House and Pipe Shrine House are
+sufficiently definite and possessed or organized balance to suggest                  a
+
+purpose underlying their production but the absence of any apparent
+means toward determining such         a   purpose removes them from the field
+of further profitable discussion.
+
+        The prominent portrayal of sex in several human or anthropomorphic
+subjects may be of symbolical         importance (Fig. 17b and c)        .   Sex is not
+uncommonly       a   factor in the religious symbolism of cultures the world
+over.        Such an assumption seems to be more in harmony with our knowledge
+of the artistic expression of primitive conceptions than the supposition
+that such drawings were prompted by either            a   sense of obscenity or a
+tendency toward carrying naturalism to such a detailed extreme.
+        No positive instances of masks or masked figures offer themselves
+for translation.         The nearest apparent approach to such figures, common
+
+in other Southwest provinces,         is to be seen       in figure   19a.   This por-
+trays    a    seated human figure in profile with a large hump on his back and
+a long       straight object held to project downward from the facial region
+of the head through the support of the two extended hands.                   It would be
+difficult to contemplate this figure and not connect it with the hump-
+backed flute player who holds the chief role in an important Hopi
+ceremony.
+
+
+                                      Idiograms
+
+        Some idiogramatic characters are possibly present.               The friendship
+sign of the Hopi might be construed as such.                It frequently constitutes
+
+
+
+                                           41
+                                        .
+
+
+
+
+an element of Mesa Verde pottery decoration design but becomes a petro-
+
+glyph motif in but two positive instances.          The Hopi symbol of virginity
+may be represented in two cases, one at Far View and one at Sun Temple,
+both of which are unfortunately mutilated by weathering.             Other possible
+instances are of even more doubtful significance.
+     Of course it does not necessarily follow that the occurrence of
+these signs on the Mesa Verde and among historic Southwestern stocks
+insures a uniform interpretation in both places.             Such a conclusion
+seems not improbable however in the light of the multitude of other
+cultural similarities which would seem to connect the primitive Mesa
+Verdans culturally with the Hbpi
+     Dr.    J.   Walter Fewkes is of the opinion that    a    series of concentric
+
+circles such as that represented on the rock bed at the head of Fewkes
+Canyon is    a   water sign.    Current report has it that similar figures are
+to be found at water sources elsewhere in this province.             The occurrence
+of concentric circle figures at sites other than water sources would
+seem to argue however that such an interpretation could not be universally
+applied.
+
+
+                                    Conclusions
+                   The Problem of Unity of Cultural Authorship
+
+     Several figures appear to be foreign at least to the general
+
+petroglyph type of types of common occurrence in the province.             These
+consist of the entire group or figures in Picture Cave.            The crude
+workmanship, careless outline and exclusively animate subject matter,
+insofar as the subject matter may be identified, separate these figures
+from the remainder of Mesa Verde petroglyphs.          A comparison of the
+human-like figures in Picture Cave (Fig. 18) with human or anthropo-
+morphous figures at other Mesa Verde sites (Fig. 17d) will serve to
+illustrate the technical differences referred to.            A lack of uniformity
+
+in type may be noticed         in the last group cited above, but this   may be
+
+
+
+
+                                            42
+largely ascribed to differences in technical methods of production.
+Th-US two   figures are similar in style due to the grooved technique, and
+differ from figure 17d which is pecked, and from another figure which
+is scratched.     All four figures resemble each other in adhering to a
+
+clean-cut preciseness of form far superior in point of workmanship to the
+Picture Cave figures.
+     In this connection it is    noteworthy that there are no house ruins
+associated with the cave pictures, and excavation in            a   rather thick
+deposit of debris on the floor of the cave uncovered a considerable
+quantity of charcoal and ash but no pottery of any description.
+     It is therefore indicated by more than one point of evidence that
+
+the Picture Cave figures do not belong to the same or a kindred culture
+responsible for the remaining petroglyphs of the Mesa Verde.
+     There appears no adequate reason to doubt that the vast majority of
+the figures under consideration are to be ascribed to the workmanship of
+the stone house builders.    At least thirteen motifs other than dots and
+
+straight parallel lines are common to both petroglyphs and decorative
+designs on pottery of the Mesa Verde.         These are simply illustrated in
+the accompanying figure.
+
+     The lightning figure (Fig. 21, No.        9)   occurs on the rock protrusions
+from the natural floor of Balcony House and in          a   more striking instance
+on the natural    rock wall back of the north kiva at Square Tower House.
+
+Both instances covered too great a surface to allow tracing when the
+opportunity was afforded.
+     In general   Mesa Verde petroglyphs broadly adhere to a type found
+associated with primitive stone houses and other pueblo ruins throughout
+the Southwest.    Human figures done in   a    few straight angular lines
+similarly disposed to those forming Mesa Verde representations have been
+reported from Utah and Colorado (Mallery 1893:73 and 704).
+     Ceremonial figures like in technique and subject matter to the
+Petroglyph House flute player occur in the Canyon Segy district (Mallery
+1893:511-512).    The inverted T-shape of Petroglyph House is exactly
+
+
+                                     43
+similar to   a    figure occurring at Oakley Springs, Colorado (Mallery
+
+1893:721).       Long handled tridents and polydents like those at Far View
+House, as well as the more common "turkey track" figures, have been
+reported from Oakley Springs and elsewhere.       Representations of mountain
+sheep, lizards, snakes, turkey-like birds and human-like hand and foot
+forms are characteristic Hopi subjects and are reported as occurring at a
+great many Southwestern pictograph sites.
+     In addition to these Hopi      subjects there is the Hopi friendship
+sign, the symbol of virginity and the hump-backed flute player at
+Petroglyph House.
+     These facts, few as they are in number, tend to support the already
+well bolstered theory that the primitive Mesa Verdans were closely
+related, culturally, to the progenitors of the Hopi.
+     A knowledge of Southwestern petroglyphs that would allow an
+adequately just comparison of Mesa Verde figures with those of other
+neighboring groups does not seem to be available.      Any larger compari-
+sons at this stage of accomplished research would hardly prove profitable.
+
+
+             The Use of Stone Etching in Decorating House Stones
+     The preceding conclusions are but poor contributions even to a field
+of knowledge so often neglected as that of pictograph archaeology.          By
+far the most important conclusions that can be summed up here regard the
+
+decorative use of petroglyphs in Mesa Verde stone masonry.
+     The Maya cultures of Central America and those prehistoric cultures
+immediately adjoining them and influenced by them to north and south
+were productive of elaborately complicated designs cut into the building
+stones to produce schemes of wall decoration which often attained a
+worthy pinnacle of artistic standard.      A considerable quantity of
+
+archaeological evidence is at hand to show the development of this art
+from a low artistic level to its highest culmination.
+     On the Mesa Verde one may see the crude beginning of what aspired
+
+to become a similar development of wall decoration.      Not that   I   presume
+
+
+
+                                      44
+to connect Central American and Mesa Verdan cultures at all.         As a
+
+matter of fact there is some evidence to support the conclusion that the
+idea of wall decoration on the Mesa Verde is of quite local origin and
+development.
+       Out of ninety-eight figures found occurring on building stones,
+sixty-six were situated at Far View House, seventeen at Sun Temple,
+twelve at Pipe Shrine House, and one each at Cliff Palace, Balcony
+House and Little Long House.       The point here is that ninety-four out
+of a total of ninety-seven figured building stones occur in Mesa houses
+rather than in cliff houses.       Archaeologists who are acquainted with
+the province generally agree that the large mesa houses anticeded the
+cliff houses.     It therefore follows that the placing of petroglyphs on
+
+house walls was    a   late development.
+
+       Of the twenty-four ornamented figures treated as such in previous
+pages of this paper ten were found occurring at Sun Temple, ten at
+Far View House, two at Pipe Shrine House and one each at Balcony House
+
+and Cliff Palace.      The Sun Temple and Far View House ornamental stones
+are equal in number and together constitute five-sixths of these
+figures, but the Sun Temple figures are far superior in artistic con-
+ception, execution and numerical variety to all other figures on the
+Mesa Verde.     From this one would conclude that the Sun Temple figures
+represent the culminating pinnacle of the art of wall decoration by
+means of stone etching that was attained in this province.         Archaeologi-
+cal   evidence points out Sun Temple to be one of, if not the most recent
+building on the Mesa Verde.       In fact,   if Sun Temple was ever completed
+
+it was apparently little used before being affected by the gradual
+exodus that seems to have depopulated the Mesa Verde of its stone build-
+ing inhabitants.
+
+      Therefore, if so little evidence is of any value whatsoever, it
+here supports three conclusions:       that the placing of petroglyphs on
+house walls, though occurring in several instances on earlier houses,
+had a pronounced development in the later mesa structures; that from
+
+
+
+
+                                      45
+this development there grew the artistic conception of wall decoration;
+that this decoration found its highest development at the very end of the
+last primitive cultural cycle on the Mesa Verde.
+
+       The highly decorated stone at Balcony House fits but poorly into
+such a chain of reasoning as that given above.      It is hardly of
+
+sufficient importance, however, to counterbalance the trend of the
+remaining evidence.    The uniqueness of this stone in Balcony House
+suggests that it might have been a late intrusive addition to the Place.
+Or its presence could be used if accompanied by sufficient corroborative
+
+evidence, to argue the comparatively late building or rebuilding of
+Balcony House.
+       If the Mesa Verdans, growing fearlessly independent as a result of
+
+increased numbers, forsook their mesa homes for      more fertile and
+tillable plains and valleys, they left behind them the abundance of
+easily quarried and dressed stone which they had become accustomed to
+using as the chief material for house constructing and were compelled
+to conform their masonry skill    to a softer, more perishable material
+
+which did not easily adapt itself to incised surface decoration.        Such
+
+a   trend of circumstances would account for the premature death of a
+rising culture of stone masonry and with it the end of an ambitious
+development of the art of incised wall decoration.
+
+
+                       SHAVANO VALLEY PETROGLYPHS
+
+
+                                Situation
+
+      The Shavano is a small V-shaped valley immediately west of Montrose,
+Colorado, and separated from the level site of the town by a narrow
+stretch of low plateau.   This plateau extends south and then west to form
+the precipitous northern border of the valley.      Low barren hills mark
+the southwestern valley wall.    The Shavano Valley extends in   a   direc-
+
+tion transverse to the compass with the apex of the valley to the
+
+
+
+
+                                    46
+northwest where plateau and hills are only separated by                             a   narrow pass.
+Not more than two miles southwest from this pass                        a   short shallow ravine
+cuts due east from the county road into the plateau.                              Only a low rocky
+ridge separates this ravine from fields bordering the county road.                                 At
+the mouth of the ravine, scattered over a long talus slope between the
+road and the perpendicular cliff face, are a number of sandstone
+boulders ranging in size from small to quite large.                              These have partly
+rolled down from the decaying edge of the plateau.                           The surfaces of many
+of these rocks and certain portions of the low cliff face topping the
+talus slope above are covered with a great many petroglyphs.                                This
+
+location will be termed herein the Eastern Petroglyph Site (Fig. 22 and
+23).        Just west of the northwest pass leading out of the valley, some
+large boulders clustered along the hillside constitute the Northwestern
+
+Petroglyph Site.               The Eastern Site is mapped in the accompanying chart.
+Seven major groups of petroglyphs are indicated on the map by the
+Roman numerals            I   to VII   inclusive and five smaller less important
+picture rocks are indicated by the Arabian numerals                          1    to 5 inclusive.
+
+           Group   I    consists of    a       single large rock somewhat monumental in
+aspect due to its perpendicularly erect position.                           The east face of
+this rock is entirely covered with petroglyphs.                         A few modern initials
+and    a    few bullet marks probably of quite recent origin tend to mar the
+primitive tracings, but only to                    a   slight extent.
+
+           Group   II    consists of       a   natural trilython composed of three yery
+large smooth slabs of sandstone.                       Two of these assume erect positions
+with an interval prevailing between smooth, perpendicular, parallel
+
+faces.        The third slab lies horizontally upon the others to tightly close
+in tunnel-like passageway which                     is as   straightly and squarely hewn as
+though of purposeful artificial origin.                        It is twenty-five feet in
+
+length, from three to five feet in breadth and from ten to twelve feet
+in height.             The walls of this tunnel are largely covered with primitive
+petroglyphs practically untouched by European contributions.
+           Group III consists of several more or less perpendicular surfaces
+on the cliff face.              These are closely associated with each other and
+
+
+                                                       47
+     c
+     s-
+     0)
+     +J
+     V)
+     <a
+     UJ
+     >»
+      0)
+     ^*
+     r*"
+     flS
+     >
+     o a>
+     c+J
+      <o r-
+      >(/)
+      «0
+     .c J=
+     00 o.
+               >>
+     4-
+      o CT)
+        O
+      c s-
+      rt3-l->
+               (U
+     aid.
+
+           •
+      CM
+      CM
+
+      C3)
+
+
+
+
+48
+Fig. 23.     Shavano Valley Looking Southeast
+             from 5MN5.
+
+
+
+
+                                  t*
+
+
+
+
+  Fig. 24.     Old Type Petroglyphs From East
+               Group Site III.
+
+
+
+                      49
+largely covered with petroglyphs placed near the cliff base.           European
+tracings are few here and practically harmless.
+      Group IV includes three rocks separated by non-substantial intervals,
+all   having one or more surfaces largely dominated by petroglyphs.          There
+are no European markings here*
+      Group V includes several boulders, one wery large.          There are few
+petroglyphs on all these rocks but the south side of the largest is
+entirely covered with incised figures.
+      Group VI includes three separate rocks situated not far apart.            Two
+of these have each a few tracings on favorable surfaces.           The third,
+by far the smallest of the three, offers one side completely covered
+with figures.
+      Group VII is made up of several neighboring surfaces on the cliff
+face, each the site for a few figures, and a large boulder resting on
+the talus slope just below the cliff sites.          This boulder bears one or
+two petroglyphs.
+
+      Sites   1   to 5 are rocks and cliff surfaces each bearing from one
+
+to several    figures.
+      The Northwestern Site consists of several large closely associated
+rocks each bearing several figures.
+      In   endeavoring to obtain as complete     a   record as possible of these
+most interesting products of primitive culture, careful tracings were
+made of three hundred and eight figures.         Drawings were made of eight
+large, inaccessible subjects.         Photographs were taken at all important
+sites.     Photographed subjects were chalked only when their natural
+coloring was judged to be too dark to record well otherwise.
+      Of the petroglyph sites studied, groups I, III and figures on one
+rock at the northwest site were known and cited by local and other reports
+previous to the obtaining of submitted data.          The remainder of the
+petroglyphs, insofar as      I   know, were discovered during recording operations.
+
+
+
+
+                                        50
+                             Technique of Workmanship
+
+       The technique of workmanship employed was in e\/ery case that of
+pecking.     There are, however, two distinct types of pecking.             One
+results in deep solid figures rather carefully outlined and uniformly
+done throughout.           This type will be designed herein as deep pecking.
+The other type results in shallow spotted figures with outlines and
+
+surfaces considerably broken due to the failure on the part of the
+artists to take proper pains or devote sufficient time to the work's
+execution.     Such a result would accrue if one hastily pounded a figure
+
+onto the rock surface without giving attention to the ultimate permanency
+of his work.         The immediate result would be a very light colored chalky
+design, fairly solid and evenly outlined; but wind and rain would in
+
+a   short time remove the chalk-like dust and leave intermittent scars
+that would but imperfectly suggest the producer's original conception.
+This second kind of workmanship will be referred to herein as shallow
+pecking.
+      No special       pecking tools were found, but not      a   few good sized
+fragments of hard stone resembling flint and to all appearances naturally
+pointed in Eolithic fashion were seen in the immediate vicinity of the
+picture rocks.         Inasmuch as the material from which these flints are
+fashioned is not       a   natural product of the field of investigation,
+
+the presence of such potential          implements in close association with the
+petroglyphs is at least suggestive.            I   found no difficulty in using such
+stones to produce comparatively good figures on sandstone surfaces
+exactly like those used by primitive artists.
+
+
+                                  Classification
+
+      A careful consideration of workmanship, style, motif, detail and
+
+age warrants the division of Shavano petroglyphs into at least two
+classificatory groups, old type and new type.
+      Old type   .    The evidence of age alone would serve to identify the old
+type petroglyphs.          The sandstone of the Shavano Valley has a dark russet
+
+
+
+                                          51
+surface coloring due largely to iron oxidation.            A new break or cut
+shows as a yellowish white tint in radical contrast to the long exposed
+surfaces.   Some observed incised initials associated with dates which
+indicate that they are about fifteen years old are           a       somewhat doubtful
+degree darker in color than is       a   fresh break in the stone.        .   The old
+type petroglyphs are identical       in coloring with the old unbroken surface
+
+save where they have been recently scratched or chalked for photographic
+purposes.   So true is this that many of these figures are noticeable
+only after close examination of the rock surfaces.
+     The workmanship of the old type petroglyphs is uniformly that of
+deep pecking.       The style is rather heavy, crude but clean lined and
+comparatively simple.
+     The motif detail is uniformly representative, almost dogmatic.                     Motifs
+treat of such subjects as simple straight lined figure, deerlike and sheep-
+like animals, anthropomorphic figures, hand and foot forms, animal tracks
+
+and long lines connecting various figures.          The old type motifs are true
+to type as such and are not to be confused with the other petroglyphs
+
+occurring at the same stations.          Two hundred and twelve old type figures
+were examined.
+     New type   .   The remainder of the petroglyphs under consideration are
+here treated jointly as     a   group due to their lack of conformity with the
+old type figures and to the difficulty involved in subdividing them into
+any sort of homogenous groups of logical classification.                  In one respect
+
+they are alike; their lighter coloring shows them to be of later origin
+then the old type pictures, but a diversity in coloring bears evidence of
+radical differences in age.       All    are more recent than old type figures
+but some are much more so than others.          In a few instances only a shade
+
+of difference in coloring was apparent, but other traits determined the
+classification satisfactorily at least in the mind of the writer.                   Such
+instances are too few to have much weight one way or the other in any of
+the following discussions.       New type petroglyphs is         a   reasonably true
+classificatory term to apply to this group as         a   whole.
+
+
+
+
+                                         52
+
+
+
+
+                                                                                             I
+       However, differences in style, workmanship and motif detail suggest
+subdivisions within the new type group which, are insufficiently
+differentiated in the observer's mind to warrant recording.                     Whether
+the product of a single or several cultures, a dogmatic uniformity in
+technique certainly did not motivate the producers as was apparently true
+of the old type group.     Any recurring tendencies suggestive of further
+classification can be better considered after       a    more detailed exposition
+of traits.
+      The more numerously repeated new type motifs include simple curvi-
+linear figures, complex curvilinear figures, characters, and portrayals
+of deer, bear, mounted horses and a few unidentified animals.                        One
+hundred and four new type of figures were examined.
+      An examination of the distribution of old and new type petroglyphs
+is   not productive of any very enlightening evidence.                Eastern sites        I   and
+II   and the Northwest group are noteworthy in that only old type figures
+
+occur there.    Forty-eight figures are found at        I,   thirty-two at II and
+twenty at the Northwest group.       Only new type figures, numbering fifty-
+three, occur at VI.     The same is true of rocks       1,   2,   3    and 4 with one
+
+figure each.    Site III offers seventy-seven old type and twenty-five new
+type figures, well    intermixed.    At site IV there are two old type and
+seven new type figures.     Site V shows old and new type figures more or
+less separately grouped but with groups overlapping.                  The old figures
+number sixteen and the new, eleven.        At site VII are seven old type and
+seven new type figures well    intermixed with each other.               Rock    5   offers
+three old and one new figure.       Thus in most cases the same rocks bear
+both old and new type figures.       In a few instances the new are super-
+
+imposed upon the old.
+
+
+
+
+                                      53
+                                     TABLE    3
+
+
+                         Shavano Petroglyph Motifs
+
+
+                                                  Old Type   New Type
+
+ I.    Conventional designs
+
+       1.   Straight-lined figures
+
+            a.   Parallel lines                       1
+
+                 Simple crosses                       1         2
+            b.
+            c.   Complex crosses                      3
+                 Tridents                            9          1
+            d.
+                 Bracketed lines                     12         2
+            e.
+            f.   Stars                                5         2
+
+                 Large complex figures                          1
+            g.
+
+
+       2.   Curvilinear figures
+
+            a.   Waving lines                         1
+                 Circles                              2         2
+            b.
+            c.   Spirals                              1
+
+            d.   Large complex figures                          4
+
+
+       3.   Straight line-curvilinear
+              complexes                               1         3
+
+
+       Characters                                    14        63
+ II.
+
+                                                     19         8
+III.   Unclassified figures
+
+ IV.   Hand forms, foot forms and tracks
+
+       1.   Hands                                    13
+       2.   Anthropomorphic feet                      7
+                                                     20         1
+       3.   Apparent animal feet
+       4.   Doubtful foot forms                      10
+       5.   Stemmed hand-like forms                   4
+       6.   "Hoof tracks"                            50
+
+
+  V.   Animate figures
+
+       1.   Animals
+
+            a.   unclassified                        11
+                                                                ^
+                                                                4
+            b.   Headless                             2
+
+
+
+
+                                         54
+                                  TABLE   3
+
+
+                        Shavano Petroglyph Motifs
+                                (continued)
+
+                                                    Old Type   New Type
+
+V.   1.   (continued)
+
+          c.   deer                                   1          1
+          d.   mountain sheep                         7
+          e.   Deerlike and
+                 sheeplike animals                    7          2
+          f.   Dog-like animals                       2
+          g.   Bear                                              3
+          h.   Rabbit-like animals                    1
+
+          i.   Horses                                            2
+
+
+     2.   Anthropomorphic figures                     6          1
+
+
+     3.   Man and animal groups
+
+          a.   Primitive
+          b.   Man and horse
+
+
+
+
+                                     55
+                            TABLE 4
+
+
+                    Group Differences in Motif
+
+
+
+
+Table 3 supplies data which may be arranged as follows to show motif
+differences between the old and new type petroglyphs.
+
+        Old type motifs:
+
+            Hand and foot forms and "hoof tracks"     104
+            Animals                                    31
+            Conventional straight-lined figures        31
+            Character-like figures                     14
+            Anthropomorphic figures                        6
+            Conventional curvilinear figures               4
+            Primitive groupings of man and animals         2
+            Conventional straight-lined and
+              curvilinear complexes                   .    1
+
+
+        New type motifs:
+
+            Character-like figures                        63
+            Animals                                       14
+            Conventional straight-lined figures            6
+            Conventional curvilinear figures               6
+            Grouping of man and horse                      4
+            Conventional straight-lined and
+              curvilinear complexes                        2
+            Foot forms                                     1
+            Anthropomorphic figures                        1
+
+
+
+
+                                56
+                                               .
+
+
+
+
+     The only Important numerical similarities in motif representation
+between the two age types are the comparatively equal importance of
+animal and conventional straight-lined figures.              It will       be shown
+
+elsewhere in this paper that these apparent similarities are purely
+numerical since the motif detail involved differs radically between new
+and old types.     Animal and straight-lined figures are not uncommonly of
+large representation at pictograph sites the world over.
+     In presenting the motifs      in detail       it seems advisable to adhere to
+
+the classificatory grouping of old and new types defined above.
+
+
+                            Old Type Designs
+
+     Forms which have outline of a regular form and conventional appearance
+are described herein as conventional designs regardless of any new indeter-
+
+minate meaning or importance which may have been originally intended.
+They are of frequent occurrence among the old type figures.
+     Straight-lined figures   .    Only one example of        a   series of parallel
+
+lines was found.     It consists of eleven short parallel            perpendiculars
+spaced at short, rather equal      intervals.
+     The simple cross is also represented by           a   single figure of rather
+rough execution.    Three more complex cross-lined figures were found and
+one is shown in Figure 24a.       The stem of one not illustrated is con-
+tinued by dotted lines, to    a   total    length of two feet.         The cross elements
+of this figure show touches of a more recent rejuvination.
+     There are nine instances of tridents.            Three of these have no marked
+posterior toe or stem (Fig. 24b).          Figure 24c and one other are so
+appendaged.   Another shows   a   yery long serpent-like stem attached to the
+base of the main figure.
+     Single straight lines, generally long, enclosed in                a   sort of bracket
+in the more simple instances and always associated with                bracket-like cross
+pieces, are termed herein bracketed lines.            Twelve of these figures occur
+situated at various sites (Fig. 24d)
+
+
+
+
+                                          57
+                       .
+
+
+
+
+     Figures consisting of five or more points radiating from                              a    center are
+here arbitrarily termed stars.                       Five stars representing two closely
+
+associated sites were found.                       The number of points varies from five to
+nine (Fig. 24d).
+     Curvilinear figures               .        Few curvilinear figures occur among old type
+petroglyphs.     One is       a    waving snake-like line, while two are partially
+complete circle figures and one of them is dually concentric.                                  Onespiral
+associated with another figure and                      a   small   circle enclosing several
+oppositely directed straight lines (Fig. 25a) complete the list.
+     One large complex of straight and curved lines was also noted.
+     Characters   .        Small       detached figures of           a   marked independence and
+compactness and not conformable to other classification have been termed
+characters in this paper.                       Some such term was necessary to cope with the
+yery large number of such figures under examination, especially among the
+new type petroglyphs.              As many figures as possible which might otherwise
+be classified as characters have been accounted for under other classifica-
+tory heads.
+     Fourteen old type figures are here grouped as characters.                                 They might
+be more fully described as indeterminate character-like figures.                                 Their
+general resemblance to             a       large and wery definite group of new type
+
+characters excuses their presumption to demand attention as                            a   group
+(Figs.    25b and c)
+     Seven other figures (Fig. 25d) might be included in the old type
+character group.           Otherwise they remain without specific classification.
+     Unclassified figures                  .     Eleven tracings, apparently inanimate in
+subject matter, remain unclassified (Figs. 26 and 27).                             One could be
+interpreted possibly as anthropomorphic while another also occurs on the
+Mesa Verde, but the simplicity and local uniqueness of the motif deprives
+this coincidence of any great importance.                           Two others from the Northwest
+group are interesting in that they probably portray the same motif.
+     Animate portrayals            .           The large group of old type animates are of
+special    interest due to their numerical                     importance.
+
+
+
+                                                      58
+                                                        h
+                                          /   ->
+
+
+
+
+                            >.   '   >.
+
+
+
+
+                                          "/
+                                     •    y
+
+
+
+
+Fig.   25.   a., b. & d.    Old Type Petroglyphs From East Group Site III,
+             c.   Old Type Petroglyphs From East Group Site II.
+
+
+
+
+Fig.   26.   Old Type Petroglyph From East Group Site       I.
+
+
+
+
+                                                   59
+                  Fig. 27.   Picture Rock in Shavano Valley, 5MN27,
+
+
+
+
+Fig.   28.   a. & e. Old Type Petroglyphs From East Group Site I,     b.   Same
+             From Site V, c. & d. Same from Site II.
+
+                                        60
+        .   .
+
+
+
+
+        Certain poorly executed or partly defaced animal representations
+defy even            a    reasonable guess as to their more specific identity (Fig.
+28a).           One shows markings under the legs which may denote tracks (see
+page            ).       Some figures seem to be headless.
+        Ten animal pictures share the common attributes of large ear-like
+appendages and short more or less upturned tails (Fig. 28b).                       They
+might well represent doe deer or fawns.                    Fig. 28c would seem to picture
+an animal            pierced by    a   javalin or arrow.   One has an exceptionally long
+tail which may or may not serve as a marker removing it from the deer
+
+group.
+        Ten other figures have pointed appendages protruding from the head
+in such a manner as to resemble horns more than ears and sheep or goat
+
+horns more than deer antlers (Fig. 28d)                .   On three of these forms the
+
+horns are abruptly turned backwards in a manner characteristic of a
+certain style of picturing the long horned mountain sheep observed at
+various pictograph-sites in the states of Utah, Colorado, Arizona and
+New Mexico and generally attributed to Shoshonean endeavor.                       The
+more gently curved horns represented in figure 29d are sufficiently
+true to natural type to most probably identify the animals as mountain
+sheep.          The shorter and less characteristic horns depicted in figure
+28d do not conform so readily to sheep types but rather favor antelope
+
+types
+        Five animals are pictured as possessing both ears and horns or
+antlers (Fig. 29b).               These may reasonably be ascribed to the deer family.
+Figure 29b has an addition to one foot which may be either the product
+of superior position or a representation of the track of the associated
+animal
+
+        Figure 28e shows traits resembling those of               a   dog or coyote and one
+from the Eastern group of some long-tailed animal such as                    a   rat or weasel
+        Six anthropomorphic figures appear outside of mixed animate groups.
+Two are Mery crude and hardly recognizable.                   The type of workmanship also
+shows a decided departure from the deep pecked technique common to other
+old-type figures.               Figure 30 is also roughly done but has the interesting
+
+
+                                                  61
+Fig. 29.   a. Old Type Petroglyphs From Northwest Group,   b.   Same
+           From East Group Site I.
+
+
+
+
+                x\v
+
+
+
+
+           Fig. 30.   Old Type Petroglyph From Northwest Group.
+
+
+
+                                   62
+feature of a spiral originating in or from a source passing through the
+figures' middle.      A similar use of spiral-like characters in the picture
+
+writing of some of the plains Indians to depict pain and its source is
+of comparative interest.        Two figures from Sites III and VII show greatly
+simplified cross-like forms with the arms terminating in large widespread
+hands.   This type of anthropomorphic representation has been classified
+elsewhere in the Southwest as Shoshonean and occurs at sites throughout
+the Southwest penetrating as far west as Owens Valley and Najowe Valley
+
+(Mallery 1893:58-59 and 65-66) in California.
+     A figure from Site V is by far the most interesting of the anthro-
+pomorphic group.      The body is represented fully rather than by a single
+straight line.      The lower limbs are given as much attention as are the
+upper limbs.      One leg terminates in five toes; the other in three, two
+long and one comparatively short.        The latter resembles a cloven hoof
+more than   a   human foot.    The straight arms extend laterally to culminate
+in large widespread hands as in the figures from Sites III and VII.           The
+head possesses lateral ring-like projections.        These might represent ears,
+forms of hair-dress or curved horns such as possessed by the rams of curly
+horned mountain sheep.        The figure has a posterior protrusion which may
+represent either a short tail or a penis.        Altogether this figure suggests
+an anthropomorphic treatment of the mountain sheep more than it does a
+human form.     The human traits consist of hands and toes on one foot.       The
+position of the body is not necessarily erect but rather spread out.          The
+sheep characteristics include the short tail, the hoof on one foot and
+the curled horns, if these interpretations will stand.
+     Two interesting man-animal groups are shown in figures from Site III
+and the Northwestern group.        In figures 31, 32 and 33 a long line origin-
+ating in the hand of a human figure proceeds downwards to pass through
+the body of a mountain sheep and culminates in a large javelin point.
+The long line may represent the handle of a javelin or the direction taken
+by the javelin in its course to transfix the animal.        Both the figure of
+
+
+
+
+                                       63
+Fig. 31.   Old Type Petroglyph From East
+           Group Site III.
+
+
+
+                 64
+                                                                    v.^
+
+
+
+
+Fig.   32.   T. C. McKee Photograph of Fig. 31 ca. 1922. Courtesy
+             Smithsonian Institution National Anthropological
+             Archives.
+
+                               65
+Fig.   33.   T. C. McKee Photograph of Shavano Valley Petroglyphs
+             ca. 1922.  Courtesy Smithsonian Institution National
+             Anthropological Archives.
+
+                                 66
+the man and that of the sheep are naturalistic and exceptionally good.
+The figure from the Northwestern group has four animals as              a       group
+on the run.     Three of these are probably mountain sheep.            The last
+resembles more      a   doe deer.     Two human-like figures appear with the
+animals, both with outstretched arms.               One of these stands to one side
+
+and near the rear of the animal group; the other stands in front block-
+ing their passage.         The presumption that we have here the pictured
+chronical of    a   sheep or deer drive seems logical.          The relatively deep
+indenture at the base of the body in the larger human form may denote
+the female sex.         Two figures of the type referred to elsewhere in this
+paper as hoof prints are present at the left of the group.
+      Hand, foot and track forms         .     A comparatively large number of hand
+impressions and tracks are represented in the old type petroglyphs.
+      Hand representations are not especially good and seem to blend in
+
+type into the foot impression forms so that there are many figures which
+cannot certainly be classified either as one or the other (Fig. 34a).
+All   but three of twelve figures portray a normal number of fingers.                   Two
+petroglyphs picture hands with six digits.
+      Three petroglyphs from Sites III and V show forms possessing both
+hand and foot characteristics.               The long digits and thumb-like position
+of an outside digit suggests hands but the long bodies of the figures
+suggest feet.       Six others (Fig. 34b) probably represent human foot-
+prints although there may be reasonable doubt about one.               Of the nine
+
+figures, seven represent normal feet in regard to the number of toes.
+The careless workmanship in two cases leaves some doubt as to the number
+of toes with the exception of one four-toed form.               The waving line
+attached to the heel of        a    glyph from Site III may represent       a    trail or
+course of direction.         A somewhat fanciful       suggestion is that the waving
+disposition of this line may imply that the individual represented by
+the foot impression was in some way, as ceremonially or socially,
+associated with the snake.
+      A glyph from Site V would seem to represent some animal                   foot since
+
+the spread of the abnormally long digits is not suggestive of the human
+hand or foot.
+
+                                              67
+                                               (
+
+
+
+
+Fig. 34.     a., c. & d.  Old Type Petroglyphs From East Group Site III,
+             b. Same From Site II.
+
+
+
+
+                            V,    /
+
+
+
+
+                          r
+
+
+
+Fig.   35.   a., b., c.  Old Type Petroglyphs From East Group Site III,
+             d. Natural Surface In Spring House, Mesa Verde, for Comparison.
+
+
+
+
+                                      68
+        Three foot-like representations are alike in that they display
+four long radiating digits associated with a somewhat narrowly elongated
+heel.     Whether or not they represent foot impressions they are to be
+more readily classified here than elsewhere (Fig. 34c).
+        The majority of foot-like forms are supplied with certain peculiar
+features which group them as follows.
+        Three figures are marked by unpecked openings which nearly cut
+transversely across the foot at    a   point immediately posterior to the
+toes.     These forms possess five, six and seven toes respectively (Fig.
+34d).     In three other instances similar bars cut entirely across the
+
+foot.     One of these figures has eight toes.   A fourth figure has a
+relatively deeper trench forming a band across the foot in a position
+similar to the unpecked bars of the three forms just described (Fig. 35a)
+        A group of nine foot-like forms are marked with unpecked spaces con-
+stituting transverse bars in the usual position, with one exception,
+but broken at either end by heavy lines completing the outline of the
+
+foot.     The exception referred to has the bar placed across the heel
+rather than across the ball of the foot.      These forms possess from four
+to seven toes.     One has a hoof track figure superimposed upon it as
+indicated by the dotted lines.     Two square short-toed figures are each
+marked by two transverse ridges rather than by one.      Both of these
+forms show claw-like indicators respectively anterior to the toes (Fig.
+
+35b).
+        Figure 35c has a single transverse ridge but is in general type
+quite unlike the preceding foot forms.      However, it resembles figure
+35b more than it does the others.
+        Two figures from Site III very probably represent the impressions
+of cat feet.     This interpretation is supported by the characteristic
+foot pads and distribution of round toe marks.
+        The characteristics of glyphs represented in figures 34c and d
+and 35a, b and c, inclusive, would seem to be more symptomatic of
+animal feet than of human feet and the impression prevails that the
+
+
+
+                                       69
+                         ;\:;c'^        «-         •*.   #
+
+
+
+
+                                            ^^-
+                                                             vr-
+                                   .,   X
+
+
+                         l^^^
+                                    3k-
+
+
+
+
+                                                              i
+
+
+
+
+Fig.   36.   Footprint Petroglyphs, 5MN5, Shavano Valley.
+
+
+
+
+                               70
+various arrangement of transverse bars and other peculiarities noted
+above are markers for different kinds of animals.          A new type drawing
+of a bear from Craig is supplied with feet showing transverse bars and
+unattached toes similar to some of the old-type foot forms.
+       There remain for consideration four figures which may be termed
+stemmed hand or foot forms.     These consist of vegetable like stems or
+stalks culminating in, or connecting, several hand-like or foot-like
+forms (Fig. 37).     Three figures (Fig. 37) might well be vegetable con-
+ceptions, but one certainly pictures a barred foot form like those dis-
+cussed previously.    These figures resemble designs reported from the
+Bald Frier Rock, Maryland, and from the Independence Stone, Ohio
+(Mallery 1893:84 and 102).    The comparison may seem rather far-fetched
+but other undisputable parallels between peculiar motifs from Eastern
+provinces, some from these same stones, and from the Shavano Valley
+seem to justify the comparison.
+       One of the most numerically important motifs in the Shavano Valley
+consists normally of two short parallel lines or oblong spots associated
+with a pair of dots or round spots, the latter respectively situated near
+complementary ends of the former.        Such is a description of the general
+type form.    Variations are not very common but since they are each
+repeated in several instances they deserve brief consideration.
+      There occur several instances in which the two parallel oblongs
+are fused into one with usually a medial notch apparent at the dotted
+end of the figure (Fig. 38a).     Several other figures show complementary
+ends of the parallel oblongs joined to constitute a sort of oval.           In
+
+some instances the lines are joined at one end only, in every case those
+ends away from the dots, to constitute a horse shoe shape (Fig. 38b).
+The usual parallel oblong form may be divided into two types:         one
+consists of a rough oval form divided lengthwise into equal halves by
+a   comparatively narrow medial line (Fig. 38c); in the other type the
+parallel lines are narrow and straight (Fig. 38d)      .   A few figures are
+
+not associated with dots or spots (Fig. 38e).
+
+
+                                    71
+Fig.   37.   Old Type Petroglyphs From East Group Site   V,
+
+
+
+
+                              72
+        These figures are placed in almost every instance with the largest
+dimensions up and down.        A few instances show a diagonal direction, and
+
+in a single instance the figure observes a transverse direction.          The
+dots are about as frequently placed above as below the parallel lines.
+Grouping is of little apparent importance.        The figures usually occur
+singly or in pairs, never in logically arranged groups suggestive of
+tracks in sequence.
+        Fifty such figures occur in the province.      Their possible signifi-
+cance is therefore of special interest and importance.         A survey of
+petroglyph motifs elsewhere in America is productive of several instances of
+parallel shapes.     A Southwest figure found associated with pueblo culture
+
+consists of two parallel oblongs respectively blunt and pointed at
+corresponding ends.        This figure has been described as representing a deer
+track (Mallery 1893:748).        A motif exactly parallel   to one of the Shavano
+
+type occurs on the Mesa Verde.        But the most interesting parallelism is to
+be found in Ohio and Pennsylvania.        The figures on Independence Stone, Ohio
+(Mallery 1893:102), are identical to those of one Shavano Valley type.           Forms
+on the Barnesville Track Rock, Ohio (Mallery 1893:103) are like the few
+
+instances in the Shavano Valley in which dots are omitted.          Bisected ovals with
+the dots omitted occur on Little Indian Rock, Pennsylvania (Mallery 1893:
+
+107).   At Millsboro, Pennsylvania, there are some forms again identical to
+one Shavano type (Mallery 1893:110-111).        The figures from Ohio and
+Pennsylvania have been interpreted to represent pairs of moccasin tracks,
+the associated dots remaining unexplained.        Such an interpretation is not
+at all satisfactory.
+        In   Colorado bits of evidence tend toward assisting in the forming of
+an interpretive theory.       An earlier mention of a glyph shows a deer-like
+animal with a typical double-barred and dotted character associated with
+one of its feet.      In   almost every instance the shapes in question occur
+closely associated with representations of deer-like animals.         At the
+Craig petroglyph site there is an old type animal figure with four double-
+barred and dotted characters each immediately below one of the creature's
+legs.   These certainly suggest either foot or track representations.
+
+
+                                         73
+These scraps of information tend to support the admittedly first-sight
+conception of the writer that the characters in question literally
+represent either the tracks or the hoofs of one or more kinds of wild
+indigenous ungulates.         Symbolically they may possess a quite different
+significance and importance involving such matters as social or
+religious organization among the producers.            The variance in type could
+imply a differentiation between the tracks of various kinds of ungulates
+or could be accounted for by arbitrary conventionalization serving to
+designate differences in symbolical import.
+     C onnecting lines    .       There remains for consideration an appreciable
+number of angular and variously curved lines extending apparently at
+random over many of the larger rock surfaces devoted to petroglyphs,
+and usually connecting all manner of figures in a most confusing
+manner.   Their importance or import, if any, is not readily apparent.
+Their occurrence, however, is of Shoshonean frequency.
+
+
+                                   New Type Designs
+
+     As has been suggested elsewhere, the new type petroglyphs in the
+
+Shavano Valley do not harmonize in a way to suggest that they are the
+independent product of        a    single or of closely allied cultures.   From
+the standpoint of apparent age, some are quite fresh while others are
+
+comparatively old although pronouncedly more recent than any of the
+old-type figures.       The figures of horses and horsemen were sufficiently
+new in appearance to permit photographing without the use of chalk.               This
+
+was also true to a lesser degree of the character figures of Site VI.
+On the other hand the bear representations and large line complexes of
+Site III were of    a   necessity lightly chalked in order to show clearly in
+photograph.
+     The three groups of figures indicated above differ in other respects
+than in apparent age.         The horse figures are closely grouped about
+Site VII, the characters about Site VI, and the large cliff figures
+confined within a small compact area of the cliff face.            The horse
+figures show a rather careless technique of workmanship but are rather
+
+
+                                            74
+realistic in detail.        The characters stand out as such in sharp
+contrast to the other petroglyphs.                The cliff figures, though having
+less in conmon from the point of motif,                    are similar in regard to
+technique of workmanship and general style.                   The remaining petro-
+glyphs classed as new type do not readily fall into one of these three
+groups or sympathize with each other sufficiently to constitute a
+definite fourth or other groups.             On the whole it seems best to treat
+
+the New Type figures as a single group, bearing in mind the while that
+this is but an arbitrary classification serving to convenience
+presentation.
+       Straight-lined figures       .    Straight-lined motifs of a strictly con-
+ventional appearance are rare among the new type figures.                    They include
+two crosses, one trident, two star-like shapes and one large complex
+
+figure.    The last named design is interesting due to its close resemblance
+to the blocked terminals at Craig, Colorado.
+
+       Curvilinear figures    .     Conventional curvilinear motifs fare even
+more poorly.    They are represented by            a   circle and a pair of concentric
+circles (Fig. 39a).
+       Straight line-curvilinear complexes             .    There are three instances
+of straight line-curvilinear complexes, conventional                   in type.     They are
+a   cross enclosed in a circle (Fig. 39b) and two more complicated figures
+involving the circle or segments thereof and straight lines.
+       Characters   .   Sixty-four figures are classified as characters.                 This
+has seemed a desirable grouping and naming for several                   reasons.     They
+seem in all respects to constitute an independent group.                    The technique
+of workmanship involved is in every case the same.                   From all appearances
+they are of a same age.           They are geographically grouped, dominating
+Site VI to the exclusion of almost all other motifs and occurring only
+
+at points near Site VI.           Their individual placing is that of separate
+units closely grouped to give a superficial                  impression of writing.     They
+are invariably simple forms             often suggestive of European letters.           Two
+
+characters are from Site V, eleven from the cliff face above Site VI,
+
+
+
+
+                                             75
+                                                 il^
+                       # m              yo
+
+
+                     €9
+Fig. 38.     a.   & d.  Old Type Petroglyphs From East Group Site I,
+             b.   Same Site II, c. Same Site IV, e. Same Site III.
+
+
+
+
+Fig.   39.   New Type Petroglyphs From East Group Site V.
+
+                                       76
+and the remainder occur on rocks at Site VI.
+        It would prove most interesting to be able to determine the purposes
+
+intentionally served by these characters.       They do not strike one as
+being purely ornamental.     That they are not used as phonetic symbols is
+practically proven by the lack of repetition of given shapes.            Out of
+sixty-four figures only eleven appear more than once to the uninitiated
+eye, and some of these repetitions are doubtfully allowed as such.            (See
+Fig.    40)
+        Thus, excepting simple diagonally disposed crosses, no character is
+repeated more than three times and thirty-five characters occur once each.
+        The startling number of characters (Fig. 40) which are shaped
+identically like European letters, including A, H, I, R, T and V,
+especially the A shapes, offers    a   most intriguing enigma.    It would be
+
+extraordinary if so many English letters were accidentally duplicated in
+a set of sixty-four    primitive characters.    A theory which has no sub-
+stantial foundation of fact to rest upon but which could explain this
+phenomena interprets the characters to be, in part at least, copied from
+horse and cattle brands.     The Ute Indians, who roamed through the
+Shavano Valley in historic times and are reported by old settlers near
+Montrose to have camped at times among the petroglyph rocks, followed the
+traditions of the plains in regard to horse and cattle thieving.            It is
+
+possible that the characters under discussion constitute records of
+possession or meritorious acquisition of branded stock, the brands offer-
+ing a ready means whereby the property could be individually recorded
+for checking purposes or emblazoned upon a monument to successful exploita-
+tion.     It was determined at any rate through consultation with Colorado
+
+cattle men that all of these characters might be branding motifs and
+that a good many of them are frequently used as such today.
+        A search for similar motifs of aboriginal origin has not been very
+
+profitable.     Crosses constitute a type unit of design common to human
+artistic effort rather than to any single culture group.         Other
+
+
+
+
+                                       77
+                        X     X
+                   3.
+
+
+
+                        T
+                        A     "V
+Fig. 40.     Motifs of Apparent Historic Rock Carvings
+
+
+
+
+                                     ^5- .tT
+
+
+
+
+Fig.   41.   a.  New Type Petroglyphs From East Group Site VI,
+             b. & c. Same Site IV.
+
+
+
+
+                               78
+similarly simple figures could not be expected to occur uniquely in the
+Shavano Valley.
+     Character-like figures very similar to some of the Shavano Valley
+examples are to be found elsewhere among the so-called Shoshonean petro-
+glyphs of the Southwest (Mallery 1893:52,         77   and 96), but a group
+exclusively limited to unit characters of this type has not to my know-
+ledge been reported.
+     The A shapes might be construed to represent the travois as
+sometimes represented in Dakota graphic art, but the Shavano A has embellish-
+ments which insistently suggest the English letter.
+     Figure   41a is like the Dakota sign for the buffalo head as depicted
+in Batiste Good's winter count (Mallery,         1893:293-299).
+     Unclassified    .   A few unclassified figures include a tree- like form
+and two five-pointed polydents facing outwards from opposite ends of a
+
+short straight connecting stem.        The latter figure is somewhat suggestive
+of the joined hand forms pictured by the Hopi           (Mallery 1893:712).     The
+same motif has been reported as occurring near the San Marcos Pass,
+California, among pictographs of Shoshonean type (Mallery 1893:62).
+     Footforms   .   A single foot impression form is representative of the
+track of some animal such as the cat, judging from the disposition of
+separated foot pads.
+     Animate Portrayals     .   Of the animal forms     five are quite free from
+
+any markers whereby they might be identified.            One is so crudely executed
+as to be hardly recognizable as an animal        subject.     Its one point of
+
+interest is its outlined form.        Several   (Fig. 41b) seem to represent
+headless animals with deer-like attributes.            One of these mutilated
+figures (Fig. 41c) has three projections extending upward from the animal's
+rump, not unlike lances with attached pennants.           The headless forms
+occur grouped at Site IV.       An obvious large antlered deer is located at
+Site VII.
+     Three animal figures occurring at Site III are probably bear.              A
+
+single figure from Site III has rear legs that are very different in
+
+
+
+
+                                        79
+type from those of a bear but the other traits represented are more
+symptomatic of the bear than of any other known animal indigeous to the
+near vicinity.     The general roughness of execution will in any case
+hardly warrant a too critical scrutiny of these pictures.            Two glyphs
+from Site III picture large animals climbing trees, a situation which
+tends to identify them as bear.     The last of these figures (Fig. 42)
+is associated with a trail    of spots, probably representing the animal's
+tracks.   The tree climbing bear constitutes     a    figure of important
+symbolical significance in the Ute Bear Dance ceremony.          This fact, coupled
+with the historic camping of Ute parties in the Shavano Valley, would argue
+to identify the climbing bear figures as Ute products.
+     Two riderless horses are pictured.       They are crudely done but show
+the unproportionately long bodies and necks characteristic of equine
+
+representations among pictographs of the plains Indians in general and
+certainly of the late Utes.
+     A single anthropomorphic figure consists of a cross, forming arms
+and trunk, surmounted by a large oval head.          The arms terminate in hand-
+like splotches.    No legs are represented.    The figure is typical of the
+Shoshonean type.
+     There are four figures picturing mounted horses.          The mounted forms
+are in three instances cross-shaped.     In figures 44, 45 and 46 the cross
+
+is supplied with legs dangling below the horse's belly.          In a glyph from
+
+Site VII a straight line extending horizontally below the animal's feet
+suggests a path or course of travel.     These figures are quite similar to
+those at Craig, Colorado.     One horse and rider from Rock      3   is more complex.
+
+It pictures a horse-like animal with ten legs mounted by a figure which
+
+is dominated by a cross within a circle.      Possibly the many legs indicate
+a troop of horses rather than a single one.      All these mounted figures
+
+are certainly of late Ute type.
+
+
+
+
+                                    80
+     9
+     9   01
+
+
+         CO
+         a.
+         3
+         O
+         s-
+
+
+
+
+         Ul
+
+         o
+
+         a.
+         >>
+         C7)
+         O
+         &.
+
+         (U
+         a.
+         (U
+         Q.
+         .>»
+
+         S
+         V
+
+         CM
+
+
+         O)
+
+
+
+
+81
+Fig. 43.     Photograph of Figure 42, 5MN5, Shavano Valley.
+
+
+
+
+Fig.   44.   New Type Petroglyph From East Group Site   V
+
+
+
+
+                               82
+Fig.   45.   T. C. McKee Photograph of Figure 44, ca. 1922.  Courtesy
+             Smithsonian Institution National Anthropological Archives
+
+                                     83
+Fig.   46.   T. C. McKee Photograph of Historic Ute Petroglyph in Shavano
+             Valley.   Courtesy Smithsonian Institution National Anthropological
+             Archives.
+                                      84
+                               Conclusions
+
+     The question aroused by the examination of a group of pictographs
+as to sources of and motives inspiring their production is primarily
+
+insistent with casual observer and student alike.         The available evidence
+does not warrant the definite answering of either question when applied
+
+to the Shavano petroglyphs, but a few data may at least be marshalled to
+attack the problem.
+     The Shavano Valley is well inside the boundaries of the historic
+Ute country.     There are no valid records to tell how long the Utes have
+inhabited this territory or who, if any, preceded them.         Their sojourn
+here would appear to have been long.         In the absence of any   conflicting
+data, the Shavano petroglyphs are therefore to be classified as Ute
+products.   Nothing inherent in the attributes of the figures themselves
+is positively    contradictory to such an assumption.     The occurrence of
+two or more peculiarly different general types of petroglyphs at one
+site may be due to individual peculiarity on the part of the workmanship
+of different artisans, to peculiar changes in the ideas and workmanship
+of the same local group of people from one generation to another
+influenced by an infusion of new ideas from surrounding groups, or to
+migratory habits of    a   people within its own boundaries resulting in a
+given area being inhabited or temporarily possessed by first one nomadic
+group and then another.
+     In regard to the last possibility, there is an old trail         passing down
+from the plateau into the eastern end of the petroglyph ravine of the
+Shavano Valley, extending along the talus slope through the group of
+petroglyph rocks and climbing again to the plateau summit at Site VII.
+This trail, indicated by the dotted line on Fig. 22 is very old according
+to reliable informants and was used by wandering bands of Utes well
+
+within the memory of old inhabitants.        The trail, especially at its
+western end, is readily discernible today although it is not in present
+use by anyone.    The occurrence of the petroglyphs on either side of
+
+
+
+
+                                      85
+this trail suggests that many at least of the figures may be the
+product of passing visitors to the locality rather than that of
+sedentary inhabitants.   The historic nomadic habits of the Utes favor
+such an interpretation of the facts.
+     But the old type figures at least would seem to be too uniform in
+type to result from the handiwork of various visiting groups of nomads,
+unless indeed they represented a surprisingly uniform and conventionally
+limited culture common to all, or unless the same group continuously
+returned to the place.   Before the advent of the horse the Utes
+undoubtedly found it much less convenient or desirable to make long
+journeys than was true afterward.     Consequently their culture was more
+isolated and must have been to a relative degree more uniform and con-
+vention bound.   With the horse came a closer contact with neighboring
+peoples and a relatively greater infusion of traits from neighboring
+cultures.   The result to the Utes would be a much less uniform culture
+carrying many strongly surviving old type peculiarities partly trans-
+formed by and well intermixed with new ideas incorporated from some of
+the surrounding Piute, Gosiute, Navaho, Pueblo, Apache, Cheyenne, Arapaho,
+Shoshoni and other cultures.   The influence of the plains cultures upon
+that of the Utes after the introduction of the horse among the latter
+people is a well established fact.        This influence is easily discernible
+in the late Ute petroglyphs.
+
+     It is probable therefore that the old type Shavano petroglyphs are
+
+the somewhat uniform product of a foot-traveling more isolated culture
+while the new type petroglyphs show the mixed motifs and ideas of a horse
+traveling people under the new influence of many neighboring cultures,
+particularly those of the plains.
+     The occurrence of peculiar Shavano motifs among the petroglyphs of
+other provinces is not common, but    a    few examples certainly tend to
+stimulate the student's interest.     I    refer particularly to the hoof forms
+or tracks, so plentifully represented among old type Shavano figures,
+and identically formed tracings of undisputed primitive origin occurring
+
+
+
+
+                                     86
+in Ohio and Pennsylvania.     This similarity cannot be lightly evaded.
+The motif, while simple, is decidedly peculiar and it is hard to
+conceive of two petroglyph sites bearing many exactly parallel
+examples of so curious a form as the result of independent endeavor.
+Other similarities between pictograph motifs of the Shavano Valley
+and those on the rocks of Ohio and Pennsylvania are noticeable, but the
+
+similar forms are of so common an occurrence at many other sites the
+world over that alone they do not justly warrant the comparison.         Their
+value as comparative material hangs upon, rather than supports,         that
+of the associated hoof -print forms.      If the possibility of independent
+
+origin seems improbable, it is equally difficult to conceive of any
+cultural connection between the Utes or other Colorado Indians and the
+Erie, Susquehanna or other far eastern tribes.       In this case   parallelism
+on the one hand, or cultural relationship on the other, seems more
+improbable than that we have here an extraordinary example of diffusion.
+In this connection it is worthy of note that the figures at both eastern
+
+and western sites are old, fashioned before the horse became a factor in
+diffusion across the great plains.       A reasonably complete record of
+
+pictographs representing the native cultures which lay between Colorado
+and Ohio would undoubtedly furnish either positive or negative evidence
+on the diffusion theory, but no such record exists as such in available
+
+form.
+        In summary, a primary survey of Shavano Valley petroglyphs seems to
+
+indicate that they are to be divided into old type and new type classes.
+The old type represents a comparatively uniform isolated culture, though
+possessing strong indications of influences (a) penetrating the Ute
+territory from far abroad, (b) eminating from the Ute territory to make
+its influence felt far abroad or (c) diffusing to both eastern and
+western places of occurrence from an unknown common source.         The new
+type represents a culture enriched in variety by the infusion of ideas
+from several surrounding cultures, particularly those of the plains.
+
+
+
+
+                                    87
+probably augmented by the advent of the horse.        This new type seems to
+be in large part characteristic of the late or historic Utes.        The
+situation of the petroglyph sites in the Shavano beside an old Indian
+trail, coupled with the accounts of early settlers in the district,
+indicates that the etchings are more apt to be the product of temporarily
+camped bands of nomadic wanderers than of sedentary inhabitants.
+
+
+                       Craig Petrogl^phs
+
+
+                           Situation
+
+     North of and immediately outside the inhabited outskirts of Craig,
+Colorado, a prominent cliff of yellow sandstone extends in an east and
+west direction with its nearby perpendicular face fronting on the town.
+This cliff face is practically covered with tracings.        The majority of
+these consist of names, initials and similar European products.        But
+
+scattered among these spurious marks of civilization, often largely
+defaced by them, are pictures and designs of an older, primitive origin.
+This is not only evidenced by the nature of the designs but by the com-
+paratively darker coloring which chemical action has produced upon the
+exposed surfaces of the etchings.     This discoloration is not so dark as
+was the case on the rock surfaces of the Shavano Valley, but the old type
+
+petroglyphs and the long exposed surfaces at Craig are about equally dis-
+colored.
+     Seventy primitive figures were observed at this site.        Tracings were
+
+obtained of thirty-eight of these.        The remainder were of a size or
+situation that made tracing impractical under existing circumstances.
+These figures were carefully copied in freehand.
+
+
+                         Classification Groups
+
+     The primitive drawings are not of one age or type.        The comparative
+
+extent of chemical discoloration divides them into two groups which, as
+
+
+
+                                     88
+in the case of Shavano Valley groups, are called herein old type and
+
+new type.   Of the seventy figures observed, thirty-seven are old and
+thirty- three new.    Old and new tracings are not to any extent naturally
+grouped according to type but are as thoroughly intermixed with each
+other as they are with the initials, love signs and other characters
+of modern inhabitants.         These two groups differ as much in style as in
+age as the following pages shall endeavor to show.
+
+     The workers' technique is in every case primarily that of grooving.
+Pecking is employed in a few instances to fill in a solid block previously
+outlined by grooves.       There is no difference between old and new types
+in this respect.     This apparent similarity may, however, be entirely
+imitative on the part of the new figures rather than constituting an
+argument for affinity between the old and the new.         The fact that non-
+primitive letters, words and signs coexistent with the Indian products
+are likewise invariably grooved certainly does not establish an affinity
+between European and Indian producers.
+
+
+                                      Gravers
+
+     No implements were found that could have been employed as gravers
+but the rather homogeneous nature of the stone surface would allow the
+use of any pointed hard stone, bone or piece of antler to produce
+similar grooves.
+
+
+                                      Motifs
+
+     The range of motif is diversified including many straight lined and
+curvilinear figures of     a   conventional appearance as well as a number of
+realistic subjects, the latter chiefly animate.        The following chart
+serves to show the numerical importance of various motif groups of both
+the old and new types.
+
+     Old type motifs   .    From the above chart it can be readily seen that
+the old type is rich in straight-lined conventional figures such as simple
+
+
+
+
+                                         89
+                                 TABLE    5
+
+
+                     Motif Chart of Craig Petroglyphs
+
+
+
+
+                                                            Comparative age
+Motifs
+                                                            Old         New
+
+
+Conventional designs
+     Straight lined figures
+         Parallel lines (series of 14; not traced)      —     1
+
+         Simple crosses                                       5
+
+         Zigzags                                —       -     1
+
+
+         Ladders                                              3
+
+         Rectangles                                                      1
+
+         Checked and criss-crossed patterns                   1          6
+
+         Other simple angular units                           4
+
+         Tridents                                             4
+
+         Leaf or tree forms                                              1
+
+         Straight lined figures with blocked terminals                  12
+
+         T    -   shapes (inverted)                           1
+
+     Straight and curved line complexes
+         Wheels
+Unclassified designs                                          3
+
+Animate forms
+     Miscellaneous animals                                    4
+
+     Horses
+     Mounted horses
+     Anthropomorphic figures
+Tracks
+     Footprints                                               8
+
+     Hand forms                                               2
+
+
+
+
+                                         90
+crosses, tridents, ladders and other simple angular units.              Foot tracks
+are common and hand forms present.           Figures including positively curved
+lines of design importance and anthropomorphic representations are
+absent.
+
+        New type motifs   .   The new type figures show no marked avoidance of
+curved lines.     Straight lined figures are dominated by checked and criss-
+crossed patterns and by a type of angular composition marked by terminals
+that are blocked by means of short cross lines.            Figures making use of
+curved lines include a comparatively large number of unclassified forms
+of sufficient complexity but non suggestive outline to make any present
+
+attempt at an interpretation unprofitable.            Tracks have a single representa-
+tion.     Animate figures are not plentiful.         They include horses, one
+mounted, and an interesting anthropomorphic form.            The more simple straight
+lined unit figures and hand forms are absent.
+
+
+                                  Old Type Figures
+
+        The older drawings resemble to a surprising extent a conventional
+type of petroglyphs found on the Mesa Verde.           The motifs, including as
+they do parallel lines, simple crosses, zigzags, ladders, a checked
+pattern, tridents, and example of the T         -   door shape, and hand forms,
+and including no important motifs not present on the Mesa Verde, offer a
+sufficient foundation for such a comparison.           The same dominance of
+conventional designs prevails at both sites.           The highly developed con-
+ventional designs found on house stones on the Mesa Verde, a peculiar
+development of petroglyph art in that province, are of course absent at
+Craig since there is no evidence of primitive stone houses near Craig.
+In fact cliff or mesa house ruins have not been located at any point
+
+nearer than two hundred miles from Craig, although           I   obtained photo-
+graphs of stone graineries situated northwest of Craig in the Bear Canyon
+
+district.
+        The foot tracks at Craig are more typical of other Shoshonean repre-
+sentations than of the usual Pueblo tracks.           But the large number of
+
+
+
+                                        91
+animal figures often cited as a Shoshonean marker are absent.      The
+spiral, so commonly occurring on the Mesa Verde, does not occur at
+Craig.
+     A study of individual designs among the old type petroglyphs dis-
+closes some remarkable Mesa Verde tendencies as well as some marked
+differences.      The ladder shapes at Craig to all appearances might have
+been taken from the building stones of Far View House (Fig. 47a).         The
+T-shaped checked pattern of Craig (Fig. 47b) is not found on the Mesa
+Verde but its general tone is Mesa Verden.      The tridents and crosses
+at Craig (Fig. 47c and 47d) are exactly similar to those of the Mesa
+Verde, though they occur with less comparative frequency at Craig.         The
+simple Craig example of the T-shape (Fig. 47e) perfectly reflects in
+every line the T-shapes at Petroglyph House on the Mesa Verde.      The
+inverted position is unusual but not unique and has at least one
+parallel    instance at Petroglyph House.   Some of the small simple units
+of geometrical design at Craig (Fig. 48a) are not exactly parallel to any
+Mesa \er6e figures.      They are not, however, out of sympathy with Mesa
+Verde motifs in general.
+     A long zigzag, a triangle intersected by a long straight line, and
+a small    simple criss-crossed pattern (Fig. 48b) have not sufficient
+character peculiarity to deserve comparison with any particular province
+of southwestern petroglyphs.      One old Craig figure (Fig. 48c), roughly
+resembling   a   corn stalk, is very like certain avowed totemic signs des-
+cribed as occurring at Oakley Springs, Arizona (Mallery 1893:329-330),
+but a single instance of similarity of this sort hardly warrants comparison,
+     The old Craig hand figures differ in that one is an impression out-
+line while the other attempts to outline the hand rather than its impres-
+sion and includes the wrist and part of the forearm (Fig. 49a).      The
+impression type is like the Mesa Verde hand forms.      The writer super-
+imposed his hand upon a Craig hand form, and the general sameness of the
+lineation of petroglyph and the actual hand outline lead me to believe
+that the Craig artist used an actual hand impression or outline to guide
+him in his work.
+
+
+                                    92
+                                m,;ims^f»^
+
+
+
+
+Fig. 47.   Craig Old Type Petroglyphs
+
+
+
+
+Fig. 48.   Craig Old Type Petroglyphs
+
+
+                  93
+        The old type foot impression forms are quite different from those
+of the Mesa Verde.     The latter are apparently representative of human
+feet while the Craig drawings, like most of the Shavano foot forms, are
+probably representations of animal tracks.     Their geometrical tendencies
+may be largely attributed to the grooving technique employed.     At least
+two of the drawings indicate animalistic toenails (Fig. 46b).     Three
+figures show the transverse cross ridge situated just posterior to the
+
+toes, a peculiarity so characteristic of many of the old type Shavano
+Valley foot forms.     Detached toe impressions characterize three figures
+(Fig. 49c).     A strong tendency to conventionalize is shown in at least
+
+three of these instances (Fig. 49b).
+        Only four animal forms occur among the old type Craig petroglyphs,
+and one of these, a very large figure (Fig. 50a), seems to represent a
+stretched hide with a round head suggestive of an anthropomorphic concep-
+tion.     The feet of this figure are like the highly conventionalized form.
+The spaces between feet and legs may be of like order with the transverse
+ridges discussed above in connection with foot forms.
+        The remaining three animal forms have peculiarities for which the
+grooving technique employed by their originators seems hardly responsible.
+One of these figures deserves particular attention (Fig. 50b).     The
+simplification of all details tending to make the whole suggestive rather
+than accurately descriptive is interesting and successfully defeats efforts
+to identify the animal.     But the treatment of the feet is especially
+worthy of attention.     Each foot is composed of two parallel perpendicular
+bars and two dots each situated directly above one of the two parallel
+
+lines.    The character comprised of similarly disposed oblongs and dots
+occurs in several widely separated localities in the United States as has
+been discussed elsewhere in this paper.     The disposition and general
+appearance of these figures suggest the tracks of some cloven-hoofed
+animal.    The Craig figure under discussion supports such an interpretation.
+The alternative interpretation is that such motifs represent hoofs rather
+
+
+
+
+                                    94
+                              r-—^
+
+
+
+
+ Fig. 49.             Craig Old Type Petroglyphs
+
+
+
+
+        ^         r
+
+
+
+
+"-71-                 ft^^
+
+
+
+
+  Fig.      50.         Craig Old Type Petroglyphs.
+
+
+
+
+                               95
+than hoof tracks.      The two dots would in one case represent the two
+posterior toes of the hoof and in the other case the impression of these
+toes.     Such an impression would only show in the track of a deer, for
+
+instance, when made in deep dust, mire or snow.         I   am not familiar with
+the tracks of buffalo, elk or other large wild ungulates.           A guess,
+based upon the hump back and apparent horns of the Craig figure, would
+identify it as representing a buffalo.
+        On the whole the old Craig petroglyph figures, aside from foot forms
+and animal forms, are remarkably like those of the Mesa Verde both in
+general type and motif detail.      The foot forms are not out of sympathy
+with other old Craig figures but are not parallel to anything on the
+Mesa Verde.      They are more closely allied to the Shavano Valley track
+forms.     Animal forms are too few in number and unlike each other to
+warrant comparisons.
+
+
+                              New Type Figures
+
+        The most numerously represented class of figures among the new type
+Craig petroglyphs are the variously shaped geometric forms having one
+or more lines terminating in short transversely directed lines.           These
+I   have called blocked terminals for want of    a   better term.    Out of twenty-
+one new type conventional motifs twelve are blocked terminals (Figs. 51b
+and c).     The only other instance of such figures which has come to my
+attention as occurring among American pictographs was observed in the
+Shavano Valley.      This apparent uniqueness does not signify much since good
+records of American pictographs are rare and the majority of western
+petroglyphs have certainly never been described.
+        The new type figures include several simple combinations of lines
+disposed to produce combs, checked patterns and criss-crossed patterns
+(Fig.    51a).   These are like similar figures occurring at various Shoshonean
+sites.     One tree or leaf figure is like new type figures in the Shavano
+Valley.     One splendid wheel shape is shown in figure 52.         Seven figures
+
+(Figs. 53a and b) are sufficiently intricate or non-suggestive as to form
+to defy classification.
+
+
+                                     96
+Fig. 51.    Craig New Type Petroglyphs
+
+
+
+
+ Fig. 52.    Craig New Type Petroglyphs
+
+
+                   97
+       The single new type foot shape is noteworthy for its angular con-
+ventionalization (Fig. 54).       Apparent representations of claws imply
+that it represents the track of an animal, such as a bear.
+
+       On the animal figures, two are exceedingly simplified and quite
+different from the usually recorded Shoshonean animal forms (Fig. 55b).
+A third is a careful   representation of     a   horse, quite elaborate in
+detail and to be classified as a rather late Ute product (Fig. 55a).
+A fourth portrays a man on horseback (Fig. 55c).          It is crudely executed
+
+but shows all the peculiarities of late Ute work.         The above described
+horse figures show a comparatively small degree of chemical discoloration
+in the exposed grooves and are therefore probably quite recent.
+
+      The only positive example of an anthropomorphic figure at Craig is
+a   new type drawing (Fig. 56).     It is very similar to figures found else-
+
+where at Shoshonean sites.    It is especially like an old-type figure in
+
+the Shavano Valley and one reported from the Rio San Juan District in
+
+New Mexico (Mallery 1893:74-75).       The large ear loops in these figures
+have been interpreted by some to represent the whorls of hair effected
+by the girls of certain southwestern tribes, such as the Hopi, but might
+
+as readily represent ears or the horns of curly horned mountain sheep.
+
+
+
+                                   Summary
+
+       In sum, the Craig petroglyphs include, first, a series of compara-
+
+tively old drawings in most respects remarkably like those found on the
+Mesa Verde, second, a less homogeneous group of more recent drawings
+quite unlike the old type figures, in many respects conforming to the so-
+called Shoshonean type, with a few especially close parallels to figures
+in the Shavano Valley, and in many respects showing pronounced local
+
+peculiarities.    It is doubtful    if these new type petroglyphs are
+
+collectively the product of any one small local unit of population.          They
+are as characteristic of Shoshonean work as are figures at the average
+site so classified.
+
+
+
+
+                                       98
+Fig. 53.   Craig New Type Petroglyphs,
+
+
+
+
+Fig. 54.   Craig New Type Petroglyphs
+
+
+
+
+                  99
+                              1J''(
+
+
+
+
+             "     vJ
+                          ^
+
+
+Fig.   55.   Craig New Type Petroglyphs
+
+
+
+
+Fig.   56.   Craig New Type Petroglyphs
+
+
+
+
+                        100
+                                 Conclusions
+
+       The Craig petroglyphs serve again to illustrate the confusing
+complexity of traits apparent at most important pictograph sites which
+opportunity has enabled me to visit personally or to study through
+the reports of other field observers.          Seldom does one encounter   a
+
+single homogeneous type of work to fit a supposed producing culture.
+       In this respect petroglyph motifs are like other culture products;
+
+they do not easily remain confined within a parent culture's boundaries
+but are found to occur at foreign stations where their presence can only
+be explained as resulting from diffusion.
+
+      At Craig, with no evidence of stone or adobe house culture evident
+within   a   radius of hundreds of miles, a group of old stone etchings shows
+a   remarkable resemblance to Mesa Verde petroglyphs in workmanship, style
+and motif detail.     The Craig T-shape, which one cannot keep from mentally
+associating with the T-shaped doors and petroglyphs of the cliff and mesa
+house cultures, such as that one primitively inhabiting the Mesa Verde,
+seems to have no logical place on the cliffs of Craig.         The cliff house
+and pueblo builders were a sedentary agricultural people and would
+hardly have made trips of hundreds of miles without leaving masonry as
+evidence of their presence.       But where pots are exchanged, so are ideas,
+and these ideas may bear with them peculiarities in artistic motif as well
+
+as in other culture aspects.
+
+      Diffusion of local peculiarities within a culture area was more to
+be expected*     Thus the old and new type petroglyph motifs of Craig show
+strong specific similarities to certain Shavano Valley pictures.               Here we
+see a strange crossing of old and new types.         The hoof track motif,
+occurring only in the old type at Shavano sites, is found only in              a   new
+type figure at Craig and    a   typical Shoshonean anthropomorphic figure
+occurring in the new type at Craig is nearly duplicated in an old type
+figure in the Shavano Valley.      This goes to show that any connection
+between time and such elements as style and motif detail must be limited
+to very local applications.
+
+
+
+                                      101
+       Petroglyph diffusion will be reviewed and discussed at greater
+length in a section to follow.
+       Like the old type Shavano petroglyphs, the old type Craig figures
+seem to represent    a   comparatively old and uniform culture but acting under
+a   culture influence quite different from that controlling the products
+of the former province.       The new type figures at Craig are representative
+of a later, less uniform culture greatly influenced by more than one
+surrounding culture through      a   diffusion of culture traits expedited
+probably by the introduction of the horse.          Both old and new types are
+probably Ute products, but one is a conservative product of a locally
+peculiar self-sufficient culture while the other is the progressive
+product of an expanding assimilating culture.           Thus there is little in
+common between the old types of the Shavano Valley and Craig.             Each
+adheres to its own peculiar bias.        On the other hand there is much in
+
+common between the new types of both provinces in spite of the fact that
+a   greater variety of motif material here would encourage radical differences,
+The explanation of this may be that, generally, the old types were proof
+against any but the very strongest outside influences.            In each case a
+
+different strong outside influence came in to dominate and fortify the
+local culture against inroads by weaker influences.            On the other hand
+
+the new types illustrate a period of general expansion when each and every
+outside influence, weak and strong, played its relatively weak or strong
+part and the resulting thorough mixture of traits, since all boundary
+lines were weakened, had a rather large distribution.
+
+
+                         Additional Petroglyph Data
+
+
+                           Youghal petroglyphs
+
+      A few petroglyphs were seen and traced near Youghal, Colorado, on
+
+the ranch of Mr.    Fray A. Baker.     These occur in   a   cluster near the base of
+a   sizeable cliff of yellow sandstone.        Aside from this group no
+
+
+
+
+                                         102
+                           .                 .
+
+
+
+
+    petroglyphs were found nor are any reported as occurring within the
+    accessible environments of Youghal
+           The group consists of seven very closely intervaled figures,
+    although there is no obvious arrangement or order to their disposition.
+I   Four mountain sheep, two anthropomorphic figures with short tails or
+    penis representations, and what appears to be an arrow point with a
+    curiously ringed base constitute the motifs (Figs. 57 and 58).
+           The animate subjects are rather smoothly and deeply pecked and solid
+    rather than in outline.      They show       a   likeness in workmanship and treat-
+    ment that suggests the work of a single artist.             The arrow head (Fig.      57)
+
+    is grooved deeply and has been       carefully smoothed and finished.
+           Judging from the comparative extent of discoloration due to chemical
+    action upon the broken surface of the stone, the animate figures are of
+    considerably later placing than is the arrow head.
+           With the possible exception of the arrow head these figures are
+    good examples of a type of pictograph, rich in animal ^nd anthropomorphic
+    subject matter, which has sometimes been confused with the so-called
+    Shoshonean type but which, in the opinion of others, shows strong
+    peculiarities which warrant     a   separate placing in classification.
+           Similar sheep and other figures are reported as occurring at Pat's
+    Hole, at the junction of the Green and Yampa rivers, about twenty miles
+    northwest of Youghal
+
+
+                               Gunnison River Petroglyphs
+
+          An hour was spent at a petroglyph site which offers probably twice
+    as much material   for investigation as does the Shavano Valley.           Unfortunately
+    a   prearranged program prevented immediate work here.           This site consists
+    of some low cliffs of brown sandstone on the left bank of the Gunnison
+
+    River, two and one half miles south of the state bridge. Delta County,
+    Colorado (Figs. 59-62).
+
+
+
+
+                                           103
+                                           .
+
+
+
+
+Fig. 57.   Petroglyphs Near Youghal
+
+
+
+
+                                       "C\,
+
+
+
+                            ^'
+                                     Kn^
+                       >'   .   ,r
+
+
+
+
+Fig. 58.   Petroglyphs Near Youghal
+
+
+
+
+               104
+Fig.   59.     Overview of Gunnison River Petroglyphs,
+                                                       5DT4.
+
+
+
+
+             Fig.   60.   Animal Petroglyphs at 5DT4,
+
+                                   105
+Fig. 61.     Kokopelli-Like Figure, 5DT4,
+
+
+
+
+Fig.   62.   Animal and Footprint Petroglyphs, 5 DT4,
+
+
+
+
+                          106
+     Any statement based upon the short observation permitted would be
+unprofitable.        A series of photographs illustrating this site is
+reproduced in Figs.
+
+
+
+                                  Conclusions
+
+     The problem of peculiar differences in style, motif and workmanship
+between pictographs of a given province deserves more attention than
+the examination of material has warranted previously in this paper.
+Such differences are probably due to a number of things.
+     In the first place individual       artists undoubtedly had individual
+peculiarities which were expressed in their work.           Petroglyphs differ
+from many products of primitive art in that they do not serve as decora-
+tions for pots, baskets, textiles, implements or other practically useful
+articles.        This fact and a survey of historic petroglyph production leads
+to the conclusion that practically in all applicable cases men served
+
+as petroglyph makers whereas women often exercised other artistic
+functions.        Moreover, a brief survey of the nature of petroglyph motif
+in the provinces under discussion and the respectful, almost religious
+
+attitude towards petroglyphs of the primitive people now living in these
+provinces, even where the making of petroglyphs continues today, fosters
+the belief that petroglyphs in most instances, especially when exact
+
+definite figures were executed, were the product of         a    comparatively few
+men who were recognized as men skilled in such work and popularly respected
+as such.        There is good reason to suspect, although    I   can offer no
+definite argument, that some of these petroglyph artists were shamans and
+the practice of their art a shamanistic function.           In any case individual
+
+style is    a    certain element for consideration and, if shamanism, religious
+cults or peculiar units of social organization were involved, the motif
+type would likewise be apt to depend upon the individual worker.
+     Next, there is the possibility of petroglyph donations by foreign
+
+artists visiting the locality.        Religious or other ceremonies of
+
+
+
+                                       107
+importance among the American Indians often brought together people
+normally living    a   considerable distance away from the ceremonial site.
+Traditional enemies often met peacefully on such occasions and each
+social unit contributed its part to the performance.        If petroglyphs had
+any religious or ceremonial importance it is not improbable that they
+were sometimes made on such occasions, and by reputed artists from various
+districts.
+     The specialization in a certain type involving a peculiar set of
+motifs at separate stations within a province must also be taken into
+consideration.     Such a thing as local strength of a clan or other social
+group at a given center of population could exert an influence in this
+direction.   If,   in the Mesa Verde,    the mountain sheep clan was yery
+strong at Petroglyph house while the snake clan was exceptionally strong
+at Far View House, providing clan symbolism exerted any influence over
+petroglyph motif, one would expect to find mountain sheep pictured at
+the former site and snakes at the latter.        Several clans of equal strength
+at a given site would encourage the production of a diversified series of
+motifs.   Pronounced local specialization on the Mesa Verde supports some
+such explanation.
+     Much has already been said in regard to the influence which the
+nomadic habits of the Utes, especially after the introduction of the
+horse, probably exerted upon petroglyph art.        The rather unimportant
+differences in style and motif detail between old figures in the Shavano
+province or old figures at Craig are too easily accounted for in the light
+of the preceding paragraphs.      The wonder is that more pronounced
+differences did not occur.      The greater variety of motifs and styles
+apparent in new type petroglyphs than in the old type of either the
+Shavano or Craig provinces is probably directly proportionate to the
+possible range of nomadic wandering with dogs and on foot on the one
+hand and with horses on the other.        Increased contact with surrounding
+cultures would undoubtedly facilitate diffusion of ideas and styles as
+well as of things material.
+
+
+
+
+                                        108
+       The most important general conclusion that offers itself,        a
+
+conclusion already endorsed in the preceding pages of this paper, is that
+primitive pictograph art, like other culture traits and products, is
+subject to change and development through diffusion.     In the case of
+
+the new type figures of the Shavano Valley the apparent great variety
+
+in motif and style may be partly explained by visiting groups of nomads
+
+each representative of a somewhat different sub-culture group.              But such
+a   migration theory could hardly be employed to account for the wide
+distribution of single peculiar designs such as cross-shaped or ring-
+eared anthropomorphic figures of a very uniform type, occurring frequently
+at sites distributed over five such large states as New Mexico, Arizona,
+
+Colorado, Utah and California.     Nor could it hardly account for the
+remarkable similarity between old Craig figures and Mesa Verde figures.
+Certainly it could not explain the occurrence of so peculiar       a    figure as
+
+the ungulate hoof-print forms found occurring in Colorado, Ohio and
+Pennsylvania.
+       But every people, whether sedentary or nomadic in its habits, has
+
+a certain amount of social   intercourse with some of its neighbors.            In
+
+such intercourse both material and mental products are exchanged.
+Materials and ideas received from one neighbor may later be passed on to
+another neighbor.    In this fashion materials and ideas often have been
+
+known to travel great distances without being literally carried by
+migrating groups or individuals.     Migrating ideas could therefore more
+rationally explain a distribution of petroglyph motifs over    a       territory
+bordered on the east by the Atlantic Ocean and on the west by the
+Rocky Mountains than could migrating tribes.     Such an explanation as the
+latter is at least more difficult to accept than is the former.
+       If the theory of petroglyph diffusion is to be accepted, and to the
+
+author it seems self-apparent, such terms as Shoshonean type and Moki
+or Hopi type are not too accurate.     If indeed as much was known of
+petroglyphs as is known of southwestern pottery, for instance, then such
+terms would be valid.    But when a very meager supply of data on western
+
+
+
+
+                                     109
+petroglyphs is available, it is doubtful if the occurrence of a given
+motif at several sites on Shoshonean territory warrants the inclusion of
+such a figure in a group classed Shoshonean.   A very thorough checking
+of motifs and styles throughout the country is necessary before it can
+be determined as to what Shoshonean petroglyph traits really are.     It is
+
+doubtful if such large classifications of petroglyphs can ever be of any
+great value since local peculiarities and local infusion of ideas from
+separate and widely divergent sources would tend to defeat any very
+inclusive uniformity of traits representative of so large a territory as
+that covered by Shoshonean stocks.
+
+
+
+
+                                     110
+                           REFERENCES CITED
+
+
+BUCKLES, William Gayl
+1971     The Uncompahgre Complex:     Historic Ute Archaeology and
+         Prehistoric Archaeology on the Uncompahgre Plateau in West
+         Central Colorado.     Unpublished Ph. D. Dissertation, Department
+         of Anthropology, University of Colorado, Boulder.
+
+
+FEWKES, J. Walter
+1923     Archaeological Field Work on the Mesa Verde National Park,
+         Field Season of 1922.     Smithsonian Miscellaneous Collections           ,   74,
+
+         89-115, Washington, D.C.
+
+
+HARRIS, Marvin
+1968     The Rise of Anthropological Theory   .   Thomas Y. Crowell Company,
+         New York.
+
+
+HAYES, Alden C.
+1964     The Archeological Survey of Wetherill Mesa Verde National
+         Park, Colorado.     Archeological Research Series Number Seven-A,
+         National Park Service, Washington, D. C.
+
+
+JEANCON, Jean Allard
+1926     Pictographs of Colorado.     Colorado Magazine   ,   3   (2):    33-45.
+
+
+
+MALLERY, Garrick
+1893     Picture Writing of the American Indians:     A Preliminary Paper.
+         10th Annual    Report Bureau of American Ethnology       ,   1888-1889.
+
+
+OLSEN, Nancy Hulbert
+1977     Hovenweep Rock Art and Agriculture.      In Hovenweep 1976
+
+         by Joseph C. Winter, pp. 279-292, Archeological Report No. 3 ,
+         Anthropology Department, San Jose State University, San Jose.
+
+                                     Ill
+RENAUD,   E.   B.
+
+1936       Pictographs and Petroglyphs of Colorado.        Southwestern Lore ,
+           2:57-60.
+
+
+ROHN, Arthur H.
+
+1977       Culture Change and Continuity on Chapin Mesa      .   Regents Press of
+           Kansas, Lawrence.
+
+
+WORMINGTON,     H.   M.   and Robert H. Lister
+
+1956      Archaeological Investigation on the Uncompahgre Plateau in
+          West Central Colorado.         Proceedings, No. 2 The Denver Museum
+           of Natural History, Denver.
+
+
+
+
+                                          112
+                                                         VMnWR   Service Center
+
+
+
+
+                           S     •    -J
+                                      vo
+                                               Q
+                                               2
+                           k;    Tj                ,_^
+G
+c/>
+          ,            ,
+
+                           ji^   ^    1^
+D             r
+              OD
+1
+              >>
+m             ZH                                   S3
+r             n    w                               -1
+s             D                                      u
+
+
+                                          rt
+                                          fD
+                                          f^
+                                          13
+
+
+                                          O
+                                          O
+                                                         e5i
+              o
+              o
+                  50
+                  50
+                  O
+                                                   o     -.
+
+                                          rt
+      1
+                                      .   fi
+                                                   .r    ^
+STATE OF COLORADO
+

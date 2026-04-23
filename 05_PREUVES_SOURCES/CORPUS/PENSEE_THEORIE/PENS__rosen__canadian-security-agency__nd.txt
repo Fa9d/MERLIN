@@ -1,0 +1,1050 @@
+               Current Issue Review                     84-27E
+
+
+
+
+               THE CANADIAN SECURITY INTELLIGENCE SERVICE
+
+
+
+
+               Philip Rosen
+               Senior Analyst
+
+               Revised 24 January 2000
+
+
+
+
+Library of
+Parliament
+               Parliamentary
+Bibliothèque
+               Research
+du Parlement   Branch
+           The Parliamentary Research Branch of the Library of
+           Parliament works exclusively for Parliament, conducting
+           research and providing information for Committees and
+           Members of the Senate and the House of Commons. This
+           service is extended without partisan bias in such forms as
+           Reports, Background Papers and Issue Reviews. Research
+           Officers in the Branch are also available for personal
+           consultation in their respective fields of expertise.
+
+
+
+
+N.B.   Any substantive changes in this publication, which have been made since the preceding
+       issue are indicated in bold print.
+
+
+
+                                                              CE DOCUMENT EST AUSSI
+                                                              PUBLIÉ EN FRANÇAIS
+                                                  TABLE OF CONTENTS
+
+
+                                                                                                                                    Page
+
+ISSUE DEFINITION ................................................................................................................. 1
+
+BACKGROUND AND INFORMATION ................................................................................. 1
+ A. The Origins and Development of the Security Intelligence Service ................................. 1
+ B. Abuses by the Security Service ......................................................................................... 3
+ C. The McDonald Commission’s Recommendations ............................................................ 5
+ D. The Canadian Security Intelligence Service Act............................................................... 6
+ E. The Controversial Issues.................................................................................................... 9
+ F. 1984 to Present................................................................................................................. 11
+
+PARLIAMENTARY ACTION................................................................................................ 14
+
+CHRONOLOGY...................................................................................................................... 17
+
+SELECTED REFERENCES.................................................................................................... 20
+                       THE CANADIAN SECURITY INTELLIGENCE SERVICE∗
+
+
+    ISSUE DEFINITION
+
+
+                    In July 1984, the Canadian Security Intelligence Service Act was proclaimed in
+    force. It brought into existence a new civilian security intelligence service, and terminated the
+    previous Security Service, which had functioned as part of the RCMP.
+                    Passage of the Act was an attempt to bring the security intelligence function under
+    more effective control and made Canada at that time one of the few western democracies to give its
+    security intelligence service an explicit statutory charter. The Act provides a defined mandate for
+    the operations of the agency; it interposes a system of judicially authorized warrants in the agency’s
+    use of intrusive investigative techniques; and it establishes monitoring and review bodies, which
+    purport to ensure that the agency does indeed act within the limits of its mandate.
+
+
+    BACKGROUND AND ANALYSIS
+
+     A. The Origins and Development of the Security Intelligence Service
+
+                    The origins of the CSIS Act may be found in the 1981 report of the Commission of
+    Inquiry Concerning Certain Activities of the Royal Canadian Mounted Police (the “McDonald
+    Commission”). That Commission had been created in 1977 as a result of the revelation of a series
+    of apparently illegal acts and practices carried out by the Security Service of the RCMP. The
+    Commission was to determine the extent and prevalence of investigative practices or other activities
+    “not authorized or provided for by law”; to report the facts of such practices; and to advise the
+    government what action should be taken to deal with them; and to advise the government generally
+    on necessary or desirable changes in “policies and procedures regarding national security.”
+
+
+
+∗
+      The original version of this Current Issue Review, was published in September 1984; the paper has regularly
+      been updated since that time.
+                                         LIBRARY OF PARLIAMENT
+                                      BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   2
+                The Security Service the McDonald Commission began to study in 1977, like many
+other Canadian institutions, developed gradually and incrementally. It was subsumed within the
+RCMP, and had no distinct statutory basis, deriving its authority from a power given to the
+Governor in Council in the Royal Canadian Mounted Police Act to assign certain functions to the
+Force. It was not until 1975 that the Service was given an explicit mandate, and even that mandate
+consisted only of a cabinet directive drafted in quite broad terms.
+                The Security Service had its genesis in certain duties assigned in 1864 by Sir John
+A. Macdonald to what was to become the Dominion Police Force. These duties included such
+things as providing security for government buildings, and providing information and intelligence
+on threats to Canada’s security, such as the Fenians. The North West Mounted Police assumed
+similar functions in the west.
+                The security intelligence role of the federal police gradually grew after
+Confederation through to the first World War, in response to labour unrest, anarchism, and the
+growth of communism. This role intensified between the world wars. But it was not until the end
+of the second World War that the security function was removed from the Criminal Investigation
+Branch of the RCMP, which had been formed in 1920.
+                The 1946 Gouzenko case led to a new awareness of the necessity for stricter security
+in government institutions, and for specific counter-espionage and counter-intelligence capabilities
+to deal with the new aggressive nature of East Bloc activities. In 1946 the Special Branch was
+created: its officer in charge reported to the Commissioner of the RCMP. The Branch had the
+specific responsibility of providing intelligence on espionage, subversion, and of ensuring that
+federal institutions were staffed by loyal and trustworthy persons. By 1956, the Special Branch had
+been raised to the directorate level within the RCMP, under the control of an Assistant
+Commissioner. Finally, in 1970, the Branch was renamed the Security Service under the control
+and management of a civilian (i.e. not a member of the RCMP) Director General (equivalent to a
+deputy commissioner) who reported to the Commissioner and to the Solicitor General. (In 1966 the
+RCMP had become the responsibility of the Solicitor General, when that position was raised to full
+ministerial status. Prior to that year, the force had been under the authority of the Minister of
+Justice.)
+                The 1970 reorganization was principally the result of the 1969 Report of the Royal
+Commission on Security (the “Mackenzie Commission”). That commission had been formed in
+1966 following the widely publicized case of a security lapse in a federal institution. Its mandate
+was to look into security procedures in government, but it was also to inquire generally into the
+                                         LIBRARY OF PARLIAMENT
+                                       BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                      3
+question of Canada’s national security.         The principal recommendation of the Mackenzie
+Commission, based upon this last element of its mandate, was that a separate civilian security
+agency be formed. The commission found that it was not appropriate for a law enforcement body
+like the RCMP to be involved in security intelligence work. Such functions were found to be
+incompatible with the role of ordinary police; and the Special Branch was found to lack sufficient
+sophistication and powers of analysis, drawing as it did only on members of the force, to fully
+discharge the security intelligence role. The commission also recommended legislation to deal with
+the use by the security agency of intrusive investigative techniques, and an improved system of
+security screening, including an appeal process.
+                The government rejected “civilianization” of the Special Branch. It did, however,
+determine to make the security intelligence function “increasingly separate in structure and civilian
+in nature,” in the words of the Prime Minister, within the RCMP. Hence the creation of the Security
+Service and the appointment of a civilian Director General. The government also pledged to bring
+more civilians into the Security Service and thereby expand its expertise and increase its flexibility.
+Another partial response to the Mackenzie Commission took place in 1974, when s. 16 of the
+Official Secrets Act was passed. That section allowed the Solicitor General to authorize the
+interception or seizure of communications if satisfied that conduct being investigated fell within a
+broad definition of activity inimical to national security - including espionage, sabotage, activities of
+foreign intelligence bodies and political violence.
+
+
+ B. Abuses by the Security Service
+
+                The Security Service in the early 1970s was in a precarious position. Its members
+retained all the extraordinary powers accorded to peace officers.            It also remained almost
+exclusively composed of RCMP members who had risen through the ranks.                    For the force,
+tight-knit, highly disciplined and loyal, strenuously resisted the infusion of civilian personnel. By
+the end of the decade there was not a single civilian in an officer-equivalent position in planning or
+operations of the Security Service.
+                Thus the service’s post-1970 personnel remained essentially similar.                 But
+organizationally they found themselves increasingly independent in matters of policy, budget, and
+operations. Service employees had the best of both worlds - police powers and a large degree of
+autonomy from the police command structure.               This independence was reinforced by the
+government’s policy with respect to the RCMP - “non-interference.” Politicians were not to be
+involved in controlling the police or directing their operations. This is a laudatory and effective
+                                         LIBRARY OF PARLIAMENT
+                                       BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   4
+principle when one is dealing only with the police who operate in a public context of checks and
+balances. It is not, however, ideal for a security intelligence agency which, perforce, acts in secrecy;
+and which, indeed, requires a degree of political control. Because the RCMP was both a police
+force and a security agency, abuses by the latter element were not immediately apparent.
+               It took the mere pressure of events to disturb the precarious position of the Security
+Service. The 1970 October Crisis stunned the government, which found itself with inadequate
+information as to the nature and scope of Quebec separatism. The government requested the RCMP
+to undertake a “proactive” strategy in this area - to try and get advance information as to the
+intentions and activities of nationalist organizations and, if possible, to prevent or “counter”
+disruptive acts. This the Security Service proceeded to do. It embarked on an extensive campaign
+of intelligence-gathering, infiltration, harassment and disruption directed at virtually all stripes of
+nationalist sentiment in Quebec. In many circumstances, the Service committed clearly illegal acts.
+Three of the most spectacular examples were: the burning down of a barn to prevent a meeting of
+militant nationalists and American radicals; a break-in at the offices of a Montreal left-wing news
+agency, followed by the theft and destruction of some of their files; and a break-in and theft of the
+membership lists of the Parti Québécois.        Operations such as these had not, the McDonald
+Commission found, been ordered by the government. They were generated from within the Service
+in response to government directions to find out more about separatism. Quite aside from being
+illegal, these operations showed a lack of discrimination between true threats and legitimate dissent.
+None had any major effect on the organizations targeted, and none brought in intelligence of much
+importance.
+               Although the most spectacular acts of the Security Service were committed in
+Quebec, they certainly were not limited to that province. Throughout Canada, the Service engaged
+in a whole series of illegal or improper activities, particularly in relation to left-wing or radical
+groups. So-called “dirty tricks” were used against perceived threats to national security. In 1975, at
+the behest of the RCMP, a cabinet directive was issued, setting out the Service’s mandate. But this
+directive merely restated the status quo, permitting the Service to “discern, monitor, investigate,
+deter, prevent and counter” persons engaging in subversive or other activity inimical to national
+security.
+               The abuses of the Security Service were not limited to the 1970s, or to excesses in
+“countering” nationalist or radical threats. It was revealed by the McDonald Commission that some
+activities such as surreptitious entry, mail-opening, and the gaining of access to supposedly
+confidential information in the possession of the government, had gone on for many years, in
+relation to various aspects of national security - from espionage and counter-intelligence to
+                                         LIBRARY OF PARLIAMENT
+                                       BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   5
+subversion. In many cases, the Commission concluded, the investigative power used was needed
+but was not authorized by law. The Commission also found that it was not only the Security
+Service that had engaged in this “institutionalized” wrongdoing. The Criminal Investigation branch
+also had a long history of abuses in this area.
+
+
+ C. The McDonald Commission’s Recommendations
+
+                During the four years of its existence, the McDonald Commission conducted an
+exhaustive review of the Security Service. It catalogued the many illegalities and improprieties. It
+found, on the whole, that the supposed political masters of the Service were ignorant of its
+misdeeds. But this exoneration was also an inherent criticism in that the structure of control and
+accountability was so weak as to allow these things to happen. In the same way, these matters had
+come to light not by reason of review or audit but as a result of fortuitous disclosures by disgruntled
+former members of the Service and of pressure by the press and the opposition.
+                The report of the McDonald Commission was highly critical of the Security Service.
+While Canada’s basic security needs, particularly in dealing with espionage and the activities of
+foreign intelligence agencies, had been adequately dealt with, the Commission found that the
+Service lacked sophistication and analytical ability.       In particular, there was an inability to
+distinguish subversion from dissent and a concomitant anti-left wing bias. The Service also lacked
+a precise mandate, effective political control and adequate review of its activities.
+                The principal recommendation of the report was that an entirely separate civilian
+security agency be formed.        The reasons were much like those posited by the Mackenzie
+Commission. There was a need for a reorientation toward information-gathering and analysis rather
+than deterring or countering. New personnel were needed. Organizationally, the new agency would
+have to be politically accountable and subject to strict review. It would not be appropriate to impose
+this on the RCMP. Law enforcement and security work are incompatible, the report concluded.
+                The proposed new agency would have a statutory mandate, consisting of a definition
+of the threats to Canada’s security it would be permitted to investigate. The definition would have
+four elements: espionage and sabotage, foreign interference; political violence and terrorism; and
+revolutionary subversion - activities directed towards the destruction of the democratic system. The
+report also recommended that the agency be expressly forbidden from investigating lawful
+advocacy, protest or dissent. It would also not have the authority to “enforce” security.
+                                          LIBRARY OF PARLIAMENT
+                                      BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   6
+               The Commission also determined that, in order to be effective, the agency would
+have to have access to certain intrusive investigative techniques, such as electronic surveillance,
+surreptitious entry, mail-opening, and the ability to obtain confidential information. But these
+investigative methods would only be used pursuant to judicial warrant, which would only be issued
+where a court was satisfied that the matter fell within the mandate. Further, they would not be
+available against “subversive” threats.
+               The Commission’s agency would be under the management and control of a
+Director General, who would in turn be responsible to the Solicitor General. This minister would
+play a significant role in the operation of the agency. He would issue directives having to do with
+its functioning, and would have to authorize applications for warrants. To ensure compliance with
+the law, the Commission recommended substantial external review of the agency’s activities. First
+there would be the Advisory Committee on Security and Intelligence - an appointed three-member
+body which would submit operations to continuous review to ensure legality and propriety. It
+would also investigate complaints, and report to the Minister and Parliament.             The second
+fundamental element of review would be a special joint parliamentary committee. The committee,
+appointed for the life of a Parliament, would be the ultimate control on the agency. In conjunction
+with the advisory committee it would, on behalf of Parliament, attempt to ensure that the agency
+observed its mandate.
+
+
+ D. The Canadian Security Intelligence Service Act
+
+               Immediately after the August 1981 release of the McDonald Commission Report,
+the government indicated its acceptance of the most fundamental recommendation - the creation of
+a civilian security service. At the ministry of the Solicitor General, a special transitional group was
+established to translate the Commission’s recommendations into legislation.
+               In May 1983, during the first session of the 32nd Parliament, Bill C-157 was
+introduced in the House of Commons. That bill would have established the Canadian Security
+Intelligence Service (CSIS), based on the framework suggested by the McDonald Commission.
+The bill also made substantial and significant alterations and additions to that framework. Almost
+immediately, it became the object of critical comment. It was alleged to be an attack on civil
+liberties, giving the proposed service extremely wide powers, insulating the government from
+accountability, and failing to institute a precise mandate or a workable review system. So vehement
+                                         LIBRARY OF PARLIAMENT
+                                       BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   7
+was public opposition that the government decided against proceeding to second reading, and
+instead referred the subject matter of the bill to a special committee of the Senate. That committee
+held hearings throughout the summer of 1983, exposing a broad cross-section of public opinion on
+the bill. It issued its report in November 1983, recommending over 40 changes to the bill so that, in
+the words of the committee, there might be “a more appropriate balance between collective and
+individual security.”
+                Following the report, Bill C-157 was allowed to die on the order paper. In the
+second session of the 32nd Parliament a new Bill, C-9, was introduced which incorporated virtually
+all the recommendations of the Senate Committee. Given first reading in January 1984, Bill C-9
+was referred to the Justice Committee of the House of Commons in March, passed third reading in
+June, and was proclaimed in force in July and August 1984. The legislation, as passed, is virtually
+identical to the bill that was introduced in January.
+                The central provision of the legislation is the definition of “threats to the security of
+Canada” in s. 2, which comprises the basic limit on the activities of the CSIS. The four elements
+recommended by the McDonald Commission remain:
+
+-   espionage or sabotage that is against Canada or is detrimental to the interests of Canada or
+    activities directed toward or in support of such espionage or sabotage;
+
+-   foreign influenced activities within or relating to Canada that are detrimental to the interests of
+    Canada and are clandestine or deceptive or involve a threat to any person;
+
+-   activities within or relating to Canada directed toward or in support of the threat or use of acts
+    of serious violence against persons or property for the purpose of achieving a political objective
+    within Canada or a foreign state; and
+
+-   activities directed toward undermining by covert unlawful acts, or directed toward or intended
+    ultimately to lead to the destruction or overthrow by violence of, the constitutionally
+    established system of government in Canada.
+
+The definition also goes on to stipulate that lawful advocacy, protest or dissent is not within the
+scope of threats to security.
+                The basic function of the service is stated in s. 12 - to investigate, collect, analyze,
+and retain information and intelligence on security threats. Bill C-157 contained a further provision
+which expressly permitted the CSIS to “remain informed” about the current economic, social and
+political climate, from public sources of information. That section at first appeared in Bill C-9, but
+was eventually deleted as surplusage. By virtue of s. 13, the CSIS is to provide security assessments
+                                         LIBRARY OF PARLIAMENT
+                                       BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   8
+with respect to individuals to be employed in the government. Finally, by s. 16, the CSIS is given
+the role of assisting in the collection of “foreign intelligence,” intelligence gained from investigation
+or surveillance of persons who are neither Canadian citizens nor permanent residents, with respect
+to defence or international affairs. As a result of the Senate committee’s recommendations, this
+function has been more sharply focused on non-Canadians, and may only be undertaken at the
+written request of the Minister of National Defence or the Minister of Foreign Affairs, with the
+consent of the Solicitor General.
+                Under Part II of the Act (ss. 21-28), the Federal Court may issue warrants to the
+service to carry out its functions under ss. 12 and 16. Such warrants allow the full range of
+investigative techniques to be used, with the exception of access to confidential census data
+maintained by Statistics Canada. The warrant process contains many safeguards and information
+requirements that were absent from Bill C-157, but which were added on the recommendation of
+the Senate Committee. Essentially, they parallel the Criminal Code requirements for warrants to
+allow electronic surveillance. A one-year limit is placed on warrants, with the exception of those
+obtained to investigate a paragraph (d) threat - subversion - which last only 60 days. This provision
+was added in the House Justice Committee, a partial recognition of the McDonald Commission
+recommendation that subversion not be the subject of intrusive investigative techniques at all. All
+warrants are renewable, on re-application to the court.
+                The Act assigns management and control of the CSIS to the Director, a Governor in
+Council appointee. The Solicitor General is given an active supervisory role. Originally, Bill C-157
+had adopted a model borrowed from similar Australian legislation, which would have given the
+Director the final say on targeting and the release of information, and would not have given the
+Minister any operational role whatsoever; the ostensible purpose of these provisions was to ensure
+that the CSIS could not be used for partisan purposes. The provisions elicited considerable public
+outcry on the ground that they reduced the direct political responsibility of the Minister for the
+agency in order to avoid a fairly remote danger. They were roundly criticized by the Senate
+Committee. The Act provides that the Minister has an override and must approve all warrant
+applications. Another provision of Bill C-157 which aroused criticism was the defence given to
+agency employees for such reasonable acts done in pursuance of their duties as were “reasonably
+necessary.” In the Act, this is replaced by s. 20, which gives employees the protection afforded by
+law to peace officers.
+                                        LIBRARY OF PARLIAMENT
+                                      BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                  9
+               Two aspects of Bill C-157 which survived its revision into the Act had to do with
+control and review. The Act establishes the office of Inspector General (s. 30) and the Security
+Intelligence Review Committee (SIRC, s. 34). The former officer, appointed by the Governor in
+Council, is to monitor CSIS operations and to report to the Deputy Solicitor General and the SIRC
+on the legality and propriety of those operations. The SIRC is a committee to be composed of up to
+five Privy Councillors appointed by the Governor in Council after consultation by the Prime
+Minister with opposition leaders in the House of Commons. It is to conduct a review of CSIS
+operations and to report to the Minister and Parliament on them.             It also has a variety of
+investigative duties. It deals with complaints about CSIS activities and acts as an appeal board with
+respect to security assessments and security-influenced decisions under the Citizenship and
+Immigration Acts.
+               A final aspect of the legislation, which was not dealt with by the McDonald
+Commission, is what was formerly Part IV of the Act (ss. 56-61), now known as the Security
+Offences Act. This Act addresses police and prosecutorial authority to deal with security-related
+offences. It gives the RCMP “primary responsibility” over the investigation of such offences, in
+pursuance of which they may enter into agreements with other police forces. The Security Offences
+Act also gives the federal Attorney General the power to prosecute security offences and, by fiat, to
+intervene in, and take over, provincial prosecutions of such offences.          Despite considerable
+provincial criticism of the Act as an impingement on a traditional provincial area of jurisdiction, it
+remained essentially unchanged as it went through the legislative process.
+
+
+ E. The Controversial Issues
+
+               The legislation which emerged from Parliament is far from being the product of
+consensus.   Indeed, the committee proceedings and report stage dealing with Bill C-9 were
+extremely contentious. Both opposition parties vociferously opposed fundamental elements of it,
+giving voice to substantial public concern.
+               Perhaps the most fundamental concern had to do with the removal of the security
+function from the RCMP and the creation of a civilian service. Several provincial attorneys general,
+the Progressive Conservative party, some civil liberties groups, and, eventually the New Democratic
+Party, opposed the change. The principal contention was that, given a clear mandate and efficient
+                                          LIBRARY OF PARLIAMENT
+                                        BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   10
+review, the RCMP was still best equipped to discharge the security function, having discipline, a
+long and honourable tradition, an established system of contacts, and being virtually immune from
+penetration by foreign agencies. Others took the position that the defects in the legislation were so
+patent that it would be better to maintain the status quo.
+                There was also considerable opposition to the mandate given to the CSIS. This
+opposition had reference not only to the breadth of the definition, but to the whole idea of a security
+agency dealing with matters such as “subversion” or “foreign influenced activities.” The Canadian
+Civil Liberties Association, for example, took the position that there was no need for more than a
+relatively small agency to deal with the distinct threats of espionage or sabotage from foreign
+nations. Regular law enforcement could deal with the other elements of threat, when the criminal
+law was contravened.
+                The scope of the threats definition is also quite controversial. Some contend that it is
+so broadly drafted as to bring within its scope a variety of acts having nothing to do with true
+security. The government took the position that the definition must be read in the context of those
+provisions which protect lawful dissent and which limit the agency to what is “strictly necessary”
+and in the context of the new system of monitoring and review. Given this context, it is said, the
+definition is reasonable. The “foreign intelligence” function of the agency (s. 16) is also quite
+contentious. Many find it inherently unreasonable to submit foreign nationals to surveillance if they
+do not constitute a security threat, but can merely provide Canada with useful information having to
+do with defence or international affairs. Another area of concern is the scope of the warrant system,
+which gives the CSIS access to virtually any investigative technique from surreptitious entry to
+access to doctor-patient confidences.
+                Most of the remainder of the Act is not particularly contentious, save for two areas
+having to do with review of the agency. The first has to do with the access to information by the
+Inspector General and the SIRC. Both bodies are given access to all information in the possession
+of the CSIS except cabinet documents. These exceptions (see ss. 31(2) and 39(3)) first appeared in
+Bill C-157 and have been almost universally condemned, critics taking the position that the review
+bodies should have access to all documents held by the agency in order to fully discharge their
+important functions. The Senate Committee recommended deletion of the exceptions. In the House
+Justice Committee, some government members joined the opposition to vote to remove them. They
+were, however, restored at report stage in the House. The government took the position that the
+cabinet system requires utmost confidentiality.
+                                        LIBRARY OF PARLIAMENT
+                                      BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                  11
+               The other area is direct parliamentary oversight of the CSIS. Recommended by
+McDonald, it was absent from Bill C-157. The Senate committee had also rejected it as impractical,
+duplicative of the SIRC, and subject to weaknesses in preserving secrecy. Both opposition parties
+supported the idea of a special parliamentary committee, with access to agency information, in order
+that Parliament could be assured that the CSIS was acting within its mandate. They were not
+confident that Parliament would get a full picture of agency operations from the SIRC, and pointed
+to the examples of the Federal Republic of Germany and the United States, to show that such a
+committee could be workable and successful. The government was firm on this matter, however,
+and refused to add direct parliamentary oversight.
+
+
+ F. 1987 to Present
+
+               On 17 August 1987, the Federal Court of Appeal, by a two-to-one majority, held that
+the warrant-granting provision of the Canadian Security Intelligence Service Act (s. 21) is not in
+violation of the Canadian Charter of Rights and Freedoms. In this case, an individual (Atwal),
+accused of involvement in an attack in B.C. on a Punjabi Cabinet Minister, applied for access to a
+sworn affidavit in support of a warrant application in Federal Court. Heald J. on 30 April 1987
+upheld s. 21 of the CSIS Act under the Charter and denied access to the affidavit. On appeal,
+Mahoney J. and MacGuigan J. not only upheld s. 21 under the Charter, but reversed Heald J. and
+allowed access to the affidavit with the names of CSIS agents and informants deleted.
+               On 11 September 1987, Mr. T.D. Finn resigned as Director of CSIS and was
+replaced by J. Reid Morden, former Assistant Secretary to the Cabinet for Foreign and Defence
+Policy. Mr. Finn resigned when it was revealed in Federal Court that day that the affidavits behind
+the warrant in the Atwal case contained inaccuracies and irregularities.
+               The Solicitor General on 30 November 1987 released the Report of a three-member
+independent advisory team chaired by Gordon Osbaldeston, and announced his acceptance and
+implementation of its recommendations. The Report was critical of CSIS and recommended
+changes in relation to all facets of the service. More particularly, criticisms and recommendations
+were made about the excessive internal compartmentalization of CSIS operations, inadequate
+reliance on open sources, under-developed analytical capacity, lack of clear policy directives on
+targeting, the use of human sources and of intrusive investigative techniques, and inadequate
+                                        LIBRARY OF PARLIAMENT
+                                     BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                 12
+training programs. The Report urged the re-opening of the CSIS staff college and the elimination of
+the Counter Subversion Branch.
+                On 29 March 1988, the Solicitor General released the SIRC’s report to him of 25
+March 1988, on CSIS’s use of its investigative powers with respect to the labour movement. The
+Committee concluded that neither Marc André Boivin, one of CSIS’s human sources, nor CSIS had
+targeted union members or unions for their labour activities as such. The report was critical of CSIS
+for retaining Mr. Boivin’s services after they had ceased to be useful, for not having in place a
+policy to determine when the use of human sources was reasonably necessary, and for maintaining,
+adding to and utilizing R.C.M.P. Security Service files in a way that may have been beyond the
+agency’s mandate as set out in the CSIS Act. The report indicated the SIRC’S satisfaction that both
+the Solicitor General and the Director of CSIS had moved expeditiously to deal with these
+difficulties.
+                In the Thomson case, an individual (Thomson) had been refused a position with the
+Department of Agriculture because of an unfavourable security assessment by CSIS. He appealed
+this decision to SIRC which conducted a hearing and recommended that he be given a positive
+security clearance. The Deputy Minister of Agriculture rejected this recommendation. On 7 March
+1988, the Federal Court of Appeal ruled that because of the statutory structure of the CSIS Act, the
+SIRC’s recommendations are binding on government. It also ruled that, because the Deputy
+Minister of Agriculture was exercising “administrative” powers, the Federal Court of Appeal did
+not have jurisdiction to make a binding ruling in this matter. On 17 June 1988, Dubé J. of the
+Federal Court, Trial Division, expressed his respect for the reasoning in the Federal Court of
+Appeal’s obiter opinion, but declined to follow it. He held that the recommendations made by the
+SIRC in security clearance cases are not “decisions” and hence not binding on government. Dubé
+J.’s ruling was appealed to the Federal Court of Appeal. On 17 May 1990, a differently constituted
+bench of the Federal Court of Appeal overruled Dubé J.’s decision and said he was bound by the
+initial appellate ruling. The Thomson decision was followed by Joyal J. on 4 October 1990 in the
+Kwan Lihuen case, which involved the removal of a security clearance from a Chinese language
+translator employed by CSIS. The Supreme Court of Canada on 25 January 1991 granted leave to
+appeal in the Thomson case. In reasons handed down in the Thomson case on 13 February 1992, the
+Supreme Court of Canada ruled that the SIRC’s recommendations in security clearance cases are
+not binding on government.
+                                         LIBRARY OF PARLIAMENT
+                                       BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                   13
+                On 26 January 1989, the Federal Court of Appeal rendered its decision in the Russell
+case. In this case, an individual (Russell) wanted to know if he had been the subject of investigation
+by CSIS. The SIRC advised Russell that CSIS had done nothing improper or illegal. In a decision
+rendered from the Bench, Pratte J.A. ruled that the March 1988 letter from the SIRC to Russell was
+merely a “report of findings,” not a “decision,” and hence not subject to judicial review.
+                On 9 March 1989, Stephen Ratkai, who had pleaded guilty to charges under the
+Official Secrets Act that he had engaged in espionage activities on behalf of the Soviet Union, was
+sentenced to nine years’ imprisonment.
+                On 23 March 1989, Marc André Boivin instituted litigation in the Federal Court
+against CSIS, the SIRC and the Solicitor General in which he claimed damages in the amount of
+half a million dollars. He sued CSIS for having revealed his activities on its behalf to the Sûreté du
+Québec, and the SIRC for having reported publicly on his activities without giving him an adequate
+opportunity to present his side of the events.
+                On 15 May 1989, the Canadian Civil Liberties Association initiated litigation in the
+Ontario Court (General Division) in which it requested a judicial declaration that certain provisions
+of the CSIS Act were in violation of the Charter of Rights and hence of no force or effect. Mr.
+Justice Potts of the Ontario Court (General Division) rendered a judgment on 16 August 1990 in
+which he concluded that the Canadian Civil Liberties Association had legal standing to continue its
+litigation. In reasons for judgment released on 25 March 1992, Mr. Justice Potts ruled that the CSIS
+Act was not in violation of the Charter of Rights and Freedoms. The Ontario Court of Appeal, by a
+2 to 1 majority, dismissed the Canadian Civil Liberties Association appeal in a 9 July 1998 decision.
+The Supreme Court of Canada refused to grant leave to appeal in this case.
+                In the Chiarelli case, the Federal Court of Appeal decided on 23 February 1990 that
+the provision of the CSIS Act that allowed the SIRC to exclude complainants and their counsel from
+certain parts of its hearings was in violation of the Charter of Rights. The Supreme Court of Canada
+granted leave to appeal in this case. On 26 March 1992, the Supreme Court of Canada ruled that the
+provision of the CSIS Act allowing the SIRC to exclude complainants and their counsel from certain
+parts of hearings was not in violation of the Charter.
+                On 14 August 1990, the SIRC issued a report and recommendations involving the
+Canadian Armed Forces and Ms. M.D. Douglas, a former member. In this report, the SIRC was
+critical of the Forces for the way in which an investigation of Ms. Douglas’s sexual orientation had
+been carried out and her security clearance withdrawn. Concluding that Ms. Douglas was not a
+                                        LIBRARY OF PARLIAMENT
+                                      BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                  14
+security risk, it recommended that her security clearance be restored and that she be reinstated in her
+former employment. This decision was appealed to the Federal Court of Appeal.
+
+
+PARLIAMENTARY ACTION
+
+
+               A parliamentary role in the oversight of CSIS operations is provided for in s. 53 of
+the Act, which stipulates that the Solicitor General must lay the annual report of the SIRC before
+Parliament. The Standing Orders of the House of Commons deem any report required by law to be
+tabled in Parliament to be permanently referred to a committee of the House. For SIRC reports, this
+is the Standing Committee on Justice and Human Rights.
+               Another source of parliamentary input into the assessment of the legislation are s. 56
+of the CSIS Act and s. 7 of the Security Offences Act, which were recommended by the Senate
+Committee. These sections provided that a committee of the House or of the House and the Senate
+was to conduct a review of the operation of the Acts within five years of their coming into force.
+That committee was to make a report, which would include “a statement of any changes” it
+recommended. The House of Commons set up a Special Committee on 27 June 1989 to conduct a
+review of the CSIS Act and the Security Offences Act. That Committee reported its findings and 117
+recommendations on 24 September 1990.
+               The Committee’s report, entitled In Flux but not in Crisis, generally concluded that
+the Canadian security and intelligence system was sound and that any reforms should be based on
+the continuation and extension of already-established institutions. Its recommendations dealt with
+the definition of mandates, labour relations and human resources, the review roles of the Inspector
+General and the SIRC, the complaints roles of the SIRC and the RCMP Public Complaints
+Commission, and the establishment of a parliamentary sub-committee to monitor and review the
+security and intelligence community. The Committee called upon the government to respond to its
+report and recommendations within 150 days.
+               The government tabled its response, entitled On Course: National Security for the
+1990’s, on 25 February 1991. The government set out its belief that legislative changes in the CSIS
+Act and the Security Offences Act were not needed. It further asserted that it was unwilling at that
+time to contemplate structural changes to the national security model in place. The response did
+                                        LIBRARY OF PARLIAMENT
+                                      BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                  15
+undertake that, starting in 1992, the Solicitor General would at the time of tabling of Main Estimates
+also provide Parliament with a statement of national security issues facing Canada. This statement
+was to be accompanied by a public Annual Report, by the Director of CSIS, which would discuss
+the “threat environment.” The government accepted the Committee recommendation that there be
+another parliamentary review of the CSIS Act and the Security Offences Act, and undertook to
+arrange for it to begin in 1998.
+                On 26 February 1991, a debate was held on an Opposition motion that the House of
+Commons concur in the Committee’s report “In Flux but not in Crisis.” The House adjourned that
+day without coming to a vote.
+                The House of Commons Standing Committee on Justice and Solicitor General,
+pursuant to a recommendation made in “In Flux but not in Crisis,” established on 13 June 1991 a
+permanent Sub-Committee on National Security. The Sub-Committee held its first meeting on 18
+June 1991.
+                In fulfillment of a commitment made by the government in “On Course: National
+Security for the 1990’s,” the Solicitor General made his first Annual Statement on National Security
+and tabled the CSIS Director’s first Public Report in the House of Commons on 19 March 1992.
+                The Solicitor General on 11 April 1994 made his Annual Statement on National
+Security and at the same time tabled in the House of Commons the CSIS Director’s Public Report
+1993. Two days later, on 13 April 1994, the Solicitor General, during an appearance on Main
+Estimates before the House of Commons Standing Committee on Justice and Legal Affairs,
+provided for the first time a three-figure breakdown of CSIS’s budget. Under the 1994-95 Main
+Estimates, CSIS was to be allocated $206,834,000, to be made up of $115,454,000 for personnel,
+$17,196,000 for construction or land acquisition, and $74,184,000 for other subsidies and payments.
+These budgetary details were made public for the first time.
+                The House of Commons Standing Committee on Justice and Legal Affairs on 3 May
+1994 adopted a motion re-establishing a Sub-Committee on National Security.
+                On 14 August 1994, there were public allegations that a CSIS human source, Grant
+Bristow, had played a prominent role in the establishment and activities of the Heritage Front. That
+day, the SIRC undertook to investigate these and related public allegations. Because of subsequent
+public developments, the House of Commons Sub-Committee on National Security on 29 August
+1994 announced that it would be investigating these events.
+                                        LIBRARY OF PARLIAMENT
+                                     BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                 16
+               The SIRC Report to the Solicitor General on CSIS’s involvement in the Heritage
+Front was released by the Minister on 15 December 1994. The report confirmed that CSIS had had
+a human source within the Heritage Front who had been properly targeted and had provided
+valuable security intelligence. It concluded that the source, whom it did not identify, had played a
+support, rather than a leadership, role in the founding and running of the Heritage Front. It also
+concluded, after lengthy consideration, that many of the public allegations were either exaggerated
+or untrue, though it expressed some concern about the “borderline” activities of the source. The
+SIRC recommended that more complete policy guidance be developed for the placement and
+control of CSIS human sources.
+               On 16 December 1994, members of SIRC appeared before the House of Commons
+Sub-Committee on National Security to answer questions about the report on CSIS and the Heritage
+Front.
+               On 28 March 1995, the Solicitor General made his Annual Statement on National
+Security and at the same time tabled in the House of Commons the CSIS Director’s Public Report
+1994. For the first time, the Public Report contained a Program Outlook covering the period until
+the end of the 1997-98 fiscal year. This document projected that CSIS’s budget would decline from
+$207 million to $159 million and its personnel component from 2,366 Full Time Equivalents
+(FTEs) to 2,021.
+               The House of Commons Sub-Committee on National Security tabled its report on
+document and personnel security on 4 October 1995. Its five recommendations proposed that the
+Government Security Policy be strengthened and that it be extended to Ministers’ offices. In its 28
+February 1996 response to the report, the Government accepted the thrust of the Sub-Committee’s
+recommendations.
+               On 19 June 1996, the House of Commons Sub-Committee on National Security
+tabled its Report on the “Heritage Front Affair.” The Sub-Committee released a majority report, a
+joint dissenting opinion, and two dissenting opinions, based on its review of the December 1994
+SIRC Report on these matters
+               On 1 August 1996, Heald J. of the Federal Court ruled in Zundel that there was well-
+founded apprehension of bias in relation to the SIRC’s consideration of a citizenship case of a
+person on whom it had commented adversely in its Heritage Front Affair Report. This decision was
+appealed by the government to the Federal Court of Appeal. In the meantime, Bill C-84, amending
+the Citizenship Act and the Immigration Act to provide an alternative process in situations analogous
+to that in Zundel, was passed by the House of Commons and the Senate, and received Royal Assent
+                                      LIBRARY OF PARLIAMENT
+                                    BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                17
+on 25 April 1997. The Federal Court of Appeal on 27 November 1997 reversed Heald J’s decision
+in Zundel. On 30 April 1998, the Supreme Court of Canada denied leave to appeal in the case.
+
+
+CHRONOLOGY
+
+
+                     1946 -    With the increase of security functions assigned to the RCMP,
+                               personnel working in that area were for the first time
+                               organizationally separated from the Criminal Investigations Branch
+                               into the Special Branch.
+
+                     1956 -    The Special Branch was elevated to the Directorate level within the
+                               RCMP, under the command of an Assistant Commissioner.
+
+                     1969 -    The Royal Commission on Security recommended creation of a
+                               civilian security agency. The government decided against this, but
+                               promised to make the Special Branch more separate and increase
+                               the civilian staff.
+
+                     1970 -    The Special Branch became the Security Service, under the
+                               direction of a civilian Director General, Mr. John Starnes.
+
+             October 1970 -    James Cross was kidnapped; Pierre Laporte was kidnapped and
+                               murdered. The War Measures Act was proclaimed.
+
+                  1971-74 -    Particularly, but not exclusively, in Quebec, the Security Service
+                               undertook a series of acts, many apparently illegal, to neutralize
+                               radical and separatist groups.
+
+           27 March 1975 -     The federal cabinet issued a directive governing the operations of
+                               the Security Service. It remained secret until 1978.
+
+           30 March 1976 -     Cpl. R. Samson, on trial for an unrelated incident, revealed his
+                               participation in Operation Bricole in 1972 (a break-in and theft of
+                               files).
+
+                June 1977 -    Former Security Service staff-sergeant Donald McCleery revealed
+                               to officials from the Department of Justice the details of other
+                               operations, including Operation Ham (the break-in and theft of PQ
+                               membership lists).
+
+               6 July 1977 -   Solicitor General Fox announced the appointment of Mr. Justice
+                               D.C. McDonald to head a commission of inquiry into the
+                               allegations of RCMP wrongdoing.
+
+                June 1981 -    Following the report of its own inquiry, the government of Quebec
+                               laid charges against 17 current or former RCMP members.
+                             LIBRARY OF PARLIAMENT
+                          BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                      18
+
+
+   25 August 1981 -   The final report of the McDonald Commission was made public.
+
+     18 May 1983 -    Bill C-157 was given first reading in the House of Commons
+                      during the 1st Session of the 32nd Parliament.
+
+     29 June 1983 -   The subject matter of Bill C-157 was referred to a special
+                      committee of the Senate, which in its November report
+                      recommended substantial amendment of the bill.
+
+  18 January 1984 -   Bill C-9 was given first reading in the House of Commons during
+                      the 2nd Session of the 32nd Parliament. The bill incorporated most
+                      of the changes recommended by the Senate Committee.
+
+     21 June 1984 -   After three months in committee, Bill C-9 was given third reading
+                      and passed by the House. Shortly thereafter it was passed by the
+                      Senate.
+
+     16 July 1984 -   All but Part II of the CSIS Act was proclaimed in force.
+
+   31 August 1984 -   Part II of the CSIS Act, which deals with warrants, was proclaimed
+                      in force.
+
+29 November 1984 -    The first members of the SIRC were appointed, under the
+                      chairmanship of Ronald Atkey, a former Conservative cabinet
+                      minister.
+
+ 15 February 1985 -   Richard Gosse, former deputy attorney general of Saskatchewan,
+                      was appointed first Inspector General under the CSIS Act.
+
+     22 July 1987 -   The Solicitor General announced the establishment of a
+                      three-member independent advisory team to report by 30 October
+                      1987 on the implementation of the SIRC’s recommendations
+                      concerning counter-subversion and civilianization.
+
+     30 July 1987 -   The Senate Special Committee on Terrorism and the Public Safety
+                      released its Report.
+
+11 September 1987 -   T.D. Finn resigned as first Director of CSIS and was replaced by J.
+                      Reid Morden.
+
+30 November 1987 -    The Solicitor General released the independent advisory team’s
+                      report and announced his acceptance of its recommendations.
+
+   29 March 1988 -    The SIRC issued its Special Report on CSIS activities in relation to
+                      the labour movement and on the actions of Marc André Boivin.
+                             LIBRARY OF PARLIAMENT
+                          BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                      19
+     27 June 1989 -   The House of Commons established a Special Committee to
+                      conduct the five-year review of the provisions and operation of the
+                      CSIS Act and the Security Offences Act. This Committee was to
+                      report by 16 July 1990.
+
+     28 June 1989 -   The Special Committee of the Senate on Terrorism and Public
+                      Safety tabled its second and final report.
+
+24 September 1990 -   The House of Commons Special Committee on the Review of the
+                      CSIS Act and the Security Offences Act tabled its report entitled In
+                      Flux but not in Crisis.”
+
+ 25 February 1991 -   The government tabled “On Course: National Security for the
+                      1990’s,” its response to the Report of the House of Commons
+                      Special Committee on the Review of the CSIS Act and the Security
+                      Offences Act.
+
+ 26 February 1991 -   A debate on a concurrence motion in the Report of the Special
+                      Committee on the Review of the CSIS Act and the Security
+                      Offences Act was held in the House of Commons.
+
+     13 June 1991 -   The House of Commons Standing Committee on Justice and
+                      Solicitor General established a Sub-Committee on National
+                      Security.
+
+     18 June 1991 -   The Sub-Committee on National Security met for the first time.
+
+      3 May 1994 -    The House of Commons Standing Committee on Justice and Legal
+                      Affairs adopted a motion re-establishing its Sub-Committee on
+                      National Security.
+
+14-29 August 1994 -   A number of public allegations were made about the role of a CSIS
+                      human source, Grant Bristow, in the establishment and activities of
+                      the Heritage Front. The SIRC decided to investigate public
+                      allegations concerning CSIS and the Heritage Front.
+
+   29 August 1994 -   The House of Commons Sub-Committee on National Security
+                      announced an investigation into public allegations of a
+                      CSIS-Heritage Front link.
+
+15 December 1994 -    The SIRC Report on CSIS’s activities within the Heritage Front
+                      was made public by the Solicitor General.
+
+   4 October 1995 -   The House of Commons Sub-Committee on National Security
+                      tabled its Report Document and Personnel Security.
+                                      LIBRARY OF PARLIAMENT
+                                    BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                               20
+             19 June 1996 -    The House of Commons Sub-Committee on National Security
+                               tabled its Report on the Heritage Front Affair.
+
+            1 August 1996 -    Heald J. of the Federal Court rendered his judgment in Zundel.
+
+            25 April 1997 -    Bill C-84 received Royal Assent.
+
+           3 October 1997 -    McGillis J. of the Federal Court rendered a judgment critical of
+                               attempts by CSIS to include “visitors clauses” in warrants for
+                               security intelligence investigations.
+
+       27 November 1997 -      The Federal Court of Appeal reversed Heald J’s decision in
+                               Zundel. The Supreme Court of Canada later denied leave to
+                               appeal.
+
+           26 March 1998 -     The Senate established a Special Committee on Security and
+                               Intelligence which was to report in the fall of 1998.
+
+               9 July 1998 -   The Ontario Court of Appeal, by a 2-1 majority, dismissed the
+                               appeal in the Canadian Civil Liberties Association case. The
+                               Supreme Court of Canada later denied leave to appeal.
+
+            January 1999 -     The Senate Special Committee on Security and Intelligence
+                               tabled its report.
+
+          November 1999 -      Media accounts contained reports of theft and mishandling of
+                               confidential CSIS documents.
+
+       16 December 1999 -      The Solicitor General made the Annual Statement on National
+                               Security in the House of Commons and responded to the
+                               Report of the Senate Special Committee on Security and
+                               Intelligence.
+
+
+SELECTED REFERENCES
+
+
+Atkey, Ronald G., “Reconciling Freedom of Expression and National Security.” (1991) 41
+    University of Toronto Law Journal 38-59.
+
+Canada, House of Commons, Special Committee on the Review of the CSIS Act and the Security
+    Offenders Act. Report - In Flux but Not in Crisis. Supply and Services Canada, Ottawa, 1990.
+
+Canada, House of Commons, Standing Committee on Justice and Legal Affairs, Sub-Committee on
+    National Security. Document and Personnel Security. Tenth Report of the Standing
+    Committee. Tabled on 4 October 1996.
+                                      LIBRARY OF PARLIAMENT
+                                    BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                               21
+Canada, House of Commons, Standing Committee on Justice and Legal Affairs, Sub-Committee on
+    National Security. The Heritage Front Affair: Our View. First Report of the Standing
+    Committee. Tabled on 19 June 1996.
+
+Canada. Report of the Royal Commission on Security. Queen’s Printer, Ottawa, 1969.
+
+Canada, Senate Special Committee. Delicate Balance: A Security Intelligence Service in a
+      Democratic Society. Supply and Services Canada, Ottawa, November 1983.
+
+Canada, Senate Special Committee on Terrorism and the Public Safety. Report. Supply and
+      Services Canada, Ottawa, 1987.
+
+Canada, Senate Special Committee on Terrorism and the Public Safety. Second and Final
+      Report. Supply and Services Canada, Ottawa, 1989.
+
+Canada, Senate Special Committee on Security and Intelligence. Report.               Supply and
+     Services Canada, Ottawa, 1999.
+
+Canada, Solicitor General. On Course: National Security for the 1990’s. The government’s
+      response to the Report of the House of Commons Special Committee on the Review of the
+      CSIS Act and the Security Offenders Act. Supply and Services Canada, Ottawa, February
+      1991.
+
+Canada, Solicitor General. People and Process in Transition: Report to the Solicitor General by
+      the Independent Advisory Team on The Canadian Security Intelligence Service.
+      Communications Group, Ministry Secretariat, Supply and Services Canada, Ottawa,
+      October 1987.
+
+Canadian Security Intelligence Service. Public Reports (1991 to 1998). Supply and Services
+      Canada, Ottawa.
+
+Cleroux, Richard. Official Secrets: The Story Behind the Canadian Security Intelligence Service.
+       McGraw-Hill Ryerson, Toronto, 1990.
+
+Commission of Inquiry Concerning Certain Activities of the RCMP. Second Report - Freedom
+     and Security Under the Law. Ottawa, 1981.
+
+Eddy, Troy Andrew. The Politics of Intelligence: A Study of Factors Influencing Canada’s
+      Security and Intelligence Network: Requirements versus Capabilities. M.A. Thesis,
+      Dalhousie University, Halifax, Nova Scotia, August 1991.
+
+Farson, A. Stuart. “Accountable and Prepared? Reorganizing Canada’s Intelligence Community
+       for the 21st Century.” Canadian Foreign Policy, Vol. 1, No. 3, 1993, p. 43-66.
+
+Farson, A. Stuart. David Stafford and Wesley K. Wark, (eds.). Security and Intelligence in a
+       Changing World: New Perspectives for the 1990’s. Frank Cass & Co. Ltd., London,
+       England, 1991.
+                                       LIBRARY OF PARLIAMENT
+                                     BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                                22
+Farson, A. Stuart. “In Crisis and In Flux?: Politics, Parliament and Canada’s Intelligence Policy.”
+       Journal of Conflict Studies, Vol. 16, No. 1, Spring 1996.
+
+Farson, A. Stuart. “Is Canadian Intelligence Being Re-Invented?” Canadian Foreign Policy,
+      Vol. 6, No. 2, 1999, p. 49-83.
+
+Finn, T. D’Arcy. “Does Canada Need a Foreign Intelligence Service?” Canadian Foreign Policy,
+       Vol. 1, No. 3, 1993, p. 149-162.
+
+Franks, C.E.S. (ed.). Dissent and the State. Oxford University Press, Toronto, 1989.
+
+Granatstein, J.L. and David Stafford. Spy Wars: Espionage and Canada from Gouzenko to
+       Glasnost. Key Porter Books, Toronto, 1990.
+
+Hanks, Peter and John D. McCamus (eds.). National Security: Surveillance and Accountability
+       in a Democratic Society. Les éditions Yvon Blais Inc., Cowansville, Quebec, 1989.
+
+Hensler, Alistair. “Canadian Intelligence: An Insider’s Perspective.” Canadian Foreign
+      Policy, Vol. 6, No. 3, 1999, p. 127-132.
+
+Hensler, Alistair. “Creating a Canadian Foreign Intelligence Service.” Canadian Foreign Policy,
+       Vol. 3, No. 3, 15.
+
+Kilgour, David. Betrayal: The Spy Canada Abandoned. Prentice-Hall Canada Inc., Scarborough,
+       Ontario, 1994.
+
+Krieber, Janine. “La démocratie du secret: le contrôle des activités de renseignement au Canada.”
+       13 Politique, 1988, p. 37-62.
+
+Leigh, Ian. “Secret Proceedings in Canada.” (1996) Osgoode Hall Law Journal, Vol. 34, No. 1.
+        113-173.
+
+Lester, Normand. Enquête sur les services secrets. Les Éditions de L’homme, Montreal, 1998.
+
+Potter, Evan, (Ed.). Economic Intelligence and National Security. Carleton University Press,
+        Ottawa, 1998.
+
+Prados, Alfred B. and Richard A. Best Jr. Intelligence Oversight in Selected Democracies.
+       Congressional Research Service, Library of Congress, Washington D.C., 21 September
+       1990.
+
+Rosen, Philip. The Communications Security Establishment: Canada’s Most Secret Intelligence
+       Agency. BP-343E, Research Branch, Library of Parliament, Ottawa, September 1993.
+
+Saltstone, Scot P. “Some Consequences of the Failure to Define the Phrase “‘National Security’”
+        Conflict Quarterly, Vol. 11, 1991, p. 36-54.
+
+Security Intelligence Review Committee. Annual Reports (1985-86 to 1998-99). Supply and
+       Services Canada, Ottawa.
+                                      LIBRARY OF PARLIAMENT
+                                    BIBLIOTHÈQUE DU PARLEMENT
+
+
+
+
+                                               23
+
+Security Intelligence Review Committee. The Heritage Front Affair: Report to the Solicitor
+       General of Canada. Mimeo, dated 9 December 1994, released by the Solicitor General on
+       15 December 1994.
+
+Security Intelligence Review Committee. Section 54 Report to the Solicitor General of Canada
+       on CSIS’ Use of its Investigative Powers with Respect to the Labour Movement. Mimeo
+       dated 25 March 1988, released by the Solicitor General on 29 March 1988.
+
+Shulsky, Abram N. Silent Warfare: Understanding the World of Intelligence. Brassey’s (U.S.)
+       Ltd., McLean, Virginia, 1991.
+
+Starnes, John. Closely Guarded: A Life in Canadian Security and Intelligence. University of
+       Toronto Press, Toronto, 1998.
+
+Weller, Geoffrey R. “Comparing Western Inspectors General of Intelligence and Security.”
+       International Journal of Intelligence and Counterintelligence, 1996-97, Vol. 9, No. 4, p.
+       383-406.
+
+Whitaker, Reg and Gary Marcuse. Cold War Canada: The Making of a National Insecurity
+      State 1945-57. University of Toronto Press, Toronto, 1994.
+
+Whitaker, Reg. “Security and Intelligence in a Cold Climate,” in: How Ottawa Spends - 1996-
+      1997, Carleton University Press, Ottawa, 1996, pp. 409-441.
+

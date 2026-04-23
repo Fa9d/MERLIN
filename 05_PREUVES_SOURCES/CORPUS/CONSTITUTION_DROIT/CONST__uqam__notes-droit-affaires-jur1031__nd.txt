@@ -1,0 +1,2212 @@
+          UNIVERSITÉ DU QUÉBEC À MONTRÉAL
+               FACULTÉ DE SCIENCE POLITIQUE ET DE DROIT
+
+                 DÉPARTEMENT DES SCIENCES JURIDIQUES
+
+
+
+
+                 Introduction au droit des affaires
+                               (JUR 1031)
+
+
+
+
+                        NOTES DE COURS
+
+
+
+
+Prof.: Roger MARTIN
+© hiver 2023
+INTRODUCTION GÉNÉRALE                      (ARCHAMBAULT, chap. 1, jusqu’à la page 27)
+
+   QU’EST-CE QUE LE DROIT ?
+
+      Définition du droit (ni courbe ni tordu ; ce qui est conforme à la règle)
+      [Le droit est une science humaine. C’est l’ensemble des règles permettant et organisant la
+      vie en société. Le droit c’est : « l’ensemble des règles de conduite qui gouvernent les
+      rapports entre les hommes et dont le respect est assuré par l’autorité publique. »
+       Universalité du droit (Ubi societas, ibi jus)
+         [Pour chaque société, il y a du droit. Le droit peut être envisagé comme une forme de
+         pouvoir social. Le droit suppose toujours la présence de plus d’un individu. Le droit sert à
+         organiser les rapports des gouvernants et gouvernés, mais également les rapports entre
+         simples particuliers. (Ex. : le droit régit la manière dont se vendent les immeubles où se
+         partagent les successions, etc.). Le droit est un système hiérarchisé de normes, édictées
+         par l’État, obligatoires pour tous et qui peuvent être imposées par la force.]
+
+
+   A. DISTINCTIONS ENTRE RÈGLE DE DROIT ET AUTRES RÈGLES DE CONDUITE
+
+      1. Droit versus morale et religion
+          [Les règles de droit se distinguent des règles de morale et de religion qui s’imposent à
+          la conscience, mais ne comportent pas de sanction de l’autorité publique. Le droit
+          apparaît comme une organisation de la force. Il fixe à quelles conditions et de quelle
+          manière on peut faire usage de la force à l'égard d’une personne. On se trouve à
+          réglementer l'emploi de la force dans les relations entre les hommes. La force ne
+          devant être employée que par certains individus spécialement autorisés à cet effet. La
+          force, mise au service du droit, c'est la force publique (police, l’huissier, etc.). Ce
+          caractère fait partie de l'essence du droit, car nul ne peut se faire justice soi-même.
+          « La justice sans la force est impuissante; la force sans la justice est tyrannique »
+          Pascal.]
+          a) Morale
+               [Le principe inspirateur de la morale se trouve dans la conscience humaine guidée
+               par la vertu. La morale peut être définie comme « la maîtrise des entraînements
+               instinctifs et passionnels et la poursuite d'un idéal de perfection individuelle plus
+               ou moins élevé ». Pour la morale, la finalité serait plutôt celle de l'épanouissement
+               de la conscience de l’individu, de son perfectionnement. Ce sont des règles
+               relatives aux mœurs, telle la mode, les relations mondaines, la courtoisie, le
+               savoir-vivre, etc.
+
+               De son côté, le droit est de toute évidence guidé par des valeurs dans le choix de
+               ses impératifs et il n'est pas toujours aisé de le discerner de la morale comme
+               l’illustre l'interdiction de l'inceste ou de l'homicide. La morale et le droit ne
+               couvrent pas toujours les mêmes domaines. Tout ce qui est licite n'est pas
+               forcément moral. Par exemple, l'adultère n'est plus aujourd'hui une infraction
+
+                                               1
+                    pénale, alors qu'il reste pour beaucoup une faute morale (autres exemples :
+                    divorce, avortement).
+
+                    Par ailleurs, dans d'autres domaines, le droit règle des rapports où la morale se
+                    tait. Ainsi, qu'une entreprise doive établir annuellement tel compte ou tel
+                    document à jour, importe peu à la morale, de même que l'on roule à droite ou à
+                    gauche sur la chaussée! Cela peut s'expliquer par le fait que morale et droit ne
+                    poursuivent pas les mêmes objectifs, la première aspirant à la perfection de
+                    l'homme, le second n'ayant pour but que d'organiser la société.
+
+                    Enfin, les sanctions du droit et de la morale ne sont pas les mêmes. Alors que le
+                    droit comporte des sanctions concrètes, prévisibles et organisées, la morale
+                    recourt à des modes coercitifs beaucoup plus incertains et diffus (comme la
+                    pression de la société, voire de la conscience personnelle…).]
+
+               b) Religion
+                  [La religion prend la forme de commandements et peut parfois se confondre avec
+                  le droit, lorsque l'État n'est pas laïc. Droit et religion se distinguent aussi par la
+                  nature de la sanction : le fidèle rend compte à Dieu, non à l'État. La règle religieuse
+                  veillerait au salut de l’âme.
+
+                    En France, le droit se distingue nettement de la religion : le mariage civil et le
+                    mariage religieux sont nettement distincts. Il est interdit aux prêtres de marier
+                    religieusement deux personnes qui ne se sont pas préalablement mariées
+                    civilement. Le mariage religieux n'a donc pas d'effet civil, mais à l'inverse, il n'est
+                    pas dissous par le divorce. Seul le mariage civil est dissous par le divorce.]
+
+
+
+
+I   ÉTUDE DE LA RÈGLE DE DROIT
+    [Règle de droit : règle sociale, établie par l'autorité publique, qui est permanente et générale
+    dans son application et dont l'inobservation est sanctionnée par la force de l’État.]
+
+    A. NAISSANCE DU SYSTÈME FÉDÉRAL CANADIEN (1867)
+
+          1.   British North America Act (Acte de l’Amérique du Nord britannique (AANB),
+               aujourd’hui appelé : Loi constitutionnelle de 1867) [Texte juridique fondateur de la
+               fédération canadienne.]
+               [Résultat des conférences constitutionnelles de Charlottetown (sept. 1864), Québec (oct. 1864)
+               et Londres (1866) qui a pour effet de créer une union des colonies britanniques en Amérique du
+               Nord (« Dominion of Canada »).]
+     a)             Forme de la Constitution
+                    [Alors que les constitutions antérieures ont été imposées par la Grande-Bretagne, le
+                    contenu de la Constitution canadienne de 1867 a été élaboré par les représentants
+                                                    2
+                       politiques des colonies. La constitution canadienne est polymorphe parce qu’elle se
+                       présente sous plusieurs formes et dans plusieurs documents. C’est un hybride
+                       constitutionnel entre la tradition constitutionnelle britannique et la tradition propre au
+                       Canada. Elle est en partie écrite et en partie non écrite, car elle résulte en partie de
+                       coutumes et des précédents sans avoir fait l’objet d’une codification.]
+                       i)   Le Canada est une Monarchie constitutionnelle
+                            [Le chef de l’État est le Roi du Royaume-Uni qui règne, mais ne gouverne pas et agit
+                            selon la Constitution du Canada par l’intermédiaire du Gouverneur général au fédéral
+                            et par l’intermédiaire d’un Lieutenant-gouverneur dans chacune des provinces.]
+                  b)   Partage des pouvoirs législatifs
+                       i) Pouvoirs du Parlement du Canada (art. 91)
+                       ii) Pouvoirs des assemblées législatives provinciales (art. 92)
+                       iii) Pouvoir résiduaire
+                            [L’article 91 de la Loi constitutionnelle de 1867 confère au Parlement du Canada le
+                            pouvoir « de faire des lois pour la paix, l’ordre et le bon gouvernement du Canada,
+                            relativement à toutes les matières ne tombant pas dans les catégories de sujets par la
+                            présente loi exclusivement assignée aux législatures des provinces ». Ce pouvoir est «
+                            résiduaire » dans le sens où toute question qui ne relève pas de la compétence des
+                            assemblées législatives provinciales relève du pouvoir du Parlement fédéral.]
+
+
+
+        B. LOI CONSTITUTIONNELLE DE 1982
+
+             Rapatriement de la Constitution (1982)
+             [Processus qui avait pour but de transformer en législation canadienne les lois britanniques de
+             nature constitutionnelle applicables au Canada afin que celles-ci puissent être modifiées au
+             Canada.]
+
+             1.    Charte canadienne des droits et libertés (Charte incluse dans la Constitution)
+                   [elle correspond à la première partie (articles 1 à 34) de la Loi constitutionnelle de
+1982]
+
+             2.    Principe de la suprématie de la Constitution et contrôle judiciaire des lois
+                   (constitutionnalité des lois)
+                   [L'essence du constitutionnalisme au Canada est exprimée dans le par. 52(1) de la Loi
+                   constitutionnelle de 1982 :
+                          La Constitution du Canada est la loi suprême du Canada; elle rend
+                          inopérantes les dispositions incompatibles de toute autre règle de droit.
+
+La Constitution est la loi la plus importante d’un pays. C’est la source primaire et fondamentale du
+droit d’un pays. La Constitution, c’est l’acte de naissance d’un pays.
+
+
+
+
+        II        SOURCES FORMELLES DU DROIT
+                                                        3
+        Principe de la séparation des pouvoirs
+                [Élaborée par Locke (1632-1704) et Montesquieu (1689-1755), la théorie de la séparation des
+        pouvoirs vise à séparer les différentes fonctions de l’État, afin de limiter l’arbitraire et d’empêcher les
+        abus liés à l’exercice de ces pouvoirs. Cette théorie est plus souvent applicable dans les régimes
+        démocratiques.]
+        La théorie de la séparation des pouvoirs distingue trois fonctions principales :
+                          Pouvoir législatif : fonction d’édiction des règles générales (adoption des lois)
+                          Pouvoir exécutif : fonction d’exécution des règles générales (application des
+                           lois)
+                          Pouvoir judiciaire : fonction de règlement des litiges (interprétation des lois)
+L’objectif de cette théorie vise un équilibre des différents pouvoirs : « Pour qu’on ne puisse pas abuser
+du pouvoir, il faut que, par la disposition des choses, le pouvoir arrête le pouvoir. » Montesquieu
+
+
+                A.    LOI
+                      [Acte juridique provenant d’un organe étatique (le législateur) qui établit une règle de
+                      droit générale et obligatoire.]
+
+                      1. Terminologie (Traité, Charte, Code, loi)
+                            [La loi est fédérale ou provinciale : selon les compétences reconnues par la Loi
+                            constitutionnelle de 1867.]
+
+                      2. Caractéristiques de la loi
+                          a) Générale, abstraite et impersonnelle
+                                 [La loi vise à organiser la vie en société. Pour atteindre cette finalité sociale, la
+                                 loi va parfois contredire des règles morales ou religieuses (divorce, prescription,
+                                 avortement, etc.).]
+                            b)   Obligatoire (nul n’est censé ignorer la règle de droit)
+                                 [La loi étant destinée à organiser la société et les rapports entre ces membres, il
+                                 est nécessaire qu’elle soit respectée et elle doit être imposée (obligatoire pour
+                                 tous).]
+                            c)   Coercitive
+                                 [La loi est par nature assortie de sanctions coercitives émanant de l’État. Si toute
+                                 règle de conduite humaine comporte une sanction, seule la loi comporte une
+                                 sanction émanant de l’État.]
+                            d)   Principe de non-rétroactivité de la loi
+                                 i) Exceptions :
+                                         loi directement rétroactive : le législateur précise sans
+                                           ambiguïté que la loi est directement rétroactive. Elle ne peut
+                                           jamais concerner une loi pénale plus sévère (in pejus).
+                                         loi pénale plus clémente (in mitius) : elle s’applique aux
+                                           infractions pénales commises avant l’entrée en vigueur de la
+                                           loi, dès lors que les infractions n’ont pas été jugées
+                                           définitivement. Ce principe est formellement reconnu dans la
+                                           Constitution.
+
+                                                         4
+Un besoin est un écart en tre l’état actuel et l,ÉTAT DÉSIRÉ, TANT PHYSIOLOGIQUE QUE
+PSYCHOLOGIQUE, qui pousse un individu a agir afin de reduire cet ecart
+                3. Processus d’adoption et de modification d’une loi
+                    a) Rédaction du projet de loi
+                    b) Révision et approbation par le Conseil des ministres (Pouvoir exécutif)
+                    c) Présentation du projet de loi (en Chambre législative)
+                    d) Étude du projet de loi (débat)
+                    e) Adoptiondu projet de loi (le texte existe)
+                    f) Sanction du projet de loi (le projet de loi devient officiellement loi)
+                             [Pour que le projet de loi devienne loi, il doit être ratifié. Pour les projets de lois
+                             fédéraux, c’est le Gouverneur général (représentant de la Roi) qui doit
+                             sanctionner (ratifier) la loi. Pour les projets de lois provinciaux, c’est le Lieutenant-
+                             gouverneur de la province (représentant de la Roi) qui doit sanctionner (ratifier) la
+                             loi.]
+g)                      Publication de la loi
+                        h) Modification de la loi
+
+                   4. Entrée en vigueur et application de la loi
+                      (Le texte de la loi devient exécutoire, la loi est applicable)
+                        [C’est à compter de son entrée en vigueur qu’une loi acquiert sa force obligatoire. La
+                        loi est permanente : elle s’applique à compter de son entrée en vigueur jusqu’à son
+                        abrogation. Le dernier article d’une loi précise habituellement le moment de l’entrée
+                        en vigueur de la loi ou d’une ou de plusieurs de ses parties. Il existe différentes
+                        modalités pour mettre en vigueur une loi.]
+
+                   5. Abrogation de la loi (Le texte de loi « meurt »)
+                        [En principe, la loi n’expire pas (une loi n’a pas de date de péremption) sauf si la loi est
+                        temporaire, c’est-à-dire lorsqu’elle prévoit une date d’expiration, ce qui est très rare.
+                        Même si la loi devient désuète, elle continue de s’appliquer jusqu’à son abrogation qui
+                        ne peut se faire que par voie législative. La loi est abrogée par l’autorité compétente
+                        (pouvoir législatif) donc par une autre loi. À noter qu’une loi inopérante ou invalidée
+                        (par le tribunal) n’est pas automatiquement abrogée.]
+
+
+
+              B.   RÈGLEMENT (législation déléguée)
+
+                   1.    Terminologie (décret, arrêté en conseil, arrêté ministériel, ordonnance,
+                         proclamation, etc.)
+                         ***Règlement sur les points d’inaptitude, chapitre C-24.2, r. 37
+                         ***Décret 177-2020, 13 mars 2020
+
+                   2.    Définition
+                         [Acte normatif de caractère général et impersonnel, édicté par une autorité
+                         administrative (incluant le gouvernement) qui existe en vertu d’une loi habilitante. Le
+                         règlement a un caractère général, alors que l’arrêté et le décret ont vocation à
+                         prendre des mesures individuelles. Toutes ces mesures ont le même caractère
+                         normatif et la même autorité que les lois, ce sont des normes à part entière. À l’instar
+                         de la loi, il faut adopter un règlement modificateur pour modifier un règlement.]
+                                                        5
+     3.   Contrôle de la légalité des règlements
+          [Ces mesures ont un caractère subordonné, c’est-à-dire que leur légalité découle du
+          respect de la loi habilitante qui les institue. Lorsqu’un juge se prononce sur
+          l’application d’un règlement, il contrôle le respect de la norme supérieure (loi
+          habilitante). Si celle-ci n’est pas respectée, le juge peut déclarer le règlement invalide
+          qui se trouve ainsi privé d’effets.]
+          a)    Règlements municipaux
+
+
+C.   USAGE ET COUTUME
+
+     1.   Définition
+          [« La coutume est une règle de droit qui s'est établie, non par une volonté étatique,
+          mais par une pratique répétée des intéressés eux-mêmes ». La coutume est une règle
+          de droit à part entière qui s'est formée par l'habitude (par la pratique et la répétition
+          de certains actes). En l'absence de loi écrite ou de règlement, le juge pourra fonder sa
+          décision sur la coutume si son existence est prouvée.]
+
+     2.   Éléments constitutifs
+          La coutume comporte deux éléments :
+          i) Élément matériel
+                [Habitude prolongée de la masse des citoyens de se conduire de telle ou telle
+                manière. C’est la répétition dans le temps. Il doit s’agir d’une pratique continue,
+                publique, paisible et durable.]
+          ii)   Élément psychologique
+                [Conviction dans le caractère obligatoire de l’usage. C’est l’idée que les individus
+                doivent avoir conscience de se soumettre à une norme, que le comportement
+                induit par la coutume est obligatoire. En outre, la coutume doit créer une
+                obligation susceptible d’être sanctionnée par les tribunaux.]
+
+     3.   Caractéristiques de la coutume
+          [La coutume est souvent locale; généralement, elle ne concerne qu'un groupe
+          relativement restreint d'individus. La coutume ne s’enseigne pas; elle se transmet
+          surtout par l'éducation des enfants, par les parents, les voisins, les amis, etc.
+
+          La coutume est une source de droit secondaire ou accessoire par rapport à la loi. En
+          pratique, la loi prédomine parce que la coutume est une source d'imprécision et
+          d'immobilité. Celui qui invoque la coutume doit la prouver. L’autorité de la coutume,
+          lorsqu’elle est constituée, est la même que toute norme du système juridique. Dans
+          la plupart des cas, les coutumes complètent la loi et parfois la loi peut même y
+          référer.]
+
+
+
+D.   JURISPRUDENCE
+
+     1.   Définition
+
+                                        6
+              [Dans un sens formel, la jurisprudence désigne l'ensemble des décisions, rendues par
+              les tribunaux. Le pouvoir judiciaire est notamment chargé d’interpréter les lois. La
+              jurisprudence constitue la solution généralement donnée par les tribunaux à une
+              question de droit. Le juge ne peut qu'appliquer les règles, en s'y conformant
+              strictement. Il est un instrument au service de la loi et doit ainsi se garder de tout
+              arbitraire.]
+
+          2. Caractère public des décisions judiciaires
+             [De façon générale, toutes les décisions des tribunaux peuvent être consultées par
+             quiconque au greffe du tribunal, car elles sont publiques. Une sélection des jugements
+             est publiée par les éditeurs juridiques dans des recueils et sur internet. Toute la
+             jurisprudence de la Cour suprême du Canada, depuis sa création, est publiée dans les
+             recueils. Elle est aussi disponible gratuitement, sur Internet, le jour même de sa
+             publication, sur le site de la Cour suprême.]
+
+
+
+     E.   DOCTRINE
+
+1.            Définition
+              [Ensemble des ouvrages et travaux écrits consacrés à l’étude du droit dans
+              lesquels les auteurs expliquent et interprètent le droit. Ce sont les opinions
+              publiées par des juristes (professeur de droit, juges, avocats, notaires, etc.).
+              La doctrine n'est pas à proprement parler une source du droit, puisqu'elle ne
+              s'impose jamais aux justiciables ni aux juges.
+
+              Elle a cependant une réelle importance, puisqu'elle peut contribuer à mettre
+              en lumière les défauts du droit positif. Elle est d'ailleurs une auxiliaire
+              précieuse du législateur et du juge qui requièrent parfois son avis. Dans la
+              mesure où les autres sources n’apportent pas de réponse claire aux
+              problèmes soulevés, la doctrine peut être porteuse de solutions. Il s’agit
+              d’une source persuasive et subsidiaire. Son autorité peut être forte, même si
+              son statut de source du droit est discutable et même si elle n’est jamais
+              obligatoire pour les juges tant qu’elle n’est pas reprise dans une décision de
+              justice pouvant valoir de précédent.]
+
+              Voici un exemple provenant d’un jugement de la Cour suprême du Canada :
+                 « C'est peut-être Mayrand (auparavant juge à la Cour d'appel du Québec),
+                 l'un des grands juristes québécois, qui a le mieux résumé l'évolution de la
+                 théorie de l'abus des droits au Québec quand il souligne dans L'abus des
+                 droits en France et au Québec (1974), 9 R.J.T. 321, à la p. 322 :
+                 Au Québec, la théorie de l'abus des droits a évolué et s'est répandue de la
+                 même manière qu'en France... »
+
+
+
+
+                                          7
+III     POUVOIR JUDICIAIRE
+        (ARCHAMBAULT, chap. 2 jusqu’à la page 53 et pages 70 à 74 et 78 à 82)
+
+
+INTRODUCTION
+
+      1. Indépendance judiciaire
+        [Absence de pressions, réelle ou apparente, des autres pouvoirs de l’État sur la magistrature et vice
+        versa (absence de pressions, réelle ou apparente, de la magistrature sur les autres pouvoirs de l’État).
+        L'objectif est de faire en sorte que justice soit rendue et d’assurer la confiance du public dans le système
+        judiciaire.]
+        *** Jean Charest démissionne; ...
+        *** Un juge suspendu six mois ...
+           i)    Règle du sub judice (sous la considération d'un juge ou du tribunal)
+
+
+          A.    THÉORIE DES COMPÉTENCES DES TRIBUNAUX
+
+                1.   Compétence territoriale des tribunaux (36 districts judiciaires au Québec)
+                     [Les règles relatives à la compétence territoriale ont pour objet la répartition géographique
+                     des affaires judiciaires.]
+
+                2.   Compétence d’attribution des tribunaux
+                     [En matière d’organisation judiciaire, il convient de distinguer : les juridictions de droit
+                     commun et les juridictions d'exception à compétence spéciale ou particulière. Les
+                     juridictions de droit commun ont une compétence générale de principe tandis que les
+                     juridictions d'exception ont une compétence matérielle spéciale ou particulière définie par
+                     des textes de loi.]
+                     i)     Distinction entre tribunal supérieur et tribunal inférieur
+                            [Cette distinction est fondée sur les attributions du tribunal. Si le tribunal a une
+                            compétence générale résiduaire et le pouvoir de surveillance des tribunaux
+                            inférieurs, c'est un tribunal supérieur. Si le tribunal n'a qu'une compétence
+                            d'attribution déterminée par une loi, c'est un tribunal inférieur.]
+
+
+                                                        8
+                   Les tribunaux supérieurs sont : la Cour supérieure, la Cour d'appel et la Cour
+                   suprême du Canada. Les principaux tribunaux inférieurs sont : la Cour du
+                   Québec, les Cours municipales et les tribunaux administratifs.
+
+
+B.   ORGANISATION DU SYSTÈME JUDICIAIRE AU QUÉBEC
+     [Chacune des provinces et chacun des territoires disposent d'une cour provinciale ou territoriale
+     qui entend les causes concernant des lois fédérales ou provinciales/territoriales. Les noms et les
+     divisions de ces cours peuvent varier d'un endroit à l'autre, mais leur rôle est essentiellement le
+     même.]
+
+     1.   Cour supérieure du Québec (tribunal de droit commun)
+          [La Cour supérieure est un tribunal de première instance. Elle exerce sa compétence
+          sur tout le territoire du Québec et siège dans tous les districts judiciaires. Les juges
+          sont nommés et rémunérés par le gouvernement du Canada.
+
+          La Cour supérieure a une « juridiction de droit commun », c'est-à-dire que la cour
+          peut entendre des causes dans n'importe quel domaine, sauf les domaines ou sujets
+          qui ont été expressément assignés à des tribunaux spécifiques.]
+          a) Chambre civile
+               [En matière civile, la Cour supérieure entend, généralement en première instance, les
+               causes où la somme en litige est d’au moins 85 000 $. Elle entend aussi, entre autres,
+               les demandes en matière de recours collectif, de jugements de protection,
+               homologation de mandat de protection et de vérification de testament. Elle émet des
+               injonctions pour faire cesser une activité préjudiciable, etc.]
+          b)   Chambre commerciale
+               Constitue une instance commerciale, instruite en Chambre commerciale, toute
+               instance où la demande initiale est principalement fondée sur une disposition
+               des lois suivantes :
+                   Loi sur la faillite et l’insolvabilité
+                   Loi sur les arrangements avec les créanciers des compagnies
+                   Loi sur les liquidations et les restructurations
+                   Loi sur la médiation en matière d’endettement agricole
+                   Loi sur les banques
+                   Loi canadienne sur les sociétés par actions
+                   Loi sur l’arbitrage commercial
+                   Loi sur la liquidation des compagnies
+                   Loi sur les sociétés par actions
+                   Loi sur les valeurs mobilières
+                   Loi sur l'Autorité des marchés financiers
+          c)   Chambre de la famille
+               [Elle a compétence exclusive sur les questions familiales comme le divorce, séparation
+               de corps, pension alimentaire et la garde des enfants. Dans ces matières, les procès se
+               déroulent à huis clos et l’identité des personnes impliquées n’est pas divulguée. Le
+               jugement rendu par le juge est public, mais anonymisé.]
+          d)   Chambre criminelle
+               i) Juridiction d’appel
+                                              9
+                 [La Cour supérieure peut entendre certaines causes en appel concernant
+                 certaines décisions rendues en vertu du Code criminel par un juge de la Cour du
+                 Québec (Chambre de la jeunesse et de la Chambre criminelle et pénale) ainsi que
+                 de la cour municipale et portant sur des infractions sommaires comme le vol, la
+                 conduite d’un véhicule avec les facultés affaiblies, etc.]
+
+2.   Cour du Québec
+     [La Cour du Québec est un tribunal de première instance qui a compétence en matière civile,
+     criminelle et pénale ainsi que dans les matières relatives à la jeunesse. Elle siège également
+     en matière administrative ou en appel, dans les cas prévus par la loi. Les juges sont nommés
+     et rémunérés par le gouvernement du Québec.]
+                                                                            a- Chambre civile
+                                                                               et
+                                                                               administrative
+          [La Chambre civile exerce sa compétence partout au Québec et siège dans les
+          différents districts judiciaires. Elle entend les causes où la somme en litige est
+          inférieure à 85 000 $, sauf les demandes de pension alimentaire et celles qui sont
+          réservées à la Cour fédérale du Canada, telles les demandes concernant l’impôt fédéral
+          sur le revenu. De plus, la Chambre civile a compétence exclusive pour entendre des
+          appels portant sur certaines décisions rendues par les tribunaux administratifs tels le
+          Tribunal administratif du Québec (TAQ) et le Tribunal administratif du logement.]
+          i)     Division des petites créances
+                    [La Division des petites créances entend toute réclamation de 15 000 $ et
+                    moins faite par une personne physique ou faite par une personne morale, une
+                    société ou une association si celle-ci employait dix personnes ou moins au
+                    cours des douze mois précédant la date de la réclamation. Il peut s’agir d’une
+                    réclamation fondée sur le non-respect d’un contrat ou visant le paiement de
+                    dommages-intérêts. À la Division des petites créances, la procédure est très
+                    simplifiée. La personne qui fait une réclamation doit le faire sans recourir aux
+                    services d’un avocat, à moins d’y être dûment autorisée en raison de la
+                    complexité de sa cause (ce qui arrive très rarement). C’est le juge lui-même
+                    qui dirige les débats, interroge les témoins et entend les parties. Les
+                    jugements de la Division des petites créances sont définitifs et sans appel.]
+     a)                                                                     Chambre criminelle
+                                                                            et pénale
+     b)                                                                     Chambre   de    la
+                                                                            jeunesse
+            i)      Procès à huis clos et identité des parties protégée
+
+3.   Tribunal des droits de la personne
+
+Il tranche les litiges qui sont dans les chartes (charte des droits et des libertés de la
+constitution par ex.)
+La charte canadienne est au-dessus des autres lois car elle a le statut constitutionnel.
+Masi la charte québécoise elle est semi-constitutionnelle. Elle est au-dessus des lois
+québécoises mais au-dessus des lois canadiennes
+      (Ne pas confondre avec Commission des droits de la personne et des droits de la
+      jeunesse)
+                                        10
+Il tranche les litiges de la charte québécoise. Des lors qu’une personne se dit victime de discrimination
+elle peut porter plainte. Si la commission considère que la plainte est fondé, elle peut demander a la
+personne convenu de payer une indemnité (il peut s’agir d’une entreprise). le montant est directement
+mit dans les poches de la victime. Mais le restaurant peut refuser de payer et donc il y’a création de
+litiges.. de ce fait la commission des droits de la personne défend la victime devant le tribunal. Si la
+commission prend la plainte s’est qu’elle n’est généralement pas fondé. La commission défend les
+victime. Elle est comme un bureau d’avocat
+                      [Le Tribunal des droits de la personne a été institué en 1990, avec l'entrée en vigueur
+                      d'amendements majeurs apportés à la Charte des droits et libertés de la personne.
+
+                    À titre de tribunal spécialisé, le Tribunal des droits de la personne a compétence pour
+                    disposer de litiges relatifs à la discrimination et au harcèlement illicites fondés sur
+                    différents motifs interdits par la Charte des droits et libertés de la personne. Il peut
+                    également entendre des dossiers relatifs à l'exploitation de personnes âgées ou
+                    handicapées ainsi qu'en matière de programmes d'accès à l'égalité.
+
+                    Toute personne désireuse d'intenter un recours au Tribunal parce qu'elle se croit
+                    victime de discrimination, de harcèlement ou d'exploitation interdits par la Charte doit
+                    d'abord déposer une plainte auprès de la Commission des droits de la personne et des
+                    droits de la jeunesse.
+
+                    Après en avoir déterminé la recevabilité, la Commission fait enquête et exerce ensuite
+                    sa discrétion en décidant si, à son avis, il y a lieu de recommander une indemnité. S’il
+                    n’y a pas d’entente sur une indemnisation, La Commission peut faire une demande
+                    devant le Tribunal des droits de la personne ou toute autre cour de justice compétente.
+                    Dans ce cas, la Commission prend fait et cause pour le bénéfice du plaignant qu'elle
+                    représente devant le tribunal. Lorsqu'elle décide de ne pas saisir le Tribunal des droits
+                    de la personne, le plaignant peut, à certaines conditions, y intenter lui-même un
+                    recours, à ses frais, pour qu'il statue sur sa demande.]
+                    ***L'Hôpital juif a manqué à son devoir d'accommodement raisonnable
+
+
+
+
+               4.   Tribunaux administratifs au Québec (y’en a aussi au fédéral et ils jouent le même
+                                                rôle qui est d’alléger les autres tribunaux)
+
+Ils sont généralement spécialisés sur un sujet. Ils permettent donc de trancher certains types de
+litiges de façon efficace.
+                      Tribunal administratif des marchés financiers
+                      Tribunal administratif du travail (quatre divisions)
+                        -              Division des relations de travail
+                        -              Division de la santé et sécurité du travail
+                        -              Division de la construction et qualification professionnelle
+                        -              Division des services essentiels
+                      Tribunal administratif du logement (T.A.L.)
+
+                                                       11
+                     Tribunal des professions (il s’occupe des 46 ordres. Il est dans la cour du Québec
+                                 sans être dans la cour du Québec)
+                     Tribunal administratif du Québec (T.A.Q.) Ce tribunal comporte quatre sections :
+                       o Section des affaires sociales (RAMQ…)
+                       o Section des affaires immobilières (taxe municipale…)
+                       o Section du territoire et de l'environnement (zonage agricole, industrielle…)
+                       o Section des affaires économiques (permis alcool, construction…)
+La plupart des tribunaux sont des juges administratifs
+
+              5.   Cour d’appel du Québec (2e instance) et (le plus haut au québec)
+
+                   Les trubunaux administratifs sont des tribunaux qui émettent des jugements finals et sans
+                   appel, mais c’est pas toujours le cas.*
+
+                   [La Cour d’appel est le tribunal général d’appel pour le Québec; c’est le plus haut tribunal de
+                   la province. Composée de 22 juges plus un certain nombre de juges surnuméraires. Tous les
+                   juges sont nommés et rémunérés par le gouvernement du Canada. Les juges sont affectés
+                   dans la région de Québec (7 juges) et dans la région de Montréal (15 juges).
+                   Les juges peuvent se promener selon les besoins de la cour
+
+                   Pour aller a la cour d’appel il faut prouver qu’il y’a eu erreur dans le jugement fait
+                   préalablement. Il tu n’es pas en mesure ça ne sert à rien.
+                   La cour d’appel n’est pas une deuxième chance. En appel, on regarde il y’a eu erreur dans le
+                   jugement ou pas
+                   Il y’a trois juge qui vont entendent la cause (pour éviter qu’il y’ai égalité)
+                   On peut s’y rendre par un appel de plein droit. C’est-à-dire que la personne qui veut aller en
+                   appel peut directement s’adresser à la cour d’appel.
+                   Ou sinon ça sera sur autorisation, et l’appel sera entendu dès lors que le juge accepte l’appel
+                   Appel plein droit : Si l’appel est d’une valeur supérieure à 60 000 on peut le faire soi-même.
+                   Les appel de pleins droit sont limités. Ce n’est pas forcement 3 juge il peut en avoir 5-7 mais
+                   cela est exceptionnel. Y’en a eu cela tres tres rarement.
+                   Appel sur autorisation.
+                   La cour d’appel peut organiser la tenue d’un nouveau procès
+
+                   La Cour d'appel est dirigée par une juge en chef, l'honorable Manon Savard, depuis 2020.
+                   Le juge en chef de la Cour d'appel du Québec porte également le titre de juge en chef du
+                   Québec.
+
+                   Le délai pour porter un jugement en appel est de 30 jours, à compter de la date du jugement
+                   de première instance. Le droit d'appel est, selon les circonstances, de plein droit ou assujetti
+                   à une autorisation préalable. Il faut, dans chaque cas, s'en remettre au texte de loi qui
+                   prévoit le droit d'appel. Par exemple, en matière civile, la Cour d'appel du Québec entend les
+                   appels des jugements finals de la Cour supérieure et de la Cour du Québec, de plein droit,
+                   lorsque la valeur de l'objet du litige en appel est de 60 000 $ ou plus, ou sur permission dans
+                   les autres cas. La permission d’appeler est accordée par un juge de la Cour d’appel lorsqu’il
+                   considère que la question en jeu en est une qui doit être soumise à la cour, notamment
+                   parce qu’il s’agit :
+                      d’une question de principe
+                      d’une question nouvelle
+                                                       12
+                        d’une question de droit faisant l’objet d’une jurisprudence contradictoire.
+
+                    Règle générale, la Cour d'appel exerce sa compétence en formation de trois juges, mais,
+                    dans les cas où elle le juge à propos, la juge en chef peut augmenter ce nombre,
+                    généralement à cinq ou à sept. La loi ne prévoit pas de nombre maximum. Il n'est pas
+                    impossible d'imaginer un cas où la juge en chef demanderait à tous les juges de la Cour de
+                    siéger. La Cour siégerait alors in banco.]
+
+                                               6. Cour suprême du Canada (3e instance)
+
+Elle est compose de 9 juges ( 3 d’Ontario, 3 du Québec, 2 des provinces de l’ouest et 1 des 4
+provinces maritimes)
+Les possibilités sont que les causes soient entendu par 5-7-9 juges dépendamment des possibilités.
+Préalablement il faut que les 3 juges de la cour suprême décident de vous entendre. Et ensuite c’est
+repartit 😉
+                    [L’histoire de la Cour suprême du Canada commence plus d’un siècle après l’apparition
+                    des tribunaux au Canada et son rôle a beaucoup évolué depuis sa création en 1875.
+                    C’est l’Acte de l’Amérique du Nord britannique de 1867 qui autorise le nouveau
+                    Parlement fédéral à créer sa propre cour d’appel. Le Parlement du Canada peut en effet
+                    « prévoir la constitution, le maintien et l’organisation d’une cour générale d’appel pour
+                    le Canada ». À l’époque, les décisions de la nouvelle cour demeurent cependant
+                    susceptibles d’appel devant le Comité judiciaire du Conseil privé situé à Londres. Cette
+                    situation ne changera qu’en 1933 pour les appels en matière criminelle et en 1949 pour
+                    les appels en matière civile. ***Les femmes au Sénat (L’affaire personne)
+
+                    Aujourd’hui, la Cour suprême est le plus haut tribunal au Canada. Elle est composée de
+                    neuf juges nommés et rémunérés par le gouvernement fédéral. La Loi sur la Cour
+                    suprême exige qu'au moins trois de ces juges viennent du Québec. Traditionnellement
+                    (par convention), trois viennent de l'Ontario, deux, de l'Ouest du Canada, et un des
+                    provinces maritimes.
+
+                    La Cour suprême du Canada entend les appels des décisions rendues par le plus haut
+                    tribunal des provinces et territoires, ainsi que par la Cour d’appel fédérale. La Cour peut
+                    être saisie d’une affaire de trois façons :
+                   Autorisation d'appel
+                        Comme c’est le cas dans la plupart des dossiers, une partie peut interjeter appel de
+                        la décision d’une cour d’instance inférieure, à condition d’y être autorisée au
+                        préalable par une formation de trois juges de la Cour suprême.
+
+                      L’autorisation est accordée par la Cour si l’affaire comporte une question
+                      d’importance pour le public ou une question importante de droit (ou une question
+                      mixte de droit et de fait) qui justifie l’intervention de la Cour. La décision de la Cour
+                      d’autoriser ou non un appel repose sur son appréciation de l’importance pour le
+                      public des questions de droit soulevées. La Cour décide donc de ce qu’elle entend et
+                      peut ainsi encadrer l’évolution de la jurisprudence canadienne.
+                   Appels de plein droit
+
+
+                                                       13
+                  Dans certains cas, l’autorisation d’appel n’est pas requise. Par exemple, en matière
+                  criminelle, un appel peut être interjeté de plein droit sur une question de droit au
+                  sujet de laquelle un juge de la cour d’appel est dissident.
+              Procédure de renvoi
+                  En plus d’être le tribunal d’appel de dernier ressort au Canada, la Cour suprême
+                  exerce une fonction exceptionnelle : le gouverneur général en conseil
+                  (gouvernement du Canada) peut, par renvoi, demander l’avis de la Cour suprême sur
+                  une question de droit importante, comme la constitutionnalité ou l’interprétation
+                  d’une loi fédérale ou provinciale. Il s’agit d’un avis juridique émis par la Cour
+                  suprême.
+
+                  La Cour suprême examine environ 600 demandes d’autorisation d’appel chaque
+                  année. Elle ne motive généralement pas sa décision sur une demande d’autorisation
+                  d’appel. La Cour tient trois sessions par an, et elle entend en moyenne 75 causes par
+                  année. La Cour ne siège qu’à Ottawa, mais les justiciables peuvent plaider à distance
+                  grâce à un système de visioconférence. Les audiences de la Cour sont publiques et
+                  sont pour la plupart enregistrées en vue d’être télédiffusées en différé. Bien que cinq
+                  juges constituent le quorum de la Cour, la majorité des appels sont entendus par des
+                  formations de sept ou de neuf juges.]
+
+
+
+
+     C.   MODES DE PRÉVENTION ET DE RÈGLEMENT DES DIFFÉRENDS (PRD)
+          [Le procès est porteur d’un conflit dont on peut craindre qu’il ne dégénère. Le rétablissement
+          de la paix sociale peut s’effectuer par le biais de la procédure judiciaire, mais aussi par la voie
+          des Modes de prévention et de règlement des différends. Ces derniers présentent des
+          avantages certains: ils peuvent être plus rapides, moins coûteux et plus appropriés à certaines
+          formes de conflits.]
+
+          Il s’est beaucoup développé et apparait maintenant dans les lois. Elles peuvent être utilisé mais
+          cela ne veut pas dire qu’on est obligé d’en avoir besoin.
+          On a la conciliation médiation.
+          Tout ce qu’on oblige a faire est d’essayer de voir si on ne peut pas arriver a une entente.
+
+          1.    Négociation
+
+2.        Médiation
+                [La médiation constitue un mode de règlement des litiges proche de la conciliation. Il s’agit
+                de recourir à un tiers afin de conduire activement les parties en litige à adopter un
+                compromis. Le recours à la médiation permet souvent de rétablir un dialogue interrompu
+                et de rappeler à chaque partie le sens de ses responsabilités. Le médiateur peut suggérer
+                des pistes de solution. Il ne peut imposer une décision. Il n’est pas décideur.]
+                a) Transaction
+                     [La transaction est un contrat par lequel les parties terminent une contestation déjà
+                     née, ou préviennent une contestation à naître. La transaction implique que chacune
+                     des parties puisse faire valoir à l’égard de l’autre une prétention, c’est-à-dire qu’elles
+                     soient engagées dans un rapport d’obligations réciproques qui permette à chacune
+
+                                                  14
+                          de faire des concessions, formalisées dans un acte écrit et signé qui mettra fin au
+                          litige.]
+
+                          La transaction constitue en quelque sorte une justice privée, qui fait toutefois l’objet
+                          d’une reconnaissance officielle par l’institution judiciaire : le Code civil confère à
+                          l’accord entre signataires l’autorité de la chose jugée en dernier ressort, ce qui
+                          signifie que l’affaire est définitivement réglée par la transaction et qu’il n’est plus
+                          possible de venir la contester devant un tribunal. De plus, il est possible de demander
+                          au tribunal d’homologuer la transaction afin de lui donner force exécutoire. Le
+                          recours à la transaction est aujourd’hui fréquent dans le domaine des assurances, du
+                          droit des affaires ou du droit du travail, où l’on apprécie la discrétion garantie par ces
+                          négociations secrètes permettant en cas de conflit de parvenir à un accord privé.]
+                          C’est un engagement de par et d’autres et elle met automatiquement fin au litige
+                          sans que le tribunal ai à se prononcer
+
+                          Si y’a entente, la deuxième étape est de procéder a une transaction.
+
+       3.        Arbitrage
+                     Il s’agit d’une façon de regler les conflit et il s’agit d’une justice privée. Elle est différente
+                     de l’arbitrage statutaire.
+                     Du côté privé, les partis peuvent decider de le confier à un arbitre. Celui-ci va prendre le
+                     conflit. Au niveau des coût, c’est moin long, et l’identité des personne reste privé.
+
+                     [L’arbitrage désigne une justice privée et payante, chargée de trancher les litiges qui lui
+                     sont soumis par les parties dans le respect des principes du droit. Il n’est possible d’y avoir
+                     recours que dans certaines conditions.
+
+                     Le recours à l’arbitrage implique tout d’abord que les parties au litige manifestent un
+                     accord préalable sur ce mode de règlement du conflit, nul ne pouvant imposer à autrui un
+                     mode de prévention et de règlement des différends (PRD). Cet accord est formalisé par un
+                     écrit qui désigne le(s) arbitre(s) et fixe les règles de procédure qui seront appliquées.
+
+                     L’arbitre doit généralement statuer en droit, ce qui le dote d’une fonction juridictionnelle
+                     au même titre que le juge. L’arbitre rend une sentence qui possède entre les parties
+                     l’autorité de la chose jugée. Un recours en annulation de la sentence est toujours possible,
+                     notamment en cas d’atteinte par l’arbitre à des règles d’ordre public. Le recours à
+                     l’arbitrage est fréquent en matière de commerce, droit des affaires et en droit du travail,
+                     notamment parce qu’il permet de trancher les litiges de manière rapide et discrète et c’est
+                     moins onéreux.]
+
+
+
+            D.   PROCÉDURE JUDICIAIRE
+
+Le pouvoir judicaire est public
+Tous les procès sons publique sauf chambre de la famille et chambre de la jeunesse. C’est par contre
+permis qu’un procès qui se déroule à huit clos soit public et exposé.
+Au-delà de ça, un juge à le droit de décider qu’un procès qui doit se dérouler en public se déroule à
+huit clos. (le principe étant que le procès soit public). Mais cela se fait uniquement sous décret. Ce qui
+
+                                                        15
+n’est pas rare et de décréter une partie du procès a huit clos. Mais avoir tout le procès a huit est
+généralement rare. On le voit de moins en moin.
+Cela peut servir a protéger les personnes, eviter des contamination dans certains cas (pour éviter de
+faire ébruiter les preuves) …
+Procès a huit clos= public exclu
+Non publication = procès public mais le juge décrète une ordonnance de non-publication. C,est a dire
+que les journaliste n’ont psa le droit de relater les fait qui se sont déroulé a la télé ou a la radio.
+
+
+               1. Caractère public des audiences judiciaires (Charte des droits et libertés de la personne, art.
+                           23)
+                  [« Toute personne a droit, en pleine égalité, à une audition publique et impartiale de sa
+                  cause par un tribunal indépendant et qui ne soit pas préjugé, qu’il s’agisse de la
+                  détermination de ses droits et obligations ou du bien-fondé de toute accusation portée
+                  contre elle. Le tribunal peut toutefois ordonner le huis clos dans l’intérêt de la morale ou de
+                  l’ordre public ».]
+
+               2. Preuve                 (ARCHAMBAULT, pages 65 et 196-198)
+
+Chaque partit en conflit a des prétentions qui doivent être appuyé par une preuve. Il y’a des règles à
+respecter et très stricte. Le juge ne s’appuie que sur la preuve. Si on prétend quelque chose qui n’est
+pas prouvé, cela est inutile. Il faut s’assurer que ce qu’on l’on prétend puisse être appuyé par une
+preuve. Certaines preuves sont plus valables que d’autres. La preuve est la base du jugement. Dès lors
+qu’on parle de tribunal la preuve joue un rôle fondamental, voir crucial.
+
+Quand on ne prouve pas c’est comme si on n’avait pas de droit.
+Une personne qui réclame son argent devra prouver qu’on lui doit une somme et qu’elle n’a pas été
+remboursé
+
+Dans le droit pénal le fardeau de la preuve incombe au procureur de la couronne de prouver que
+l’accusé est coupable. De ce fait il est plus lourd. Dès lors qu’il y’a un doute qu’il y’a un doute
+raisonnable.
+.
+Au niveau civil, on donc moins exigeant
+On soumet la preuve a une balance de probabilité. 50/50.
+Il est préférable D’avoir un coupable non condamné plutôt qu’un innocent condamné
+
+Du coté civil le fardeau incombe a celui qui demande. Le demandeur doit donc prouver ce qu’il
+prétend.
+On peut attaquer la preuve par une contre preuve. On ne peut rien déposer quelque chose en preuve.
+Le juge évalue en regardant la contre preuve. Car on le rappelle c’est 50/50.
+Une contre preuve dans notre exemple pourrait être un reçu de paiement…
+
+                  [Le droit comporte des sanctions qui permettent d'en assurer le respect. Mais pour que ce
+                  respect s’exerce, encore faut-il que la victime ou la personne qui prétend à un droit fasse
+                  connaître l'existence de son droit : c'est la preuve des droits qui présente un intérêt certain
+                                                     16
+parce qu'un droit sans preuve équivaut à une absence de droit. Invoquer le respect ou
+l’obtention d’un droit suppose de le prouver. Ne pas pouvoir prouver un droit, c’est
+l’équivalent de ne pas avoir de droit. Les preuves sont les éléments de conviction que les
+parties à un procès peuvent soumettre à un tribunal. Mais la première question à se poser
+est : qui doit faire la preuve ? En matière criminelle et pénale, c’est le procureur de l’État
+(Substitut du procureur général ou procureur de la Couronne) qui doit prouver, hors de tout
+doute raisonnable, que l’accusé est coupable. En matière civile, le principe réside dans le fait
+que le fardeau de la preuve incombe au demandeur ou partie demanderesse (celui qui
+prétend avoir un droit) qui doit prouver selon la balance des probabilités (prépondérance).
+Le défendeur (défenderesse) peut présenter une contre preuve.]
+a)   Procédés de preuve
+     i) Écrits ou preuves littérales
+            Il s’agit d’une preuve qui est plus facile déposer au tribunal. C’est le
+            seul avantage pourtant.
+          Acte authentique
+              [Document établi par un officier public compétent (notaire, huissier, officier
+              d’État civil, greffier), rédigé selon les formalités exigées par la loi et susceptible
+              d'exécution forcée.]
+              C’est un acte qui presque impossible a contester puisque par ce contenue il
+              prouve la véracité du contenu.
+
+           Acte sous seing privé
+              [Engagement établi par des particuliers sans faire appel à un officier public.
+              Ex. : contrat de vente, bail, etc.]
+            Document technologique
+               Il fait appel a tout ce qui est technologique
+     ii) Preuve testimoniale (par témoin)
+     Il s’agit de témoin qui ont vu ou entendu des choses et qui vont relater les faits
+     sous serment devant le tribunal.
+     Celle par ouï dire est interdite (mon… a vu,… a entendu….)
+     C’est une règle qui s’applique à tous les tribunaux.
+
+          [Preuve résultant de la déposition en justice de personnes qui viennent relater
+          sous serment des faits dont ils ont eu personnellement connaissance (ouï-dire
+          interdit).
+          La preuve par témoin ne peut contredire un écrit valable et produit en preuve. La
+          preuve d’un acte juridique ne peut, entre les parties, se faire seulement par
+          témoin si la valeur du litige dépasse 1 500 $. Exceptions : s’il y a eu transaction
+          dans le cours des activités d’une entreprise.
+     iii) Aveu
+              Un aveu joue un rôle majeur dans tous les procès. Sachant qu’un
+              procès coute déjà cher, un aveu est capable de rétrécir un procès. Il
+              allège la preuve
+          [L'aveu est une déclaration par laquelle une personne reconnaît l'exactitude d'un
+          fait allégué contre elle et qui est destinée à produire des conséquences
+          juridiques.]
+           Aveu judiciaire
+
+                                    17
+                                 [Aveu qui est fait au cours d'un procès ou dans une procédure judiciaire par la
+                                 partie elle-même ou par son représentant.]
+                                 C’est un aveu qui est fait devant le tribunal ou dans le cadre d’une procédure
+                                 judiciaire.
+                              Aveu extrajudiciaire
+                               Aveu fait a l’extérieur du tribunal. Il faudra le mettre en preuve devant
+                               le tribunal puisqu’il n’est pas judiciaire (il a été fait hors d’un tribunal
+
+                               iii) Élément matériel (objet, photo, vidéo, etc.)
+On peut enregistrer quelqu’un a son insu uniquement lorsqu’il s’agit d’un acte civil. Mais pas dans le
+cas d’un acte criminel.
+Ex : enregistrer un appel ou il y’a aveu de devoir de l’argent.
+
+IV     DROIT DES PERSONNES. (LA SEMAINE PRO)
+
+       A. PERSONNE PHYSIQUE                                   (ARCHAMBAULT, chap. 3, pages 90-101)
+                  Personne physique versus personne morale (virtuelle ou fictive)
+                  Un fœtus n’est pas une personne
+                  Une personne qui vient de naitre est une personne a part entière (peut poursuivre
+                               ne justice, être poursuivi…)
+                  Un enfant est lié contractuellement a son tuteur.
+
+      1.           Personnalité juridique
+                   [Aptitude à être titulaire de droits subjectifs, que le droit objectif (le système juridique)
+                   reconnaît à chacun et aptitude à être sujet actif (de droits) et sujet passif (d’obligations).]
+                   a)   Début de la personnalité juridique
+                        [Pour la personne physique, la naissance vivante et viable constitue le point de départ
+                        de la personnalité juridique. La naissance vivante implique que l’enfant a respiré
+                        complètement et qu’il est susceptible d’avoir une vie autonome. Quant à la viabilité,
+                        elle est présumée jusqu’à ce qu’il soit évident sur le plan médical que l’enfant ne peut
+                        survivre. La personne est protégée par les lois, dont les chartes des droits et libertés.]
+                        i)    Droits liés à la personnalité juridique
+                        ii)   Intégrité physique et consentement aux soins
+                   b)   Fin de la personnalité juridique
+                        [La personnalité juridique se termine avec la mort.]
+
+              2.   État civil des personnes
+                   a) Nom (premier élément de l’individualisation de la personne)
+                        ***L’affaire Nutella
+                        i)   Changement de nom
+                              Demande au Directeur de l’état civil (pour un motif sérieux)
+                                 ***Gabriel c. Québec (Directeur de l’état civil), [2005] R.J.Q. 470 (C.S.) Résumé
+                                 ***Un Montréalais veut changer de prénom pour ne plus être discriminé
+                   b)   Domicile
+                           Unique (résidence principale)
+                        [Le domicile d’une personne est situé au lieu où elle a sa résidence principale. Le
+                        domicile d’une personne est unique.
+                                                        18
+                          La résidence est l’endroit où une personne demeure de façon habituelle. S’il y a
+                          pluralité de résidences, on considère, pour l’établissement du domicile, celle qui a le
+                          caractère principal (généralement, c’est l’endroit où la personne a fixé le centre de ses
+                          intérêts).]
+                     c)   Actes de l’état civil
+                              Exemple ; une union civile…
+
+
+
+         B. SUCCESSIONS                              (ARCHAMBAULT, chap. 3, pages 122-132)
+
+                            1. Transmission des biens
+                            La personne doit être officiellement décédé.
+                            On peut avoir testament (choix des héritiers)
+                            On peut faire un testament qui va déroger a la loi
+                            On peut aussi renoncer a un héritage (par exemple si on a beaucoup de
+                            dette dans le testament) on ne recoit des dettes au dessus de ce qu’on
+                            perçoit.
+
+                                  a)   Option des héritiers (Responsabilité limitée des héritiers)
+                                       i) Acceptation / Renonciation
+
+                            2.    Succession légale (dévolution légale ou succession ab intestat)
+
+                            3.    Succession testamentaire (LA SEMAINE PRO )
+
+                                  Dans un testament on peut léguer différente partie a différente
+personne et cela reste légale
+                                  a)    Formes de testament
+   i)                                   Testament notarié (Acte authentique)
+                                          Registre des testaments et mandats. I n’a pas besoin d’être
+vérifié par le tribunal. Il se fait devant le notaire. Il y’a différentes clauses afin de rendre le testament le
+plus complet possible. Une transmission entre une personne vivante et décédé est un lègue. Un don
+est plutôt un transfert de vivant à vivant.
+   ii)                                  Testament devant témoins
+                                             [Doit être signé par testateur et deux témoins majeurs qui ne sont
+                                             pas héritiers, capables et qui signent le testament. Le testateur et les
+                                             témoins doivent parapher ou signer chaque page du testament qui
+                                             ne porte pas leur signature.]
+Peut être rédigé par n’importe qui, mais être signé par le testateur et par deux témoins.
+Si le testament a plus qu’une page, chacune des pages doit être signé
+   iii)                                Testament olographe (entièrement écrit et signé par le testateur
+puis daté).
+                                       Pas besoin de témoin. On peut le rédiger à tout moment.
+
+                                                         19
+                                         Le testament qui entre en vigueur est le dernier testament écrit
+                                         (avec comme mention « ce testament révoque tous les testaments
+                                         antérieur ».
+                                    b)   Modification et révocation du testament
+                                         [Le testament est modifiable et révocable à tout moment jusqu’au décès,
+                                         expressément ou tacitement ou de plein droit (par un divorce). Lorsqu’on
+                                         modifie un testament, la partie du testament qui n’a pas été modifiée
+                                         demeure valide.]
+La révocation
+
+                             4. Liquidation de la succession
+                             On le nomme dans le testament. Il doit être une personne en qui en a
+                             confiance. Le liquidateur peut refuser. Même si on nomme quelqu’un qui
+                             est jeune, si cette personne meurt on en nomme 3, par ordre de priorité.
+                                  a) Désignation du liquidateur (La personne désignée peut refuser)
+                                      i) Obtention de l’acte de décès et recherche de testament
+                                      ii) Vérification du testament (le cas échéant)
+                                            Chambre du quebec et barau du quebec. Vérifier veut juste
+                                            dire s’assurer que les testament est conforme à la loi.
+                                               [Testaments olographe et devant témoins doivent être vérifiés (par
+                                               un notaire ou par requête devant un juge de la Cour supérieure).]
+                                      iii) Lecture du testament (facultatif)
+                                                Elle peut être prévu dans le testament. Elle est faite par un
+                                                notaire et coute une cenrtaine de dollard. Ou après la mort le
+                                                liquidateur fait une lecture devant le notaire.
+                                                Devant un juge ou devant temoin
+                                    b) Application du patrimoine familial
+                                    Elle ne comprend pas tous les biens mais certains bien.(ex : les
+                                    entreprises,…)
+                                        [Le patrimoine familial est constitué des biens suivants, dont l’un ou l’autre
+                                        des époux ou des conjoints unis civilement est propriétaire :
+                                    Résidences de la famille ou les droits qui en confèrent l’usage; (celle qui
+servent à l’usage de la famille.)
+                                          Meubles qui garnissent ou ornent ces résidences et qui servent à
+                                           l’usage du ménage;
+                                          Véhicules automobiles utilisés pour les déplacements de la famille;
+                                          Droits accumulés, pendant le mariage ou l’union civile, au titre d’un
+                                           régime de retraite;
+                                          gains inscrits, durant le mariage ou l’union civile, au nom de chaque
+                                           époux ou conjoint uni civilement en application de la Loi sur le régime
+                                           de rentes du Québec ou de programmes équivalents.
+
+                                            À noter que les biens qui font partie du patrimoine familial ne sont pas
+                                            détenus en copropriété par les époux ou les conjoints unis civilement.
+                                            La loi leur confère plutôt le droit d’en partager la valeur s’il y a
+                                            dissolution du mariage (mort ou divorce).]
+                     c)                  Fiscalité
+                                                          20
+   Quand on recoit l’héritage, il faut s’assurer que le défunt à payer ses
+   impots.
+        [Au Québec, les héritiers reçoivent leur héritage libre d'impôts. C’est le
+        liquidateur de la succession qui est responsable d'acquitter les impôts dus
+     par      la personne décédée avant d'effectuer le partage des actifs entre les
+     héritiers.
+
+        Pour le liquidateur, il s’agit d'une responsabilité importante et lourde de
+        conséquences puisqu'à défaut d’exécuter cette obligation, il pourrait être
+        tenu personnellement responsable des dettes fiscales du défunt. Il est donc
+        fortement recommandé au liquidateur d'obtenir un certificat provenant des
+        autorités fiscales confirmant que toutes les dettes fiscales du défunt ont été
+        payées.]
+i) Impôt sur le gain en capital
+              [Les impôts dus par la personne décédée sont calculés à la date du
+              décès par l'entremise d'une fiction juridique : le défunt est présumé
+              avoir disposé de ses actifs le jour de son décès à leur valeur
+              marchande. Le liquidateur devra donc acquitter, à même les biens de
+              la succession, les impôts du défunt sur le gain en capital réalisé par
+              ce dernier à son décès.
+
+              Cette présomption de disposition peut avoir de lourdes
+              conséquences pour les héritiers qui pourraient devoir se départir des
+              biens du défunt pour pouvoir acquitter les dettes fiscales. Dans le cas
+              d'une entreprise familiale, les héritiers pourraient même devoir
+              renoncer à poursuivre les activités de l'entreprise, faute de
+              ressources financières adéquates. Dans ce cas précis, le défunt aurait
+              eu avantage à mieux planifier sa succession d'un point de vue fiscal.
+
+              Le gain en capital représente les profits sur la vente, le legs, la
+              cession ou la donation de vos immobilisations. On entend
+              notamment par immobilisations : maison, chalet, terrain, entreprise,
+              ainsi que les actions, obligations, fonds communs, etc.]
+                Exonération cumulative des gains en capital (E.C.G.C.)
+                 [L’exonération cumulative des gains en capital est indexée chaque
+                 année. En 2022, l’exonération est de 913 630 $ (en 2021, c’était
+                 892 218 $). Toutefois, comme seulement la moitié des gains en
+                 capital réalisés sont imposés, la limite de déduction est quant à
+                 elle de 456 815 $.
+
+                 Exemple : lors d’une vente d’entreprise, on réalise un profit (gain
+                 en capital) de 1 000 000 $. S’il n’y avait pas d’ECGC, on devrait
+                 payer de l’impôt sur la moitié de ce montant (500 000 $). L’ECGC
+                 permet de soustraire 913 630 $ des profits, donc, on doit payer de
+                 l’impôt sur (1 000 000 $ - 913 630 $) x 50 % = 43 185 $ plutôt que
+                 sur 500 000 $.
+
+
+
+
+                          21
+                                    L’ECGC est cumulative à vie, c’est-à-dire qu’on peut l’utiliser à
+                                    plusieurs reprises, tant et aussi longtemps qu’on n’a pas atteint le
+                                    maximum (913 630 $).
+
+                                    Exemple : si en 2022, une personne vend une entreprise et qu’elle
+                                    réalise un profit de 300 000 $. On se trouve à utiliser 300 000 $ de
+                                    l’ECGC. Or, comme l’ECGC est cumulative, cette personne pourra
+                                    utiliser les 613 630 $ d’exonération restants (913 630 $ - 300 000
+                                    $) lorsqu’elle réalisera d’autres gains en capital dans le futur.]
+
+                                    On peut faire un lègue a titre indicateur/particulier (faire un don
+                                    de 100 000 comme indemnisation…)
+
+
+
+
+C. PATRIMOINE                            (ARCHAMBAULT, pages 142-146)
+   Toutes personne qu’elle soit physique ou morale a un patrimoine.
+   Le patrimoine est un contenant virtuel où se trouve l’ensemble des droits qu’une
+   personne à dans sa vie.
+     [Le patrimoine, c’est l’aptitude d’une personne à être titulaire de droits et d’obligations. Toute
+     personne a un patrimoine. On peut considérer le patrimoine comme un contenant virtuel.]
+     Le patrimoine c’est notamment :
+      ce que les créanciers peuvent saisir (contenu) en cas de défaut de paiement du
+        débiteur (gage commun des créanciers)
+      ce que le défunt transmet à ses héritiers
+      ce qu’un tuteur ou un curateur administre au nom d’un mineur ou d’un majeur
+             protégé
+
+       1. Composition du patrimoine
+          a) Distinction entre droits patrimoniaux et droits extrapatrimoniaux
+             i) Droits extrapatrimoniaux (ne font pas parti du patrimoine)
+             Ce sont des droits qu’on a mais qui sont impossible a évaluer monétairement.
+             Ce sont des droits qui son intiment lié à la personne (droit a la vie, la
+             reputation…)
+                     [Il s’agit de droits intimement liés à la personne. Par définition, ces droits ne
+                     peuvent s’apprécier en argent. Ce sont des prérogatives qui assurent à tout être
+                     humain le respect de son intégrité physique ou morale, de son mode de vie, de
+                     ses mœurs et de ses aspirations. Exemples : les droits de la personnalité comme le
+                     respect de l’intégrité physique, respect de la vie privée, droit à l’image, droit à
+                     l’honneur, à la réputation, etc.]
+               ii)   Droits patrimoniaux (ou biens) (font partie du patrimoine)
+                      C’est un droit qui comporte une valeur monétaire/pécuniaire. Dès qu’on
+                      peut l’évaluer monétairement.
+                                             22
+                            [Ce sont des droits susceptibles d’être appréciés directement en argent, ils sont
+                            un élément de richesse dans le patrimoine d’une personne (exemples : droits
+                            réels (droit de propriété, etc.), droit de créance ou droits personnels, droits
+                            intellectuels.]
+                    b) Actif et passif
+
+                2. Théorie du patrimoine (théorie subjective ou personnaliste)
+                   a) Patrimoine est intimement lié à la personnalité juridique et à la capacité de
+                      jouissance
+                       Toute personne (physique ou morale) est nécessairement titulaire d’un
+                         patrimoine
+                       Unicité du patrimoine
+                   b) Patrimoine (contenant) est incessible, intransmissible et insaisissable
+
+                 3. Caractères des éléments du patrimoine (contenu)
+                     (Cessible, transmissible et saisissable)
+Cessible = on ne peut pas le saisir, on ne peut pas le transmettre
+Le patrimoine contenu est cessible, transmissible et saisissable.)
+Ceder un patrimoine ne se dit. On parle du contenu et non le contenant.
+Seul le contenu à la plus grande valeur.
+Les éléments dans le patrimoine est en principe saisissable sauf lorsqu’on prévoit l’insaisissabilité de
+certains droits.
+La loi prévoit que certains droits sont insaisissables, de ce fait si la loi ne le prévoit pas, tout est
+insaisissable.
+
+
+
+
+ORGANISATION JURIDIQUE D’UNE ENTREPRISE
+(ARCHAMBAULT, chap. 7 jusqu’à la page 263)
+
+
+INTRODUCTION GÉNÉRALE
+
+EXPLOITATION D’UNE ENTREPRISE
+
+
+                                                    23
+Un cadre juridique est nécessaire pour organiser les relations d’affaires dans le contexte de
+l’exploitation d’une entreprise.
+
+Diverses formes juridiques pour exploiter une entreprise :
+     entreprise individuelle;
+     société de personnes (ou société contractuelle)
+       o société en nom collectif
+       o société en commandite
+       o société en participation
+     association;
+     société par actions aussi appelée « compagnie »
+     coopérative
+
+Délimitation du droit des affaires                    (ARCHAMBAULT, page 6)
+
+[Le droit des affaires ou droit de l'entreprise est présenté comme une alternative au droit commercial. Le droit
+des affaires est la bonne expression à utiliser parce qu’elle a le mérite d'être compréhensible et qu’elle recouvre
+toutes les activités qui relèvent de la vie des affaires. Le droit des affaires désigne l’ensemble des règles
+applicables aux entreprises.
+
+Au Canada, en droit des affaires, il faut référer à la Loi constitutionnelle de 1867. L'article 91 dicte le pouvoir
+fédéral (monnaie et intérêt sur l'argent, taxation distincte, faillite, assurance-emploi, etc.), alors que l'article 92
+dicte le pouvoir provincial (permis d'affaires, société par actions provinciale, propriété privée, etc.).]
+
+Concept d’entreprise
+
+Définition de l'exploitation d’une entreprise : article 1525 al. 3 C.c.Q. : […] l'exercice, par une ou
+plusieurs personnes, d'une activité économique organisée, qu'elle soit ou non à caractère commercial,
+consistant dans la production ou la réalisation de biens, leur administration ou leur aliénation ou dans
+la prestation de services.
+
+Selon cette définition, l’entreprise est une activité organisée à caractère économique et non un sujet
+de droit (ce n’est pas une personne). La notion d’activité suggère qu’il ne s’agit pas d’un acte isolé ou
+occasionnel. Il doit y avoir un élément de fréquence, de répétition, d’habitude ou de continuité. Ces
+actes sont posés selon un plan d’affaires ou stratégique (explicite ou implicite) visant l’atteinte
+d’objectifs.
+
+La notion d’organisation suppose un aspect matériel sous forme d’un rassemblement de moyens
+humains et matériels mis en œuvre pour atteindre un objectif. Il s’agit d’une structure qui supporte
+l’exercice de l’activité.
+
+Combien d’actes sont nécessaires pour qu’on considère qu’une personne exploite une entreprise ?
+
+On doit tenir compte de l’intention de la personne en se référant aux faits et aux circonstances.
+Quelques indices :
+        Demande de permis
+                                                          24
+        Location d’un espace
+        Publicité
+        Achats d’équipements, etc.
+
+Fonds d’entreprise
+
+[L’ensemble des biens corporels et incorporels rassemblés et affectés à l’exploitation d’une entreprise se trouve à
+former une universalité appelée fonds d’entreprise. Exemples de biens corporels :
+Équipement, outillage, machinerie, inventaire, immeuble, etc. Exemples de biens incorporels :
+Clientèle ou achalandage, nom, no. de téléphone, permis d’exploitation ou licence, droit au bail, droits de
+propriété intellectuelle (droit d’auteur, logo, brevets d’invention, marque de commerce, dessins industriels,
+etc.).]
+
+
+
+PUBLICITÉ LÉGALE DES ENTREPRISES
+[Entrée en vigueur en février 2011, la Loi sur la publicité légale des entreprises (LPLE) permet la constitution d’un
+registre des entreprises dans le but de rendre publiques certaines informations concernant les entreprises qui
+exercent des activités au Québec. Ce registre est administré par le Registraire des entreprises et vise à protéger le
+public. Les informations qui apparaissent au registre sont considérées comme authentiques et opposables en
+justice. Il y a présomption d’exactitude de l’information qui apparaît sur le registre.]
+
+Le Registre permet de vérifier plusieurs informations concernant les entreprises, notamment:
+     l’existence légale d’une entreprise
+     son nom et ses noms d’emprunt
+     sa forme juridique
+     son domicile et ses établissements
+     les propriétaires, principaux associés, principaux actionnaires, administrateurs et dirigeants
+
+
+IMMATRICULATION DE L’ENTREPRISE
+[L’immatriculation peut se faire par internet au plus tard 60 jours après le début des activités de l’entreprise sur
+le territoire du Québec. Cette immatriculation se traduit par l’attribution d’un numéro d’entreprise. Les deux
+premiers chiffres indiquent la forme d’entreprise.]
+
+Déclaration initiale
+    Choix d’un nom
+       o Restrictions quant au choix d’un nom
+    Forme juridique empruntée
+    Domicile et établissements
+    Propriétaire(s), principaux associés, principaux actionnaires, administrateurs et dirigeants
+
+Mise à jour de l’information
+    Déclaration de mise à jour (au plus tard 30 jours après un changement des informations sur le
+        registre (aucun droit à payer)
+    Déclaration annuelle, mise à jour annuelle et paiement des droits annuels (Période de dépôt de
+                                                         25
+         la déclaration annuelle harmonisé avec la période de production de la déclaration de revenus
+         du Québec)
+        Déclaration de radiation (Lors d’une vente, d’une dissolution ou d’une faillite de l’entreprise)
+
+Radiation
+    Radiation par le Registraire si, à la suite d’une demande de remédier à un défaut, l’assujetti ne
+        se conforme pas
+    Radiation d’office si l’assujetti ne fait pas sa déclaration annuelle deux années consécutives
+
+Recours et sanctions
+    Annulation d’une inscription illégale
+    Correction ou suppression d’une information inexacte
+    Modification ou cessation d’utilisation d’un nom illégal
+       Sanctions pénales
+       o Amendes de 500 $ à 10 000 $ si personne physique
+       o Amendes de 1 000 $ à 20 000 $ dans les autres cas
+       S’il y a récidive, les amendes sont doublées.
+
+         Recours civils (s’il y a lieu)
+
+
+ENTREPRISE INDIVIDUELLE (exploitée par une personne physique)
+L'entreprise individuelle n'a ni de personnalité juridique ni de patrimoine distinct du propriétaire de l'entreprise.
+Ce dernier possède personnellement tous les actifs, il dirige, il perçoit tous les revenus et il assume toutes les
+responsabilités financières et administratives.
+
+Constitution
+Il n’y a aucune formalité légale à respecter pour créer une entreprise individuelle. Toute personne
+physique a le droit de faire des affaires. De nos jours, c’est la forme d’entreprise la plus répandue.
+Cependant, pour opérer légalement son entreprise la personne physique qui exploite une entreprise
+doit respecter plusieurs lois et règlements (si applicables). Exemples :
+      Permis municipaux, provinciaux ou fédéraux (le cas échéant)
+      Numéro de TPS et de TVQ
+      Numéro d’employeur provincial et fédéral
+      Inscription à la CNESST, Normes du travail, etc.
+
+Sauf exception, on doit respecter la Loi sur la publicité légale et on doit produire une déclaration annuelle et
+déclaration de mise à jour. À la vente, on doit produire déclaration de radiation et acheteur doit s’immatriculer.
+Au décès si un seul héritier, déclaration de mise à jour ou de radiation. Si plusieurs héritiers, ils doivent opter
+pour une autre forme d’entreprise ou radiation.
+
+La personne physique qui exploite une entreprise individuelle sous un nom comprenant son nom de famille et
+son prénom n'est pas tenue de s'immatriculer, sauf si elle exploite un point de vente de tabac au détail ou si elle
+offre des services de bronzage. Possible de s’immatriculer volontairement.
+
+Caractéristiques de l’entreprise individuelle
+                                                         26
+       Elle n’est pas une personne morale (n’est pas une personne distincte).
+       Il n’y a pas de distinction juridique entre l’entreprise et son propriétaire.
+       Les dettes de l’entreprise sont les dettes du propriétaire, donc responsabilité illimitée du
+        propriétaire sur ses biens personnels.
+       Si un client veut poursuivre l’entreprise, il doit poursuivre personnellement le propriétaire.
+       L’entreprise ne fait pas de déclaration de revenus distincte du propriétaire. En fait, les profits
+        ou les pertes de l’entreprise sont intégrés à la déclaration de revenus du propriétaire.
+
+Capacité juridique
+    Majeur capable
+    Mineurs de 14 ans et plus
+
+Époux et conjoints de fait
+       o Prestation compensatoire             (ARCHAMBAULT, page 121)
+       o Action pour enrichissement injustifié (ou enrichissement sans cause)
+
+Dissolution
+La dissolution de l’entreprise doit être suivie d’une déclaration de radiation au registre des entreprises.
+     Décès du propriétaire (si aucun héritier ne continue l’entreprise)
+     Cessation de l’exploitation de l’entreprise
+     Faillite du propriétaire
+     Ouverture d’un régime de protection à l’égard du propriétaire
+
+Avantages et inconvénients de l'entreprise individuelle
+Avantages
+     Simple à mettre sur pied et souplesse dans l’administration (un seul patron)
+     Confidentialité
+     Coûts peu élevés
+     Aucun partage de bénéfices
+     Possibilité de recourir à la Cour du Québec (division des petites créances)
+Inconvénients
+     Responsabilité personnelle (un seul patrimoine)
+     Financement limité
+     Statut précaire de l’entreprise
+     Fiscalité
+
+Exemple :
+ Salaire imposable du propriétaire          120 000 $
+ Profit de l’entreprise                     30 000 $
+ Revenu imposable du propriétaire           150 000 $
+
+Le taux marginal d’impôt pour un revenu imposable de 150 000 $ oscille autour de 50 %, donc dans notre
+exemple le propriétaire de cette entreprise individuelle devrait payer 15 000 $ d’impôt (30 000 $ x 50 %) parce
+que les revenus de son entreprise s’ajoutent à ses autres sources de revenus. S’il avait une entreprise incorporée
+
+                                                        27
+(société par actions), cette entreprise aurait payé 4 200 $ d’impôt (30 000 $ x 14 %). Donc la société par actions
+pourrait verser un dividende imposable de 25 800 $ (30 000 $ - 4 200 $).
+
+Dans certains cas, la fiscalité pourrait être un avantage.
+ Salaire imposable du propriétaire          120 000 $
+ Perte de l’entreprise                      20 000 $
+ Revenu imposable du propriétaire           100 000 $
+
+Le taux marginal d’impôt pour un revenu imposable de 100 000 $ oscille autour de 45 %. Dans notre exemple le
+propriétaire de l’entreprise obtiendrait un remboursement d’impôt de 9 000 $ (20 000 $ x 45 %) parce qu’il peut
+déduire de ses autres sources de revenus les pertes de son entreprise. La perte nette de l’entreprise est 11 000 $.
+
+Pour avoir droit au taux d’imposition réduit accordé aux petites entreprises, il faut atteindre un minimum de 5
+500 heures rémunérées par ses employés pour l’année d’imposition.
+***La vente illégale de cannabis : attention au fisc!
+
+
+
+
+SOCIÉTÉ DE PERSONNES (société contractuelle)
+(ARCHAMBAULT, chap. 7 (pages 263 à 275)
+
+La société est en nom collectif, en commandite ou en participation. Elle peut aussi être par actions
+(aussi appelée compagnie) ; dans ce cas elle est une personne morale. Cette dernière est une société
+légale et non contractuelle (ou de personnes). Elle sera vue ultérieurement.
+
+Différentes formes de sociétés de personnes
+     Société en nom collectif (S.E.N.C.) société de droit commun (immatriculation requise)
+     Société en commandite (S.E.C.) (immatriculation requise)
+     Société en participation (S.E.P.) société résiduaire ou par défaut (immatriculation non requise)
+
+
+
+
+FORMATION DE LA SOCIÉTÉ DE PERSONNES
+
+Définition
+« Le contrat de société est celui par lequel les parties conviennent, dans un esprit de collaboration, d'exercer une
+activité, incluant celle d'exploiter une entreprise, d'y contribuer par la mise en commun de biens, de
+connaissances ou d'activités et de partager entre elles les bénéfices pécuniaires qui en résultent. »
+
+Sauf indication contraire, la société de personnes est formée dès la conclusion du contrat (verbal ou écrit) entre
+des personnes physiques ou morales (capables de contracter). Ce contrat est fondé sur les qualités personnelles
+
+                                                         28
+des associés (contrat intuitu personae). Lorsque la société accueille un nouvel associé, il faut modifier le contrat
+de société, ce qui requiert l’unanimité des associés.
+
+Trois éléments essentiels
+     L’apport ou mise en commun (biens, connaissances, activités, etc.)
+         (La seule détention de biens est insuffisante pour former une société.)
+     Participation aux bénéfices (partage des bénéfices pécuniaires qui en résultent. Ce n’est pas
+         un salaire parce que les associés ne sont pas des employés.)
+     Intention de former une société pour exercer une activité (l’affectio societatis)
+
+Individualité juridique de la société de personnes
+[La société de personnes n’est pas une personne morale, mais elle a certains attributs d’une personne
+morale permettant de l’individualiser. On parle d’individualité juridique et non de personnalité
+juridique. On dit aussi qu’elle se présente comme une personne morale incomplète.]
+      Nom et domicile (siège social)
+      Patrimoine propre (distinct des associés)
+        (L’associé est propriétaire d’une quote-part et non des biens de la société)
+      Capacité juridique
+        o Capacité d’ester en justice
+        o Capacité de s’obliger envers les tiers (fournisseurs, clients, etc.)
+
+Déclaration d’immatriculation
+[Selon l’art. 2189 al. 2 C.c.Q., la société en nom collectif et la société en commandite doivent produire une
+déclaration d’immatriculation de la manière prévue à la LPLE. L'absence de déclaration d'immatriculation n'a pas
+pour effet de mener à la dissolution de la société ; elle sera plutôt considérée comme une « société en
+participation ». Nous verrons plus loin les conséquences.]
+
+Déclaration de revenus
+La société de personnes n’est pas une personne (n’est pas un contribuable). Par conséquent, elle ne fait pas de
+déclaration de revenus. La société prépare ses états de revenus et dépenses, puis elle établit les revenus nets à
+partager entre les associés en fonction du partage des profits (et des pertes) prévu au contrat de société. Les
+associés (personnes physiques ou morales) intègrent les profits ou les pertes de la société dans leurs déclarations
+de revenus.
+
+
+
+
+SOCIÉTÉ EN NOM COLLECTIF (S.E.N.C., société de droit commun)
+
+Fonctionnement général de la société de personnes
+Le fonctionnement de la société de personnes est régi par la loi (surtout le Code civil) et le contrat de société de
+personnes.
+
+Régime interne (entre les associés)
+
+                                                         29
+Chaque associé est pleinement propriétaire d’une quote-part qui peut être évaluée, vendue et hypothéquée. Les
+parts des associés sont présumées égales. Si les parts sont inégales, il faut prévoir une clause dans le contrat de
+société.
+
+Obligations légales des associés envers la société
+     Fournir l’apport convenu (en contrepartie, l’associé reçoit une part de la société)
+     Obligation de non-concurrence
+
+Droits des associés
+      Partage des bénéfices (et des pertes)
+      Participer aux décisions collectives (le contrat de société ne peut empêcher l'exercice de ce
+        droit qui est d’ordre public)
+        [La société est gérée par les associés et non pas par un conseil d’administration. À moins de stipulation
+        contraire dans le contrat, les décisions se prennent à la majorité des voix des associés, sans égard aux
+        parts de ceux-ci, mais les décisions qui impliquent une modification du contrat de société se prennent
+        toujours à l'unanimité.]
+      Remboursement des dépenses (effectuées dans l’intérêt de la société)
+      Utilisation des biens de la société (dans l’intérêt de la société et non personnellement)
+      Cession de quote-part
+       o Clause de préemption
+      Accès à l’information concernant les affaires de la société
+
+Quelques exemples de clauses d’un contrat de société
+     Clause sur les apports des associés
+     Clause de non-concurrence
+     Clause de préemption ou clause de première offre et de rachat (buy and sell)
+     Clause d’arbitrage
+     Clause d’expulsion d’un associé
+     Clause de gérance et d’administration
+     Clause d’assurance-vie
+     Clause d’assurance-responsabilité
+     Clause excluant (totalement ou partiellement) un associé des pertes ou du paiement des
+      dettes de la société (inopposable aux tiers)
+     Clause concernant les majorités requises pour la prise de décision
+     Clause concernant le remboursement des dépenses des associés
+     Clause concernant l’utilisation des biens de la société
+
+
+
+Administration et représentation de la société
+[Chaque associé est administrateur de la société. Chaque associé est mandant et mandataire (représentant) de la
+société. Cela implique que chaque associé a personnellement le pouvoir de lier la société. Toute stipulation
+contraire est inopposable aux tiers de bonne foi. Les dispositions législatives concernant le contrat de mandat
+reçoivent application.]
+      Obligations des associés vis-à-vis des tiers
+
+                                                       30
+       [L'obligation contractée par un associé en son nom propre lie la société lorsqu'elle s'inscrit dans le cours
+       des activités de celle-ci ou a pour objet des biens dont cette dernière a l'usage.]
+       o Seule la société est liée et obligée
+          Le créancier de la société doit discuter des biens de la société avant ceux de l’associé. Si les biens de
+          la société sont insuffisants pour payer les obligations de la société (s’il y a déficit), les créanciers de la
+          société ont droit de poursuivre personnellement les associés de la société (les biens de l'associé y
+          passeront, mais après paiement des dettes de ses propres créanciers).
+                 Obligations solidaires des associés
+                  Les associés sont tenus solidairement des dettes contractées pour l’exploitation d’une
+                  entreprise. À noter que le nouvel associé n’est pas tenu des dettes de la société avant son
+                  arrivée, d’où l’importance de maintenir à jour l’information sur le Registre des entreprises en
+                  vertu de la LPLE.
+     Possibilité de nommer un ou plusieurs gérant(s)
+
+
+PERTE DE LA QUALITÉ D’ASSOCIÉ
+   • Cession ou rachat de sa part par la société
+   • Décès de l’associé
+   • Ouverture de régime de protection de l’associé
+   • Faillite de l’associé
+   • Jugement ordonnant saisie de sa part
+   • Exercice de son droit de retrait ou jugement autorisant son retrait
+   • Expulsion de l’associé
+
+
+DISSOLUTION ET LIQUIDATION DE LA SOCIÉTÉ
+
+Dissolution
+    • Réalisation de l’objet
+    • Disparition de l’objet ou impossibilité d’accomplir l’objet
+    • Consentement de tous les associés (dissolution conventionnelle)
+    • Dissolution par le tribunal (rare)
+    • Arrivée du terme
+    • Réunion de toutes les parts entre les mains d’un seul associé
+        (La réunion de toutes les parts entre les mains d'un seul associé n'emporte pas la dissolution
+        de la société, pourvu que, dans les cent vingt jours, au moins un autre associé se joigne à la
+        société.)
+    • Toute autre cause prévue dans le contrat de société
+
+Liquidation
+
+
+SOCIÉTÉ EN COMMANDITE (SEC)
+
+Principales caractéristiques
+
+                                                         31
+       Deux catégories d’associés
+        La société en commandite comprend un ou des commandités et un ou des commanditaires.
+        o Associé commandité
+           L’associé commandité est une personne physique ou morale qui administre en exclusivité la société
+           et qui est personnellement responsable des obligations de la société à l'égard des tiers. Les
+           commandités sont les représentants (mandataires) de la société. Seuls les commandités sont
+           autorisés à administrer la société et à l’obliger. Ils ont une responsabilité solidaire. Ils ont les
+           pouvoirs, droits et obligations des associés de la société en nom collectif.
+        o Associé commanditaire
+           L’associé commanditaire, qui est également une personne physique ou morale, est tenu de fournir
+           un apport au fonds commun de la société, mais la loi lui interdit de participer à son administration.
+           En contrepartie, ils ne sont pas responsables des obligations au-delà de leur apport. Les
+           commanditaires ont une responsabilité limitée à leur mise de fonds dans la société. L’associé
+           commanditaire ne peut, par une clause dans le contrat de société, être tenu de cautionner la SEC. Est
+           sans effet toute clause qui oblige un commanditaire à cautionner ou à assumer les obligations de la
+           société au-delà de l'apport convenu.
+
+           Les commanditaires ne peuvent négocier aucune affaire pour le compte de la société, ni agir pour
+           celle-ci comme représentant, mandataire ou agent, ni permettre que leur nom soit utilisé dans un
+           acte de la société; si le nom d’un commanditaire apparait dans le nom de la société sans préciser
+           qu’il est commanditaire, il serait tenu, comme un commandité de toutes les obligations de la
+           société.
+
+       Possibilité de financement par l’appel à l’épargne public
+        [Contrairement à la société en nom collectif, la société en commandite peut faire publiquement appel à
+        l'épargne.]
+
+Pour le reste, les dispositions du Code civil concernant la société en nom collectif s'appliquent à la
+société en commandite.
+
+
+SOCIÉTÉ EN PARTICIPATION (SEP)
+
+La société en participation, aussi appelée société de fait, est peu organisée, souvent informelle
+(occulte) et rarement choisie délibérément. Le contrat de société peut être verbal ou écrit et résulter
+de faits manifestes indiquant l’intention de s’associer. Enfin, cette société n'est pas assujettie à
+l'obligation d'immatriculation (LPLE). Elle est souvent inconnue par les tiers. La seule indivision des
+biens ne fait pas présumer l’intention de s’associer.
+
+Principales caractéristiques
+     Société en participation ne possède pas de patrimoine distinct des associés
+     Chaque associé demeure propriétaire des biens constituant son apport au fonds commun
+
+
+       Chaque associé contracte en son nom personnel
+
+
+                                                      32
+         [Les associés ne sont pas tenus solidairement (obligation de chacun des payer la dette en entier) des
+         dettes contractées dans l'exercice de leur activité, à moins que celles-ci n'aient été contractées pour le
+         service ou l'exploitation d'une entreprise.]
+
+Fin du contrat de société en participation
+[Outre les causes de dissolution susmentionnées, la société en participation est dissoute à la suite du décès ou la
+faillite d’un associé. Il est cependant possible de prévoir dans la convention que la SEP continuera malgré le décès
+d’un associé.]
+
+Différences entre société en nom collectif et société en participation
+     Patrimoine distinct
+[Dans une société en nom collectif, un créancier doit d’abord discuter des « biens de la société » avant de
+discuter des biens personnels des associés. Dans une société en participation, la discussion des biens de la société
+n'est pas prévue, non plus que le paiement antérieur des créanciers de l'associé. Tous les « biens de la société »
+sont confondus avec les biens de l'associé poursuivi. Il n'y a pas de discussion préalable des biens de la société.]
+        Action en justice
+[La société en nom collectif peut être poursuivie en justice. Pour la société en participation, il faut que le
+créancier poursuive l'un ou l'autre ou tous les associés simultanément.]
+        Fin de la société en participation
+[Décès ou faillite de l’un des associés ainsi que l’ouverture de régime de protection à l’égard d’un associé met fin
+à la société en participation, ce qui n’est pas nécessairement le cas pour la société en nom collectif.]
+
+AVANTAGES ET INCONVÉNIENTS
+
+
+
+
+SOCIÉTÉ PAR ACTIONS           (AUSSI APPELÉE COMPAGNIE)
+(ARCHAMBAULT chapitre 7 pages 276 à 289 et chapitre 8 jusqu’à la page 331 + 336 à 340)
+
+Définition de la société par actions
+Personne morale de droit privé, constituée sous l’autorité d’une loi générale, dotée d’un capital-
+actions et exerçant une activité lucrative autre que des affaires de banque ou d’assurances.
+ - Personne morale (ou personne fictive) complètement distincte de ses membres (leurs actes
+     n'engagent qu'elle-même, sauf exception)
+ - De droit privé (on exclut personnes morales de droit public comme les sociétés d’État)
+ - Sous l’autorité d’une loi générale (L.C.S.A. ou L.S.A.)
+ - Dotée d’un capital-actions (On distingue des autres personnes morales de droit privé sans capital-
+     actions comme les syndicats, les corporations religieuses, etc.)
+ - Exercice d’une activité lucrative (exploitation d’une entreprise)
+
+Caractéristiques et attributs de la société par actions    (ARCHAMBAULT pages 103 à 106)
+     Personne morale (dotée de la personnalité juridique, la SPA a la pleine jouissance des droits
+       civils).
+     Capacité juridique
+         La SPA peut contracter, elle peut ester en justice (représentée par un procureur) et elle doit produire
+                                                        33
+         des déclarations de revenus.]
+        o Nom (Le nom doit être conforme à la loi)
+        o Domicile (siège social)
+            Le domicile est unique, mais la SPA peut avoir plusieurs établissements ou places d’affaires.]
+        Responsabilité limitée
+         La SPA possède son propre patrimoine distinct de ceux de ses membres (actionnaires et
+         administrateurs). Les actionnaires sont propriétaires de leurs actions, mais n’ont aucun droit de
+         propriété sur les biens appartenant à la SPA.]
+        Vocation à la perpétuité (L'existence d'une société par actions n'est pas affectée par la mort
+         des actionnaires)
+
+Représentation de la SPA
+Étant une personne morale, la SPA ne peut agir par elle-même parce qu’elle est virtuelle. Elle ne peut donc
+contracter et s'obliger que par des mécanismes intermédiaires que sont le Conseil d'administration (C.A.), les
+administrateurs et autres mandataires (officiers, dirigeants, etc.).]
+        Voile corporatif
+        La SPA est une personne morale distincte de ses membres (actionnaires et administrateurs). Par
+        conséquent, la constitution d’une SPA établit, entre cette dernière et ceux qui agissent pour elle, une
+        barrière (un voile) qui fait en sorte qu’il n’est pas possible d’aller voir derrière ce voile pour tenir
+        responsables ceux qui ont agi au nom de la personne morale. On ne peut pas non plus rechercher la
+        responsabilité des actionnaires.
+         Soulèvement du voile corporatif
+            Même si la société par actions est dotée d’une personnalité juridique distincte de ses membres, il
+            est possible, dans certains cas, de faire une demande au tribunal pour soulever le voile corporatif et
+            poursuivre personnellement les administrateurs et/ou les actionnaires. Pour réussir, le demandeur
+            doit prouver qu’il y a eu fraude ou abus de droit ou contravention à une règle intéressant l'ordre
+            public.
+
+
+
+CONSTITUTION DE LA SOCIÉTÉ PAR ACTIONS
+Le ou les fondateurs doivent obtenir un certificat de constitution (acte de naissance de la SPA) qui est la
+première étape pour créer une société par actions. Ce certificat est émis après le dépôt des statuts de
+constitution par les fondateurs auprès du Registraire des entreprises du Québec (LSA) ou du Directeur de
+Corporations Canada (LCSA). Les fondateurs sont responsables de l’exactitude des informations contenues dans
+les statuts de constitution. Le dépôt de statuts peut se faire par voie électronique. Avant de démarrer ce
+processus, les fondateurs doivent choisir si la société sera fédérale ou provinciale et choisir si elle sera publique
+ou privée.
+
+        Société fédérale ou provinciale
+          Lois constitutives (Les sociétés par actions sont constituées en vertu d'une loi)
+             o Loi canadienne sur les sociétés par actions LCSA (Canada)
+             o Loi sur les sociétés par actions LSA (Québec).
+
+       Société publique (émetteur assujetti) ou société privée (émetteur fermé)
+     o Société par actions privée
+                Nombre des actionnaires limité à 50
+                Actions ne sont pas offertes au public (restrictions à la libre circulation des actions)
+                                                         34
+                  Actionnaires sont souvent les administrateurs, certains membres de la famille et
+                 amis
+
+     o Société par actions publique
+                Actions cotées en bourse et offertes au public par l’intermédiaire d’un courtier en
+                  valeurs mobilières
+                Société soumise à la Loi sur les valeurs mobilières LVM
+                Doit transmettre un prospectus et produire des états financiers à l’Autorité des
+                  marchés financiers
+
+        Nationalité propre (distincte de ses membres)
+
+        Informations à fournir :
+         Fondateurs et leurs coordonnées
+        Le fondateur est une personne physique ou morale qui crée une personne morale. Le fondateur ne doit
+        pas avoir le statut de failli. Si le fondateur est une personne physique, il doit être une personne majeure
+        et ne pas être sous tutelle.
+         Nom (dénomination sociale), désignation numérique ou numéro matricule
+        Comme toute personne physique, une personne morale doit avoir un nom que l'on appelle
+        dénomination sociale, nom par lequel on puisse l'identifier et la distinguer des autres personnes
+        morales. Le choix du nom appartient aux fondateurs. Ce nom doit être conforme à la loi et indiquer
+        clairement la forme juridique : le nom d'une société qui ne comprend pas l'expression « société par
+        actions » doit comporter le vocable terminal « inc. », « S.A. » ou « ltée. » pour indiquer qu'elle est une
+        entreprise à responsabilité limitée. La SPA exerce ses droits sous ce nom. Elle peut utiliser un autre nom,
+        mais doit déposer un avis en ce sens au Registraire des entreprises. S'ils le désirent, les fondateurs
+        peuvent demander une « désignation numérique ».
+         Description du capital-actions
+          o Actions ordinaires (catégorie A)
+          o Actions privilégiées (catégorie B)
+         Restrictions sur les transferts de titres (société privée ou société publique)
+         Siège social
+            Le siège social est le domicile de la société. Il s’agit d’une notion importante parce que selon la loi,
+            une société québécoise doit avoir son siège social situé au Québec et une société fédérale doit avoir
+            son siège social situé au Canada.
+         Nombre d’administrateurs
+            On doit inscrire un minimum et un maximum. On peut nommer un seul administrateur. Si la société
+            prévoit faire une émission publique d’actions (société publique), elle doit indiquer un minimum de
+            trois administrateurs.
+
+Immatriculation
+Les sociétés par actions provinciales (LSA) sont automatiquement immatriculées. Toutes les autres sociétés par
+actions qui exploitent une entreprise sur le territoire du Québec doivent s’immatriculer conformément à la
+LPLE.
+
+
+
+FONCTIONNEMENT ET ORGANISATION DE LA SOCIÉTÉ PAR ACTIONS
+                                                         35
+Une fois créée, la société par actions existe, mais elle n’a pas encore ce qu’il faut pour fonctionner, il
+faut procéder à son organisation. D’abord par une assemblée d’administrateurs (C.A.) qui sera suivie
+d’une assemblée des actionnaires. Pour organiser son fonctionnement, la SPA devra adopter des
+règlements et/ou une convention qui précisera notamment comment se prennent les décisions.
+
+Lors de la première assemblée des administrateurs, on doit :
+        - Obtenir le(s) permis (si requis)
+        - Adoptions des règlements pour opérer la SPA
+        Il ne faut pas confondre règlements et résolutions. Les règlements ont un caractère formel et
+        obligatoire. Tandis que les résolutions représentent des expressions de la volonté des
+        administrateurs. Les règlements doivent toujours être conformes aux statuts de la SPA. Ils
+        reçoivent application dès leur adoption, mais doivent être ratifiés par les actionnaires lors de
+        leur prochaine assemblée.
+     Autorisation d’émission d’actions
+     Nominations des officiers et dirigeants de la SPA
+     Détermination de la rémunération des officiers et dirigeants de la SPA
+     Ouvertures des comptes de banque
+     Autorisations pour les signatures
+
+Lors de la première assemblée des actionnaires, on doit :
+     Élire les administrateurs
+     Confirmer, modifier ou rejeter les règlements adoptés par le CA
+     Procéder à la nomination du vérificateur
+
+Les vérificateurs examinent et analysent les documents comptables et registres financiers de
+particuliers ou d'entreprises, afin d'assurer l'exactitude des documents en accord avec les principes
+comptables généralement reconnus.
+
+
+GOUVERNANCE DE LA SOCIÉTÉ PAR ACTIONS
+
+ACTIONNAIRES
+Toute personne (morale ou physique) ainsi qu’un mineur peut être actionnaire d’une SPA. On devient
+actionnaire lorsqu’on détient ou acquiert des actions. Les actionnaires ne sont pas propriétaires des biens de la
+SPA. Les actionnaires ne peuvent agir au nom de la société. Ils ne sont pas mandataires (représentants) de la
+SPA.
+
+Capital-actions
+Le financement d’une société par actions passe notamment par des investissements qui prennent la forme
+d’actions. La somme de ces investissements forme le capital-actions qui fait partie intégrante du patrimoine de la
+SPA. Le capital-actions est un ensemble, divisible par unité, de mise de fonds en vue d’une exploitation
+commune. Un actionnaire détient une ou plusieurs actions.
+       Catégories d’actions
+        o Action ordinaire (classe A)
+            L’actionnaire ordinaire peut, via son droit de vote, participer à la direction de l’entreprise,
+            notamment en élisant les membres du conseil d’administration (C.A.).
+                                                        36
+        o Action privilégiée (classe B)
+           Sans droit de vote (sauf exception)
+           Droit dans l’actif de la SPA (de préférence aux actionnaires ordinaires)
+
+       Certificat d’actions
+    Il s’agit d’un titre de propriété des actions. Une « action » est une unité du capital-actions d'une société par
+    actions qui est un bien mobilier par détermination de la loi et qui confère à son détenteur certains droits.
+    Les actions sont nominatives et non payables au porteur (pour éviter le blanchiment d’argent).
+
+Acquisition d’actions
+    Émission d’actions
+    Souscription d’actions
+        Acte par lequel un investisseur promet de se porter acquéreur d'actions d'une SPA. Les bons de
+        souscription donnent le droit d’acheter des actions de la société émettrice à un prix fixé, dans un délai
+        préétabli.
+       Rachat d’actions
+       Transfert d’actions
+        o Par cession (Vente, donation, échange)
+        o Par transmission (succession)
+
+Certains droits de l’actionnaire
+     Droit de vote lors des assemblées
+     Droit aux dividendes
+     Droit dans l’actif de la SPA (aux reliquats des biens de la SPA)
+     Droit à l’information (de consulter les registres de la SPA)
+     Droit à la dissidence et au rachat des actions
+        L’actionnaire en désaccord avec une décision apportant des changements importants à la structure de
+        la SPA peut forcer le rachat de ses actions à sa juste valeur marchande.
+       Droit de convoquer une assemblée d’actionnaires
+       Droit de demander la tenue d’une enquête (demande au tribunal)
+        o Pour annuler une décision, un acte abusif ou injuste de la SPA
+        o Pour contester une élection
+        o Pour exiger le respect de la loi ainsi que des statuts et règlements de la SPA
+        o ETC.
+
+Convention unanime des actionnaires
+Cette convention entre actionnaires est facultative. Il s’agit d’une entente écrite qui permet d’établir
+certaines règles quant au fonctionnement de la société par actions. Elle vient restreindre les pouvoirs
+des administrateurs. Il est même possible de transférer certains pouvoirs des administrateurs aux
+actionnaires (pouvoir de décider du versement des dividendes, etc.). Dans ce cas, les actionnaires
+assument les responsabilités des administrateurs lorsqu’ils exercent ces pouvoirs.
+
+La convention unanime peut lier un nouvel actionnaire si le certificat d’action porte une mention ou un
+renvoi visible concernant l’existence de la convention unanime. Si un nouvel actionnaire n’a pas été
+
+                                                        37
+avisé de l’existence de la convention unanime au moment de l’acquisition, il pourra dans les 30 jours
+après avoir appris son existence, annuler l’opération.
+
+Quelques exemples de clauses
+     Droit de premier refus
+     Clause d’assurance
+     Clause pénale
+     Clause « shotgun »
+La clause « shotgun » (aussi appelée : clause coercitive ou de coercition, clause baseball, clause
+roulette russe, clause boomerang, clause discorde, clause ultimatum ou simplement clause
+d'achat/vente obligatoire) permet à l'un des actionnaires de racheter les actions de son associé ou de
+vendre les actions qu'il détient à son associé.
+
+Si un actionnaire offre d'acheter les actions de son associé et celui-ci refuse, cet associé sera forcé de
+racheter les actions de celui qui lui a fait une offre d'achat et ce aux mêmes conditions et prix que
+l'offre d'origine. Exemple : A offre d'acheter à B les actions qu'il détient dans leur entreprise et B refuse
+de vendre, ce dernier sera obligé de racheter les actions de A au même prix que celui proposé par A
+pour les actions de B.
+
+Si un actionnaire offre de vendre ses actions à son associé et que celui-ci refuse d’acheter, ce dernier
+sera forcé de vendre les actions qu'il détient dans la SPA. Exemple : X offre de vendre à Y les actions
+qu'il détient dans leur entreprise commune et Y refuse d'acheter, Y sera obligé de vendre ses actions à
+X au même prix que celui proposé par X pour vendre à Y.
+
+
+ASSEMBLÉES DES ACTIONNAIRES
+
+       Assemblée annuelle
+        Il doit y avoir au moins une assemblée par année (obligation légale).
+
+       Assemblée spéciale ou extraordinaire (si nécessaire)
+        Il est possible de convoquer les actionnaires à une assemblée spéciale ou extraordinaire pour prendre
+        une ou des décision(s) importante(s). Un groupe d’actionnaires (10 % ou 5 %) peuvent demander la
+        convocation d’une assemblée spéciale.
+
+       Avis de convocation
+        L’avis est envoyé aux actionnaires et aux administrateurs, mais seuls les actionnaires ont droit de vote.
+        o Date et lieu de l’assemblée
+        o Ordre du jour
+           Élections des administrateurs (ou au renouvellement de leur mandat)
+           Règlements adoptés par les administrateurs (confirmation, la modification ou au rejet
+             des règlements)
+           Nomination du vérificateur
+               Le vérificateur doit obligatoirement être un comptable professionnel agréé (CPA). Il doit être
+               indépendant de la SPA (le comptable ne peut être un employé ou un administrateur). Les
+               actionnaires d’une SPA privée (émetteur fermé) peuvent décider de ne pas nommer de
+                                                        38
+               vérificateur par un vote unanime. Dans ce cas, ce sont les administrateurs qui nomment un
+               comptable.
+             États financiers
+               Au moment de l’assemblée, les états financiers ont déjà été analysés par le vérificateur.
+             ETC.
+
+
+Quorum
+Nombre minimal de personnes présentes ou représentées pour qu’une assemblée soit valide. Lors d’une
+assemblée, il doit y avoir quorum (à défaut de règlement qui fixe le quorum, il y a quorum lorsque les détenteurs
+d’actions représentant 50 % + 1 des voix).
+
+Vote
+[Les actionnaires expriment leurs volontés au moyen de votes. Un actionnaire détient autant de votes qu’il a
+d’actions (une action = un vote). En général, les décisions sont prises à la majorité simple (50% + 1), mais il est
+possible de prévoir par règlement que certaines décisions seront prises à une majorité plus élevée.
+
+Les actionnaires peuvent voter par procuration écrite signée par l’actionnaire en mandatant quelqu’un
+(actionnaire ou non) pour voter à leur place. La loi prévoit des limites à ce pouvoir pour éviter qu’un actionnaire
+contrôle une assemblée. La procuration peut contenir des instructions sur la manière de voter en fonction de
+l’ordre du jour.]
+
+Formes du vote (Le vote peut prendre différentes formes qui peuvent être déterminées par règlement)
+    Scrutin secret
+    Main levée et à voix ouvertes (en précisant pour chaque actionnaire le nombre de voix qu’il
+       représente)
+    Main levée (un actionnaire un vote)
+
+Régime de l’actionnaire unique
+L’actionnaire unique peut décider de se soustraire aux formalités suivantes :
+     Constitution d’un conseil d’administration
+     Nomination d’un vérificateur
+
+L’actionnaire unique peut dissoudre la SPA par une déclaration de dissolution. Dès la dissolution, les
+droits et obligations de la SPA deviennent ceux de l’actionnaire.
+
+
+ADMINISTRATEURS
+
+Éligibilité
+      Personne physique majeure
+      Ne pas être sous tutelle
+      Ne pas avoir le statut de failli
+      Ne pas avoir de casier judiciaire (concernant un crime comme la fraude, etc.)
+
+Élections et mandat des administrateurs
+                                                        39
+[Les administrateurs sont élus par les actionnaires. Le mandat d’un administrateur est généralement d’un an. Ce
+mandat ne peut excéder trois ans. Il est possible de destituer un administrateur, pour un motif sérieux, par une
+résolution adoptée par les actionnaires.]
+        Officiers, dirigeants (règle générale, ces personnes sont élues ou nommées par le CA)
+        Comités du conseil d’administration
+[Le CA peut former différents comités, notamment un Comité exécutif ou un Comité de direction pour gérer les
+affaires courantes de la SPA.]
+
+Rémunération
+La rémunération des administrateurs est établie par règlement, elle peut prendre différentes formes.
+     Salaire
+     Primes
+     Option d’achat d’actions, etc.
+
+Assemblée des administrateurs
+[Les administrateurs peuvent se réunir autant de fois qu’ils le désirent pour prendre des décisions concernant la
+SPA. Il doit y avoir quorum.]
+
+Quorum et vote des administrateurs
+[À l’instar de l’assemblée des actionnaires, le quorum est fixé par règlement. À défaut de règlement, le quorum
+est fixé à 50 % + 1 des administrateurs. L’administrateur ne peut mandater une autre personne pour voter à sa
+place (la présence de l’administrateur est plus importante que celle d’un actionnaire). Un administrateur peut
+être présent à distance (téléphone, skype, etc.). Chaque administrateur a droit à un vote. Sauf exception, les
+décisions du Conseil d’administration se prennent à la majorité simple (50 % + 1). L’administrateur vote dans
+l’intérêt de la SPA, tandis que l’actionnaire vote dans son propre intérêt. Sauf clause contraire dans une
+convention unanime des actionnaires, c’est le conseil d’administration qui décide de verser ou non des
+dividendes (les actionnaires ne peuvent infirmer cette décision).]
+
+Présomption d’acquiescement aux décisions prises lors des assemblées
+[Tous les administrateurs présents ou non sont présumés avoir acquiescé aux décisions prises lors d’une réunion.
+Si un administrateur présent à une réunion veut se dissocier d’une décision, il doit consigner sa dissidence au
+procès-verbal ou informer le secrétaire de la réunion avant la fin de la réunion. L’administrateur absent peut se
+dissocier en consignant sa dissidence dans les sept jours suivants la réunion en envoyant un avis au siège social
+de la SPA.]
+
+Capacité de contracter et représentation de la société par actions
+    Règle de l’« indoor management » (théorie civile du mandat)
+
+Devoirs et obligations des administrateurs (incluant les officiers et dirigeants)
+[Les administrateurs jouent un rôle très important au sein de la SPA. Ils ont des responsabilités et des exigences à
+satisfaire en tant que cadre supérieur de l'entreprise. Les administrateurs sont mandataires (représentants) de la
+SPA et à ce titre, ils doivent agir personnellement, dans les limites de leurs pouvoirs. Ils doivent également agir
+avec diligence, prudence, honnêteté et loyauté.]
+L’administrateur doit :
+     Agir personnellement à l’intérieur des limites de ses pouvoirs
+     Agir avec prudence et diligence
+     Agir avec honnêteté et loyauté
+                                                        40
+        [Les administrateurs et dirigeants doivent agir en tenant compte des intérêts supérieurs de la SPA. Ils
+        doivent s’abstenir d’abuser de leur pouvoir et éviter de se placer en situation de conflit d’intérêts
+        (notamment éviter d’utiliser à son profit l’information obtenue dans le cadre de ses fonctions).]
+
+[L’administrateur, qui est poursuivi personnellement pour des actes commis de bonne foi dans
+l’exercice de ses fonctions, a le droit d’être indemnisé par la SPA pourvu qu’il ait respecté ses
+obligations.]
+
+
+
+Quelques cas spécifiques de responsabilités civiles des administrateurs
+    Salaires impayés des employés
+[Les administrateurs sont responsables envers les employés de la SPA jusqu’à concurrence de six mois de salaire
+pour les services rendus pendant leur administration. Les employés doivent d’abord poursuivre la SPA au plus
+tard dans les six mois suivant l’exigibilité du salaire pour une société fédérale (c’est un an pour une société
+provinciale) et doivent démontrer que la SPA ne s’est pas acquittée de toute son obligation malgré le jugement
+exécuté contre elle. La responsabilité des administrateurs s’applique même s’ils n’ont commis aucune faute et
+même s’ils étaient de bonne foi. C’est ce qui explique que les administrateurs vont licencier des salariés lorsque
+les affaires de la SPA vont mal.]
+        Déclaration et paiement illégal de dividendes
+[La SPA ne peut émettre un dividende si cela a pour effet de la rendre insolvable. Les administrateurs qui ont
+autorisé ce paiement dans de telles circonstances ou qui sont réputés l’avoir autorisée sont solidairement
+responsables envers la SPA. Si la SPA devient en faillite dans l’année suivant le paiement illégal, le tribunal peut
+par jugement condamner les administrateurs à payer solidairement le montant du dividende plus intérêts. Les
+administrateurs peuvent se défendre en démontrant qu’ils étaient de bonne foi lorsqu’ils ont autorisé ce
+dividende et un administrateur peut se défendre en prouvant qu’il a voté contre le paiement de ce dividende.]
+        Transfert d’actions impayées
+[Un actionnaire qui veut céder ses actions avant de les avoir payées doit obtenir le consentement des
+administrateurs. Si ces derniers consentent et que le cessionnaire semble insolvable lors de la cession, les
+administrateurs sont solidairement responsables jusqu’à concurrence du montant impayé sur les actions. Il est à
+noter que la LCSA interdit le transfert d’actions qui ne sont pas totalement payées.]
+        Rachat illégal d’actions
+[La SPA peut racheter des actions si elles ont été payées et si ce rachat ne rend pas la SPA insolvable. Si ces
+conditions ne sont pas respectées, les administrateurs qui l’ont autorisé encourent leur responsabilité jusqu’à
+concurrence des sommes versées et non recouvrées. Les administrateurs ont un recours contre les bénéficiaires
+pour récupérer les fonds ou biens reçus.]
+
+
+
+FUSION D’UNE SOCIÉTÉ PAR ACTIONS
+
+Fusion ordinaire
+[Deux SPA peuvent fusionner par une convention approuvée par le CA de chacune des SPA et par l’adoption
+d’une résolution spéciale par les actionnaires des deux SPA. Cette résolution doit être approuvée par au moins les
+2/3 des actionnaires de chacune des SPA.]
+
+Fusion simplifiée
+
+                                                        41
+[Lorsqu’une SPA détient toutes les actions de plusieurs SPA. Deux SPA peuvent fusionner par une résolution
+adoptée par le CA de chacune des SPA.]
+      Fusion verticale (La société mère se fusionne avec une SPA qu’elle contrôle (une de ses filiales).)
+        Fusion horizontale (Deux SPA (filiales) contrôlées par la société mère se fusionnent.)
+
+
+DISSOLUTION ET LIQUIDATION
+
+Dissolution volontaire
+[La SPA peut décider de mettre fin à ses activités (ses opérations) en procédant à une dissolution. Il ne s’agit pas
+d’une faillite. La dissolution c’est la fin de la SPA, comme la mort représente la fin pour une personne physique.
+La SPA doit produire une annonce dans un journal pour rendre publique sa dissolution. On devra dresser un acte
+de dissolution.]
+
+Dissolution forcée (très rare)
+[Si le certificat a été obtenu illégalement, si le statut de la spa contient des obligations erronées, etc.]
+
+Liquidation (volontaire ou forcée)
+[La liquidation est volontaire ou judiciaire. C’est le processus par lequel les actifs de la SPA sont distribués aux
+actionnaires après avoir payé tous les créanciers. Pour la liquidation, on nomme un ou plusieurs liquidateur(s). La
+SPA continue d’exister uniquement pour les fins de sa liquidation parce que c’est la SPA qui est partie aux
+contrats qui visent à liquider les biens de la SPA.]
+
+
+
+AVANTAGES ET INCONVÉNIENTS DE LA SOCIÉTÉ PAR ACTIONS
+
+Avantages
+   • Responsabilité limitée des actionnaires
+         [Cet avantage est théoriquement acquis aux grandes SPA. Dans les faits, les banques et les créanciers
+         exigent souvent, dans le cas des petites corporations qui ont peu d'actifs, que les administrateurs ou les
+         actionnaires s'engagent personnellement ou cautionnent leur SPA, ce qui a pour effet de réduire à néant
+         l'avantage envisagé.]
+    •    Permanence
+         [La personnalité morale ou juridique confère à la corporation une permanence que n'a pas la société de
+         personnes dont l'existence et la survie sont souvent liées à la situation financière de chacun des
+         associés.]
+    •    Plus grande facilité de financement
+         [À l’instar de la société de personnes, la SPA peut effectuer des emprunts. Les associés sont
+         personnellement responsables jusqu’à concurrence de la totalité de la somme empruntée. Les
+         actionnaires d'une SPA bénéficient du privilège de la responsabilité limitée, qui fait en sorte qu’ils ne
+         sont pas personnellement responsables.]
+    •    Avantages fiscaux
+         [Les taux d’imposition de la SPA sont nettement plus avantageux que ceux applicables aux particuliers ou
+         aux sociétés de personnes. Dès lors qu’une entreprise génère des bénéfices importants, il devient
+         avantageux de constituer une SPA parce que fiscalité corporative est beaucoup moins contraignante que
+         la fiscalité des particuliers. Le propriétaire de l’entreprise individuelle et l’associé doivent payer de
+         l’impôt chaque année même si les profits sont réinvestis dans l’entreprise. Les profits de la SPA
+
+                                                           42
+            (personne morale) ne sont imposables que lorsque la SPA verse un dividende, ce qui permet à
+            l’actionnaire de reporter à plus tard le paiement de l’impôt.
+
+            La réduction des taux d’imposition permet à la SPA de faire fructifier l'argent qui lui reste de sorte qu'elle
+            l'utilise à son propre développement au lieu de le remettre immédiatement au fisc. Soit dit en passant, il
+            ne sert à rien à un individu de se constituer en personne morale si la personne visée a besoin de tous les
+            profits de son entreprise pour assurer sa subsistance personnelle. Il peut donc être intéressant de
+            former une personne morale si les revenus de l'individu dépassent un certain montant.]
+
+
+
+
+Inconvénients
+     Frais de constitution
+            [Les coûts de constitution et les différentes formalités pour maintenir une corporation peuvent être
+            relativement importants. Il est souvent utile de recourir aux services d’un expert (notaire, avocat,
+            comptable, etc.), ce qui augmente les frais.]
+           Administration complexe
+            [La règle de la majorité, le fonctionnement en assemblées, l’obligation de tenir des procès-verbaux et
+            des registres corporatifs, etc. Les formalités, les rapports et les contrôles étatiques sont assez lourds à
+            assumer.]
+           Impossibilité de recourir à la Cour du Québec (chambre civile, division des petites créances)
+
+
+
+
+FRANCHISAGE                                     (ARCHAMBAULT, pages 480-481)
+
+Définition
+[Contrat par lequel la personne du franchiseur vend à une autre personne (franchisé) le droit d’exploiter une
+entreprise sous le nom et la marque du franchiseur selon les méthodes et les normes du franchiseur. Le
+franchiseur se trouve en quelque sorte à mettre ses connaissances, compétences, expérience ainsi que sa
+réputation à la disposition du franchisé afin de lui permettre d’exploiter une entreprise sous le nom du
+franchiseur.]
+
+CONTRAT DE FRANCHISE
+
+               Contrat d’adhésion
+              Obligations du franchiseur
+                  o Formation du franchisé
+                  o Manuel d’exploitation précisant les normes d’exploitation
+              Obligations du franchisé
+        o      Redevances
+                      Droit d’entrée (montant fixé par le franchiseur)
+                      Redevances annuelles (pourcentage du chiffre d’affaires)
+                                                             43
+                       Redevances publicitaires (pourcentage du chiffre d’affaires)
+        o      Respecter les normes
+                      (Normes de construction, d’aménagement, d’approvisionnement, etc.)
+        o      Subir les inspections du franchiseur
+
+               Expiration et résiliation du contrat
+              Faillite du franchisé
+              Fraude envers le franchiseur
+              Non-respect du bail ou du contrat de franchise
+              Non-respect des normes du franchiseur
+              ETC.
+
+
+
+
+COOPÉRATIVE                                       (ARCHAMBAULT, chap. 7 (pages 289 à 293)
+(Loi sur les coopératives, L.R.Q., c. C-67.2) Cette loi ne s’applique pas à une coopérative de crédit.
+
+Selon l’économiste Esdras Minville, la coopérative se situe "entre le capitalisme sans cœur et le
+communisme sans Dieu"
+
+Définition
+[Personne morale, distincte de ses membres, regroupant des personnes qui ont des besoins économiques et
+sociaux communs et qui, en vue de les satisfaire, s'associent pour exploiter une entreprise conformément aux
+règles d'action coopérative. La coopérative offre aux membres des biens et/ou des services à prix avantageux,
+notamment en éliminant certains intermédiaires. On retrouve les coopératives dans différents domaines : sport,
+habitation, alimentation, éducation, etc.]
+
+Caractéristiques de la coopérative
+           Personne morale, dotée de la personnalité juridique comme la société par actions
+           Dénomination sociale : le nom de la coopérative doit comprendre un mot ou expression
+            (coopérative, coopératif, coopération ou coop.)
+           Doit remplir une déclaration d’immatriculation conformément à la LPLE
+           Membres (sociétaires) sont propriétaires et usagers de la coopérative
+           Capital social
+            [C’est l’équivalent du capital-actions d’une compagnie, il est composé des parts sociales de tous les
+            membres de la coopérative.]
+           Part sociale
+            [Chaque membre d’une coop. doit détenir une part sociale (c’est l’équivalent d’une action pour
+            l’actionnaire d’une SPA). La part sociale est nominative (émise au nom du membre) et ne prend pas de
+            valeur.]
+           Trop-perçu
+            [Ce sont les profits et les excédents réalisés par la coopérative au cours d’une année.]
+           Ristourne
+            [C’est ce qui est versé au membre. C’est l’équivalent du dividende versé à l’actionnaire.]
+           Réserve
+                                                            44
+        [La coop a l’obligation de constituer une réserve. La coop. doit verser un minimum de 10 % des trop-
+        perçus dans la réserve. Lorsque la réserve a atteint au moins 40 % du passif de la coopérative, il est
+        possible de cesser cette obligation imposée par la loi.]
+
+
+
+MEMBRE
+[Le membre d’une coopérative c’est l’équivalent d’un actionnaire pour la SPA. Pour être membre de la coop., une
+personne doit avoir la capacité juridique. Toute personne, peut devenir membre d’une coop. Une personne
+mineure peut être membre sous réserve des règlements de la coopérative.
+
+Chaque membre doit souscrire une part sociale nominative. Le membre doit aussi s’engager à respecter les
+règlements de la coopérative. Les membres n’assument aucune responsabilité personnelle concernant les
+obligations de la coopérative. Possibilité de contraindre les membres, par règlement, à utiliser les services de la
+Coopérative.]
+
+
+
+
+FONCTIONNEMENT DE LA COOPÉRATIVE
+
+Pour former une coopérative, il faut un minimum de cinq membres, ce minimum peut être abaissé à
+trois
+
+ASSEMBLÉE GÉNÉRALE
+À l’instar de la SPA, les membres peuvent prendre part aux décisions de la coop. en participant à
+l’assemblée annuelle des membres. Lors de cette assemblée, les membres vont notamment :
+      élire les administrateurs (qui sont membres de la coop.)
+      nommer le vérificateur
+      prendre connaissance du rapport annuel du vérificateur
+      voter sur les résolutions et règlements
+      statuer sur la répartition des trop-perçus ou excédents
+      discuter des politiques et orientations de la coop.
+      Etc.
+
+Quorum
+[Il est déterminé par règlement. À défaut de règlement, les membres présents lors d’une assemblée
+constituent le quorum.]
+
+Vote
+[Le mouvement coopératif est fondé sur le principe d’égalité de tous les membres. Chaque membre détient un
+vote. Un membre = un vote. Un membre ne peut voter par procuration.]
+
+Assemblée extraordinaire (rare)
+[Le conseil d’administration de la coop. doit décréter la tenue d’une assemblée extraordinaire sur requête de 500
+membres si la coop. compte 2 000 membres ou plus ou sur requête de 25 % des membres si la coop compte
+moins de 2 000 membres. Le conseil d’administration de la coopérative peut décider, s’il le juge utile, de décréter
+la tenue d’une telle assemblée.]
+                                                        45
+CONSEIL D’ADMINISTRATION
+[Les membres du conseil d’administration sont mandataires (représentants) de la coop. et ne sont pas
+personnellement responsables des obligations de la coop. Les administrateurs sont élus lors de l’assemblée
+générale. La durée du mandat est d’un an. Le règlement peut prévoir un mandat plus long (maximum trois ans).
+Le nombre d’administrateurs est déterminé par règlement (minimum trois (3), maximum quinze (15)
+administrateurs). Si le conseil d’administration est composé d’un minimum de six administrateurs, il est possible
+de créer un comité exécutif de trois membres : président, vice-président et secrétaire. Le quorum est fixé à la
+majorité des membres du CA.]
+       Convention d’administration
+        [La coopérative qui compte moins de 25 membres n’est pas tenue d’élire un conseil d’administration à la
+        condition que 90 % des membres acceptent de signer une convention d’administration. Les membres
+        doivent alors élire un président, un vice-président et un secrétaire. La convention d’administration est
+        grosso modo semblable à une convention unanime des actionnaires, mais doit être renouvelée chaque
+        année, sauf si on décide d’élire un Conseil d’administration.]
+
+
+
+
+REGISTRE DE LA COOPÉRATIVE
+
+Toute coopérative doit tenir, un registre contenant :
+    Statuts (certificat de constitution), règlements et la convention d’administration par
+       l’assemblée des membres;
+    Convention d’administration
+    liste des administrateurs et dirigeants indiquant leurs nom et domicile ainsi que, le cas
+       échéant, la date du début de leur mandat et sa durée;
+    procès-verbaux et résolutions de ses assemblées générales;
+    procès-verbaux des réunions et les résolutions du conseil d’administration, du comité exécutif
+       et, le cas échéant, des autres comités;
+    liste des membres en règle (nombre des parts sociales);
+
+[Le registre peut être tenu sur tout support d’information permettant d’avoir accès à des données
+écrites accessibles dans une transcription intelligible.]
+
+REGROUPEMENT DE COOPÉRATIVES
+[Dans le but de favoriser leur développement, les coopératives peuvent se réunir au sein d’une fédération ou
+d’une confédération.]
+
+
+
+DISSOLUTION ET LIQUIDATION
+
+La dissolution est décidée dans le cadre d’une assemblée extraordinaire des membres dûment
+convoqués. La dissolution requiert un vote d’un minimum de 75% des membres présents ou
+représentés.
+
+
+                                                       46
+Le ministre responsable peut décréter une dissolution forcée (rare).
+
+[Pour dissoudre la COOP, on doit payer tous les créanciers et rembourser les parts sociales des
+membres. S’il y a surplus (incluant un solde de la réserve), ils doivent être versés à une autre COOP ou
+à une fédération de coop., désignée par le ministre responsable.]
+
+
+
+
+                                           *****
+
+
+
+
+                                                   47
+

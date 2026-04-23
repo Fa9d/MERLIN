@@ -1,0 +1,743 @@
+meta:
+  id: ref_services_orientation_sante_mentale_qc_2026_04_19
+  type_objet: referentiel_services_orientation
+  territoire: Quebec
+  statut_document: draft
+  date: 2026-04-19
+  schema_ref: C:/MERLIN/05_PREUVES_SOURCES/SCHEMAS/MERLIN_PREU_SCHEMA_SERVICE_ORIENTATION_v1.0.md
+  description: Referentiel YAML minimal des services d orientation sante mentale et psychosociale pour MERLIN.
+
+services:
+  - id: svc_811_qc
+    type_objet: service_orientation
+    nom: 811 info sante info social
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: tele_triage_orientation
+    niveau_systeme: premiere_ligne
+    statut_offre: public
+    porte_entree_principale: telephone_811
+    portes_entree_secondaires: []
+    acces_direct: oui
+    reference_requise: non
+    cout_usager: gratuit
+    niveau_urgence_cible: subaigu
+    besoins_pris_en_charge:
+      - orientation_initiale
+      - doute_sur_bonne_porte_entree
+      - detresse_psychosociale_non_vitale
+      - questions_sante_non_urgentes
+    quand_orienter:
+      - gravite_incertaine
+      - besoin_avis_rapide
+      - absence_ressource_habituelle
+    quand_ne_pas_orienter:
+      - danger_vital_immediat
+      - douleur_thoracique_aigue
+      - plan_suicidaire_imminent
+    signaux_alerte_escalade:
+      - idee_suicidaire_avec_plan
+      - confusion_aigue
+      - detresse_respiratoire
+    services_alternatifs:
+      - svc_urgence_psy_qc
+      - svc_centre_crise_qc
+      - svc_clsc_qc
+      - svc_gap_qc
+    role_pour_merlin: porte_entree_si_gravite_incertaine
+    confusions_a_eviter:
+      - service_suivi_neq_811
+      - urgence_neq_811
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/services-de-sante-et-services-sociaux-de-premiere-ligne
+      - https://g26.pub.msss.rtss.qc.ca/Formulaires/Circulaire/ConsCirculaire.aspx?id=3641
+    a_valider_localement:
+      - temps_attente
+      - langues
+      - articulation_gap
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/PREMIERE_LIGNE/SOIN__canon__fiche-811-info-sante-info-social-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_gap_qc
+    type_objet: service_orientation
+    nom: GAP
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: guichet_acces_orientation
+    niveau_systeme: premiere_ligne
+    statut_offre: public
+    porte_entree_principale: plateforme_gap
+    portes_entree_secondaires:
+      - telephone_gap
+    acces_direct: oui
+    reference_requise: non
+    cout_usager: gratuit
+    niveau_urgence_cible: non_urgent
+    besoins_pris_en_charge:
+      - evaluation_non_urgente
+      - orientation_premiere_ligne
+      - acces_sans_medecin_famille
+    quand_orienter:
+      - pas_de_medecin_famille
+      - besoin_reel_non_urgent
+      - acces_difficile_ressource_habituelle
+    quand_ne_pas_orienter:
+      - danger_vital_immediat
+      - crise_psychiatrique_aigue
+      - suivi_specialise_deja_etabli
+    signaux_alerte_escalade:
+      - ideation_suicidaire_avec_plan
+      - aggravation_rapide
+      - symptomes_neurologiques_aigus
+    services_alternatifs:
+      - svc_811_qc
+      - svc_clsc_qc
+      - svc_urgence_psy_qc
+    role_pour_merlin: premiere_ligne_non_urgente_en_absence_medecin
+    confusions_a_eviter:
+      - gamf_neq_gap
+      - psychotherapie_neq_gap
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://www.quebec.ca/sante/trouver-une-ressource/guichet-acces-premiere-ligne
+    a_valider_localement:
+      - horaires
+      - telephone
+      - disponibilite_territoriale
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/PREMIERE_LIGNE/SOIN__canon__fiche-gap-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_clsc_qc
+    type_objet: service_orientation
+    nom: CLSC
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: premiere_ligne_sante_services_sociaux
+    niveau_systeme: premiere_ligne
+    statut_offre: public
+    porte_entree_principale: clsc
+    portes_entree_secondaires:
+      - orientation_811
+      - orientation_professionnelle
+    acces_direct: oui
+    reference_requise: variable
+    cout_usager: gratuit
+    niveau_urgence_cible: urgence_sociale
+    besoins_pris_en_charge:
+      - accueil_psychosocial
+      - sante_mentale_non_urgente
+      - vulnerabilite_sociale
+      - maintien_domicile
+    quand_orienter:
+      - besoins_psychosociaux_ou_mixtes
+      - social_pese_fortement
+      - pas_de_danger_vital_manifeste
+    quand_ne_pas_orienter:
+      - urgence_vitale
+      - crise_psychiatrique_aigue
+      - soins_super_specialises
+    signaux_alerte_escalade:
+      - violence_actuelle
+      - risque_suicidaire
+      - desorganisation_severe
+    services_alternatifs:
+      - svc_811_qc
+      - svc_travailleur_social_public_qc
+      - svc_urgence_psy_qc
+      - svc_centre_crise_qc
+    role_pour_merlin: noeud_central_pour_parcours_sante_social
+    confusions_a_eviter:
+      - urgence_neq_clsc
+      - cabinet_medical_simple_neq_clsc
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/services-de-sante-et-services-sociaux-de-premiere-ligne
+      - https://publications.msss.gouv.qc.ca/msss/fichiers/2025/25-924-24W.pdf
+    a_valider_localement:
+      - programmes
+      - delais
+      - ressources_sante_mentale
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/PREMIERE_LIGNE/SOIN__canon__fiche-clsc-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_psychologue_public_qc
+    type_objet: service_orientation
+    nom: psychologue public
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: professionnel_sante_mentale
+    niveau_systeme: deuxieme_ligne
+    statut_offre: public
+    porte_entree_principale: CLSC
+    portes_entree_secondaires:
+      - GMF
+      - equipe_sante_mentale
+      - psychiatre
+    acces_direct: non
+    reference_requise: oui
+    cout_usager: gratuit
+    niveau_urgence_cible: subaigu
+    besoins_pris_en_charge:
+      - trouble_anxieux
+      - trouble_depressif
+      - trouble_adaptation
+      - trauma
+      - psychotherapie
+    quand_orienter:
+      - detresse_persistante
+      - trouble_mental_probable
+      - motivation_psychotherapie
+      - pas_de_danger_immediat
+    quand_ne_pas_orienter:
+      - crise_suicidaire
+      - psychose_aigue
+      - besoin_principalement_social
+    signaux_alerte_escalade:
+      - plan_suicidaire
+      - moyens_letaux_disponibles
+      - symptomes_psychotiques_aigus
+    services_alternatifs:
+      - svc_travailleur_social_public_qc
+      - svc_psychologue_prive_qc
+      - svc_urgence_psy_qc
+    role_pour_merlin: psychotherapie_publique_si_parcours_approprie
+    confusions_a_eviter:
+      - psychiatre_neq_psychologue_public
+      - prive_neq_public
+    niveau_fiabilite: moyen_a_eleve
+    sources_principales:
+      - https://www.ordrepsy.qc.ca/ou-trouver
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/etapes-pour-obtenir-soins-et-services-en-sante-mentale
+    a_valider_localement:
+      - delais
+      - criteres_programme
+      - nombre_seances
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/SANTE_MENTALE/SOIN__canon__fiche-psychologue-public-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_psychologue_prive_qc
+    type_objet: service_orientation
+    nom: psychologue prive
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: professionnel_sante_mentale
+    niveau_systeme: premiere_ligne
+    statut_offre: prive
+    porte_entree_principale: cabinet_prive
+    portes_entree_secondaires:
+      - service_reference_opq
+    acces_direct: oui
+    reference_requise: non
+    cout_usager: payant
+    niveau_urgence_cible: subaigu
+    besoins_pris_en_charge:
+      - psychotherapie
+      - detresse_psychologique
+      - trouble_anxieux
+      - trouble_depressif
+      - trauma
+    quand_orienter:
+      - besoin_psychotherapie
+      - acces_rapide_souhaite
+      - capacite_payer_ou_assurance
+    quand_ne_pas_orienter:
+      - danger_immediat
+      - crise_psychiatrique_aigue
+      - impossibilite_financiere_totale
+    signaux_alerte_escalade:
+      - plan_suicidaire
+      - psychose_aigue
+      - confusion
+    services_alternatifs:
+      - svc_psychologue_public_qc
+      - svc_811_qc
+      - svc_urgence_psy_qc
+    role_pour_merlin: option_psychotherapie_rapide_si_moyens_disponibles
+    confusions_a_eviter:
+      - gratuit_neq_prive
+      - psychiatre_neq_psychologue_prive
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://www.ordrepsy.qc.ca/service-reference-membres
+      - https://www.ordrepsy.qc.ca/ou-trouver
+    a_valider_localement:
+      - couts
+      - delais
+      - couverture_assurance
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/SANTE_MENTALE/SOIN__canon__fiche-psychologue-prive-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_psychiatre_qc
+    type_objet: service_orientation
+    nom: psychiatre
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: specialiste_medical
+    niveau_systeme: specialise
+    statut_offre: public
+    porte_entree_principale: reference_medicale
+    portes_entree_secondaires:
+      - urgence
+      - CLSC
+      - GMF
+    acces_direct: non
+    reference_requise: oui
+    cout_usager: gratuit
+    niveau_urgence_cible: urgent
+    besoins_pris_en_charge:
+      - psychose
+      - bipolarite
+      - depression_severe
+      - risque_suicidaire_persistant
+      - medication_specialisee
+    quand_orienter:
+      - trouble_mental_grave_ou_complexe
+      - besoin_evaluation_medicale_specialisee
+      - echecs_premiere_ligne
+    quand_ne_pas_orienter:
+      - trouble_leger_sans_gravite
+      - besoin_principalement_social
+      - simple_demande_psychotherapie
+    signaux_alerte_escalade:
+      - hallucinations
+      - idees_delirantes
+      - violence
+      - danger_suicidaire_eleve
+    services_alternatifs:
+      - svc_urgence_psy_qc
+      - svc_psychologue_public_qc
+      - svc_travailleur_social_public_qc
+    role_pour_merlin: evaluation_specialisee_pour_gravite_complexite_ou_medicament
+    confusions_a_eviter:
+      - psychologue_neq_psychiatre
+      - travailleur_social_neq_psychiatre
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/reseau-integre-en-sante-mentale/
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/etapes-pour-obtenir-soins-et-services-en-sante-mentale
+    a_valider_localement:
+      - acces_ambulatoire
+      - delais
+      - programmes_specialises
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/SANTE_MENTALE/SOIN__canon__fiche-psychiatre-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_travailleur_social_public_qc
+    type_objet: service_orientation
+    nom: travailleur social public
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: professionnel_services_sociaux
+    niveau_systeme: premiere_ligne
+    statut_offre: public
+    porte_entree_principale: CLSC
+    portes_entree_secondaires:
+      - GMF
+      - hopital
+      - 811
+    acces_direct: oui
+    reference_requise: variable
+    cout_usager: gratuit
+    niveau_urgence_cible: urgence_sociale
+    besoins_pris_en_charge:
+      - logement
+      - revenus
+      - violence
+      - isolement
+      - parentalite
+      - demarches
+    quand_orienter:
+      - determinant_social_central
+      - besoin_accompagnement_demarches
+      - poids_du_social_sur_detresse
+    quand_ne_pas_orienter:
+      - crise_psychiatrique_aigue
+      - besoin_medical_urgent
+      - besoin_purement_psychotherapeutique
+    signaux_alerte_escalade:
+      - maltraitance_enfant
+      - violence_actuelle
+      - impossibilite_besoins_base
+    services_alternatifs:
+      - svc_clsc_qc
+      - svc_urgence_psy_qc
+      - svc_psychologue_public_qc
+    role_pour_merlin: levier_principal_si_le_social_domine
+    confusions_a_eviter:
+      - psychologue_neq_travailleur_social
+      - urgence_neq_travailleur_social
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://publications.msss.gouv.qc.ca/msss/fichiers/2025/25-924-24W.pdf
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/reseau-integre-en-sante-mentale/
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/etapes-pour-obtenir-soins-et-services-en-sante-mentale
+    a_valider_localement:
+      - delais
+      - modalites_accueil
+      - disponibilite_gmf
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/PREMIERE_LIGNE/SOIN__canon__fiche-travailleur-social-public-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_psychoeducateur_qc
+    type_objet: service_orientation
+    nom: psychoeducateur
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: adaptation_intervention_educative
+    niveau_systeme: premiere_ligne
+    statut_offre: mixte
+    porte_entree_principale: ecole_ou_services_jeunesse
+    portes_entree_secondaires:
+      - CISSS_CIUSSS
+      - CLSC_jeunesse
+      - cabinet_prive
+    acces_direct: variable
+    reference_requise: variable
+    cout_usager: mixte
+    niveau_urgence_cible: non_urgent
+    besoins_pris_en_charge:
+      - difficultes_adaptation
+      - difficultes_comportement
+      - TDAH
+      - TSA
+      - integration_scolaire
+    quand_orienter:
+      - jeune_avec_problemes_comportement
+      - besoin_plan_intervention_structure
+      - difficultes_dans_milieux_de_vie
+    quand_ne_pas_orienter:
+      - crise_suicidaire
+      - psychose
+      - enjeu_principalement_social
+    signaux_alerte_escalade:
+      - auto_agressivite_severe
+      - violence_extreme
+      - ideation_suicidaire
+    services_alternatifs:
+      - svc_psychologue_public_qc
+      - svc_psychiatre_qc
+      - svc_travailleur_social_public_qc
+    role_pour_merlin: orientation_jeunesse_si_adaptation_et_comportement_dominent
+    confusions_a_eviter:
+      - psychologue_neq_psychoeducateur
+      - urgence_neq_psychoeducateur
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://ordrepsed.qc.ca
+    a_valider_localement:
+      - acces_ecole
+      - acces_CISSS_CIUSSS
+      - delais
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/SANTE_MENTALE/SOIN__canon__fiche-psychoeducateur-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_urgence_psy_qc
+    type_objet: service_orientation
+    nom: urgence psychiatrique
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: service_hospitalier_specialise
+    niveau_systeme: urgence
+    statut_offre: public
+    porte_entree_principale: urgence_hospitaliere
+    portes_entree_secondaires:
+      - 911
+      - ambulance
+    acces_direct: oui
+    reference_requise: non
+    cout_usager: gratuit
+    niveau_urgence_cible: critique
+    besoins_pris_en_charge:
+      - risque_suicidaire_imminent
+      - psychose_aigue
+      - agitation_severe
+      - confusion
+      - danger_pour_soi_ou_autrui
+    quand_orienter:
+      - securite_ne_peut_pas_etre_garantie
+      - danger_immediat
+      - desorganisation_majeure
+    quand_ne_pas_orienter:
+      - detresse_chronique_non_urgente
+      - simple_demande_suivi
+      - probleme_social_sans_danger_immediat
+    signaux_alerte_escalade:
+      - passage_a_l_acte_en_cours
+      - hallucinations_commandantes
+      - menaces_concretes
+      - intoxication_severe_avec_alteration
+    services_alternatifs:
+      - svc_centre_crise_qc
+      - svc_811_qc
+    role_pour_merlin: destination_prioritaire_si_danger_immediat
+    confusions_a_eviter:
+      - centre_de_crise_neq_urgence_psy
+      - psychologue_neq_urgence_psy
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/reseau-integre-en-sante-mentale/
+    a_valider_localement:
+      - organisation_hopital
+      - delais
+      - UIBP_associee
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/URGENCES_CRISE/SOIN__canon__fiche-urgence-psychiatrique-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_uibp_qc
+    type_objet: service_orientation
+    nom: UIBP
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: unite_court_sejour_psychiatrique
+    niveau_systeme: urgence
+    statut_offre: public
+    porte_entree_principale: suite_urgence_psy
+    portes_entree_secondaires: []
+    acces_direct: non
+    reference_requise: oui
+    cout_usager: gratuit
+    niveau_urgence_cible: post_urgence
+    besoins_pris_en_charge:
+      - stabilisation_breve_crise_psychiatrique
+      - reevaluation_diagnostique
+      - plan_sortie_rapide
+    quand_orienter:
+      - jamais_en_destination_directe
+      - explication_possible_apres_urgence
+    quand_ne_pas_orienter:
+      - acces_direct
+      - suivi_long_terme
+      - detresse_non_aigue
+    signaux_alerte_escalade:
+      - meme_seuil_que_urgence_psy
+    services_alternatifs:
+      - svc_urgence_psy_qc
+      - svc_centre_crise_qc
+    role_pour_merlin: element_explicatif_post_urgence
+    confusions_a_eviter:
+      - acces_direct_neq_uibp
+      - hospitalisation_longue_neq_uibp
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://publications.msss.gouv.qc.ca/msss/fichiers/sante-quebec/25-23_Guide_UIBP.pdf
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/reseau-integre-en-sante-mentale/
+    a_valider_localement:
+      - presence_uibp
+      - capacite_lits
+      - criteres_admission
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/HOSPITALIER_SPECIALISE/SOIN__canon__fiche-uibp-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_centre_crise_qc
+    type_objet: service_orientation
+    nom: centre de crise
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: ressource_crise_psychosociale
+    niveau_systeme: urgence
+    statut_offre: communautaire
+    porte_entree_principale: telephone_centre_crise
+    portes_entree_secondaires:
+      - 811
+      - CLSC
+      - urgence
+    acces_direct: variable
+    reference_requise: variable
+    cout_usager: gratuit
+    niveau_urgence_cible: crise
+    besoins_pris_en_charge:
+      - crise_psychosociale
+      - idee_suicidaire_sans_plan_imminent
+      - detresse_majeure
+      - soutien_intensif_court_terme
+    quand_orienter:
+      - adulte_en_crise_severe_sans_danger_vital_manifeste
+      - refus_ou_evitement_hopital
+      - besoin_soutien_crise_non_medical
+    quand_ne_pas_orienter:
+      - danger_vital
+      - violence_extreme
+      - intoxication_grave
+      - enfant_si_ressource_adulte
+    signaux_alerte_escalade:
+      - plan_suicidaire_concret
+      - confusion
+      - comportement_violent
+    services_alternatifs:
+      - svc_urgence_psy_qc
+      - svc_811_qc
+      - svc_lignes_ecoute_crise_qc
+    role_pour_merlin: distinguer_crise_non_vitale_de_danger_immediat
+    confusions_a_eviter:
+      - urgence_neq_centre_de_crise
+      - hebergement_long_terme_neq_centre_de_crise
+    niveau_fiabilite: moyen_a_eleve
+    sources_principales:
+      - https://resicq.ca/a-propos-centres-crise/
+      - https://www.santemonteregie.qc.ca/est/centre-de-crise-lacces
+    a_valider_localement:
+      - existence_territoriale
+      - age
+      - hebergement
+      - acces_direct
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/URGENCES_CRISE/SOIN__canon__fiche-centre-de-crise-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_services_dependance_qc
+    type_objet: service_orientation
+    nom: services en dependance
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: service_specialise_dependance
+    niveau_systeme: specialise
+    statut_offre: mixte
+    porte_entree_principale: contact_direct_ressource
+    portes_entree_secondaires:
+      - CLSC
+      - medecin
+      - urgence
+    acces_direct: variable
+    reference_requise: variable
+    cout_usager: variable
+    niveau_urgence_cible: subaigu
+    besoins_pris_en_charge:
+      - dependance_alcool
+      - dependance_drogues
+      - dependance_jeu
+      - readaptation
+      - traitement_ambulatoire_ou_residentiel
+    quand_orienter:
+      - usage_problematique_avec_retentissement
+      - demande_aide
+      - besoin_programme_structure
+    quand_ne_pas_orienter:
+      - intoxication_severe
+      - sevrage_a_risque
+      - absence_trouble_usage
+    signaux_alerte_escalade:
+      - convulsions
+      - delirium
+      - idee_suicidaire
+      - melange_substances
+    services_alternatifs:
+      - svc_urgence_psy_qc
+      - svc_travailleur_social_public_qc
+      - svc_centre_crise_qc
+    role_pour_merlin: branche_specialisee_si_dependance_significative
+    confusions_a_eviter:
+      - urgence_medicale_neq_dependance_non_medicalisee
+      - groupe_entraide_neq_service_specialise
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/repertoires/dependances/
+    a_valider_localement:
+      - reference_necessaire
+      - delais
+      - couts_prives
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/DEPENDANCES/SOIN__canon__fiche-services-dependance-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_ressources_communautaires_sm_qc
+    type_objet: service_orientation
+    nom: ressources communautaires sante mentale
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: soutien_communautaire_sante_mentale
+    niveau_systeme: soutien_communautaire
+    statut_offre: communautaire
+    porte_entree_principale: organisme_communautaire
+    portes_entree_secondaires:
+      - CLSC
+      - 811
+    acces_direct: oui
+    reference_requise: non
+    cout_usager: variable
+    niveau_urgence_cible: non_urgent
+    besoins_pris_en_charge:
+      - isolement
+      - entraide
+      - readaptation_sociale
+      - soutien_aux_proches
+    quand_orienter:
+      - detresse_stabilisee
+      - besoin_pairs
+      - attente_services_specialises
+      - besoin_structurer_quotidien
+    quand_ne_pas_orienter:
+      - crise_aigue
+      - symptomes_graves_non_evalues
+      - besoin_medical_immediat
+    signaux_alerte_escalade:
+      - idees_suicidaires_actives
+      - psychose_non_evaluee
+      - violence
+    services_alternatifs:
+      - svc_clsc_qc
+      - svc_centre_crise_qc
+      - svc_psychologue_public_qc
+    role_pour_merlin: complement_pour_isolement_et_attente
+    confusions_a_eviter:
+      - psychotherapie_neq_communautaire
+      - service_medical_neq_communautaire
+    niveau_fiabilite: moyen
+    sources_principales:
+      - https://www.quebec.ca/sante/sante-mentale
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/trouver-ressource-aide-et-soutien-en-sante-mentale
+    a_valider_localement:
+      - organismes_disponibles
+      - criteres
+      - qualite_activites
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/SANTE_MENTALE/SOIN__canon__fiche-ressources-communautaires-sante-mentale-qc__2026-04-19.md
+    notes: null
+
+  - id: svc_lignes_ecoute_crise_qc
+    type_objet: service_orientation
+    nom: lignes d ecoute et de crise
+    territoire: Quebec
+    statut_document: draft
+    categorie_service: soutien_distance_crise
+    niveau_systeme: premiere_ligne
+    statut_offre: communautaire
+    porte_entree_principale: telephone_texto_clavardage
+    portes_entree_secondaires: []
+    acces_direct: oui
+    reference_requise: non
+    cout_usager: gratuit
+    niveau_urgence_cible: crise
+    besoins_pris_en_charge:
+      - detresse_immediate
+      - pensees_suicidaires_sans_danger_vital_clair
+      - inquietude_pour_un_proche
+      - besoin_parler_maintenant
+    quand_orienter:
+      - besoin_aide_immediate_distance
+      - prefere_telephone_texte_ou_web
+      - absence_criteres_clairs_danger_vital
+    quand_ne_pas_orienter:
+      - passage_a_l_acte_en_cours
+      - plan_imminent_avec_moyens
+      - violence_en_cours
+    signaux_alerte_escalade:
+      - moyens_letaux_disponibles
+      - intention_imminente
+      - intoxication_severe
+    services_alternatifs:
+      - svc_urgence_psy_qc
+      - svc_centre_crise_qc
+      - svc_811_qc
+    role_pour_merlin: soutien_immediat_si_pas_de_danger_vital_clair
+    confusions_a_eviter:
+      - suivi_therapeutique_neq_ligne_ecoute
+      - urgence_sur_place_neq_ligne_ecoute
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/trouver-ressource-aide-et-soutien-en-sante-mentale
+    a_valider_localement:
+      - lignes_exactes
+      - horaires
+      - langues
+    fiche_canonique_path: C:/MERLIN/05_PREUVES_SOURCES/CORPUS/SYSTEMES_SOINS_INSTITUTIONNELS/QUEBEC/SANTE_MENTALE/SOIN__canon__fiche-lignes-ecoute-crise-qc__2026-04-19.md
+    notes: null

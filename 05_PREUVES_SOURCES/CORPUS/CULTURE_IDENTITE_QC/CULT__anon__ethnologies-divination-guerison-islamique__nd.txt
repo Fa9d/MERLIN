@@ -1,0 +1,905 @@
+Document généré le 2 mai 2024 09:32
+
+
+
+Ethnologies
+
+
+Divination, pratiques de guérison et traditions islamiques
+parmi des femmes d’origine ouest-africaine à Montréal
+Diahara Traoré
+
+
+Volume 37, numéro 1, 2015                                                        Résumé de l'article
+                                                                                 À partir d’une enquête ethnographique, cet article examine des pratiques de
+                                                                                 divination et de guérison parmi des immigrantes musulmanes d’origine
+URI : https://id.erudit.org/iderudit/1039661ar                                   ouest-africaine à Montréal, montrant ainsi la dynamique dialogique entre ces
+DOI : https://doi.org/10.7202/1039661ar                                          pratiques et la construction du religieux en contexte migratoire. En utilisant un
+                                                                                 cadre conceptuel inspiré de la théorie de Talal Asad sur l’anthropologie de
+Aller au sommaire du numéro                                                      l’islam, l’article présente une description de pratiques divinatoires observées
+                                                                                 entre 2008 et 2010, ainsi que le rapport que les femmes qui y participent
+                                                                                 entretiennent avec celles-ci. En particulier, l’auteure décrit des séances de
+                                                                                 divination par les cauris, ainsi que les rituels et pratiques de protection qui en
+Éditeur(s)                                                                       découlent parmi les femmes participantes. L’auteure présente également des
+Association Canadienne d’Ethnologie et de Folklore                               pratiques de guérison telles que décrites lors d’entretiens avec 24 femmes
+                                                                                 ouest-africaines provenant du Niger, du Mali, de la Guinée et du Sénégal. Dans
+ISSN                                                                             le contexte d’une pluralité religieuse croissante dans la région de Montréal,
+                                                                                 cette étude démontre que, même à l’intérieur d’une tradition religieuse établie
+1481-5974 (imprimé)                                                              (l’islam), diverses traditions sont négociées et (re)construites en contexte
+1708-0401 (numérique)                                                            migratoire.
+
+Découvrir la revue
+
+
+Citer cet article
+Traoré, D. (2015). Divination, pratiques de guérison et traditions islamiques
+parmi des femmes d’origine ouest-africaine à Montréal. Ethnologies, 37(1),
+175–192. https://doi.org/10.7202/1039661ar
+
+
+
+
+Tous droits réservés © Ethnologies, Université Laval, 2015                      Ce document est protégé par la loi sur le droit d’auteur. L’utilisation des
+                                                                                services d’Érudit (y compris la reproduction) est assujettie à sa politique
+                                                                                d’utilisation que vous pouvez consulter en ligne.
+                                                                                https://apropos.erudit.org/fr/usagers/politique-dutilisation/
+
+
+                                                                                Cet article est diffusé et préservé par Érudit.
+                                                                                Érudit est un consortium interuniversitaire sans but lucratif composé de
+                                                                                l’Université de Montréal, l’Université Laval et l’Université du Québec à
+                                                                                Montréal. Il a pour mission la promotion et la valorisation de la recherche.
+                                                                                https://www.erudit.org/fr/
+                  Divination, pratiques de guérison et traditions
+                  islamiques parmi des femmes d’origine ouest-
+                  africaine à Montréal
+
+
+
+                                                                                 Diahara Traoré
+                                                                             Université de Montréal
+
+
+                  Introduction
+                        Talal Asad (1986) dans son « idée d’une anthropologie de l’islam »
+                  remet en question l’approche anthropologique selon laquelle l’islam
+                  constitue une structure sociale commune à toutes les sociétés musulmanes.
+                  Il tente de produire un cadre d’analyse qui tient compte de la diversité et
+                  de l’hétérogénéité sans pour autant renier les traditions communes qui
+                  en forment la base. Il s’agit donc ici d’un projet d’établir une définition
+                  de l’islam en tant que tradition discursive ayant des liens variés et divers
+                  avec l’individu moral, la gouvernance et l’organisation sociale, ainsi que
+                  la production du savoir. À cet effet, une pratique est islamique à partir du
+                  moment où celle-ci est autorisée par les traditions discursives de l’islam
+                  et transmise par des musulmans, qu’ils soient des savants, des dirigeants
+                  religieux ou des parents peu instruits (Asad 1986:14). Cette définition de
+                  l’islam, centrée sur le discours, permet d’accommoder les différences dans la
+                  pratique ainsi que la diversité qui existe à travers les sociétés musulmanes tout
+                  en maintenant un fil conducteur commun issu de l’héritage des traditions.
+                  Cet article s’inscrit dans ce cadre conceptuel en explorant la production du
+                  savoir islamique par des femmes musulmanes d’origine ouest-africaine sous
+                  trois aspects. Les connaissances que les gens ont à propos des rites et des
+                  croyances, constituent une dimension importante de l’étude du religieux.
+                  Lorsqu’il s’agit de pratiques religieuses, le savoir accompagnant ces pratiques
+                  consiste dans l’exégèse, les explications que donnent les pratiquants quant
+                  à l’histoire de la pratique religieuse en question, son sens, ses finalités. Ces
+                  connaissances peuvent soit être partagées par l’ensemble des musulmans,
+                  soit être le monopole de spécialistes. Cet article se base sur des données
+
+
+
+
+ethnologies 37(1).indb 175                                                                     2017-03-02 14:25:32
+               176                            diahara traoré
+
+
+
+
+               recueillies entre 2008 et 2010 lors d’un terrain ethnographique mené au sein
+               de communautés ouest-africaines vivant dans la région de Montréal ainsi
+               que les banlieues environnantes. Dans le cadre de ce terrain, 24 femmes
+               ont été interviewées, et l’auteure a effectué de l’observation participante
+               d’activités sociales et religieuses, ainsi que dans les domiciles des femmes.
+               Les femmes, âgées entre 25 et 55 ans, sont originaires du Mali, du Niger, de
+               la Guinée, et du Sénégal, et sont de confession musulmane. Les descriptions
+               présentées dans cet article sont une combinaison d’entretiens et de notes de
+               terrain. Cet article examine certaines pratiques courantes, bien que moins
+               connues, parmi certaines femmes ouest-africaines musulmanes, dans le but
+               d’articuler justement la complexité de la dynamique dialogique qu’elles
+               entretiennent avec le savoir islamique. L’article décrit ensuite des pratiques
+               de divination, et de guérison observées lors d’un terrain ethnographique,
+               ainsi que des pratiques qualifiées de « magiques ». Finalement, l’article
+               décrit des pratiques de guérison associées au savoir islamique parmi les
+               femmes étudiées.
+
+               Les musulmans ouest-africains à Montréal
+                    Les femmes rencontrées lors de cette étude étaient toutes originaires
+               de pays de l’Afrique de l’Ouest francophone et résidaient toutes au Québec
+               depuis un minimum de cinq ans. Au Québec, l’immigration ouest-africaine
+               est beaucoup plus récente qu’en France, probablement en raison de la
+               politique très restrictive de l’immigration au Canada qui refusait le droit
+               d’immigrer sur la base de critères ethniques. La Loi sur l’immigration est
+               abolie en 1962 (CIC 2000). L’immigration ouest-africaine débute donc dans
+               les années 1960 avec une première vague d’étudiants africains sur des visas
+               d’étudiant dans le cadre d’échange du Commonwealth et de la Francophonie
+               (LeBlanc 2002). Dans les années 1980, elle augmente considérablement
+               en partie à cause du durcissement des politiques d’immigration en France,
+               ainsi que dans les autres pays d’Europe de l’Ouest, mais surtout à cause du
+               contexte linguistique francophone et de la nouvelle politique d’immigration
+               du Québec. Les immigrants s’installent principalement dans les grands
+               centres urbains et en particulier à Montréal qui continue de regrouper
+               90 % des nouveaux arrivants au Québec (CIC 2007). Au Québec, entre
+               1997 et 2006, le nombre d’immigrants en provenance de l’Afrique de
+               l’Ouest était d’environ 7000 personnes (MICC Québec 2008); en 2008,
+               5000 Ouest-Africains résidaient à Montréal. Avec la diversité religieuse
+               accrue, l’islam est sorti de la marginalité depuis les années 1980. Durant
+               les deux dernières décennies, le nombre de musulmans au Canada est
+
+
+
+
+ethnologies 37(1).indb 176                                                                 2017-03-02 14:25:32
+                                  Divination, pratiques de guérison et traditions islamiques           177
+
+
+
+                  passé de 100 000 à 600 000. Au Québec, 95 % des musulmans vivent dans
+                  la région métropolitaine de Montréal. À Montréal, on comptait environ
+                  200 000 musulmans et une soixantaine de lieux de cultes il y a 10 ans,
+                  incluant les mosquées et les salles de prières (Daher 2003). Aujourd’hui,
+                  on peut estimer que le nombre de lieux de culte islamiques a largement
+                  augmenté. Contrairement aux pays d’Europe où les musulmans sont
+                  majoritairement originaires de la même région, tels les Turcs en Allemagne
+                  ou les Maghrébins en France, les musulmans du Québec sont d’origines
+                  géographiques et ethniques diverses et aucun groupe n’est dominant. Par
+                  conséquent, la population musulmane est très hétérogène, tant dans sa
+                  composition ethnoculturelle et linguistique que nationale. Au niveau des
+                  statuts socioéconomiques et professionnels, il y a également une grande
+                  diversité. Les orientations religieuses et politiques varient également :
+                  politisés ou non, sunnites ou chiites, pratiquants ou non pratiquants
+                  (Daher 2003). Les musulmans de Montréal constituent donc un groupe
+                  pluriel, avec des rituels et des pratiques sociales variés (Fortin, LeBlanc
+                  et LeGall 2008). Les groupes maghrébins et du Moyen-Orient demeurent
+                  largement majoritaires à ce jour. Les lieux de cultes islamiques sont situés
+                  dans différents quartiers de l’île de Montréal, surtout là où l’on observe des
+                  concentrations de résidents musulmans : à Ville-Saint-Laurent, Côte-des-
+                  Neiges, Notre-Dame-de-Grâce, Parc-Extension, Pierrefonds, St-Léonard,
+                  St-Michel et Montréal-Nord. (Gagnon et Germain 2002). Pour les Ouest-
+                  Africains musulmans, l’immigration pose la question de la pratique et de
+                  l’identité religieuse au Québec, surtout depuis le tournant du 21e siècle et
+                  après les attaques terroristes du 11 septembre 2001. Comme le souligne
+                  Mahmood Mamdani (2002), le 11 septembre 2001 a mis les musulmans
+                  au centre d’un débat culturel qu’il qualifie de « culture talk ». Selon lui, les
+                  musulmans sont désormais très conscients de l’image des musulmans qui
+                  circule dans les médias, et de ce qui est fait la différence entre les « bons »
+                  musulmans et les « mauvais » musulmans (Mamdani 2002).
+
+                  La divination : une consultation avec une lanceuse de cauris
+                      Benjamin Soares (2005) mentionne des pratiques féminines de l’islam
+                  en Afrique de l’Ouest, consistant principalement de pratiques divinatoires
+                  pré- et non- islamiques. Ce « savoir des femmes » n’occupe que deux pages
+                  et demie chez Soares (2005 : 145-148) et est très vite discrédité par ses
+                  informateurs, des hommes maliens :
+
+                             Many men in Nioro were quick to note that Muslim women’s secrets
+                             were not as licit as some of their own secrets, which they claimed were
+
+
+
+
+ethnologies 37(1).indb 177                                                                             2017-03-02 14:25:33
+               178                                      diahara traoré
+
+
+
+
+                             tied directly to Islam and its correct interpretation. They argued that
+                             because women have much less knowledge of Islam and its central
+                             text, the Quran, than men, their practices were necessarily more
+                             questionable, possibly even unlawful (Soares : 145).
+                    Ce sont précisément ces « pratiques douteuses et possiblement
+               même illégitimes » qui nous intéressent ici, notamment en
+               examinant la divination par les cauris, à laquelle la majorité des
+               femmes rencontrées dans le cadre de notre terrain ethnographique.
+               Le terme divination fait référence aux techniques mises en œuvre pour
+               interpréter des évènements passés, présents ou futurs. Les institutions
+               divinatoires existent dans la plupart des sociétés. Pour plusieurs peuples
+               africains, le « véritable » savoir est caché, secret, et accessible uniquement
+               à certaines personnes capables de l’utiliser de manière appropriée (Peek
+               1991). Les techniques divinatoires sont diverses et coexistent souvent au
+               sein d’une même société. Les pratiques divinatoires en Afrique de l’Ouest
+               ont toujours joué un rôle important dans la conduite des affaires familiales,
+               communautaires et même politiques. Dans le cadre de nos observations,
+               nous nous sommes limités à la pratique divinatoire des cauris. Les cauris
+               sont des coquillages qui servaient communément en Afrique de l’Ouest
+               précoloniale de monnaie d’échange. Les cauris avec lesquels est pratiquée la
+               divination sont généralement plus petits que ceux utilisés comme monnaie.
+               Le lancement de cauris est un procédé divinatoire très répandu en Afrique
+               subsaharienne musulmane (Regourd 2000), surtout dans les quatre pays
+               d’origine des femmes de l’étude, comme le souligne une femme sénégalaise
+               de l’étude :
+
+                             Au Sénégal, j’ai déjà, je suis allée voir une femme qui faisait les
+                             cauris, juste pour le fun. C’est arrivé une ou deux fois qu’on est allé
+                             avec des amis et y avait une femme qui fait les cauris et qui l’a fait.
+                             C’est quelque chose qui est très courant chez nous. (Dada, 8 mai
+                             2009, Montréal)1
+
+                    C’est une méthode de divination utilisée à des fins diverses, telles que
+               « lire les auspices sous lesquelles se déroulera une manifestation, ou pour
+               savoir si un sacrifice a été accepté par les divinités » (Dramé 1986). On
+               l’utilise pour connaître l’issue d’un événement à venir, l’avenir immédiat
+               ou à long terme d’un individu, ou pour déterminer le type de sacrifices à
+               accomplir pour obtenir une issue favorable dans une épreuve. La volonté
+               des divinités ou esprits consultés est transmise au devin à travers les cauris
+               1.     Les noms utilisés sont des pseudonymes afin de protéger l’anonymat des femmes
+                      étudiées.
+
+
+
+
+ethnologies 37(1).indb 178                                                                             2017-03-02 14:25:33
+                                 Divination, pratiques de guérison et traditions islamiques   179
+
+
+
+                  sous forme de code basé sur le positionnement des cauris dans un panier.
+                  Cette pratique est généralement transmise de mère en fille, ou d’une femme
+                  plus âgée à une plus jeune de la même famille. Selon certaines croyances,
+                  on peut également recevoir le don d’interprétation des cauris en songe,
+                  lorsque l’on se voit se faire offrir une poignée de cauris par quelqu’un. La
+                  divination par les cauris est en réalité un mode de communication entre
+                  les humains et les esprits ou divinités. Dans plusieurs cultes yorubas au
+                  Nigéria par exemple, cette pratique est utilisée pour connaître la volonté
+                  des dieux, ainsi que les mesures à prendre pour s’assurer leurs bonnes
+                  faveurs dans la vie courante (Bascom 1980). Bien que la divination soit
+                  reconnue comme relevant du domaine des hommes, la divination par
+                  les cauris demeure la plus pratiquée par les femmes (Ogdubesan 1969).
+                  La religion islamique apporte une nouvelle cosmologie et de nouvelles
+                  conceptions des pratiques divinatoires. On ne parle désormais plus de
+                  consulter les ancêtres ou les divinités locales, mais de consulter Dieu, tandis
+                  que d’autres pratiques sont remplacées par les aumônes, comme le montre
+                  une étude sur la divination et les croyances islamiques au Ghana (Kirby
+                  1993).(Regourd 2000). La pratique de consultation deDieu par des songes
+                  par le biais de prières islamiques spéciales de consultation, al-istikhara, est
+                  reconnue comme acceptable par l’islam. Néanmoins, comme le constate
+                  Rosalind Shaw dans son étude sur la divination par songe chez les Temné,
+                  les croyances islamiques, plutôt que d’éradiquer les croyances locales, ne
+                  font que contribuer à la cosmologie, en se juxtaposant aux pratiques et
+                  conceptions existantes (Shaw 1992).
+                       Une de nos observations nous a menés dans un appartement du quartier
+                  Saint-Laurent à Montréal, chez Madame Djénabou2, pour accompagner
+                  deux femmes de mon étude, en septembre 2008 puis à nouveau en novembre
+                  2010. Celle-ci, 42 ans, a été initiée au déchiffrage des cauris par sa tante
+                  maternelle, en Guinée. Musulmane pratiquante, elle exhorte ses clientes
+                  à faire leurs prières régulièrement.
+                      Madame Djénabou offre pour la somme modique de 20 $ une séance
+                  de consultation de l’avenir à l’aide de cauris. La plupart de ses clients sont
+                  des hommes et des femmes originaires de l’Afrique subsaharienne, incluant
+                  plusieurs femmes musulmanes ouest-africaines. En arrivant chez Madame
+                  Djénabou, il faut sonner à la porte de l’immeuble et s’identifier. Madame
+                  Djénabou n’ouvrira que si elle reconnaît le nom de la personne qui vient
+                  la consulter. Il faut, au préalable, avoir été référé par un de ses clients et
+                  avoir pris un rendez-vous. Ceci s’explique par le fait que la divination est
+                  2.     Il s’agit d’un pseudonyme.
+
+
+
+
+ethnologies 37(1).indb 179                                                                    2017-03-02 14:25:33
+               180                                      diahara traoré
+
+
+
+
+               pratiquée dans le secret et l’anonymat des clients doit être préservé. Une
+               fois dans son domicile, on est invité à s’assoir au salon en attendant Madame
+               Djénabou. On s’y retrouve la plupart du temps seul, car Madame Djénabou
+               planifie les rendez-vous en s’assurant que les clients ne se rencontrent
+               pas chez elle. Son salon est décoré avec soin : des fauteuils confortables
+               en cuir, des tables basses de verre, des plantes vertes, et des décorations
+               diverses, telles que des tableaux ou des sculptures africaines. Une télévision
+               à un écran plat de 37 pouces offre un éventail de chaînes internationales.
+               Madame Djénabou émerge de sa chambre et, après les salutations d’usage,
+               invite la cliente à la suivre à l’intérieur, à l’abri des oreilles indiscrètes.
+               Les consultations ont lieu dans la chambre de ses enfants, dans l’espace
+               entre le mur et le lit superposé de ceux-ci. Assise l’une en face de l’autre,
+               Madame Djénabou et la cliente commence la consultation. Madame
+               Djénabou se pose sur les genoux un panier plat et rond en rotin dans lequel
+               se trouvent douze cauris. La cliente est invitée alors à déposer de l’argent
+               symboliquement dans le panier afin d’inciter les cauris à parler. Une pièce
+               d’un dollar suffit généralement. Madame Djénabou invite alors la cliente
+               à prendre les cauris dans sa main et à leur dire à voix basse la raison de
+               sa visite ou les questions qui la troublent. La séance de divination peut
+               enfin débuter. Madame Djénabou ramasse les cauris dans sa main droite,
+               puis les lance dans le panier. Nos notes de terrain offrent, à cet égard, une
+               description de la séance :
+
+                             Madame Djénabou ramasse les cauris avec sa main droite, tenant
+                             le panier de sa main gauche. Elle les jette ensuite dans le panier et
+                             déchiffre le positionnement de chaque coquillage, avant de secouer
+                             la tête d’un air dubitatif. S’ensuit qu’elle commence à me parler du
+                             sujet même que j’ai mentionné mentalement en tenant les cauris dans
+                             ma main. Lorsque les nouvelles sont mauvaises, Madame Djénabou
+                             m’invite à faire mes prières islamiques régulièrement « Il faut vraiment
+                             toujours prier. Tu sais que nous sommes des musulmans. Et même si
+                             la prière est difficile parfois, c’est cela qui nous protège de tous les
+                             maux ». Elle me dit ceci en dioula. Puis précise qu’il me faut verser
+                             de l’eau (dji bon) après chaque prière. Je fronce les sourcils. « Jeter
+                             de l’eau? » je lui demande. « Oui, tu ne connais pas ça?! Mais c’est
+                             très important de faire ça hein. » « C’est pour que les plans de tes
+                             ennemis contre toi n’aboutissent pas. » Elle m’explique que quand on
+                             vit dans un appartement cela peut se faire en versant de l’eau dans un
+                             pot à plante. Les bonnes nouvelles, elles, sont suivis d’une invocation
+                             divine que moi, la consultante, je dois faire en tenant dans ma main
+                             les cauris annonceurs de bonne nouvelle et en les maintenant contre
+                             mon front en disant « Que Dieu l’exauce » Allah koo kê. Elle me
+
+
+
+
+ethnologies 37(1).indb 180                                                                              2017-03-02 14:25:33
+                                   Divination, pratiques de guérison et traditions islamiques           181
+
+
+
+                             conseille ensuite de faire du sacrifice de lait à des petits enfants, et
+                             également d bonbons et de biscuits. Elle me dit aussi de donner des
+                             noix de colas en me précisant la couleur et le type de ces noix de
+                             cola à un musulman. Le don doit être fait à « quelqu’un qui prie »
+                             un musulman. (Notes de terrain, 8 septembre 2008, Saint-Laurent)
+
+
+                      Par ailleurs, la prière rituelle islamique est affirmée comme une
+                  pratique nécessaire et complémentaire aux prescriptions communiquées
+                  par les cauris. Lorsque Nana, originaire du Sénégal et âgée de 27 ans vient
+                  consulter Madame Djénabou, la lanceuse de cauris lui révèle tout de suite
+                  la cause de sa visite. Après avoir lancé les cauris deux ou trois fois dans
+                  le panier en secouant la tête, dubitative, Madame Djénabou lui annonce
+                  que l’homme que Nana fréquente, souhaite l’épouser. Nana est inquiète.
+                  Malgré une relation amoureuse qui dure maintenant depuis six mois, Aziz,
+                  un sénégalais de 34 qui vit à Boston, ne fait pas mention de mariage. Les
+                  cauris annoncent une bonne nouvelle : Aziz l’aime et veut la demander en
+                  mariage. Madame Djénabou tend les cauris porteurs du message à Nana,
+                  et celle-ci les prend dans sa main, puis les porte à son front en disant : «
+                  Qu’Allah l’accomplisse ». La lanceuse de cauris réplique aussitôt « Amine
+                  ». La séance se poursuit.
+                      La consultation révèle à Nana qu’il lui faut absolument faire ses cinq
+                  prières islamiques par jour, et surtout s’assurer de verser de l’eau après
+                  chaque prière. En interrogeant Madame Djénabou sur la pratique de
+                  verser de l’eau après chaque prière, nous apprenons que cette une pratique
+                  importante permet d’éloigner les malheurs et s’attirer une protection.
+                  Nana, par ailleurs, n’est elle-même pas surprise : « Au Sénégal, on m’avait
+                  déjà dit de faire ça, mais c’est vrai que j’avais arrêté (de verser l’eau). J’ai
+                  négligé, en fait ». Suite à nos questions, Madame Djénabou clarifie que
+                  normalement l’eau se verse sur le sol de terre, mais qu’étant à Montréal,
+                  on peut la verser dans un pot de plante. Nana reçoit également une liste
+                  de sacrifices à accomplir pour s’assurer une issue favorable : trois noix de
+                  cola ni blanches ni sombres, et du lait à donner à des petits enfants. Le
+                  sacrifice, ou saddaqa, est important dans la mesure où il permet d’éviter un
+                  malheur futur (Werbner 2015). Selon Claude Lévi-Strauss (1962), le rite
+                  sacrificiel a pour but de créer un rapport « entre deux termes polaires dont
+                  l’un est le sacrificateur et l’autre la divinité, et entre lesquels, au départ, il
+                  n’existe pas d’homologie, ni même de rapport d’aucune sorte » (Lévi-Strauss
+                  1962:196). Le sacrifiant, c’est-à-dire le sujet qui recueille les bienfaits ou
+                  subit les effets du sacrifice acquière par le sacrifice un changement d’état,
+                  voire même une sorte de « transformation religieuse » de son statut (Hubert
+
+
+
+
+ethnologies 37(1).indb 181                                                                              2017-03-02 14:25:33
+               182                                        diahara traoré
+
+
+
+
+               et Mauss 1968). Dans son étude sur le destin dans la société sénégalaise,
+               Ibrahima Sow fait état de l’absence de rigidité et l’élasticité d’un destin
+               auquel un autre peut être substitué par le biais de sacrifices : « Il semble qu’à
+               un destin énoncé et prédit, il peut être substitué un autre destin qu’il faut
+               auparavant satisfaire et réaliser pour que puisse s’accomplir la totalité du
+               verdict destinal » (Sow 2004 : 51). En accomplissant le rituel du sacrifice,
+               Nana pourra substituer un destin remplis d’embûches à un destin où l’accès
+               au mariage est facilité. En établissant un rapport avec Dieu par le biais de
+               son sacrifice, elle bénéficiera d’une transformation de son statut religieux qui
+               lui attirera donc la faveur de Dieu, afin que Dieu puisse changer son destin
+               et lui éviter le malheur ou l’obstacle prédit. Pour que le sacrifice puisse être
+               bénéfique, il faut suivre des instructions précises concernant notamment
+               le récipiendaire de l’offrande en question: une femme âgée « qui prie », ou
+               des « petits » enfants, ou encore, un homme « qui prie ». L’expression «
+               qui prie » fait référence ici à un musulman, une personne qui observent les
+               rituels de l’islam et en particulier qui accomplit ses cinq prières par jour.
+               Ceci peut être interpréter comme une volonté d’islamiser cette pratique et
+               de l’inscrire dans le contexte de la zakaat islamique, qui implique des dons
+               de charité envers les défavorisés de la communauté musulmane. D’ailleurs,
+               une des femmes interrogées parle des sacrifices comme l’une des pratiques
+               régulières de l’islam, avec la prière :
+
+                             Nous comme on était des enfants, on faisait quand même notre mieux
+                             pour faire les cinq prières. C’est les vieilles qui ajoutaient les nafila3.
+                             Et puis aussi il faut faire des sacrifices dans la vie. Par exemple tu peux
+                             donner du lait aux enfants ou bien donner de l’argent aux jumelles
+                             ou aux jumeaux ou bien d’acheter du cola de donner à la mosquée ou
+                             à une vieille personne qui prie. Donc des sacrifices comme ça ou de
+                             l’aumône a des gens qui sont pauvres. Si tu as des voisines qui sont
+                             pauvres à côté, tu peux leur donner à manger. (...) Je suis pratiquante.
+                             Je fais mes prières et je fais les sacrifices qu’il faut si j’ai les moyens,
+                             c’est ça. (Counda, 21 janvier 2009, LaSalle)
+                  Une autre femme rencontrée, responsable d’une garderie en milieu
+               familial, en tentant d’expliquer ses pratiques islamiques dans le contexte
+               montréalais, mentionne que :
+
+                             Moi je me dis tous les jours je donne des sacrifices parce que chez moi
+                             ici c’est toujours plein, les neveux et nièces qui étudient à l’université,
+                             le weekend ils sont ici. Et vu que j’ai une garderie, je donne toujours
+                             du lait aux enfants. Et normalement les parents doivent amener le
+
+               3.     Prières islamiques supplémentaires optionnelles.
+
+
+
+
+ethnologies 37(1).indb 182                                                                                  2017-03-02 14:25:33
+                                  Divination, pratiques de guérison et traditions islamiques           183
+
+
+
+                             lait eux-mêmes, mais j’ai dit à mon assistante que je vais pas exiger
+                             ça, ça je peux l’offrir. Ce sont des petits trucs comme ça qui sont des
+                             sacrifices pour moi. (Nafi, 1er octobre 2009, Outremont)
+                      Selon la pratique usuelle, pendant que l’on donne l’offrande au
+                  récipiendaire, on s’assure de demander des prières d’intercession. Le
+                  récipiendaire, par ailleurs, fait des bénédictions en invoquant le nom de
+                  Dieu, tandis que le donateur les ponctue de « amine » sonores. Dans le cas de
+                  Nana, elle se rend dans une épicerie africaine de Montréal pour trouver des
+                  noix de colas appropriées. Il est très important de suivre les instructions de la
+                  lanceuse de cauris à la lettre. Ne pas effectuer le sacrifice correctement peut
+                  avoir des conséquences sérieuses, allant jusqu’à la substitution de l’ancien
+                  destin d’embûche par un destin affranchi d’obstacle peut ne pas avoir lieu.
+                       Ces pratiques divinatoires, ainsi que les sacrifices mentionnés plus haut,
+                  font partie d’un ensemble de croyances en un monde invisible, monde qui
+                  peut tout autant bénir que nuire au bonheur. Les djinns ou les jnoun font
+                  partie des croyances inscrites dans le dogme islamique au même titre que les
+                  anges, les livres saints, le paradis et la résurrection. Ces êtres invisibles sont
+                  classés en deux catégories : des bénéfiques et des maléfiques (Burge 2014,
+                  Khan 2006). Ils sont partout, invisibles tout en étant proches de nous, actifs
+                  plutôt la nuit que le jour, pouvant se manifester sous une forme humaine ou
+                  animale, capables de se marier avec les humains, de les séduire (Rothenberg
+                  2006), et de punir celui ou celle qui les dérange, les blesse, les offense ou
+                  simplement empiète sur leurs domaines ou leurs lieux de résidence (Islam et
+                  Campbell 2014). Certains djinns sont musulmans, d’autres sont chrétiens,
+                  juifs ou païens. Leur univers est complexe et intimidant pour le non-initié
+                  (le client du devin) et toute communication avec lui, en dehors de tout
+                  rite ou de toute protection, est dangereuse et peut exposer à plusieurs maux
+                  et malheurs, une réalité qui exige de se protéger.
+                      Deux ans après sa consultation avec Madame Djénabou, nous
+                  retrouvons Nana qui revient d’un long séjour au Sénégal en 2010. Elle
+                  a un nouveau prétendant pour le mariage, mais celui-ci ne semble pas
+                  se décider pour une date de mariage. Nana s’explique l’hésitation de
+                  cet homme : « Le problème c’est qu’il ne prie pas. Si au moins il priait,
+                  tous ces trucs mystiques que les gens font pour ne pas qu’il se marie...
+                  tout ça n’allait pas marcher. » (Nana, 12 novembre 2010, Verdun)
+                  C’est d’ailleurs un marabout musulman qui a confirmé à Nana la cause
+                  mystique de l’indécision de son prétendant : des ennemis auraient fait « un
+                  travail » – jeté un sort – afin de le bloquer dans ses entreprises. Ce marabout,
+                  selon la description de Nana, a procédé à des prières islamiques spéciales,
+
+
+
+
+ethnologies 37(1).indb 183                                                                             2017-03-02 14:25:33
+               184                                      diahara traoré
+
+
+
+
+               nommée al-istikhar (terme arabe pour questionnement ou consultation).
+               Après avoir fait ces prières, le marabout a eu accès à la réponse aux questions
+               par le biais de songes (Nana, 12 novembre 2010). Cette pratique est bien
+               décrite par Ibrahima Sow (1977, 2006) :
+
+                             Cette technique se pratique à la demande d’un consultant qui,
+                             lorsqu’il a des ennuis personnels ou qu’il souhaite qu’un projet
+                             aboutisse, va exposer minutieusement son cas au marabout (praticien
+                             musulman). Les projets personnels vont-ils aboutir? Les ennuis
+                             vont-ils cesser? Telles sont, finalement, les questions dont on attend
+                             la réponse. Le consultant se retire; quant au « marabout », il opère
+                             la nuit et donne ses réponses sous huitaine au plus tard. C’est parce
+                             qu’il y a des jours favorables pour pratiquer le listixaar. Les nuits
+                             du dimanche au lundi, et du jeudi au vendredi semblent être tout
+                             particulièrement indiquées. Il s’agit, pour le marabout, de se mettre
+                             dans des conditions telles qu’il se trouve dans un état de rêve éveillé
+                             durant lequel se déroule, « comme un film devant ses yeux », le cas
+                             du consultant. (Sow, 1977 : 53).
+
+
+               Pratiques magiques et protection spirituelle
+                    En addition aux pratiques divinatoires, nous avons observé des pratiques
+               que nous qualifions de magiques. En parlant de magie dans le contexte des
+               femmes de ma recherche, nous faisons référence à l’usage de talismans,
+               d’objets ou de rituels dans le but d’influencer le comportement d’autrui, de
+               changer le cours des évènements ou de nuire à autrui. La magie consiste
+               en savoirs, croyances et pratiques partagées, qui vont émerger par besoin
+               d’agir sur des forces indéchiffrables et impersonnelles (mana), inhérentes
+               à la nature ou à certaines personnes (Mauss et Hubert 1950). L’objectif est
+               de manipuler des forces ou encore à les capter dans le but de s’en servir.
+               Levi-Strauss (1958) observe que la magie que le chamane amérindien
+               opère lors des accouchements compliqués agit en transformant le matériau
+               mythique et symbolique, par le biais de transferts symboliques. Ce transfert
+               symbolique est à la base de plusieurs pratiques, comme discuté ci-dessous.
+                   Une femme de l’étude, Aminata, originaire du Mali et ayant des
+               problèmes conjugaux m’a raconté qu’elle a recouru à cette méthode afin
+               d’influencer le comportement de son mari. Elle a récité certains chapitres
+               du Coran, notamment, le verset « Le Trône » dans le chapitre « La Vache
+               » du Coran et a ensuite soufflé dans un verre de lait qu’elle a fait boire à
+               son époux. Son époux, qui s’opposait à ce qu’elle se rende au Mali pour
+               les vacances, a finalement donné son accord. Cette pratique rappelle
+
+
+
+
+ethnologies 37(1).indb 184                                                                             2017-03-02 14:25:33
+                                   Divination, pratiques de guérison et traditions islamiques              185
+
+
+
+                  celle des femmes algériennes dans l’étude de Marnia Lazreg (1994) sur
+                  les pratiques précoloniales mystiques des femmes. L’auteure met en garde
+                  contre une lecture des pratiques féminines de magie comme indication de
+                  leur impuissance face à leur condition (Lazreg 1994 : 113-114). Bien que
+                  Lazreg interprète ces pratiques comme n’étant que de simples activités de
+                  passe-temps, notre terrain ethnographique révèle que, loin d’être de simples
+                  passe-temps, ces pratiques sont des moyens de retrouver un contrôle sur un
+                  destin et des circonstances qui les dépassent.
+                       Naturellement, la protection spirituelle contre des attaques mystiques
+                  liées à la sorcellerie constitue un aspect important de ces pratiques, qui sont
+                  prises très au sérieux par certaines femmes. Awa, 25 ans et originaire du
+                  Mali, s’était fait refuser plusieurs demandes de visas d’étude par la France
+                  avant son immigration au Canada. Un marabout local l’avait informée
+                  de la cause de ces embûches : une tante maternelle avait usé de pratiques
+                  occultes contre elle afin de lui fermer les portes des études et du travail. Awa
+                  avait reçu du marabout des concoctions à base de feuilles et qui contenaient
+                  l’encre utilisée pour écrire le chapitre Ya-Sin du Coran. Elle raconte qu’elle
+                  devait se frictionner tout le corps avec ces concoctions quotidiennement :
+                  « Heureusement que moi aussi je priais beaucoup. C’est là que j’ai vraiment
+                  commencé à faire mes cinq prières parce que j’ai vu que c’était grave. »
+                  (Awa, 28 mai 2009, Montréal)
+                      Par la suite, Awa a obtenu un visa pour le Canada. Elle est toujours
+                  en contact téléphonique plus ou moins régulier avec le marabout qui l’a
+                  aidé à Bamako, et malgré la distance, continue de le consulter. De fait, la
+                  pratique des prières islamiques est interprétée comme l’un des remèdes aux
+                  attaques mystiques et de sorcellerie. Dans le cas de Awa, elle décide de faire
+                  ses prières régulièrement afin de renforcer l’effet des concoctions de son
+                  marabout. La prière assidue constitue donc un rempart contre les mauvais
+                  sorts et les complots d’ennemis divers, comme l’exprime cette autre femme :
+
+                             Parce que, en islam il y a certaines sourates si tu lis ça, ça peut t’aider
+                             beaucoup. Par exemple, ma mère m’a dit le matin si tu te réveilles, tu
+                             prends un verre d’eau avant que tu te brosses, tu dis bismillahi et puis
+                             tout ça-là et puis tu bois et c’est bon pour ta santé. (Counda, 21 janvier
+                             2009, LaSalle)
+
+                      On est proche ici de la notion de « sécurité spirituelle » que décrit Adam
+                  Ashforth dans son ouvrage sur la sorcellerie et la violence en Afrique du
+                  Sud (2005). Incontestablement, le monde invisible étant plein de menaces
+                  avec des ennemis difficilement identifiables, le sentiment d’insécurité est
+
+
+
+
+ethnologies 37(1).indb 185                                                                                 2017-03-02 14:25:33
+               186                                     diahara traoré
+
+
+
+
+               omniprésent. Des problèmes de santé à répétition, ou encore des échecs
+               successifs sont souvent perçus comme des attaques de parents ou d’amis
+               jaloux. Comme l’explique, Mouminatou, une femme sénégalaise mouride,
+               il peut arriver que certains problèmes de santé ne soient pas liés à des causes
+               naturelles :
+
+                             Bon comme je te dis, mon guide religieux Cheikh Ahmadou Bamba,
+                             il a écrit beaucoup de poèmes et à chaque poème sa spécificité. C’est
+                             à dire des choses qu’ils peuvent te permettre d’accomplir... Et... y
+                             en un poème qui permet vraiment de guérir certaines maladies.
+                             Si tu l’apprends, quand tu es malade tu les lis, ça peut être comme
+                             une prière qui permet de guérir ta maladie, ça, par la grâce de Dieu
+                             quand même... Mais je sais que ce poème-là a ce pouvoir-là. Mais
+                             moi particulièrement une fois que je suis malade c’est instantané,
+                             je vais voir un médecin, tu prends des médicaments. Mais en plus
+                             des médicaments je fais des prières à coté aussi. Surtout quand
+                             c’est une maladie qui dépasse un peu les choses que je comprends.
+                             (Mouminatou, 10 juin 2009, Montréal)
+
+                   À cet effet, pour les femmes interrogées, les rituels de l’islam sont
+               logés à la même enseigne que les pratiques de divination et les talismans.
+               Notamment, les talismans sont souvent fabriqués avec des versets coraniques
+               (Hamès 2007). Les versets coraniques sont écrits sur du papier ou sur une
+               tablette de bois. L’encre est lavée avec de l’eau et le liquide recueilli est
+               patiemment séché. La poudre obtenue est insérée dans une pochette de cuir,
+               qui une fois recousue, est portée sur le corps comme ceinture ou bracelet.
+                    Parmi les femmes d’origines malienne et sénégalaise, nous avons
+               constaté la popularité d’un ouvrage en Afrique de l’Ouest qui est
+               représentatif des pratiques et rituels couramment utilisés. L’ouvrage, Les
+               Dimensions de l’islam (1996), par Cheikh El Hadji Ahmadou Tall, décrit
+               les différents usages des 99 noms de Dieu, ainsi que le nombre de fois que
+               chaque nom doit être récité afin d’influencer les évènements, obtenir
+               une guérison, ou encore disposer une personne en faveur du requérant.
+               L’auteur, un adepte de la Tidjaniyya, est reconnu en Afrique de l’Ouest
+               comme un érudit de la numérologie islamique. Certains chiffres sont
+               associés à des noms divins spécifiques. Plusieurs des femmes de cette
+               étude possédaient une copie de cet ouvrage dans leur domicile et en ont
+               fait référence pendant les conversations informelles ou les entretiens.
+               Pour plusieurs, les pratiques de ces femmes donnent l’impression d’être
+               difficilement dissociable de pratiques hétérogènes provenant d’autres
+               traditions. C’est par exemple une impression partagée par Vincent Monteil
+
+
+
+
+ethnologies 37(1).indb 186                                                                           2017-03-02 14:25:33
+                             Divination, pratiques de guérison et traditions islamiques     187
+
+
+
+                  (1964) qui fait le constat d’un islam qu’il qualifie d’« islam noir », un
+                  islam syncrétique et spécifique à l’Afrique de l’ouest. De même, René-Luc
+                  Moreau (1982) parle des « Africains musulmans » en des termes similaires,
+                  appuyant l’idée d’un islam typique de l’Afrique de l’Ouest qui se distingue
+                  par l’incorporation de pratiques issues de traditions locales. Pour Levtzion
+                  (1979), en Afrique de l’Ouest l’islamisation est un passage progressif qui
+                  s’opère de façon collective, impliquant un passage par le syncrétisme
+                  qui ne serait qu’une étape dans le processus de conversion, par lequel on
+                  passerait d’un islam nominal à une intégration complète à l’orthodoxie
+                  (Triaud 1974). Ces auteurs avaient une vision de l’islam en Afrique au
+                  Sud du Sahara comme étant plus syncrétique que l’islam ailleurs, ce qui
+                  n’est guère surprenant car leurs travaux datent de l’époque de l’après-
+                  indépendance. Dans la littérature qui pré-date les années 1990, l’idée de
+                  cet islam syncrétique est omniprésente dans la littérature (Monteil 1964;
+                  Moreau 1982; Levtzion 1979; Triaud 1974).
+                       Selon nos constats, le cadre conceptuel Asadien qui conçoit l’islam
+                  comme un ensemble de traditions discursives offre un éclairage moins teinté
+                  par ces classifications binaires (islam syncrétique v. islam) et la notion
+                  d’une évolution progressive vers une pratique plus puriste de l’islam. Nous
+                  ne nous inscrivons pas dans la logique de distinguer un islam soit disant
+                  pur d’un islam syncrétique pour plusieurs raisons. Premièrement, dans
+                  quelque contexte social que ce soit, les pratiques religieuses ne peuvent
+                  être dîtes pures ou moins pures, car l’argument lié à l’authenticité ne peut
+                  être scientifique. Il s’agit plutôt d’un argument idéologique. Nous tenons
+                  particulièrement à me distinguer de cet argument dans la mesure où celui-
+                  ci qualifie les pratiques divinatoires ou magiques des femmes de pratiques
+                  syncrétiques ou de confusions entre culture et religion. Deuxièmement,
+                  l’argument mis de l’avant dans cet article s’inscrit dans un projet de mettre
+                  à jour des traditions subsédiaires. Par ailleurs, notre intention n’est pas de
+                  s’aligner sur les arguments ou théories de ces divers auteurs, mais de décrire
+                  les pratiques des femmes étudiées selon mes observations et leurs propres
+                  récits. D’évidence, les femmes étudiées ne se perçoivent pas comme étant
+                  moins musulmanes de par leurs pratiques, comme en témoignent leurs
+                  discours. Au contraire, selon elles, c’est justement en pratiquant l’islam
+                  que l’on se protège des dangers que la divination révèle.
+                      Dans cette même optique de protection spirituelle, on s’abstient de
+                  révéler à autrui ses projets (mariage, promotion professionnelle, achat
+                  de propriété...) jusqu’à ce que les plans soient accomplis. Les femmes
+                  musulmanes d’origine ouest-africaine de l’étude qui ont été enceintes ont
+
+
+
+
+ethnologies 37(1).indb 187                                                                  2017-03-02 14:25:33
+               188                                      diahara traoré
+
+
+
+
+               admis qu’elles n’annoncent pas leur grossesse publiquement. Ce n’est que
+               lorsque l’arrondi du ventre est visible, que la nouvelle est implicitement
+               annoncée. Incidemment, un proverbe bambara décrit une femme enceinte
+               comme ayant un pied dans la vie et un pied dans la mort. Ashforth fait
+               le même observation en Afrique du Sud, dans des circonstances quelques
+               peu embarrassantes :
+
+                             So when the neighbor inquired, « Where’s Seipati? » I replied with
+                             the simple, stupid, truth: « In the hospital having her baby. » Almost
+                             before I could finish the sentence I was drawn up short by an alarmed
+                             flare from MaMfete. I knew then that I had committed more than a
+                             gaffe. I had been around long enough by then to know I should have
+                             known better. (...) The moments of birth and death, when persons
+                             are in the process of transition from one form of being to another, are
+                             particularly vulnerable to attack by malicious agents using invisible
+                             forces. Discretion is of the utmost importance at such times in order
+                             to secure the mother and child from hostile interference or to allow
+                             safe passage for the deceased into the afterlife. Discretion at times of
+                             childbirth is also more generally important to prevent the circulation
+                             of information that might give rise to jealousy. (Ashforth 2005:73)
+                    La croyance en des menaces invisibles, mais bien réelles, informe les
+               pratiques de certaines femmes de l’étude. De la même façon, une grande
+               partie des femmes musulmanes interrogées ont mentionné des pratiques
+               de guérison associées à des récitations de versets du Coran. En cela, il
+               n’y a rien de nouveau surtout à la lumière des traditions prophétiques
+               concernant les vertus guérisseuses de certains versets ou de certains noms
+               de Dieu, qui datent du premier siècle de l’islam. Bien que toutes les femmes
+               sans exception aient affirmé n’avoir aucune réserve face à l’utilisation de
+               versets du Coran à des fins de guérison, cette dernière est pratiquée dans
+               la discrétion. C’est ainsi que certaines femmes utilisent la récitation de
+               certains versets coraniques, où dans le cas des mourides, de poèmes écrit
+               par Ahmadou Bamba, le fondateur de la confrérie mouride. Par exemple,
+               les propos de Mame Faye attestent de ce fait :
+
+                             Mon guide religieux Cheikh Ahmadou Bamba, il a écrit beaucoup
+                             de poèmes et à chaque poème sa spécificité. C’est à dire des choses
+                             qu’ils peuvent te permettre d’accomplir... Et... y en un poème qui
+                             permet vraiment de guérir certaines maladies. Si tu l’apprends, quand
+                             tu es malade tu les lis, ça peut être comme une prière qui permet de
+                             guérir ta maladie, ça, par la grâce de Dieu quand même. (Mame Faye,
+                             19 avril 2009, LaSalle)
+
+
+
+
+ethnologies 37(1).indb 188                                                                              2017-03-02 14:25:33
+                                   Divination, pratiques de guérison et traditions islamiques           189
+
+
+
+                     Ce type de pratiques était partagé à la majorité des femmes interrogées.
+                  Une autre femme explique qu’elle a hérité cette pratique de sa mère :
+
+                             Moi, c’est systématique. Même quand je me sens pas bien, mal de tête,
+                             je récite des versets du Coran. Il m’est arrivé d’être malade et puis de
+                             réciter un verset de Coran sur un verre d’eau et d’aller me coucher et
+                             de le verser devant ma porte. Je ne sais pas si c’est considéré en tant
+                             que tel. Mais c’est quelque chose de courant que j’ai toujours fait. Par
+                             mon éducation familiale, c’est ma mère qui n’est pas musulmane de
+                             naissance qui me l’a montré quand je me réveille en pleine nuit et
+                             que je me sens lourde et pas bien, elle me dit tu récites des versets et
+                             tu fais deux rakat et ça va aller. (Dada, 8 mai 2009, Montréal)
+
+
+                  Conclusion
+                        Bien que ces pratiques propres aux femmes ne se limitent pas à des
+                  formes non légitimes - légitime ici faisant référence aux savoirs reconnus par
+                  les figures de l’autorité en islam - ces femmes imbriquent les formes légitimes
+                  aux formes non légitimes. Dans la pratique et dans la conception de certaines
+                  des femmes ouest-africaines étudiées, cette imbrication de traditions est
+                  constamment renégociée, comme en témoigne Madame Djénabou dans
+                  sa façon de qualifier l’islam, à savoir nécessaire et complémentaire aux
+                  pratiques de divinations. Il en découle une pluralité de discours, qui bien
+                  que s’opposant parfois, contribuent à définir l’islam. Dans la pratique et
+                  dans la conception de certaines des femmes ouest-africaines étudiées,
+                  cette imbrication de traditions est constamment renégociée, comme en
+                  témoigne Madame Djénabou dans sa façon de qualifier l’islam, comme
+                  complémentaire aux pratiques de divination. Construire un discours sur
+                  l’islam qui est adaptable, juxtaposable à des pratiques magiques, ou au
+                  contraire exclusif de ces dernières, devient un acte perpétuel de redéfinition
+                  de ce que constitue l’islam dans le contexte de la vie quotidienne.
+
+
+
+
+ethnologies 37(1).indb 189                                                                              2017-03-02 14:25:34
+               190                            diahara traoré
+
+
+
+
+               Références
+               Asad, Talal, 1986, The Idea of an Anthropology of Islam, Washington, DC :
+                    Georgetown University Press.
+               Ashforth, Adam, 2005, Witchcraft, violence, and democracy in South Africa.
+                    Chicago: University of Chicago Press.
+               Bascom, William, 1980, Sixteen Cowries: Yoruba Divination from Africa to
+                    the New World. Bloomington: Indiana University Press.
+               Burge, Stephen, 2012, « Islam, Arabs, and the Intelligent World of the
+                    Jinn (Contemporary Issues in the Middle East Series), Amira El-Zein ».
+                    British Journal of Middle Eastern Studies, 39(3) : 427-429.
+               Citoyenneté et immigration Canada, 2007, Faits et chiffres 2007. Aperçu de
+                    l’immigration : résidents permanents. Ottawa : Gouvernement du Canada.
+               Citoyenneté et immigration Canada, 2000, Les artisans de notre patrimoine :
+                    la citoyenneté et l’immigration au Canada de 1900 à 1977. Ottawa :
+                    Gouvernement du Canada.
+               Daher, Ali, 2003, Les musulmans au Québec. Un document produit en
+                    version numérique par Jean-Marie Tremblay, Cégep de Chicoutimi.
+                    Bibliothèque Paul-Émile-Boulet, Université du Québec à Chicoutimi.
+                    Récupéré de http://classiques.uqac.ca/contemporains/daher_ali/
+                    musulmans_au_quebec/musulmans_au_Quebec.pdf.
+               Dramé, Mallafé, 1986, « Langage non-verbal : une autre dimension de
+                    la communication africaine ». Éthiopiques : revue négro-africaine de
+                    littérature, 37-38 : 105-117.
+               Fortin, Sylvie, Marie Nathalie Le Blanc et Josianne Le Gall, 2008,
+                    « Entre la oumma, l’ethnicité et la culture : le rapport à l’islam chez
+                    les musulmans francophones de Montréal », Diversité urbaine, 18(2) :
+                    99-134.
+               Frazer, James G., 1900, The Golden Bough. A Study in Magic and Religion,
+                    London : MacMillan.
+               Hamès, Constant, 2007, Coran et talismans. Textes et pratiques magiques en
+                    milieu musulman. Paris : Karthala Editions.
+               Hubert, Henri, et Marcel Mauss, 1968, Les fonctions sociales du sacré. Paris,
+                    Minuit.
+               Khan, Naveeda, 2006, « Of children and jinn : an inquiry into an unexpected
+                    friendship during uncertain times », Cultural Anthropology, 21(2) :
+                    234-264.
+               Irby, Jon P., 1993, « The Islamic Dialogue with African Traditional Religion.
+                    Divination and Health Care », Social Science and Medicine, 36(3) :
+                    237-247.
+               Islam, F. et R.A. Campbell, 2014, « “Satan Has Afflicted Me!” Jinn-
+
+
+
+
+ethnologies 37(1).indb 190                                                                2017-03-02 14:25:34
+                             Divination, pratiques de guérison et traditions islamiques     191
+
+
+
+                      Possession and Mental Illness in the Qur’an », Journal of religion and
+                      health, 53(1) : 229-243.
+                  Lazreg, Marnia (dir.), 1994, The eloquence of silence: Algerian women in
+                      question. East Sussex, UK: Psychology Press.
+                  LeBlanc, Marie Nathalie, 2002, « Processes of identification among French-
+                      speaking West African migrants in Montreal ». Canadian Ethnic Studies
+                      Journal, 34(3) : 121-141.
+                  Lévi-Strauss, Claude, 1962, La pensée sauvage. Paris : Plon.
+                  Levtzion, Nehemia, 1979, « Patterns of Islamization in West Africa ». Dans
+                      Nehemia Levtzion (dir.), Conversion to Islam : 207-216. New York :
+                      Holmes & Meier.
+                  Mamdani, Mahmood, 2002, « Good Muslim, bad Muslim: a political
+                      perspective on culture and terrorism », American Anthropologist, 104 :
+                      766-775.
+                  Ministère de l’immigration et des communautés culturelles du Québec,
+                      2008, Portraits régionaux 1997-2006, Caractéristiques des immigrants
+                      établis au Québec et dans les régions en 2008. Québec : Gouvernement
+                      du Québec.
+                  Monteil, Vincent, 1964, L’Islam noir. Paris : Éditions du Seuil.
+                  Moreau, René Luc, 1982, Africains musulmans. Paris : Présence Africaine;
+                      Abidjan : INADES Éditions.
+                  Odugbesan, Clara, 1969, « Femininity in Yoruba Religious Art ». Dans
+                      Mary Douglas et Phyllis Mary Kaberry (dir.), Man in Africa : 201-213.
+                      London : Oxford University Press.
+                  Peek, Philip M., 1991, « Introduction ». Dans Philip Peek (dir.), African
+                      divination systems. Ways of knowing : 1-22. Georgetown : Georgetown
+                      University Press.
+                  Regourd, Anne, 2000, « Le jet de coquillages divinatoire en islam arabe
+                      et en Afrique subsaharienne: première contribution à une étude
+                      comparative ». Journal of Oriental and African Studies 11 : 133-149.
+                  Rothenberg, Celia, 2006, « My Wife is from the Jinn. Palestinian
+                      Men, Diaspora and Love ». Dans Lahoucine Ouzgane (dir.), Islamic
+                      Masculinities : 89-104. London: Zed Books.
+                  Shaw, Rosalind, 1992, « Dreaming as Accomplishment : Power, the
+                      Individual, and Temne divination ». Dans Rosalind Shaw et M. Charles
+                      Jedrej, (dir.) Dreaming, religion, and society in Africa : 35-54. Leiden :
+                      Brill.
+                  Soares, Benjamin, 2005, Islam and the Prayer Economy: History and Authority
+                      in a Malian Town. Ann Arbor : University of Michigan Press.
+                  Sow, Ibrahima, 2006, « Le Listixaar est-il une pratique divinatoire? »
+
+
+
+
+ethnologies 37(1).indb 191                                                                  2017-03-02 14:25:34
+               192                           diahara traoré
+
+
+
+
+                   Ethiopiques, 77 : 193-206.
+               Sow, Ibrahima, 2004, « Les représentations sénégalaises du destin ». Notes
+                   Africaines, 207-208 : http://bca.ucad.sn/jspui/handle/01/135 [récupéré
+                   le 16 juillet 2010].
+               Sow, Ibrahima, 1977, Psychiatrie dynamique africaine. Paris : Payot.
+               Tall, Cheikh Ahmadou, 1996, Les Dimensions de l’islam (5e éd.). Beyrouth :
+                   Dar el Fikr.
+               Triaud, Jean-Louis, 1974, « Un cas de passage collectif à l’islam en Basse
+                   Côte d’Ivoire : le village d’Ahua au début du siècle », Cahiers d’études
+                   africaines 14(54) : 317-337.
+               Werbner, Pnina, 2015, « Sacrifice, purification and gender In the Hajj:
+                   personhood, metonymy, and ritual transformation ». Dans Luitgard
+                   Mois et Marjo Buitelaar (dir.), Hajj: Global Interactions through
+                   Pilgrimage : 27-40. Leiden : Sidestone Press.
+
+
+
+
+ethnologies 37(1).indb 192                                                               2017-03-02 14:25:34
+

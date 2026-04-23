@@ -1,0 +1,379 @@
+   The Daiwa Anglo-Japanese Foundation Book Launch Series 2023
+
+
+
+
+BOOK LAUNCH: HANDBOOK OF THE AINU LANGUAGE
+                PUBLISHED BY DE GRUYER MOUTON, 2022
+
+
+
+                   Anna Bugaeva (bugaeva@rs.tus.ac.jp)
+
+
+
+
+  Online: Tuesday 21 March 2023 12:00pm-1:00pm (UK time) 9:00PM-10:00PM (Japan time)
+Anna Bugaeva (ed.) 2022. Handbook of the Ainu
+language (Handbooks of Japanese Language
+and Linguistics 12). Berlin: De Gruyter Mouton.
+699 pp.
+
+•   21 chapters by 17 contributors
+•   Series editors: Masayoshi Shibatani and Taro Kageyama
+
+•   Started as part of NINJAL project “Typological and
+    historical/comparative research on the languages of the
+    Japanese archipelago and their environs” (2013–2016; PI:
+    John Whitman)
+•   Continued as part of NINJAL project “Endangered languages
+    and dialects in Japan” (2016–2021; PI: Kibe Nobuko)
+•   Unprecedented cooperation among the leading experts on
+    Ainu: holding many research meetings.
+                                                            2
+WHAT IS SPECIAL ABOUT HANDBOOK OF THE AINU LANGUAGE?
+
+   Not the first English description of Ainu!
+    The first full-scale Ainu-English-Japanese dictionary with an attached short grammar was
+    published by the Anglican Church missionary Rev. John Batchelor in 1887.
+
+   This is the first comprehensive description of Ainu in English., i.e., covering many different aspects in
+    many Ainu dialects:
+
+        Part I: Overview of Ainu studies
+         (Ainu ethnogenesis, history of Ainu studies, history of Ainu, language contact, dialects, oral literature,
+         revitalization)
+
+        Part II: Typologically interesting characteristics of the Ainu language
+         (vowel co-occurrence restrictions, polysynthesis, combinability of various voice markers, noun
+         incorporation, tripartite alignment, nominal classification distinguishing ordinary and locative nouns,
+         elaborate possessive classes, verbal number, a rich four-term evidential system, and
+         undergrammaticalized aspect)
+                                                                                                                      3
+AINU
+   Ainu (isolate, Northern Japan,
+    moribund)
+   Hokkaido, Sakhalin and Kuril groups of
+    dialects.
+   Hokkaido Ainu dialects: Southwestern
+    and Northeastern.
+   Sakhalin Ainu dialects: Northern,
+    Central and Southern.
+   Kuril Ainu dialects: Northern and
+    Southern, but poorly investigated.
+                                                  NE
+   Like most languages in the world, Ainu
+    did not have its own writing system,     SW
+   but it has been written down since the
+    early 17th century in the Roman,
+    Japanese kana, and later Cyrillic
+    alphabets.                                         4
+ AINU ORAL LITERATURE
+ In the early 20th century, severe ethnic and linguistic oppression by the Japanese state
+  resulted in the rapid abandonment of the Ainu language.
+ Not used as a language of daily communication since the 1950s.
+
+ But, for half a century Ainu was remembered by older speakers who used it for
+  transmitting Ainu oral literature.
+ Sophisticated oral literatures, at least 3 genres: melodic yukar ‘heroic epics’ and
+  kamuy yukar ‘songs of gods’, and prose uwepeker ‘folktales’ (Endō 2022, Chapter 10).
+ See Nakagawa, Hiroshi, Anna Bugaeva, Miki Kobayashi, and Yoshimi Yoshikawa. 2016–
+  2021. A glossed audio corpus of Ainu folklore. Tokyo: National Institute for Japanese
+  Language and Linguistics. Available online at:
+  https://ainu.ninjal.ac.jp/folklore/en/
+
+                                                                                        5
+6
+THE SPREAD OF AINU
+   The predecessor of Ainu arrived to Japan from southern East Asia 30,000 years ago (Stanyon
+    et al. 2009), when the Japanese islands were connected to the mainland.
+   Then at the beginning of the modern interglacial period c. 10,000 years ago, sea level began
+    to rise, and for many years the ancient population of Japan was left in isolation.
+   3,000 years ago wet rice agriculturalists, who were speakers of Japanese, started moving to
+    western Kyūshū in Japan from the southwest of the Korean Peninsula (the future kingdom of
+    Paekche) (Janhunen 2023: 141).
+   The migration to Japan continued throughout the Yayoi (900/300 BCE to 300 CE) and Kofun
+    (300–500 CE) periods resulting in the replacement of all multiple lineages that had evolved in
+    the Neolithic Jōmon Japan, except for the Ainuic language family.
+   Ainu spread to Hokkaido by c. 1000 CE , to southern Sakhalin by c. 1300 CE and to the
+    Kuril Islands by c. 1500–1600 CE.
+   Ainu too could have contributed to the reduction of linguistic diversity on the Japanese
+    archipelago by sweeping away or absorbing other Jōmon languages on its northward spread
+    to Hokkaido (Janhunen 2022: 63, 65, Chapter 2).
+                                                                                               7
+WHY IS AINU SO IMPORTANT?
+   Ainu is head-marking, polysynthetic and incorporating.
+
+   Most Northeast Asian languages are strikingly different from Ainu.
+
+   Ainu is likely to be much more typical of what languages were like in Northeast Asia
+    several millennia ago than the picture we would get from Japanese or Korean.
+
+
+
+
+                                                                                       8
+ WHAT IS IT THAT AINU HAS BUT ENGLISH AND JAPANESE DON’T?
+ Head-marking character of Ainu
+ Polysynthetic character of Ainu
+
+ Noun incorporation
+
+ Vebal number
+
+ Evidentiality
+
+  and much more…
+
+
+
+
+                                                      9
+ HEAD-MARKING CHARACTER OF AINU
+   Subject and object agreement on the verb (3rd person ‘he/she/they’ is zero).
+
+(1) a. (káni) cikap ku-Ø-nukar
+       1SG bird 1SG.A(I)-3.O-see
+       ‘I saw a bird.’ (Tamura 1984: 15)
+    b. toan hekaci Ø-en-koyki
+       that boy         3.A-1SG.O(me)-bully
+       ‘That boy bullied me.’ (Tamura 1984: 30)
+
+(2)      eci-en-hotuyekar                 yak     pirka         p
+         2SG.A(you)-1SG.O(me)-call        if      be.good       but
+         ‘You(PL) should have called out to me.’ (Tamura 1984: 36)
+                                                                                   10
+ POLYSYNTHETIC CHARACTER OF AINU
+   Being able to represent a whole sentence by a single word (Bugaeva and Kobayashi
+    2022: 520, Chapter 15).
+
+(3)      iteki       yay-ipe-e-ko-sunke                 pa no pirka-no
+         PROH REFL-food-about.APPL-to.APPL-lie PL and be.good-ADV
+         suke wa ipe pa kor oka                 yak pirka
+         cook and eat PL and exist.PL if              be.good
+         ‘You must not eat meager meals, fix proper food and eat it.’
+         (lit. ‘lie to oneself about food’) (Nakagawa et al. 2016–2021: K8010291UP.183)
+
+
+
+                                                                                       11
+ NOUN INCORPORATION IN AINU
+   Noun may form one word with the verb (Satō 2022: 556, Chapter 16).
+
+The base clause:
+(4) a. turép              ku-tá
+       wild.lily          1SG.A-dig
+       ‘I dig wild lilies.’
+Noun incorporation of the object:
+    b. ku-túrep-ta
+        1SG.S-wild.lily-dig
+         ‘I dig wild lilies.’
+
+
+                                                                         12
+    NOUN INCORPORATION IN AINU
+   Noun incorporation of the object commonly is often used when referring to conceptually
+    unitary and noteworthy cultural activities (Mithun 1984).
+
+    Noun Incorporation           Cf. Phrase
+
+    ní-tuye ‘cut trees’           ní ‘tree’, tuyé ‘cut’
+    kem-éyki ‘sew’                kém ‘needle’, éyki ‘do with’
+    cisé-kar ‘build a house’      cisé ‘house’, kár ‘make’
+    apé-ari ‘build a fire’        apé ‘fire’, ári ‘put’
+    apá-asi ‘close the door’      apá ‘door’, así ‘close’
+    apá-caka ‘open the door’      apá ‘door’, caká ‘open’
+    apé-ari ‘build a fire’        apé ‘fire’, ári ‘put’
+    cép-koyki ‘catch fish’        cép ‘fish’, kóyki ‘catch’
+
+    (Satō 2022: 556-557, Chapter 16)
+                                                                                             13
+ NOUN INCORPORATION IN AINU
+   Noun incorporation of the transitive subject was claimed to be impossible (Baker 1988) :
+
+The base clause:
+(5) a. koy en-yanke
+        wave 1SG.O-raise
+       ‘The wave raises me.’
+
+Noun incorporation of the transitive subject:
+  b. ku-koy-yanke
+       1SG.S-wave-raise
+       ‘I am wave-raised.’
+       (Satō 2022: 559, Chapter 16)
+
+                                                                                               14
+NUMBER AS A GRAMMATICAL CATEGORY: NOMINAL NUMBER
+                               古池や蛙飛びこむ水の音
+                 furu ike ya / kawazu tobikomu / mizu no oto (Matsuo Basho 1686)
+
+
+                                    English translation：
+  1. The ancient pond
+     A frog leaps in
+     The sound of the water.                                      (Translated by Donald Keene)
+
+
+  2. Old pond — frogs jumped in — sound of water.
+                                                                  (Translated by Lafcadio Hearn)
+
+
+   •   There is no grammatical number in Japanese.
+                                                                         15
+    NUMBER AS A GRAMMATICAL CATEGORY: NOMINAL NUMBER
+
+                                     Is it ‘a frog’ or ‘frogs’ ?
+
+
+
+
+   There is no grammatical number in Japanese so only the (cultural?) context can help us decide.
+                                                                                               16
+NUMBER AS A GRAMMATICAL CATEGORY:VERBAL NUMBER IN AINU
+                               古池や蛙飛びこむ水の音
+                   furu ike ya / kawazu tobikomu / mizu no oto (Matsuo Basho 1686)
+
+                                       Ainu translation：
+  (6)      husko to        an            wa/ oro      unno           terkeype/
+           old   pond      exist.SG      and there toward            frog
+
+        a. ahu-n           tek             hum        as
+           enter-SG        suddenly        voice     stand.SG
+        b. ahu-p           tek             hum        as
+           enter-PL        suddenly        voice      stand.SG
+
+        (Translated by Anna Bugaeva and Hiroshi Nakagawa)
+
+                                                                             17
+NUMBER AS A GRAMMATICAL CATEGORY:VERBAL NUMBER IN AINU
+  •   Ainu has verbal number (a singular vs. plural distinction in verbs) instead of
+      nominal number as in English.
+
+  •   In case of intransitive verbs, verbal number refers to the number of subject
+      participants:
+
+         terkeype ahu-n ‘a frog jumped’
+         terkeype ahu-p ‘(many) frogs jumped’
+
+  •   In case of transitive verbs, verbal number refers to the number of object participants
+      or event number (number of actions):
+
+         cep tuy-e ‘cut (one) fish’‐ cep tuy-pa ‘cut (many) fish, cut (one) fish several times’
+         yuk rayke ‘kill (one) deer’ ‐ yuk ronnu ‘kill (many) deer’
+         Cf. English kill vs. massacre 'kill many people in a short period of time’.
+                                                                        18
+NUMBER AS A GRAMMATICAL CATEGORY:VERBAL NUMBER IN AINU
+       •    SG/PL distinction can be encoded by suffix alternation or suppletion
+           (use of different stems) as below, each type is limited to only some verbs.
+
+
+
+
+                                                                    (Nakagawa 2022: 574, Chapter 17)
+                                                                      19
+NUMBER AS A GRAMMATICAL CATEGORY: VERBAL NUMBER IN AINU
+
+
+    Verbal number is absent in Northeast Asian languages but is widely attested in the
+     North American languages such as Haida, Zuni, Paiute (Uto-Aztecan), Pomo (Pomoan),
+     Karok (Hokan), Navajo (Athabaskan) (Mithun 1988).
+
+     “Overall, Ainu is more like a morphologically reduced version of a North American
+     language.” (Johanna Nichols p.c.).
+
+
+
+
+                                                                                      20
+ MARKING EVIDENTIALITY IN AINU
+  Evidentiality: the indication of the nature of evidence for a given statement.
+  (Seen? Felt? Heard? Inferred? Other?)
+ Ainu has a four-term evidential system consisting of the following markers, all
+  originating in nouns, which is rather unusual crosslinguistically
+ (Takahashi 2022, Chapter 18):
+
+    •   Visual: sir lit. ‘appearance’
+    •   Non-visual sensory: hum lit. ‘sound’
+    •   Hearsay: (h)aw lit. ‘voice’
+    •   Inferential: ru lit. ‘footprint’
+
+        (Tokachi: eastern Hokkaido Ainu)
+
+
+                                                                                    21
+                          MARKING EVIDENTIALITY IN AINU
+
+(7) a.    upas    ruy     sir            ne                                         Visual evidential
+          snow heavy appearance be
+         ‘It is seen that snow fell.’ Lit. ‘(It) is (the) appearance (of) the snow (being) heavy.’
+    b. upas      ruy     hum      ne                                                Non-visual sensory evidential
+          snow heavy sound be
+         ‘It is felt that snow fell.’ Lit. ‘(It) is (the) sound (of) the snow (being) heavy.’
+    c. upas      ruy    (h)aw      ne                                               Hearsay evidential
+          snow heavy voice         be
+         ‘It is said that snow fell.’ Lit. ‘(It) is (the) voice (of) the snow (being) heavy.’
+    d. upas      ruy    ru                    ne                                   Inferential evidential
+         snow heavy trace/footprint be
+         ‘It is thought that snow fell.’ Lit. ‘(It) is (the) trace/footprint (of) the snow (being) heavy.’
+
+                                                                                       22
+SUMMARY
+
+   This volume will open the field of Ainu studies to the world and help to attract many new students
+    and researchers.
+
+
+   Being so different from other Northeast Asian languages, Ainu can definitely maximize the accuracy
+    of our view of earlier linguistic ecologies in the region’s deep past.
+
+
+   Ainu will help people to appreciate the linguistic and cultural contribution of the Ainu of Japan to
+    human intellectual heritage.
+
+
+   This volume will make a step forward in the process of the so-called “gradual rediscovery of Japan as
+    an ethnically and culturally diverse nation” (Morris-Suzuki 1998: 183).
+
+
+
+                                                                                                           23
+ACKNOWLDGEMENTS
+I would like to thank for their hard work
+
+    all my contributors,
+    series editors Masayoshi Shibatani and Taro Kageyama,
+    NINJAL project leaders John Whitman and Nobuko Kibe,
+    the copy-editor John Haig,
+    proofreader Emi Mukai,
+    the current director of NINJAL Yukinori Takubo,
+    all NINJAL project research assistants and office staff ,
+    De Gruyer Mouton editorial staff Birgit Sievert and Michaela Göbels and
+
+    all the Ainu people, past and present,
+    who have allowed us to share their beautiful language and culture with the world!
+
+
+                                        Iyairaykere!                                    24
+REFERENCES
+   Baker, Mark C. 1988. Incorporation: A theory of grammatical function changing. Chicago: University of Chicago Press.
+   Bugaeva, Anna and Miki Kobayashi. 2022. Chapter 15.Verbal valency. In Anna Bugaeva (ed.), Handbook of the Ainu language (HJLL 12). Berlin: De
+    Gruyter Mouton.
+   Endō, Shiho. 2022. Chapter 10. Ainu oral literature. In Anna Bugaeva (ed.), Handbook of the Ainu language (HJLL12). Berlin: De Gruyter Mouton.
+   Janhunen, Juha. 2022. Chapter 2. Ainu ethnic origins. In Anna Bugaeva (ed.), Handbook of the Ainu language (HJLL 12). Berlin: Mouton de Gruyter.
+   Janhunen, Juha. 2023. The Unity and Diversity of Altaic. Annual Review of Linguistics 9:135–54.
+   Mithun, Marianne. 1984. The evolution of noun incorporation. Language 60. 847–894.
+   Mithun, Marianne. 1988. Lexical category and the evolution of number marking. In Michael Hammond and Michael Noonan (eds.), Theoretical
+    morphology: Approaches in modern linguistics, 211–234. San Diego: Academic Press.
+   Morris-Suzuki, Tessa. 1998. Re-inventing Japan:Time, space, nation. New York: M. E. Sharpe Inc.
+   Nakagawa, Hiroshi. 2022. Chapter 17.Verbal number. In Anna Bugaeva (ed.), Handbook of the Ainu language (HJLL 12). Berlin: De Gruyter Mouton.
+   Nakagawa, Hiroshi, Anna Bugaeva, Miki Kobayashi, and Yoshimi Yoshikawa. 2016–2021. A glossed audio corpus of Ainu folklore. Tokyo: National
+    Institute for Japanese Language and Linguistics. Available online at: https://ainu.ninjal.ac.jp/folklore/en/
+   Stanyon, Roscoe,Marco Sazzini, and Donata Luiselli. 2009. Timing the first human migration into eastern Asia. Journal of Biology 8(2): 18.
+   Satō, Tomomi. This volume: Chapter 16. Noun incorporation in Ainu. In Anna Bugaeva (ed.), Handbook of the Ainu language (HJLL 12). Berlin:
+    Mouton de Gruyter.
+   Takahashi,Yasushige. 2022. Chapter 18. Aspect and evidentiality. In Anna Bugaeva (ed.), Handbook of the Ainu language (HJLL 12). Berlin: Mouton
+    de Gruyter.
+   Tamura, Suzuko. 1984. Ainugo nyūmon: Kaisetsu-hen [Commentary on Introduction to Ainu]. Tokyo: Waseda Daigaku Gogaku Kyōiku Kenkyūjo.
+                                                                                                                                                       2
+                                                                                                                                                       5
+

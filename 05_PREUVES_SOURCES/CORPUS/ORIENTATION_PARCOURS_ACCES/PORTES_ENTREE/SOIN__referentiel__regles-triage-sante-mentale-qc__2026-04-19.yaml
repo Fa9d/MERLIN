@@ -1,0 +1,267 @@
+meta:
+  id: ref_regles_triage_sante_mentale_qc_2026_04_19
+  type_objet: referentiel_regles_triage
+  territoire: Quebec
+  statut_document: draft
+  date: 2026-04-19
+  schema_ref: C:/MERLIN/05_PREUVES_SOURCES/SCHEMAS/MERLIN_PREU_SCHEMA_REGLE_TRIAGE_v1.0.md
+  description: Regles de triage prioritaires pour eviter de confondre urgence, crise et orientation non urgente.
+
+regles:
+  - id: triage_suicide_imminent_qc
+    type_objet: regle_triage
+    nom_regle: risque suicidaire imminent
+    priorite: critique
+    domaine: suicide
+    declencheurs_any:
+      - plan_suicidaire
+      - moyens_letaux_disponibles
+      - passage_a_l_acte_en_cours
+      - intention_imminente
+    declencheurs_all: []
+    indicateurs_exemples:
+      - je vais me tuer ce soir
+      - j ai deja ce qu il faut
+      - je suis en train de passer a l acte
+    action_principale: appeler_911
+    services_cibles:
+      - svc_urgence_psy_qc
+    services_a_eviter:
+      - svc_psychologue_public_qc
+      - svc_psychologue_prive_qc
+      - svc_travailleur_social_public_qc
+      - svc_ressources_communautaires_sm_qc
+      - svc_lignes_ecoute_crise_qc
+    message_court: danger immediat probable; l orientation urgente prime.
+    justification: presence d un risque vital ou tres imminent.
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/trouver-ressource-aide-et-soutien-en-sante-mentale
+    a_valider_localement:
+      - protocole_etablissement
+    notes: null
+
+  - id: triage_psychose_aigue_qc
+    type_objet: regle_triage
+    nom_regle: psychose aigue ou desorganisation majeure
+    priorite: critique
+    domaine: psychose
+    declencheurs_any:
+      - hallucinations_commandantes
+      - idees_delirantes_actives
+      - desorganisation_majeure
+      - incapacite_a_se_proteger
+    declencheurs_all: []
+    indicateurs_exemples:
+      - j entends des voix qui me commandent
+      - mes proches disent que je suis completement desorganise
+    action_principale: orienter_urgence_psy
+    services_cibles:
+      - svc_urgence_psy_qc
+    services_a_eviter:
+      - svc_psychologue_public_qc
+      - svc_psychologue_prive_qc
+      - svc_psychoeducateur_qc
+      - svc_ressources_communautaires_sm_qc
+    message_court: symptomes psychotiques aigus; evaluation hospitaliere urgente requise.
+    justification: risque eleve d atteinte a la securite et besoin devaluation medicale specialisee.
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/reseau-integre-en-sante-mentale/
+    a_valider_localement:
+      - protocole_local_urgence
+    notes: null
+
+  - id: triage_violence_danger_qc
+    type_objet: regle_triage
+    nom_regle: violence ou danger pour autrui
+    priorite: critique
+    domaine: violence
+    declencheurs_any:
+      - menaces_concretes
+      - comportement_violent
+      - aggression_en_cours
+      - danger_pour_autrui
+    declencheurs_all: []
+    indicateurs_exemples:
+      - je vais faire du mal a quelqu un
+      - il casse tout et menace tout le monde
+    action_principale: appeler_911
+    services_cibles:
+      - svc_urgence_psy_qc
+    services_a_eviter:
+      - svc_centre_crise_qc
+      - svc_lignes_ecoute_crise_qc
+      - svc_travailleur_social_public_qc
+    message_court: danger pour autrui ou violence en cours; intervention urgente prioritaire.
+    justification: securite immediate prioritaire.
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+    a_valider_localement:
+      - protocoles_police_ambulance
+    notes: null
+
+  - id: triage_confusion_aigue_qc
+    type_objet: regle_triage
+    nom_regle: confusion aigue ou alteration majeure
+    priorite: critique
+    domaine: confusion
+    declencheurs_any:
+      - confusion_aigue
+      - ne_reconnait_plus_proches
+      - alteration_conscience
+      - agitation_severe_avec_incoherence
+    declencheurs_all: []
+    indicateurs_exemples:
+      - il ne reconnait plus personne
+      - elle est completement confuse depuis soudainement
+    action_principale: aller_urgence
+    services_cibles:
+      - svc_urgence_psy_qc
+    services_a_eviter:
+      - svc_psychologue_public_qc
+      - svc_centre_crise_qc
+      - svc_ressources_communautaires_sm_qc
+    message_court: confusion aigue; evaluation urgente requise.
+    justification: possible urgence medicale ou psychiatrique severe.
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+      - https://www.quebec.ca/sante/systeme-et-services-de-sante/organisation-des-services/services-de-sante-et-services-sociaux-de-premiere-ligne
+    a_valider_localement:
+      - protocole_local_urgence
+    notes: null
+
+  - id: triage_sevrage_dangereux_qc
+    type_objet: regle_triage
+    nom_regle: intoxication severe ou sevrage medicalement dangereux
+    priorite: critique
+    domaine: dependance
+    declencheurs_any:
+      - convulsions
+      - delirium
+      - melange_substances
+      - intoxication_severe
+      - sevrage_a_risque
+    declencheurs_all: []
+    indicateurs_exemples:
+      - il tremble fort et voit des choses
+      - elle a melange plusieurs substances et n est plus coherente
+    action_principale: aller_urgence
+    services_cibles:
+      - svc_urgence_psy_qc
+    services_a_eviter:
+      - svc_services_dependance_qc
+      - svc_centre_crise_qc
+      - svc_lignes_ecoute_crise_qc
+    message_court: risque medical eleve; stabilisation urgente avant orientation dependance.
+    justification: les ressources dependance non medicalisees ne suffisent pas en premiere intention.
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://msss.gouv.qc.ca/repertoires/dependances/
+      - https://msss.gouv.qc.ca/professionnels/soins-et-services/guide-urgences-sante-mentale/
+    a_valider_localement:
+      - protocole_medical_local
+    notes: proxy_temporaire_vers_service_hospitalier_urgent_en_attendant_une_fiche_canonique_urgence_generale
+
+  - id: triage_crise_non_vitale_qc
+    type_objet: regle_triage
+    nom_regle: crise severe sans danger vital manifeste
+    priorite: haute
+    domaine: orientation_generale
+    declencheurs_any:
+      - idee_suicidaire_sans_plan_imminent
+      - detresse_majeure
+      - crise_relationnelle
+      - refus_hopital_sans_danger_vital_clair
+    declencheurs_all: []
+    indicateurs_exemples:
+      - je suis a bout mais je n ai pas de plan
+      - je veux parler a quelqu un tout de suite mais je ne veux pas aller a l hopital
+    action_principale: orienter_centre_crise
+    services_cibles:
+      - svc_centre_crise_qc
+      - svc_lignes_ecoute_crise_qc
+      - svc_811_qc
+    services_a_eviter:
+      - svc_psychologue_public_qc
+      - svc_psychologue_prive_qc
+    message_court: crise severe non vitale; mobiliser une ressource de crise plutot qu un suivi non urgent.
+    justification: besoin de reponse immediate sans franchir clairement le seuil hospitalier.
+    niveau_fiabilite: moyen_a_eleve
+    sources_principales:
+      - https://resicq.ca/a-propos-centres-crise/
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/trouver-ressource-aide-et-soutien-en-sante-mentale
+    a_valider_localement:
+      - centre_de_crise_disponible
+    notes: null
+
+  - id: triage_social_dominant_qc
+    type_objet: regle_triage
+    nom_regle: determinant social dominant sans danger vital
+    priorite: haute
+    domaine: orientation_generale
+    declencheurs_any:
+      - risque_perte_logement
+      - violence_conjugale_sans_danger_vital_immediat
+      - problemes_financiers_majeurs
+      - isolement_extreme
+      - besoin_demarches
+    declencheurs_all: []
+    indicateurs_exemples:
+      - je vais perdre mon logement
+      - je ne comprends aucune demarche et je n y arrive plus
+    action_principale: orienter_service_specialise
+    services_cibles:
+      - svc_travailleur_social_public_qc
+      - svc_clsc_qc
+      - svc_811_qc
+    services_a_eviter:
+      - svc_psychiatre_qc
+      - svc_psychologue_public_qc
+    message_court: le social domine; orienter d abord vers travail social et accueil psychosocial.
+    justification: une reponse uniquement clinique serait incomplete ou inefficace.
+    niveau_fiabilite: eleve
+    sources_principales:
+      - https://publications.msss.gouv.qc.ca/msss/fichiers/2025/25-924-24W.pdf
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/etapes-pour-obtenir-soins-et-services-en-sante-mentale
+    a_valider_localement:
+      - acces_clsc
+      - disponibilite_ts
+    notes: null
+
+  - id: triage_psychotherapie_non_urgente_qc
+    type_objet: regle_triage
+    nom_regle: besoin principal de psychotherapie sans danger immediat
+    priorite: moyenne
+    domaine: orientation_generale
+    declencheurs_any:
+      - detresse_persistante
+      - trouble_anxieux_probable
+      - trouble_depressif_probable
+      - motivation_psychotherapie
+    declencheurs_all: []
+    indicateurs_exemples:
+      - ca dure depuis des mois
+      - je veux entreprendre une psychotherapie
+    action_principale: orienter_service_specialise
+    services_cibles:
+      - svc_psychologue_public_qc
+      - svc_psychologue_prive_qc
+      - svc_811_qc
+    services_a_eviter:
+      - svc_urgence_psy_qc
+      - svc_uibp_qc
+    message_court: besoin psychotherapeutique non urgent; orienter vers psychologie publique ou privee selon acces.
+    justification: bonne indication de psychotherapie si absence de crise aigue.
+    niveau_fiabilite: moyen_a_eleve
+    sources_principales:
+      - https://www.ordrepsy.qc.ca/ou-trouver
+      - https://www.quebec.ca/sante/sante-mentale/trouver-aide-et-soutien-en-sante-mentale/etapes-pour-obtenir-soins-et-services-en-sante-mentale
+    a_valider_localement:
+      - delais_public
+      - moyens_financiers
+    notes: null

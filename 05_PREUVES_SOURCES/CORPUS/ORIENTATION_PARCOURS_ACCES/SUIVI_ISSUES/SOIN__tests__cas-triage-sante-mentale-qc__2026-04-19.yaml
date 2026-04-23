@@ -1,0 +1,117 @@
+meta:
+  id: tests_triage_sante_mentale_qc_2026_04_19
+  type_objet: suite_tests_triage
+  territoire: Quebec
+  statut_document: draft
+  date: 2026-04-19
+  description: Cas de test minimaux pour verifier que MERLIN distingue urgence, crise, social et suivi non urgent.
+
+cas_tests:
+  - id: case_001
+    description: idee suicidaire avec plan et moyens disponibles
+    signaux:
+      - idee_suicidaire
+      - plan_suicidaire
+      - moyens_letaux_disponibles
+    regles_attendues:
+      - triage_suicide_imminent_qc
+    service_attendu_primaire: svc_urgence_psy_qc
+    services_secondaires_acceptables: []
+    escalation_securite_attendue: critique
+    services_a_eviter:
+      - svc_psychologue_public_qc
+      - svc_travailleur_social_public_qc
+
+  - id: case_002
+    description: adulte en detresse majeure avec idees suicidaires sans plan imminent
+    signaux:
+      - detresse_majeure
+      - idee_suicidaire_sans_plan_imminent
+      - refus_hopital_sans_danger_vital_clair
+    regles_attendues:
+      - triage_crise_non_vitale_qc
+    service_attendu_primaire: svc_centre_crise_qc
+    services_secondaires_acceptables:
+      - svc_lignes_ecoute_crise_qc
+      - svc_811_qc
+    escalation_securite_attendue: haute
+    services_a_eviter:
+      - svc_psychologue_public_qc
+
+  - id: case_003
+    description: personne surtout menacee d eviction et en grande detresse financiere, sans danger immediat
+    signaux:
+      - risque_perte_logement
+      - problemes_financiers_majeurs
+      - detresse_persistante
+    regles_attendues:
+      - triage_social_dominant_qc
+    service_attendu_primaire: svc_travailleur_social_public_qc
+    services_secondaires_acceptables:
+      - svc_clsc_qc
+      - svc_811_qc
+    escalation_securite_attendue: haute
+    services_a_eviter:
+      - svc_psychiatre_qc
+
+  - id: case_004
+    description: adolescent avec problemes de comportement recurrent a l ecole, sans crise aigue
+    signaux:
+      - jeune_avec_problemes_comportement
+      - difficultes_dans_milieux_de_vie
+      - pas_de_danger_immediat
+    regles_attendues: []
+    service_attendu_primaire: svc_psychoeducateur_qc
+    services_secondaires_acceptables:
+      - svc_psychologue_public_qc
+      - svc_travailleur_social_public_qc
+    escalation_securite_attendue: moyenne
+    services_a_eviter:
+      - svc_urgence_psy_qc
+
+  - id: case_005
+    description: consommation importante avec tremblements severes et hallucinations au sevrage
+    signaux:
+      - sevrage_a_risque
+      - convulsions
+      - delirium
+    regles_attendues:
+      - triage_sevrage_dangereux_qc
+    service_attendu_primaire: svc_urgence_psy_qc
+    services_secondaires_acceptables: []
+    escalation_securite_attendue: critique
+    services_a_eviter:
+      - svc_services_dependance_qc
+    notes: urgence_hospitaliere_generale_a_modeliser_explicitement_dans_un_prochain_cycle
+
+  - id: case_006
+    description: detresse anxieuse depuis 6 mois, motivation a entreprendre une psychotherapie, pas de danger immediat
+    signaux:
+      - detresse_persistante
+      - trouble_anxieux_probable
+      - motivation_psychotherapie
+    regles_attendues:
+      - triage_psychotherapie_non_urgente_qc
+    service_attendu_primaire: svc_psychologue_public_qc
+    services_secondaires_acceptables:
+      - svc_psychologue_prive_qc
+      - svc_811_qc
+    escalation_securite_attendue: moyenne
+    services_a_eviter:
+      - svc_urgence_psy_qc
+
+  - id: case_007
+    description: personne qui entend des voix commandantes et ne reconnait plus ses proches
+    signaux:
+      - hallucinations_commandantes
+      - ne_reconnait_plus_proches
+      - confusion_aigue
+    regles_attendues:
+      - triage_psychose_aigue_qc
+      - triage_confusion_aigue_qc
+    service_attendu_primaire: svc_urgence_psy_qc
+    services_secondaires_acceptables: []
+    escalation_securite_attendue: critique
+    services_a_eviter:
+      - svc_centre_crise_qc
+      - svc_ressources_communautaires_sm_qc
