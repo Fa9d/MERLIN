@@ -1,0 +1,28 @@
+{
+  "folders": [
+    { "name": "00 — GOUVERNANCE", "path": "00_GOUVERNANCE" },
+    { "name": "01 — FONDATEUR", "path": "01_FONDATEUR" },
+    { "name": "02 — NATIONS_QC", "path": "02_NATIONS_QC" },
+    { "name": "03 — MODELE_GOUVERNANCE", "path": "03_MODELE_GOUVERNANCE" },
+    { "name": "04 — METHODES", "path": "04_METHODES" },
+    { "name": "05 — PREUVES_SOURCES", "path": "05_PREUVES_SOURCES" },
+    { "name": "06 — IMPORTS_MESANGE", "path": "06_IMPORTS_MESANGE" },
+    { "name": "07 — EXPORTS", "path": "07_EXPORTS" },
+    { "name": "08 — EMPLOI", "path": "08_EMPLOI" },
+    { "name": "DAVID_CORPUS", "path": "DAVID_CORPUS" },
+    { "name": "memory", "path": "memory" }
+  ],
+  "settings": {
+    "editor.wordWrap": "on",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 2000,
+    "explorer.sortOrder": "type",
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.git": false,
+      "**/.venv": true,
+      "**/.pytest_cache": true,
+      "**/__pycache__": true
+    }
+  }
+}
