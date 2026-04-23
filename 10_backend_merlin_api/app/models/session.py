@@ -86,3 +86,4 @@ class SessionRecord(Base):
     consents = relationship("Consent", back_populates="session")
     notes = relationship("SessionNote", back_populates="session")
     audio_session = relationship("AudioSession", back_populates="session", uselist=False)
+    derived_documents = relationship("DerivedDocument", back_populates="session")

@@ -59,3 +59,4 @@ class Client(Base):
     intake_requests = relationship("IntakeRequest", back_populates="client")
     consents = relationship("Consent", back_populates="client")
     sessions = relationship("SessionRecord", back_populates="client")
+    derived_documents = relationship("DerivedDocument", back_populates="client")

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 
-import { createClient, createIntakeRequest } from "@/lib/merlin-api";
+import { createClient, createConsent, createIntakeRequest } from "@/lib/merlin-api";
 
 type SubmissionState = {
   clientCode: string;
@@ -15,6 +15,9 @@ export default function RendezVousPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [isAdultConfirmed, setIsAdultConfirmed] = useState(false);
+  const [sessionConsent, setSessionConsent] = useState(false);
+  const [sessionNoteConsent, setSessionNoteConsent] = useState(false);
+  const [historyConsent, setHistoryConsent] = useState(false);
   const [need, setNeed] = useState<
     "clarification" | "support" | "orientation" | "loneliness" | "distress" | "other"
   >("support");
@@ -30,12 +33,24 @@ export default function RendezVousPage() {
     setErrorMessage(null);
     setSubmissionState(null);
 
+    if (!isAdultConfirmed) {
+      setErrorMessage("La demande est reservee aux adultes de 18 ans et plus.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!sessionConsent || !sessionNoteConsent) {
+      setErrorMessage("Les consentements de seance et de note sont requis pour continuer.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const client = await createClient({
         first_name_or_alias: firstNameOrAlias.trim(),
         email: email.trim() || null,
         phone: phone.trim() || null,
-        is_adult_confirmed: true,
+        is_adult_confirmed: isAdultConfirmed,
       });
 
       const intake = await createIntakeRequest({
@@ -48,6 +63,27 @@ export default function RendezVousPage() {
         requested_outcome_text: requestText.trim() || null,
       });
 
+      await Promise.all([
+        createConsent({
+          client_id: client.id,
+          consent_type_code: "consent_session",
+          consent_value: sessionConsent,
+          granted_by_actor_code: "client",
+        }),
+        createConsent({
+          client_id: client.id,
+          consent_type_code: "consent_session_note",
+          consent_value: sessionNoteConsent,
+          granted_by_actor_code: "client",
+        }),
+        createConsent({
+          client_id: client.id,
+          consent_type_code: "consent_history",
+          consent_value: historyConsent,
+          granted_by_actor_code: "client",
+        }),
+      ]);
+
       setSubmissionState({
         clientCode: client.public_client_code,
         intakeId: intake.id,
@@ -56,6 +92,9 @@ export default function RendezVousPage() {
       setEmail("");
       setPhone("");
       setIsAdultConfirmed(false);
+      setSessionConsent(false);
+      setSessionNoteConsent(false);
+      setHistoryConsent(false);
       setNeed("support");
       setRequestText("");
       setSupportInPlace(false);
@@ -184,6 +223,51 @@ export default function RendezVousPage() {
               Cette information nous aide a mieux comprendre ou vous en etes. Elle
               ne change pas votre acces au service.
             </p>
+
+            <div className="stack-sm">
+              <h3>Consentements de base</h3>
+              <p className="inline-note">
+                Vous donnez ici les accords minimaux pour ouvrir votre demande. Aucun
+                enregistrement, aucune transcription et aucune transmission a un tiers
+                ne sont autorises par ce formulaire.
+              </p>
+
+              <label className="checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={sessionConsent}
+                  onChange={(event) => setSessionConsent(event.target.checked)}
+                />
+                <span>
+                  J&apos;accepte une premiere seance d&apos;ecoute IVIA dans le cadre
+                  presente.
+                </span>
+              </label>
+
+              <label className="checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={sessionNoteConsent}
+                  onChange={(event) => setSessionNoteConsent(event.target.checked)}
+                />
+                <span>
+                  J&apos;accepte qu&apos;une note breve de seance soit conservee pour le
+                  suivi.
+                </span>
+              </label>
+
+              <label className="checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={historyConsent}
+                  onChange={(event) => setHistoryConsent(event.target.checked)}
+                />
+                <span>
+                  J&apos;accepte qu&apos;un historique court soit maintenu pour eviter de
+                  recommencer a zero.
+                </span>
+              </label>
+            </div>
 
             <div className="message message-error">
               IVIA n&apos;est pas un service d&apos;urgence. Si vous etes en danger

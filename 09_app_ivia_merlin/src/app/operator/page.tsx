@@ -9,11 +9,16 @@ import {
   type AudioSessionRecord,
   closeSession,
   type ClientRecord,
+  type ConsentRecord,
   createClientJoinContext,
   createSession,
+  type DerivedDocumentRecord,
   listAudioRecordings,
   listAudioSessions,
   listClients,
+  listConsents,
+  listDerivedDocuments,
+  listIntakeRequests,
   listSessionNotes,
   listSessions,
   loginOperator,
@@ -21,6 +26,7 @@ import {
   startAudioRecording,
   startSession,
   stopAudioRecording,
+  type IntakeRequestRecord,
   type LoginResponse,
   type SessionCloseResult,
   type SessionNoteValidationPayload,
@@ -31,12 +37,20 @@ import {
 
 const STORAGE_KEY = "merlin_operator_session";
 const SHOW_DEV_AUDIO_TOOLS = process.env.NODE_ENV !== "production";
+const INTAKE_CONSENT_TYPES = [
+  "consent_session",
+  "consent_session_note",
+  "consent_history",
+] as const;
 
 export default function OperatorPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [session, setSession] = useState<LoginResponse | null>(null);
   const [clients, setClients] = useState<ClientRecord[]>([]);
+  const [consents, setConsents] = useState<ConsentRecord[]>([]);
+  const [derivedDocuments, setDerivedDocuments] = useState<DerivedDocumentRecord[]>([]);
+  const [intakeRequests, setIntakeRequests] = useState<IntakeRequestRecord[]>([]);
   const [sessions, setSessions] = useState<SessionRecord[]>([]);
   const [sessionNotes, setSessionNotes] = useState<SessionNoteRecord[]>([]);
   const [audioSessions, setAudioSessions] = useState<AudioSessionRecord[]>([]);
@@ -138,6 +152,9 @@ export default function OperatorPage() {
       try {
         const [
           clientResult,
+          consentResult,
+          derivedDocumentResult,
+          intakeRequestResult,
           sessionResult,
           sessionNoteResult,
           audioSessionResult,
@@ -145,6 +162,9 @@ export default function OperatorPage() {
         ] =
           await Promise.all([
             listClients(currentSession.access_token),
+            listConsents(currentSession.access_token),
+            listDerivedDocuments(currentSession.access_token),
+            listIntakeRequests(currentSession.access_token),
             listSessions(currentSession.access_token),
             listSessionNotes(currentSession.access_token),
             listAudioSessions(currentSession.access_token),
@@ -154,6 +174,9 @@ export default function OperatorPage() {
           return;
         }
         setClients(clientResult);
+        setConsents(consentResult);
+        setDerivedDocuments(derivedDocumentResult);
+        setIntakeRequests(intakeRequestResult);
         setSessions(sessionResult);
         setSessionNotes(sessionNoteResult);
         setAudioSessions(audioSessionResult);
@@ -207,6 +230,9 @@ export default function OperatorPage() {
     window.localStorage.removeItem(STORAGE_KEY);
     setSession(null);
     setClients([]);
+    setConsents([]);
+    setDerivedDocuments([]);
+    setIntakeRequests([]);
     setSessions([]);
     setSessionNotes([]);
     setAudioSessions([]);
@@ -498,14 +524,16 @@ export default function OperatorPage() {
       ]);
       setSessions(nextSessions);
       setSessionNotes(nextNotes);
-      const [nextAudioSessions, nextAudioRecordings] = await Promise.all([
+      const [nextAudioSessions, nextAudioRecordings, nextDerivedDocuments] = await Promise.all([
         listAudioSessions(session.access_token),
         listAudioRecordings(session.access_token),
+        listDerivedDocuments(session.access_token),
       ]);
       setAudioSessions(nextAudioSessions);
       setAudioRecordings(nextAudioRecordings);
+      setDerivedDocuments(nextDerivedDocuments);
       setSessionClosureSuccessMessage(
-        `Seance ${closeResult.session.session_sequence_number} cloturee. Note ${closeResult.generated_note.note_sequence_number} generee.`,
+        `Seance ${closeResult.session.session_sequence_number} cloturee. Note ${closeResult.generated_note.note_sequence_number} et document derives generes.`,
       );
       setActualStartAt("");
       setActualEndAt("");
@@ -563,6 +591,31 @@ export default function OperatorPage() {
 
   const selectedClient =
     clients.find((client) => client.id === selectedClientId) ?? null;
+  const selectedClientConsents = selectedClientId
+    ? consents.filter((consent) => consent.client_id === selectedClientId)
+    : [];
+  const latestSelectedClientConsentByType = new Map(
+    selectedClientConsents.map((consent) => [consent.consent_type_code, consent]),
+  );
+  const selectedClientIntakeConsentSummary = INTAKE_CONSENT_TYPES.map((consentType) => {
+    const consent = latestSelectedClientConsentByType.get(consentType) ?? null;
+    const labelByType = {
+      consent_session: "Seance",
+      consent_session_note: "Note",
+      consent_history: "Historique",
+    } as const;
+
+    return {
+      consentType,
+      label: labelByType[consentType],
+      status: consent ? (consent.consent_value ? "Accorde" : "Refuse") : "Manquant",
+      grantedAt: consent?.granted_at ?? null,
+    };
+  });
+  const selectedClientIntakeRequests = selectedClientId
+    ? intakeRequests.filter((intakeRequest) => intakeRequest.client_id === selectedClientId)
+    : [];
+  const selectedClientLatestIntakeRequest = selectedClientIntakeRequests[0] ?? null;
   const selectedSession =
     sessions.find((sessionRecord) => sessionRecord.id === selectedSessionId) ?? null;
   const selectedAudioSession =
@@ -583,6 +636,10 @@ export default function OperatorPage() {
     ? sessionNotes.filter((note) => note.session_id === selectedSessionId)
     : sessionNotes;
   const selectedSessionGeneratedNote = visibleNotes[0] ?? null;
+  const visibleDerivedDocuments = selectedSessionId
+    ? derivedDocuments.filter((document) => document.session_id === selectedSessionId)
+    : derivedDocuments;
+  const selectedSessionDerivedDocument = visibleDerivedDocuments[0] ?? null;
   const visibleClientTestLink =
     selectedAudioSession && clientTestLink?.audioSessionId === selectedAudioSession.id
       ? clientTestLink.url
@@ -716,10 +773,51 @@ export default function OperatorPage() {
                     </label>
 
                     {selectedClient ? (
-                      <div className="info-strip">
-                        <span className="mono">{selectedClient.public_client_code}</span>
-                        <span>{selectedClient.email ?? "Sans courriel"}</span>
-                        <span>{selectedClient.phone ?? "Sans telephone"}</span>
+                      <div className="stack-sm">
+                        <div className="info-strip">
+                          <span className="mono">{selectedClient.public_client_code}</span>
+                          <span>{selectedClient.email ?? "Sans courriel"}</span>
+                          <span>{selectedClient.phone ?? "Sans telephone"}</span>
+                        </div>
+                        <div className="card">
+                          <h4>Consentements d&apos;entree</h4>
+                          <div className="info-strip">
+                            {selectedClientIntakeConsentSummary.map((item) => (
+                              <span key={item.consentType}>
+                                {item.label}: {item.status}
+                              </span>
+                            ))}
+                          </div>
+                          <p className="inline-note">
+                            Enregistrement, transcription et transmission tiers restent hors du
+                            consentement public initial.
+                          </p>
+                        </div>
+                        <div className="card">
+                          <h4>Demande d&apos;entree</h4>
+                          {selectedClientLatestIntakeRequest ? (
+                            <div className="stack-sm">
+                              <div className="info-strip">
+                                <span>Besoin: {selectedClientLatestIntakeRequest.primary_need_code}</span>
+                                <span>Urgence: {selectedClientLatestIntakeRequest.perceived_urgency_code}</span>
+                                <span>
+                                  Soutien en place:{" "}
+                                  {selectedClientLatestIntakeRequest.support_already_in_place
+                                    ? "oui"
+                                    : "non"}
+                                </span>
+                              </div>
+                              <p>
+                                {selectedClientLatestIntakeRequest.requested_outcome_text ??
+                                  "Aucun texte libre transmis dans la demande d'entree."}
+                              </p>
+                            </div>
+                          ) : (
+                            <p className="inline-note">
+                              Aucune demande d&apos;entree trouvee pour ce client.
+                            </p>
+                          )}
+                        </div>
                       </div>
                     ) : null}
 
@@ -803,6 +901,8 @@ export default function OperatorPage() {
                             <th>Nom</th>
                             <th>Courriel</th>
                             <th>Telephone</th>
+                            <th>Consentements</th>
+                            <th>Demande</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -812,6 +912,37 @@ export default function OperatorPage() {
                               <td>{client.first_name_or_alias}</td>
                               <td>{client.email ?? "-"}</td>
                               <td>{client.phone ?? "-"}</td>
+                              <td>
+                                {INTAKE_CONSENT_TYPES.map((consentType) => {
+                                  const consent = consents.find(
+                                    (item) =>
+                                      item.client_id === client.id &&
+                                      item.consent_type_code === consentType,
+                                  );
+                                  const shortLabelByType = {
+                                    consent_session: "S",
+                                    consent_session_note: "N",
+                                    consent_history: "H",
+                                  } as const;
+                                  const status = consent
+                                    ? consent.consent_value
+                                      ? "oui"
+                                      : "non"
+                                    : "-";
+                                  return `${shortLabelByType[consentType]}:${status}`;
+                                }).join("  ")}
+                              </td>
+                              <td>
+                                {(() => {
+                                  const intakeRequest = intakeRequests.find(
+                                    (item) => item.client_id === client.id,
+                                  );
+                                  if (!intakeRequest) {
+                                    return "-";
+                                  }
+                                  return `${intakeRequest.primary_need_code} / ${intakeRequest.perceived_urgency_code}`;
+                                })()}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -1255,6 +1386,56 @@ export default function OperatorPage() {
                       </table>
                     </div>
                   ) : null}
+                </div>
+
+                <div className="stack-md">
+                  <h3>Document derive</h3>
+                  {selectedSessionDerivedDocument ? (
+                    <div className="card form-stack">
+                      <div className="info-strip">
+                        <span>{selectedSessionDerivedDocument.title}</span>
+                        <span>{selectedSessionDerivedDocument.document_kind_code}</span>
+                        <span>{selectedSessionDerivedDocument.audience_code}</span>
+                        <span>
+                          {selectedSessionDerivedDocument.client_visible
+                            ? "Diffusable client"
+                            : "Interne"}
+                        </span>
+                      </div>
+                      <label className="field">
+                        <span>Contenu</span>
+                        <textarea
+                          readOnly
+                          rows={6}
+                          value={selectedSessionDerivedDocument.body_text}
+                        />
+                      </label>
+                      {visibleDerivedDocuments.length > 1 ? (
+                        <div className="table-wrap">
+                          <table className="data-table">
+                            <thead>
+                              <tr>
+                                <th>Titre</th>
+                                <th>Audience</th>
+                                <th>Visible client</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {visibleDerivedDocuments.map((document) => (
+                                <tr key={document.id}>
+                                  <td>{document.title}</td>
+                                  <td>{document.audience_code}</td>
+                                  <td>{document.client_visible ? "Oui" : "Non"}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <p>Aucun document derive pour la selection courante.</p>
+                  )}
                 </div>
 
                 <div className="stack-md">

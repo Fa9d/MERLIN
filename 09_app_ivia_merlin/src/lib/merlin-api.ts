@@ -91,6 +91,67 @@ export type IntakeRequestRecord = {
   updated_at: string;
 };
 
+export type ConsentTypeCode =
+  | "consent_session"
+  | "consent_session_note"
+  | "consent_history"
+  | "consent_recording"
+  | "consent_transcription"
+  | "consent_client_delivery"
+  | "consent_third_party_transmission";
+
+export type GrantedByActorCode = "client" | "operator" | "system";
+
+export type RevocationScopeCode = "future_only" | "future_and_pending";
+
+export type ConsentPayload = {
+  client_id: string;
+  session_id?: string | null;
+  consent_type_code: ConsentTypeCode;
+  consent_value: boolean;
+  consent_version_code?: string;
+  granted_by_actor_code: GrantedByActorCode;
+  granted_at?: string | null;
+  revoked_at?: string | null;
+  revocation_scope_code?: RevocationScopeCode | null;
+  notes?: string | null;
+  record_status?: "draft" | "active" | "validated" | "closed" | "deprecated" | "archived";
+};
+
+export type ConsentRecord = {
+  id: string;
+  client_id: string;
+  session_id: string | null;
+  consent_type_code: ConsentTypeCode;
+  consent_value: boolean;
+  consent_version_code: string;
+  granted_by_actor_code: GrantedByActorCode;
+  granted_at: string;
+  revoked_at: string | null;
+  revocation_scope_code: RevocationScopeCode | null;
+  notes: string | null;
+  record_status: "draft" | "active" | "validated" | "closed" | "deprecated" | "archived";
+  created_at: string;
+  updated_at: string;
+};
+
+export type DerivedDocumentRecord = {
+  id: string;
+  client_id: string;
+  session_id: string;
+  source_note_id: string;
+  document_kind_code: string;
+  audience_code: string;
+  title: string;
+  body_text: string;
+  client_visible: boolean;
+  record_status: "draft" | "active" | "validated" | "closed" | "deprecated" | "archived";
+  data_sensitivity_class: "low" | "moderate" | "high" | "restricted";
+  retention_class: "ephemeral" | "short_term" | "standard" | "extended" | "archival";
+  created_at: string;
+  updated_at: string;
+};
+
 export type AuthUser = {
   id: string;
   email: string;
@@ -158,6 +219,7 @@ export type SessionClosePayload = {
 export type SessionCloseResult = {
   session: SessionRecord;
   generated_note: SessionNoteRecord;
+  generated_document: DerivedDocumentRecord;
 };
 
 export type SessionStartPayload = {
@@ -294,6 +356,30 @@ export async function createIntakeRequest(
   });
 }
 
+export async function listIntakeRequests(
+  token: string,
+  options?: { clientId?: string },
+): Promise<IntakeRequestRecord[]> {
+  const query = options?.clientId
+    ? `?client_id=${encodeURIComponent(options.clientId)}`
+    : "";
+
+  return request<IntakeRequestRecord[]>(`/api/v1/intake-requests${query}`, {
+    token,
+  });
+}
+
+export async function createConsent(
+  payload: ConsentPayload,
+  token?: string,
+): Promise<ConsentRecord> {
+  return request<ConsentRecord>("/api/v1/consents", {
+    method: "POST",
+    body: payload,
+    token,
+  });
+}
+
 export async function loginOperator(
   email: string,
   password: string,
@@ -306,6 +392,37 @@ export async function loginOperator(
 
 export async function listClients(token: string): Promise<ClientRecord[]> {
   return request<ClientRecord[]>("/api/v1/clients", {
+    token,
+  });
+}
+
+export async function listConsents(
+  token: string,
+  options?: { clientId?: string },
+): Promise<ConsentRecord[]> {
+  const query = options?.clientId
+    ? `?client_id=${encodeURIComponent(options.clientId)}`
+    : "";
+
+  return request<ConsentRecord[]>(`/api/v1/consents${query}`, {
+    token,
+  });
+}
+
+export async function listDerivedDocuments(
+  token: string,
+  options?: { clientId?: string; sessionId?: string },
+): Promise<DerivedDocumentRecord[]> {
+  const params = new URLSearchParams();
+  if (options?.clientId) {
+    params.set("client_id", options.clientId);
+  }
+  if (options?.sessionId) {
+    params.set("session_id", options.sessionId);
+  }
+  const query = params.size > 0 ? `?${params.toString()}` : "";
+
+  return request<DerivedDocumentRecord[]>(`/api/v1/derived-documents${query}`, {
     token,
   });
 }

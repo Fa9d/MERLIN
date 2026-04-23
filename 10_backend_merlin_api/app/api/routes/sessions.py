@@ -14,6 +14,7 @@ from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
 from app.models.client import Client
+from app.models.derived_document import DerivedDocument
 from app.models.enums import (
     AnalysisNextStepCode,
     AudioSessionStatusCode,
@@ -104,6 +105,21 @@ def _build_client_facing_summary(
     ]
     if next_step:
         parts.append(f"Prochaine etape: {next_step}.")
+    return " ".join(parts)
+
+
+def _build_derived_document_text(generated_note: SessionNote) -> str:
+    parts = []
+    if generated_note.client_facing_summary_text:
+        parts.append(generated_note.client_facing_summary_text)
+    else:
+        parts.append(generated_note.summary_text)
+
+    if generated_note.follow_up_actions_text:
+        parts.append(f"Suites proposees: {generated_note.follow_up_actions_text}.")
+    if generated_note.next_session_focus_text:
+        parts.append(f"Focus prochaine seance: {generated_note.next_session_focus_text}.")
+
     return " ".join(parts)
 
 
@@ -344,11 +360,33 @@ async def close_session(
     )
 
     db.add(generated_note)
+    db.flush()
+
+    generated_document = DerivedDocument(
+        client_id=session_record.client_id,
+        session_id=session_record.id,
+        source_note_id=generated_note.id,
+        document_kind_code="session_summary",
+        audience_code="client" if generated_note.client_visible else "internal",
+        title=f"Synthese seance {session_record.session_sequence_number}",
+        body_text=_build_derived_document_text(generated_note),
+        client_visible=generated_note.client_visible,
+        record_status=session_record.record_status,
+        data_sensitivity_class=session_record.data_sensitivity_class,
+        retention_class=session_record.retention_class,
+    )
+
+    db.add(generated_document)
     db.add(session_record)
     db.commit()
     db.refresh(session_record)
     db.refresh(generated_note)
-    return SessionCloseResult(session=session_record, generated_note=generated_note)
+    db.refresh(generated_document)
+    return SessionCloseResult(
+        session=session_record,
+        generated_note=generated_note,
+        generated_document=generated_document,
+    )
 
 
 @router.post("/{session_id}/start", response_model=SessionRead)

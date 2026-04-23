@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.deps import require_internal_clinical_roles
@@ -9,6 +10,19 @@ from app.models.intake_request import IntakeRequest
 from app.schemas.intake_request import IntakeRequestCreate, IntakeRequestRead
 
 router = APIRouter(prefix="/intake-requests", tags=["intake_requests"])
+
+
+@router.get("", response_model=list[IntakeRequestRead])
+def list_intake_requests(
+    client_id: str | None = Query(default=None),
+    limit: int = Query(default=200, ge=1, le=500),
+    db: Session = Depends(get_db),
+    _: AppUser = Depends(require_internal_clinical_roles()),
+) -> list[IntakeRequest]:
+    statement = select(IntakeRequest).order_by(IntakeRequest.created_at.desc()).limit(limit)
+    if client_id is not None:
+        statement = statement.where(IntakeRequest.client_id == client_id)
+    return list(db.scalars(statement))
 
 
 @router.post("", response_model=IntakeRequestRead, status_code=status.HTTP_201_CREATED)

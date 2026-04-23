@@ -185,6 +185,29 @@ def test_core_flow_smoke() -> None:
             assert client_resp.status_code == 201
             client_id = client_resp.json()["id"]
 
+            public_consent_resp = client.post(
+            "/api/v1/consents",
+            json={
+                "client_id": client_id,
+                "consent_type_code": "consent_session",
+                "consent_value": True,
+                "granted_by_actor_code": "client",
+            },
+        )
+            assert public_consent_resp.status_code == 201
+            assert public_consent_resp.json()["consent_type_code"] == "consent_session"
+
+            public_recording_resp = client.post(
+            "/api/v1/consents",
+            json={
+                "client_id": client_id,
+                "consent_type_code": "consent_recording",
+                "consent_value": True,
+                "granted_by_actor_code": "client",
+            },
+        )
+            assert public_recording_resp.status_code == 401
+
             intake_resp = client.post(
             "/api/v1/intake-requests",
             json={
@@ -198,6 +221,13 @@ def test_core_flow_smoke() -> None:
         )
             assert intake_resp.status_code == 201
             intake_id = intake_resp.json()["id"]
+
+            list_intake_requests_resp = client.get(
+            f"/api/v1/intake-requests?client_id={client_id}",
+            headers=auth_headers,
+        )
+            assert list_intake_requests_resp.status_code == 200
+            assert list_intake_requests_resp.json()[0]["id"] == intake_id
 
             session_resp = client.post(
             "/api/v1/sessions",
@@ -348,6 +378,18 @@ def test_core_flow_smoke() -> None:
             assert close_payload["generated_note"]["validated_by_practitioner"] is False
             assert close_payload["generated_note"]["validated_at"] is None
             assert close_payload["generated_note"]["practitioner_corrections"] is None
+            assert close_payload["generated_document"]["document_kind_code"] == "session_summary"
+            assert close_payload["generated_document"]["audience_code"] == "client"
+            assert close_payload["generated_document"]["client_visible"] is True
+            assert "Vous repartez avec une situation mieux nommee" in close_payload["generated_document"]["body_text"]
+
+            list_derived_documents_resp = client.get(
+            f"/api/v1/derived-documents?session_id={second_session['id']}",
+            headers=auth_headers,
+        )
+            assert list_derived_documents_resp.status_code == 200
+            assert len(list_derived_documents_resp.json()) == 1
+            assert list_derived_documents_resp.json()[0]["source_note_id"] == close_payload["generated_note"]["id"]
 
             validate_note_resp = client.patch(
                 f"/api/v1/session-notes/{close_payload['generated_note']['id']}/validate",
@@ -419,6 +461,13 @@ def test_core_flow_smoke() -> None:
             headers=auth_headers,
         )
             assert consent_resp.status_code == 201
+
+            list_consents_resp = client.get(
+            f"/api/v1/consents?client_id={client_id}",
+            headers=auth_headers,
+        )
+            assert list_consents_resp.status_code == 200
+            assert len(list_consents_resp.json()) >= 2
 
             get_client_resp = client.get(f"/api/v1/clients/{client_id}", headers=auth_headers)
             assert get_client_resp.status_code == 200

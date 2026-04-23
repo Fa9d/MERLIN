@@ -11,6 +11,7 @@ from app.models.enums import (
     SessionStatusCode,
 )
 from app.schemas.common import MerlinSchema, TimestampedReadSchema
+from app.schemas.derived_document import DerivedDocumentRead
 from app.schemas.session_note import SessionNoteRead
 
 
@@ -84,6 +85,7 @@ class SessionStart(MerlinSchema):
 class SessionCloseResult(MerlinSchema):
     session: SessionRead
     generated_note: SessionNoteRead
+    generated_document: DerivedDocumentRead
 
 
 class SessionRoomRead(MerlinSchema):
