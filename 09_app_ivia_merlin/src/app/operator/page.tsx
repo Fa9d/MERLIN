@@ -1,0 +1,1498 @@
+"use client";
+
+import Link from "next/link";
+import { FormEvent, useEffect, useState } from "react";
+
+import { OperatorLiveKitPanel } from "@/components/operator-livekit-panel";
+import {
+  type AudioRecordingRecord,
+  type AudioSessionRecord,
+  closeSession,
+  type ClientRecord,
+  createClientJoinContext,
+  createSession,
+  listAudioRecordings,
+  listAudioSessions,
+  listClients,
+  listSessionNotes,
+  listSessions,
+  loginOperator,
+  provisionAudioSession,
+  startAudioRecording,
+  startSession,
+  stopAudioRecording,
+  type LoginResponse,
+  type SessionCloseResult,
+  type SessionNoteValidationPayload,
+  type SessionNoteRecord,
+  type SessionRecord,
+  validateSessionNote,
+} from "@/lib/merlin-api";
+
+const STORAGE_KEY = "merlin_operator_session";
+const SHOW_DEV_AUDIO_TOOLS = process.env.NODE_ENV !== "production";
+
+export default function OperatorPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [session, setSession] = useState<LoginResponse | null>(null);
+  const [clients, setClients] = useState<ClientRecord[]>([]);
+  const [sessions, setSessions] = useState<SessionRecord[]>([]);
+  const [sessionNotes, setSessionNotes] = useState<SessionNoteRecord[]>([]);
+  const [audioSessions, setAudioSessions] = useState<AudioSessionRecord[]>([]);
+  const [audioRecordings, setAudioRecordings] = useState<AudioRecordingRecord[]>([]);
+  const [authErrorMessage, setAuthErrorMessage] = useState<string | null>(null);
+  const [dashboardErrorMessage, setDashboardErrorMessage] = useState<string | null>(null);
+  const [sessionSuccessMessage, setSessionSuccessMessage] = useState<string | null>(null);
+  const [sessionClosureSuccessMessage, setSessionClosureSuccessMessage] = useState<string | null>(
+    null,
+  );
+  const [audioSessionSuccessMessage, setAudioSessionSuccessMessage] = useState<string | null>(null);
+  const [audioRecordingSuccessMessage, setAudioRecordingSuccessMessage] = useState<string | null>(
+    null,
+  );
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isLoadingDashboard, setIsLoadingDashboard] = useState(false);
+  const [isCreatingSession, setIsCreatingSession] = useState(false);
+  const [isProvisioningAudio, setIsProvisioningAudio] = useState(false);
+  const [isGeneratingClientTestLink, setIsGeneratingClientTestLink] = useState(false);
+  const [isStartingAudioRecording, setIsStartingAudioRecording] = useState(false);
+  const [isStoppingAudioRecording, setIsStoppingAudioRecording] = useState(false);
+  const [isStartingSession, setIsStartingSession] = useState(false);
+  const [isClosingSession, setIsClosingSession] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [selectedSessionId, setSelectedSessionId] = useState("");
+  const [sessionModeCode, setSessionModeCode] = useState<"intake" | "standard" | "follow_up">(
+    "intake",
+  );
+  const [sessionChannelCode, setSessionChannelCode] = useState<
+    "phone" | "video" | "in_person" | "async"
+  >("phone");
+  const [scheduledStartAt, setScheduledStartAt] = useState("");
+  const [durationMinutes, setDurationMinutes] = useState("60");
+  const [plannedActualStartAt, setPlannedActualStartAt] = useState("");
+  const [actualStartAt, setActualStartAt] = useState("");
+  const [actualEndAt, setActualEndAt] = useState("");
+  const [finalSessionStatus, setFinalSessionStatus] = useState<
+    "completed" | "cancelled" | "no_show" | "escalated"
+  >("completed");
+  const [presentingTopicText, setPresentingTopicText] = useState("");
+  const [sessionHighlightsText, setSessionHighlightsText] = useState("");
+  const [operatorAssessmentText, setOperatorAssessmentText] = useState("");
+  const [vigilanceLevelCode, setVigilanceLevelCode] = useState<
+    "non_urgent" | "watch" | "priority" | "urgent"
+  >("non_urgent");
+  const [followUpActionsText, setFollowUpActionsText] = useState("");
+  const [nextSessionFocusText, setNextSessionFocusText] = useState("");
+  const [clientVisible, setClientVisible] = useState(false);
+  const [isUpdatingSessionNoteValidation, setIsUpdatingSessionNoteValidation] = useState(false);
+  const [isCorrectionMode, setIsCorrectionMode] = useState(false);
+  const [correctionCoeur, setCorrectionCoeur] = useState("");
+  const [correctionCorps, setCorrectionCorps] = useState("");
+  const [correctionEsprit, setCorrectionEsprit] = useState("");
+  const [correctionEtre, setCorrectionEtre] = useState("");
+  const [correctionTensions, setCorrectionTensions] = useState("");
+  const [correctionVigilance, setCorrectionVigilance] = useState("");
+  const [correctionNextStep, setCorrectionNextStep] = useState("");
+  const [clientTestLink, setClientTestLink] = useState<{
+    audioSessionId: string;
+    url: string;
+  } | null>(null);
+  const isOperatorSession = session?.user.role === "operator";
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.setTimeout(() => {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        return;
+      }
+
+      try {
+        setSession(JSON.parse(stored) as LoginResponse);
+      } catch {
+        window.localStorage.removeItem(STORAGE_KEY);
+      }
+    }, 0);
+  }, []);
+
+  useEffect(() => {
+    if (!session) {
+      return;
+    }
+
+    if (session.user.role !== "operator") {
+      return;
+    }
+
+    const currentSession = session;
+    let active = true;
+
+    async function loadDashboard() {
+      setIsLoadingDashboard(true);
+      setDashboardErrorMessage(null);
+
+      try {
+        const [
+          clientResult,
+          sessionResult,
+          sessionNoteResult,
+          audioSessionResult,
+          audioRecordingResult,
+        ] =
+          await Promise.all([
+            listClients(currentSession.access_token),
+            listSessions(currentSession.access_token),
+            listSessionNotes(currentSession.access_token),
+            listAudioSessions(currentSession.access_token),
+            listAudioRecordings(currentSession.access_token),
+          ]);
+        if (!active) {
+          return;
+        }
+        setClients(clientResult);
+        setSessions(sessionResult);
+        setSessionNotes(sessionNoteResult);
+        setAudioSessions(audioSessionResult);
+        setAudioRecordings(audioRecordingResult);
+        if (clientResult.length > 0) {
+          setSelectedClientId((currentValue) => currentValue || clientResult[0].id);
+        }
+        if (sessionResult.length > 0) {
+          setSelectedSessionId((currentValue) => currentValue || sessionResult[0].id);
+        }
+      } catch (error) {
+        if (!active) {
+          return;
+        }
+        setDashboardErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "Impossible de charger les donnees operateur.",
+        );
+      } finally {
+        if (active) {
+          setIsLoadingDashboard(false);
+        }
+      }
+    }
+
+    void loadDashboard();
+
+    return () => {
+      active = false;
+    };
+  }, [session]);
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsLoggingIn(true);
+    setAuthErrorMessage(null);
+
+    try {
+      const result = await loginOperator(email, password);
+      setSession(result);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+    } catch (error) {
+      setAuthErrorMessage(error instanceof Error ? error.message : "Connexion impossible.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  }
+
+  function handleLogout() {
+    window.localStorage.removeItem(STORAGE_KEY);
+    setSession(null);
+    setClients([]);
+    setSessions([]);
+    setSessionNotes([]);
+    setAudioSessions([]);
+    setAudioRecordings([]);
+    setAuthErrorMessage(null);
+    setDashboardErrorMessage(null);
+    setSessionSuccessMessage(null);
+    setSessionClosureSuccessMessage(null);
+    setAudioSessionSuccessMessage(null);
+    setAudioRecordingSuccessMessage(null);
+  }
+
+  function buildCorrectionPayload(): SessionNoteValidationPayload["corrections"] {
+    const tensions = correctionTensions
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+
+    const payload: NonNullable<SessionNoteValidationPayload["corrections"]> = {};
+    if (correctionCoeur.trim()) payload.coeur = correctionCoeur.trim();
+    if (correctionCorps.trim()) payload.corps = correctionCorps.trim();
+    if (correctionEsprit.trim()) payload.esprit = correctionEsprit.trim();
+    if (correctionEtre.trim()) payload.etre = correctionEtre.trim();
+    if (tensions.length > 0) payload.tensions = tensions;
+    if (correctionVigilance.trim()) payload.vigilance = correctionVigilance.trim();
+    if (correctionNextStep.trim()) payload.next_step = correctionNextStep.trim();
+
+    return Object.keys(payload).length > 0 ? payload : null;
+  }
+
+  function resetCorrectionFields() {
+    setCorrectionCoeur("");
+    setCorrectionCorps("");
+    setCorrectionEsprit("");
+    setCorrectionEtre("");
+    setCorrectionTensions("");
+    setCorrectionVigilance("");
+    setCorrectionNextStep("");
+  }
+
+  async function handleCreateSession(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!session || !selectedClientId) {
+      return;
+    }
+
+    setIsCreatingSession(true);
+    setDashboardErrorMessage(null);
+    setSessionSuccessMessage(null);
+    setSessionClosureSuccessMessage(null);
+    setAudioSessionSuccessMessage(null);
+    setAudioRecordingSuccessMessage(null);
+
+    try {
+      const createdSession = await createSession(
+        {
+          client_id: selectedClientId,
+          session_mode_code: sessionModeCode,
+          session_channel_code: sessionChannelCode,
+          scheduled_start_at: scheduledStartAt
+            ? new Date(scheduledStartAt).toISOString()
+            : null,
+          duration_minutes: durationMinutes ? Number(durationMinutes) : null,
+          session_status_code: "scheduled",
+        },
+        session.access_token,
+      );
+
+      const nextSessions = await listSessions(session.access_token);
+      setSessions(nextSessions);
+      setSelectedSessionId(createdSession.id);
+      setSessionSuccessMessage(
+        `Seance ${createdSession.session_sequence_number} creee pour le client selectionne.`,
+      );
+      setPlannedActualStartAt("");
+      setSessionModeCode("follow_up");
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de creer la seance.",
+      );
+    } finally {
+      setIsCreatingSession(false);
+    }
+  }
+
+  async function handleProvisionAudioSession() {
+    if (!session || !selectedSessionId) {
+      return;
+    }
+
+    setIsProvisioningAudio(true);
+    setDashboardErrorMessage(null);
+    setAudioSessionSuccessMessage(null);
+    setAudioRecordingSuccessMessage(null);
+
+    try {
+      const provisionedAudioSession = await provisionAudioSession(
+        selectedSessionId,
+        session.access_token,
+      );
+      const nextAudioSessions = await listAudioSessions(session.access_token);
+      setAudioSessions(nextAudioSessions);
+      setAudioRecordingSuccessMessage(null);
+      setAudioSessionSuccessMessage(
+        `Salle audio ${provisionedAudioSession.room_name} preparee.`,
+      );
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de preparer l'audio.",
+      );
+    } finally {
+      setIsProvisioningAudio(false);
+    }
+  }
+
+  async function handleStartSession() {
+    if (!session || !selectedSessionId) {
+      return;
+    }
+
+    const targetSession = sessions.find((sessionRecord) => sessionRecord.id === selectedSessionId);
+    if (!targetSession) {
+      setDashboardErrorMessage("Seance selectionnee introuvable.");
+      return;
+    }
+
+    setIsStartingSession(true);
+    setDashboardErrorMessage(null);
+    setSessionSuccessMessage(null);
+    setSessionClosureSuccessMessage(null);
+
+    try {
+      const startedSession = await startSession(
+        targetSession.id,
+        {
+          actual_start_at: plannedActualStartAt ? new Date(plannedActualStartAt).toISOString() : null,
+        },
+        session.access_token,
+      );
+      const nextSessions = await listSessions(session.access_token);
+      setSessions(nextSessions);
+      setSelectedSessionId(startedSession.id);
+      const nextAudioSessions = await listAudioSessions(session.access_token);
+      setAudioSessions(nextAudioSessions);
+      setActualStartAt(
+        startedSession.actual_start_at
+          ? new Date(startedSession.actual_start_at).toISOString().slice(0, 16)
+          : "",
+      );
+      setSessionSuccessMessage(
+        `Seance ${startedSession.session_sequence_number} demarree.`,
+      );
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de demarrer la seance.",
+      );
+    } finally {
+      setIsStartingSession(false);
+    }
+  }
+
+  async function handleGenerateClientTestLink() {
+    if (!session || !selectedAudioSession || typeof window === "undefined") {
+      return;
+    }
+
+    setIsGeneratingClientTestLink(true);
+    setDashboardErrorMessage(null);
+    setAudioSessionSuccessMessage(null);
+    setAudioRecordingSuccessMessage(null);
+
+    try {
+      const joinContext = await createClientJoinContext(
+        selectedAudioSession.id,
+        session.access_token,
+      );
+      const searchParams = new URLSearchParams({
+        wsUrl: joinContext.ws_url,
+        token: joinContext.token,
+        roomName: joinContext.room_name,
+        identity: joinContext.participant_identity,
+        role: "client-test",
+      });
+      const nextLink = `${window.location.origin}/audio-test?${searchParams.toString()}`;
+      setClientTestLink({
+        audioSessionId: selectedAudioSession.id,
+        url: nextLink,
+      });
+      setAudioSessionSuccessMessage("Lien de test client genere pour la salle audio.");
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de generer le lien client test.",
+      );
+    } finally {
+      setIsGeneratingClientTestLink(false);
+    }
+  }
+
+  async function handleStartAudioRecording() {
+    if (!session || !selectedAudioSession) {
+      return;
+    }
+
+    setIsStartingAudioRecording(true);
+    setDashboardErrorMessage(null);
+    setAudioRecordingSuccessMessage(null);
+
+    try {
+      const recording = await startAudioRecording(
+        selectedAudioSession.id,
+        session.access_token,
+      );
+      const nextAudioRecordings = await listAudioRecordings(session.access_token);
+      setAudioRecordings(nextAudioRecordings);
+      setAudioRecordingSuccessMessage(
+        recording.audio_recording_status_code === "failed"
+          ? "Tentative d'enregistrement lancee mais le provider a retourne un echec."
+          : "Cycle d'enregistrement demarre pour cette salle audio.",
+      );
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de demarrer l'enregistrement.",
+      );
+    } finally {
+      setIsStartingAudioRecording(false);
+    }
+  }
+
+  async function handleStopAudioRecording() {
+    if (!session || !selectedAudioRecording) {
+      return;
+    }
+
+    setIsStoppingAudioRecording(true);
+    setDashboardErrorMessage(null);
+    setAudioRecordingSuccessMessage(null);
+
+    try {
+      await stopAudioRecording(selectedAudioRecording.id, session.access_token);
+      const nextAudioRecordings = await listAudioRecordings(session.access_token);
+      setAudioRecordings(nextAudioRecordings);
+      setAudioRecordingSuccessMessage("Enregistrement arrete et marque comme pret.");
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible d'arreter l'enregistrement.",
+      );
+    } finally {
+      setIsStoppingAudioRecording(false);
+    }
+  }
+
+  async function handleCloseSession(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!session || !selectedSessionId) {
+      return;
+    }
+
+    const targetSession = sessions.find((sessionRecord) => sessionRecord.id === selectedSessionId);
+    if (!targetSession) {
+      setDashboardErrorMessage("Seance selectionnee introuvable.");
+      return;
+    }
+
+    setIsClosingSession(true);
+    setDashboardErrorMessage(null);
+    setSessionClosureSuccessMessage(null);
+
+    try {
+      const closeResult: SessionCloseResult = await closeSession(
+        targetSession.id,
+        {
+          actual_start_at: actualStartAt ? new Date(actualStartAt).toISOString() : null,
+          actual_end_at: actualEndAt ? new Date(actualEndAt).toISOString() : null,
+          session_status_code: finalSessionStatus,
+          presenting_topic_text: presentingTopicText,
+          session_highlights_text: sessionHighlightsText,
+          operator_assessment_text: operatorAssessmentText || null,
+          vigilance_level_code: vigilanceLevelCode,
+          follow_up_actions_text: followUpActionsText || null,
+          next_session_focus_text: nextSessionFocusText || null,
+          client_visible: clientVisible,
+        },
+        session.access_token,
+      );
+
+      const [nextSessions, nextNotes] = await Promise.all([
+        listSessions(session.access_token),
+        listSessionNotes(session.access_token),
+      ]);
+      setSessions(nextSessions);
+      setSessionNotes(nextNotes);
+      const [nextAudioSessions, nextAudioRecordings] = await Promise.all([
+        listAudioSessions(session.access_token),
+        listAudioRecordings(session.access_token),
+      ]);
+      setAudioSessions(nextAudioSessions);
+      setAudioRecordings(nextAudioRecordings);
+      setSessionClosureSuccessMessage(
+        `Seance ${closeResult.session.session_sequence_number} cloturee. Note ${closeResult.generated_note.note_sequence_number} generee.`,
+      );
+      setActualStartAt("");
+      setActualEndAt("");
+      setPresentingTopicText("");
+      setSessionHighlightsText("");
+      setOperatorAssessmentText("");
+      setFollowUpActionsText("");
+      setNextSessionFocusText("");
+      setClientVisible(false);
+      setIsCorrectionMode(false);
+      resetCorrectionFields();
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de cloturer la seance.",
+      );
+    } finally {
+      setIsClosingSession(false);
+    }
+  }
+
+  async function handleValidateGeneratedNote(
+    noteId: string,
+    payload: SessionNoteValidationPayload,
+    successMessage: string,
+  ) {
+    if (!session) {
+      return;
+    }
+
+    setIsUpdatingSessionNoteValidation(true);
+    setDashboardErrorMessage(null);
+    setSessionClosureSuccessMessage(null);
+
+    try {
+      await validateSessionNote(noteId, payload, session.access_token);
+      const nextNotes = await listSessionNotes(session.access_token);
+      setSessionNotes(nextNotes);
+      setSessionSuccessMessage(successMessage);
+      if (payload.validated || payload.corrections) {
+        setIsCorrectionMode(false);
+      }
+      if (payload.validated || payload.corrections) {
+        resetCorrectionFields();
+      }
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Impossible de mettre a jour la validation praticien.",
+      );
+    } finally {
+      setIsUpdatingSessionNoteValidation(false);
+    }
+  }
+
+  const selectedClient =
+    clients.find((client) => client.id === selectedClientId) ?? null;
+  const selectedSession =
+    sessions.find((sessionRecord) => sessionRecord.id === selectedSessionId) ?? null;
+  const selectedAudioSession =
+    audioSessions.find((audioSession) => audioSession.session_id === selectedSessionId) ?? null;
+  const selectedAudioSessionRecordings = selectedAudioSession
+    ? audioRecordings.filter((audioRecording) => audioRecording.audio_session_id === selectedAudioSession.id)
+    : [];
+  const selectedAudioRecording = selectedAudioSessionRecordings[0] ?? null;
+  const sessionOptions = sessions.map((sessionRecord) => {
+    const client = clients.find((item) => item.id === sessionRecord.client_id);
+    const clientLabel = client?.public_client_code ?? sessionRecord.client_id.slice(0, 8);
+    return {
+      id: sessionRecord.id,
+      label: `S-${sessionRecord.session_sequence_number} / ${clientLabel} / ${sessionRecord.session_mode_code}`,
+    };
+  });
+  const visibleNotes = selectedSessionId
+    ? sessionNotes.filter((note) => note.session_id === selectedSessionId)
+    : sessionNotes;
+  const selectedSessionGeneratedNote = visibleNotes[0] ?? null;
+  const visibleClientTestLink =
+    selectedAudioSession && clientTestLink?.audioSessionId === selectedAudioSession.id
+      ? clientTestLink.url
+      : null;
+
+  return (
+    <div className="page-shell">
+      <header className="topbar">
+        <div className="wordmark">MERLIN / Operateur</div>
+        <nav className="nav">
+          <Link href="/">Accueil</Link>
+          <Link href="/rendez-vous">Entree client</Link>
+          <Link href="/supervision">Supervision</Link>
+          <Link href="/admin">Admin</Link>
+        </nav>
+      </header>
+
+      <main className="section">
+        <div className="section-header">
+          <div className="eyebrow">SCR-101 a SCR-109</div>
+          <h2>Backoffice operateur branche</h2>
+          <p>
+            Cette page se connecte maintenant a l&apos;API MERLIN. Elle sert d&apos;amorce
+            pour le login operateur et la lecture des dossiers clients entres par IVIA.
+          </p>
+        </div>
+
+        {!session ? (
+          <form className="card form-stack operator-auth-card" onSubmit={handleLogin}>
+            <h3>Connexion operateur</h3>
+            <label className="field">
+              <span>Courriel</span>
+              <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" />
+            </label>
+            <label className="field">
+              <span>Mot de passe</span>
+              <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                type="password"
+              />
+            </label>
+            <button className="button button-primary" disabled={isLoggingIn} type="submit">
+              {isLoggingIn ? "Connexion..." : "Se connecter"}
+            </button>
+            <p className="inline-note">
+              L&apos;initialisation de l&apos;admin technique a ete sortie de cet ecran.
+              Utiliser <Link href="/admin">/admin</Link> pour le bootstrap et la maintenance.
+            </p>
+            {authErrorMessage ? <p className="message message-error">{authErrorMessage}</p> : null}
+          </form>
+        ) : !isOperatorSession ? (
+          <div className="grid operator-layout">
+            <article className="card">
+              <h3>Session ouverte hors perimetre operateur</h3>
+              <p>
+                Connecte comme <span className="mono">{session.user.email}</span>
+              </p>
+              <p>Role: {session.user.role}</p>
+              <p className="inline-note">
+                Cet ecran est reserve a la production operateur. Les droits du role actif ne
+                doivent pas charger le tableau de production.
+              </p>
+              <div className="cta-row">
+                {session.user.role === "supervisor" ? (
+                  <Link className="button button-secondary" href="/supervision">
+                    Aller a la supervision
+                  </Link>
+                ) : null}
+                {session.user.role === "admin_tech" ? (
+                  <Link className="button button-secondary" href="/admin">
+                    Aller a l&apos;administration
+                  </Link>
+                ) : null}
+                <button className="button button-secondary" onClick={handleLogout} type="button">
+                  Se deconnecter
+                </button>
+              </div>
+            </article>
+          </div>
+        ) : (
+          <div className="grid operator-layout">
+            <article className="card">
+              <h3>Session operateur</h3>
+              <p>
+                Connecte comme <span className="mono">{session.user.email}</span>
+              </p>
+              <p>Role: {session.user.role}</p>
+              <p className="inline-note">Identifiant operateur: <span className="mono">{session.user.id}</span></p>
+              <div className="cta-row">
+                <button className="button button-secondary" onClick={handleLogout} type="button">
+                  Se deconnecter
+                </button>
+              </div>
+            </article>
+
+            <article className="card">
+              <div className="stack-lg">
+                <div>
+                  <h3>Planifier une seance</h3>
+                  <p>
+                    Cette vue permet maintenant de transformer une entree client en seance operateur
+                    planifiee, avec numerotation automatique par client.
+                  </p>
+                </div>
+
+                {isLoadingDashboard ? <p>Chargement du tableau operateur...</p> : null}
+                {dashboardErrorMessage ? (
+                  <p className="message message-error">{dashboardErrorMessage}</p>
+                ) : null}
+                {sessionSuccessMessage ? (
+                  <p className="message message-success">{sessionSuccessMessage}</p>
+                ) : null}
+
+                {clients.length === 0 ? (
+                  <p>Aucun client encore enregistre.</p>
+                ) : (
+                  <form className="form-stack" onSubmit={handleCreateSession}>
+                    <label className="field">
+                      <span>Client</span>
+                      <select
+                        value={selectedClientId}
+                        onChange={(event) => setSelectedClientId(event.target.value)}
+                      >
+                        {clients.map((client) => (
+                          <option key={client.id} value={client.id}>
+                            {client.public_client_code} - {client.first_name_or_alias}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                    {selectedClient ? (
+                      <div className="info-strip">
+                        <span className="mono">{selectedClient.public_client_code}</span>
+                        <span>{selectedClient.email ?? "Sans courriel"}</span>
+                        <span>{selectedClient.phone ?? "Sans telephone"}</span>
+                      </div>
+                    ) : null}
+
+                    <div className="form-grid-2">
+                      <label className="field">
+                        <span>Mode</span>
+                        <select
+                          value={sessionModeCode}
+                          onChange={(event) =>
+                            setSessionModeCode(
+                              event.target.value as "intake" | "standard" | "follow_up",
+                            )
+                          }
+                        >
+                          <option value="intake">Intake</option>
+                          <option value="standard">Standard</option>
+                          <option value="follow_up">Follow-up</option>
+                        </select>
+                      </label>
+
+                      <label className="field">
+                        <span>Canal</span>
+                        <select
+                          value={sessionChannelCode}
+                          onChange={(event) =>
+                            setSessionChannelCode(
+                              event.target.value as "phone" | "video" | "in_person" | "async",
+                            )
+                          }
+                        >
+                          <option value="phone">Telephone</option>
+                          <option value="video">Video</option>
+                          <option value="in_person">Presentiel</option>
+                          <option value="async">Asynchrone</option>
+                        </select>
+                      </label>
+                    </div>
+
+                    <div className="form-grid-2">
+                      <label className="field">
+                        <span>Debut planifie</span>
+                        <input
+                          type="datetime-local"
+                          value={scheduledStartAt}
+                          onChange={(event) => setScheduledStartAt(event.target.value)}
+                        />
+                      </label>
+
+                      <label className="field">
+                        <span>Duree estimee (minutes)</span>
+                        <input
+                          type="number"
+                          min="15"
+                          step="5"
+                          value={durationMinutes}
+                          onChange={(event) => setDurationMinutes(event.target.value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="cta-row">
+                      <button
+                        className="button button-primary"
+                        disabled={isCreatingSession || !selectedClientId}
+                        type="submit"
+                      >
+                        {isCreatingSession ? "Creation..." : "Creer la seance"}
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                <div className="stack-md">
+                  <h3>Clients entres dans MERLIN</h3>
+                  {clients.length > 0 ? (
+                    <div className="table-wrap">
+                      <table className="data-table">
+                        <thead>
+                          <tr>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Courriel</th>
+                            <th>Telephone</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {clients.map((client) => (
+                            <tr key={client.id}>
+                              <td className="mono">{client.public_client_code}</td>
+                              <td>{client.first_name_or_alias}</td>
+                              <td>{client.email ?? "-"}</td>
+                              <td>{client.phone ?? "-"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="stack-md">
+                  <h3>Audio natif</h3>
+                  {sessions.length === 0 ? (
+                    <p>Aucune seance disponible pour preparer l&apos;audio.</p>
+                  ) : (
+                    <div className="form-stack">
+                      <label className="field">
+                        <span>Seance</span>
+                        <select
+                          value={selectedSessionId}
+                          onChange={(event) => setSelectedSessionId(event.target.value)}
+                        >
+                          {sessionOptions.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      {selectedAudioSession ? (
+                        <div className="info-strip">
+                          <span className="mono">{selectedAudioSession.room_name}</span>
+                          <span>{selectedAudioSession.audio_session_status_code}</span>
+                          <span>{selectedAudioSession.provider_code}</span>
+                          <span>
+                            {selectedAudioSession.recording_enabled
+                              ? "Enregistrement actif"
+                              : "Sans enregistrement"}
+                          </span>
+                        </div>
+                      ) : (
+                        <p className="inline-note">
+                          Aucune salle audio encore preparee pour cette seance.
+                        </p>
+                      )}
+
+                      {selectedAudioSession?.provider_room_url ? (
+                        <p className="inline-note">
+                          Point de media configure:{" "}
+                          <span className="mono">{selectedAudioSession.provider_room_url}</span>
+                        </p>
+                      ) : (
+                        <p className="inline-note">
+                          Aucune URL media configuree pour le moment. La salle est preparee cote
+                          MERLIN mais le provider temps reel n&apos;est pas encore branche.
+                        </p>
+                      )}
+
+                      <OperatorLiveKitPanel
+                        key={selectedAudioSession?.id ?? "no-audio-session"}
+                        audioSession={selectedAudioSession}
+                        operatorAccessToken={session.access_token}
+                      />
+
+                      {SHOW_DEV_AUDIO_TOOLS && visibleClientTestLink ? (
+                        <label className="field">
+                          <span>Lien local de test client</span>
+                          <textarea readOnly rows={3} value={visibleClientTestLink} />
+                        </label>
+                      ) : null}
+
+                      {audioSessionSuccessMessage ? (
+                        <p className="message message-success">{audioSessionSuccessMessage}</p>
+                      ) : null}
+
+                      <div className="stack-md">
+                        <h4>Enregistrement</h4>
+                        <p className="inline-note">
+                          Strategie locale: <span className="mono">metadata_only</span>. Le cycle
+                          de capture est trace des maintenant; le branchement binaire final vers
+                          l&apos;egress LiveKit viendra ensuite.
+                        </p>
+
+                        {selectedAudioRecording ? (
+                          <div className="info-strip">
+                            <span>{selectedAudioRecording.audio_recording_status_code}</span>
+                            <span className="mono">{selectedAudioRecording.id.slice(0, 8)}</span>
+                            <span>
+                              {selectedAudioRecording.output_location ?? "Sans emplacement de sortie"}
+                            </span>
+                          </div>
+                        ) : (
+                          <p className="inline-note">
+                            Aucun cycle d&apos;enregistrement encore trace pour cette salle.
+                          </p>
+                        )}
+
+                        {selectedAudioRecording?.failure_reason ? (
+                          <p className="message message-error">
+                            {selectedAudioRecording.failure_reason}
+                          </p>
+                        ) : null}
+
+                        {audioRecordingSuccessMessage ? (
+                          <p className="message message-success">{audioRecordingSuccessMessage}</p>
+                        ) : null}
+
+                        <div className="cta-row">
+                          <button
+                            className="button button-secondary"
+                            disabled={
+                              isStartingAudioRecording ||
+                              !selectedAudioSession ||
+                              selectedAudioRecording?.audio_recording_status_code === "recording"
+                            }
+                            onClick={handleStartAudioRecording}
+                            type="button"
+                          >
+                            {isStartingAudioRecording
+                              ? "Demarrage..."
+                              : "Demarrer l'enregistrement"}
+                          </button>
+                          <button
+                            className="button button-secondary"
+                            disabled={
+                              isStoppingAudioRecording ||
+                              !selectedAudioRecording ||
+                              selectedAudioRecording.audio_recording_status_code !== "recording"
+                            }
+                            onClick={handleStopAudioRecording}
+                            type="button"
+                          >
+                            {isStoppingAudioRecording
+                              ? "Arret..."
+                              : "Arreter l'enregistrement"}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="cta-row">
+                        <button
+                          className="button button-primary"
+                          disabled={
+                            isProvisioningAudio ||
+                            !selectedSessionId ||
+                            selectedSession?.session_status_code === "completed" ||
+                            selectedSession?.session_status_code === "cancelled" ||
+                            selectedSession?.session_status_code === "no_show" ||
+                            selectedSession?.session_status_code === "escalated"
+                          }
+                          onClick={handleProvisionAudioSession}
+                          type="button"
+                        >
+                          {isProvisioningAudio ? "Preparation..." : "Preparer l'audio"}
+                        </button>
+                        {SHOW_DEV_AUDIO_TOOLS ? (
+                          <button
+                            className="button button-secondary"
+                            disabled={
+                              isGeneratingClientTestLink ||
+                              !selectedAudioSession ||
+                              !selectedAudioSession.provider_room_url
+                            }
+                            onClick={handleGenerateClientTestLink}
+                            type="button"
+                          >
+                            {isGeneratingClientTestLink
+                              ? "Generation..."
+                              : "Generer un lien client test"}
+                          </button>
+                        ) : null}
+                        {SHOW_DEV_AUDIO_TOOLS && visibleClientTestLink ? (
+                          <a
+                            className="button button-secondary"
+                            href={visibleClientTestLink}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            Ouvrir le test client
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="stack-md">
+                  <h3>Demarrage de seance</h3>
+                  {sessions.length === 0 ? (
+                    <p>Aucune seance disponible pour le demarrage.</p>
+                  ) : (
+                    <div className="form-stack">
+                      <label className="field">
+                        <span>Seance</span>
+                        <select
+                          value={selectedSessionId}
+                          onChange={(event) => setSelectedSessionId(event.target.value)}
+                        >
+                          {sessionOptions.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      {selectedSession ? (
+                        <div className="info-strip">
+                          <span className="mono">{selectedSession.id.slice(0, 8)}</span>
+                          <span>{selectedSession.session_status_code}</span>
+                          <span>{selectedSession.session_channel_code}</span>
+                          <span>{selectedSession.scheduled_start_at ?? "Sans horaire"}</span>
+                        </div>
+                      ) : null}
+
+                      <label className="field">
+                        <span>Debut reel a enregistrer</span>
+                        <input
+                          type="datetime-local"
+                          value={plannedActualStartAt}
+                          onChange={(event) => setPlannedActualStartAt(event.target.value)}
+                        />
+                      </label>
+
+                      <div className="cta-row">
+                        <button
+                          className="button button-primary"
+                          disabled={
+                            isStartingSession ||
+                            !selectedSessionId ||
+                            selectedSession?.session_status_code !== "scheduled"
+                          }
+                          onClick={handleStartSession}
+                          type="button"
+                        >
+                          {isStartingSession ? "Demarrage..." : "Demarrer la seance"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="stack-md">
+                  <h3>Cloture de seance</h3>
+                  {sessions.length === 0 ? (
+                    <p>Aucune seance disponible pour la cloture.</p>
+                  ) : (
+                    <form className="form-stack" onSubmit={handleCloseSession}>
+                      <label className="field">
+                        <span>Seance</span>
+                        <select
+                          value={selectedSessionId}
+                          onChange={(event) => setSelectedSessionId(event.target.value)}
+                        >
+                          {sessionOptions.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      {selectedSession ? (
+                        <div className="info-strip">
+                          <span className="mono">{selectedSession.id.slice(0, 8)}</span>
+                          <span>{selectedSession.session_status_code}</span>
+                          <span>{selectedSession.session_channel_code}</span>
+                          <span>{selectedSession.duration_minutes ?? "-"} min</span>
+                        </div>
+                      ) : null}
+
+                      <div className="form-grid-2">
+                        <label className="field">
+                          <span>Debut reel</span>
+                          <input
+                            type="datetime-local"
+                            value={actualStartAt}
+                            onChange={(event) => setActualStartAt(event.target.value)}
+                          />
+                        </label>
+
+                        <label className="field">
+                          <span>Fin reelle</span>
+                          <input
+                            type="datetime-local"
+                            value={actualEndAt}
+                            onChange={(event) => setActualEndAt(event.target.value)}
+                          />
+                        </label>
+                      </div>
+
+                      <div className="form-grid-2">
+                        <label className="field">
+                          <span>Statut final</span>
+                          <select
+                            value={finalSessionStatus}
+                            onChange={(event) =>
+                              setFinalSessionStatus(
+                                event.target.value as
+                                  | "completed"
+                                  | "cancelled"
+                                  | "no_show"
+                                  | "escalated",
+                              )
+                            }
+                          >
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="no_show">No-show</option>
+                            <option value="escalated">Escalated</option>
+                          </select>
+                        </label>
+
+                        <label className="field">
+                          <span>Niveau de vigilance</span>
+                          <select
+                            value={vigilanceLevelCode}
+                            onChange={(event) =>
+                              setVigilanceLevelCode(
+                                event.target.value as
+                                  | "non_urgent"
+                                  | "watch"
+                                  | "priority"
+                                  | "urgent",
+                              )
+                            }
+                          >
+                            <option value="non_urgent">Non urgent</option>
+                            <option value="watch">Watch</option>
+                            <option value="priority">Priority</option>
+                            <option value="urgent">Urgent</option>
+                          </select>
+                        </label>
+                      </div>
+
+                      <label className="field">
+                        <span>Sujet principal traite</span>
+                        <textarea
+                          rows={2}
+                          value={presentingTopicText}
+                          onChange={(event) => setPresentingTopicText(event.target.value)}
+                          required
+                        />
+                      </label>
+
+                      <label className="field">
+                        <span>Points saillants de la seance</span>
+                        <textarea
+                          rows={3}
+                          value={sessionHighlightsText}
+                          onChange={(event) => setSessionHighlightsText(event.target.value)}
+                          required
+                        />
+                      </label>
+
+                      <label className="field">
+                        <span>Evaluation operateur</span>
+                        <textarea
+                          rows={3}
+                          value={operatorAssessmentText}
+                          onChange={(event) => setOperatorAssessmentText(event.target.value)}
+                        />
+                      </label>
+
+                      <label className="field">
+                        <span>Suites proposees</span>
+                        <textarea
+                          rows={3}
+                          value={followUpActionsText}
+                          onChange={(event) => setFollowUpActionsText(event.target.value)}
+                        />
+                      </label>
+
+                      <label className="field">
+                        <span>Focus prochaine seance</span>
+                        <textarea
+                          rows={2}
+                          value={nextSessionFocusText}
+                          onChange={(event) => setNextSessionFocusText(event.target.value)}
+                        />
+                      </label>
+
+                      <label className="checkbox-row">
+                        <input
+                          checked={clientVisible}
+                          onChange={(event) => setClientVisible(event.target.checked)}
+                          type="checkbox"
+                        />
+                        <span>Note diffusable au client</span>
+                      </label>
+
+                      {sessionClosureSuccessMessage ? (
+                        <p className="message message-success">{sessionClosureSuccessMessage}</p>
+                      ) : null}
+
+                      <div className="cta-row">
+                        <button
+                          className="button button-primary"
+                          disabled={
+                            isClosingSession ||
+                            !selectedSessionId ||
+                            !presentingTopicText.trim() ||
+                            !sessionHighlightsText.trim()
+                          }
+                          type="submit"
+                        >
+                          {isClosingSession ? "Cloture..." : "Cloturer et generer la note"}
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+
+                <div className="stack-md">
+                  <h3>Seances creees</h3>
+                  {sessions.length === 0 ? <p>Aucune seance encore planifiee.</p> : null}
+                  {sessions.length > 0 ? (
+                    <div className="table-wrap">
+                      <table className="data-table">
+                        <thead>
+                          <tr>
+                            <th>Seq.</th>
+                            <th>Client</th>
+                            <th>Mode</th>
+                            <th>Canal</th>
+                            <th>Statut</th>
+                            <th>Duree</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sessions.map((sessionRecord) => (
+                            <tr key={sessionRecord.id}>
+                              <td className="mono">S-{sessionRecord.session_sequence_number}</td>
+                              <td className="mono">{sessionRecord.client_id.slice(0, 8)}</td>
+                              <td>{sessionRecord.session_mode_code}</td>
+                              <td>{sessionRecord.session_channel_code}</td>
+                              <td>{sessionRecord.session_status_code}</td>
+                              <td>{sessionRecord.duration_minutes ?? "-"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="stack-md">
+                  <h3>Notes de seance</h3>
+                  {visibleNotes.length === 0 ? <p>Aucune note pour la selection courante.</p> : null}
+                  {selectedSessionGeneratedNote ? (
+                    <div className="card form-stack">
+                      <div className="info-strip">
+                        <span className="mono">N-{selectedSessionGeneratedNote.note_sequence_number}</span>
+                        <span>{selectedSessionGeneratedNote.validated_by_practitioner ? "Validee" : "Non validee"}</span>
+                        <span>
+                          {selectedSessionGeneratedNote.validated_at
+                            ? new Date(selectedSessionGeneratedNote.validated_at).toLocaleString("fr-CA")
+                            : "Aucune validation"}
+                        </span>
+                      </div>
+
+                      <div className="form-grid-2">
+                        <div className="card">
+                          <h4>Client delivery</h4>
+                          <p>
+                            {selectedSessionGeneratedNote.client_facing_summary_text ??
+                              "Aucune synthese diffusable au client."}
+                          </p>
+                        </div>
+                        <div className="card">
+                          <h4>Supervision</h4>
+                          <p>
+                            {selectedSessionGeneratedNote.supervision_summary_text ??
+                              "Aucune synthese supervision pour cette note."}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="form-grid-2">
+                        <label className="field">
+                          <span>Coeur</span>
+                          <textarea readOnly rows={2} value={selectedSessionGeneratedNote.coeur_summary_text ?? ""} />
+                        </label>
+                        <label className="field">
+                          <span>Corps</span>
+                          <textarea readOnly rows={2} value={selectedSessionGeneratedNote.corps_summary_text ?? ""} />
+                        </label>
+                        <label className="field">
+                          <span>Esprit</span>
+                          <textarea readOnly rows={2} value={selectedSessionGeneratedNote.esprit_summary_text ?? ""} />
+                        </label>
+                        <label className="field">
+                          <span>Etre</span>
+                          <textarea readOnly rows={2} value={selectedSessionGeneratedNote.etre_summary_text ?? ""} />
+                        </label>
+                      </div>
+
+                      <label className="field">
+                        <span>Hypotheses contextuelles</span>
+                        <textarea
+                          readOnly
+                          rows={4}
+                          value={
+                            selectedSessionGeneratedNote.context_hypotheses_json
+                              ? JSON.stringify(selectedSessionGeneratedNote.context_hypotheses_json, null, 2)
+                              : ""
+                          }
+                        />
+                      </label>
+
+                      {selectedSessionGeneratedNote.practitioner_corrections ? (
+                        <label className="field">
+                          <span>Corrections praticien enregistrees</span>
+                          <textarea
+                            readOnly
+                            rows={4}
+                            value={JSON.stringify(selectedSessionGeneratedNote.practitioner_corrections, null, 2)}
+                          />
+                        </label>
+                      ) : null}
+
+                      <div className="cta-row">
+                        <button
+                          className="button button-primary"
+                          disabled={isUpdatingSessionNoteValidation}
+                          onClick={() =>
+                            void handleValidateGeneratedNote(
+                              selectedSessionGeneratedNote.id,
+                              { validated: true, corrections: null },
+                              "Note validee par le praticien.",
+                            )
+                          }
+                          style={{ backgroundColor: "#1f7a45", borderColor: "#1f7a45" }}
+                          type="button"
+                        >
+                          {isUpdatingSessionNoteValidation ? "Validation..." : "Valider"}
+                        </button>
+                        <button
+                          className="button button-secondary"
+                          disabled={isUpdatingSessionNoteValidation}
+                          onClick={() => {
+                            setIsCorrectionMode((current) => !current);
+                            setCorrectionCoeur(selectedSessionGeneratedNote.coeur_summary_text ?? "");
+                            setCorrectionCorps(selectedSessionGeneratedNote.corps_summary_text ?? "");
+                            setCorrectionEsprit(selectedSessionGeneratedNote.esprit_summary_text ?? "");
+                            setCorrectionEtre(selectedSessionGeneratedNote.etre_summary_text ?? "");
+                            setCorrectionVigilance(selectedSessionGeneratedNote.vigilance_level_code ?? "");
+                            setCorrectionNextStep(selectedSessionGeneratedNote.next_session_focus_text ?? "");
+                            setCorrectionTensions(
+                              Array.isArray(selectedSessionGeneratedNote.identified_tensions_json)
+                                ? selectedSessionGeneratedNote.identified_tensions_json
+                                    .map((item) =>
+                                      typeof item === "object" && item && "tension_code" in item
+                                        ? String(item.tension_code)
+                                        : "",
+                                    )
+                                    .filter(Boolean)
+                                    .join(", ")
+                                : "",
+                            );
+                          }}
+                          type="button"
+                        >
+                          Corriger
+                        </button>
+                        <button
+                          className="button button-secondary"
+                          disabled={isUpdatingSessionNoteValidation}
+                          onClick={() =>
+                            void handleValidateGeneratedNote(
+                              selectedSessionGeneratedNote.id,
+                              { validated: false, corrections: buildCorrectionPayload() },
+                              "Note rejetee par le praticien.",
+                            )
+                          }
+                          style={{ backgroundColor: "#9b2c2c", borderColor: "#9b2c2c", color: "#fff" }}
+                          type="button"
+                        >
+                          {isUpdatingSessionNoteValidation ? "Mise a jour..." : "Rejeter"}
+                        </button>
+                      </div>
+
+                      {isCorrectionMode ? (
+                        <div className="form-stack">
+                          <h4>Correction praticien</h4>
+                          <div className="form-grid-2">
+                            <label className="field">
+                              <span>Coeur</span>
+                              <textarea rows={2} value={correctionCoeur} onChange={(event) => setCorrectionCoeur(event.target.value)} />
+                            </label>
+                            <label className="field">
+                              <span>Corps</span>
+                              <textarea rows={2} value={correctionCorps} onChange={(event) => setCorrectionCorps(event.target.value)} />
+                            </label>
+                            <label className="field">
+                              <span>Esprit</span>
+                              <textarea rows={2} value={correctionEsprit} onChange={(event) => setCorrectionEsprit(event.target.value)} />
+                            </label>
+                            <label className="field">
+                              <span>Etre</span>
+                              <textarea rows={2} value={correctionEtre} onChange={(event) => setCorrectionEtre(event.target.value)} />
+                            </label>
+                          </div>
+                          <label className="field">
+                            <span>Tensions (codes separes par virgule)</span>
+                            <input value={correctionTensions} onChange={(event) => setCorrectionTensions(event.target.value)} />
+                          </label>
+                          <div className="form-grid-2">
+                            <label className="field">
+                              <span>Vigilance</span>
+                              <input value={correctionVigilance} onChange={(event) => setCorrectionVigilance(event.target.value)} />
+                            </label>
+                            <label className="field">
+                              <span>Prochaine etape</span>
+                              <input value={correctionNextStep} onChange={(event) => setCorrectionNextStep(event.target.value)} />
+                            </label>
+                          </div>
+                          <div className="cta-row">
+                            <button
+                              className="button button-primary"
+                              disabled={isUpdatingSessionNoteValidation}
+                              onClick={() =>
+                                void handleValidateGeneratedNote(
+                                  selectedSessionGeneratedNote.id,
+                                  {
+                                    validated: true,
+                                    corrections: buildCorrectionPayload(),
+                                  },
+                                  "Corrections praticien enregistrees.",
+                                )
+                              }
+                              type="button"
+                            >
+                              {isUpdatingSessionNoteValidation ? "Enregistrement..." : "Appliquer la correction"}
+                            </button>
+                            <button
+                              className="button button-secondary"
+                              disabled={isUpdatingSessionNoteValidation}
+                              onClick={() => {
+                                setIsCorrectionMode(false);
+                                resetCorrectionFields();
+                              }}
+                              type="button"
+                            >
+                              Annuler
+                            </button>
+                          </div>
+                        </div>
+                      ) : null}
+
+                      {visibleNotes.length > 1 ? (
+                        <div className="table-wrap">
+                          <table className="data-table">
+                            <thead>
+                              <tr>
+                                <th>Note</th>
+                                <th>Seance</th>
+                                <th>Resume</th>
+                                <th>Validation</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {visibleNotes.map((note) => (
+                                <tr key={note.id}>
+                                  <td className="mono">N-{note.note_sequence_number}</td>
+                                  <td className="mono">{note.session_id.slice(0, 8)}</td>
+                                  <td>{note.summary_text}</td>
+                                  <td>{note.validated_by_practitioner ? "Validee" : "Non"}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </article>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

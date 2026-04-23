@@ -1,0 +1,40 @@
+services:
+  merlin_postgres:
+    image: postgres:16
+    container_name: merlin_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: merlin_v1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "55432:5432"
+    volumes:
+      - merlin_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d merlin_v1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  merlin_livekit:
+    image: livekit/livekit-server
+    container_name: merlin_livekit
+    restart: unless-stopped
+    command:
+      - --dev
+      - --bind
+      - 0.0.0.0
+      - --node-ip
+      - 127.0.0.1
+      - --keys
+      - "APIxDb493MSSSWH: K5QStXAY9ullbYeee2KkjVMwkW6dATJ6w7zaHfvyCunC"
+      - --udp-port
+      - 50000-50010
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "50000-50010:50000-50010/udp"
+
+volumes:
+  merlin_postgres_data:
