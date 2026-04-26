@@ -1,36 +1,39 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
-import {
-  type DerivedDocumentRecord,
-  listPublicDerivedDocuments,
-} from "@/lib/merlin-api";
+import { type DerivedDocumentRecord, listPublicDerivedDocuments } from "@/lib/merlin-api";
 
-export default function SuiviPage() {
+function SuiviPageContent() {
   const searchParams = useSearchParams();
   const [clientCode, setClientCode] = useState(searchParams.get("code") ?? "");
+  const [intakeReference, setIntakeReference] = useState(searchParams.get("intake") ?? "");
   const [documents, setDocuments] = useState<DerivedDocumentRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const initialCode = searchParams.get("code");
-    if (!initialCode) {
+    const initialIntake = searchParams.get("intake");
+    if (!initialCode || !initialIntake) {
       return;
     }
 
-    void loadDocuments(initialCode);
+    void loadDocuments(initialCode, initialIntake);
   }, [searchParams]);
 
-  async function loadDocuments(code: string) {
+  async function loadDocuments(code: string, intakeId: string) {
     setIsLoading(true);
     setErrorMessage(null);
 
     try {
-      const result = await listPublicDerivedDocuments(code.trim().toUpperCase());
+      const result = await listPublicDerivedDocuments(
+        code.trim().toUpperCase(),
+        intakeId.trim(),
+      );
       setDocuments(result);
     } catch (error) {
       setDocuments([]);
@@ -48,7 +51,11 @@ export default function SuiviPage() {
       setErrorMessage("Entrez votre reference client.");
       return;
     }
-    await loadDocuments(clientCode);
+    if (!intakeReference.trim()) {
+      setErrorMessage("Entrez votre reference d'entree.");
+      return;
+    }
+    await loadDocuments(clientCode, intakeReference);
   }
 
   return (
@@ -81,11 +88,20 @@ export default function SuiviPage() {
                 placeholder="CLI-XXXXXXXXXX"
               />
             </label>
+            <label className="field">
+              <span>Reference d&apos;entree</span>
+              <input
+                value={intakeReference}
+                onChange={(event) => setIntakeReference(event.target.value)}
+                placeholder="UUID de votre demande"
+              />
+            </label>
             <button className="button button-primary" disabled={isLoading} type="submit">
               {isLoading ? "Chargement..." : "Voir mes documents"}
             </button>
             <p className="inline-note">
               Cette page n&apos;affiche pas les notes internes, seulement les syntheses diffusees.
+              Les deux references remises a l&apos;entree sont necessaires.
             </p>
             {errorMessage ? <p className="message message-error">{errorMessage}</p> : null}
           </form>
@@ -114,5 +130,13 @@ export default function SuiviPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function SuiviPage() {
+  return (
+    <Suspense fallback={<div className="page-shell section">Chargement du suivi...</div>}>
+      <SuiviPageContent />
+    </Suspense>
   );
 }

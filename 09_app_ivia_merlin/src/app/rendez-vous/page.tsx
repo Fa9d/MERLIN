@@ -300,7 +300,11 @@ export default function RendezVousPage() {
                 </p>
                 <p>
                   Vous pourrez consulter les syntheses diffusees plus tard dans{" "}
-                  <Link href={`/suivi?code=${submissionState.clientCode}`}>votre espace de suivi</Link>.
+                  <Link
+                    href={`/suivi?code=${submissionState.clientCode}&intake=${submissionState.intakeId}`}
+                  >
+                    votre espace de suivi
+                  </Link>.
                 </p>
               </div>
             ) : null}

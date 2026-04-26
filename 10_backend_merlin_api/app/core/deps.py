@@ -87,3 +87,7 @@ def require_internal_clinical_roles():
 
 def require_admin_tech():
     return require_roles(AppRole.admin_tech)
+
+
+def is_operator_user(user: AppUser) -> bool:
+    return user.role == AppRole.operator

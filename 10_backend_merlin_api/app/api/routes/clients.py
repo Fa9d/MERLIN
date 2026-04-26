@@ -2,13 +2,43 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.deps import require_internal_clinical_roles
+from app.core.deps import get_optional_current_user, require_internal_clinical_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
+from app.models.enums import DataSensitivityClass, RecordStatus
 from app.schemas.client import ClientCreate, ClientRead
 
 router = APIRouter(prefix="/clients", tags=["clients"])
+
+
+def _validate_create_access(payload: ClientCreate, current_user: AppUser | None) -> None:
+    if current_user is not None:
+        return
+
+    if not payload.is_adult_confirmed:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="L'entree publique est reservee aux adultes confirmes.",
+        )
+
+    if payload.record_status != RecordStatus.active:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentification requise pour ce niveau de creation client.",
+        )
+
+    if payload.data_sensitivity_class != DataSensitivityClass.high:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentification requise pour ce niveau de creation client.",
+        )
+
+    if not (payload.email or payload.phone):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Un courriel ou un telephone est requis pour l'entree publique.",
+        )
 
 
 @router.get("", response_model=list[ClientRead])
@@ -22,7 +52,13 @@ def list_clients(
 
 
 @router.post("", response_model=ClientRead, status_code=status.HTTP_201_CREATED)
-def create_client(payload: ClientCreate, db: Session = Depends(get_db)) -> Client:
+def create_client(
+    payload: ClientCreate,
+    db: Session = Depends(get_db),
+    current_user: AppUser | None = Depends(get_optional_current_user),
+) -> Client:
+    _validate_create_access(payload, current_user)
+
     client = Client(**payload.model_dump())
     db.add(client)
     db.commit()

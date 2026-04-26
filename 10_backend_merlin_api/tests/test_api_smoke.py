@@ -161,6 +161,30 @@ def test_core_flow_smoke() -> None:
             )
             assert operator_register_resp.status_code == 201
 
+            second_operator_register_resp = client.post(
+                "/api/v1/auth/register",
+                json={
+                    "email": "operator2@example.com",
+                    "password": "operator2-secret",
+                    "display_name": "Operator 2",
+                    "role": "operator",
+                },
+                headers=admin_headers,
+            )
+            assert second_operator_register_resp.status_code == 201
+
+            supervisor_register_resp = client.post(
+                "/api/v1/auth/register",
+                json={
+                    "email": "supervisor@example.com",
+                    "password": "supervisor-secret",
+                    "display_name": "Supervisor",
+                    "role": "supervisor",
+                },
+                headers=admin_headers,
+            )
+            assert supervisor_register_resp.status_code == 201
+
             operator_login_resp = client.post(
                 "/api/v1/auth/login",
                 json={
@@ -174,14 +198,60 @@ def test_core_flow_smoke() -> None:
                 "Authorization": f"Bearer {operator_login_payload['access_token']}",
             }
 
+            second_operator_login_resp = client.post(
+                "/api/v1/auth/login",
+                json={
+                    "email": "operator2@example.com",
+                    "password": "operator2-secret",
+                },
+            )
+            assert second_operator_login_resp.status_code == 200
+            second_operator_login_payload = second_operator_login_resp.json()
+            second_operator_headers = {
+                "Authorization": f"Bearer {second_operator_login_payload['access_token']}",
+            }
+
+            supervisor_login_resp = client.post(
+                "/api/v1/auth/login",
+                json={
+                    "email": "supervisor@example.com",
+                    "password": "supervisor-secret",
+                },
+            )
+            assert supervisor_login_resp.status_code == 200
+            supervisor_login_payload = supervisor_login_resp.json()
+            supervisor_headers = {
+                "Authorization": f"Bearer {supervisor_login_payload['access_token']}",
+            }
+
+            anonymous_client_missing_contact_resp = client.post(
+                "/api/v1/clients",
+                json={
+                    "first_name_or_alias": "Alice",
+                    "is_adult_confirmed": True,
+                },
+            )
+            assert anonymous_client_missing_contact_resp.status_code == 422
+
+            anonymous_client_resp = client.post(
+                "/api/v1/clients",
+                json={
+                    "first_name_or_alias": "Alice",
+                    "email": "alice@example.com",
+                    "is_adult_confirmed": True,
+                },
+            )
+            assert anonymous_client_resp.status_code == 201
+
             client_resp = client.post(
-            "/api/v1/clients",
-            json={
-                "first_name_or_alias": "Alice",
-                "email": "alice@example.com",
-                "is_adult_confirmed": True,
-            },
-        )
+                "/api/v1/clients",
+                json={
+                    "first_name_or_alias": "Alice",
+                    "email": "alice@example.com",
+                    "is_adult_confirmed": True,
+                },
+                headers=auth_headers,
+            )
             assert client_resp.status_code == 201
             client_id = client_resp.json()["id"]
             client_public_code = client_resp.json()["public_client_code"]
@@ -209,17 +279,44 @@ def test_core_flow_smoke() -> None:
         )
             assert public_recording_resp.status_code == 401
 
+            public_priority_intake_resp = client.post(
+                "/api/v1/intake-requests",
+                json={
+                    "client_id": client_id,
+                    "request_channel_code": "web_form",
+                    "request_for_code": "self",
+                    "primary_need_code": "support",
+                    "perceived_urgency_code": "priority",
+                    "support_already_in_place": False,
+                },
+            )
+            assert public_priority_intake_resp.status_code == 401
+
+            anonymous_intake_resp = client.post(
+                "/api/v1/intake-requests",
+                json={
+                    "client_id": client_id,
+                    "request_channel_code": "web_form",
+                    "request_for_code": "self",
+                    "primary_need_code": "support",
+                    "perceived_urgency_code": "non_urgent",
+                    "support_already_in_place": False,
+                },
+            )
+            assert anonymous_intake_resp.status_code == 201
+
             intake_resp = client.post(
-            "/api/v1/intake-requests",
-            json={
-                "client_id": client_id,
-                "request_channel_code": "web_form",
-                "request_for_code": "self",
-                "primary_need_code": "support",
-                "perceived_urgency_code": "non_urgent",
-                "support_already_in_place": False,
-            },
-        )
+                "/api/v1/intake-requests",
+                json={
+                    "client_id": client_id,
+                    "request_channel_code": "web_form",
+                    "request_for_code": "self",
+                    "primary_need_code": "support",
+                    "perceived_urgency_code": "non_urgent",
+                    "support_already_in_place": False,
+                },
+                headers=auth_headers,
+            )
             assert intake_resp.status_code == 201
             intake_id = intake_resp.json()["id"]
 
@@ -260,6 +357,20 @@ def test_core_flow_smoke() -> None:
             assert second_session_resp.status_code == 201
             second_session = second_session_resp.json()
             assert second_session["session_sequence_number"] == 2
+
+            third_session_resp = client.post(
+                "/api/v1/sessions",
+                json={
+                    "client_id": client_id,
+                    "session_mode_code": "standard",
+                    "session_channel_code": "phone",
+                    "session_status_code": "scheduled",
+                },
+                headers=second_operator_headers,
+            )
+            assert third_session_resp.status_code == 201
+            third_session = third_session_resp.json()
+            assert third_session["operator_user_id"] == second_operator_login_payload["user"]["id"]
 
             room_resp = client.post(
                 f"/api/v1/sessions/{second_session['id']}/room",
@@ -380,9 +491,17 @@ def test_core_flow_smoke() -> None:
             assert close_payload["generated_note"]["validated_at"] is None
             assert close_payload["generated_note"]["practitioner_corrections"] is None
             assert close_payload["generated_document"]["document_kind_code"] == "session_summary"
-            assert close_payload["generated_document"]["audience_code"] == "client"
-            assert close_payload["generated_document"]["client_visible"] is True
+            assert close_payload["generated_document"]["audience_code"] == "client_pending_review"
+            assert close_payload["generated_document"]["title"] == "Synthese de seance 2"
+            assert close_payload["generated_document"]["client_visible"] is False
             assert "Vous repartez avec une situation mieux nommee" in close_payload["generated_document"]["body_text"]
+            assert "Suites proposees: Proposer un suivi dans une semaine." in (
+                close_payload["generated_document"]["body_text"]
+            )
+            assert "Focus prochaine seance: Clarifier les declencheurs et le rythme." in (
+                close_payload["generated_document"]["body_text"]
+            )
+            assert ".." not in close_payload["generated_document"]["body_text"]
 
             list_derived_documents_resp = client.get(
             f"/api/v1/derived-documents?session_id={second_session['id']}",
@@ -393,11 +512,20 @@ def test_core_flow_smoke() -> None:
             assert list_derived_documents_resp.json()[0]["source_note_id"] == close_payload["generated_note"]["id"]
 
             public_derived_documents_resp = client.get(
-            f"/api/v1/derived-documents/public/client/{client_public_code}",
+            f"/api/v1/derived-documents/public/client/{client_public_code}?intake_request_id={intake_id}",
         )
             assert public_derived_documents_resp.status_code == 200
-            assert len(public_derived_documents_resp.json()) == 1
-            assert public_derived_documents_resp.json()[0]["client_visible"] is True
+            assert len(public_derived_documents_resp.json()) == 0
+
+            public_derived_documents_without_intake_resp = client.get(
+                f"/api/v1/derived-documents/public/client/{client_public_code}",
+            )
+            assert public_derived_documents_without_intake_resp.status_code == 422
+
+            public_derived_documents_with_wrong_intake_resp = client.get(
+                f"/api/v1/derived-documents/public/client/{client_public_code}?intake_request_id=missing-intake",
+            )
+            assert public_derived_documents_with_wrong_intake_resp.status_code == 404
 
             validate_note_resp = client.patch(
                 f"/api/v1/session-notes/{close_payload['generated_note']['id']}/validate",
@@ -405,13 +533,38 @@ def test_core_flow_smoke() -> None:
                     "validated": True,
                     "corrections": None,
                 },
-                headers=auth_headers,
+                headers=supervisor_headers,
             )
             assert validate_note_resp.status_code == 200
             validated_note = validate_note_resp.json()
             assert validated_note["validated_by_practitioner"] is True
             assert validated_note["validated_at"] is not None
             assert validated_note["practitioner_corrections"] is None
+
+            published_derived_documents_resp = client.get(
+                f"/api/v1/derived-documents?session_id={second_session['id']}",
+                headers=auth_headers,
+            )
+            assert published_derived_documents_resp.status_code == 200
+            assert published_derived_documents_resp.json()[0]["audience_code"] == "client"
+            assert published_derived_documents_resp.json()[0]["client_visible"] is True
+
+            public_derived_documents_after_validation_resp = client.get(
+                f"/api/v1/derived-documents/public/client/{client_public_code}?intake_request_id={intake_id}",
+            )
+            assert public_derived_documents_after_validation_resp.status_code == 200
+            assert len(public_derived_documents_after_validation_resp.json()) == 1
+            assert public_derived_documents_after_validation_resp.json()[0]["client_visible"] is True
+
+            operator_validate_note_resp = client.patch(
+                f"/api/v1/session-notes/{close_payload['generated_note']['id']}/validate",
+                json={
+                    "validated": True,
+                    "corrections": None,
+                },
+                headers=auth_headers,
+            )
+            assert operator_validate_note_resp.status_code == 403
 
             correct_note_resp = client.patch(
                 f"/api/v1/session-notes/{close_payload['generated_note']['id']}/validate",
@@ -423,7 +576,7 @@ def test_core_flow_smoke() -> None:
                         "next_step": "Proposer un suivi de regulation.",
                     },
                 },
-                headers=auth_headers,
+                headers=supervisor_headers,
             )
             assert correct_note_resp.status_code == 200
             corrected_note = correct_note_resp.json()
@@ -440,7 +593,7 @@ def test_core_flow_smoke() -> None:
                         "tensions": ["tension_charge_exigences"],
                     },
                 },
-                headers=auth_headers,
+                headers=supervisor_headers,
             )
             assert reject_note_resp.status_code == 200
             rejected_note = reject_note_resp.json()
@@ -449,6 +602,20 @@ def test_core_flow_smoke() -> None:
             assert rejected_note["practitioner_corrections"]["tensions"] == [
                 "tension_charge_exigences"
             ]
+
+            hidden_derived_documents_resp = client.get(
+                f"/api/v1/derived-documents?session_id={second_session['id']}",
+                headers=auth_headers,
+            )
+            assert hidden_derived_documents_resp.status_code == 200
+            assert hidden_derived_documents_resp.json()[0]["audience_code"] == "client_pending_review"
+            assert hidden_derived_documents_resp.json()[0]["client_visible"] is False
+
+            public_derived_documents_after_reject_resp = client.get(
+                f"/api/v1/derived-documents/public/client/{client_public_code}?intake_request_id={intake_id}",
+            )
+            assert public_derived_documents_after_reject_resp.status_code == 200
+            assert len(public_derived_documents_after_reject_resp.json()) == 0
 
             closed_audio_list_resp = client.get(
             f"/api/v1/audio-sessions?session_id={second_session['id']}",
@@ -483,6 +650,20 @@ def test_core_flow_smoke() -> None:
             list_sessions_resp = client.get("/api/v1/sessions", headers=auth_headers)
             assert list_sessions_resp.status_code == 200
             assert len(list_sessions_resp.json()) == 2
+
+            hidden_session_resp = client.get(
+                f"/api/v1/sessions/{third_session['id']}",
+                headers=auth_headers,
+            )
+            assert hidden_session_resp.status_code == 404
+
+            second_operator_sessions_resp = client.get(
+                "/api/v1/sessions",
+                headers=second_operator_headers,
+            )
+            assert second_operator_sessions_resp.status_code == 200
+            assert len(second_operator_sessions_resp.json()) == 1
+            assert second_operator_sessions_resp.json()[0]["id"] == third_session["id"]
 
             session_note_resp = client.post(
             "/api/v1/session-notes",

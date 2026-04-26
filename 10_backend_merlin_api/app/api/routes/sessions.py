@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
@@ -8,7 +9,7 @@ from app.ai.anthropic_session_note_pipeline import (
     AnthropicSessionNoteError,
     generate_session_note_from_transcript,
 )
-from app.core.deps import require_internal_clinical_roles, require_operator
+from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
@@ -42,6 +43,51 @@ from app.schemas.session import (
 )
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
+
+
+def _normalize_text_fragment(value: str | None) -> str | None:
+    if value is None:
+        return None
+    normalized = re.sub(r"\s+", " ", value).strip()
+    return normalized or None
+
+
+def _ensure_terminal_punctuation(value: str | None) -> str | None:
+    normalized = _normalize_text_fragment(value)
+    if normalized is None:
+        return None
+    if normalized.endswith((".", "!", "?")):
+        return normalized
+    return f"{normalized}."
+
+
+def _build_labeled_sentence(label: str, value: str | None) -> str | None:
+    normalized = _ensure_terminal_punctuation(value)
+    if normalized is None:
+        return None
+    return f"{label}: {normalized}"
+
+
+def _build_generated_document_title(session_record: SessionRecord) -> str:
+    return f"Synthese de seance {session_record.session_sequence_number}"
+
+
+def _build_document_audience_code(
+    client_delivery_requested: bool,
+    validated_by_practitioner: bool,
+) -> str:
+    if not client_delivery_requested:
+        return "internal"
+    if validated_by_practitioner:
+        return "client"
+    return "client_pending_review"
+
+
+def _build_document_client_visibility(
+    client_delivery_requested: bool,
+    validated_by_practitioner: bool,
+) -> bool:
+    return bool(client_delivery_requested and validated_by_practitioner)
 
 
 def _compute_duration_minutes(
@@ -110,15 +156,25 @@ def _build_client_facing_summary(
 
 def _build_derived_document_text(generated_note: SessionNote) -> str:
     parts = []
-    if generated_note.client_facing_summary_text:
-        parts.append(generated_note.client_facing_summary_text)
-    else:
-        parts.append(generated_note.summary_text)
+    primary_summary = _ensure_terminal_punctuation(
+        generated_note.client_facing_summary_text or generated_note.summary_text
+    )
+    if primary_summary:
+        parts.append(primary_summary)
 
-    if generated_note.follow_up_actions_text:
-        parts.append(f"Suites proposees: {generated_note.follow_up_actions_text}.")
-    if generated_note.next_session_focus_text:
-        parts.append(f"Focus prochaine seance: {generated_note.next_session_focus_text}.")
+    follow_up_sentence = _build_labeled_sentence(
+        "Suites proposees",
+        generated_note.follow_up_actions_text,
+    )
+    if follow_up_sentence:
+        parts.append(follow_up_sentence)
+
+    next_focus_sentence = _build_labeled_sentence(
+        "Focus prochaine seance",
+        generated_note.next_session_focus_text,
+    )
+    if next_focus_sentence:
+        parts.append(next_focus_sentence)
 
     return " ".join(parts)
 
@@ -367,10 +423,16 @@ async def close_session(
         session_id=session_record.id,
         source_note_id=generated_note.id,
         document_kind_code="session_summary",
-        audience_code="client" if generated_note.client_visible else "internal",
-        title=f"Synthese seance {session_record.session_sequence_number}",
+        audience_code=_build_document_audience_code(
+            client_delivery_requested=generated_note.client_visible,
+            validated_by_practitioner=generated_note.validated_by_practitioner,
+        ),
+        title=_build_generated_document_title(session_record),
         body_text=_build_derived_document_text(generated_note),
-        client_visible=generated_note.client_visible,
+        client_visible=_build_document_client_visibility(
+            client_delivery_requested=generated_note.client_visible,
+            validated_by_practitioner=generated_note.validated_by_practitioner,
+        ),
         record_status=session_record.record_status,
         data_sensitivity_class=session_record.data_sensitivity_class,
         retention_class=session_record.retention_class,
@@ -435,9 +497,11 @@ def start_session(
 def list_sessions(
     client_id: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> list[SessionRecord]:
     statement = select(SessionRecord).order_by(SessionRecord.created_at.desc())
+    if is_operator_user(current_user):
+        statement = statement.where(SessionRecord.operator_user_id == current_user.id)
     if client_id is not None:
         statement = statement.where(SessionRecord.client_id == client_id)
     return list(db.scalars(statement).all())
@@ -447,10 +511,12 @@ def list_sessions(
 def get_session(
     session_id: str,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> SessionRecord:
     session_record = db.get(SessionRecord, session_id)
     if session_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    if is_operator_user(current_user) and session_record.operator_user_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
     return session_record
 

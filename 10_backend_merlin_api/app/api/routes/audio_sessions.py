@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.deps import require_internal_clinical_roles, require_operator
+from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_session import AudioSession
@@ -142,9 +142,13 @@ def provision_audio_session(
 def list_audio_sessions(
     session_id: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> list[AudioSession]:
     statement = select(AudioSession).order_by(AudioSession.created_at.desc())
+    if is_operator_user(current_user):
+        statement = statement.join(SessionRecord, SessionRecord.id == AudioSession.session_id).where(
+            SessionRecord.operator_user_id == current_user.id
+        )
     if session_id is not None:
         statement = statement.where(AudioSession.session_id == session_id)
     return list(db.scalars(statement).all())
@@ -154,11 +158,18 @@ def list_audio_sessions(
 def get_audio_session(
     audio_session_id: str,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> AudioSession:
     audio_session = db.get(AudioSession, audio_session_id)
     if audio_session is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    if is_operator_user(current_user):
+        session_record = db.get(SessionRecord, audio_session.session_id)
+        if session_record is None or session_record.operator_user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Session audio introuvable.",
+            )
     return audio_session
 
 

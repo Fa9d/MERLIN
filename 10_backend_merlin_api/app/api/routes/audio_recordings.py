@@ -7,12 +7,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.deps import require_internal_clinical_roles, require_operator
+from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
 from app.models.enums import AudioRecordingStatusCode, AudioSessionStatusCode
+from app.models.session import SessionRecord
 from app.schemas.audio_recording import AudioRecordingRead
 
 router = APIRouter(prefix="/audio-recordings", tags=["audio-recordings"])
@@ -110,9 +111,15 @@ async def _stop_provider_recording(recording: AudioRecording) -> str | None:
 def list_audio_recordings(
     audio_session_id: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> list[AudioRecording]:
     statement = select(AudioRecording).order_by(AudioRecording.created_at.desc())
+    if is_operator_user(current_user):
+        statement = (
+            statement.join(AudioSession, AudioSession.id == AudioRecording.audio_session_id)
+            .join(SessionRecord, SessionRecord.id == AudioSession.session_id)
+            .where(SessionRecord.operator_user_id == current_user.id)
+        )
     if audio_session_id is not None:
         statement = statement.where(AudioRecording.audio_session_id == audio_session_id)
     return list(db.scalars(statement).all())
@@ -122,7 +129,7 @@ def list_audio_recordings(
 def get_audio_recording(
     audio_recording_id: str,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> AudioRecording:
     audio_recording = db.get(AudioRecording, audio_recording_id)
     if audio_recording is None:
@@ -130,6 +137,14 @@ def get_audio_recording(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Enregistrement audio introuvable.",
         )
+    if is_operator_user(current_user):
+        audio_session = db.get(AudioSession, audio_recording.audio_session_id)
+        session_record = db.get(SessionRecord, audio_session.session_id) if audio_session else None
+        if session_record is None or session_record.operator_user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Enregistrement audio introuvable.",
+            )
     return audio_recording
 
 

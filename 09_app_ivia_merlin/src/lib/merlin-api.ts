@@ -340,19 +340,22 @@ export async function registerOperator(payload: {
   });
 }
 
-export async function createClient(payload: ClientPayload): Promise<ClientRecord> {
+export async function createClient(payload: ClientPayload, token?: string): Promise<ClientRecord> {
   return request<ClientRecord>("/api/v1/clients", {
     method: "POST",
     body: payload,
+    token,
   });
 }
 
 export async function createIntakeRequest(
   payload: IntakeRequestPayload,
+  token?: string,
 ): Promise<IntakeRequestRecord> {
   return request<IntakeRequestRecord>("/api/v1/intake-requests", {
     method: "POST",
     body: payload,
+    token,
   });
 }
 
@@ -429,9 +432,11 @@ export async function listDerivedDocuments(
 
 export async function listPublicDerivedDocuments(
   publicClientCode: string,
+  intakeRequestId: string,
 ): Promise<DerivedDocumentRecord[]> {
+  const query = `?intake_request_id=${encodeURIComponent(intakeRequestId)}`;
   return request<DerivedDocumentRecord[]>(
-    `/api/v1/derived-documents/public/client/${encodeURIComponent(publicClientCode)}`,
+    `/api/v1/derived-documents/public/client/${encodeURIComponent(publicClientCode)}${query}`,
   );
 }
 

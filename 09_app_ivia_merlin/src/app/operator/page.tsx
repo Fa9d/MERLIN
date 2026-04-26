@@ -10,7 +10,6 @@ import {
   closeSession,
   type ClientRecord,
   type ConsentRecord,
-  createClientJoinContext,
   createSession,
   type DerivedDocumentRecord,
   listAudioRecordings,
@@ -29,14 +28,11 @@ import {
   type IntakeRequestRecord,
   type LoginResponse,
   type SessionCloseResult,
-  type SessionNoteValidationPayload,
   type SessionNoteRecord,
   type SessionRecord,
-  validateSessionNote,
 } from "@/lib/merlin-api";
 
 const STORAGE_KEY = "merlin_operator_session";
-const SHOW_DEV_AUDIO_TOOLS = process.env.NODE_ENV !== "production";
 const INTAKE_CONSENT_TYPES = [
   "consent_session",
   "consent_session_note",
@@ -69,7 +65,6 @@ export default function OperatorPage() {
   const [isLoadingDashboard, setIsLoadingDashboard] = useState(false);
   const [isCreatingSession, setIsCreatingSession] = useState(false);
   const [isProvisioningAudio, setIsProvisioningAudio] = useState(false);
-  const [isGeneratingClientTestLink, setIsGeneratingClientTestLink] = useState(false);
   const [isStartingAudioRecording, setIsStartingAudioRecording] = useState(false);
   const [isStoppingAudioRecording, setIsStoppingAudioRecording] = useState(false);
   const [isStartingSession, setIsStartingSession] = useState(false);
@@ -99,19 +94,6 @@ export default function OperatorPage() {
   const [followUpActionsText, setFollowUpActionsText] = useState("");
   const [nextSessionFocusText, setNextSessionFocusText] = useState("");
   const [clientVisible, setClientVisible] = useState(false);
-  const [isUpdatingSessionNoteValidation, setIsUpdatingSessionNoteValidation] = useState(false);
-  const [isCorrectionMode, setIsCorrectionMode] = useState(false);
-  const [correctionCoeur, setCorrectionCoeur] = useState("");
-  const [correctionCorps, setCorrectionCorps] = useState("");
-  const [correctionEsprit, setCorrectionEsprit] = useState("");
-  const [correctionEtre, setCorrectionEtre] = useState("");
-  const [correctionTensions, setCorrectionTensions] = useState("");
-  const [correctionVigilance, setCorrectionVigilance] = useState("");
-  const [correctionNextStep, setCorrectionNextStep] = useState("");
-  const [clientTestLink, setClientTestLink] = useState<{
-    audioSessionId: string;
-    url: string;
-  } | null>(null);
   const isOperatorSession = session?.user.role === "operator";
 
   useEffect(() => {
@@ -245,34 +227,6 @@ export default function OperatorPage() {
     setAudioRecordingSuccessMessage(null);
   }
 
-  function buildCorrectionPayload(): SessionNoteValidationPayload["corrections"] {
-    const tensions = correctionTensions
-      .split(",")
-      .map((value) => value.trim())
-      .filter(Boolean);
-
-    const payload: NonNullable<SessionNoteValidationPayload["corrections"]> = {};
-    if (correctionCoeur.trim()) payload.coeur = correctionCoeur.trim();
-    if (correctionCorps.trim()) payload.corps = correctionCorps.trim();
-    if (correctionEsprit.trim()) payload.esprit = correctionEsprit.trim();
-    if (correctionEtre.trim()) payload.etre = correctionEtre.trim();
-    if (tensions.length > 0) payload.tensions = tensions;
-    if (correctionVigilance.trim()) payload.vigilance = correctionVigilance.trim();
-    if (correctionNextStep.trim()) payload.next_step = correctionNextStep.trim();
-
-    return Object.keys(payload).length > 0 ? payload : null;
-  }
-
-  function resetCorrectionFields() {
-    setCorrectionCoeur("");
-    setCorrectionCorps("");
-    setCorrectionEsprit("");
-    setCorrectionEtre("");
-    setCorrectionTensions("");
-    setCorrectionVigilance("");
-    setCorrectionNextStep("");
-  }
-
   async function handleCreateSession(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!session || !selectedClientId) {
@@ -394,43 +348,6 @@ export default function OperatorPage() {
     }
   }
 
-  async function handleGenerateClientTestLink() {
-    if (!session || !selectedAudioSession || typeof window === "undefined") {
-      return;
-    }
-
-    setIsGeneratingClientTestLink(true);
-    setDashboardErrorMessage(null);
-    setAudioSessionSuccessMessage(null);
-    setAudioRecordingSuccessMessage(null);
-
-    try {
-      const joinContext = await createClientJoinContext(
-        selectedAudioSession.id,
-        session.access_token,
-      );
-      const searchParams = new URLSearchParams({
-        wsUrl: joinContext.ws_url,
-        token: joinContext.token,
-        roomName: joinContext.room_name,
-        identity: joinContext.participant_identity,
-        role: "client-test",
-      });
-      const nextLink = `${window.location.origin}/audio-test?${searchParams.toString()}`;
-      setClientTestLink({
-        audioSessionId: selectedAudioSession.id,
-        url: nextLink,
-      });
-      setAudioSessionSuccessMessage("Lien de test client genere pour la salle audio.");
-    } catch (error) {
-      setDashboardErrorMessage(
-        error instanceof Error ? error.message : "Impossible de generer le lien client test.",
-      );
-    } finally {
-      setIsGeneratingClientTestLink(false);
-    }
-  }
-
   async function handleStartAudioRecording() {
     if (!session || !selectedAudioSession) {
       return;
@@ -533,7 +450,9 @@ export default function OperatorPage() {
       setAudioRecordings(nextAudioRecordings);
       setDerivedDocuments(nextDerivedDocuments);
       setSessionClosureSuccessMessage(
-        `Seance ${closeResult.session.session_sequence_number} cloturee. Note ${closeResult.generated_note.note_sequence_number} et document derives generes.`,
+        closeResult.generated_note.client_visible
+          ? `Seance ${closeResult.session.session_sequence_number} cloturee. Note ${closeResult.generated_note.note_sequence_number} et document derives generes. La diffusion client reste en attente de validation supervision.`
+          : `Seance ${closeResult.session.session_sequence_number} cloturee. Note ${closeResult.generated_note.note_sequence_number} et document derives generes pour usage interne.`,
       );
       setActualStartAt("");
       setActualEndAt("");
@@ -543,49 +462,12 @@ export default function OperatorPage() {
       setFollowUpActionsText("");
       setNextSessionFocusText("");
       setClientVisible(false);
-      setIsCorrectionMode(false);
-      resetCorrectionFields();
     } catch (error) {
       setDashboardErrorMessage(
         error instanceof Error ? error.message : "Impossible de cloturer la seance.",
       );
     } finally {
       setIsClosingSession(false);
-    }
-  }
-
-  async function handleValidateGeneratedNote(
-    noteId: string,
-    payload: SessionNoteValidationPayload,
-    successMessage: string,
-  ) {
-    if (!session) {
-      return;
-    }
-
-    setIsUpdatingSessionNoteValidation(true);
-    setDashboardErrorMessage(null);
-    setSessionClosureSuccessMessage(null);
-
-    try {
-      await validateSessionNote(noteId, payload, session.access_token);
-      const nextNotes = await listSessionNotes(session.access_token);
-      setSessionNotes(nextNotes);
-      setSessionSuccessMessage(successMessage);
-      if (payload.validated || payload.corrections) {
-        setIsCorrectionMode(false);
-      }
-      if (payload.validated || payload.corrections) {
-        resetCorrectionFields();
-      }
-    } catch (error) {
-      setDashboardErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "Impossible de mettre a jour la validation praticien.",
-      );
-    } finally {
-      setIsUpdatingSessionNoteValidation(false);
     }
   }
 
@@ -640,10 +522,6 @@ export default function OperatorPage() {
     ? derivedDocuments.filter((document) => document.session_id === selectedSessionId)
     : derivedDocuments;
   const selectedSessionDerivedDocument = visibleDerivedDocuments[0] ?? null;
-  const visibleClientTestLink =
-    selectedAudioSession && clientTestLink?.audioSessionId === selectedAudioSession.id
-      ? clientTestLink.url
-      : null;
 
   return (
     <div className="page-shell">
@@ -653,17 +531,16 @@ export default function OperatorPage() {
           <Link href="/">Accueil</Link>
           <Link href="/rendez-vous">Entree client</Link>
           <Link href="/supervision">Supervision</Link>
-          <Link href="/admin">Admin</Link>
         </nav>
       </header>
 
       <main className="section">
         <div className="section-header">
           <div className="eyebrow">SCR-101 a SCR-109</div>
-          <h2>Backoffice operateur branche</h2>
+          <h2>Backoffice operateur</h2>
           <p>
-            Cette page se connecte maintenant a l&apos;API MERLIN. Elle sert d&apos;amorce
-            pour le login operateur et la lecture des dossiers clients entres par IVIA.
+            Cette surface est centree sur la production operateur: entrees client,
+            planification, conduite de seance, cloture et lecture des sorties.
           </p>
         </div>
 
@@ -685,10 +562,6 @@ export default function OperatorPage() {
             <button className="button button-primary" disabled={isLoggingIn} type="submit">
               {isLoggingIn ? "Connexion..." : "Se connecter"}
             </button>
-            <p className="inline-note">
-              L&apos;initialisation de l&apos;admin technique a ete sortie de cet ecran.
-              Utiliser <Link href="/admin">/admin</Link> pour le bootstrap et la maintenance.
-            </p>
             {authErrorMessage ? <p className="message message-error">{authErrorMessage}</p> : null}
           </form>
         ) : !isOperatorSession ? (
@@ -1006,13 +879,6 @@ export default function OperatorPage() {
                         operatorAccessToken={session.access_token}
                       />
 
-                      {SHOW_DEV_AUDIO_TOOLS && visibleClientTestLink ? (
-                        <label className="field">
-                          <span>Lien local de test client</span>
-                          <textarea readOnly rows={3} value={visibleClientTestLink} />
-                        </label>
-                      ) : null}
-
                       {audioSessionSuccessMessage ? (
                         <p className="message message-success">{audioSessionSuccessMessage}</p>
                       ) : null}
@@ -1097,32 +963,6 @@ export default function OperatorPage() {
                         >
                           {isProvisioningAudio ? "Preparation..." : "Preparer l'audio"}
                         </button>
-                        {SHOW_DEV_AUDIO_TOOLS ? (
-                          <button
-                            className="button button-secondary"
-                            disabled={
-                              isGeneratingClientTestLink ||
-                              !selectedAudioSession ||
-                              !selectedAudioSession.provider_room_url
-                            }
-                            onClick={handleGenerateClientTestLink}
-                            type="button"
-                          >
-                            {isGeneratingClientTestLink
-                              ? "Generation..."
-                              : "Generer un lien client test"}
-                          </button>
-                        ) : null}
-                        {SHOW_DEV_AUDIO_TOOLS && visibleClientTestLink ? (
-                          <a
-                            className="button button-secondary"
-                            href={visibleClientTestLink}
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            Ouvrir le test client
-                          </a>
-                        ) : null}
                       </div>
                     </div>
                   )}
@@ -1330,7 +1170,7 @@ export default function OperatorPage() {
                           onChange={(event) => setClientVisible(event.target.checked)}
                           type="checkbox"
                         />
-                        <span>Note diffusable au client</span>
+                        <span>Proposer une diffusion client apres validation supervision</span>
                       </label>
 
                       {sessionClosureSuccessMessage ? (
@@ -1391,17 +1231,19 @@ export default function OperatorPage() {
                 <div className="stack-md">
                   <h3>Document derive</h3>
                   {selectedSessionDerivedDocument ? (
-                    <div className="card form-stack">
-                      <div className="info-strip">
-                        <span>{selectedSessionDerivedDocument.title}</span>
-                        <span>{selectedSessionDerivedDocument.document_kind_code}</span>
-                        <span>{selectedSessionDerivedDocument.audience_code}</span>
-                        <span>
+                      <div className="card form-stack">
+                        <div className="info-strip">
+                          <span>{selectedSessionDerivedDocument.title}</span>
+                          <span>{selectedSessionDerivedDocument.document_kind_code}</span>
+                          <span>{selectedSessionDerivedDocument.audience_code}</span>
+                          <span>
                           {selectedSessionDerivedDocument.client_visible
-                            ? "Diffusable client"
-                            : "Interne"}
-                        </span>
-                      </div>
+                            ? "Diffuse client"
+                            : selectedSessionDerivedDocument.audience_code === "client_pending_review"
+                              ? "En attente supervision"
+                              : "Interne"}
+                          </span>
+                        </div>
                       <label className="field">
                         <span>Contenu</span>
                         <textarea
@@ -1425,7 +1267,13 @@ export default function OperatorPage() {
                                 <tr key={document.id}>
                                   <td>{document.title}</td>
                                   <td>{document.audience_code}</td>
-                                  <td>{document.client_visible ? "Oui" : "Non"}</td>
+                                  <td>
+                                    {document.client_visible
+                                      ? "Diffuse"
+                                      : document.audience_code === "client_pending_review"
+                                        ? "En attente"
+                                        : "Non"}
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
@@ -1456,11 +1304,11 @@ export default function OperatorPage() {
                       <div className="form-grid-2">
                         <div className="card">
                           <h4>Client delivery</h4>
-                          <p>
-                            {selectedSessionGeneratedNote.client_facing_summary_text ??
-                              "Aucune synthese diffusable au client."}
-                          </p>
-                        </div>
+                            <p>
+                              {selectedSessionGeneratedNote.client_facing_summary_text ??
+                              "Aucune synthese proposee pour le client."}
+                            </p>
+                          </div>
                         <div className="card">
                           <h4>Supervision</h4>
                           <p>
@@ -1513,134 +1361,13 @@ export default function OperatorPage() {
                         </label>
                       ) : null}
 
-                      <div className="cta-row">
-                        <button
-                          className="button button-primary"
-                          disabled={isUpdatingSessionNoteValidation}
-                          onClick={() =>
-                            void handleValidateGeneratedNote(
-                              selectedSessionGeneratedNote.id,
-                              { validated: true, corrections: null },
-                              "Note validee par le praticien.",
-                            )
-                          }
-                          style={{ backgroundColor: "#1f7a45", borderColor: "#1f7a45" }}
-                          type="button"
-                        >
-                          {isUpdatingSessionNoteValidation ? "Validation..." : "Valider"}
-                        </button>
-                        <button
-                          className="button button-secondary"
-                          disabled={isUpdatingSessionNoteValidation}
-                          onClick={() => {
-                            setIsCorrectionMode((current) => !current);
-                            setCorrectionCoeur(selectedSessionGeneratedNote.coeur_summary_text ?? "");
-                            setCorrectionCorps(selectedSessionGeneratedNote.corps_summary_text ?? "");
-                            setCorrectionEsprit(selectedSessionGeneratedNote.esprit_summary_text ?? "");
-                            setCorrectionEtre(selectedSessionGeneratedNote.etre_summary_text ?? "");
-                            setCorrectionVigilance(selectedSessionGeneratedNote.vigilance_level_code ?? "");
-                            setCorrectionNextStep(selectedSessionGeneratedNote.next_session_focus_text ?? "");
-                            setCorrectionTensions(
-                              Array.isArray(selectedSessionGeneratedNote.identified_tensions_json)
-                                ? selectedSessionGeneratedNote.identified_tensions_json
-                                    .map((item) =>
-                                      typeof item === "object" && item && "tension_code" in item
-                                        ? String(item.tension_code)
-                                        : "",
-                                    )
-                                    .filter(Boolean)
-                                    .join(", ")
-                                : "",
-                            );
-                          }}
-                          type="button"
-                        >
-                          Corriger
-                        </button>
-                        <button
-                          className="button button-secondary"
-                          disabled={isUpdatingSessionNoteValidation}
-                          onClick={() =>
-                            void handleValidateGeneratedNote(
-                              selectedSessionGeneratedNote.id,
-                              { validated: false, corrections: buildCorrectionPayload() },
-                              "Note rejetee par le praticien.",
-                            )
-                          }
-                          style={{ backgroundColor: "#9b2c2c", borderColor: "#9b2c2c", color: "#fff" }}
-                          type="button"
-                        >
-                          {isUpdatingSessionNoteValidation ? "Mise a jour..." : "Rejeter"}
-                        </button>
+                      <div className="message message-success">
+                        La validation et la correction de note sont maintenant reservees a la
+                        supervision. Une proposition de diffusion client reste en attente tant que
+                        la supervision n&apos;a pas valide la note. Utiliser{" "}
+                        <Link href="/supervision">/supervision</Link> pour relire, valider ou
+                        rejeter une sortie.
                       </div>
-
-                      {isCorrectionMode ? (
-                        <div className="form-stack">
-                          <h4>Correction praticien</h4>
-                          <div className="form-grid-2">
-                            <label className="field">
-                              <span>Coeur</span>
-                              <textarea rows={2} value={correctionCoeur} onChange={(event) => setCorrectionCoeur(event.target.value)} />
-                            </label>
-                            <label className="field">
-                              <span>Corps</span>
-                              <textarea rows={2} value={correctionCorps} onChange={(event) => setCorrectionCorps(event.target.value)} />
-                            </label>
-                            <label className="field">
-                              <span>Esprit</span>
-                              <textarea rows={2} value={correctionEsprit} onChange={(event) => setCorrectionEsprit(event.target.value)} />
-                            </label>
-                            <label className="field">
-                              <span>Etre</span>
-                              <textarea rows={2} value={correctionEtre} onChange={(event) => setCorrectionEtre(event.target.value)} />
-                            </label>
-                          </div>
-                          <label className="field">
-                            <span>Tensions (codes separes par virgule)</span>
-                            <input value={correctionTensions} onChange={(event) => setCorrectionTensions(event.target.value)} />
-                          </label>
-                          <div className="form-grid-2">
-                            <label className="field">
-                              <span>Vigilance</span>
-                              <input value={correctionVigilance} onChange={(event) => setCorrectionVigilance(event.target.value)} />
-                            </label>
-                            <label className="field">
-                              <span>Prochaine etape</span>
-                              <input value={correctionNextStep} onChange={(event) => setCorrectionNextStep(event.target.value)} />
-                            </label>
-                          </div>
-                          <div className="cta-row">
-                            <button
-                              className="button button-primary"
-                              disabled={isUpdatingSessionNoteValidation}
-                              onClick={() =>
-                                void handleValidateGeneratedNote(
-                                  selectedSessionGeneratedNote.id,
-                                  {
-                                    validated: true,
-                                    corrections: buildCorrectionPayload(),
-                                  },
-                                  "Corrections praticien enregistrees.",
-                                )
-                              }
-                              type="button"
-                            >
-                              {isUpdatingSessionNoteValidation ? "Enregistrement..." : "Appliquer la correction"}
-                            </button>
-                            <button
-                              className="button button-secondary"
-                              disabled={isUpdatingSessionNoteValidation}
-                              onClick={() => {
-                                setIsCorrectionMode(false);
-                                resetCorrectionFields();
-                              }}
-                              type="button"
-                            >
-                              Annuler
-                            </button>
-                          </div>
-                        </div>
-                      ) : null}
 
                       {visibleNotes.length > 1 ? (
                         <div className="table-wrap">
