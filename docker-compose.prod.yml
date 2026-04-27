@@ -1,4 +1,17 @@
 services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - merlin_network
+
   db:
     image: postgres:15-alpine
     restart: unless-stopped
@@ -29,6 +42,8 @@ services:
       - .env.prod
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
       livekit:
         condition: service_started
@@ -95,6 +110,9 @@ services:
     restart: unless-stopped
     env_file:
       - .env.prod
+    depends_on:
+      redis:
+        condition: service_healthy
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - >-
@@ -109,6 +127,8 @@ services:
         '  use_external_ip: ${LIVEKIT_USE_EXTERNAL_IP}'
         'room:'
         '  auto_create: true'
+        'redis:'
+        '  address: redis:6379'
         'keys:'
         '  ${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}'
         'logging:'
@@ -118,6 +138,36 @@ services:
     ports:
       - "7881:7881/tcp"
       - "${LIVEKIT_RTC_PORT_RANGE_START}-${LIVEKIT_RTC_PORT_RANGE_END}:${LIVEKIT_RTC_PORT_RANGE_START}-${LIVEKIT_RTC_PORT_RANGE_END}/udp"
+    networks:
+      - merlin_network
+
+  livekit-egress:
+    image: livekit/egress:v1.8.3
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      livekit:
+        condition: service_started
+    environment:
+      EGRESS_CONFIG_BODY: |-
+        api_key: ${LIVEKIT_API_KEY}
+        api_secret: ${LIVEKIT_API_SECRET}
+        ws_url: ws://livekit:7880
+        redis:
+          address: redis:6379
+        health_port: 8081
+        template_port: 7980
+        logging:
+          level: ${LIVEKIT_LOG_LEVEL}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8081/ >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - merlin_recordings:/app/storage/recordings
     networks:
       - merlin_network
 
@@ -132,6 +182,8 @@ services:
       frontend:
         condition: service_started
       livekit:
+        condition: service_started
+      livekit-egress:
         condition: service_started
     environment:
       MERLIN_SERVER_NAME: ${MERLIN_SERVER_NAME}
