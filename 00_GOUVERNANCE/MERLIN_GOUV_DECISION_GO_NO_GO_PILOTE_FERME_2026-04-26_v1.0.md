@@ -81,11 +81,13 @@ Constat:
 
 - un flux audio / enregistrement de test a deja remonte en `failed`;
 - ce point n'empeche pas le pilote ferme sur le coeur documentaire, mais il empeche de presenter la chaine audio comme completement stabilisee.
+- une checklist dediee existe desormais pour rejouer ce perimetre sur le flux audio canonique sans improviser les commandes.
 
 Consequence:
 
 - ne pas faire reposer le pilote sur la promesse audio avancee;
 - traiter l'audio comme perimetre prudent ou secondaire tant qu'une recette dediee n'est pas bouclee.
+- utiliser la checklist audio prod canonique avant toute affirmation de stabilisation.
 
 ### Risque 2 - Finition UX encore partielle
 
@@ -148,7 +150,7 @@ Mini-sprint suivant recommande:
 - corriger les irritants UX les plus visibles;
 - nettoyer les traces de test prod prioritaires;
 - durcir le runbook comptes / secrets / nettoyage;
-- verifier specifiquement la chaine audio si elle doit entrer dans le pilote.
+- verifier specifiquement la chaine audio via la checklist dediee si elle doit entrer dans le pilote.
 
 ---
 
@@ -168,5 +170,6 @@ Formule courte:
 
 - [MERLIN_GOUV_PLANNING_OPERATIONNEL_10_JOURS_V1.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_PLANNING_OPERATIONNEL_10_JOURS_V1.md)
 - [MERLIN_GOUV_CHECKLIST_RECETTE_PROD_E2E_J8_V1.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_CHECKLIST_RECETTE_PROD_E2E_J8_V1.md)
+- [MERLIN_GOUV_CHECKLIST_VALIDATION_AUDIO_PROD_V1.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_CHECKLIST_VALIDATION_AUDIO_PROD_V1.md)
 - [MERLIN_GOUV_LOG_TEST_PROD_TRACE_NETTOYAGE_2026-04-24_v1.0.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_LOG_TEST_PROD_TRACE_NETTOYAGE_2026-04-24_v1.0.md)
 - [MERLIN_GOUV_RUNBOOK_COMPTES_SECRETS_ACCES_TEST_V1.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_RUNBOOK_COMPTES_SECRETS_ACCES_TEST_V1.md)

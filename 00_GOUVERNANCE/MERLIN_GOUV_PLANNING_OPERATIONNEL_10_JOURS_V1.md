@@ -30,10 +30,12 @@ Constats de preuve:
 - la validation d'une note par `operator` repond `403`;
 - la validation d'une note par `supervisor` repond `200`;
 - la lecture operateur du document derive de sa seance repond `200`.
+- le prochain test audio doit passer par la recette dediee fondee sur `audio-sessions` / `audio-recordings`, pas par un assemblage de routes legacy.
 
 Point ouvert separe:
 
 - un enregistrement audio de test est remonte en statut `failed`; ce point concerne la chaine d'enregistrement et non le cloisonnement des droits.
+- une checklist audio prod dediee existe desormais pour rejouer ce point proprement avec jonction navigateur reelle et lecture explicite des statuts BDD.
 
 ---
 

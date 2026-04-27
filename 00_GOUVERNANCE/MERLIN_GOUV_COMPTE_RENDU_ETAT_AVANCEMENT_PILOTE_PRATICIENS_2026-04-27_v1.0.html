@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MERLIN - Compte rendu d'etat d'avancement et echeancier praticiens</title>
+  <style>
+    :root {
+      --bg: #f5efe6;
+      --panel: rgba(255, 251, 246, 0.94);
+      --ink: #182119;
+      --muted: #586257;
+      --line: rgba(43, 58, 46, 0.14);
+      --accent: #244c39;
+      --accent-soft: rgba(36, 76, 57, 0.1);
+      --warn: #8a5b17;
+      --warn-soft: rgba(190, 140, 47, 0.12);
+      --danger: #842d22;
+      --danger-soft: rgba(132, 45, 34, 0.1);
+      --shadow: 0 22px 60px rgba(24, 33, 25, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(202, 183, 136, 0.18), transparent 22%),
+        radial-gradient(circle at top left, rgba(83, 113, 89, 0.1), transparent 26%),
+        linear-gradient(180deg, #faf5ee 0%, var(--bg) 100%);
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 34px 36px;
+      margin-bottom: 18px;
+      background:
+        radial-gradient(circle at right top, rgba(36, 76, 57, 0.1), transparent 24%),
+        linear-gradient(180deg, rgba(255, 252, 247, 0.97) 0%, rgba(250, 244, 235, 0.96) 100%);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 46px;
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      max-width: 11ch;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 78ch;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 252, 247, 0.9);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .panel {
+      padding: 24px 24px 22px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 17px;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li + li {
+      margin-top: 7px;
+    }
+
+    .status-good,
+    .status-mid,
+    .status-risk {
+      border-radius: 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+    }
+
+    .status-good {
+      background: var(--accent-soft);
+    }
+
+    .status-mid {
+      background: var(--warn-soft);
+      color: #624513;
+    }
+
+    .status-risk {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .kpi {
+      display: grid;
+      gap: 6px;
+      padding: 18px 18px 16px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255, 252, 247, 0.82);
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .kpi-value {
+      font-size: 28px;
+      letter-spacing: -0.05em;
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 252, 247, 0.82);
+    }
+
+    .timeline-tag {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .panel {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-row {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">MERLIN / IVIA - Compte rendu executif</div>
+      <h1>Etat d'avancement et echeancier praticiens</h1>
+      <p>
+        Rapport de synthese au 2026-04-27. Ce document consolide l'etat reel du projet MERLIN apres les validations
+        production J1 a J8, les correctifs d'autorisation backend, la stabilisation VPS, la verification e2e
+        documentaire et la fermeture technique en cours du perimetre audio.
+      </p>
+      <div class="meta">
+        <span class="pill">Statut: GO pilote ferme encadre</span>
+        <span class="pill">Portee: MERLIN uniquement</span>
+        <span class="pill">Horizon vise: praticiens inscrits bout en bout</span>
+        <span class="pill">Auteur: Codex</span>
+      </div>
+    </section>
+
+    <section class="grid grid-3" style="margin-bottom: 18px;">
+      <article class="kpi">
+        <div class="kpi-label">Niveau actuel</div>
+        <div class="kpi-value">Pilote ferme</div>
+        <p class="small">Le coeur documentaire, les droits et la prod sont reellement exploitable en petit perimetre.</p>
+      </article>
+      <article class="kpi">
+        <div class="kpi-label">Risque principal</div>
+        <div class="kpi-value">Audio</div>
+        <p class="small">Le dernier verrou technique visible est la chaine audio temps reel et enregistrement.</p>
+      </article>
+      <article class="kpi">
+        <div class="kpi-label">Lecture calendrier</div>
+        <div class="kpi-value">Semaines, pas mois</div>
+        <p class="small">Si le focus reste sur MERLIN, la suite releve de quelques semaines et non d'un trimestre.</p>
+      </article>
+    </section>
+
+    <section class="grid grid-2" style="margin-bottom: 18px;">
+      <article class="panel">
+        <h2>Verdict executif</h2>
+        <div class="status-good">
+          <h3>Ce qui est ferme</h3>
+          <ul>
+            <li>Frontend IVIA en ligne sur <code>https://ivia.quebec</code>.</li>
+            <li>API MERLIN saine sur <code>https://api.ivia.quebec/api/health</code>.</li>
+            <li>Roles <code>operator</code> / <code>supervisor</code> separes.</li>
+            <li>Cloisonnement operateur borne a ses propres objets.</li>
+            <li>Workflow documentaire client gouverne et valide de bout en bout.</li>
+            <li>Runbooks de redeploiement et de recette prod formalises.</li>
+          </ul>
+        </div>
+        <div class="status-mid" style="margin-top: 12px;">
+          <h3>Ce qui est presque ferme</h3>
+          <ul>
+            <li>Chaine audio reelle naviguateur + LiveKit + enregistrement.</li>
+            <li>Petit durcissement UX autour du micro et des parcours audio.</li>
+            <li>Clarification finale du chemin audio canonique.</li>
+          </ul>
+        </div>
+        <div class="status-risk" style="margin-top: 12px;">
+          <h3>Ce qui n'est pas encore pret pour une ouverture large</h3>
+          <ul>
+            <li>Perimetre audio presente comme totalement stabilise.</li>
+            <li>Couche praticiens complete et proprement isolee.</li>
+            <li>Exploitation suffisamment automatisee pour une forte hausse de volume.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Ou en est le produit</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Bloc</th>
+              <th>Etat reel</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Entree client</td>
+              <td>Fonctionnelle mais encore tres liee a un parcours pilote et a des tests encadres.</td>
+            </tr>
+            <tr>
+              <td>Session / note / document</td>
+              <td>Ferme de bout en bout sur le coeur du produit.</td>
+            </tr>
+            <tr>
+              <td>Droits et visibilite</td>
+              <td>Durcis en production et verifies par recette et par correctif authz audio.</td>
+            </tr>
+            <tr>
+              <td>Supervision</td>
+              <td>Suffisante pour le pilote ferme, encore perfectible en UX et outillage.</td>
+            </tr>
+            <tr>
+              <td>Audio</td>
+              <td>Control-plane fonctionnel, recette dediee en place, fermeture reelle encore a confirmer sur le dernier mile.</td>
+            </tr>
+            <tr>
+              <td>Couche praticiens</td>
+              <td>Non completement lancee proprement. C'est le prochain vrai bloc produit.</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="panel" style="margin-bottom: 18px;">
+      <h2>Structure technique actuelle</h2>
+      <div class="grid grid-3">
+        <div>
+          <h3>Surface publique</h3>
+          <ul>
+            <li>Frontend Next.js pour <code>rendez-vous</code>, <code>suivi</code>, <code>operator</code>, <code>supervision</code>.</li>
+            <li>nginx sert les routes web et reverse-proxy l'API.</li>
+            <li>TLS multi-domaine en place.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Noyau metier</h3>
+          <ul>
+            <li>FastAPI porte la verite metier.</li>
+            <li>PostgreSQL stocke clients, intakes, sessions, notes, derives, audio.</li>
+            <li>Alembic couvre les migrations de structure.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Audio</h3>
+          <ul>
+            <li>LiveKit porte la salle temps reel.</li>
+            <li>Chemin frontend canonique: <code>/audio-sessions</code> + <code>/audio-recordings</code>.</li>
+            <li>Dette restante: coexistence avec des routes legacy <code>/sessions/{id}/room</code> et <code>/sessions/{id}/recording/*</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-bottom: 18px;">
+      <h2>Lecture de la vitesse reelle</h2>
+      <p>
+        Le projet a compresse environ neuf jours de travail critique en trois jours de poussee reelle. C'est un tres bon signe
+        sur la capacite d'execution. Ce n'est cependant pas un coefficient lineaire exploitable jusqu'au bout. Les derniers
+        pourcents coutent plus cher parce qu'ils concentrent les vrais risques de stabilisation: audio, praticiens,
+        exploitation, UX et non-regression.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Lecture</th>
+            <th>Conclusion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Compression initiale</td>
+            <td>Excellente. Le noyau MERLIN a avance beaucoup plus vite que prevu.</td>
+          </tr>
+          <tr>
+            <td>Fin de cycle</td>
+            <td>Plus lente par nature. Il faut consolider, pas seulement construire.</td>
+          </tr>
+          <tr>
+            <td>Extrapolation lineaire</td>
+            <td>A eviter. La bonne unite n'est plus la journee brute, mais le verrou fonctionnel ferme.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid grid-2" style="margin-bottom: 18px;">
+      <article class="panel">
+        <h2>Echeances estimees</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Palier</th>
+              <th>Estimation agressive</th>
+              <th>Lecture</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pilote praticiens ferme</td>
+              <td>7 a 12 jours calendrier</td>
+              <td>Horizon cible autour du 2026-05-05 au 2026-05-09.</td>
+            </tr>
+            <tr>
+              <td>V1 praticiens propre</td>
+              <td>2 a 3 semaines</td>
+              <td>Horizon cible autour du 2026-05-12 au 2026-05-23.</td>
+            </tr>
+            <tr>
+              <td>Version vendable plus solide</td>
+              <td>4 a 6 semaines</td>
+              <td>Horizon cible fin mai a mi-juin.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footer-note">
+          Hypothese sous-jacente: focus quasi exclusif sur MERLIN, peu de dispersion, peu d'incidents ops lourds.
+        </p>
+      </article>
+
+      <article class="panel">
+        <h2>Definition du "bout en bout praticiens"</h2>
+        <ul>
+          <li>Inscription et authentification praticien.</li>
+          <li>Cloisonnement praticien sur ses clients, ses seances et ses traces.</li>
+          <li>Creation, gestion et cloture de seance.</li>
+          <li>Audio temps reel utilisable avec enregistrement gouverne.</li>
+          <li>Note, document derive et historique praticien.</li>
+          <li>Diffusion client gouvernee quand applicable.</li>
+          <li>Frontend propre cote praticien, sans confusion avec les surfaces internes actuelles.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel" style="margin-bottom: 18px;">
+      <h2>Timeline actualisee</h2>
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="timeline-tag">J1 a J8</div>
+          <div>
+            <strong>Ferme ou quasi ferme.</strong>
+            Infra prod, frontend public, backend, droits, supervision minimale, diffusion client gouvernee,
+            recette e2e documentaire et runbooks critiques.
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-tag">J9</div>
+          <div>
+            <strong>Audio de bout en bout.</strong>
+            Verifier jonction operateur/client, start, stop, statut BDD, <code>output_location</code>,
+            fichier reel et comportement navigateur.
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-tag">J10</div>
+          <div>
+            <strong>Nettoyage architecture audio.</strong>
+            Acter officiellement le chemin canonique <code>/audio-sessions</code> + <code>/audio-recordings</code>,
+            releguer les routes legacy et deployer le correctif frontend popup micro.
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-tag">J11 a J12</div>
+          <div>
+            <strong>Stabilisation pilote.</strong>
+            Nettoyage des traces de test, petits correctifs UX visibles, reduction des manips ops ad hoc,
+            recette finale courte et rejouable.
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-tag">Semaine suivante</div>
+          <div>
+            <strong>Couche praticiens.</strong>
+            Basculer du noyau pilote MERLIN interne vers un vrai parcours praticien inscrit, cloisonne
+            et presentable.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-2" style="margin-bottom: 18px;">
+      <article class="panel">
+        <h2>Ce qui reste avant une V1 praticiens propre</h2>
+        <ul>
+          <li>Fermer completement la chaine audio en prod.</li>
+          <li>Deployer le correctif frontend popup micro.</li>
+          <li>Creer la vraie couche praticiens, distincte des surfaces internes actuelles.</li>
+          <li>Verifier inscription, login et parcours quotidien praticien.</li>
+          <li>Rendre la recette prod plus courte et moins dependante du shell manuel.</li>
+          <li>Poursuivre le nettoyage des traces de test prod.</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>Ce qui peut attendre apres</h2>
+        <ul>
+          <li>Ouverture large et communication publique ambitieuse.</li>
+          <li>Industrialisation ops plus lourde.</li>
+          <li>Extension multi-organisation ou couche praticien plus riche.</li>
+          <li>Finition UX haut de gamme sur l'ensemble des surfaces.</li>
+          <li>Promesses produit appuyees sur une maturite audio complete a grande echelle.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Conclusion nette</h2>
+      <p>
+        MERLIN n'est plus un prototype flou. Le noyau est reel, prod, verifie et pilotable. La lecture juste aujourd'hui
+        est la suivante: le produit est pret pour un <strong>pilote ferme encadre</strong>, mais pas encore pour une
+        <strong>ouverture large</strong>. Le coeur documentaire et les droits sont devant le planning initial. Le dernier
+        verrou technique visible est concentre sur l'audio et sur la transformation de l'outil interne actuel en une couche
+        praticiens propre et vendable.
+      </p>
+      <p>
+        Si le focus reste quasi exclusif sur MERLIN, l'horizon n'est plus "plusieurs mois avant quelque chose de serieux",
+        mais plutot <strong>quelques semaines pour atteindre une V1 praticiens credible</strong>.
+      </p>
+      <p class="footer-note">
+        Sources de reference: planning operationnel 10 jours, decision go/no-go pilote ferme, checklist validation audio prod,
+        runbook secrets et procedure redeploiement VPS.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
