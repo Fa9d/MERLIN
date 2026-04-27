@@ -384,6 +384,12 @@ def test_core_flow_smoke() -> None:
             assert room_payload["practitioner_token"] == "jwt-practitioner-test-token"
             assert room_payload["client_token"] == "jwt-client-test-token"
 
+            hidden_room_resp = client.post(
+                f"/api/v1/sessions/{second_session['id']}/room",
+                headers=second_operator_headers,
+            )
+            assert hidden_room_resp.status_code == 404
+
             start_session_resp = client.post(
             f"/api/v1/sessions/{second_session['id']}/start",
             json={
@@ -391,6 +397,14 @@ def test_core_flow_smoke() -> None:
             },
             headers=auth_headers,
         )
+            hidden_start_session_resp = client.post(
+            f"/api/v1/sessions/{second_session['id']}/start",
+            json={
+                "actual_start_at": "2026-04-21T13:00:00Z",
+            },
+            headers=second_operator_headers,
+        )
+            assert hidden_start_session_resp.status_code == 404
             audio_provision_resp = client.post(
             f"/api/v1/audio-sessions/sessions/{second_session['id']}/provision",
             json={},
@@ -398,6 +412,13 @@ def test_core_flow_smoke() -> None:
         )
             assert audio_provision_resp.status_code == 201
             assert audio_provision_resp.json()["audio_session_status_code"] == "active"
+
+            hidden_audio_provision_resp = client.post(
+            f"/api/v1/audio-sessions/sessions/{second_session['id']}/provision",
+            json={},
+            headers=second_operator_headers,
+        )
+            assert hidden_audio_provision_resp.status_code == 404
 
             assert start_session_resp.status_code == 200
             assert start_session_resp.json()["session_status_code"] == "in_progress"
@@ -418,6 +439,12 @@ def test_core_flow_smoke() -> None:
             assert isinstance(join_resp.json()["token"], str)
             assert len(join_resp.json()["token"]) > 20
 
+            hidden_join_resp = client.post(
+            f"/api/v1/audio-sessions/{audio_provision_resp.json()['id']}/operator-join",
+            headers=second_operator_headers,
+        )
+            assert hidden_join_resp.status_code == 404
+
             client_join_resp = client.post(
             f"/api/v1/audio-sessions/{audio_provision_resp.json()['id']}/client-join",
             headers=auth_headers,
@@ -428,12 +455,24 @@ def test_core_flow_smoke() -> None:
             assert isinstance(client_join_resp.json()["token"], str)
             assert len(client_join_resp.json()["token"]) > 20
 
+            hidden_client_join_resp = client.post(
+            f"/api/v1/audio-sessions/{audio_provision_resp.json()['id']}/client-join",
+            headers=second_operator_headers,
+        )
+            assert hidden_client_join_resp.status_code == 404
+
             recording_start_resp = client.post(
                 f"/api/v1/audio-recordings/audio-sessions/{audio_provision_resp.json()['id']}/start",
                 headers=auth_headers,
             )
             assert recording_start_resp.status_code == 201
             assert recording_start_resp.json()["audio_recording_status_code"] == "recording"
+
+            hidden_recording_start_resp = client.post(
+                f"/api/v1/audio-recordings/audio-sessions/{audio_provision_resp.json()['id']}/start",
+                headers=second_operator_headers,
+            )
+            assert hidden_recording_start_resp.status_code == 404
 
             recording_list_resp = client.get(
                 f"/api/v1/audio-recordings?audio_session_id={audio_provision_resp.json()['id']}",
@@ -448,6 +487,12 @@ def test_core_flow_smoke() -> None:
             )
             assert recording_stop_resp.status_code == 200
             assert recording_stop_resp.json()["audio_recording_status_code"] == "ready"
+
+            hidden_recording_stop_resp = client.post(
+                f"/api/v1/audio-recordings/{recording_start_resp.json()['id']}/stop",
+                headers=second_operator_headers,
+            )
+            assert hidden_recording_stop_resp.status_code == 404
 
             close_session_resp = client.post(
             f"/api/v1/sessions/{second_session['id']}/close",
@@ -466,6 +511,24 @@ def test_core_flow_smoke() -> None:
             headers=auth_headers,
         )
             assert close_session_resp.status_code == 200
+
+            hidden_close_session_resp = client.post(
+            f"/api/v1/sessions/{third_session['id']}/close",
+            json={
+                "actual_end_at": "2026-04-21T13:50:00Z",
+                "session_status_code": "completed",
+                "presenting_topic_text": "Besoin de soutien",
+                "session_highlights_text": "Le client a precise son contexte principal.",
+                "operator_assessment_text": "Echange stable et coherent.",
+                "vigilance_level_code": "watch",
+                "transcript_text": "Je dors mal, je me sens depasse et je ne sais plus par ou commencer.",
+                "follow_up_actions_text": "Proposer un suivi dans une semaine.",
+                "next_session_focus_text": "Clarifier les declencheurs.",
+                "client_visible": True,
+            },
+            headers=auth_headers,
+        )
+            assert hidden_close_session_resp.status_code == 404
             close_payload = close_session_resp.json()
             assert close_payload["session"]["session_status_code"] == "completed"
             assert close_payload["session"]["duration_minutes"] == 50

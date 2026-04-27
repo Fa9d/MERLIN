@@ -19,6 +19,41 @@ from app.schemas.audio_recording import AudioRecordingRead
 router = APIRouter(prefix="/audio-recordings", tags=["audio-recordings"])
 
 
+def _get_owned_audio_session_or_404(
+    audio_session_id: str,
+    db: Session,
+    current_user: AppUser,
+) -> AudioSession:
+    audio_session = db.get(AudioSession, audio_session_id)
+    if audio_session is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    session_record = db.get(SessionRecord, audio_session.session_id)
+    if session_record is None or session_record.operator_user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    return audio_session
+
+
+def _get_owned_audio_recording_or_404(
+    audio_recording_id: str,
+    db: Session,
+    current_user: AppUser,
+) -> AudioRecording:
+    recording = db.get(AudioRecording, audio_recording_id)
+    if recording is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Enregistrement audio introuvable.",
+        )
+    audio_session = db.get(AudioSession, recording.audio_session_id)
+    session_record = db.get(SessionRecord, audio_session.session_id) if audio_session else None
+    if session_record is None or session_record.operator_user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Enregistrement audio introuvable.",
+        )
+    return recording
+
+
 def _normalize_livekit_api_url(ws_url: str) -> str:
     if ws_url.startswith("ws://"):
         return f"http://{ws_url.removeprefix('ws://')}"
@@ -154,9 +189,7 @@ async def start_audio_recording(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> AudioRecording:
-    audio_session = db.get(AudioSession, audio_session_id)
-    if audio_session is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
     if not audio_session.recording_enabled:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -213,14 +246,9 @@ async def start_audio_recording(
 async def stop_audio_recording(
     audio_recording_id: str,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_operator()),
 ) -> AudioRecording:
-    recording = db.get(AudioRecording, audio_recording_id)
-    if recording is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Enregistrement audio introuvable.",
-        )
+    recording = _get_owned_audio_recording_or_404(audio_recording_id, db, current_user)
     if recording.audio_recording_status_code not in {
         AudioRecordingStatusCode.starting,
         AudioRecordingStatusCode.recording,

@@ -45,6 +45,17 @@ from app.schemas.session import (
 router = APIRouter(prefix="/sessions", tags=["sessions"])
 
 
+def _get_owned_session_or_404(
+    session_id: str,
+    db: Session,
+    current_user: AppUser,
+) -> SessionRecord:
+    session_record = db.get(SessionRecord, session_id)
+    if session_record is None or session_record.operator_user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    return session_record
+
+
 def _normalize_text_fragment(value: str | None) -> str | None:
     if value is None:
         return None
@@ -289,11 +300,9 @@ async def close_session(
     session_id: str,
     payload: SessionClose,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_operator()),
 ) -> SessionCloseResult:
-    session_record = db.get(SessionRecord, session_id)
-    if session_record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     if session_record.session_status_code in {
         SessionStatusCode.completed,
@@ -456,11 +465,9 @@ def start_session(
     session_id: str,
     payload: SessionStart,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_operator()),
 ) -> SessionRecord:
-    session_record = db.get(SessionRecord, session_id)
-    if session_record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     if session_record.session_status_code in {
         SessionStatusCode.completed,
@@ -525,11 +532,9 @@ def get_session(
 async def create_session_room(
     session_id: str,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_operator()),
 ) -> SessionRoomRead:
-    session_record = db.get(SessionRecord, session_id)
-    if session_record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     try:
         room_payload = await create_livekit_room_for_session(db, session_record)
@@ -545,9 +550,7 @@ async def start_session_recording(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> SessionRecordingRead:
-    session_record = db.get(SessionRecord, session_id)
-    if session_record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     try:
         recording: AudioRecording = await start_livekit_recording_for_session(
@@ -575,11 +578,9 @@ async def stop_session_recording(
     session_id: str,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_operator()),
 ) -> SessionRecordingRead:
-    session_record = db.get(SessionRecord, session_id)
-    if session_record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     try:
         recording: AudioRecording = await stop_livekit_recording_for_session(db, session_record)

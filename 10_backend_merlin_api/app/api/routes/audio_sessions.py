@@ -15,6 +15,31 @@ from app.schemas.audio_session import AudioSessionJoinRead, AudioSessionProvisio
 router = APIRouter(prefix="/audio-sessions", tags=["audio-sessions"])
 
 
+def _get_owned_session_or_404(
+    session_id: str,
+    db: Session,
+    current_user: AppUser,
+) -> SessionRecord:
+    session_record = db.get(SessionRecord, session_id)
+    if session_record is None or session_record.operator_user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    return session_record
+
+
+def _get_owned_audio_session_or_404(
+    audio_session_id: str,
+    db: Session,
+    current_user: AppUser,
+) -> AudioSession:
+    audio_session = db.get(AudioSession, audio_session_id)
+    if audio_session is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    session_record = db.get(SessionRecord, audio_session.session_id)
+    if session_record is None or session_record.operator_user_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    return audio_session
+
+
 def _build_room_name(session_record: SessionRecord) -> str:
     return f"merlin-session-{session_record.session_sequence_number}-{session_record.id[:8]}"
 
@@ -88,9 +113,7 @@ def provision_audio_session(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> AudioSession:
-    session_record = db.get(SessionRecord, session_id)
-    if session_record is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     if session_record.session_status_code in {
         SessionStatusCode.completed,
@@ -179,9 +202,7 @@ def create_operator_join_context(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> AudioSessionJoinRead:
-    audio_session = db.get(AudioSession, audio_session_id)
-    if audio_session is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
 
     ws_url, _, _ = _ensure_livekit_config()
     token = _build_operator_join_token(audio_session, current_user)
@@ -199,11 +220,9 @@ def create_operator_join_context(
 def create_client_join_context(
     audio_session_id: str,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_operator()),
 ) -> AudioSessionJoinRead:
-    audio_session = db.get(AudioSession, audio_session_id)
-    if audio_session is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session audio introuvable.")
+    audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
 
     ws_url, _, _ = _ensure_livekit_config()
     token = _build_join_token(
