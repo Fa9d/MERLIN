@@ -38,6 +38,13 @@ services:
       context: ./10_backend_merlin_api
       dockerfile: Dockerfile
     restart: unless-stopped
+    command:
+      - /bin/sh
+      - -ec
+      - >-
+        mkdir -p /app/storage/recordings &&
+        chmod 0775 /app/storage/recordings &&
+        exec uvicorn app.main:app --host 0.0.0.0 --port 8000
     env_file:
       - .env.prod
     depends_on:
@@ -149,6 +156,8 @@ services:
         condition: service_healthy
       livekit:
         condition: service_started
+      api:
+        condition: service_healthy
     environment:
       EGRESS_CONFIG_BODY: |-
         api_key: ${LIVEKIT_API_KEY}

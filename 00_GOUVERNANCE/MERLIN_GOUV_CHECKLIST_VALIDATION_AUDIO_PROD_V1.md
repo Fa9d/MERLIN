@@ -16,6 +16,7 @@ Cette checklist valide en production:
 - l'emission des contextes de jonction `operator` et `client`;
 - une connexion navigateur reelle a la salle LiveKit via `/audio-test`;
 - le cycle `start recording -> stop recording`;
+- l'ecriture physique du fichier audio sur le volume partage de production;
 - l'ecriture en base des statuts audio et du `failure_reason` si echec;
 - le nettoyage des objets de test crees.
 
@@ -112,6 +113,13 @@ Succes minimal:
 - `output_location` est renseigne;
 - si `output_location` pointe vers un chemin local, le fichier existe dans le conteneur `merlin-api-1`.
 
+Succes confirme au 2026-04-27:
+
+- fichier `.ogg` reel observe dans `/app/storage/recordings`;
+- BDD en `audio_recording_status_code = ready`;
+- `failure_reason` vide;
+- cause racine de l'echec precedent identifiee puis corrigee: permissions du volume Docker `merlin_recordings`.
+
 Si echec:
 
 - conserver la sortie du script;
@@ -120,6 +128,11 @@ Si echec:
   - echec de config `MERLIN_MEDIA_*` ou `LIVEKIT_*`;
   - echec de jonction navigateur / micro;
   - echec d'egress ou d'ecriture de fichier.
+
+Correctif infra a conserver:
+
+- le conteneur API initialise desormais `/app/storage/recordings` en `0775` au demarrage;
+- `livekit-egress` demarre apres API saine afin d'eviter un retour au mauvais etat de permissions apres redeploiement.
 
 ---
 

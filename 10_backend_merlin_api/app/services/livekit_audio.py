@@ -19,6 +19,7 @@ from app.db.session import SessionLocal
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
 from app.models.client import Client
+from app.models.derived_document import DerivedDocument
 from app.models.enums import (
     AnalysisNextStepCode,
     AudioProviderCode,
@@ -28,6 +29,7 @@ from app.models.enums import (
 )
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
+from app.services.session_documents import ensure_session_derived_document
 
 
 logger = logging.getLogger(__name__)
@@ -449,6 +451,12 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             )
         )
         if existing_note is not None:
+            existing_document = db.scalar(
+                select(DerivedDocument).where(DerivedDocument.source_note_id == existing_note.id)
+            )
+            if existing_document is None:
+                ensure_session_derived_document(db, session_record, existing_note)
+                db.commit()
             logger.info(
                 "Note deja presente pour la seance %s, pipeline audio ignore pour eviter un doublon.",
                 session_id,
@@ -514,5 +522,7 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             retention_class=session_record.retention_class,
         )
         db.add(generated_note)
+        db.flush()
+        ensure_session_derived_document(db, session_record, generated_note)
         db.commit()
         logger.info("Pipeline post-enregistrement complete pour la seance %s.", session_id)

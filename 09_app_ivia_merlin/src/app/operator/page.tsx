@@ -64,6 +64,7 @@ export default function OperatorPage() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoadingDashboard, setIsLoadingDashboard] = useState(false);
   const [isCreatingSession, setIsCreatingSession] = useState(false);
+  const [isCreatingListeningSlot, setIsCreatingListeningSlot] = useState(false);
   const [isProvisioningAudio, setIsProvisioningAudio] = useState(false);
   const [isStartingAudioRecording, setIsStartingAudioRecording] = useState(false);
   const [isStoppingAudioRecording, setIsStoppingAudioRecording] = useState(false);
@@ -227,8 +228,8 @@ export default function OperatorPage() {
     setAudioRecordingSuccessMessage(null);
   }
 
-  async function handleCreateSession(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleCreateSession(event?: { preventDefault?: () => void }) {
+    event?.preventDefault?.();
     if (!session || !selectedClientId) {
       return;
     }
@@ -299,6 +300,65 @@ export default function OperatorPage() {
       );
     } finally {
       setIsProvisioningAudio(false);
+    }
+  }
+
+  async function handleCreateListeningSlot(event?: { preventDefault?: () => void }) {
+    event?.preventDefault?.();
+    if (!session || !selectedClientId) {
+      return;
+    }
+
+    setIsCreatingListeningSlot(true);
+    setDashboardErrorMessage(null);
+    setSessionSuccessMessage(null);
+    setSessionClosureSuccessMessage(null);
+    setAudioSessionSuccessMessage(null);
+    setAudioRecordingSuccessMessage(null);
+
+    try {
+      const createdSession = await createSession(
+        {
+          client_id: selectedClientId,
+          session_mode_code: sessionModeCode,
+          session_channel_code: sessionChannelCode,
+          scheduled_start_at: scheduledStartAt
+            ? new Date(scheduledStartAt).toISOString()
+            : null,
+          duration_minutes: durationMinutes ? Number(durationMinutes) : null,
+          session_status_code: "scheduled",
+        },
+        session.access_token,
+      );
+
+      const provisionedAudioSession = await provisionAudioSession(
+        createdSession.id,
+        session.access_token,
+      );
+
+      const [nextSessions, nextAudioSessions] = await Promise.all([
+        listSessions(session.access_token),
+        listAudioSessions(session.access_token),
+      ]);
+      setSessions(nextSessions);
+      setAudioSessions(nextAudioSessions);
+      setSelectedSessionId(createdSession.id);
+      setPlannedActualStartAt("");
+      setSessionModeCode("follow_up");
+      setSessionSuccessMessage(
+        `Creneau ${createdSession.session_sequence_number} cree et salle ${provisionedAudioSession.room_name} preparee.`,
+      );
+      setAudioSessionSuccessMessage(
+        "La salle audio est prete. Tu peux maintenant generer le lien client.",
+      );
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Impossible de creer le creneau d'ecoute.",
+      );
+    } finally {
+      setIsCreatingListeningSlot(false);
     }
   }
 
@@ -612,10 +672,10 @@ export default function OperatorPage() {
             <article className="card">
               <div className="stack-lg">
                 <div>
-                  <h3>Planifier une seance</h3>
+                  <h3>Creer un creneau d'ecoute</h3>
                   <p>
-                    Cette vue permet maintenant de transformer une entree client en seance operateur
-                    planifiee, avec numerotation automatique par client.
+                    Le praticien doit pouvoir creer une seance, preparer la salle et envoyer le
+                    lien client sans naviguer entre plusieurs etapes techniques.
                   </p>
                 </div>
 
@@ -630,7 +690,7 @@ export default function OperatorPage() {
                 {clients.length === 0 ? (
                   <p>Aucun client encore enregistre.</p>
                 ) : (
-                  <form className="form-stack" onSubmit={handleCreateSession}>
+                  <form className="form-stack" onSubmit={handleCreateListeningSlot}>
                     <label className="field">
                       <span>Client</span>
                       <select
@@ -754,12 +814,25 @@ export default function OperatorPage() {
                     <div className="cta-row">
                       <button
                         className="button button-primary"
-                        disabled={isCreatingSession || !selectedClientId}
+                        disabled={isCreatingListeningSlot || !selectedClientId}
                         type="submit"
+                      >
+                        {isCreatingListeningSlot
+                          ? "Creation..."
+                          : "Creer et preparer la salle"}
+                      </button>
+                      <button
+                        className="button button-secondary"
+                        disabled={isCreatingSession || !selectedClientId}
+                        onClick={handleCreateSession}
+                        type="button"
                       >
                         {isCreatingSession ? "Creation..." : "Creer la seance"}
                       </button>
                     </div>
+                    <p className="inline-note">
+                      Action principale: cree la seance puis prepare immediatement la salle audio.
+                    </p>
                   </form>
                 )}
 
@@ -825,7 +898,7 @@ export default function OperatorPage() {
                 </div>
 
                 <div className="stack-md">
-                  <h3>Audio natif</h3>
+                  <h3>Salle audio et enregistrement</h3>
                   {sessions.length === 0 ? (
                     <p>Aucune seance disponible pour preparer l&apos;audio.</p>
                   ) : (
@@ -961,7 +1034,7 @@ export default function OperatorPage() {
                           onClick={handleProvisionAudioSession}
                           type="button"
                         >
-                          {isProvisioningAudio ? "Preparation..." : "Preparer l'audio"}
+                          {isProvisioningAudio ? "Preparation..." : "Preparer la salle"}
                         </button>
                       </div>
                     </div>

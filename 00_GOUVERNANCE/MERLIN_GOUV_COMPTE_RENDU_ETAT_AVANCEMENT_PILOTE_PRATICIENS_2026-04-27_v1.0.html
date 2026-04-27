@@ -301,8 +301,8 @@
       </article>
       <article class="kpi">
         <div class="kpi-label">Risque principal</div>
-        <div class="kpi-value">Audio</div>
-        <p class="small">Le dernier verrou technique visible est la chaine audio temps reel et enregistrement.</p>
+        <div class="kpi-value">Praticiens</div>
+        <p class="small">L'audio prod est valide. Le prochain vrai bloc a fermer est la couche praticiens inscrits.</p>
       </article>
       <article class="kpi">
         <div class="kpi-label">Lecture calendrier</div>
@@ -328,17 +328,17 @@
         <div class="status-mid" style="margin-top: 12px;">
           <h3>Ce qui est presque ferme</h3>
           <ul>
-            <li>Chaine audio reelle naviguateur + LiveKit + enregistrement.</li>
-            <li>Petit durcissement UX autour du micro et des parcours audio.</li>
-            <li>Clarification finale du chemin audio canonique.</li>
+            <li>Couche praticiens complete, proprement isolee et presentable.</li>
+            <li>Suite de traitement audio metier sur les vrais fichiers produits.</li>
+            <li>Reduction des manipulations ops manuelles autour des validations prod.</li>
           </ul>
         </div>
         <div class="status-risk" style="margin-top: 12px;">
           <h3>Ce qui n'est pas encore pret pour une ouverture large</h3>
           <ul>
-            <li>Perimetre audio presente comme totalement stabilise.</li>
             <li>Couche praticiens complete et proprement isolee.</li>
             <li>Exploitation suffisamment automatisee pour une forte hausse de volume.</li>
+            <li>Traitement audio clinique industrialise sur volume reel.</li>
           </ul>
         </div>
       </article>
@@ -371,7 +371,7 @@
             </tr>
             <tr>
               <td>Audio</td>
-              <td>Control-plane fonctionnel, recette dediee en place, fermeture reelle encore a confirmer sur le dernier mile.</td>
+              <td>Valide en production de bout en bout: join navigateur, egress, fichier reel sur volume partage, statut BDD `ready`.</td>
             </tr>
             <tr>
               <td>Couche praticiens</td>
@@ -406,6 +406,7 @@
           <ul>
             <li>LiveKit porte la salle temps reel.</li>
             <li>Chemin frontend canonique: <code>/audio-sessions</code> + <code>/audio-recordings</code>.</li>
+            <li>Enregistrement prod valide sur fichier reel `.ogg` via `livekit-egress` et volume partage.</li>
             <li>Dette restante: coexistence avec des routes legacy <code>/sessions/{id}/room</code> et <code>/sessions/{id}/recording/*</code>.</li>
           </ul>
         </div>
@@ -458,8 +459,8 @@
           <tbody>
             <tr>
               <td>Pilote praticiens ferme</td>
-              <td>7 a 12 jours calendrier</td>
-              <td>Horizon cible autour du 2026-05-05 au 2026-05-09.</td>
+              <td>5 a 10 jours calendrier</td>
+              <td>Horizon cible autour du 2026-05-02 au 2026-05-07.</td>
             </tr>
             <tr>
               <td>V1 praticiens propre</td>
@@ -506,17 +507,17 @@
         <div class="timeline-row">
           <div class="timeline-tag">J9</div>
           <div>
-            <strong>Audio de bout en bout.</strong>
-            Verifier jonction operateur/client, start, stop, statut BDD, <code>output_location</code>,
-            fichier reel et comportement navigateur.
+            <strong>Audio de bout en bout valide.</strong>
+            Jonction operateur/client, start, stop, statut BDD, <code>output_location</code> et
+            fichier reel verifies en production.
           </div>
         </div>
         <div class="timeline-row">
           <div class="timeline-tag">J10</div>
           <div>
-            <strong>Nettoyage architecture audio.</strong>
-            Acter officiellement le chemin canonique <code>/audio-sessions</code> + <code>/audio-recordings</code>,
-            releguer les routes legacy et deployer le correctif frontend popup micro.
+            <strong>Durcissement audio.</strong>
+            Rendre permanent le bootstrap des permissions du volume d'enregistrements, acter officiellement
+            le chemin canonique <code>/audio-sessions</code> + <code>/audio-recordings</code> et releguer les routes legacy.
           </div>
         </div>
         <div class="timeline-row">
@@ -542,10 +543,10 @@
       <article class="panel">
         <h2>Ce qui reste avant une V1 praticiens propre</h2>
         <ul>
-          <li>Fermer completement la chaine audio en prod.</li>
-          <li>Deployer le correctif frontend popup micro.</li>
           <li>Creer la vraie couche praticiens, distincte des surfaces internes actuelles.</li>
           <li>Verifier inscription, login et parcours quotidien praticien.</li>
+          <li>Enchainer le traitement metier des vrais fichiers audio produits.</li>
+          <li>Durcir l'infra audio pour qu'aucun redeploiement ne casse les permissions du volume.</li>
           <li>Rendre la recette prod plus courte et moins dependante du shell manuel.</li>
           <li>Poursuivre le nettoyage des traces de test prod.</li>
         </ul>
@@ -568,9 +569,9 @@
       <p>
         MERLIN n'est plus un prototype flou. Le noyau est reel, prod, verifie et pilotable. La lecture juste aujourd'hui
         est la suivante: le produit est pret pour un <strong>pilote ferme encadre</strong>, mais pas encore pour une
-        <strong>ouverture large</strong>. Le coeur documentaire et les droits sont devant le planning initial. Le dernier
-        verrou technique visible est concentre sur l'audio et sur la transformation de l'outil interne actuel en une couche
-        praticiens propre et vendable.
+        <strong>ouverture large</strong>. Le coeur documentaire, les droits et l'audio prod sont devant le planning initial.
+        Le principal chantier restant est maintenant la transformation de l'outil interne actuel en une couche praticiens
+        propre, cloisonnee et vendable, avec traitement audio metier appuye sur les vrais fichiers produits.
       </p>
       <p>
         Si le focus reste quasi exclusif sur MERLIN, l'horizon n'est plus "plusieurs mois avant quelque chose de serieux",

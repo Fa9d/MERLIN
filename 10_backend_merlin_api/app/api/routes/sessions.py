@@ -1,4 +1,3 @@
-import re
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
@@ -15,7 +14,6 @@ from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
 from app.models.client import Client
-from app.models.derived_document import DerivedDocument
 from app.models.enums import (
     AnalysisNextStepCode,
     AudioSessionStatusCode,
@@ -32,6 +30,7 @@ from app.services.livekit_audio import (
     start_livekit_recording_for_session,
     stop_livekit_recording_for_session,
 )
+from app.services.session_documents import ensure_session_derived_document
 from app.schemas.session import (
     SessionClose,
     SessionCloseResult,
@@ -54,51 +53,6 @@ def _get_owned_session_or_404(
     if session_record is None or session_record.operator_user_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
     return session_record
-
-
-def _normalize_text_fragment(value: str | None) -> str | None:
-    if value is None:
-        return None
-    normalized = re.sub(r"\s+", " ", value).strip()
-    return normalized or None
-
-
-def _ensure_terminal_punctuation(value: str | None) -> str | None:
-    normalized = _normalize_text_fragment(value)
-    if normalized is None:
-        return None
-    if normalized.endswith((".", "!", "?")):
-        return normalized
-    return f"{normalized}."
-
-
-def _build_labeled_sentence(label: str, value: str | None) -> str | None:
-    normalized = _ensure_terminal_punctuation(value)
-    if normalized is None:
-        return None
-    return f"{label}: {normalized}"
-
-
-def _build_generated_document_title(session_record: SessionRecord) -> str:
-    return f"Synthese de seance {session_record.session_sequence_number}"
-
-
-def _build_document_audience_code(
-    client_delivery_requested: bool,
-    validated_by_practitioner: bool,
-) -> str:
-    if not client_delivery_requested:
-        return "internal"
-    if validated_by_practitioner:
-        return "client"
-    return "client_pending_review"
-
-
-def _build_document_client_visibility(
-    client_delivery_requested: bool,
-    validated_by_practitioner: bool,
-) -> bool:
-    return bool(client_delivery_requested and validated_by_practitioner)
 
 
 def _compute_duration_minutes(
@@ -162,31 +116,6 @@ def _build_client_facing_summary(
     ]
     if next_step:
         parts.append(f"Prochaine etape: {next_step}.")
-    return " ".join(parts)
-
-
-def _build_derived_document_text(generated_note: SessionNote) -> str:
-    parts = []
-    primary_summary = _ensure_terminal_punctuation(
-        generated_note.client_facing_summary_text or generated_note.summary_text
-    )
-    if primary_summary:
-        parts.append(primary_summary)
-
-    follow_up_sentence = _build_labeled_sentence(
-        "Suites proposees",
-        generated_note.follow_up_actions_text,
-    )
-    if follow_up_sentence:
-        parts.append(follow_up_sentence)
-
-    next_focus_sentence = _build_labeled_sentence(
-        "Focus prochaine seance",
-        generated_note.next_session_focus_text,
-    )
-    if next_focus_sentence:
-        parts.append(next_focus_sentence)
-
     return " ".join(parts)
 
 
@@ -356,6 +285,24 @@ async def close_session(
         linked_audio_session.audio_session_status_code = AudioSessionStatusCode.closed
         db.add(linked_audio_session)
 
+    existing_generated_note = db.scalar(
+        select(SessionNote)
+        .where(SessionNote.session_id == session_id)
+        .order_by(SessionNote.created_at.desc())
+    )
+    if existing_generated_note is not None and not payload.transcript_text:
+        generated_document = ensure_session_derived_document(db, session_record, existing_generated_note)
+        db.add(session_record)
+        db.commit()
+        db.refresh(session_record)
+        db.refresh(existing_generated_note)
+        db.refresh(generated_document)
+        return SessionCloseResult(
+            session=session_record,
+            generated_note=existing_generated_note,
+            generated_document=generated_document,
+        )
+
     latest_note_sequence_number = db.scalar(
         select(func.max(SessionNote.note_sequence_number)).where(SessionNote.session_id == session_id)
     )
@@ -427,27 +374,7 @@ async def close_session(
     db.add(generated_note)
     db.flush()
 
-    generated_document = DerivedDocument(
-        client_id=session_record.client_id,
-        session_id=session_record.id,
-        source_note_id=generated_note.id,
-        document_kind_code="session_summary",
-        audience_code=_build_document_audience_code(
-            client_delivery_requested=generated_note.client_visible,
-            validated_by_practitioner=generated_note.validated_by_practitioner,
-        ),
-        title=_build_generated_document_title(session_record),
-        body_text=_build_derived_document_text(generated_note),
-        client_visible=_build_document_client_visibility(
-            client_delivery_requested=generated_note.client_visible,
-            validated_by_practitioner=generated_note.validated_by_practitioner,
-        ),
-        record_status=session_record.record_status,
-        data_sensitivity_class=session_record.data_sensitivity_class,
-        retention_class=session_record.retention_class,
-    )
-
-    db.add(generated_document)
+    generated_document = ensure_session_derived_document(db, session_record, generated_note)
     db.add(session_record)
     db.commit()
     db.refresh(session_record)

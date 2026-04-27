@@ -36,7 +36,7 @@ export function AudioTestRoom() {
 
   async function handleConnect() {
     if (!wsUrl || !token) {
-      setErrorMessage("Le lien de test audio est incomplet.");
+      setErrorMessage("Le lien de salle audio est incomplet.");
       return;
     }
 
@@ -133,7 +133,7 @@ export function AudioTestRoom() {
   return (
     <div className="page-shell">
       <header className="topbar">
-        <div className="wordmark">IVIA / Test audio</div>
+        <div className="wordmark">IVIA / Salle audio</div>
         <nav className="nav">
           <Link href="/">Accueil</Link>
           <Link href="/operator">Operateur</Link>
@@ -142,11 +142,11 @@ export function AudioTestRoom() {
 
       <main className="section">
         <div className="section-header">
-          <div className="eyebrow">LIVE AUDIO CHECK</div>
-          <h2>Participant de test navigateur</h2>
+          <div className="eyebrow">SALLE AUDIO</div>
+          <h2>Connexion a la seance</h2>
           <p>
-            Cette page sert a verifier la salle LiveKit en conditions reelles avec un second
-            participant local avant d&apos;introduire le vrai parcours client.
+            Rejoins la salle audio securisee envoyee par ton praticien et autorise le micro pour
+            demarrer l&apos;echange.
           </p>
         </div>
 

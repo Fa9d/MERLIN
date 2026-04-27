@@ -758,3 +758,245 @@ def test_core_flow_smoke() -> None:
             audio_recordings_routes._stop_provider_recording = original_stop_provider_recording
             sessions_routes.generate_session_note_from_transcript = original_generate_session_note
             sessions_routes.create_livekit_room_for_session = original_create_livekit_room_for_session
+
+
+def test_canonical_audio_recording_generates_note_and_document_without_close_duplicates() -> None:
+    tmp_db = Path("test_audio_pipeline_merlin.db").resolve()
+    if tmp_db.exists():
+        tmp_db.unlink()
+
+    os.environ["MERLIN_DATABASE_URL"] = f"sqlite:///{tmp_db.as_posix()}"
+    os.environ["MERLIN_AUTO_CREATE_TABLES"] = "true"
+    os.environ["MERLIN_MEDIA_LIVEKIT_WS_URL"] = "wss://livekit.example.test"
+    os.environ["MERLIN_MEDIA_LIVEKIT_PUBLIC_WS_URL"] = "wss://livekit.example.test"
+    os.environ["MERLIN_MEDIA_LIVEKIT_API_KEY"] = "devkey"
+    os.environ["MERLIN_MEDIA_LIVEKIT_API_SECRET"] = "devsecret-devsecret-devsecret-2026"
+    os.environ["MERLIN_MEDIA_RECORDING_STRATEGY"] = "metadata_only"
+
+    from app.main import app
+    from app.api.routes import audio_recordings as audio_recordings_routes
+    from app.core.config import settings
+    from app.services import livekit_audio
+
+    object.__setattr__(settings, "assemblyai_api_key", "assembly-test-key")
+
+    with TestClient(app) as client:
+        original_start_provider_recording = audio_recordings_routes._start_provider_recording
+        original_stop_provider_recording = audio_recordings_routes._stop_provider_recording
+        original_transcribe_audio = livekit_audio._transcribe_audio_with_assemblyai
+        original_generate_session_note = livekit_audio.generate_session_note_from_transcript
+        audio_recordings_routes._start_provider_recording = AsyncMock(
+            return_value=(None, "/tmp/audio-recordings/test-recording.ogg")
+        )
+        audio_recordings_routes._stop_provider_recording = AsyncMock(
+            return_value="/tmp/audio-recordings/test-recording.ogg"
+        )
+        livekit_audio._transcribe_audio_with_assemblyai = AsyncMock(
+            return_value="Je me sens depasse et j'ai besoin d'une prochaine etape concrete."
+        )
+        livekit_audio.generate_session_note_from_transcript = AsyncMock(
+            return_value={
+                "production_note": {
+                    "summary_text": "Lecture structuree generee depuis l'audio.",
+                    "observations_text": "Le discours montre une surcharge et un besoin de clarte.",
+                    "follow_up_actions_text": "Prevoir un retour dans les prochains jours.",
+                    "next_session_focus_text": "Identifier les points de surcharge dominants.",
+                    "coeur_summary_text": "Charge relationnelle importante.",
+                    "corps_summary_text": "Fatigue persistante.",
+                    "esprit_summary_text": "Confusion sur la prochaine etape.",
+                    "etre_summary_text": "Sentiment de desorientation.",
+                    "vigilance_level_code": "watch",
+                    "next_step_type_code": "propose_follow_up",
+                },
+                "client_delivery": {
+                    "client_visible_recommended": False,
+                    "client_facing_summary_text": "Vous repartez avec une lecture plus claire de votre situation.",
+                },
+                "supervision": {
+                    "supervision_summary_text": "Surveiller l'epuisement et la charge diffuse.",
+                },
+                "research": {
+                    "research_notes_text": None,
+                },
+                "metadata": {
+                    "model_used": "claude-sonnet-4-20250514",
+                    "prompt_version": "session_note_cercle_v1",
+                    "complexity_score": None,
+                    "validated_by_practitioner": False,
+                    "practitioner_corrections": None,
+                },
+            }
+        )
+        try:
+            bootstrap_resp = client.post(
+                "/api/v1/auth/register",
+                json={
+                    "email": "admin-audio@example.com",
+                    "password": "admin-secret",
+                    "display_name": "Admin",
+                    "role": "admin_tech",
+                },
+            )
+            assert bootstrap_resp.status_code == 201
+
+            login_resp = client.post(
+                "/api/v1/auth/login",
+                json={
+                    "email": "admin-audio@example.com",
+                    "password": "admin-secret",
+                },
+            )
+            assert login_resp.status_code == 200
+            admin_headers = {
+                "Authorization": f"Bearer {login_resp.json()['access_token']}",
+            }
+
+            operator_register_resp = client.post(
+                "/api/v1/auth/register",
+                json={
+                    "email": "operator-audio@example.com",
+                    "password": "operator-secret",
+                    "display_name": "Operator Audio",
+                    "role": "operator",
+                },
+                headers=admin_headers,
+            )
+            assert operator_register_resp.status_code == 201
+
+            operator_login_resp = client.post(
+                "/api/v1/auth/login",
+                json={
+                    "email": "operator-audio@example.com",
+                    "password": "operator-secret",
+                },
+            )
+            assert operator_login_resp.status_code == 200
+            auth_headers = {
+                "Authorization": f"Bearer {operator_login_resp.json()['access_token']}",
+            }
+
+            client_resp = client.post(
+                "/api/v1/clients",
+                json={
+                    "first_name_or_alias": "Bob",
+                    "email": "bob.audio@example.com",
+                    "is_adult_confirmed": True,
+                },
+                headers=auth_headers,
+            )
+            assert client_resp.status_code == 201
+            client_id = client_resp.json()["id"]
+
+            intake_resp = client.post(
+                "/api/v1/intake-requests",
+                json={
+                    "client_id": client_id,
+                    "request_channel_code": "web_form",
+                    "request_for_code": "self",
+                    "primary_need_code": "clarification",
+                    "perceived_urgency_code": "non_urgent",
+                    "support_already_in_place": False,
+                },
+                headers=auth_headers,
+            )
+            assert intake_resp.status_code == 201
+            intake_id = intake_resp.json()["id"]
+
+            session_resp = client.post(
+                "/api/v1/sessions",
+                json={
+                    "client_id": client_id,
+                    "intake_request_id": intake_id,
+                    "session_mode_code": "follow_up",
+                    "session_channel_code": "phone",
+                    "session_status_code": "scheduled",
+                },
+                headers=auth_headers,
+            )
+            assert session_resp.status_code == 201
+            session_id = session_resp.json()["id"]
+
+            start_session_resp = client.post(
+                f"/api/v1/sessions/{session_id}/start",
+                json={"actual_start_at": "2026-04-21T13:00:00Z"},
+                headers=auth_headers,
+            )
+            assert start_session_resp.status_code == 200
+
+            audio_provision_resp = client.post(
+                f"/api/v1/audio-sessions/sessions/{session_id}/provision",
+                json={},
+                headers=auth_headers,
+            )
+            assert audio_provision_resp.status_code == 201
+            audio_session_id = audio_provision_resp.json()["id"]
+
+            recording_start_resp = client.post(
+                f"/api/v1/audio-recordings/audio-sessions/{audio_session_id}/start",
+                headers=auth_headers,
+            )
+            assert recording_start_resp.status_code == 201
+
+            recording_stop_resp = client.post(
+                f"/api/v1/audio-recordings/{recording_start_resp.json()['id']}/stop",
+                headers=auth_headers,
+            )
+            assert recording_stop_resp.status_code == 200
+            assert recording_stop_resp.json()["audio_recording_status_code"] == "ready"
+
+            list_session_notes_resp = client.get(
+                f"/api/v1/session-notes?session_id={session_id}",
+                headers=auth_headers,
+            )
+            assert list_session_notes_resp.status_code == 200
+            assert len(list_session_notes_resp.json()) == 1
+            generated_note = list_session_notes_resp.json()[0]
+            assert generated_note["summary_text"] == "Lecture structuree generee depuis l'audio."
+
+            list_derived_documents_resp = client.get(
+                f"/api/v1/derived-documents?session_id={session_id}",
+                headers=auth_headers,
+            )
+            assert list_derived_documents_resp.status_code == 200
+            assert len(list_derived_documents_resp.json()) == 1
+            generated_document = list_derived_documents_resp.json()[0]
+            assert generated_document["source_note_id"] == generated_note["id"]
+            assert generated_document["audience_code"] == "internal"
+            assert generated_document["client_visible"] is False
+
+            close_session_resp = client.post(
+                f"/api/v1/sessions/{session_id}/close",
+                json={
+                    "actual_end_at": "2026-04-21T13:20:00Z",
+                    "session_status_code": "completed",
+                    "presenting_topic_text": "Clarifier la situation",
+                    "session_highlights_text": "Synthese deja produite par la chaine audio.",
+                    "operator_assessment_text": "Echange stable.",
+                    "vigilance_level_code": "watch",
+                    "client_visible": False,
+                },
+                headers=auth_headers,
+            )
+            assert close_session_resp.status_code == 200
+            close_payload = close_session_resp.json()
+            assert close_payload["generated_note"]["id"] == generated_note["id"]
+            assert close_payload["generated_document"]["id"] == generated_document["id"]
+
+            list_session_notes_after_close_resp = client.get(
+                f"/api/v1/session-notes?session_id={session_id}",
+                headers=auth_headers,
+            )
+            assert list_session_notes_after_close_resp.status_code == 200
+            assert len(list_session_notes_after_close_resp.json()) == 1
+
+            list_derived_documents_after_close_resp = client.get(
+                f"/api/v1/derived-documents?session_id={session_id}",
+                headers=auth_headers,
+            )
+            assert list_derived_documents_after_close_resp.status_code == 200
+            assert len(list_derived_documents_after_close_resp.json()) == 1
+        finally:
+            audio_recordings_routes._start_provider_recording = original_start_provider_recording
+            audio_recordings_routes._stop_provider_recording = original_stop_provider_recording
+            livekit_audio._transcribe_audio_with_assemblyai = original_transcribe_audio
+            livekit_audio.generate_session_note_from_transcript = original_generate_session_note

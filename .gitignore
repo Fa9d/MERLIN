@@ -11,3 +11,5 @@ _ARCHIVES_IMPORT/
 deploy/certbot/www/
 memory/
 nginx/certbot/
+deploy/handoff/*.tgz
+merlin_*.tgz

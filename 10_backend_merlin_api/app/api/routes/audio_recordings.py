@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 from livekit import api as livekit_api
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -14,6 +14,7 @@ from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
 from app.models.enums import AudioRecordingStatusCode, AudioSessionStatusCode
 from app.models.session import SessionRecord
+from app.services.livekit_audio import run_post_recording_pipeline
 from app.schemas.audio_recording import AudioRecordingRead
 
 router = APIRouter(prefix="/audio-recordings", tags=["audio-recordings"])
@@ -245,6 +246,7 @@ async def start_audio_recording(
 @router.post("/{audio_recording_id}/stop", response_model=AudioRecordingRead)
 async def stop_audio_recording(
     audio_recording_id: str,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> AudioRecording:
@@ -258,16 +260,38 @@ async def stop_audio_recording(
             detail="Cet enregistrement n'est pas actif.",
         )
 
+    audio_session = db.get(AudioSession, recording.audio_session_id)
+    session_record = db.get(SessionRecord, audio_session.session_id) if audio_session else None
+
     try:
         recording.output_location = await _stop_provider_recording(recording)
         recording.audio_recording_status_code = AudioRecordingStatusCode.ready
         recording.ended_at = datetime.now(timezone.utc)
         recording.failure_reason = None
+        if session_record is not None:
+            session_record.audio_file_path = recording.output_location
     except Exception as exc:
         recording.audio_recording_status_code = AudioRecordingStatusCode.failed
         recording.failure_reason = str(exc)
 
     db.add(recording)
+    if session_record is not None:
+        db.add(session_record)
     db.commit()
     db.refresh(recording)
+    if (
+        session_record is not None
+        and recording.audio_recording_status_code == AudioRecordingStatusCode.ready
+        and recording.output_location
+        and (
+            recording.output_location.startswith("/")
+            or recording.output_location.startswith("http://")
+            or recording.output_location.startswith("https://")
+        )
+    ):
+        background_tasks.add_task(
+            run_post_recording_pipeline,
+            session_record.id,
+            recording.output_location,
+        )
     return recording

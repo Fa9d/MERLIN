@@ -1,0 +1,9 @@
+[Unit]
+Description=Run MERLIN PostgreSQL backup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/merlin
+ExecStart=/usr/local/bin/merlin-backup-postgres.sh
