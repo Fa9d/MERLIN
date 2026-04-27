@@ -13,6 +13,7 @@ def test_core_flow_smoke() -> None:
     os.environ["MERLIN_DATABASE_URL"] = f"sqlite:///{tmp_db.as_posix()}"
     os.environ["MERLIN_AUTO_CREATE_TABLES"] = "true"
     os.environ["MERLIN_MEDIA_LIVEKIT_WS_URL"] = "wss://livekit.example.test"
+    os.environ["MERLIN_MEDIA_LIVEKIT_PUBLIC_WS_URL"] = "wss://livekit.example.test"
     os.environ["MERLIN_MEDIA_LIVEKIT_API_KEY"] = "devkey"
     os.environ["MERLIN_MEDIA_LIVEKIT_API_SECRET"] = "devsecret-devsecret-devsecret-2026"
     os.environ["MERLIN_MEDIA_RECORDING_STRATEGY"] = "metadata_only"

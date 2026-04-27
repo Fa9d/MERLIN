@@ -35,6 +35,9 @@ class Settings:
     )
     media_provider_code: str = os.getenv("MERLIN_MEDIA_PROVIDER_CODE", "livekit")
     media_livekit_ws_url: str | None = os.getenv("MERLIN_MEDIA_LIVEKIT_WS_URL")
+    media_livekit_public_ws_url: str | None = os.getenv("MERLIN_MEDIA_LIVEKIT_PUBLIC_WS_URL") or os.getenv(
+        "MERLIN_MEDIA_LIVEKIT_WS_URL"
+    )
     media_livekit_api_key: str | None = os.getenv("MERLIN_MEDIA_LIVEKIT_API_KEY")
     media_livekit_api_secret: str | None = os.getenv("MERLIN_MEDIA_LIVEKIT_API_SECRET")
     livekit_url: str | None = os.getenv("LIVEKIT_URL") or os.getenv("MERLIN_MEDIA_LIVEKIT_WS_URL")

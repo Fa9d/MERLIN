@@ -48,11 +48,11 @@ def _build_client_identity(session_record: SessionRecord) -> str:
     return f"client-{session_record.client_id[:8]}"
 
 
-def _ensure_livekit_config() -> tuple[str, str, str]:
-    if not settings.media_livekit_ws_url:
+def _ensure_livekit_browser_config() -> tuple[str, str, str]:
+    if not settings.media_livekit_public_ws_url:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="MERLIN_MEDIA_LIVEKIT_WS_URL est absent.",
+            detail="MERLIN_MEDIA_LIVEKIT_PUBLIC_WS_URL est absent.",
         )
     if not settings.media_livekit_api_key:
         raise HTTPException(
@@ -65,7 +65,7 @@ def _ensure_livekit_config() -> tuple[str, str, str]:
             detail="MERLIN_MEDIA_LIVEKIT_API_SECRET est absent.",
         )
     return (
-        settings.media_livekit_ws_url,
+        settings.media_livekit_public_ws_url,
         settings.media_livekit_api_key,
         settings.media_livekit_api_secret,
     )
@@ -84,7 +84,7 @@ def _build_join_token(
     participant_identity: str,
     participant_name: str,
 ) -> str:
-    _, api_key, api_secret = _ensure_livekit_config()
+    _, api_key, api_secret = _ensure_livekit_browser_config()
     token = (
         livekit_api.AccessToken(api_key=api_key, api_secret=api_secret)
         .with_identity(participant_identity)
@@ -138,8 +138,8 @@ def provision_audio_session(
         return existing_audio_session
 
     provider_room_url = None
-    if settings.media_livekit_ws_url:
-        provider_room_url = settings.media_livekit_ws_url
+    if settings.media_livekit_public_ws_url:
+        provider_room_url = settings.media_livekit_public_ws_url
 
     audio_session = AudioSession(
         session_id=session_record.id,
@@ -204,7 +204,7 @@ def create_operator_join_context(
 ) -> AudioSessionJoinRead:
     audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
 
-    ws_url, _, _ = _ensure_livekit_config()
+    ws_url, _, _ = _ensure_livekit_browser_config()
     token = _build_operator_join_token(audio_session, current_user)
     return AudioSessionJoinRead(
         audio_session_id=audio_session.id,
@@ -224,7 +224,7 @@ def create_client_join_context(
 ) -> AudioSessionJoinRead:
     audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
 
-    ws_url, _, _ = _ensure_livekit_config()
+    ws_url, _, _ = _ensure_livekit_browser_config()
     token = _build_join_token(
         audio_session=audio_session,
         participant_identity=audio_session.client_participant_identity,

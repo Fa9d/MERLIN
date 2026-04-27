@@ -12,6 +12,8 @@ export function AudioTestRoom() {
   const [connectionState, setConnectionState] = useState("disconnected");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  const [isRequestingMicrophone, setIsRequestingMicrophone] = useState(false);
 
   const wsUrl = searchParams.get("wsUrl");
   const token = searchParams.get("token");
@@ -86,6 +88,37 @@ export function AudioTestRoom() {
     }
   }
 
+  function handleOpenMicrophonePrompt() {
+    setErrorMessage(null);
+    setIsPromptOpen(true);
+  }
+
+  async function handleAuthorizeMicrophone() {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setErrorMessage("Ce navigateur ne permet pas l'autorisation micro requise.");
+      setIsPromptOpen(false);
+      return;
+    }
+
+    setIsRequestingMicrophone(true);
+    setErrorMessage(null);
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+      setIsPromptOpen(false);
+      await handleConnect();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Le navigateur a refuse l'acces au micro.",
+      );
+    } finally {
+      setIsRequestingMicrophone(false);
+    }
+  }
+
   function handleDisconnect() {
     if (roomRef.current) {
       roomRef.current.disconnect();
@@ -142,7 +175,7 @@ export function AudioTestRoom() {
                 <button
                   className="button button-primary"
                   disabled={isConnecting || !wsUrl || !token || connectionState === "connected"}
-                  onClick={handleConnect}
+                  onClick={handleOpenMicrophonePrompt}
                   type="button"
                 >
                   {isConnecting ? "Connexion..." : "Rejoindre la salle"}
@@ -168,6 +201,44 @@ export function AudioTestRoom() {
             <div className="audio-stage" ref={remoteAudioContainerRef} />
           </article>
         </div>
+
+        {isPromptOpen ? (
+          <div className="permission-modal-backdrop" role="presentation">
+            <div
+              aria-describedby="audio-test-microphone-modal-description"
+              aria-labelledby="audio-test-microphone-modal-title"
+              aria-modal="true"
+              className="permission-modal"
+              role="dialog"
+            >
+              <h3 id="audio-test-microphone-modal-title">Autoriser le micro</h3>
+              <p
+                className="inline-note"
+                id="audio-test-microphone-modal-description"
+              >
+                Le navigateur va demander l'acces au micro avant la connexion a la salle.
+              </p>
+              <div className="permission-modal-actions">
+                <button
+                  className="button button-primary"
+                  disabled={isRequestingMicrophone}
+                  onClick={handleAuthorizeMicrophone}
+                  type="button"
+                >
+                  {isRequestingMicrophone ? "Demande en cours..." : "Autoriser le micro"}
+                </button>
+                <button
+                  className="button button-secondary"
+                  disabled={isRequestingMicrophone}
+                  onClick={() => setIsPromptOpen(false)}
+                  type="button"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </main>
     </div>
   );
