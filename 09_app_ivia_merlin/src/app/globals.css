@@ -277,6 +277,60 @@ a {
   max-width: 520px;
 }
 
+.auth-card-narrow {
+  max-width: 420px;
+}
+
+.muted-text {
+  color: var(--muted);
+}
+
+.muted-small {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.muted-sm-text {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.message-mb {
+  margin-bottom: 1rem;
+}
+
+.praticien-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.button-sm {
+  font-size: 0.88rem;
+  min-height: 2.2rem;
+  padding: 0 1rem;
+}
+
+.button-xs {
+  font-size: 0.85rem;
+  min-height: 2rem;
+  padding: 0 0.85rem;
+}
+
+.row-clickable {
+  cursor: pointer;
+}
+
+.row-selected td {
+  background: rgba(76, 100, 84, 0.07);
+}
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .inline-note {
   color: var(--muted);
   font-size: 0.92rem;

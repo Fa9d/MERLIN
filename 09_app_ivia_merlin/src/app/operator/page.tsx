@@ -765,9 +765,9 @@ export default function OperatorPage() {
                             )
                           }
                         >
-                          <option value="intake">Intake</option>
+                          <option value="intake">Accueil</option>
                           <option value="standard">Standard</option>
-                          <option value="follow_up">Follow-up</option>
+                          <option value="follow_up">Suivi</option>
                         </select>
                       </label>
 
@@ -958,12 +958,6 @@ export default function OperatorPage() {
 
                       <div className="stack-md">
                         <h4>Enregistrement</h4>
-                        <p className="inline-note">
-                          Strategie locale: <span className="mono">metadata_only</span>. Le cycle
-                          de capture est trace des maintenant; le branchement binaire final vers
-                          l&apos;egress LiveKit viendra ensuite.
-                        </p>
-
                         {selectedAudioRecording ? (
                           <div className="info-strip">
                             <span>{selectedAudioRecording.audio_recording_status_code}</span>
@@ -1161,10 +1155,10 @@ export default function OperatorPage() {
                               )
                             }
                           >
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                            <option value="no_show">No-show</option>
-                            <option value="escalated">Escalated</option>
+                            <option value="completed">Completee</option>
+                            <option value="cancelled">Annulee</option>
+                            <option value="no_show">Absence</option>
+                            <option value="escalated">Escaladee</option>
                           </select>
                         </label>
 
@@ -1183,8 +1177,8 @@ export default function OperatorPage() {
                             }
                           >
                             <option value="non_urgent">Non urgent</option>
-                            <option value="watch">Watch</option>
-                            <option value="priority">Priority</option>
+                            <option value="watch">Surveillance</option>
+                            <option value="priority">Prioritaire</option>
                             <option value="urgent">Urgent</option>
                           </select>
                         </label>

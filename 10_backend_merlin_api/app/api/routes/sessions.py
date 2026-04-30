@@ -1,6 +1,9 @@
+import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
+
+logger = logging.getLogger(__name__)
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -455,12 +458,21 @@ def get_session(
     return session_record
 
 
-@router.post("/{session_id}/room", response_model=SessionRoomRead)
+@router.post(
+    "/{session_id}/room",
+    response_model=SessionRoomRead,
+    deprecated=True,
+    summary="[DEPRECATED] Creer une salle LiveKit via sessions — utiliser /audio-sessions",
+)
 async def create_session_room(
     session_id: str,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> SessionRoomRead:
+    logger.warning(
+        "Route legacy POST /sessions/%s/room appelee. Utiliser POST /audio-sessions/sessions/{session_id}/provision.",
+        session_id,
+    )
     session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     try:
@@ -471,12 +483,21 @@ async def create_session_room(
     return SessionRoomRead(session_id=session_record.id, **room_payload)
 
 
-@router.post("/{session_id}/recording/start", response_model=SessionRecordingRead)
+@router.post(
+    "/{session_id}/recording/start",
+    response_model=SessionRecordingRead,
+    deprecated=True,
+    summary="[DEPRECATED] Demarrer enregistrement via sessions — utiliser /audio-recordings",
+)
 async def start_session_recording(
     session_id: str,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> SessionRecordingRead:
+    logger.warning(
+        "Route legacy POST /sessions/%s/recording/start appelee. Utiliser POST /audio-recordings/audio-sessions/{audio_session_id}/start.",
+        session_id,
+    )
     session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     try:
@@ -500,13 +521,22 @@ async def start_session_recording(
     )
 
 
-@router.post("/{session_id}/recording/stop", response_model=SessionRecordingRead)
+@router.post(
+    "/{session_id}/recording/stop",
+    response_model=SessionRecordingRead,
+    deprecated=True,
+    summary="[DEPRECATED] Arreter enregistrement via sessions — utiliser /audio-recordings",
+)
 async def stop_session_recording(
     session_id: str,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> SessionRecordingRead:
+    logger.warning(
+        "Route legacy POST /sessions/%s/recording/stop appelee. Utiliser POST /audio-recordings/{audio_recording_id}/stop.",
+        session_id,
+    )
     session_record = _get_owned_session_or_404(session_id, db, current_user)
 
     try:

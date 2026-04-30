@@ -8,8 +8,8 @@ import { loginOperator, registerOperator, type LoginResponse } from "@/lib/merli
 const STORAGE_KEY = "merlin_admin_session";
 
 export default function AdminPage() {
-  const [email, setEmail] = useState("admin@example.com");
-  const [password, setPassword] = useState("admin-secret");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [session, setSession] = useState<LoginResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
