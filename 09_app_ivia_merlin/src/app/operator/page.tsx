@@ -1119,11 +1119,11 @@ export default function OperatorPage() {
                                       className="button button-ghost"
                                       disabled={isLoading}
                                       onClick={async () => {
-                                        if (!currentSession) return;
+                                        if (!session) return;
                                         setAnalyzingId(req.id);
                                         setAnalysisResult(null);
                                         try {
-                                          const result = await analyseIntakeRequest(req.id, currentSession.access_token);
+                                          const result = await analyseIntakeRequest(req.id, session.access_token);
                                           setAnalysisResult(result);
                                         } catch {
                                           // silencieux
