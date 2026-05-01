@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -9,6 +10,24 @@ from app.models.client import Client
 from app.models.enums import RecordStatus, RequestForCode, RiskLevelCode
 from app.models.intake_request import IntakeRequest
 from app.schemas.intake_request import IntakeRequestCreate, IntakeRequestRead
+from app.services.intake_analysis import IntakeSignal, analyse_intake_text
+
+
+class IntakeSignalSchema(BaseModel):
+    code: str
+    label: str
+    severity: str
+
+
+class IntakeAnalysisResponse(BaseModel):
+    intake_request_id: str
+    risk_signals: list[IntakeSignalSchema]
+    gap_signals: list[IntakeSignalSchema]
+    suggested_urgency: str
+    current_urgency: str
+    has_risk: bool
+    has_gaps: bool
+    urgency_upgrade_suggested: bool
 
 router = APIRouter(prefix="/intake-requests", tags=["intake_requests"])
 
@@ -87,3 +106,49 @@ def get_intake_request(
             detail="Demande d'entree introuvable.",
         )
     return intake_request
+
+
+@router.get("/{intake_request_id}/analyse", response_model=IntakeAnalysisResponse)
+def analyse_intake_request(
+    intake_request_id: str,
+    db: Session = Depends(get_db),
+    _: AppUser = Depends(require_internal_clinical_roles()),
+) -> IntakeAnalysisResponse:
+    """
+    Analyse le texte libre d'une demande d'entree et retourne les signaux detectes.
+    Aucune modification de la base — lecture seule.
+    """
+    intake_request = db.get(IntakeRequest, intake_request_id)
+    if intake_request is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Demande d'entree introuvable.",
+        )
+
+    combined_text = " ".join(filter(None, [
+        intake_request.entry_summary_text,
+        intake_request.requested_outcome_text,
+    ]))
+    current_urgency = intake_request.perceived_urgency_code.value
+
+    analysis = analyse_intake_text(combined_text, current_urgency)
+
+    def _signal_to_schema(s: IntakeSignal) -> IntakeSignalSchema:
+        return IntakeSignalSchema(code=s.code, label=s.label, severity=s.severity)
+
+    from app.services.intake_analysis import _URGENCY_RANK  # noqa: PLC0415
+    urgency_upgrade = (
+        _URGENCY_RANK.get(analysis.suggested_urgency, 0)
+        > _URGENCY_RANK.get(current_urgency, 0)
+    )
+
+    return IntakeAnalysisResponse(
+        intake_request_id=intake_request_id,
+        risk_signals=[_signal_to_schema(s) for s in analysis.risk_signals],
+        gap_signals=[_signal_to_schema(s) for s in analysis.gap_signals],
+        suggested_urgency=analysis.suggested_urgency,
+        current_urgency=current_urgency,
+        has_risk=analysis.has_risk,
+        has_gaps=analysis.has_gaps,
+        urgency_upgrade_suggested=urgency_upgrade,
+    )

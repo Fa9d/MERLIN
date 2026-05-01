@@ -30,6 +30,8 @@ import {
   startAudioRecording,
   startSession,
   stopAudioRecording,
+  analyseIntakeRequest,
+  type IntakeAnalysisResult,
   type IntakeRequestRecord,
   type LoginResponse,
   type SessionCloseResult,
@@ -143,6 +145,8 @@ export default function OperatorPage() {
   const [isSubmittingIntake, setIsSubmittingIntake] = useState(false);
   const [intakeSuccessMessage, setIntakeSuccessMessage] = useState<string | null>(null);
   const [intakeErrorMessage, setIntakeErrorMessage] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<IntakeAnalysisResult | null>(null);
+  const [analyzingId, setAnalyzingId] = useState<string | null>(null);
 
   const isOperatorSession = session?.user.role === "operator";
 
@@ -1105,6 +1109,34 @@ export default function OperatorPage() {
                                   return `${NEED_LABELS[intakeRequest.primary_need_code] ?? intakeRequest.primary_need_code} / ${URGENCY_LABELS[intakeRequest.perceived_urgency_code] ?? intakeRequest.perceived_urgency_code}`;
                                 })()}
                               </td>
+                              <td>
+                                {(() => {
+                                  const req = intakeRequests.find((item) => item.client_id === client.id);
+                                  if (!req) return null;
+                                  const isLoading = analyzingId === req.id;
+                                  return (
+                                    <button
+                                      className="button button-ghost"
+                                      disabled={isLoading}
+                                      onClick={async () => {
+                                        if (!currentSession) return;
+                                        setAnalyzingId(req.id);
+                                        setAnalysisResult(null);
+                                        try {
+                                          const result = await analyseIntakeRequest(req.id, currentSession.access_token);
+                                          setAnalysisResult(result);
+                                        } catch {
+                                          // silencieux
+                                        } finally {
+                                          setAnalyzingId(null);
+                                        }
+                                      }}
+                                    >
+                                      {isLoading ? "..." : "Analyser"}
+                                    </button>
+                                  );
+                                })()}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -1112,6 +1144,44 @@ export default function OperatorPage() {
                     </div>
                   ) : null}
                 </div>
+
+                {analysisResult ? (
+                  <div className="stack-md card" style={{borderLeft:"4px solid var(--color-primary)"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                      <h3 style={{margin:0}}>Analyse — signaux detectes</h3>
+                      <button className="button button-ghost" onClick={() => setAnalysisResult(null)}>Fermer</button>
+                    </div>
+                    {analysisResult.urgency_upgrade_suggested ? (
+                      <p className="message message-error">
+                        Urgence actuelle : <strong>{analysisResult.current_urgency}</strong> — Niveau suggere par le texte : <strong>{analysisResult.suggested_urgency}</strong>
+                      </p>
+                    ) : null}
+                    {analysisResult.risk_signals.length > 0 ? (
+                      <div>
+                        <p><strong>Signaux de risque</strong></p>
+                        <ul style={{margin:0,paddingLeft:"1.2rem"}}>
+                          {analysisResult.risk_signals.map((s) => (
+                            <li key={s.code} style={{color: s.severity === "rouge" ? "var(--color-error)" : s.severity === "orange" ? "var(--color-warning,#d97706)" : "inherit"}}>
+                              {s.label}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <p className="inline-note">Aucun signal de risque detecte dans le texte libre.</p>
+                    )}
+                    {analysisResult.gap_signals.length > 0 ? (
+                      <div>
+                        <p><strong>Signaux de non-reponse</strong></p>
+                        <ul style={{margin:0,paddingLeft:"1.2rem"}}>
+                          {analysisResult.gap_signals.map((s) => (
+                            <li key={s.code} className="inline-note">{s.label}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
 
                 <div className="stack-md">
                   <h3>Salle audio et enregistrement</h3>

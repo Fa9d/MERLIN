@@ -589,3 +589,29 @@ export type PraticienPublic = {
 export async function listPraticiens(): Promise<PraticienPublic[]> {
   return request<PraticienPublic[]>("/api/v1/praticiens");
 }
+
+export type IntakeSignal = {
+  code: string;
+  label: string;
+  severity: "rouge" | "orange" | "jaune" | "info";
+};
+
+export type IntakeAnalysisResult = {
+  intake_request_id: string;
+  risk_signals: IntakeSignal[];
+  gap_signals: IntakeSignal[];
+  suggested_urgency: string;
+  current_urgency: string;
+  has_risk: boolean;
+  has_gaps: boolean;
+  urgency_upgrade_suggested: boolean;
+};
+
+export async function analyseIntakeRequest(
+  intakeRequestId: string,
+  token: string,
+): Promise<IntakeAnalysisResult> {
+  return request<IntakeAnalysisResult>(`/api/v1/intake-requests/${intakeRequestId}/analyse`, {
+    token,
+  });
+}
