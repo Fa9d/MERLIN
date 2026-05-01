@@ -35,6 +35,7 @@ from app.services.livekit_audio import (
 )
 from app.services.session_documents import ensure_session_derived_document
 from app.schemas.session import (
+    SessionAssign,
     SessionClose,
     SessionCloseResult,
     SessionCreate,
@@ -437,7 +438,9 @@ def list_sessions(
     current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> list[SessionRecord]:
     statement = select(SessionRecord).order_by(SessionRecord.created_at.desc())
-    if is_operator_user(current_user):
+    if current_user.role == "practitioner":
+        statement = statement.where(SessionRecord.praticien_id == current_user.id)
+    elif is_operator_user(current_user):
         statement = statement.where(SessionRecord.operator_user_id == current_user.id)
     if client_id is not None:
         statement = statement.where(SessionRecord.client_id == client_id)
@@ -455,6 +458,28 @@ def get_session(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
     if is_operator_user(current_user) and session_record.operator_user_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    return session_record
+
+
+@router.patch("/{session_id}/assign", response_model=SessionRead)
+def assign_praticien(
+    session_id: str,
+    payload: SessionAssign,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_operator()),
+) -> SessionRecord:
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
+    if payload.praticien_id is not None:
+        praticien = db.get(AppUser, payload.praticien_id)
+        if praticien is None or praticien.role != "practitioner":
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Praticien introuvable.",
+            )
+    session_record.praticien_id = payload.praticien_id
+    db.add(session_record)
+    db.commit()
+    db.refresh(session_record)
     return session_record
 
 

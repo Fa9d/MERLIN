@@ -8,6 +8,7 @@ import {
   type AudioRecordingRecord,
   type AudioSessionRecord,
   closeSession,
+  createSessionNote,
   type ClientRecord,
   type ConsentRecord,
   type DerivedDocumentRecord,
@@ -113,6 +114,10 @@ export default function PraticienPage() {
   const [isValidatingNote, setIsValidatingNote] = useState(false);
   const [noteCorrections, setNoteCorrections] = useState<SessionNoteValidationPayload["corrections"]>(null);
   const [expandedNoteId, setExpandedNoteId] = useState<string | null>(null);
+
+  // Note rapide post-séance
+  const [quickNoteText, setQuickNoteText] = useState("");
+  const [isSubmittingQuickNote, setIsSubmittingQuickNote] = useState(false);
 
   // Restaurer la session depuis le localStorage
   useEffect(() => {
@@ -321,6 +326,32 @@ export default function PraticienPage() {
       setGlobalError(error instanceof Error ? error.message : "Impossible d'arrêter l'enregistrement.");
     } finally {
       setIsStoppingRecording(false);
+    }
+  }
+
+  async function handleQuickNote(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!session || !selectedSessionId || !quickNoteText.trim()) return;
+    const selectedSession_ = sessions.find((s) => s.id === selectedSessionId);
+    if (!selectedSession_) return;
+    clearMessages();
+    setIsSubmittingQuickNote(true);
+    try {
+      await createSessionNote(
+        {
+          session_id: selectedSessionId,
+          client_id: selectedSession_.client_id,
+          summary_text: quickNoteText.trim(),
+        },
+        session.access_token,
+      );
+      await refreshData();
+      setQuickNoteText("");
+      setSuccessMessage("Note enregistrée.");
+    } catch (error) {
+      setGlobalError(error instanceof Error ? error.message : "Impossible d'enregistrer la note.");
+    } finally {
+      setIsSubmittingQuickNote(false);
     }
   }
 
@@ -925,6 +956,30 @@ export default function PraticienPage() {
                 <p className="inline-note">Aucune séance active. Créez une nouvelle séance depuis l'onglet Clients.</p>
               ) : null}
             </div>
+
+            {/* Note rapide post-séance */}
+            {selectedSessionId ? (
+              <div className="card form-stack">
+                <h3>Note rapide post-séance</h3>
+                <form className="form-stack" onSubmit={handleQuickNote}>
+                  <label className="field">
+                    <span>Résumé / observations</span>
+                    <textarea
+                      required
+                      rows={4}
+                      placeholder="Points saillants, observations, suites envisagées…"
+                      value={quickNoteText}
+                      onChange={(e) => setQuickNoteText(e.target.value)}
+                    />
+                  </label>
+                  <div className="cta-row">
+                    <button className="button button-primary" disabled={isSubmittingQuickNote || !quickNoteText.trim()} type="submit">
+                      {isSubmittingQuickNote ? "Enregistrement..." : "Enregistrer la note"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            ) : null}
           </div>
         )}
 

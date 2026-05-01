@@ -195,12 +195,14 @@ export type SessionRecord = {
   actual_end_at: string | null;
   duration_minutes: number | null;
   operator_user_id: string;
+  praticien_id: string | null;
   session_status_code: string;
   record_status: string;
   data_sensitivity_class: string;
   retention_class: string;
   created_at: string;
   updated_at: string;
+  room_name: string | null;
 };
 
 export type SessionClosePayload = {
@@ -453,6 +455,18 @@ export async function createSession(
 
 export async function listSessions(token: string): Promise<SessionRecord[]> {
   return request<SessionRecord[]>("/api/v1/sessions", {
+    token,
+  });
+}
+
+export async function assignPraticien(
+  sessionId: string,
+  praticienId: string | null,
+  token: string,
+): Promise<SessionRecord> {
+  return request<SessionRecord>(`/api/v1/sessions/${sessionId}/assign`, {
+    method: "PATCH",
+    body: { praticien_id: praticienId },
     token,
   });
 }

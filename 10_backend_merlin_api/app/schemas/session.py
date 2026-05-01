@@ -29,6 +29,11 @@ class SessionCreate(MerlinSchema):
     record_status: RecordStatus = RecordStatus.active
     data_sensitivity_class: DataSensitivityClass = DataSensitivityClass.high
     retention_class: RetentionClass = RetentionClass.standard
+    praticien_id: str | None = None
+
+
+class SessionAssign(MerlinSchema):
+    praticien_id: str | None = None
 
 
 class SessionRead(TimestampedReadSchema):
@@ -47,6 +52,7 @@ class SessionRead(TimestampedReadSchema):
     egress_id: str | None = None
     audio_file_path: str | None = None
     operator_user_id: str
+    praticien_id: str | None = None
     session_status_code: SessionStatusCode
     record_status: RecordStatus
     data_sensitivity_class: DataSensitivityClass

@@ -7,6 +7,7 @@ import { OperatorLiveKitPanel } from "@/components/operator-livekit-panel";
 import {
   type AudioRecordingRecord,
   type AudioSessionRecord,
+  assignPraticien,
   closeSession,
   type ClientPayload,
   type ClientRecord,
@@ -23,6 +24,7 @@ import {
   listConsents,
   listDerivedDocuments,
   listIntakeRequests,
+  listPraticiens,
   listSessionNotes,
   listSessions,
   loginOperator,
@@ -34,6 +36,7 @@ import {
   type IntakeAnalysisResult,
   type IntakeRequestRecord,
   type LoginResponse,
+  type PraticienPublic,
   type SessionCloseResult,
   type SessionNoteRecord,
   type SessionRecord,
@@ -147,6 +150,9 @@ export default function OperatorPage() {
   const [intakeErrorMessage, setIntakeErrorMessage] = useState<string | null>(null);
   const [analysisResult, setAnalysisResult] = useState<IntakeAnalysisResult | null>(null);
   const [analyzingId, setAnalyzingId] = useState<string | null>(null);
+  const [praticiens, setPraticiens] = useState<PraticienPublic[]>([]);
+  const [assigningSessionId, setAssigningSessionId] = useState<string | null>(null);
+  const [assignPraticienMap, setAssignPraticienMap] = useState<Record<string, string>>({});
 
   const isOperatorSession = session?.user.role === "operator";
 
@@ -195,6 +201,7 @@ export default function OperatorPage() {
           sessionNoteResult,
           audioSessionResult,
           audioRecordingResult,
+          praticiensResult,
         ] =
           await Promise.all([
             listClients(currentSession.access_token),
@@ -205,6 +212,7 @@ export default function OperatorPage() {
             listSessionNotes(currentSession.access_token),
             listAudioSessions(currentSession.access_token),
             listAudioRecordings(currentSession.access_token),
+            listPraticiens(),
           ]);
         if (!active) {
           return;
@@ -217,6 +225,7 @@ export default function OperatorPage() {
         setSessionNotes(sessionNoteResult);
         setAudioSessions(audioSessionResult);
         setAudioRecordings(audioRecordingResult);
+        setPraticiens(praticiensResult);
         if (clientResult.length > 0) {
           setSelectedClientId((currentValue) => currentValue || clientResult[0].id);
         }
@@ -1562,6 +1571,7 @@ export default function OperatorPage() {
                             <th>Canal</th>
                             <th>Statut</th>
                             <th>Duree</th>
+                            <th>Praticien</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1573,6 +1583,47 @@ export default function OperatorPage() {
                               <td>{sessionRecord.session_channel_code}</td>
                               <td>{SESSION_STATUS_LABELS[sessionRecord.session_status_code] ?? sessionRecord.session_status_code}</td>
                               <td>{sessionRecord.duration_minutes ?? "-"}</td>
+                              <td>
+                                {praticiens.length > 0 ? (
+                                  <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                                    <select
+                                      value={assignPraticienMap[sessionRecord.id] ?? sessionRecord.praticien_id ?? ""}
+                                      onChange={(e) => setAssignPraticienMap((prev) => ({ ...prev, [sessionRecord.id]: e.target.value }))}
+                                      style={{ fontSize: "0.8rem" }}
+                                    >
+                                      <option value="">— aucun —</option>
+                                      {praticiens.map((p) => (
+                                        <option key={p.id} value={p.id}>{p.display_name}</option>
+                                      ))}
+                                    </select>
+                                    <button
+                                      disabled={assigningSessionId === sessionRecord.id}
+                                      onClick={async () => {
+                                        if (!session) return;
+                                        setAssigningSessionId(sessionRecord.id);
+                                        try {
+                                          const updated = await assignPraticien(
+                                            sessionRecord.id,
+                                            assignPraticienMap[sessionRecord.id] || null,
+                                            session.access_token,
+                                          );
+                                          setSessions((prev) => prev.map((s) => s.id === updated.id ? updated : s));
+                                        } catch {
+                                          // silently ignore
+                                        } finally {
+                                          setAssigningSessionId(null);
+                                        }
+                                      }}
+                                    >
+                                      {assigningSessionId === sessionRecord.id ? "…" : "Assigner"}
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <span className="mono" style={{ fontSize: "0.75rem" }}>
+                                    {sessionRecord.praticien_id ? sessionRecord.praticien_id.slice(0, 8) : "—"}
+                                  </span>
+                                )}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
