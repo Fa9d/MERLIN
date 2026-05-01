@@ -8,10 +8,15 @@ import {
   type AudioRecordingRecord,
   type AudioSessionRecord,
   closeSession,
+  type ClientPayload,
   type ClientRecord,
   type ConsentRecord,
+  createClient,
+  createConsent,
+  createIntakeRequest,
   createSession,
   type DerivedDocumentRecord,
+  type IntakeRequestPayload,
   listAudioRecordings,
   listAudioSessions,
   listClients,
@@ -52,6 +57,22 @@ const SESSION_STATUS_LABELS: Record<string, string> = {
   cancelled: "Annulée",
   no_show: "Absence",
   escalated: "Escaladée",
+};
+
+const NEED_LABELS: Record<string, string> = {
+  clarification: "Comprendre ce qu'il ressent",
+  support: "Être écouté",
+  orientation: "Savoir vers où se tourner",
+  loneliness: "Sortir de la solitude",
+  distress: "Détresse qui monte",
+  other: "Autre",
+};
+
+const URGENCY_LABELS: Record<string, string> = {
+  non_urgent: "Non urgent",
+  watch: "À surveiller",
+  priority: "Prioritaire",
+  urgent: "Urgent",
 };
 
 export default function OperatorPage() {
@@ -110,6 +131,19 @@ export default function OperatorPage() {
   const [followUpActionsText, setFollowUpActionsText] = useState("");
   const [nextSessionFocusText, setNextSessionFocusText] = useState("");
   const [clientVisible, setClientVisible] = useState(false);
+
+  // Formulaire d'inscription manuelle (entree directe / appel entrant)
+  const [intakeFirstName, setIntakeFirstName] = useState("");
+  const [intakeEmail, setIntakeEmail] = useState("");
+  const [intakePhone, setIntakePhone] = useState("");
+  const [intakeIsAdult, setIntakeIsAdult] = useState(false);
+  const [intakeNeed, setIntakeNeed] = useState<IntakeRequestPayload["primary_need_code"]>("support");
+  const [intakeText, setIntakeText] = useState("");
+  const [intakeSupportInPlace, setIntakeSupportInPlace] = useState(false);
+  const [isSubmittingIntake, setIsSubmittingIntake] = useState(false);
+  const [intakeSuccessMessage, setIntakeSuccessMessage] = useState<string | null>(null);
+  const [intakeErrorMessage, setIntakeErrorMessage] = useState<string | null>(null);
+
   const isOperatorSession = session?.user.role === "operator";
 
   useEffect(() => {
@@ -241,6 +275,78 @@ export default function OperatorPage() {
     setSessionClosureSuccessMessage(null);
     setAudioSessionSuccessMessage(null);
     setAudioRecordingSuccessMessage(null);
+  }
+
+  async function handleManualIntake(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!session) return;
+    setIsSubmittingIntake(true);
+    setIntakeErrorMessage(null);
+    setIntakeSuccessMessage(null);
+
+    try {
+      const clientPayload: ClientPayload = {
+        first_name_or_alias: intakeFirstName.trim(),
+        email: intakeEmail.trim() || null,
+        phone: intakePhone.trim() || null,
+        is_adult_confirmed: intakeIsAdult,
+      };
+      const newClient = await createClient(clientPayload, session.access_token);
+
+      await createIntakeRequest(
+        {
+          client_id: newClient.id,
+          request_channel_code: "operator_direct",
+          request_for_code: "self",
+          primary_need_code: intakeNeed,
+          perceived_urgency_code: "non_urgent",
+          support_already_in_place: intakeSupportInPlace,
+          requested_outcome_text: intakeText.trim() || null,
+        },
+        session.access_token,
+      );
+
+      await Promise.all([
+        createConsent(
+          { client_id: newClient.id, consent_type_code: "consent_session", consent_value: true, granted_by_actor_code: "operator" },
+          session.access_token,
+        ),
+        createConsent(
+          { client_id: newClient.id, consent_type_code: "consent_session_note", consent_value: true, granted_by_actor_code: "operator" },
+          session.access_token,
+        ),
+        createConsent(
+          { client_id: newClient.id, consent_type_code: "consent_history", consent_value: true, granted_by_actor_code: "operator" },
+          session.access_token,
+        ),
+      ]);
+
+      setIntakeSuccessMessage(`Client ${newClient.public_client_code} — ${newClient.first_name_or_alias} inscrit.`);
+      setIntakeFirstName("");
+      setIntakeEmail("");
+      setIntakePhone("");
+      setIntakeIsAdult(false);
+      setIntakeNeed("support");
+      setIntakeText("");
+      setIntakeSupportInPlace(false);
+
+      // Rafraichit la liste des clients et donnees associees
+      const [clientResult, consentResult, intakeResult] = await Promise.all([
+        listClients(session.access_token),
+        listConsents(session.access_token),
+        listIntakeRequests(session.access_token),
+      ]);
+      setClients(clientResult);
+      setConsents(consentResult);
+      setIntakeRequests(intakeResult);
+      if (!selectedClientId && clientResult.length > 0) {
+        setSelectedClientId(clientResult[0].id);
+      }
+    } catch (error) {
+      setIntakeErrorMessage(error instanceof Error ? error.message : "Erreur inconnue.");
+    } finally {
+      setIsSubmittingIntake(false);
+    }
   }
 
   async function handleCreateSession(event?: { preventDefault?: () => void }) {
@@ -851,6 +957,102 @@ export default function OperatorPage() {
                 )}
 
                 <div className="stack-md">
+                  <h3>Inscrire un client (entree directe)</h3>
+                  <p className="inline-note">
+                    Pour un client qui appelle directement ou dont l&apos;entree se fait hors
+                    formulaire public. Cree le profil client, la demande d&apos;entree et les
+                    consentements de base (seance, note, historique).
+                  </p>
+                  <form className="form-stack card" onSubmit={handleManualIntake}>
+                    <div className="form-grid-2">
+                      <label className="field">
+                        <span>Prenom ou alias <span style={{color:"var(--color-error)"}}>*</span></span>
+                        <input
+                          required
+                          value={intakeFirstName}
+                          onChange={(e) => setIntakeFirstName(e.target.value)}
+                          placeholder="Ex: Sophie"
+                        />
+                      </label>
+                      <label className="field">
+                        <span>Courriel</span>
+                        <input
+                          type="email"
+                          value={intakeEmail}
+                          onChange={(e) => setIntakeEmail(e.target.value)}
+                          placeholder="optionnel"
+                        />
+                      </label>
+                    </div>
+                    <div className="form-grid-2">
+                      <label className="field">
+                        <span>Telephone</span>
+                        <input
+                          value={intakePhone}
+                          onChange={(e) => setIntakePhone(e.target.value)}
+                          placeholder="optionnel"
+                        />
+                      </label>
+                      <label className="field">
+                        <span>Besoin principal</span>
+                        <select
+                          value={intakeNeed}
+                          onChange={(e) =>
+                            setIntakeNeed(e.target.value as IntakeRequestPayload["primary_need_code"])
+                          }
+                        >
+                          {Object.entries(NEED_LABELS).map(([code, label]) => (
+                            <option key={code} value={code}>{label}</option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
+                    <label className="field">
+                      <span>Ce qui amene le client (texte libre)</span>
+                      <textarea
+                        rows={3}
+                        value={intakeText}
+                        onChange={(e) => setIntakeText(e.target.value)}
+                        placeholder="Resume de la situation en quelques phrases..."
+                      />
+                    </label>
+                    <div className="form-stack">
+                      <label style={{display:"flex",gap:"0.5rem",alignItems:"center",cursor:"pointer"}}>
+                        <input
+                          type="checkbox"
+                          checked={intakeIsAdult}
+                          onChange={(e) => setIntakeIsAdult(e.target.checked)}
+                        />
+                        <span>Adulte confirme (18 ans et plus)</span>
+                      </label>
+                      <label style={{display:"flex",gap:"0.5rem",alignItems:"center",cursor:"pointer"}}>
+                        <input
+                          type="checkbox"
+                          checked={intakeSupportInPlace}
+                          onChange={(e) => setIntakeSupportInPlace(e.target.checked)}
+                        />
+                        <span>Un autre soutien est deja en place</span>
+                      </label>
+                    </div>
+                    <div className="cta-row">
+                      <button
+                        className="button button-primary"
+                        disabled={isSubmittingIntake || !intakeFirstName.trim()}
+                        type="submit"
+                      >
+                        {isSubmittingIntake ? "Inscription..." : "Inscrire le client"}
+                      </button>
+                    </div>
+                    {intakeSuccessMessage ? (
+                      <p className="message message-success">{intakeSuccessMessage}</p>
+                    ) : null}
+                    {intakeErrorMessage ? (
+                      <p className="message message-error">{intakeErrorMessage}</p>
+                    ) : null}
+                  </form>
+                </div>
+
+                <div className="stack-md">
                   <h3>Clients entres dans MERLIN</h3>
                   {clients.length > 0 ? (
                     <div className="table-wrap">
@@ -900,7 +1102,7 @@ export default function OperatorPage() {
                                   if (!intakeRequest) {
                                     return "-";
                                   }
-                                  return `${intakeRequest.primary_need_code} / ${intakeRequest.perceived_urgency_code}`;
+                                  return `${NEED_LABELS[intakeRequest.primary_need_code] ?? intakeRequest.primary_need_code} / ${URGENCY_LABELS[intakeRequest.perceived_urgency_code] ?? intakeRequest.perceived_urgency_code}`;
                                 })()}
                               </td>
                             </tr>
