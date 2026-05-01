@@ -520,3 +520,5 @@ MERLIN doit maintenant:
 Doctrine finale:
 
 `la capacite de production documentaire MERLIN doit etre standardisee, mesurable, actualisable et adaptee au marche Quebecois, sans vendre des sorties dont le cout reel n'est pas maitrise`
+DELETE FROM app_users WHERE id = '97f51dc7-df05-4655-a383-77c6295dec9c';
+DELETE FROM app_users WHERE id = '5c65e043-b6ef-49d3-a533-38f8300235f1';

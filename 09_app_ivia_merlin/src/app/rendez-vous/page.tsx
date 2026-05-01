@@ -18,6 +18,8 @@ export default function RendezVousPage() {
   const [sessionConsent, setSessionConsent] = useState(false);
   const [sessionNoteConsent, setSessionNoteConsent] = useState(false);
   const [historyConsent, setHistoryConsent] = useState(false);
+  const [recordingConsent, setRecordingConsent] = useState(false);
+  const [transcriptionConsent, setTranscriptionConsent] = useState(false);
   const [need, setNeed] = useState<
     "clarification" | "support" | "orientation" | "loneliness" | "distress" | "other"
   >("support");
@@ -40,7 +42,13 @@ export default function RendezVousPage() {
     }
 
     if (!sessionConsent || !sessionNoteConsent) {
-      setErrorMessage("Les consentements de seance et de note sont requis pour continuer.");
+      setErrorMessage("Les consentements de séance et de note sont requis pour continuer.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!recordingConsent || !transcriptionConsent) {
+      setErrorMessage("Le consentement à l'enregistrement et à la transcription est requis. C'est la méthode de travail d'IVIA.");
       setIsSubmitting(false);
       return;
     }
@@ -82,6 +90,18 @@ export default function RendezVousPage() {
           consent_value: historyConsent,
           granted_by_actor_code: "client",
         }),
+        createConsent({
+          client_id: client.id,
+          consent_type_code: "consent_recording",
+          consent_value: recordingConsent,
+          granted_by_actor_code: "client",
+        }),
+        createConsent({
+          client_id: client.id,
+          consent_type_code: "consent_transcription",
+          consent_value: transcriptionConsent,
+          granted_by_actor_code: "client",
+        }),
       ]);
 
       setSubmissionState({
@@ -95,6 +115,8 @@ export default function RendezVousPage() {
       setSessionConsent(false);
       setSessionNoteConsent(false);
       setHistoryConsent(false);
+      setRecordingConsent(false);
+      setTranscriptionConsent(false);
       setNeed("support");
       setRequestText("");
       setSupportInPlace(false);
@@ -128,19 +150,32 @@ export default function RendezVousPage() {
           <article className="card stack-md">
             <h3>Avant de commencer</h3>
             <ul>
-              <li>IVIA s&apos;adresse aux adultes hors situation d&apos;urgence immediate.</li>
-              <li>Le but est de vous offrir un espace d&apos;ecoute, de clarte et de suite concrete.</li>
-              <li>Votre demande est enregistree pour etre reprise dans le cadre IVIA.</li>
+              <li>IVIA s&apos;adresse aux adultes hors situation d&apos;urgence immédiate.</li>
+              <li>Notre but est de vous offrir un espace d&apos;écoute, de clarté et de suite concrète — sans diagnostic, sans prescription.</li>
+              <li>Nous ne remplaçons pas les soins. Nous aidons à trouver le bon chemin vers eux.</li>
             </ul>
             <div className="info-strip">
               <span>65 $</span>
-              <span>60 a 75 min</span>
+              <span>60 à 75 min</span>
               <span>En ligne</span>
             </div>
-            <p className="inline-note">
-              Les echanges sont traites avec confidentialite, dans les limites
-              prevues par la loi.
-            </p>
+            <div className="stack-sm">
+              <h4>Pourquoi nous enregistrons les séances</h4>
+              <p className="inline-note">
+                Chaque séance IVIA est enregistrée. L&apos;enregistrement est converti
+                en transcription, puis le fichier audio est détruit.
+              </p>
+              <p className="inline-note">
+                La transcription sert uniquement à structurer la note de séance,
+                à maintenir la continuité de votre suivi, et à améliorer nos
+                approches d&apos;accompagnement. Elle n&apos;est jamais transmise
+                à des tiers sans votre consentement explicite.
+              </p>
+              <p className="inline-note">
+                Cette approche nous permet d&apos;être rigoureux sur les faits,
+                fidèles à ce qui a été dit, et transparents sur nos pratiques.
+              </p>
+            </div>
           </article>
 
           <form className="card form-stack" onSubmit={handleSubmit}>
@@ -225,12 +260,33 @@ export default function RendezVousPage() {
             </p>
 
             <div className="stack-sm">
-              <h3>Consentements de base</h3>
-              <p className="inline-note">
-                Vous donnez ici les accords minimaux pour ouvrir votre demande. Aucun
-                enregistrement, aucune transcription et aucune transmission a un tiers
-                ne sont autorises par ce formulaire.
-              </p>
+              <h3>Consentements</h3>
+
+              <label className="checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={recordingConsent}
+                  onChange={(event) => setRecordingConsent(event.target.checked)}
+                />
+                <span>
+                  <strong>J&apos;accepte que ma séance soit enregistrée.</strong>{" "}
+                  L&apos;enregistrement audio est détruit après transcription.
+                  Il ne sera jamais transmis à des tiers.
+                </span>
+              </label>
+
+              <label className="checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={transcriptionConsent}
+                  onChange={(event) => setTranscriptionConsent(event.target.checked)}
+                />
+                <span>
+                  <strong>J&apos;accepte que la transcription soit utilisée</strong>{" "}
+                  pour structurer la note de séance, maintenir la continuité
+                  de mon suivi et améliorer les pratiques d&apos;accompagnement d&apos;IVIA.
+                </span>
+              </label>
 
               <label className="checkbox-row">
                 <input
@@ -239,8 +295,8 @@ export default function RendezVousPage() {
                   onChange={(event) => setSessionConsent(event.target.checked)}
                 />
                 <span>
-                  J&apos;accepte une premiere seance d&apos;ecoute IVIA dans le cadre
-                  presente.
+                  J&apos;accepte une première séance d&apos;écoute IVIA dans le cadre
+                  présenté, sans diagnostic ni prescription.
                 </span>
               </label>
 
@@ -251,8 +307,8 @@ export default function RendezVousPage() {
                   onChange={(event) => setSessionNoteConsent(event.target.checked)}
                 />
                 <span>
-                  J&apos;accepte qu&apos;une note breve de seance soit conservee pour le
-                  suivi.
+                  J&apos;accepte qu&apos;une note de séance soit conservée pour
+                  assurer la continuité de mon suivi.
                 </span>
               </label>
 
@@ -263,10 +319,16 @@ export default function RendezVousPage() {
                   onChange={(event) => setHistoryConsent(event.target.checked)}
                 />
                 <span>
-                  J&apos;accepte qu&apos;un historique court soit maintenu pour eviter de
-                  recommencer a zero.
+                  J&apos;accepte qu&apos;un historique de mes séances soit maintenu
+                  pour éviter de recommencer à zéro à chaque rencontre.
                 </span>
               </label>
+
+              <p className="inline-note">
+                Les deux premiers consentements sont requis. Ils sont la base
+                de la méthode IVIA. Les trois suivants permettent de personnaliser
+                votre suivi.
+              </p>
             </div>
 
             <div className="message message-error">

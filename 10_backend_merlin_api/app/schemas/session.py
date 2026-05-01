@@ -20,7 +20,7 @@ class SessionCreate(MerlinSchema):
     intake_request_id: str | None = None
     session_sequence_number: int | None = None
     session_mode_code: SessionModeCode = SessionModeCode.standard
-    session_channel_code: SessionChannelCode = SessionChannelCode.phone
+    session_channel_code: SessionChannelCode = SessionChannelCode.direct
     scheduled_start_at: datetime | None = None
     actual_start_at: datetime | None = None
     actual_end_at: datetime | None = None

@@ -4,6 +4,15 @@ from app.models.enums import AppRole, RecordStatus
 from app.schemas.common import MerlinSchema, TimestampedReadSchema
 
 
+class PraticienPublic(MerlinSchema):
+    id: str
+    display_name: str
+    title_line: str | None
+    intro_text: str | None
+    spoken_languages: str | None  # JSON array string
+    available_channels: str | None  # JSON array string
+
+
 class RegisterUserRequest(MerlinSchema):
     email: EmailStr
     password: str

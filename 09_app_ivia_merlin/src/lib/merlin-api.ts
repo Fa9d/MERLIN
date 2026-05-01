@@ -172,7 +172,7 @@ export type SessionPayload = {
   intake_request_id?: string | null;
   session_sequence_number?: number | null;
   session_mode_code?: "standard" | "intake" | "follow_up";
-  session_channel_code?: "phone" | "video" | "in_person" | "async";
+  session_channel_code?: "direct" | "in_person" | "async";
   scheduled_start_at?: string | null;
   actual_start_at?: string | null;
   actual_end_at?: string | null;
@@ -575,4 +575,17 @@ export async function validateSessionNote(
     body: payload,
     token,
   });
+}
+
+export type PraticienPublic = {
+  id: string;
+  display_name: string;
+  title_line: string | null;
+  intro_text: string | null;
+  spoken_languages: string | null;
+  available_channels: string | null;
+};
+
+export async function listPraticiens(): Promise<PraticienPublic[]> {
+  return request<PraticienPublic[]>("/api/v1/praticiens");
 }

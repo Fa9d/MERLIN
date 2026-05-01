@@ -38,7 +38,7 @@ class SessionRecord(Base):
     session_channel_code: Mapped[SessionChannelCode] = mapped_column(
         Enum(SessionChannelCode, native_enum=False),
         nullable=False,
-        default=SessionChannelCode.phone,
+        default=SessionChannelCode.direct,
     )
     scheduled_start_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     actual_start_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

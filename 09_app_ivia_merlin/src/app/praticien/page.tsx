@@ -41,6 +41,21 @@ const INTAKE_CONSENT_TYPES = [
   "consent_history",
 ] as const;
 
+const SESSION_MODE_LABELS: Record<string, string> = {
+  intake: "Premier RDV",
+  standard: "Suivi",
+  follow_up: "Reprise",
+};
+
+const SESSION_STATUS_LABELS: Record<string, string> = {
+  scheduled: "Planifiée",
+  in_progress: "En cours",
+  completed: "Complétée",
+  cancelled: "Annulée",
+  no_show: "Absence",
+  escalated: "Escaladée",
+};
+
 type ActiveView = "clients" | "seance" | "cloture" | "historique";
 
 export default function PraticienPage() {
@@ -65,7 +80,7 @@ export default function PraticienPage() {
 
   // Formulaire nouvelle séance
   const [sessionModeCode, setSessionModeCode] = useState<"intake" | "standard" | "follow_up">("intake");
-  const [sessionChannelCode, setSessionChannelCode] = useState<"phone" | "video" | "in_person" | "async">("video");
+  const [sessionChannelCode, setSessionChannelCode] = useState<"direct" | "in_person" | "async">("direct");
   const [scheduledStartAt, setScheduledStartAt] = useState("");
   const [durationMinutes, setDurationMinutes] = useState("60");
 
@@ -115,7 +130,7 @@ export default function PraticienPage() {
 
   // Charger les données après connexion
   useEffect(() => {
-    if (!session || session.user.role !== "operator") return;
+    if (!session || !(["operator", "practitioner"] as string[]).includes(session.user.role)) return;
     const currentSession = session;
     let active = true;
 
@@ -169,7 +184,7 @@ export default function PraticienPage() {
     setAuthError(null);
     try {
       const result = await loginOperator(email, password);
-      if (result.user.role !== "operator") {
+      if (result.user.role !== "operator" && result.user.role !== "practitioner") {
         setAuthError("Cet espace est réservé aux praticiens. Votre compte n'a pas le rôle requis.");
         setIsLoggingIn(false);
         return;
@@ -506,24 +521,20 @@ export default function PraticienPage() {
         {/* === CLIENTS === */}
         {activeView === "clients" && (
           <div className="stack-md">
-            <div className="card form-stack">
-              <h3>Nouvelle séance</h3>
-              <form className="form-stack" onSubmit={handleCreateSession}>
-                <label className="field">
-                  <span>Client</span>
-                  <select
-                    required
-                    value={selectedClientId}
-                    onChange={(e) => setSelectedClientId(e.target.value)}
+
+            {/* Formulaire nouvelle séance — visible uniquement si un client est sélectionné */}
+            {selectedClientId ? (
+              <div className="card form-stack">
+                <div className="section-header-row">
+                  <h3>Nouvelle séance — {selectedClient?.first_name_or_alias}</h3>
+                  <button
+                    className="button button-secondary button-xs"
+                    onClick={() => setSelectedClientId("")}
+                    type="button"
                   >
-                    <option value="">— Sélectionner un client —</option>
-                    {clients.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.public_client_code} · {c.first_name_or_alias}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                    Changer de client
+                  </button>
+                </div>
 
                 {selectedClient ? (
                   <div className="info-strip">
@@ -543,89 +554,282 @@ export default function PraticienPage() {
                   </div>
                 ) : null}
 
-                <div className="form-grid-2">
-                  <label className="field">
-                    <span>Mode</span>
-                    <select value={sessionModeCode} onChange={(e) => setSessionModeCode(e.target.value as typeof sessionModeCode)}>
-                      <option value="intake">Accueil</option>
-                      <option value="standard">Standard</option>
-                      <option value="follow_up">Suivi</option>
-                    </select>
-                  </label>
-                  <label className="field">
-                    <span>Canal</span>
-                    <select value={sessionChannelCode} onChange={(e) => setSessionChannelCode(e.target.value as typeof sessionChannelCode)}>
-                      <option value="video">Vidéo</option>
-                      <option value="phone">Téléphone</option>
-                      <option value="in_person">Présentiel</option>
-                      <option value="async">Asynchrone</option>
-                    </select>
-                  </label>
-                </div>
+                <form className="form-stack" onSubmit={handleCreateSession}>
+                  <div className="form-grid-2">
+                    <label className="field">
+                      <span>Mode</span>
+                      <select value={sessionModeCode} onChange={(e) => setSessionModeCode(e.target.value as typeof sessionModeCode)}>
+                        <option value="intake">Premier RDV</option>
+                        <option value="standard">Suivi</option>
+                        <option value="follow_up">Reprise</option>
+                      </select>
+                      <span className="field-hint">
+                        {sessionModeCode === "intake" && "Ouverture du dossier — évaluation initiale, contexte et besoins."}
+                        {sessionModeCode === "standard" && "Séance ordinaire dans une relation continue."}
+                        {sessionModeCode === "follow_up" && "Retour après interruption — reconstitution historique, état actuel et plan de suite."}
+                      </span>
+                    </label>
+                    <label className="field">
+                      <span>Canal</span>
+                      <select value={sessionChannelCode} onChange={(e) => setSessionChannelCode(e.target.value as typeof sessionChannelCode)}>
+                        <option value="direct">Direct</option>
+                        <option value="in_person">Présentiel</option>
+                        <option value="async">Asynchrone</option>
+                      </select>
+                    </label>
+                  </div>
 
-                <div className="form-grid-2">
-                  <label className="field">
-                    <span>Début planifié</span>
-                    <input type="datetime-local" value={scheduledStartAt} onChange={(e) => setScheduledStartAt(e.target.value)} />
-                  </label>
-                  <label className="field">
-                    <span>Durée estimée (min)</span>
-                    <input type="number" min="15" step="5" value={durationMinutes} onChange={(e) => setDurationMinutes(e.target.value)} />
-                  </label>
-                </div>
+                  <div className="form-grid-2">
+                    <label className="field">
+                      <span>Début planifié</span>
+                      <input type="datetime-local" value={scheduledStartAt} onChange={(e) => setScheduledStartAt(e.target.value)} />
+                    </label>
+                    <label className="field">
+                      <span>Durée estimée (min)</span>
+                      <input type="number" min="15" step="5" value={durationMinutes} onChange={(e) => setDurationMinutes(e.target.value)} />
+                    </label>
+                  </div>
 
-                <div className="cta-row">
-                  <button className="button button-primary" disabled={isCreatingSession || !selectedClientId} type="submit">
-                    {isCreatingSession ? "Création..." : "Créer la séance et préparer la salle"}
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {clients.length > 0 ? (
-              <div className="card">
-                <h3>Mes clients ({clients.length})</h3>
-                <div className="table-wrap">
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                        <th>Courriel</th>
-                        <th>Besoin</th>
-                        <th>Consentements</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {clients.map((c) => {
-                        const ir = intakeRequests.find((r) => r.client_id === c.id);
-                        const clientConsents = consents.filter((co) => co.client_id === c.id);
-                        return (
-                          <tr
-                            key={c.id}
-                            className={`row-clickable${selectedClientId === c.id ? " row-selected" : ""}`}
-                            onClick={() => setSelectedClientId(c.id)}
-                          >
-                            <td className="mono">{c.public_client_code}</td>
-                            <td>{c.first_name_or_alias}</td>
-                            <td>{c.email ?? "—"}</td>
-                            <td>{ir?.primary_need_code ?? "—"}</td>
-                            <td>
-                              {INTAKE_CONSENT_TYPES.map((type) => {
-                                const consent = clientConsents.find((co) => co.consent_type_code === type);
-                                const short = { consent_session: "S", consent_session_note: "N", consent_history: "H" } as const;
-                                return `${short[type]}:${consent ? (consent.consent_value ? "✓" : "✗") : "—"}`;
-                              }).join("  ")}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                  <div className="cta-row">
+                    <button className="button button-primary" disabled={isCreatingSession} type="submit">
+                      {isCreatingSession ? "Création..." : "Créer la séance et préparer la salle"}
+                    </button>
+                  </div>
+                </form>
               </div>
-            ) : (
+            ) : null}
+
+            {clients.length === 0 ? (
               <p className="muted-text">Aucun client enregistré pour le moment.</p>
+            ) : (
+              <>
+                {/* Section 1 — Demandes en attente (intake soumis, aucune séance) */}
+                {(() => {
+                  const pending = clients.filter((c) => {
+                    const hasIntake = intakeRequests.some((ir) => ir.client_id === c.id);
+                    const hasSessions = sessions.some((s) => s.client_id === c.id);
+                    return hasIntake && !hasSessions;
+                  });
+                  if (pending.length === 0) return null;
+                  return (
+                    <div className="card">
+                      <h3 className="section-label-urgent">Demandes en attente ({pending.length})</h3>
+                      <div className="table-wrap">
+                        <table className="data-table">
+                          <thead>
+                            <tr>
+                              <th>Client</th>
+                              <th>Besoin</th>
+                              <th>Urgence</th>
+                              <th>Demande</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {pending.map((c) => {
+                              const ir = intakeRequests.find((r) => r.client_id === c.id);
+                              return (
+                                <tr key={c.id}>
+                                  <td>
+                                    <span className="mono">{c.public_client_code}</span>{" "}
+                                    {c.first_name_or_alias}
+                                  </td>
+                                  <td>{ir?.primary_need_code ?? "—"}</td>
+                                  <td>{ir?.perceived_urgency_code ?? "—"}</td>
+                                  <td className="text-muted-sm">{ir?.requested_outcome_text ?? "—"}</td>
+                                  <td>
+                                    <button
+                                      className="button button-primary button-xs"
+                                      onClick={() => {
+                                        setSelectedClientId(c.id);
+                                        setSessionModeCode("intake");
+                                        clearMessages();
+                                      }}
+                                      type="button"
+                                    >
+                                      Créer séance
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Section 2 — Séances actives */}
+                {(() => {
+                  const activeClientIds = new Set(
+                    sessions
+                      .filter((s) => s.session_status_code === "scheduled" || s.session_status_code === "in_progress")
+                      .map((s) => s.client_id),
+                  );
+                  const active = clients.filter((c) => activeClientIds.has(c.id));
+                  if (active.length === 0) return null;
+                  return (
+                    <div className="card">
+                      <h3>Séances en cours ({active.length})</h3>
+                      <div className="table-wrap">
+                        <table className="data-table">
+                          <thead>
+                            <tr>
+                              <th>Client</th>
+                              <th>Séance</th>
+                              <th>Mode</th>
+                              <th>Statut</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {active.map((c) => {
+                              const activeSess = sessions.find(
+                                (s) =>
+                                  s.client_id === c.id &&
+                                  (s.session_status_code === "scheduled" || s.session_status_code === "in_progress"),
+                              );
+                              return (
+                                <tr key={c.id}>
+                                  <td>
+                                    <span className="mono">{c.public_client_code}</span>{" "}
+                                    {c.first_name_or_alias}
+                                  </td>
+                                  <td className="mono">S-{activeSess?.session_sequence_number}</td>
+                                  <td>{activeSess ? (SESSION_MODE_LABELS[activeSess.session_mode_code] ?? activeSess.session_mode_code) : "—"}</td>
+                                  <td>{activeSess ? (SESSION_STATUS_LABELS[activeSess.session_status_code] ?? activeSess.session_status_code) : "—"}</td>
+                                  <td>
+                                    <button
+                                      className="button button-secondary button-xs"
+                                      onClick={() => {
+                                        setSelectedClientId(c.id);
+                                        if (activeSess) setSelectedSessionId(activeSess.id);
+                                        clearMessages();
+                                        setActiveView("seance");
+                                      }}
+                                      type="button"
+                                    >
+                                      Reprendre →
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Section 3 — Dossiers fermés */}
+                {(() => {
+                  const closedStatuses = new Set(["completed", "cancelled", "no_show", "escalated"]);
+                  const closedClientIds = new Set(
+                    sessions.filter((s) => closedStatuses.has(s.session_status_code)).map((s) => s.client_id),
+                  );
+                  const activeClientIds = new Set(
+                    sessions
+                      .filter((s) => s.session_status_code === "scheduled" || s.session_status_code === "in_progress")
+                      .map((s) => s.client_id),
+                  );
+                  const closed = clients.filter(
+                    (c) => closedClientIds.has(c.id) && !activeClientIds.has(c.id),
+                  );
+                  if (closed.length === 0) return null;
+                  return (
+                    <div className="card">
+                      <h3 className="text-muted">Dossiers fermés ({closed.length})</h3>
+                      <div className="table-wrap">
+                        <table className="data-table">
+                          <thead>
+                            <tr>
+                              <th>Client</th>
+                              <th>Séances</th>
+                              <th>Courriel</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {closed.map((c) => {
+                              const clientSessions = sessions.filter((s) => s.client_id === c.id);
+                              return (
+                                <tr key={c.id}>
+                                  <td>
+                                    <span className="mono">{c.public_client_code}</span>{" "}
+                                    {c.first_name_or_alias}
+                                  </td>
+                                  <td>{clientSessions.length}</td>
+                                  <td>{c.email ?? "—"}</td>
+                                  <td>
+                                    <button
+                                      className="button button-secondary button-xs"
+                                      onClick={() => {
+                                        setSelectedClientId(c.id);
+                                        clearMessages();
+                                        setActiveView("historique");
+                                      }}
+                                      type="button"
+                                    >
+                                      Historique →
+                                    </button>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Clients sans intake ni séance */}
+                {(() => {
+                  const noIntakeNoSession = clients.filter(
+                    (c) =>
+                      !intakeRequests.some((ir) => ir.client_id === c.id) &&
+                      !sessions.some((s) => s.client_id === c.id),
+                  );
+                  if (noIntakeNoSession.length === 0) return null;
+                  return (
+                    <div className="card">
+                      <h3 className="text-muted">Sans demande active ({noIntakeNoSession.length})</h3>
+                      <div className="table-wrap">
+                        <table className="data-table">
+                          <thead>
+                            <tr>
+                              <th>Code</th>
+                              <th>Nom</th>
+                              <th>Courriel</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {noIntakeNoSession.map((c) => (
+                              <tr key={c.id}>
+                                <td className="mono">{c.public_client_code}</td>
+                                <td>{c.first_name_or_alias}</td>
+                                <td>{c.email ?? "—"}</td>
+                                <td>
+                                  <button
+                                    className="button button-secondary button-xs"
+                                    onClick={() => { setSelectedClientId(c.id); clearMessages(); }}
+                                    type="button"
+                                  >
+                                    Sélectionner
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </>
             )}
           </div>
         )}
@@ -649,8 +853,8 @@ export default function PraticienPage() {
               {selectedSession ? (
                 <div className="info-strip">
                   <span className="mono">S-{selectedSession.session_sequence_number}</span>
-                  <span>{selectedSession.session_status_code}</span>
-                  <span>{selectedSession.session_mode_code} · {selectedSession.session_channel_code}</span>
+                  <span>{SESSION_STATUS_LABELS[selectedSession.session_status_code] ?? selectedSession.session_status_code}</span>
+                  <span>{SESSION_MODE_LABELS[selectedSession.session_mode_code] ?? selectedSession.session_mode_code} · {selectedSession.session_channel_code}</span>
                   {selectedSession.duration_minutes ? <span>{selectedSession.duration_minutes} min</span> : null}
                 </div>
               ) : null}
@@ -860,9 +1064,9 @@ export default function PraticienPage() {
                           >
                             <td className="mono">S-{s.session_sequence_number}</td>
                             <td className="mono">{client?.public_client_code ?? s.client_id.slice(0, 8)}</td>
-                            <td>{s.session_mode_code}</td>
-                            <td>{s.session_channel_code}</td>
-                            <td>{s.session_status_code}</td>
+                            <td>{SESSION_MODE_LABELS[s.session_mode_code] ?? s.session_mode_code}</td>
+                            <td>{s.session_channel_code === "direct" ? "Direct" : s.session_channel_code === "in_person" ? "Présentiel" : s.session_channel_code === "async" ? "Asynchrone" : s.session_channel_code}</td>
+                            <td>{SESSION_STATUS_LABELS[s.session_status_code] ?? s.session_status_code}</td>
                             <td>{s.duration_minutes ?? "—"}</td>
                           </tr>
                         );

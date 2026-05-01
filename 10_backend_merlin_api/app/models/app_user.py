@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from sqlalchemy import DateTime, Enum, String
+from sqlalchemy import Boolean, DateTime, Enum, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -19,6 +19,13 @@ class AppUser(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     display_name: Mapped[str] = mapped_column(String(160), nullable=False)
+    legal_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    title_line: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    intro_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    presentation_audio_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    spoken_languages: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON array
+    available_channels: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON array
+    is_publicly_listed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     role: Mapped[AppRole] = mapped_column(
         Enum(AppRole, native_enum=False),
         nullable=False,

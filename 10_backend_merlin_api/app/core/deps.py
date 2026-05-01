@@ -73,16 +73,24 @@ def require_operator():
     return require_roles(AppRole.operator)
 
 
+def require_practitioner():
+    return require_roles(AppRole.practitioner)
+
+
+def require_practitioner_or_operator():
+    return require_roles(AppRole.practitioner, AppRole.operator)
+
+
 def require_supervision_roles():
     return require_roles(AppRole.supervisor)
 
 
 def require_production_roles():
-    return require_roles(AppRole.operator)
+    return require_roles(AppRole.practitioner, AppRole.operator)
 
 
 def require_internal_clinical_roles():
-    return require_roles(AppRole.operator, AppRole.supervisor)
+    return require_roles(AppRole.practitioner, AppRole.operator, AppRole.supervisor)
 
 
 def require_admin_tech():
@@ -90,4 +98,4 @@ def require_admin_tech():
 
 
 def is_operator_user(user: AppUser) -> bool:
-    return user.role == AppRole.operator
+    return user.role in (AppRole.operator, AppRole.practitioner)

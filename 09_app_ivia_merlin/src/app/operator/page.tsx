@@ -39,6 +39,21 @@ const INTAKE_CONSENT_TYPES = [
   "consent_history",
 ] as const;
 
+const SESSION_MODE_LABELS: Record<string, string> = {
+  intake: "Premier RDV",
+  standard: "Suivi",
+  follow_up: "Reprise",
+};
+
+const SESSION_STATUS_LABELS: Record<string, string> = {
+  scheduled: "Planifiée",
+  in_progress: "En cours",
+  completed: "Complétée",
+  cancelled: "Annulée",
+  no_show: "Absence",
+  escalated: "Escaladée",
+};
+
 export default function OperatorPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,8 +91,8 @@ export default function OperatorPage() {
     "intake",
   );
   const [sessionChannelCode, setSessionChannelCode] = useState<
-    "phone" | "video" | "in_person" | "async"
-  >("phone");
+    "direct" | "in_person" | "async"
+  >("direct");
   const [scheduledStartAt, setScheduledStartAt] = useState("");
   const [durationMinutes, setDurationMinutes] = useState("60");
   const [plannedActualStartAt, setPlannedActualStartAt] = useState("");
@@ -765,9 +780,9 @@ export default function OperatorPage() {
                             )
                           }
                         >
-                          <option value="intake">Accueil</option>
-                          <option value="standard">Standard</option>
-                          <option value="follow_up">Suivi</option>
+                          <option value="intake">Premier RDV</option>
+                          <option value="standard">Suivi</option>
+                          <option value="follow_up">Reprise</option>
                         </select>
                       </label>
 
@@ -777,12 +792,11 @@ export default function OperatorPage() {
                           value={sessionChannelCode}
                           onChange={(event) =>
                             setSessionChannelCode(
-                              event.target.value as "phone" | "video" | "in_person" | "async",
+                              event.target.value as "direct" | "in_person" | "async",
                             )
                           }
                         >
-                          <option value="phone">Telephone</option>
-                          <option value="video">Video</option>
+                          <option value="direct">Direct</option>
                           <option value="in_person">Presentiel</option>
                           <option value="async">Asynchrone</option>
                         </select>
@@ -1283,9 +1297,9 @@ export default function OperatorPage() {
                             <tr key={sessionRecord.id}>
                               <td className="mono">S-{sessionRecord.session_sequence_number}</td>
                               <td className="mono">{sessionRecord.client_id.slice(0, 8)}</td>
-                              <td>{sessionRecord.session_mode_code}</td>
+                              <td>{SESSION_MODE_LABELS[sessionRecord.session_mode_code] ?? sessionRecord.session_mode_code}</td>
                               <td>{sessionRecord.session_channel_code}</td>
-                              <td>{sessionRecord.session_status_code}</td>
+                              <td>{SESSION_STATUS_LABELS[sessionRecord.session_status_code] ?? sessionRecord.session_status_code}</td>
                               <td>{sessionRecord.duration_minutes ?? "-"}</td>
                             </tr>
                           ))}

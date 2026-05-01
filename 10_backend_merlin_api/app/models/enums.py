@@ -12,6 +12,7 @@ class RecordStatus(str, Enum):
 
 class AppRole(str, Enum):
     public_client = "public_client"
+    practitioner = "practitioner"
     operator = "operator"
     supervisor = "supervisor"
     admin_tech = "admin_tech"
@@ -82,8 +83,7 @@ class SessionModeCode(str, Enum):
 
 
 class SessionChannelCode(str, Enum):
-    phone = "phone"
-    video = "video"
+    direct = "direct"
     in_person = "in_person"
     async_mode = "async"
 

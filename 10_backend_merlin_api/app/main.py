@@ -13,6 +13,7 @@ from app.api.routes.consents import router as consents_router
 from app.api.routes.derived_documents import router as derived_documents_router
 from app.api.routes.health import router as health_router
 from app.api.routes.intake_requests import router as intake_requests_router
+from app.api.routes.praticiens import router as praticiens_router
 from app.api.routes.sessions import router as sessions_router
 from app.api.routes.session_notes import router as session_notes_router
 from app.core.config import settings
@@ -53,6 +54,7 @@ app.include_router(clients_router, prefix=settings.api_v1_prefix)
 app.include_router(intake_requests_router, prefix=settings.api_v1_prefix)
 app.include_router(consents_router, prefix=settings.api_v1_prefix)
 app.include_router(derived_documents_router, prefix=settings.api_v1_prefix)
+app.include_router(praticiens_router, prefix=settings.api_v1_prefix)
 app.include_router(sessions_router, prefix=settings.api_v1_prefix)
 app.include_router(session_notes_router, prefix=settings.api_v1_prefix)
 
