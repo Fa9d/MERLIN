@@ -1,4 +1,11 @@
 # IVIA — Correspondances avec le CERCLE MERLIN
+---
+Statut: DRAFT — EN ATTENTE D'ARBITRAGE
+Périmètre: IVIA + MERLIN Architecture
+Auteur: David Phaneuf
+Date: Mai 2026
+Arbitrage requis: Oui — voir GOUVERNANCE/IVIA_ARBITRAGE_AXE_FREQUENCE_v1.md
+---
 ### Version 1.0 — Mai 2026
 
 ---

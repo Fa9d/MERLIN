@@ -1,4 +1,11 @@
 # IVIA — Plan éditorial
+---
+Statut: DRAFT
+Périmètre: IVIA — Éditorial
+Auteur: David Phaneuf
+Date: Mai 2026
+Arbitrage requis: Non
+---
 ## 4 sections × 4 articles = 16 articles fondateurs
 ### Version 1.0 — Mai 2026
 

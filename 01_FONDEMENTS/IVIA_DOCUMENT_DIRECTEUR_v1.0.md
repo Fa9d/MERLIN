@@ -1,4 +1,11 @@
 # IVIA — Document Directeur
+---
+Statut: DRAFT
+Périmètre: IVIA
+Auteur: David Phaneuf
+Date: Mai 2026
+Arbitrage requis: Non
+---
 ## Au sein de l'être — En actes
 ### Version 1.0 — Mai 2026
 
