@@ -1,5 +1,5 @@
 # Arbitrage — Extension du CERCLE MERLIN : axe FRÉQUENCE
-## Statut: PROPOSÉ — EN ATTENTE DE DÉCISION
+## Statut: APPROUVÉ
 ### Date: Mai 2026 | Auteur: David Phaneuf
 
 ---
@@ -39,13 +39,16 @@ Sources d'appui :
 
 ## DÉCISION REQUISE
 
-[ ] Approuver l'ajout de l'axe FRÉQUENCE au CERCLE MERLIN
+[x] Approuver l'ajout de l'axe FRÉQUENCE au CERCLE MERLIN
 [ ] Rejeter — maintenir le CERCLE à 4 axes
 [ ] Modifier — reformuler l'axe différemment
 
-Décision prise par : _______________
-Date de décision : _______________
-Notes : _______________
+Décision prise par : David Phaneuf
+Date de décision : Mai 2026
+Notes : Axe validé dans le cadre d'IVIA.
+Déclinaison vibratoire et incarnée du vivant.
+Complémentaire aux 4 axes existants du CERCLE.
+Mise à jour de 03_MODELE_GOUVERNANCE/ à planifier.
 
 ---
 
