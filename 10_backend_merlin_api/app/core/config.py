@@ -78,6 +78,16 @@ class Settings:
     )
     assemblyai_api_key: str | None = os.getenv("ASSEMBLYAI_API_KEY")
     anthropic_api_key: str | None = os.getenv("ANTHROPIC_API_KEY")
+    # SMTP
+    smtp_host: str = os.getenv("SMTP_HOST", "ssl0.ovh.net")
+    smtp_port: int = int(os.getenv("SMTP_PORT", "465"))
+    smtp_username: str | None = os.getenv("SMTP_USERNAME")
+    smtp_password: str | None = os.getenv("SMTP_PASSWORD")
+    smtp_from_email: str = os.getenv("SMTP_FROM_EMAIL", "noreply@ivia.quebec")
+    smtp_from_name: str = os.getenv("SMTP_FROM_NAME", "IVIA")
+    smtp_use_tls: bool = _as_bool(os.getenv("SMTP_USE_TLS"), default=False)
+    smtp_use_ssl: bool = _as_bool(os.getenv("SMTP_USE_SSL"), default=True)
+    frontend_url: str = os.getenv("FRONTEND_URL", "https://ivia.quebec")
     cors_origins: list[str] = field(
         default_factory=lambda: _as_list(
             os.getenv("MERLIN_CORS_ORIGINS"),

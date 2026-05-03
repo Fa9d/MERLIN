@@ -65,6 +65,43 @@ class ConsentTypeCode(str, Enum):
     consent_third_party_transmission = "consent_third_party_transmission"
 
 
+# --------------- Schedule / Booking ----------------------------------------
+
+class DayOfWeek(int, Enum):
+    monday = 0
+    tuesday = 1
+    wednesday = 2
+    thursday = 3
+    friday = 4
+    saturday = 5
+    sunday = 6
+
+
+class SessionTypeCode(str, Enum):
+    intake = "intake"           # Évaluation initiale (90 min)
+    standard = "standard"       # Consultation standard (60 min)
+    follow_up = "follow_up"     # Suivi court (45 min)
+    any = "any"                 # Type libre
+
+
+class ExceptionType(str, Enum):
+    blocked = "blocked"   # Plage bloquée (vacances, indispo)
+    extra = "extra"       # Plage supplémentaire hors gabarit
+
+
+class SlotStatus(str, Enum):
+    available = "available"
+    hold = "hold"           # Réservé temporairement (15 min)
+    confirmed = "confirmed"
+    cancelled = "cancelled"
+
+    consent_history = "consent_history"
+    consent_recording = "consent_recording"
+    consent_transcription = "consent_transcription"
+    consent_client_delivery = "consent_client_delivery"
+    consent_third_party_transmission = "consent_third_party_transmission"
+
+
 class RevocationScopeCode(str, Enum):
     future_only = "future_only"
     future_and_pending = "future_and_pending"

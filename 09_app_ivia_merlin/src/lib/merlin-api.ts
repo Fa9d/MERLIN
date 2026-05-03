@@ -629,3 +629,223 @@ export async function analyseIntakeRequest(
     token,
   });
 }
+
+// ---------------------------------------------------------------------------
+// Schedule / Disponibilités praticien
+// ---------------------------------------------------------------------------
+
+export type SessionTypeCode = "intake" | "standard" | "follow_up" | "any";
+export type ExceptionType = "blocked" | "extra";
+export type SlotStatus = "available" | "hold" | "confirmed" | "cancelled";
+
+export type ScheduleSlotRecord = {
+  id: string;
+  praticien_id: string;
+  day_of_week: number;
+  day_label: string;
+  start_time: string;     // "HH:MM:SS"
+  end_time: string;
+  session_duration_minutes: number;
+  buffer_minutes: number;
+  session_type: SessionTypeCode;
+  session_type_label: string;
+  valid_from: string | null;
+  valid_until: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ScheduleSlotCreate = {
+  day_of_week: number;
+  start_time: string;     // "HH:MM"
+  end_time: string;
+  session_duration_minutes?: number;
+  buffer_minutes?: number;
+  session_type?: SessionTypeCode;
+  valid_from?: string | null;
+  valid_until?: string | null;
+};
+
+export type ScheduleExceptionRecord = {
+  id: string;
+  praticien_id: string;
+  exception_date: string;
+  exception_type: ExceptionType;
+  start_time: string | null;
+  end_time: string | null;
+  reason: string | null;
+  created_at: string;
+};
+
+export type ScheduleExceptionCreate = {
+  exception_date: string;
+  exception_type?: ExceptionType;
+  start_time?: string | null;
+  end_time?: string | null;
+  reason?: string | null;
+};
+
+export type AvailableSlotRecord = {
+  praticien_id: string;
+  praticien_name: string;
+  slot_date: string;
+  start_time: string;
+  end_time: string;
+  session_type: SessionTypeCode;
+  session_type_label: string;
+  duration_minutes: number;
+  slot_id: string | null;
+  status: SlotStatus;
+};
+
+export async function listMySchedule(token: string): Promise<ScheduleSlotRecord[]> {
+  return request<ScheduleSlotRecord[]>("/api/v1/schedules/my", { token });
+}
+
+export async function createScheduleSlot(
+  payload: ScheduleSlotCreate,
+  token: string,
+): Promise<ScheduleSlotRecord> {
+  return request<ScheduleSlotRecord>("/api/v1/schedules/my", {
+    method: "POST",
+    body: payload,
+    token,
+  });
+}
+
+export async function deleteScheduleSlot(slotId: string, token: string): Promise<void> {
+  const url = `${MERLIN_API_BASE_URL}/api/v1/schedules/my/${slotId}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok && res.status !== 204) {
+    throw new Error(`Erreur suppression créneau (${res.status})`);
+  }
+}
+
+export async function listMyExceptions(token: string): Promise<ScheduleExceptionRecord[]> {
+  return request<ScheduleExceptionRecord[]>("/api/v1/schedules/my/exceptions", { token });
+}
+
+export async function createScheduleException(
+  payload: ScheduleExceptionCreate,
+  token: string,
+): Promise<ScheduleExceptionRecord> {
+  return request<ScheduleExceptionRecord>("/api/v1/schedules/my/exceptions", {
+    method: "POST",
+    body: payload,
+    token,
+  });
+}
+
+export async function deleteScheduleException(excId: string, token: string): Promise<void> {
+  const url = `${MERLIN_API_BASE_URL}/api/v1/schedules/my/exceptions/${excId}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok && res.status !== 204) {
+    throw new Error(`Erreur suppression exception (${res.status})`);
+  }
+}
+
+export async function listAvailableSlots(
+  praticienId: string,
+  dateFrom: string,
+  dateTo: string,
+): Promise<AvailableSlotRecord[]> {
+  const params = new URLSearchParams({
+    praticien_id: praticienId,
+    date_from: dateFrom,
+    date_to: dateTo,
+  });
+  return request<AvailableSlotRecord[]>(`/api/v1/schedules/available?${params.toString()}`);
+}
+
+// ---------------------------------------------------------------------------
+// Inscription client + vérification email
+// ---------------------------------------------------------------------------
+
+export type ClientRegisterPayload = {
+  email: string;
+  password: string;
+  display_name: string;
+};
+
+export type ClientRegisterResult = {
+  id: string;
+  email: string;
+  display_name: string;
+  message: string;
+};
+
+export async function registerClient(
+  payload: ClientRegisterPayload,
+): Promise<ClientRegisterResult> {
+  return request<ClientRegisterResult>("/api/v1/register/client", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export type VerifyEmailResult = {
+  message: string;
+};
+
+export async function verifyEmail(token: string): Promise<VerifyEmailResult> {
+  return request<VerifyEmailResult>(`/api/v1/verify-email/${token}`);
+}
+
+// ---------------------------------------------------------------------------
+// Bookings
+// ---------------------------------------------------------------------------
+
+export type BookingSlotRecord = {
+  id: string;
+  praticien_id: string;
+  client_id: string | null;
+  slot_date: string;
+  start_time: string;
+  end_time: string;
+  session_type: SessionTypeCode;
+  status: SlotStatus;
+  hold_expires_at: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function holdSlot(slotId: string, token: string): Promise<BookingSlotRecord> {
+  return request<BookingSlotRecord>("/api/v1/bookings/hold", {
+    method: "POST",
+    body: { slot_id: slotId },
+    token,
+  });
+}
+
+export async function confirmSlot(
+  slotId: string,
+  token: string,
+  notes?: string,
+): Promise<BookingSlotRecord> {
+  return request<BookingSlotRecord>("/api/v1/bookings/confirm", {
+    method: "POST",
+    body: { slot_id: slotId, notes: notes ?? null },
+    token,
+  });
+}
+
+export async function cancelSlot(slotId: string, token: string): Promise<BookingSlotRecord> {
+  return request<BookingSlotRecord>("/api/v1/bookings/cancel", {
+    method: "POST",
+    body: { slot_id: slotId },
+    token,
+  });
+}
+
+export async function listMyBookings(token: string): Promise<BookingSlotRecord[]> {
+  return request<BookingSlotRecord[]>("/api/v1/bookings/my", { token });
+}
+

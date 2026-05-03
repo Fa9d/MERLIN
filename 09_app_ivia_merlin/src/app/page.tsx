@@ -1,373 +1,261 @@
+﻿"use client";
+import { useState } from "react";
+import Link from "next/link";
 import "./styles.css";
+import { ThemeToggle } from "@/components/theme-toggle";
 
-export default function HomePage() {
+/* ── SVG Logo ─────────────────────────────────────────────────────────────── */
+function IviaLogo({ className = "" }: { className?: string }) {
   return (
-    <div className="home-page">
-      <div className="home-shell">
-        <header className="home-topbar">
-          <a className="home-brand" href="/">
-            IVIA
-          </a>
-          <nav className="home-nav">
-            <a href="/#pour-qui">Pour qui</a>
-            <a href="/#comment">Comment ça fonctionne</a>
-            <a href="/#tarifs">Tarifs</a>
-            <a href="/rendez-vous">Prendre rendez-vous</a>
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+      <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="16" cy="16" r="2.5" fill="currentColor" />
+      <line x1="16" y1="2" x2="16" y2="13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="16" y1="18.5" x2="16" y2="30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="2" y1="16" x2="13.5" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/* ── Data ─────────────────────────────────────────────────────────────────── */
+const PILIERS = [
+  {
+    num: "01",
+    title: "L\u2019\u00e9coute avant tout",
+    body: "Je prends le temps de comprendre ce que vous vivez, sans grille, sans jugement. Chaque personne arrive avec son histoire unique.",
+  },
+  {
+    num: "02",
+    title: "Des rep\u00e8res concrets",
+    body: "À chaque rencontre, on cherche quelque chose que vous pouvez garder — une prise de conscience, une d\u00e9cision, une direction.",
+  },
+  {
+    num: "03",
+    title: "Un rythme qui vous appartient",
+    body: "Pas de protocole impos\u00e9. On avance \u00e0 votre rythme, selon ce dont vous avez besoin.",
+  },
+];
+
+const AUDIENCE = [
+  {
+    tag: "Adultes",
+    mod: "--adults",
+    body: "Vous traversez une p\u00e9riode difficile, une transition, un doute profond. Vous cherchez \u00e0 comprendre ce qui se passe en vous — et \u00e0 trouver une direction.",
+  },
+  {
+    tag: "Adolescents",
+    mod: "--ados",
+    body: "L\u2019adolescence peut \u00eatre un temps de turbulence int\u00e9rieure. Je cr\u00e9e un espace s\u00e9curitaire o\u00f9 parler devient possible, sans pression, sans jugement.",
+  },
+  {
+    tag: "Parents \u0026 familles",
+    mod: "--families",
+    body: "Parfois c\u2019est la dynamique familiale qui a besoin d\u2019attention. On regarde ensemble ce qui se passe et comment retrouver un terrain commun.",
+  },
+];
+
+const ETAPES = [
+  { num: "01", title: "Vous arrivez comme vous \u00eates", body: "Pas besoin de pr\u00e9parer quoi que ce soit. Vous arrivez avec ce qui est l\u00e0." },
+  { num: "02", title: "On prend le temps d\u2019\u00e9couter", body: "Je pose des questions, j\u2019\u00e9coute, je refl\u00e8te. On explore ce que vous portez." },
+  { num: "03", title: "On cherche ensemble", body: "Pas de r\u00e9ponses toutes faites. On cherche ce qui a du sens pour vous, maintenant." },
+  { num: "04", title: "Vous repartez avec quelque chose", body: "Une clart\u00e9, une d\u00e9cision, une prochaine \u00e9tape. Quelque chose qui vous appartient." },
+];
+
+/* ── Component ────────────────────────────────────────────────────────────── */
+export default function HomePage() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [emailVal, setEmailVal] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+
+  function handleEmailSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (emailVal.trim()) setEmailSent(true);
+  }
+
+  return (
+    <div className="hp">
+      {/* ── NAV ─────────────────────────────────────────────────────────── */}
+      <header className="hp-nav">
+        <div className="hp-nav__inner">
+          <Link href="/" className="hp-nav__logo" aria-label="IVIA — accueil">
+            <IviaLogo className="hp-nav__logo-svg" />
+            <span className="hp-nav__brand">IVIA</span>
+          </Link>
+          <nav className={`hp-nav__links${menuOpen ? " is-open" : ""}`} aria-label="Navigation principale">
+            <Link href="#approche" className="hp-nav__link" onClick={() => setMenuOpen(false)}>Approche</Link>
+            <Link href="#pour-qui" className="hp-nav__link" onClick={() => setMenuOpen(false)}>Pour qui</Link>
+            <Link href="#rencontre" className="hp-nav__link" onClick={() => setMenuOpen(false)}>Une rencontre</Link>
           </nav>
-        </header>
+          <div className="hp-nav__actions">
+            <ThemeToggle />
+            <Link href="/rendez-vous" className="hp-nav__cta">Prendre rendez-vous</Link>
+            <button
+              className="hp-nav__burger"
+              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span /><span /><span />
+            </button>
+          </div>
+        </div>
+      </header>
 
-        <main className="home-main">
-          <section className="home-section home-hero">
-            <div className="home-hero-copy">
-              <p className="home-kicker">IVIA</p>
-              <h1 className="home-title">
-                Quand tout se mélange,
-                <br />
-                commencez par être entendu.
+      <main>
+        {/* ── HERO ──────────────────────────────────────────────────────── */}
+        <section className="hp-hero">
+          <div className="hp-hero__inner">
+            <div className="hp-hero__copy">
+              <p className="hp-kicker">Accompagnement individuel · Montréal</p>
+              <h1 className="hp-hero__h1">
+                Un espace pour déposer<br />
+                ce que vous portez
               </h1>
-              <p className="home-subtitle">
-                Un espace d&apos;écoute pour nommer ce que vous vivez,
-                <br />
-                situer ce qui pèse le plus,
-                <br />
-                et repartir avec une suite concrète.
+              <p className="hp-hero__sub">
+                Je vous accompagne avec calme et une vraie présence — pour retrouver de la clarté et repartir avec quelque chose de concret.
               </p>
-              <div className="home-actions">
-                <a className="home-button home-button-primary" href="/rendez-vous">
-                  Prendre rendez-vous
-                </a>
-                <a className="home-button home-button-secondary" href="/#comment">
-                  Comment ça fonctionne
-                </a>
-              </div>
-              <div className="home-trustline">
-                <p>Séances à 65 $ · Adultes · Non urgent</p>
-                <p>Confidentialité assurée · Pas de diagnostic</p>
+              <Link href="/rendez-vous" className="hp-btn hp-btn--primary">
+                Prendre un premier rendez-vous
+              </Link>
+            </div>
+            <div className="hp-hero__visual" aria-hidden="true">
+              <div className="hp-hero__art">
+                <span className="hp-hero__art-word hp-hero__art-word--1">présence</span>
+                <span className="hp-hero__art-word hp-hero__art-word--2">écoute</span>
+                <span className="hp-hero__art-word hp-hero__art-word--3">clarté</span>
               </div>
             </div>
+          </div>
+        </section>
 
-            <aside className="home-hero-aside">
-              <div className="home-hero-panel">
-                <div className="home-hero-panel-line" />
-                <p className="home-hero-panel-text">
-                  Vous n&apos;avez pas besoin de savoir exactement ce que vous
-                  cherchez pour commencer.
-                </p>
-                <div className="home-trustline">
-                  <p>65 $ · En ligne · Confidentiel</p>
+        {/* ── PONT ──────────────────────────────────────────────────────── */}
+        <section className="hp-pont">
+          <p className="hp-pont__text">
+            Vous n’avez pas à avoir les mots parfaits.<br />
+            <em>Vous avez juste à commencer.</em>
+          </p>
+        </section>
+
+        {/* ── APPROCHE ──────────────────────────────────────────────────── */}
+        <section className="hp-section hp-approche" id="approche">
+          <div className="hp-section__inner">
+            <p className="hp-kicker">Ma manière d’accompagner</p>
+            <h2 className="hp-h2">Je ne suis pas là pour diagnostiquer<br className="hp-br" /> ni pour diriger.</h2>
+            <p className="hp-approche__intro">
+              Je suis là pour écouter vraiment, poser les bonnes questions, et vous aider à voir plus clair.
+            </p>
+            <div className="hp-piliers">
+              {PILIERS.map((p) => (
+                <div key={p.num} className="hp-pilier">
+                  <span className="hp-pilier__num">{p.num}</span>
+                  <h3 className="hp-pilier__title">{p.title}</h3>
+                  <p className="hp-pilier__body">{p.body}</p>
                 </div>
-              </div>
-            </aside>
-          </section>
-
-          <section className="home-section">
-            <div className="home-recognition-wrap">
-              <div className="home-recognition">
-                <p>
-                  Vous n&apos;avez pas toujours besoin
-                  <br />
-                  d&apos;une réponse immédiate.
-                </p>
-                <p>
-                  Parfois ce dont vous avez besoin en premier,
-                  <br />
-                  c&apos;est d&apos;un espace pour poser ce que vous portez.
-                </p>
-                <p>
-                  Pas être redirigé. Pas recevoir un diagnostic.
-                  <br />
-                  Pas vous faire dire quoi faire.
-                </p>
-                <p>
-                  Juste être entendu — vraiment —
-                  <br />
-                  puis repartir avec quelque chose de plus clair
-                  <br />
-                  que lorsque vous êtes arrivé.
-                </p>
-                <p>C&apos;est ce qu&apos;IVIA propose.</p>
-              </div>
+              ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="home-section home-block" id="pour-qui">
-            <h2 className="home-section-title">IVIA est fait pour vous si…</h2>
-            <ul className="home-list">
-              <li>
-                Vous traversez une période difficile et vous ne savez pas par où
-                commencer.
-              </li>
-              <li>
-                Vous portez quelque chose de lourd, mais vous n&apos;êtes pas en
-                crise.
-              </li>
-              <li>
-                Vous avez déjà essayé d&apos;en parler autour de vous, mais ça ne
-                suffit plus.
-              </li>
-              <li>
-                Vous hésitez à consulter un professionnel — vous ne savez pas si
-                c&apos;est nécessaire, ni lequel.
-              </li>
-              <li>
-                Vous voulez comprendre ce que vous vivez avant de décider quoi
-                faire.
-              </li>
-            </ul>
-
-            <div className="home-block">
-              <h3 className="home-subheading">IVIA n&apos;est pas fait pour vous si…</h3>
-              <ul className="home-list">
-                <li>
-                  Vous êtes en danger immédiat → composez le{" "}
-                  <a className="home-link-inline" href="tel:911">
-                    911
-                  </a>{" "}
-                  ou le{" "}
-                  <a className="home-link-inline" href="tel:3114">
-                    3114
-                  </a>
-                  .
-                </li>
-                <li>
-                  Vous avez besoin d&apos;un diagnostic médical ou d&apos;une
-                  prescription.
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <section className="home-section home-block">
-            <h2 className="home-section-title">
-              Après une séance IVIA, vous repartez avec :
-            </h2>
-            <div className="home-cards">
-              <article className="home-card">
-                <h3>Une situation mieux nommée</h3>
-                <p>
-                  Ce qui était flou devient plus lisible.
-                  <br />
-                  Pas une vérité définitive —
-                  <br />
-                  une lecture plus claire de ce que vous vivez.
-                </p>
-              </article>
-
-              <article className="home-card">
-                <h3>Un niveau de vigilance situé</h3>
-                <p>
-                  Est-ce que ça demande une attention urgente ?
-                  <br />
-                  Est-ce que vous pouvez souffler ?
-                  <br />
-                  Vous le saurez mieux.
-                </p>
-              </article>
-
-              <article className="home-card">
-                <h3>Une prochaine étape concrète</h3>
-                <p>
-                  Pas une liste de conseils génériques.
-                  <br />
-                  Une suite adaptée à votre réalité —
-                  <br />
-                  vers qui vous tourner, quoi faire, dans quel ordre.
-                </p>
-              </article>
-
-              <article className="home-card">
-                <h3>Une mémoire de votre parcours</h3>
-                <p>
-                  Si vous revenez, IVIA se souvient.
-                  <br />
-                  Pas besoin de tout réexpliquer.
-                  <br />
-                  Le suivi est continu, utile, et vous appartient.
-                </p>
-              </article>
-            </div>
-          </section>
-
-          <section className="home-section home-block" id="comment">
-            <h2 className="home-section-title">
-              Simple. Sans attente. À votre rythme.
-            </h2>
-            <div className="home-steps">
-              <article className="home-step">
-                <div className="home-step-number">①</div>
-                <div>
-                  <h3>Vous décrivez ce que vous cherchez</h3>
-                  <p>
-                    Un court formulaire — 2 minutes.
-                    <br />
-                    Pas de dossier médical, pas d&apos;historique à remplir.
-                  </p>
+        {/* ── POUR QUI ──────────────────────────────────────────────────── */}
+        <section className="hp-section hp-pourqui" id="pour-qui">
+          <div className="hp-section__inner">
+            <p className="hp-kicker">Pour qui</p>
+            <h2 className="hp-h2">Chaque personne arrive avec son histoire.</h2>
+            <div className="hp-audience">
+              {AUDIENCE.map((a) => (
+                <div key={a.tag} className={`hp-audience__card hp-audience__card${a.mod}`}>
+                  <h3 className="hp-audience__tag">{a.tag}</h3>
+                  <p className="hp-audience__body">{a.body}</p>
+                  <a href="#rencontre" className="hp-link">Je veux en savoir plus →</a>
                 </div>
-              </article>
-
-              <article className="home-step">
-                <div className="home-step-number">②</div>
-                <div>
-                  <h3>Vous choisissez un créneau</h3>
-                  <p>
-                    Les séances durent 60 à 75 minutes.
-                    <br />
-                    En ligne, depuis chez vous.
-                  </p>
-                </div>
-              </article>
-
-              <article className="home-step">
-                <div className="home-step-number">③</div>
-                <div>
-                  <h3>Vous êtes entendu</h3>
-                  <p>
-                    Un espace structuré, bienveillant, confidentiel.
-                    <br />
-                    Une écoute qui aide à mettre de l&apos;ordre, pas à juger.
-                  </p>
-                </div>
-              </article>
-
-              <article className="home-step">
-                <div className="home-step-number">④</div>
-                <div>
-                  <h3>Vous repartez avec quelque chose</h3>
-                  <p>
-                    Une synthèse de séance. Une prochaine étape claire.
-                    <br />
-                    Et si vous revenez, on repart de là où vous en êtes.
-                  </p>
-                </div>
-              </article>
+              ))}
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="home-section home-pricing" id="tarifs">
-            <h2 className="home-section-title">Transparent. Sans surprise.</h2>
-            <div className="home-table-wrap">
-              <table className="home-table">
-                <thead>
-                  <tr>
-                    <th>Séance</th>
-                    <th>Durée</th>
-                    <th>Prix</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Séance unique</td>
-                    <td>60–75 min</td>
-                    <td>65 $</td>
-                  </tr>
-                  <tr>
-                    <td>Forfait 4 séances</td>
-                    <td>60–75 min chacune</td>
-                    <td>240 $ (60 $/séance)</td>
-                  </tr>
-                  <tr>
-                    <td>Forfait 8 séances</td>
-                    <td>60–75 min chacune</td>
-                    <td>440 $ (55 $/séance)</td>
-                  </tr>
-                </tbody>
-              </table>
+        {/* ── RENCONTRE ─────────────────────────────────────────────────── */}
+        <section className="hp-section hp-rencontre" id="rencontre">
+          <div className="hp-section__inner">
+            <p className="hp-kicker">Comment se passe une rencontre</p>
+            <h2 className="hp-h2">50 minutes de présence complète.</h2>
+            <div className="hp-etapes">
+              {ETAPES.map((e) => (
+                <div key={e.num} className="hp-etape">
+                  <span className="hp-etape__num">{e.num}</span>
+                  <div>
+                    <h3 className="hp-etape__title">{e.title}</h3>
+                    <p className="hp-etape__body">{e.body}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="home-pricing-notes">
-              <p>Paiement sécurisé avant la séance.</p>
-              <p>Annulation gratuite jusqu&apos;à 24 h avant.</p>
-              <p>
-                Aucun remboursement d&apos;assurance — IVIA n&apos;est pas un
-                service médical.
+          </div>
+        </section>
+
+        {/* ── CAPSULES ──────────────────────────────────────────────────── */}
+        <section className="hp-section hp-capsules">
+          <div className="hp-section__inner hp-capsules__inner">
+            <div className="hp-capsules__copy">
+              <p className="hp-kicker">Capsules audio · À venir</p>
+              <h2 className="hp-h2 hp-h2--sm">De courtes écoutes pour<br />les moments difficiles.</h2>
+              <p className="hp-capsules__body">
+                La fatigue décisionnelle, l’anxiété du dimanche soir, la voix intérieure trop sévère. Je travaille en ce moment à vous les offrir.
               </p>
             </div>
-          </section>
+            <div className="hp-capsules__form-wrap">
+              {emailSent ? (
+                <p className="hp-capsules__confirm">Merci — je vous écrirai à leur sortie.</p>
+              ) : (
+                <form className="hp-capsules__form" onSubmit={handleEmailSubmit} aria-label="Notification capsules audio">
+                  <label htmlFor="capsule-email" className="hp-capsules__label">
+                    Recevoir un mot à leur sortie
+                  </label>
+                  <div className="hp-capsules__row">
+                    <input
+                      id="capsule-email"
+                      type="email"
+                      required
+                      placeholder="votre@courriel.com"
+                      className="hp-input"
+                      value={emailVal}
+                      onChange={(e) => setEmailVal(e.target.value)}
+                    />
+                    <button type="submit" className="hp-btn hp-btn--secondary">M’avertir</button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </section>
 
-          <section className="home-section home-block">
-            <h2 className="home-section-title">On préfère être clairs.</h2>
-            <article className="home-frame">
-              <p>
-                IVIA n&apos;est pas un service de psychothérapie,
-                <br />
-                ni un service médical.
-                <br />
-                IVIA ne pose pas de diagnostic
-                <br />
-                et ne prescrit pas de traitement.
-                <br />
-                IVIA ne remplace pas un psychologue,
-                <br />
-                un médecin ou un service d&apos;urgence
-                <br />
-                lorsque ceux-ci sont nécessaires.
-              </p>
-              <br />
-              <p>
-                Ce que nous faisons : écoute structurée,
-                <br />
-                clarification de situation,
-                <br />
-                orientation accompagnée,
-                <br />
-                continuité de parcours.
-              </p>
-              <br />
-              <p>
-                Si votre situation demande plus que ça,
-                <br />
-                nous vous aiderons à trouver
-                <br />
-                la bonne porte d&apos;entrée.
-              </p>
-            </article>
-          </section>
+        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
+        <section className="hp-cta-final">
+          <div className="hp-section__inner hp-cta-final__inner">
+            <p className="hp-cta-final__text">
+              Si quelque chose résonne,<br />
+              c’est peut-être le bon moment.
+            </p>
+            <Link href="/rendez-vous" className="hp-btn hp-btn--primary">
+              Prendre un premier rendez-vous →
+            </Link>
+          </div>
+        </section>
+      </main>
 
-          <section className="home-section home-block">
-            <h2 className="home-section-title">Quelques mots sur notre approche</h2>
-            <article className="home-signature">
-              <p>
-                IVIA est propulsé par MERLIN —
-                <br />
-                un moteur documentaire et méthodologique
-                <br />
-                qui structure l&apos;écoute, organise la mémoire
-                <br />
-                de parcours et produit une synthèse utile
-                <br />
-                après chaque séance.
-              </p>
-              <br />
-              <p>
-                Notre travail repose sur une idée simple :
-                <br />
-                beaucoup de personnes ne manquent pas
-                <br />
-                seulement d&apos;aide —
-                <br />
-                elles manquent d&apos;abord de clarté.
-              </p>
-              <br />
-              <p className="home-signature-quote">
-                IN VIVO IN ACTU — Au sein de l&apos;être, en acte.
-              </p>
-            </article>
-          </section>
-
-          <section className="home-section">
-            <article className="home-final">
-              <h2 className="home-final-title">
-                Vous n&apos;avez pas besoin de savoir exactement
-                <br />
-                ce que vous cherchez pour commencer.
-              </h2>
-              <a className="home-button home-button-primary" href="/rendez-vous">
-                Prendre rendez-vous
-              </a>
-              <p className="home-note">65 $ · En ligne · Confidentiel</p>
-            </article>
-          </section>
-        </main>
-      </div>
+      {/* ── FOOTER ────────────────────────────────────────────────────────── */}
+      <footer className="hp-footer">
+        <div className="hp-section__inner hp-footer__inner">
+          <Link href="/" className="hp-footer__logo" aria-label="IVIA">
+            <IviaLogo className="hp-nav__logo-svg" />
+            <span>IVIA</span>
+          </Link>
+          <p className="hp-footer__copy">&copy; {new Date().getFullYear()} IVIA. Montréal, Québec.</p>
+          <nav className="hp-footer__links" aria-label="Liens du pied de page">
+            <Link href="#approche" className="hp-footer__link">Approche</Link>
+            <Link href="/rendez-vous" className="hp-footer__link">Rendez-vous</Link>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }

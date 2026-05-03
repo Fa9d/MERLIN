@@ -1,12 +1,113 @@
+/* ─── DESIGN TOKENS ─────────────────────────────────────────────────────── */
 :root {
-  --background: #f5f0e7;
-  --foreground: #1e241f;
-  --surface: rgba(255, 251, 246, 0.84);
-  --border: rgba(62, 74, 66, 0.14);
-  --muted: #5b645d;
-  --accent: #4c6454;
-  --accent-deep: #24332b;
-  --shadow: 0 24px 70px rgba(36, 41, 35, 0.08);
+  /* Color — OKLCH warm naturals (light) */
+  --background:   oklch(97% 0.016 78);
+  --surface:      oklch(98.5% 0.01 76);
+  --surface-alt:  oklch(94% 0.022 74);
+  --foreground:   oklch(22% 0.022 80);
+  --muted:        oklch(50% 0.025 78);
+  --subtle:       oklch(66% 0.018 78);
+  --border:       rgba(62, 74, 66, 0.14);
+  --border-solid: oklch(82% 0.018 78);
+  --accent:       oklch(42% 0.09 145);
+  --accent-deep:  oklch(30% 0.07 145);
+  --accent-surf:  oklch(93% 0.04 145);
+  --earth:        oklch(55% 0.082 56);
+  --earth-surf:   oklch(93% 0.038 62);
+  --warm:         oklch(62% 0.1 68);
+
+  /* Space (4px base grid) */
+  --sp-1: 0.25rem;   /* 4px  */
+  --sp-2: 0.5rem;    /* 8px  */
+  --sp-3: 0.75rem;   /* 12px */
+  --sp-4: 1rem;      /* 16px */
+  --sp-5: 1.25rem;   /* 20px */
+  --sp-6: 1.5rem;    /* 24px */
+  --sp-8: 2rem;      /* 32px */
+  --sp-10: 2.5rem;   /* 40px */
+  --sp-12: 3rem;     /* 48px */
+  --sp-16: 4rem;     /* 64px */
+  --sp-20: 5rem;     /* 80px */
+
+  /* Typography */
+  --font-display: 'Zodiak', 'Instrument Serif', serif;
+  --font-body:    'Satoshi', 'DM Sans', sans-serif;
+
+  /* Radius */
+  --r-sm:   0.625rem;
+  --r-md:   1.25rem;
+  --r-lg:   2rem;
+  --r-full: 999px;
+
+  /* Shadow */
+  --shadow:    0 24px 70px oklch(22% 0.022 80 / 0.08);
+  --shadow-sm: 0 4px 16px oklch(22% 0.022 80 / 0.06);
+  --shadow-lg: 0 40px 100px oklch(22% 0.022 80 / 0.12);
+}
+
+/* Dark mode — media query (default) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background:   oklch(18% 0.018 82);
+    --surface:      oklch(22% 0.02 80);
+    --surface-alt:  oklch(26% 0.024 76);
+    --foreground:   oklch(93% 0.014 80);
+    --muted:        oklch(68% 0.018 78);
+    --subtle:       oklch(55% 0.016 78);
+    --border:       rgba(200, 210, 198, 0.12);
+    --border-solid: oklch(36% 0.022 78);
+    --accent:       oklch(63% 0.115 145);
+    --accent-deep:  oklch(73% 0.13 145);
+    --accent-surf:  oklch(26% 0.06 145);
+    --earth:        oklch(68% 0.09 56);
+    --earth-surf:   oklch(26% 0.05 62);
+    --warm:         oklch(72% 0.1 68);
+    --shadow:    0 24px 70px oklch(10% 0.01 80 / 0.3);
+    --shadow-sm: 0 4px 16px oklch(10% 0.01 80 / 0.22);
+    --shadow-lg: 0 40px 100px oklch(10% 0.01 80 / 0.4);
+  }
+}
+
+/* Dark mode — explicit data-theme */
+[data-theme="dark"] {
+  --background:   oklch(18% 0.018 82);
+  --surface:      oklch(22% 0.02 80);
+  --surface-alt:  oklch(26% 0.024 76);
+  --foreground:   oklch(93% 0.014 80);
+  --muted:        oklch(68% 0.018 78);
+  --subtle:       oklch(55% 0.016 78);
+  --border:       rgba(200, 210, 198, 0.12);
+  --border-solid: oklch(36% 0.022 78);
+  --accent:       oklch(63% 0.115 145);
+  --accent-deep:  oklch(73% 0.13 145);
+  --accent-surf:  oklch(26% 0.06 145);
+  --earth:        oklch(68% 0.09 56);
+  --earth-surf:   oklch(26% 0.05 62);
+  --warm:         oklch(72% 0.1 68);
+  --shadow:    0 24px 70px oklch(10% 0.01 80 / 0.3);
+  --shadow-sm: 0 4px 16px oklch(10% 0.01 80 / 0.22);
+  --shadow-lg: 0 40px 100px oklch(10% 0.01 80 / 0.4);
+}
+
+/* Light mode explicit override */
+[data-theme="light"] {
+  --background:   oklch(97% 0.016 78);
+  --surface:      oklch(98.5% 0.01 76);
+  --surface-alt:  oklch(94% 0.022 74);
+  --foreground:   oklch(22% 0.022 80);
+  --muted:        oklch(50% 0.025 78);
+  --subtle:       oklch(66% 0.018 78);
+  --border:       rgba(62, 74, 66, 0.14);
+  --border-solid: oklch(82% 0.018 78);
+  --accent:       oklch(42% 0.09 145);
+  --accent-deep:  oklch(30% 0.07 145);
+  --accent-surf:  oklch(93% 0.04 145);
+  --earth:        oklch(55% 0.082 56);
+  --earth-surf:   oklch(93% 0.038 62);
+  --warm:         oklch(62% 0.1 68);
+  --shadow:    0 24px 70px oklch(22% 0.022 80 / 0.08);
+  --shadow-sm: 0 4px 16px oklch(22% 0.022 80 / 0.06);
+  --shadow-lg: 0 40px 100px oklch(22% 0.022 80 / 0.12);
 }
 
 html {
@@ -24,10 +125,8 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--foreground);
-  background:
-    radial-gradient(circle at top, rgba(218, 227, 215, 0.95), transparent 30%),
-    linear-gradient(180deg, #faf5ee 0%, #f3ede4 100%);
-  font-family: var(--font-dm-sans), sans-serif;
+  background: var(--background);
+  font-family: var(--font-body), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -495,6 +594,20 @@ a {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* Agenda / disponibilités */
+.form-grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.form-grid-auto-wide {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 @media (max-width: 900px) {

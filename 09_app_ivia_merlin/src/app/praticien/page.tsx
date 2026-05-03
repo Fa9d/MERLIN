@@ -33,6 +33,15 @@ import {
   type SessionRecord,
   createSession,
   validateSessionNote,
+  // Agenda
+  type ScheduleSlotRecord,
+  type ScheduleExceptionRecord,
+  listMySchedule,
+  createScheduleSlot,
+  deleteScheduleSlot,
+  listMyExceptions,
+  createScheduleException,
+  deleteScheduleException,
 } from "@/lib/merlin-api";
 
 const STORAGE_KEY = "merlin_praticien_session";
@@ -57,7 +66,7 @@ const SESSION_STATUS_LABELS: Record<string, string> = {
   escalated: "Escaladée",
 };
 
-type ActiveView = "clients" | "seance" | "cloture" | "historique";
+type ActiveView = "clients" | "seance" | "cloture" | "historique" | "agenda";
 
 export default function PraticienPage() {
   const [email, setEmail] = useState("");
@@ -119,6 +128,28 @@ export default function PraticienPage() {
   const [quickNoteText, setQuickNoteText] = useState("");
   const [isSubmittingQuickNote, setIsSubmittingQuickNote] = useState(false);
 
+  // Agenda — gabarit hebdomadaire
+  const [scheduleSlots, setScheduleSlots] = useState<ScheduleSlotRecord[]>([]);
+  const [exceptions, setExceptions] = useState<ScheduleExceptionRecord[]>([]);
+  const [isLoadingSchedule, setIsLoadingSchedule] = useState(false);
+  const [scheduleError, setScheduleError] = useState<string | null>(null);
+  const [scheduleSuccess, setScheduleSuccess] = useState<string | null>(null);
+
+  // Formulaire nouveau bloc
+  const [newSlotDay, setNewSlotDay] = useState<number>(0);
+  const [newSlotStart, setNewSlotStart] = useState("09:00");
+  const [newSlotEnd, setNewSlotEnd] = useState("17:00");
+  const [newSlotDuration, setNewSlotDuration] = useState<number>(60);
+  const [newSlotBuffer, setNewSlotBuffer] = useState<number>(15);
+  const [newSlotType, setNewSlotType] = useState<"intake" | "standard" | "follow_up" | "any">("standard");
+  const [isAddingSlot, setIsAddingSlot] = useState(false);
+
+  // Formulaire exception
+  const [newExcDate, setNewExcDate] = useState("");
+  const [newExcType, setNewExcType] = useState<"blocked" | "extra">("blocked");
+  const [newExcReason, setNewExcReason] = useState("");
+  const [isAddingException, setIsAddingException] = useState(false);
+
   // Restaurer la session depuis le localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -126,7 +157,12 @@ export default function PraticienPage() {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (!stored) return;
       try {
-        setSession(JSON.parse(stored) as LoginResponse);
+        const parsed = JSON.parse(stored) as LoginResponse;
+        if (parsed.user.role !== "practitioner") {
+          window.localStorage.removeItem(STORAGE_KEY);
+          return;
+        }
+        setSession(parsed);
       } catch {
         window.localStorage.removeItem(STORAGE_KEY);
       }
@@ -135,7 +171,7 @@ export default function PraticienPage() {
 
   // Charger les données après connexion
   useEffect(() => {
-    if (!session || !(["operator", "practitioner"] as string[]).includes(session.user.role)) return;
+    if (!session || session.user.role !== "practitioner") return;
     const currentSession = session;
     let active = true;
 
@@ -179,7 +215,25 @@ export default function PraticienPage() {
       }
     }
 
+    async function loadSchedule() {
+      setIsLoadingSchedule(true);
+      try {
+        const [slots, excs] = await Promise.all([
+          listMySchedule(currentSession.access_token),
+          listMyExceptions(currentSession.access_token),
+        ]);
+        if (!active) return;
+        setScheduleSlots(slots);
+        setExceptions(excs);
+      } catch {
+        // non-bloquant
+      } finally {
+        if (active) setIsLoadingSchedule(false);
+      }
+    }
+
     void loadData();
+    void loadSchedule();
     return () => { active = false; };
   }, [session]);
 
@@ -189,7 +243,7 @@ export default function PraticienPage() {
     setAuthError(null);
     try {
       const result = await loginOperator(email, password);
-      if (result.user.role !== "operator" && result.user.role !== "practitioner") {
+      if (result.user.role !== "practitioner") {
         setAuthError("Cet espace est réservé aux praticiens. Votre compte n'a pas le rôle requis.");
         setIsLoggingIn(false);
         return;
@@ -529,12 +583,13 @@ export default function PraticienPage() {
 
         {/* Navigation interne */}
         <nav className="praticien-nav">
-          {(["clients", "seance", "cloture", "historique"] as ActiveView[]).map((view) => {
+          {(["clients", "seance", "cloture", "historique", "agenda"] as ActiveView[]).map((view) => {
             const labels: Record<ActiveView, string> = {
               clients: "Clients",
               seance: `Séances (${activeSessions.length})`,
               cloture: "Clôturer",
               historique: "Historique",
+              agenda: "Mon Agenda",
             };
             return (
               <button
@@ -1288,6 +1343,246 @@ export default function PraticienPage() {
             ) : selectedSessionId ? (
               <p className="muted-text">Aucun document dérivé pour cette séance.</p>
             ) : null}
+          </div>
+        )}
+
+        {/* === AGENDA — Gabarit hebdomadaire === */}
+        {activeView === "agenda" && (
+          <div className="stack-md">
+            <div className="card form-stack">
+              <h3>Gabarit hebdomadaire</h3>
+              <p className="muted-text">
+                Définissez vos blocs de disponibilité récurrents. Les créneaux seront générés
+                automatiquement pour les clients lors de la prise de rendez-vous.
+              </p>
+
+              {scheduleError ? <p className="message message-error">{scheduleError}</p> : null}
+              {scheduleSuccess ? <p className="message message-success">{scheduleSuccess}</p> : null}
+
+              {/* Liste des blocs existants */}
+              {isLoadingSchedule ? (
+                <p className="muted-text">Chargement…</p>
+              ) : scheduleSlots.length === 0 ? (
+                <p className="muted-text">Aucun bloc de disponibilité défini.</p>
+              ) : (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Jour</th>
+                      <th>Début</th>
+                      <th>Fin</th>
+                      <th>Durée</th>
+                      <th>Tampon</th>
+                      <th>Type</th>
+                      <th>Actif</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scheduleSlots.map((slot) => (
+                      <tr key={slot.id}>
+                        <td>{slot.day_label}</td>
+                        <td>{slot.start_time.slice(0, 5)}</td>
+                        <td>{slot.end_time.slice(0, 5)}</td>
+                        <td>{slot.session_duration_minutes} min</td>
+                        <td>{slot.buffer_minutes} min</td>
+                        <td>{slot.session_type_label}</td>
+                        <td>{slot.is_active ? "✓" : "—"}</td>
+                        <td>
+                          <button
+                            className="button button-danger button-xs"
+                            type="button"
+                            onClick={async () => {
+                              if (!session) return;
+                              try {
+                                await deleteScheduleSlot(slot.id, session.access_token);
+                                setScheduleSlots((prev) => prev.filter((s) => s.id !== slot.id));
+                                setScheduleSuccess("Bloc supprimé.");
+                              } catch (e) {
+                                setScheduleError(e instanceof Error ? e.message : "Erreur suppression.");
+                              }
+                            }}
+                          >
+                            Supprimer
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            {/* Formulaire — nouveau bloc */}
+            <div className="card form-stack">
+              <h3>Ajouter un bloc</h3>
+              <div className="form-grid-auto">
+                <label className="field">
+                  <span>Jour</span>
+                  <select value={newSlotDay} onChange={(e) => setNewSlotDay(Number(e.target.value))}>
+                    {["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"].map((d, i) => (
+                      <option key={i} value={i}>{d}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field">
+                  <span>Début</span>
+                  <input type="time" value={newSlotStart} onChange={(e) => setNewSlotStart(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Fin</span>
+                  <input type="time" value={newSlotEnd} onChange={(e) => setNewSlotEnd(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Durée séance (min)</span>
+                  <select value={newSlotDuration} onChange={(e) => setNewSlotDuration(Number(e.target.value))}>
+                    <option value={45}>45 min</option>
+                    <option value={60}>60 min</option>
+                    <option value={90}>90 min</option>
+                  </select>
+                </label>
+                <label className="field">
+                  <span>Tampon (min)</span>
+                  <select value={newSlotBuffer} onChange={(e) => setNewSlotBuffer(Number(e.target.value))}>
+                    <option value={0}>0 min</option>
+                    <option value={5}>5 min</option>
+                    <option value={10}>10 min</option>
+                    <option value={15}>15 min</option>
+                    <option value={30}>30 min</option>
+                  </select>
+                </label>
+                <label className="field">
+                  <span>Type</span>
+                  <select value={newSlotType} onChange={(e) => setNewSlotType(e.target.value as typeof newSlotType)}>
+                    <option value="standard">Standard (60 min)</option>
+                    <option value="intake">Évaluation (90 min)</option>
+                    <option value="follow_up">Suivi court (45 min)</option>
+                    <option value="any">Libre</option>
+                  </select>
+                </label>
+              </div>
+              <button
+                className="button button-primary button-sm"
+                type="button"
+                disabled={isAddingSlot}
+                onClick={async () => {
+                  if (!session) return;
+                  setIsAddingSlot(true);
+                  setScheduleError(null);
+                  setScheduleSuccess(null);
+                  try {
+                    const created = await createScheduleSlot(
+                      {
+                        day_of_week: newSlotDay,
+                        start_time: newSlotStart,
+                        end_time: newSlotEnd,
+                        session_duration_minutes: newSlotDuration,
+                        buffer_minutes: newSlotBuffer,
+                        session_type: newSlotType,
+                      },
+                      session.access_token,
+                    );
+                    setScheduleSlots((prev) => [...prev, created]);
+                    setScheduleSuccess("Bloc ajouté.");
+                  } catch (e) {
+                    setScheduleError(e instanceof Error ? e.message : "Erreur création bloc.");
+                  } finally {
+                    setIsAddingSlot(false);
+                  }
+                }}
+              >
+                {isAddingSlot ? "Ajout…" : "Ajouter"}
+              </button>
+            </div>
+
+            {/* Exceptions */}
+            <div className="card form-stack">
+              <h3>Exceptions (congés, jours bloqués)</h3>
+              {exceptions.length === 0 ? (
+                <p className="muted-text">Aucune exception enregistrée.</p>
+              ) : (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Type</th>
+                      <th>Raison</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {exceptions.map((exc) => (
+                      <tr key={exc.id}>
+                        <td>{exc.exception_date}</td>
+                        <td>{exc.exception_type === "blocked" ? "Bloqué" : "Extra"}</td>
+                        <td>{exc.reason ?? "—"}</td>
+                        <td>
+                          <button
+                            className="button button-danger button-xs"
+                            type="button"
+                            onClick={async () => {
+                              if (!session) return;
+                              try {
+                                await deleteScheduleException(exc.id, session.access_token);
+                                setExceptions((prev) => prev.filter((e) => e.id !== exc.id));
+                              } catch (e) {
+                                setScheduleError(e instanceof Error ? e.message : "Erreur.");
+                              }
+                            }}
+                          >
+                            Supprimer
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+
+              <div className="form-grid-auto-wide">
+                <label className="field">
+                  <span>Date</span>
+                  <input type="date" value={newExcDate} onChange={(e) => setNewExcDate(e.target.value)} />
+                </label>
+                <label className="field">
+                  <span>Type</span>
+                  <select value={newExcType} onChange={(e) => setNewExcType(e.target.value as "blocked" | "extra")}>
+                    <option value="blocked">Journée bloquée</option>
+                    <option value="extra">Créneau supplémentaire</option>
+                  </select>
+                </label>
+                <label className="field">
+                  <span>Raison (optionnel)</span>
+                  <input type="text" value={newExcReason} onChange={(e) => setNewExcReason(e.target.value)} placeholder="Congé, formation…" />
+                </label>
+              </div>
+              <button
+                className="button button-secondary button-sm"
+                type="button"
+                disabled={isAddingException || !newExcDate}
+                onClick={async () => {
+                  if (!session || !newExcDate) return;
+                  setIsAddingException(true);
+                  setScheduleError(null);
+                  try {
+                    const created = await createScheduleException(
+                      { exception_date: newExcDate, exception_type: newExcType, reason: newExcReason || null },
+                      session.access_token,
+                    );
+                    setExceptions((prev) => [...prev, created]);
+                    setNewExcDate("");
+                    setNewExcReason("");
+                    setScheduleSuccess("Exception ajoutée.");
+                  } catch (e) {
+                    setScheduleError(e instanceof Error ? e.message : "Erreur.");
+                  } finally {
+                    setIsAddingException(false);
+                  }
+                }}
+              >
+                {isAddingException ? "Ajout…" : "Bloquer cette date"}
+              </button>
+            </div>
           </div>
         )}
       </main>

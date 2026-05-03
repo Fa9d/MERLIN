@@ -18,6 +18,7 @@ def load_models() -> None:
     import app.models.intake_request  # noqa: F401
     import app.models.session  # noqa: F401
     import app.models.session_note  # noqa: F401
+    import app.models.schedule  # noqa: F401
 
 
 def init_models() -> None:

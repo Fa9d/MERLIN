@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from sqlalchemy import Boolean, DateTime, Enum, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
+from typing import Optional
 
 from app.db.base import Base
 from app.models.enums import AppRole, RecordStatus
@@ -47,4 +48,7 @@ class AppUser(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
+    email_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    email_verification_token: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    token_expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
