@@ -37,6 +37,17 @@ def get_current_user(
     return user
 
 
+async def require_verified_email_user(
+    current_user: AppUser = Depends(get_current_user),
+) -> AppUser:
+    if not current_user.email_verified:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Email non vérifié. Consultez votre boîte mail.",
+        )
+    return current_user
+
+
 def get_optional_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
     db: Session = Depends(get_db),

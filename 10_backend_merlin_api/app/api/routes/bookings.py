@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user
+from app.core.deps import get_current_user, require_verified_email_user
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.enums import AppRole, SlotStatus
@@ -51,10 +51,8 @@ class BookingCancelIn(BaseModel):
 def hold_slot(
     body: BookingHoldIn,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(get_current_user),
+    current_user: AppUser = Depends(require_verified_email_user),
 ) -> BookingSlotOut:
-    _require_email_verified(current_user)
-
     slot: BookingSlot | None = db.query(BookingSlot).filter(BookingSlot.id == body.slot_id).first()
     if not slot:
         raise HTTPException(status_code=404, detail="Créneau introuvable.")
@@ -89,10 +87,8 @@ def hold_slot(
 async def confirm_slot(
     body: BookingConfirmIn,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(get_current_user),
+    current_user: AppUser = Depends(require_verified_email_user),
 ) -> BookingSlotOut:
-    _require_email_verified(current_user)
-
     slot: BookingSlot | None = db.query(BookingSlot).filter(BookingSlot.id == body.slot_id).first()
     if not slot:
         raise HTTPException(status_code=404, detail="Créneau introuvable.")
@@ -217,9 +213,3 @@ def _expire_hold(slot: BookingSlot) -> None:
         slot.hold_expires_at = None
 
 
-def _require_email_verified(user: AppUser) -> None:
-    if not user.email_verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Votre adresse courriel doit être vérifiée avant de réserver.",
-        )
