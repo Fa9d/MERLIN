@@ -13,3 +13,29 @@ memory/
 nginx/certbot/
 deploy/handoff/*.tgz
 merlin_*.tgz
+
+# Fichiers temporaires de benchmark / scraping
+tmp_*.html
+tmp_*.json
+tmp_*.csv
+
+# Variables d'environnement réelles (les .example sont versionnés)
+.env
+.env.local
+.env.prod
+.env.*.local
+# Ne pas ignorer les templates
+!.env.example
+!.env.prod.example
+
+# Artefacts Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.db
+
+# Archives de déploiement à la racine
+*.tgz
+*.tar.gz
+*.zip
