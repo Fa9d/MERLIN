@@ -398,6 +398,270 @@ a {
   margin-bottom: 1rem;
 }
 
+/* ─── CLASSES UTILITAIRES MANQUANTES ─────────────────────────────────────── */
+
+/* Texte atténué */
+.text-muted {
+  color: var(--muted);
+}
+
+.text-muted-sm {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* Centrage de page */
+.page-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  gap: var(--sp-4);
+}
+
+/* ─── Variantes de bouton ─── */
+
+.button-primary {
+  background: var(--accent);
+  color: oklch(97% 0.016 78);
+  border-color: transparent;
+}
+
+.button-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.button-danger {
+  background: oklch(45% 0.14 22);
+  color: oklch(97% 0.01 78);
+  border-color: transparent;
+}
+
+.button-sm {
+  min-height: 2.25rem;
+  padding: 0 0.85rem;
+  font-size: 0.88rem;
+}
+
+.button-xs {
+  min-height: 1.85rem;
+  padding: 0 0.65rem;
+  font-size: 0.82rem;
+}
+
+/* ─── btn (alias léger pour pages rendez-vous / suivi) ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0 1.1rem;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: var(--surface);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn:hover {
+  opacity: 0.82;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: oklch(97% 0.016 78);
+  border-color: transparent;
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border-solid);
+  color: var(--foreground);
+}
+
+/* ─── Formulaires utilitaires ─── */
+.form-control {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: 0.75rem 1rem;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--foreground);
+}
+
+.field-hint {
+  font-size: 0.82rem;
+  color: var(--subtle);
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-4);
+}
+
+@media (max-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Sections ─── */
+.section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.section-label-urgent {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+/* ─── Bandes d'info ─── */
+.info-strip {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ─── Stacks (espacement vertical) ─── */
+.stack-sm > * + * { margin-top: var(--sp-3); }
+.stack-md > * + * { margin-top: var(--sp-6); }
+.stack-lg > * + * { margin-top: var(--sp-10); }
+
+/* ─── Tableaux ─── */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.data-table th {
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover td {
+  background: var(--surface-alt);
+}
+
+/* ─── Messages d'erreur inline ─── */
+.error-msg {
+  color: oklch(45% 0.14 22);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* ─── Titres de carte ─── */
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+/* ─── Statistiques (dashboard) ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--sp-4);
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: var(--sp-5) var(--sp-6);
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--foreground);
+}
+
+/* ─── Salle audio ─── */
+.audio-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-8);
+  min-height: 60vh;
+  padding: var(--sp-8) var(--sp-4);
+}
+
 .praticien-nav {
   display: flex;
   flex-wrap: wrap;
