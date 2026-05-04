@@ -43,6 +43,8 @@ export type ClientPayload = {
   timezone?: string;
   territory_code?: string;
   is_adult_confirmed?: boolean;
+  record_status?: string;
+  data_sensitivity_class?: string;
 };
 
 export type ClientRecord = {
