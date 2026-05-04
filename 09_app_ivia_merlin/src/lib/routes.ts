@@ -2,6 +2,7 @@ export const appRoutes = {
   home: "/",
   booking: "/rendez-vous",
   bookingReserver: "/rendez-vous/reserver",
+  bookingConfirmation: "/rendez-vous/confirmation",
   operator: "/operator",
   supervision: "/supervision",
   admin: "/admin",
@@ -12,4 +13,5 @@ export const appRoutes = {
   verifyEmail: "/verify-email",
   audioRoom: "/audio-room",
   audioTest: "/audio-test",
+  login: "/login",
 } as const;

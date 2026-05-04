@@ -21,6 +21,7 @@ const PUBLIC_PATHS = new Set([
   "/login",
   "/rendez-vous",
   "/rendez-vous/reserver",
+  "/rendez-vous/confirmation",
   "/ressources",
   "/praticiens",
 ]);
