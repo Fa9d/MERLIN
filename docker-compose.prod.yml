@@ -87,8 +87,7 @@ services:
       MERLIN_AUTO_CREATE_TABLES: ${MERLIN_AUTO_CREATE_TABLES}
     volumes:
       - merlin_recordings:/app/storage/recordings
-    healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health >/dev/null || exit 1"]
+      - ./10_backend_merlin_api/alembic/versions:/app/alembic/versions
       interval: 15s
       timeout: 5s
       retries: 5
