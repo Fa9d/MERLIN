@@ -485,27 +485,16 @@ def assign_praticien(
 
 @router.post(
     "/{session_id}/room",
-    response_model=SessionRoomRead,
     deprecated=True,
     summary="[DEPRECATED] Creer une salle LiveKit via sessions — utiliser /audio-sessions",
 )
 async def create_session_room(
     session_id: str,
-    db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
-) -> SessionRoomRead:
-    logger.warning(
-        "Route legacy POST /sessions/%s/room appelee. Utiliser POST /audio-sessions/sessions/{session_id}/provision.",
-        session_id,
+) -> None:
+    raise HTTPException(
+        status_code=status.HTTP_410_GONE,
+        detail="Cette route est dépréciée. Utilisez /api/v1/audio-sessions à la place.",
     )
-    session_record = _get_owned_session_or_404(session_id, db, current_user)
-
-    try:
-        room_payload = await create_livekit_room_for_session(db, session_record)
-    except LiveKitAudioError as exc:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
-
-    return SessionRoomRead(session_id=session_record.id, **room_payload)
 
 
 @router.post(
