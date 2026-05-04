@@ -7,7 +7,7 @@ export const appRoutes = {
   supervision: "/supervision",
   admin: "/admin",
   ressources: "/ressources",
-  praticien: "/praticien",
+  praticien: "/espace-praticien",
   praticiens: "/praticiens",
   suivi: "/suivi",
   verifyEmail: "/verify-email",

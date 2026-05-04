@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
  * Tout sous-chemin de ces préfixes est également protégé.
  */
 const PROTECTED_PREFIXES = [
-  "/praticien",
+  "/espace-praticien",
   "/operator",
   "/supervision",
   "/admin",
