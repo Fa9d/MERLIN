@@ -11,7 +11,7 @@
 C:\MERLIN\
 ├── 00_GOUVERNANCE/          # Décisions, politiques, conventions, benchmarks, backlogs
 ├── 01_FONDATEUR/            # Fondements philosophiques et doctrine du projet (hors IVIA)
-├── 01_FONDEMENTS/           # Documents fondateurs IVIA (charte, cercle, plan éditorial)
+├── 01_FONDEMENTS/           # Documents fondateurs IVIA (charte, cercle, positionnement stratégique, plan éditorial)
 ├── 02_NATIONS_QC/           # Fiches-nations, cadres concepts autochtones Québec
 ├── 03_MODELE_GOUVERNANCE/   # Modèle opératoire MERLIN, axes CERCLE
 ├── 04_METHODES/             # Playbooks, méthodes, articles éditoriaux IVIA
@@ -51,7 +51,22 @@ C:\MERLIN\
 Les fichiers documentaires suivent la convention :
 `MERLIN_[DOMAINE]_[TYPE]_[SUJET]_v[MAJOR].[MINOR].md`
 
-Voir [00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V1.md](00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V1.md)
+Exception formalisée — corpus IVIA : `IVIA_[TYPE]_[SUJET]_v[MAJOR].[MINOR].md`
+
+**Référence active :** [00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V2.md](00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V2.md)
+*(remplace V1 — formalise IVIA_, BACK_, FRONT_)*
+
+---
+
+## Documents de référence rapide
+
+| Fichier | Rôle |
+|---|---|
+| [00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V2.md](00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V2.md) | Convention de nommage active (v2) |
+| [01_FONDEMENTS/IVIA_POSITIONNEMENT_STRATEGIQUE_EDITORIAL_v1.0.md](01_FONDEMENTS/IVIA_POSITIONNEMENT_STRATEGIQUE_EDITORIAL_v1.0.md) | Positionnement IVIA, cadre légal, textes site, capsules audio |
+| [01_FONDEMENTS/IVIA_DOCUMENT_DIRECTEUR_v1.0.md](01_FONDEMENTS/IVIA_DOCUMENT_DIRECTEUR_v1.0.md) | Charte philosophique — 7 principes fondateurs |
+| [04_METHODES/IVIA_PLAN_EDITORIAL_v1.0.md](04_METHODES/IVIA_PLAN_EDITORIAL_v1.0.md) | Plan 16 articles × calendrier 16 semaines |
+| [00_GOUVERNANCE/IVIA_ARBITRAGE_AXE_FREQUENCE_v1.md](00_GOUVERNANCE/IVIA_ARBITRAGE_AXE_FREQUENCE_v1.md) | Arbitrage axe FRÉQUENCE — décision APPROUVÉE |
 
 ---
 
@@ -66,4 +81,4 @@ Voir [00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V1.md](00_GOUVERNANCE/MERLIN_CONV
 
 ---
 
-*Dernière mise à jour : Mai 2026*
+*Dernière mise à jour : 4 mai 2026*
