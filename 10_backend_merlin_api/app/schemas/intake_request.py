@@ -1,10 +1,10 @@
-from app.models.enums import NeedCode, RecordStatus, RequestForCode, RiskLevelCode
+from app.models.enums import NeedCode, RecordStatus, RequestChannelCode, RequestForCode, RiskLevelCode
 from app.schemas.common import MerlinSchema, TimestampedReadSchema
 
 
 class IntakeRequestCreate(MerlinSchema):
     client_id: str
-    request_channel_code: str
+    request_channel_code: RequestChannelCode
     request_for_code: RequestForCode
     primary_need_code: NeedCode
     perceived_urgency_code: RiskLevelCode = RiskLevelCode.non_urgent
@@ -18,7 +18,7 @@ class IntakeRequestCreate(MerlinSchema):
 class IntakeRequestRead(TimestampedReadSchema):
     id: str
     client_id: str
-    request_channel_code: str
+    request_channel_code: RequestChannelCode
     request_for_code: RequestForCode
     primary_need_code: NeedCode
     perceived_urgency_code: RiskLevelCode

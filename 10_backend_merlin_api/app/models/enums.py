@@ -55,6 +55,14 @@ class RiskLevelCode(str, Enum):
     urgent = "urgent"
 
 
+class RequestChannelCode(str, Enum):
+    web_form = "web_form"
+    phone = "phone"
+    email = "email"
+    referral = "referral"
+    other = "other"
+
+
 class ConsentTypeCode(str, Enum):
     consent_session = "consent_session"
     consent_session_note = "consent_session_note"

@@ -5,7 +5,7 @@ from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
-from app.models.enums import NeedCode, RecordStatus, RequestForCode, RiskLevelCode
+from app.models.enums import NeedCode, RecordStatus, RequestChannelCode, RequestForCode, RiskLevelCode
 
 
 class IntakeRequest(Base):
@@ -17,7 +17,10 @@ class IntakeRequest(Base):
         default=lambda: str(uuid4()),
     )
     client_id: Mapped[str] = mapped_column(ForeignKey("clients.id"), nullable=False, index=True)
-    request_channel_code: Mapped[str] = mapped_column(String(32), nullable=False)
+    request_channel_code: Mapped[RequestChannelCode] = mapped_column(
+        Enum(RequestChannelCode, native_enum=False),
+        nullable=False,
+    )
     request_for_code: Mapped[RequestForCode] = mapped_column(
         Enum(RequestForCode, native_enum=False),
         nullable=False,
