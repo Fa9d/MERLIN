@@ -2,20 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import "./styles.css";
-import { ThemeToggle } from "@/components/theme-toggle";
-
-/* ── SVG Logo ─────────────────────────────────────────────────────────────── */
-function IviaLogo({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
-      <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="16" cy="16" r="2.5" fill="currentColor" />
-      <line x1="16" y1="2" x2="16" y2="13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="16" y1="18.5" x2="16" y2="30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="2" y1="16" x2="13.5" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
+import { PublicLayout } from "@/components/layout/PublicLayout";
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 const PILIERS = [
@@ -63,7 +50,6 @@ const ETAPES = [
 
 /* ── Component ────────────────────────────────────────────────────────────── */
 export default function HomePage() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [emailVal, setEmailVal] = useState("");
   const [emailSent, setEmailSent] = useState(false);
 
@@ -73,36 +59,10 @@ export default function HomePage() {
   }
 
   return (
-    <div className="hp">
-      {/* ── NAV ─────────────────────────────────────────────────────────── */}
-      <header className="hp-nav">
-        <div className="hp-nav__inner">
-          <Link href="/" className="hp-nav__logo" aria-label="IVIA — accueil">
-            <IviaLogo className="hp-nav__logo-svg" />
-            <span className="hp-nav__brand">IVIA</span>
-          </Link>
-          <nav className={`hp-nav__links${menuOpen ? " is-open" : ""}`} aria-label="Navigation principale">
-            <Link href="#approche" className="hp-nav__link" onClick={() => setMenuOpen(false)}>Approche</Link>
-            <Link href="#pour-qui" className="hp-nav__link" onClick={() => setMenuOpen(false)}>Pour qui</Link>
-            <Link href="#rencontre" className="hp-nav__link" onClick={() => setMenuOpen(false)}>Une rencontre</Link>
-          </nav>
-          <div className="hp-nav__actions">
-            <ThemeToggle />
-            <Link href="/rendez-vous" className="hp-nav__cta">Prendre rendez-vous</Link>
-            <button
-              className="hp-nav__burger"
-              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <span /><span /><span />
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <PublicLayout>
+      <div className="hp">
       <main>
-        {/* ── HERO ──────────────────────────────────────────────────────── */}
+        {/* ── HERO ──────────────────────────────────────────────────────── */
         <section className="hp-hero">
           <div className="hp-hero__inner">
             <div className="hp-hero__copy">
@@ -241,21 +201,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-
-      {/* ── FOOTER ────────────────────────────────────────────────────────── */}
-      <footer className="hp-footer">
-        <div className="hp-section__inner hp-footer__inner">
-          <Link href="/" className="hp-footer__logo" aria-label="IVIA">
-            <IviaLogo className="hp-nav__logo-svg" />
-            <span>IVIA</span>
-          </Link>
-          <p className="hp-footer__copy">&copy; {new Date().getFullYear()} IVIA. Montréal, Québec.</p>
-          <nav className="hp-footer__links" aria-label="Liens du pied de page">
-            <Link href="#approche" className="hp-footer__link">Approche</Link>
-            <Link href="/rendez-vous" className="hp-footer__link">Rendez-vous</Link>
-          </nav>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </PublicLayout>
   );
 }

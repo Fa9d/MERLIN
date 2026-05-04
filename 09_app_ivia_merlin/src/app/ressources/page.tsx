@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 
 const CATEGORIES = [
   {
@@ -87,26 +88,10 @@ export default function RessourcesPage() {
   const filtered = activeFilter ? ARTICLES.filter((a) => a.cat === activeFilter) : ARTICLES;
 
   return (
+    <PublicLayout>
     <div style={{ background: "var(--background)", minHeight: "100vh", fontFamily: "var(--font-body, sans-serif)", color: "var(--foreground)" }}>
       <div style={{ width: "min(1100px, calc(100% - 2rem))", margin: "0 auto", paddingBottom: "5rem" }}>
-        {/* Nav */}
-        <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1.5rem 0", borderBottom: "1px solid var(--border)" }}>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", color: "var(--foreground)" }}>
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "1.5rem", height: "1.5rem", color: "var(--accent)" }} aria-hidden="true">
-              <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="1.5" />
-              <circle cx="16" cy="16" r="2.5" fill="currentColor" />
-              <line x1="16" y1="2" x2="16" y2="13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <line x1="16" y1="18.5" x2="16" y2="30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <line x1="2" y1="16" x2="13.5" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-            <span style={{ fontFamily: "var(--font-display, serif)", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, fontSize: "1rem" }}>IVIA</span>
-          </Link>
-          <Link href="/rendez-vous/reserver" style={{ minHeight: "44px", padding: "0 1.25rem", display: "inline-flex", alignItems: "center", borderRadius: "999px", background: "var(--accent-deep)", color: "oklch(95% 0.01 80)", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}>
-            Réserver
-          </Link>
-        </nav>
-
-        {/* Header */}
+        {/* Header */}}
         <header style={{ padding: "3.5rem 0 2.5rem", display: "grid", gap: "1rem" }}>
           <h1 style={{ fontFamily: "var(--font-display, serif)", fontWeight: 400, fontSize: "clamp(2.5rem,6vw,4.5rem)", lineHeight: 1, letterSpacing: "-0.04em", color: "var(--foreground)" }}>
             Ressources
@@ -188,5 +173,6 @@ export default function RessourcesPage() {
         </div>
       </div>
     </div>
+    </PublicLayout>
   );
 }

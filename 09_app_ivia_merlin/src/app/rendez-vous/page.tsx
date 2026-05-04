@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 
 import { createClient, createConsent, createIntakeRequest } from "@/lib/merlin-api";
 
@@ -128,14 +129,8 @@ export default function RendezVousPage() {
   }
 
   return (
+    <PublicLayout>
     <div className="page-shell">
-      <header className="topbar">
-        <div className="wordmark">IVIA</div>
-        <nav className="nav">
-          <Link href="/">Accueil</Link>
-        </nav>
-      </header>
-
       <main className="section">
         <div className="section-header">
           <div className="eyebrow">Premiere seance</div>
@@ -374,5 +369,6 @@ export default function RendezVousPage() {
         </div>
       </main>
     </div>
+    </PublicLayout>
   );
 }

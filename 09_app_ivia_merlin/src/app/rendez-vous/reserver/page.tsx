@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 import {
   listPraticiens,
   listAvailableSlots,
@@ -155,10 +156,8 @@ export default function ReserverPage() {
   // ─── RENDER ───────────────────────────────────────────────────────────────
 
   return (
-    <main style={{ maxWidth: 720, margin: "60px auto", padding: "0 1.5rem" }}>
-      <Link href="/" className="btn btn-outline" style={{ marginBottom: "2rem", display: "inline-block" }}>
-        ← Retour
-      </Link>
+    <PublicLayout>
+    <main style={{ maxWidth: 720, margin: "2rem auto", padding: "0 1.5rem" }}>
       <h1 style={{ marginBottom: "1.5rem" }}>Réserver un rendez-vous</h1>
 
       {/* ── STEP 1 : Slot picker ──────────────────────────────────────── */}
@@ -403,5 +402,6 @@ export default function ReserverPage() {
         </div>
       )}
     </main>
+    </PublicLayout>
   );
 }

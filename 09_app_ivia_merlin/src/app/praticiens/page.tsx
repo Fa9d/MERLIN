@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { listPraticiens, PraticienPublic } from "@/lib/merlin-api";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 
 export default function PraticiensPage() {
   const [praticiens, setPraticiens] = useState<PraticienPublic[]>([]);
@@ -44,17 +45,8 @@ export default function PraticiensPage() {
   };
 
   return (
+    <PublicLayout>
     <div className="page-shell" style={{ paddingBottom: "4rem" }}>
-      <header className="topbar">
-        <a className="wordmark" href="/">
-          IVIA
-        </a>
-        <nav className="nav">
-          <a href="/">Accueil</a>
-          <a href="/rendez-vous">Prendre rendez-vous</a>
-        </nav>
-      </header>
-
       <main>
         <div className="hero" style={{ paddingBottom: "1.5rem" }}>
           <p className="eyebrow">Équipe IVIA</p>
@@ -161,5 +153,6 @@ export default function PraticiensPage() {
         )}
       </main>
     </div>
+    </PublicLayout>
   );
 }
