@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 
 /**
  * Routes protégées — accès interdit sans authentification.
@@ -27,47 +28,57 @@ const PUBLIC_PATHS = new Set([
 ]);
 
 function isProtected(pathname: string): boolean {
-  // La liste publique est prioritaire
   if (PUBLIC_PATHS.has(pathname)) return false;
-
   return PROTECTED_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(prefix + "/")
   );
 }
 
-function hasValidCredentials(request: NextRequest): boolean {
-  // 1. Cookie de session
-  const sessionCookie = request.cookies.get("session_token");
-  if (sessionCookie?.value) return true;
-
-  // 2. Header Authorization: Bearer <token>
-  const authHeader = request.headers.get("authorization") ?? "";
-  if (authHeader.startsWith("Bearer ")) {
-    const token = authHeader.slice(7).trim();
-    // Vérification structurelle minimale : trois segments séparés par des points (JWT)
-    if (token.split(".").length === 3) return true;
-  }
-
-  return false;
+function redirectToLogin(request: NextRequest, pathname: string): NextResponse {
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = "/login";
+  loginUrl.search = `?redirect=${encodeURIComponent(pathname)}`;
+  return NextResponse.redirect(loginUrl);
 }
 
-export function middleware(request: NextRequest) {
+function getJwtSecret(): Uint8Array {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET environment variable is not set");
+  return new TextEncoder().encode(secret);
+}
+
+async function verifyToken(token: string): Promise<boolean> {
+  try {
+    await jwtVerify(token, getJwtSecret());
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (!isProtected(pathname)) {
     return NextResponse.next();
   }
 
-  if (hasValidCredentials(request)) {
+  // 1. Cookie de session
+  const sessionToken = request.cookies.get("session_token")?.value;
+  if (sessionToken && (await verifyToken(sessionToken))) {
     return NextResponse.next();
   }
 
-  // Redirection vers /login avec la destination originale en paramètre
-  const loginUrl = request.nextUrl.clone();
-  loginUrl.pathname = "/login";
-  loginUrl.search = `?redirect=${encodeURIComponent(pathname)}`;
+  // 2. Header Authorization: Bearer <token>
+  const authHeader = request.headers.get("authorization") ?? "";
+  if (authHeader.startsWith("Bearer ")) {
+    const bearerToken = authHeader.slice(7).trim();
+    if (bearerToken && (await verifyToken(bearerToken))) {
+      return NextResponse.next();
+    }
+  }
 
-  return NextResponse.redirect(loginUrl);
+  return redirectToLogin(request, pathname);
 }
 
 export const config = {
