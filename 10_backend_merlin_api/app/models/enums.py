@@ -95,12 +95,6 @@ class SlotStatus(str, Enum):
     confirmed = "confirmed"
     cancelled = "cancelled"
 
-    consent_history = "consent_history"
-    consent_recording = "consent_recording"
-    consent_transcription = "consent_transcription"
-    consent_client_delivery = "consent_client_delivery"
-    consent_third_party_transmission = "consent_third_party_transmission"
-
 
 class RevocationScopeCode(str, Enum):
     future_only = "future_only"
