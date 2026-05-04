@@ -1,7 +1,15 @@
 export const appRoutes = {
   home: "/",
   booking: "/rendez-vous",
+  bookingReserver: "/rendez-vous/reserver",
   operator: "/operator",
   supervision: "/supervision",
   admin: "/admin",
+  ressources: "/ressources",
+  praticien: "/praticien",
+  praticiens: "/praticiens",
+  suivi: "/suivi",
+  verifyEmail: "/verify-email",
+  audioRoom: "/audio-room",
+  audioTest: "/audio-test",
 } as const;
