@@ -62,7 +62,7 @@ export default function HomePage() {
     <PublicLayout>
       <div className="hp">
       <main>
-        {/* ── HERO ──────────────────────────────────────────────────────── */
+        {/* ── HERO ──────────────────────────────────────────────────────── */}
         <section className="hp-hero">
           <div className="hp-hero__inner">
             <div className="hp-hero__copy">

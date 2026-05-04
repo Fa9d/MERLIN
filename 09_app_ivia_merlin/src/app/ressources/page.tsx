@@ -91,7 +91,7 @@ export default function RessourcesPage() {
     <PublicLayout>
     <div style={{ background: "var(--background)", minHeight: "100vh", fontFamily: "var(--font-body, sans-serif)", color: "var(--foreground)" }}>
       <div style={{ width: "min(1100px, calc(100% - 2rem))", margin: "0 auto", paddingBottom: "5rem" }}>
-        {/* Header */}}
+        {/* Header */}
         <header style={{ padding: "3.5rem 0 2.5rem", display: "grid", gap: "1rem" }}>
           <h1 style={{ fontFamily: "var(--font-display, serif)", fontWeight: 400, fontSize: "clamp(2.5rem,6vw,4.5rem)", lineHeight: 1, letterSpacing: "-0.04em", color: "var(--foreground)" }}>
             Ressources
