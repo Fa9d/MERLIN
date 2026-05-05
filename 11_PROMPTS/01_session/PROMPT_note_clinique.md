@@ -85,3 +85,20 @@ Cervicales libérées selon retour verbal. Prochain rendez-vous dans deux semain
 - Ce prompt doit être utilisé **avant** l’étape de validation superviseur (`client_visible = false` jusqu’à approbation).
 - En cas de transcription incomplète ou de qualité audio insuffisante, signaler avec le flag `[transcription partielle]` en tête de note.
 - Complémentaire à : `PROMPT_resume_session.md`, `PROMPT_flags_anomalies.md`
+
+
+---
+
+## Règles absolues
+
+- Ne jamais formuler de diagnostic clinique, même implicitement.
+- Si une section est vide ou non documentable, écrire `[non documenté]` — jamais laisser un champ vide.
+- Longueur maximale : 300 mots. Au-delà, tronquer en priorisant Motif et État final.
+- N’utiliser que les informations présentes dans la transcription. Zéro supposition.
+- En cas de transcription de qualité insuffisante, ajouter `[transcription partielle]` en tête, sans compléter les lacunes.
+- Ne jamais inclure le nom complet du client dans le corps de la note — utiliser les initiales ou l’ID dossier.
+- Ce prompt ne peut pas être utilisé directement par le client. Surface : opérateur uniquement.
+
+---
+
+**Version**: v1.1 — 2026-05-05 (ajout Règles absolues)
