@@ -75,3 +75,20 @@ Date session: [AAAA-MM-JJ]
 - Ne jamais générer ce document si `client_visible = false`.
 - Le document généré est enregistré comme `derived_document` dans le système.
 - Complémentaire à : `PROMPT_note_clinique.md`, `PROMPT_validation_contenu.md`
+
+
+---
+
+## Règles absolues
+
+- Ne jamais générer ce document si `client_visible = false`. Arrêt immédiat.
+- Aucun placeholder `[...]` ne peut subsister dans le document final livré.
+- Ne jamais inclure d’informations internes (ID techniques, logs, statuts système).
+- Adapter le vocabulaire au client non-spécialiste : aucun jargon clinique non expliqué.
+- Zéro supposition : si une information est absente de la note source, indiquer «aucune suite immédiate documentée».
+- Le document est enregistré comme `derived_document` dans le système après génération.
+- Ce prompt n’est jamais utilisé directement par le client. Surface : opérateur uniquement.
+
+---
+
+**Version**: v1.1 — 2026-05-05 (ajout Règles absolues)
