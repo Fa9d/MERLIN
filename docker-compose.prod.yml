@@ -88,6 +88,8 @@ services:
     volumes:
       - merlin_recordings:/app/storage/recordings
       - ./10_backend_merlin_api/alembic/versions:/app/alembic/versions
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health >/dev/null || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 5
