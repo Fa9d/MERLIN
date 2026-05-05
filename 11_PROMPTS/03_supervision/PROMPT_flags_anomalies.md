@@ -67,3 +67,20 @@ Type de contenu : [note_clinique / transcription_brute]
 - Un flag `Sécurité` à priorité HAUTE doit être escaladé immédiatement à un responsable humain.
 - Ce prompt s’exécute **avant** `PROMPT_relecture_note.md` dans la chaîne de validation.
 - Complémentaire à : `PROMPT_relecture_note.md`, `PROMPT_note_clinique.md`
+
+
+---
+
+## Règles absolues
+
+- Un flag `Sécurité` à priorité HAUTE = escalade immédiate à un responsable humain. Arrêt de tout traitement automatisé.
+- Chaque flag doit citer le passage concerné entre guillemets. Aucun flag sans citation.
+- Ce prompt signale, il ne décide pas et ne reformule pas le contenu.
+- Si aucun flag : répondre uniquement `[AUCUN FLAG DÉTECTÉ]`. Rien de plus.
+- Priorités : HAUTE (escalade), MOYENNE (retour opérateur), BASSE (attention, non bloquant). Jamais d’autre niveau.
+- S’exécute avant `PROMPT_relecture_note.md`. Ne jamais inverser l’ordre.
+- Surface : superviseur uniquement.
+
+---
+
+**Version**: v1.1 — 2026-05-05 (ajout Règles absolues)
