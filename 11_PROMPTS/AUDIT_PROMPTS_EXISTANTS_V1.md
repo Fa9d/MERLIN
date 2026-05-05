@@ -293,3 +293,35 @@ Le `README.md` de `11_PROMPTS/` liste des fichiers qui n'existent pas :
 |---|---|---|---|
 | 1.1 | 2026-05-05 | fondateur | Mise a jour Vague 3 — Phase A complete (3 prompts critiques externalises) |
 | 1.0 | 2026-05-05 | fondateur | Création initiale — audit Vague 2 |
+
+| 1.2 | 2026-05-05 | fondateur | Vague 4 — Phase B completée : frontmatter YAML ajouté PROD-001 à PROD-009, enregistrement dans prompt_loader.py |
+
+---
+
+## Rapport Vague 4 (2026-05-05)
+
+### Statut global
+
+- **Phase A (Vague 3)** : TERMINÉE — METH-001, METH-002, METH-003 externalisés et dans prompt_loader
+- **Phase B (Vague 4)** : TERMINÉE — PROD-001 à PROD-009 : frontmatter YAML ajouté, enregistrement dans `_PROMPT_PATHS`
+- **Phase C** : PLANIFIÉE — documentation règles METH (triage signaux, urgence)
+
+### Actions Vague 4 complétées
+
+| # | Fichier | Action | ID assigné |
+|---|---|---|---|
+| 1 | 01_session/PROMPT_note_clinique.md | Frontmatter YAML ajouté | PROD-001 |
+| 2 | 01_session/PROMPT_resume_session.md | Frontmatter YAML ajouté | PROD-002 |
+| 3 | 02_document/PROMPT_generation_rapport.md | Frontmatter YAML ajouté | PROD-003 |
+| 4 | 02_document/PROMPT_validation_contenu.md | Frontmatter YAML ajouté | PROD-004 |
+| 5 | 03_supervision/PROMPT_relecture_note.md | Frontmatter YAML ajouté | PROD-005 |
+| 6 | 03_supervision/PROMPT_flags_anomalies.md | Frontmatter YAML ajouté | PROD-006 |
+| 7 | 04_admin/PROMPT_onboarding_client.md | Frontmatter YAML ajouté | PROD-007 |
+| 8 | 04_admin/PROMPT_audit_dossier.md | Frontmatter YAML ajouté | PROD-008 |
+| 9 | 05_pilote/PROMPT_validation_pilote.md | Frontmatter YAML ajouté | PROD-009 |
+| 10 | prompt_loader.py | _PROMPT_PATHS mis à jour (PROD-001 à PROD-009) | — |
+| 11 | INDEX_PROMPTS_V1.md | Registre PROD ajouté, version 1.2 | — |
+
+### Prochaine étape : Phase C
+
+- Créer `02_METH/METH-004-triage-signaux-urgence-v1.md` documentant les patterns `_RISK_PATTERNS` et `_GAP_PATTERNS` de `intake_analysis.py`
