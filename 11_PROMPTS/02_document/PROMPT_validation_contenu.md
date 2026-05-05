@@ -66,3 +66,19 @@ ID dossier : [optionnel]
 - Statut `BLOQUÉ` = ne pas diffuser, retourner à l’opérateur.
 - Ce prompt est le dernier filtre avant `client_visible = true`.
 - Complémentaire à : `PROMPT_generation_rapport.md`, `PROMPT_relecture_note.md`
+
+
+---
+
+## Règles absolues
+
+- Statut `BLOQUÉ` = arrêt total. Le document ne peut pas être diffusé dans cet état.
+- Aucun placeholder `[...]` non remplacé ne constitue un document «conforme».
+- Toute information de nature technique ou interne (ID, statuts système) est automatiquement classée comme problème de confidentialité.
+- Ce prompt est le dernier filtre avant `client_visible = true` — il ne peut pas être sauté.
+- La décision finale de diffusion reste humaine (opérateur ou superviseur). Ce prompt recommande, il ne décide pas.
+- Ne jamais valider un document dont la note source est marquée `[transcription partielle]` sans validation superviseur explicite.
+
+---
+
+**Version**: v1.1 — 2026-05-05 (ajout Règles absolues)
