@@ -28,7 +28,7 @@ pytestmark = pytest.mark.integration
 # Modèle actif
 # ---------------------------------------------------------------------------
 
-CLAUDE_MODEL = "claude-sonnet-4-20250514"
+CLAUDE_MODEL = "claude-sonnet-4-5"
 
 
 # ---------------------------------------------------------------------------
