@@ -1,3 +1,12 @@
+---
+id: PROD-007
+version: v1.0
+layer: 05_PROD
+trigger: creation_nouveau_dossier_client
+surface: operateur/admin
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Onboarding client
 
 **Version**: v1.1 — 2026-05-05
