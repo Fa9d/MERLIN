@@ -1,0 +1,130 @@
+---
+titre: Index de la bibliothèque de prompts — MERLIN
+id: MERLIN-INDEX-PROMPTS-V1
+statut: active
+type: charte
+couche: PROD
+périmètre: 11_PROMPTS
+auteur: fondateur
+date: 2026-05-05
+version: 1.0
+dépend_de: [ADR-0002, MERLIN-MODELE-COUCHES-V1]
+remplace: [README.md (non structuré)]
+arbitrage_requis: non
+source_canonique: 11_PROMPTS/INDEX_PROMPTS_V1.md
+---
+
+# MERLIN — Index de la bibliothèque de prompts V1
+
+> **Porte d'entrée humaine dans `11_PROMPTS/`**
+> **Statut** : active — 2026-05-05
+> **Décision formelle** : ADR-0002
+
+---
+
+## Rôle de `11_PROMPTS/`
+
+`11_PROMPTS/` est la **bibliothèque canonique de prompts de MERLIN**.
+
+Elle contient l'ensemble des instructions destinées aux modèles IA (Anthropic Claude et tout
+futur modèle) utilisés par le système MERLIN / IVIA.
+
+Chaque prompt dans cette bibliothèque est :
+- **versionné** : tout changement de logique déclenche un bump de version,
+- **localisé** : un prompt = un fichier, dans un dossier de couche,
+- **auditable** : ses métadonnées permettent de savoir qui l'a créé, quand, et pour quel usage,
+- **relié à une couche** : chaque prompt appartient à FOND, METH, EDIT, ADMIN ou PROD.
+
+**Un prompt non présent dans cette bibliothèque n'est pas un prompt gouverné.**
+Il peut exister dans le code comme valeur temporaire mais doit être migré avant
+toute mise en production d'une fonctionnalité qui l'utilise.
+
+---
+
+## Structure cible (Vague 2)
+
+```
+11_PROMPTS/
+├── INDEX_PROMPTS_V1.md              ← ce fichier
+├── PROMPTS_CONVENTION_NOMMAGE_V1.md ← règles de nommage et version
+├── PROMPTS_STANDARD_METADATA_V1.md  ← standard de métadonnées
+├── AUDIT_PROMPTS_EXISTANTS_V1.md    ← rapport d'audit Vague 2
+│
+├── 00_SYSTEME/    ← prompts système globaux (identité MERLIN, contraintes absolues)
+├── 01_FOND/       ← prompts liés à la couche FOND (doctrine, contexte culturel)
+├── 02_METH/       ← prompts liés à la couche METH (triage, orientation, notes de séance)
+├── 03_EDIT/       ← prompts liés à la couche EDIT (génération de contenus publics)
+├── 04_ADMIN/      ← prompts administratifs (onboarding, routage, audit dossier)
+└── 05_PROD/       ← prompts techniques/infrastructure (validation, tests, logs)
+```
+
+**Note sur la migration :** les sous-dossiers `01_session/`, `02_document/`, `03_supervision/`,
+`04_admin/`, `05_pilote/` sont la structure héritée. Ils sont conservés sans modification jusqu'à
+la migration traçable définie dans `AUDIT_PROMPTS_EXISTANTS_V1.md`.
+
+---
+
+## Description des couches de prompts
+
+| Dossier | Couche MERLIN | Rôle |
+|---|---|---|
+| `00_SYSTEME/` | — (transversal) | Prompts d'identité système globaux. Définissent qui est MERLIN dans toute interaction IA. |
+| `01_FOND/` | FOND | Prompts qui mobilisent les fondements, la doctrine, le cadre culturel québécois ou autochtone. |
+| `02_METH/` | METH | Prompts qui implémentent les méthodes : note de séance Cercle V1, triage, orientation, supervision. |
+| `03_EDIT/` | EDIT | Prompts qui génèrent des contenus publics : lettres client, pages web, offres, calendriers. |
+| `04_ADMIN/` | ADMIN | Prompts d'administration : onboarding, routage de demande, audit de dossier. |
+| `05_PROD/` | PROD | Prompts techniques : validation de contenu, tests, pilote, schémas de sortie. |
+
+---
+
+## Inventaire des prompts existants (état au 2026-05-05)
+
+### Structure héritée — à migrer (Vague 3)
+
+| Fichier actuel | Emplacement | Couche cible | Dossier cible |
+|---|---|---|---|
+| `PROMPT_note_clinique.md` | `01_session/` | METH | `02_METH/` |
+| `PROMPT_resume_session.md` | `01_session/` | METH | `02_METH/` |
+| `PROMPT_generation_rapport.md` | `02_document/` | METH | `02_METH/` |
+| `PROMPT_validation_contenu.md` | `02_document/` | PROD | `05_PROD/` |
+| `PROMPT_flags_anomalies.md` | `03_supervision/` | METH | `02_METH/` |
+| `PROMPT_relecture_note.md` | `03_supervision/` | METH | `02_METH/` |
+| `PROMPT_audit_dossier.md` | `04_admin/` | ADMIN | `04_ADMIN/` |
+| `PROMPT_onboarding_client.md` | `04_admin/` | ADMIN | `04_ADMIN/` |
+| `PROMPT_validation_pilote.md` | `05_pilote/` | PROD | `05_PROD/` |
+
+### Prompts critiques dans le backend (à externaliser — Vague 3)
+
+| Prompt | Fichier backend | Couche | Priorité |
+|---|---|---|---|
+| `SESSION_NOTE_CERCLE_SYSTEM_PROMPT` | `app/ai/prompts/session_note_cercle_v1.py` | METH (CRITIQUE) | P1 |
+| `QUEBEC_CONTEXT_HYPOTHESES` | `app/ai/prompts/session_note_cercle_v1.py` | FOND | P1 |
+| `QUEBEC_CONTEXT_SIGNALS` | `app/ai/prompts/session_note_cercle_v1.py` | FOND | P1 |
+
+Voir `AUDIT_PROMPTS_EXISTANTS_V1.md` pour le détail.
+
+---
+
+## Ordre de lecture recommandé
+
+1. `PROMPTS_CONVENTION_NOMMAGE_V1.md` — comprendre les règles de nommage
+2. `PROMPTS_STANDARD_METADATA_V1.md` — comprendre les métadonnées obligatoires
+3. `AUDIT_PROMPTS_EXISTANTS_V1.md` — état de la bibliothèque et plan de migration
+4. Dossiers couche par couche, en partant de `02_METH/` (le plus peuplé)
+
+---
+
+## Règles de maintenance
+
+- Tout nouveau prompt doit d'abord être créé dans ce dossier (avec métadonnées), **avant** d'être intégré dans le code.
+- Tout changement de logique = bump de version du fichier Markdown + bump dans le code.
+- Tout nouveau prompt de couche METH ou FOND (à impact clinique ou culturel) = arbitrage requis.
+- Ce fichier INDEX doit être mis à jour à chaque ajout de prompt gouverné.
+
+---
+
+## Historique de révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 2 structuration prompts |
