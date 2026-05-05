@@ -2,28 +2,52 @@
 
 > Ce fichier est lu automatiquement par Claude Code à chaque session.
 > Il contient tout ce qu'il faut savoir pour travailler efficacement sur ce repo.
+>
+> **Mise à jour 2026-05-05** — Aligné avec l'état réel du repo et la structuration MERLIN/IVIA.
 
 ---
 
-## Projet
+## Architecture globale
 
-**MERLIN** est un système de gestion de sessions cliniques assisté par IA.
-- Fondateur unique : David Phaneuf (Montréal, Québec)
-- Objectif : automatiser la génération de notes cliniques, le suivi de dossiers et la supervision des anomalies
-- Phase actuelle : documentation + architecture + premiers prototypes
+MERLIN n'est pas seulement une app clinique — c'est un **repo-système canonique**.
+
+```
+MERLIN  →  pense, gouverne, trace, décide
+IVIA    →  traduit, expose, organise les parcours
+Modules →  exécutent des fonctions assistées sous validation humaine
+```
+
+**MERLIN** est la source unique de vérité : gouvernance, méthodes, prompts, preuves, décisions stratégiques, composants applicatifs. Tout ce qui est produit (code, interfaces, documents) en dérive.
+
+**IVIA** (`ivia.quebec`) est la couche d'exposition publique : parcours clients, frontend Next.js, articles, expérience utilisateur.
+
+**Le sous-système clinique assisté par IA** est un cas d'usage majeur de MERLIN, pas sa définition totale.
+
+- Fondateur : David Phaneuf (Montréal, Québec)
+- Domaine : santé mentale, première ligne, contexte québécois/canadien
+- Phase actuelle : stack prod déployée — backend API live, frontend live, migrations appliquées
 
 ---
 
-## Stack technique cible
+## Stack technique — état réel (prod)
 
 ```
-Backend   : Python / FastAPI / SQLAlchemy
-DB        : PostgreSQL (migrations via Alembic)
-IA        : API Anthropic (Claude) — modèle haiku ou sonnet selon la tâche
-Frontend  : React / TypeScript / Next.js (phase ultérieure)
-Infra     : Docker / OVH VPS
-Versioning: Git / GitHub (branch master)
+Backend   : Python / FastAPI / SQLAlchemy / Alembic
+DB        : PostgreSQL 15 (migrations via Alembic — HEAD = 20260504_0017)
+IA        : API Anthropic (Claude) — haiku ou sonnet selon la tâche
+Frontend  : Next.js 16.2.4 + Turbopack + Prisma (09_app_ivia_merlin/)
+Media     : LiveKit v1.8.3 (sessions audio/vidéo)
+Infra     : Docker Compose — OVH VPS ubuntu@137.74.42.121:/opt/merlin
+Reverse   : Nginx 1.27 (TLS Let's Encrypt)
+Versioning: Git / GitHub — branche master, HEAD = e569e69
 ```
+
+**URLs prod :**
+- Frontend : `https://ivia.quebec`
+- API : `https://api.ivia.quebec/api/health`
+
+**RÈGLE CRITIQUE :** Ne jamais appeler `docker compose` sans `--env-file .env.prod`.
+Utiliser `make <cible>` ou `bash deploy/prod-up.sh` — voir `docs/ops-docker-compose.md`.
 
 ---
 
@@ -31,19 +55,26 @@ Versioning: Git / GitHub (branch master)
 
 ```
 MERLIN/
+├── 00_GOUVERNANCE/          # Gouvernance, décisions, backlog, journal
+├── 01_FONDATEUR/            # Fondements et visées
+├── 02_NATIONS_QC/           # Cadre des 11 Nations du Québec
+├── 03_MODELE_GOUVERNANCE/   # Modèle opératoire
+├── 04_METHODES/             # Méthodes, cas simulés, articles
+├── 05_PREUVES_SOURCES/      # Audits, preuves, base de connaissance
+├── 06_IMPORTS_MESANGE/      # Imports depuis Mésange
+├── 07_EXPORTS/              # Exports (site preview IVIA)
+├── 08_EMPLOI/               # Runbooks, checklists opérationnelles
+├── 09_app_ivia_merlin/      # Frontend Next.js (IVIA)
+├── 10_backend_merlin_api/   # Backend FastAPI (MERLIN API)
 ├── 11_PROMPTS/              # Bibliothèque de prompts système (markdown)
-│   ├── 01_session/          # Prompts de session clinique
-│   ├── 02_document/         # Prompts de génération de documents
-│   ├── 03_supervision/      # Prompts de supervision et flags
-│   ├── 04_admin/            # Prompts administratifs (onboarding, audit)
-│   └── 05_pilote/           # Prompts d'évaluation de déploiement
 ├── 12_JURIDIQUE_AFFAIRES/   # Documents stratégiques et juridiques
-├── CLAUDE.md               # Ce fichier
-└── README.md               # Documentation principale
+├── deploy/                  # Scripts de déploiement (prod-up.sh)
+├── docs/                    # Documentation d'exploitation
+├── nginx/                   # Config Nginx + Certbot
+├── docker-compose.prod.yml  # Stack Docker prod
+├── Makefile                 # Commandes officielles prod
+└── CLAUDE.md               # Ce fichier
 ```
-
-> Le code source (API, DB, frontend) sera dans les dossiers à créer :
-> `src/`, `api/`, `db/`, `tests/`
 
 ---
 
@@ -99,78 +130,98 @@ Chaque prompt `.md` respecte la structure suivante :
 
 ---
 
-## Variables d'environnement requises (.env)
+## Variables d'environnement requises
 
+**Prod (VPS)** : `/opt/merlin/.env.prod` — déjà en place, ne pas modifier sans coordination.
+
+**Local** : copier `.env.prod.example` → `.env.prod` et renseigner :
 ```env
-# API Anthropic
-ANTHROPIC_API_KEY=sk-ant-...
+POSTGRES_PASSWORD=
+MERLIN_AUTH_SECRET_KEY=
+LIVEKIT_API_SECRET=
+ANTHROPIC_API_KEY=
+ASSEMBLYAI_API_KEY=
+```
 
-# Base de données
-DATABASE_URL=postgresql://user:password@localhost:5432/merlin
+> Ne jamais commiter `.env.prod` ou tout fichier contenant des secrets réels.
 
-# Application
-APP_ENV=development
-APP_SECRET_KEY=
-DEBUG=true
+---
+
+## Modules backend existants (10_backend_merlin_api/)
+
+```
+app/
+├── main.py              # FastAPI app, CORS, routers
+├── core/
+│   ├── deps.py          # require_verified_email_user(), get_current_user()
+│   └── config.py
+├── models/
+│   ├── enums.py         # SlotStatus, RequestChannelCode, ...
+│   ├── intake_request.py
+│   └── ...
+├── schemas/
+│   ├── session.py       # SessionCreate, SessionAssign, SessionRead, ...
+│   └── ...
+├── api/routes/
+│   ├── sessions.py      # POST /sessions/{id}/room → 410 Gone
+│   ├── bookings.py      # hold_slot, confirm_slot (require_verified_email)
+│   └── ...
+└── alembic/versions/    # Migrations — HEAD = 20260504_0017
 ```
 
 ---
 
-## Modules à construire (ordre de priorité)
-
-1. **`api/`** — Routes FastAPI principales
-   - `POST /sessions` — créer une session avec transcription
-   - `GET /sessions/{id}` — récupérer une session
-   - `POST /notes/generate` — déclencher la génération de note clinique
-   - `POST /flags/check` — vérifier les anomalies sur une note
-
-2. **`db/`** — Modèles et migrations
-   - `Client`, `Session`, `Note`, `Flag`, `Operator`
-
-3. **`core/`** — Logique métier
-   - `prompt_loader.py` — chargeur de prompts depuis `11_PROMPTS/`
-   - `claude_client.py` — wrapper API Anthropic
-   - `note_generator.py` — orchestrateur de génération
-   - `flag_detector.py` — orchestrateur de détection d'anomalies
-
-4. **`tests/`** — Tests unitaires et d'intégration
-
----
-
-## Commandes utiles
+## Commandes officielles prod
 
 ```bash
-# Installer les dépendances
-pip install -r requirements.txt
+make up            # rebuild + démarrer la stack
+make down          # arrêter
+make restart       # redémarrer sans rebuild
+make migrate       # alembic upgrade head
+make prod-ps       # état des conteneurs
+make prod-logs-api # logs API temps réel
+make prod-logs     # tous les logs
+make config-check  # valider YAML + variables avant redémarrage
 
-# Lancer l'API en développement
-uvicorn api.main:app --reload
+# Déploiement complet en une commande
+bash deploy/prod-up.sh
 
-# Appliquer les migrations
+# scp d'un fichier backend vers le VPS
+scp 10_backend_merlin_api/app/[...] ubuntu@137.74.42.121:/opt/merlin/10_backend_merlin_api/app/[...]
+```
+
+## Commandes de développement
+
+```bash
+# Backend local
+cd 10_backend_merlin_api
+.venv\Scripts\python.exe -m uvicorn app.main:app --reload
+
+# Frontend local
+cd 09_app_ivia_merlin
+npm run dev
+
+# Alembic (depuis 10_backend_merlin_api)
 alembic upgrade head
-
-# Lancer les tests
-pytest tests/
-
-# Lancer Claude Code
-claude
+alembic current
+alembic revision --autogenerate -m "description"
 ```
 
 ---
 
-## Contexte métier (lire avant de toucher aux prompts)
+## Contexte métier (lire avant de toucher aux prompts ou au domaine clinique)
 
 - MERLIN s'adresse aux **opérateurs cliniques** (non-médecins) et aux **superviseurs**
 - L'IA **ne pose pas de diagnostic** et **ne remplace pas le jugement clinique**
 - Toute sortie IA est **soumise à validation humaine** avant archivage
 - Les données clients sont **strictement confidentielles** — aucune donnée réelle dans les tests
 - Un flag `Sécurité` à priorité HAUTE = escalade immédiate à un responsable humain
-
----
+- Contexte québécois/canadien : vigilance forte sur les données personnelles et potentiellement sensibles (Loi 25, LPRPDE)
 
 ## Ressources clés
 
-- Bibliothèque de prompts : `11_PROMPTS/README.md`
-- Structure juridique : `12_JURIDIQUE_AFFAIRES/MERLIN_STRUCTURE_JURIDIQUE_V1.md`
-- Mission OBNL : `12_JURIDIQUE_AFFAIRES/MERLIN_OBNL_MISSION_V1.md`
-- Financement : `12_JURIDIQUE_AFFAIRES/MERLIN_FINANCEMENT_SOURCES_V1.md`
+- Documentation ops Docker : `docs/ops-docker-compose.md`
+- Script déploiement : `deploy/prod-up.sh`
+- Gouvernance et backlog : `00_GOUVERNANCE/`
+- Bibliothèque de prompts : `11_PROMPTS/`
+- Structure juridique : `12_JURIDIQUE_AFFAIRES/`
