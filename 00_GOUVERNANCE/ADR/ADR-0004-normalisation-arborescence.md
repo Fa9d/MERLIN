@@ -9,6 +9,8 @@ date: 2026-05-05
 version: 1.0
 dépend_de: [ADR-0001, MERLIN-CONVENTION-NOMMAGE-V2]
 remplace: []
+remplacé_par: []
+décideurs: fondateur
 arbitrage_requis: oui — modifie la structure racine du repo
 source_canonique: 00_GOUVERNANCE/ADR/ADR-0004-normalisation-arborescence.md
 décision_registre: DEC-039
@@ -16,9 +18,9 @@ décision_registre: DEC-039
 
 # ADR-0004 — Normalisation progressive de l'arborescence racine
 
-## Statut
-
-`accepted` — 2026-05-05
+> **Statut** : accepted — 2026-05-05
+> **Couche concernée** : FOND
+> **Document de référence** : `MERLIN_CONVENTION_NOMMAGE_V2.md`
 
 ---
 
@@ -143,6 +145,24 @@ Cette mise à jour est la première action de Vague 3 (post-ADR-0004).
 
 ---
 
+## Conséquences
+
+### Avantages
+
+- Normalisation progressive sans risque de régression en production (pas de renommage à chaud).
+- La convention V2 devient descriptive de la réalité plutôt que normative sur une arborescence brisée.
+- Chaque migration est bornée, testée et committée séparément — réversible à tout moment.
+- Les dossiers applicatifs (`09_app_ivia_merlin/`, `10_backend_merlin_api/`) et `11_PROMPTS/` obtiennent un slot explicite dans la convention V3.
+
+### Inconvénients ou risques
+
+- Délai de convergence : plusieurs semaines avant que l'arborescence réelle soit conforme à V3.
+  → Règle : utiliser les noms actuels dans le code jusqu'à migration formelle tracée par ADR ou log de gouvernance.
+- `MERLIN_CONVENTION_NOMMAGE_V2.md` est temporairement incohérent avec l'arborescence réelle jusqu'à création de V3.
+  → Action : priorité P1 en Vague 3 (action 2 ci-dessous).
+
+---
+
 ## Actions requises
 
 1. Ajouter **DEC-039** au registre des décisions MERLIN.
@@ -150,6 +170,12 @@ Cette mise à jour est la première action de Vague 3 (post-ADR-0004).
    noms cibles normalisés.
 3. Fusionner `01_FONDATEUR/` dans `01_FONDEMENTS/` en Vague 3 (P2).
 4. Renommer `08_EMPLOI/` → `08_OPERATIONS/` en Vague 3 — vérifier impact sur scripts PowerShell.
+
+---
+
+## Entrée registre associée
+
+> DEC-039 | 2026-05-05 | arborescence | normalisation progressive arborescence racine — migration par vagues | validated | ADR-0004
 
 ---
 

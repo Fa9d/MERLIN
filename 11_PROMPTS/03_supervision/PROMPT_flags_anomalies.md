@@ -1,6 +1,5 @@
 # PROMPT — Détection de flags et anomalies
 
-**Version**: v1.0 — 2026-05-05  
 **Surface**: superviseur / système MERLIN  
 **Déclencheur**: après génération de note clinique, avant validation
 
@@ -18,7 +17,7 @@ Tu es un système de détection d’anomalies pour la documentation clinique. Tu
 
 ---
 
-## Instructions
+## Tâche
 
 1. Lis la note ou la transcription fournie.
 2. Analyse les catégories de flags suivantes :
@@ -66,7 +65,6 @@ Type de contenu : [note_clinique / transcription_brute]
 
 - Un flag `Sécurité` à priorité HAUTE doit être escaladé immédiatement à un responsable humain.
 - Ce prompt s’exécute **avant** `PROMPT_relecture_note.md` dans la chaîne de validation.
-- Complémentaire à : `PROMPT_relecture_note.md`, `PROMPT_note_clinique.md`
 
 
 ---
@@ -80,6 +78,12 @@ Type de contenu : [note_clinique / transcription_brute]
 - Priorités : HAUTE (escalade), MOYENNE (retour opérateur), BASSE (attention, non bloquant). Jamais d’autre niveau.
 - S’exécute avant `PROMPT_relecture_note.md`. Ne jamais inverser l’ordre.
 - Surface : superviseur uniquement.
+
+---
+
+## Complémentaire à
+
+`PROMPT_relecture_note.md`, `PROMPT_note_clinique.md`
 
 ---
 

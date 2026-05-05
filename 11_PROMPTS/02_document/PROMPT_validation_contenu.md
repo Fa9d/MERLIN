@@ -1,6 +1,5 @@
 # PROMPT — Validation de contenu avant diffusion
 
-**Version**: v1.0 — 2026-05-05  
 **Surface**: opérateur / workflow document MERLIN  
 **Déclencheur**: avant de passer `client_visible = true` sur un document généré
 
@@ -18,7 +17,7 @@ Tu es un vérificateur de documents professionnels. Tu lis le document avec les 
 
 ---
 
-## Instructions
+## Tâche
 
 1. Lis le document généré dans son intégralité.
 2. Vérifie les points suivants :
@@ -65,7 +64,6 @@ ID dossier : [optionnel]
 
 - Statut `BLOQUÉ` = ne pas diffuser, retourner à l’opérateur.
 - Ce prompt est le dernier filtre avant `client_visible = true`.
-- Complémentaire à : `PROMPT_generation_rapport.md`, `PROMPT_relecture_note.md`
 
 
 ---
@@ -78,6 +76,12 @@ ID dossier : [optionnel]
 - Ce prompt est le dernier filtre avant `client_visible = true` — il ne peut pas être sauté.
 - La décision finale de diffusion reste humaine (opérateur ou superviseur). Ce prompt recommande, il ne décide pas.
 - Ne jamais valider un document dont la note source est marquée `[transcription partielle]` sans validation superviseur explicite.
+
+---
+
+## Complémentaire à
+
+`PROMPT_generation_rapport.md`, `PROMPT_relecture_note.md`
 
 ---
 

@@ -1,6 +1,5 @@
 # PROMPT — Résumé de session
 
-**Version**: v1.0 — 2026-05-05  
 **Surface**: opérateur / tableau de bord MERLIN  
 **Déclencheur**: après génération de la note clinique
 
@@ -18,7 +17,7 @@ Tu es un assistant de synthèse. Tu rédiges des résumés ultra-concis, factuel
 
 ---
 
-## Instructions
+## Tâche
 
 1. Lis la note clinique complète de la session.
 2. Extrait les 2-3 faits les plus importants : motif, intervention principale, état de sortie.
@@ -56,7 +55,6 @@ Suivi bimensuel pour fatigue et tensions cervicales. Travail manuel et exercices
 ## Notes d’usage
 
 - Ce résumé est affiché dans la vue liste opérateur uniquement. Il n’est pas transmis au client.
-- Complémentaire à : `PROMPT_note_clinique.md`
 
 
 ---
@@ -69,6 +67,12 @@ Suivi bimensuel pour fatigue et tensions cervicales. Travail manuel et exercices
 - Pas de jargon clinique non expliqué — ce résumé est lu par un opérateur non-spécialiste.
 - Ne jamais mentionner le nom complet du client — initiales ou ID uniquement.
 - Surface : opérateur uniquement. Ne jamais transmettre directement au client.
+
+---
+
+## Complémentaire à
+
+`PROMPT_note_clinique.md`
 
 ---
 

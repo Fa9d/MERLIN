@@ -2,7 +2,11 @@
 titre: Adoption du modèle de couches FOND / METH / EDIT / PROD
 id: ADR-0001
 statut: accepted
+couche: FOND
+type: ADR
+auteur: fondateur
 date: 2026-05-05
+version: 1.0
 décideurs: fondateur
 remplace: []
 remplacé_par: []
@@ -111,3 +115,11 @@ Il s'applique à tout document produit ou révisé après le 2026-05-05.
 ## Entrée registre associée
 
 > DEC-036 | 2026-05-05 | architecture | adoption modèle de couches FOND/METH/EDIT/PROD | validated | ADR-0001
+
+---
+
+## Historique de révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 1 |

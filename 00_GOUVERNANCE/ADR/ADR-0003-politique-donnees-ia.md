@@ -2,7 +2,11 @@
 titre: Politique initiale de données et IA — contexte québécois et canadien
 id: ADR-0003
 statut: accepted
+couche: FOND
+type: ADR
+auteur: fondateur
 date: 2026-05-05
+version: 1.0
 décideurs: fondateur
 remplace: []
 remplacé_par: []
@@ -163,3 +167,11 @@ de données personnelles ou potentiellement identifiantes vers un fournisseur ex
 ## Entrée registre associée
 
 > DEC-038 | 2026-05-05 | données | politique initiale données IA — contexte québécois — hébergement canadien par défaut | validated | ADR-0003
+
+---
+
+## Historique de révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 1 |

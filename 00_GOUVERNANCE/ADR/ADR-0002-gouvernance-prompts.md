@@ -2,7 +2,11 @@
 titre: Gouvernance des prompts — versionnage, localisation, auditabilité
 id: ADR-0002
 statut: accepted
+couche: PROD
+type: ADR
+auteur: fondateur
 date: 2026-05-05
+version: 1.0
 décideurs: fondateur
 remplace: []
 remplacé_par: []
@@ -120,3 +124,11 @@ est maintenue en Markdown et toute modification doit être reflétée dans les d
 ## Entrée registre associée
 
 > DEC-037 | 2026-05-05 | prompts | gouvernance des prompts — versionnage + localisation + auditabilité | validated | ADR-0002
+
+---
+
+## Historique de révisions
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 2 |

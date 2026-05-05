@@ -1,6 +1,5 @@
 # PROMPT — Note clinique
 
-**Version**: v1.0 — 2026-05-05  
 **Surface**: opérateur / backend MERLIN  
 **Déclencheur**: après clôture d'une session audio
 
@@ -19,7 +18,7 @@ Tu es rigoureux, neutre, factuel. Tu ne présumes rien au-delà de ce qui est di
 
 ---
 
-## Instructions
+## Tâche
 
 1. Lis la transcription complète de la session.
 2. Identifie les éléments clés : motif de consultation, éléments cliniques notés, interventions effectuées, état observé en fin de session.
@@ -84,7 +83,6 @@ Cervicales libérées selon retour verbal. Prochain rendez-vous dans deux semain
 
 - Ce prompt doit être utilisé **avant** l’étape de validation superviseur (`client_visible = false` jusqu’à approbation).
 - En cas de transcription incomplète ou de qualité audio insuffisante, signaler avec le flag `[transcription partielle]` en tête de note.
-- Complémentaire à : `PROMPT_resume_session.md`, `PROMPT_flags_anomalies.md`
 
 
 ---
@@ -98,6 +96,12 @@ Cervicales libérées selon retour verbal. Prochain rendez-vous dans deux semain
 - En cas de transcription de qualité insuffisante, ajouter `[transcription partielle]` en tête, sans compléter les lacunes.
 - Ne jamais inclure le nom complet du client dans le corps de la note — utiliser les initiales ou l’ID dossier.
 - Ce prompt ne peut pas être utilisé directement par le client. Surface : opérateur uniquement.
+
+---
+
+## Complémentaire à
+
+`PROMPT_resume_session.md`, `PROMPT_flags_anomalies.md`
 
 ---
 

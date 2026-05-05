@@ -1,10 +1,19 @@
+"""Chargement dynamique des prompts Markdown depuis la bibliothèque canonique 11_PROMPTS/.
+
+Expose `load_prompt(prompt_id)` — lit les fichiers Markdown, extrait le corps
+après le frontmatter YAML, et applique un cache mémoire simple.
+
+Portée actuelle : METH-001, METH-002, METH-003 (Vague 3 Phase A).
+Pour étendre la portée, ajouter une entrée dans `_PROMPT_PATHS`.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
 
 
 class PromptNotFoundError(FileNotFoundError):
-    """Erreur levee quand un prompt attendu est introuvable dans 11_PROMPTS."""
+    """Erreur levée quand un prompt attendu est introuvable dans 11_PROMPTS."""
 
 
 _PROMPT_PATHS: dict[str, str] = {
@@ -29,7 +38,7 @@ def _read_prompt_file(path: Path) -> str:
 
 
 def _extract_markdown_body(markdown_text: str) -> str:
-    """Extrait la section de contenu situee apres le deuxieme delimitateur YAML `---`."""
+    """Extrait la section de contenu située après le deuxième délimitateur YAML `---`."""
 
     lines = markdown_text.splitlines()
     delimiter_positions = [idx for idx, line in enumerate(lines) if line.strip() == "---"]
@@ -42,7 +51,7 @@ def _extract_markdown_body(markdown_text: str) -> str:
 
 
 def load_prompt(prompt_id: str) -> str:
-    """Charge un prompt Markdown a partir de son identifiant et applique un cache memoire simple."""
+    """Charge un prompt Markdown à partir de son identifiant et applique un cache mémoire simple."""
 
     if prompt_id in _PROMPT_CACHE:
         return _PROMPT_CACHE[prompt_id]

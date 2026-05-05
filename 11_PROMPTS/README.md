@@ -16,12 +16,10 @@ Chaque prompt est un fichier `.md` isolé, composable et traçable comme n'impor
 ├── README.md                          # Ce fichier
 ├── 01_session/
 │   ├── PROMPT_note_clinique.md        # Audio → note structurée
-│   ├── PROMPT_resume_session.md       # Résumé court pour opérateur
-│   └── PROMPT_extraction_entites.md  # Extraction dates, noms, actions
+│   └── PROMPT_resume_session.md       # Résumé court pour opérateur
 ├── 02_document/
 │   ├── PROMPT_generation_rapport.md   # Note → document formel client
-│   ├── PROMPT_validation_contenu.md   # Vérification qualité avant diffusion
-│   └── PROMPT_lettre_client.md        # Génération lettre/communication client
+│   └── PROMPT_validation_contenu.md   # Vérification qualité avant diffusion
 ├── 03_supervision/
 │   ├── PROMPT_relecture_note.md       # Aide superviseur pour correction
 │   └── PROMPT_flags_anomalies.md      # Détection anomalies dans les sessions
