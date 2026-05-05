@@ -27,13 +27,13 @@ source_canonique: 11_PROMPTS/AUDIT_PROMPTS_EXISTANTS_V1.md
 | Catégorie | Nb | Statut |
 |---|---|---|
 | Prompts externalisés dans `11_PROMPTS/` (structure héritée) | 9 | Partiellement gouvernés — sans métadonnées standard |
-| Prompts critiques dans le backend Python | 3 | **Non gouvernés** — hardcodés, sans version Markdown |
+| Prompts critiques dans le backend Python | 3 | **Externalises** — Phase A completee le 2026-05-05 |
 | Prompts référencés dans README mais absents | 2 | Fantômes documentaires |
 | Prompts candidats à externalisation (services/analyse) | 1 | Règles regex — hors périmètre IA strict |
 
-**Risque immédiat** : `SESSION_NOTE_CERCLE_SYSTEM_PROMPT` est un prompt critique de niveau METH
-en production, sans version Markdown de référence dans `11_PROMPTS/`. Tout changement de
-ce prompt est invisible depuis le repo documentaire.
+**Mise a jour 2026-05-05 (Vague 3 - Phase A)** : les 3 prompts critiques initialement hardcodes
+dans `app/ai/prompts/session_note_cercle_v1.py` sont maintenant externalises dans
+`11_PROMPTS/02_METH/` via le loader `app/ai/prompt_loader.py`.
 
 ---
 
@@ -155,11 +155,10 @@ Son impact est direct sur le parcours de supervision. Migration prioritaire.
 
 ---
 
-## SECTION 2 — Prompts critiques enfouis dans le backend Python
+## SECTION 2 — Prompts critiques backend (etat apres externalisation Phase A)
 
-Ces prompts sont **entièrement dans le code Python**. Ils n'ont aucune version Markdown
-de référence dans `11_PROMPTS/`. Ils sont en production et leur modification est invisible
-depuis le repo documentaire.
+Ces prompts etaient entierement dans le code Python au debut de Vague 3.
+Depuis le 2026-05-05, ils sont externalises et charges dynamiquement depuis `11_PROMPTS/`.
 
 ### PROMPT CRITIQUE 1 — `SESSION_NOTE_CERCLE_SYSTEM_PROMPT`
 
@@ -172,17 +171,16 @@ depuis le repo documentaire.
 | Modèle cible | `claude-sonnet-4-20250514` |
 | En production | **Oui** |
 | Données sensibles | **Oui** — traite des transcriptions de séances de santé mentale |
-| Version Markdown | ❌ **Absente** |
-| Priorité externalisation | **P1 — URGENT** |
+| Version Markdown | ✅ `11_PROMPTS/02_METH/METH-003-session-note-cercle-system-prompt-v1.md` |
+| Statut migration | ✅ **Externalise — Phase A complete** |
 
 **Contenu** : prompt système complet définissant MERLIN comme "moteur documentaire d'IVIA".
 Contient les contraintes absolues (ne pas poser de diagnostic, ne pas citer des traditions),
 les règles de diffusion (production_note / client_delivery / supervision / research),
 et l'enrichissement contextuel québécois.
 
-**Risque** : ce prompt contient les règles de non-diagnostic et les règles de sécurité
-(niveau de vigilance URGENCE). Toute modification silencieuse dans le code
-peut entraîner une dérive clinique sans alerte documentaire.
+**Etat actuel** : le prompt est charge via `load_prompt("METH-003")`; les modifications
+passent desormais par fichier Markdown versionne.
 
 ### PROMPT CRITIQUE 2 — `QUEBEC_CONTEXT_HYPOTHESES`
 
@@ -193,8 +191,8 @@ peut entraîner une dérive clinique sans alerte documentaire.
 | Couche | **FOND** |
 | En production | Oui — injecté dans SESSION_NOTE_CERCLE_SYSTEM_PROMPT |
 | Données sensibles | Non — liste d'hypothèses génériques |
-| Version Markdown | ❌ **Absente** |
-| Priorité externalisation | **P1** |
+| Version Markdown | ✅ `11_PROMPTS/02_METH/METH-001-quebec-context-hypotheses-v1.md` |
+| Statut migration | ✅ **Externalise — Phase A complete** |
 
 **Contenu** : 9 hypothèses de pression contextuelle québécoise (pression_silence_et_minimisation,
 pression_performance_travail, pression_isolement_relationnel, etc.).
@@ -210,8 +208,8 @@ Il devrait exister dans `11_PROMPTS/01_FOND/` **et** dans `04_METHODES/`.
 | Couche | **FOND** |
 | En production | Oui — injecté dans SESSION_NOTE_CERCLE_SYSTEM_PROMPT |
 | Données sensibles | Non — liste de signaux génériques |
-| Version Markdown | ❌ **Absente** |
-| Priorité externalisation | **P1** |
+| Version Markdown | ✅ `11_PROMPTS/02_METH/METH-002-quebec-context-signals-v1.md` |
+| Statut migration | ✅ **Externalise — Phase A complete** |
 
 **Contenu** : 12 signaux d'entretien québécois à détecter dans les transcriptions
 (minimisation_verbale, humour_defensif, honte_de_demander, etc.).
@@ -255,9 +253,9 @@ Le `README.md` de `11_PROMPTS/` liste des fichiers qui n'existent pas :
 
 | Risque | Niveau | Description | Action recommandée |
 |---|---|---|---|
-| Modification silencieuse du prompt de note de séance | **CRITIQUE** | `SESSION_NOTE_CERCLE_SYSTEM_PROMPT` est en prod sans Markdown de référence | Externaliser en Vague 3 — P1 |
-| Dérive des règles de non-diagnostic | **CRITIQUE** | Les contraintes absolues sont dans le code Python uniquement | Externaliser et bumper la version à chaque révision |
-| Perte de traçabilité du contexte québécois | **ÉLEVÉ** | `QUEBEC_CONTEXT_HYPOTHESES` et `SIGNALS` sont invisibles depuis la gouvernance | Externaliser dans 01_FOND/ |
+| Modification silencieuse du prompt de note de seance | **FAIBLE** | Prompt externalise via `METH-003` + loader en cache | Maintenir discipline de bump de version |
+| Derive des regles de non-diagnostic | **MOYEN** | Le risque reste lie aux changements sans revue humaine | Exiger revue superviseur pour tout changement METH-003 |
+| Perte de tracabilite du contexte quebecois | **FAIBLE** | Hypotheses/signaux externalises via `METH-001` et `METH-002` | Maintenir les liens d'ID dans la gouvernance |
 | Prompts héritées sans métadonnées | **MOYEN** | 9 fichiers dans l'ancienne structure sans YAML, sans ID | Migrer en Vague 3 |
 | Prompts fantômes dans README | **FAIBLE** | 2 fichiers référencés absents | Corriger le README |
 
@@ -293,4 +291,5 @@ Le `README.md` de `11_PROMPTS/` liste des fichiers qui n'existent pas :
 
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
+| 1.1 | 2026-05-05 | fondateur | Mise a jour Vague 3 — Phase A complete (3 prompts critiques externalises) |
 | 1.0 | 2026-05-05 | fondateur | Création initiale — audit Vague 2 |

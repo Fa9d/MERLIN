@@ -93,13 +93,21 @@ la migration traçable définie dans `AUDIT_PROMPTS_EXISTANTS_V1.md`.
 | `PROMPT_onboarding_client.md` | `04_admin/` | ADMIN | `04_ADMIN/` |
 | `PROMPT_validation_pilote.md` | `05_pilote/` | PROD | `05_PROD/` |
 
-### Prompts critiques dans le backend (à externaliser — Vague 3)
+### Prompts critiques backend (externalises — Vague 3 Phase A)
 
-| Prompt | Fichier backend | Couche | Priorité |
+| Prompt | Fichier backend | Couche | Statut |
 |---|---|---|---|
-| `SESSION_NOTE_CERCLE_SYSTEM_PROMPT` | `app/ai/prompts/session_note_cercle_v1.py` | METH (CRITIQUE) | P1 |
-| `QUEBEC_CONTEXT_HYPOTHESES` | `app/ai/prompts/session_note_cercle_v1.py` | FOND | P1 |
-| `QUEBEC_CONTEXT_SIGNALS` | `app/ai/prompts/session_note_cercle_v1.py` | FOND | P1 |
+| `SESSION_NOTE_CERCLE_SYSTEM_PROMPT` | `app/ai/prompts/session_note_cercle_v1.py` | METH (CRITIQUE) | Externalise via `02_METH/METH-003-session-note-cercle-system-prompt-v1.md` |
+| `QUEBEC_CONTEXT_HYPOTHESES` | `app/ai/prompts/session_note_cercle_v1.py` | FOND | Externalise via `02_METH/METH-001-quebec-context-hypotheses-v1.md` |
+| `QUEBEC_CONTEXT_SIGNALS` | `app/ai/prompts/session_note_cercle_v1.py` | FOND | Externalise via `02_METH/METH-002-quebec-context-signals-v1.md` |
+
+### Nouveaux prompts gouvernes en `02_METH/`
+
+| ID court | Fichier | Usage |
+|---|---|---|
+| `METH-001` | `02_METH/METH-001-quebec-context-hypotheses-v1.md` | Hypotheses contextuelles Quebec chargees par backend |
+| `METH-002` | `02_METH/METH-002-quebec-context-signals-v1.md` | Signaux contextuels Quebec charges par backend |
+| `METH-003` | `02_METH/METH-003-session-note-cercle-system-prompt-v1.md` | Prompt systeme principal note de seance Cercle V1 |
 
 Voir `AUDIT_PROMPTS_EXISTANTS_V1.md` pour le détail.
 
@@ -127,4 +135,5 @@ Voir `AUDIT_PROMPTS_EXISTANTS_V1.md` pour le détail.
 
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
+| 1.1 | 2026-05-05 | fondateur | Mise a jour Vague 3 — ajout METH-001/002/003 et statut externalise Phase A |
 | 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 2 structuration prompts |

@@ -62,6 +62,7 @@ Chaque entree doit rester courte, verifiable et reliee a une source.
 | DEC-037 | 2026-05-05 | decision | prompts | Adoption d'une bibliotheque versionnee de prompts dans `11_PROMPTS/`, classee par couche (00_SYSTEME a 05_PROD). Tout prompt utilise en production doit avoir un fichier Markdown de reference avec YAML frontmatter et version explicite. Les prompts hardcodes dans le code Python sont a externaliser en priorite P1. | validated | `ADR/ADR-0002-gouvernance-prompts.md` |
 | DEC-038 | 2026-05-05 | decision | donnees | Politique initiale donnees IA : hebergement canadien par defaut, 4 niveaux de sensibilite (0=public a 3=sensible), pseudonymisation obligatoire avant envoi a Anthropic, effacement apres transcription AssemblyAI. Conforme Loi 25 + LPRPDE. | validated | `ADR/ADR-0003-politique-donnees-ia.md` |
 | DEC-039 | 2026-05-05 | decision | arborescence | Adoption d'une strategie de normalisation progressive de l'arborescence racine MERLIN par vagues, plutot qu'un renommage massif immediat. La convention V2 sera remplacee par V3 (Vague 3) pour reflecter la realite + les noms cibles. `01_FONDATEUR/` et `01_FONDEMENTS/` seront fusionnes; `08_EMPLOI/` renomme en `08_OPERATIONS/`. | validated | `ADR/ADR-0004-normalisation-arborescence.md` |
+| DEC-040 | 2026-05-05 | decision | prompts | Externalisation Phase A — 3 prompts critiques migres de Python vers 11_PROMPTS/02_METH/ avec chargement dynamique via `prompt_loader`. | validated | `ADR/ADR-0002-gouvernance-prompts.md` |
 
 ---
 
