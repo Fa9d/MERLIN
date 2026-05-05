@@ -57,3 +57,19 @@ Suivi bimensuel pour fatigue et tensions cervicales. Travail manuel et exercices
 
 - Ce résumé est affiché dans la vue liste opérateur uniquement. Il n’est pas transmis au client.
 - Complémentaire à : `PROMPT_note_clinique.md`
+
+
+---
+
+## Règles absolues
+
+- Maximum 80 mots. Toute réponse plus longue doit être tronquée avant livraison.
+- Commencer directement par le contenu. Aucune formule d’introduction du type « Bien sûr, voici... ».
+- Ne pas inclure d’informations non présentes dans la note source. Zéro enrichissement.
+- Pas de jargon clinique non expliqué — ce résumé est lu par un opérateur non-spécialiste.
+- Ne jamais mentionner le nom complet du client — initiales ou ID uniquement.
+- Surface : opérateur uniquement. Ne jamais transmettre directement au client.
+
+---
+
+**Version**: v1.1 — 2026-05-05 (ajout Règles absolues)
