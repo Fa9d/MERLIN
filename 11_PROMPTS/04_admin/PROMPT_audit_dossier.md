@@ -1,3 +1,12 @@
+---
+id: PROD-008
+version: v1.0
+layer: 05_PROD
+trigger: revue_periodique_dossier_client
+surface: operateur/admin
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Audit de dossier client
 
 **Version**: v1.1 — 2026-05-05

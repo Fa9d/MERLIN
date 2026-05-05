@@ -1,3 +1,12 @@
+---
+id: PROD-006
+version: v1.0
+layer: 05_PROD
+trigger: analyse_note_clinique_post_generation
+surface: superviseur/supervision
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Détection de flags et anomalies
 
 **Surface**: superviseur / système MERLIN  

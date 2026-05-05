@@ -1,3 +1,12 @@
+---
+id: PROD-004
+version: v1.0
+layer: 05_PROD
+trigger: avant_client_visible_true
+surface: operateur/workflow_document
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Validation de contenu avant diffusion
 
 **Surface**: opérateur / workflow document MERLIN  

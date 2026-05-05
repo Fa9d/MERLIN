@@ -1,3 +1,12 @@
+---
+id: PROD-001
+version: v1.1
+layer: 05_PROD
+trigger: apres_cloture_session_audio
+surface: operateur/backend
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Note clinique
 
 **Surface**: opérateur / backend MERLIN  

@@ -137,3 +137,38 @@ Voir `AUDIT_PROMPTS_EXISTANTS_V1.md` pour le détail.
 |---|---|---|---|
 | 1.1 | 2026-05-05 | fondateur | Mise a jour Vague 3 — ajout METH-001/002/003 et statut externalise Phase A |
 | 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 2 structuration prompts |
+| 1.2 | 2026-05-05 | fondateur | Vague 4 — ajout frontmatter YAML PROD-001 à PROD-009, enregistrement dans prompt_loader |
+
+---
+
+## Registre Vague 4 — Couche PROD
+
+| ID | Fichier | Dossier | Trigger | Statut |
+|---|---|---|---|---|
+| PROD-001 | PROMPT_note_clinique.md | 01_session/ | apres_cloture_session_audio | production |
+| PROD-002 | PROMPT_resume_session.md | 01_session/ | apres_generation_note_clinique | production |
+| PROD-003 | PROMPT_generation_rapport.md | 02_document/ | apres_validation_superviseur_note | production |
+| PROD-004 | PROMPT_validation_contenu.md | 02_document/ | avant_client_visible_true | production |
+| PROD-005 | PROMPT_relecture_note.md | 03_supervision/ | note_clinique_soumise_en_attente_validation | production |
+| PROD-006 | PROMPT_flags_anomalies.md | 03_supervision/ | analyse_note_clinique_post_generation | production |
+| PROD-007 | PROMPT_onboarding_client.md | 04_admin/ | creation_nouveau_dossier_client | production |
+| PROD-008 | PROMPT_audit_dossier.md | 04_admin/ | revue_periodique_dossier_client | production |
+| PROD-009 | PROMPT_validation_pilote.md | 05_pilote/ | fin_phase_pilote_evaluation | production |
+
+
+
+---
+
+## Registre Vague 5 — METH-004
+
+| ID | Fichier | Dossier | Trigger | Statut |
+|---|---|---|---|---|
+| METH-004 | METH-004-triage-signaux-urgence-v1.md | 02_METH/ | analyse_intake_text_appellee | production |
+
+---
+
+## Historique de révisions (suite)
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.3 | 2026-05-05 | fondateur | Vague 5 Phase C — création METH-004, enregistrement loader, 13 prompts total |

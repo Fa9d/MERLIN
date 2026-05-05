@@ -3,8 +3,7 @@
 Expose `load_prompt(prompt_id)` — lit les fichiers Markdown, extrait le corps
 après le frontmatter YAML, et applique un cache mémoire simple.
 
-Portée actuelle : METH-001, METH-002, METH-003 (Vague 3 Phase A).
-Pour étendre la portée, ajouter une entrée dans `_PROMPT_PATHS`.
+    Portée actuelle : METH-001, METH-002, METH-003 (Vague 3), PROD-001 à PROD-009 (Vague 4).Pour étendre la portée, ajouter une entrée dans `_PROMPT_PATHS`.
 """
 
 from __future__ import annotations
@@ -20,6 +19,16 @@ _PROMPT_PATHS: dict[str, str] = {
     "METH-001": "02_METH/METH-001-quebec-context-hypotheses-v1.md",
     "METH-002": "02_METH/METH-002-quebec-context-signals-v1.md",
     "METH-003": "02_METH/METH-003-session-note-cercle-system-prompt-v1.md",
+    "METH-004": "02_METH/METH-004-triage-signaux-urgence-v1.md",
+    "PROD-001": "01_session/PROMPT_note_clinique.md",
+    "PROD-002": "01_session/PROMPT_resume_session.md",
+    "PROD-003": "02_document/PROMPT_generation_rapport.md",
+    "PROD-004": "02_document/PROMPT_validation_contenu.md",
+    "PROD-005": "03_supervision/PROMPT_relecture_note.md",
+    "PROD-006": "03_supervision/PROMPT_flags_anomalies.md",
+    "PROD-007": "04_admin/PROMPT_onboarding_client.md",
+    "PROD-008": "04_admin/PROMPT_audit_dossier.md",
+    "PROD-009": "05_pilote/PROMPT_validation_pilote.md",
 }
 
 _PROMPT_CACHE: dict[str, str] = {}

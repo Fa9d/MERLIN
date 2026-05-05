@@ -1,3 +1,12 @@
+---
+id: PROD-003
+version: v1.0
+layer: 05_PROD
+trigger: apres_validation_superviseur_note
+surface: operateur/workflow_document
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Génération de rapport client
 
 **Surface**: opérateur / workflow document MERLIN  

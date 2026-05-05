@@ -1,3 +1,12 @@
+---
+id: PROD-009
+version: v1.0
+layer: 05_PROD
+trigger: fin_phase_pilote_evaluation
+surface: operateur/pilote
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Validation pilote
 
 **Version**: v1.0 — 2026-05-05

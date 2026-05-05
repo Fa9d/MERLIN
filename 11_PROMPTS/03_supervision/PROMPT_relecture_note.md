@@ -1,3 +1,12 @@
+---
+id: PROD-005
+version: v1.0
+layer: 05_PROD
+trigger: note_clinique_soumise_en_attente_validation
+surface: superviseur/supervision
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Relecture et validation de note (superviseur)
 
 **Surface**: superviseur / surface `/supervision` MERLIN  
