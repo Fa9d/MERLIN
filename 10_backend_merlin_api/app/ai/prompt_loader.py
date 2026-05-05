@@ -19,6 +19,7 @@ _PROMPT_PATHS: dict[str, str] = {
     "METH-001": "02_METH/METH-001-quebec-context-hypotheses-v1.md",
     "METH-002": "02_METH/METH-002-quebec-context-signals-v1.md",
     "METH-003": "02_METH/METH-003-session-note-cercle-system-prompt-v1.md",
+    "METH-004": "02_METH/METH-004-triage-signaux-urgence-v1.md",
     "PROD-001": "01_session/PROMPT_note_clinique.md",
     "PROD-002": "01_session/PROMPT_resume_session.md",
     "PROD-003": "02_document/PROMPT_generation_rapport.md",
