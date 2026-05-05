@@ -65,3 +65,20 @@ ID dossier: [optionnel]
 - Ce prompt est un outil d’aide à la décision. Le superviseur valide ou rejette manuellement dans l’interface `/supervision`.
 - Statut `BLOQUÉ` = note ne doit pas être diffusée dans l’état actuel.
 - Complémentaire à : `PROMPT_note_clinique.md`, `PROMPT_flags_anomalies.md`
+
+
+---
+
+## Règles absolues
+
+- Statut `BLOQUÉ` = la note ne doit pas être diffusée. Arrêt de la chaîne documentaire.
+- Ce prompt est un outil d’aide à la décision. La validation finale est toujours humaine.
+- Ne jamais reformuler l’ensemble de la note — pointer, pas réécrire.
+- Tout flag relevé doit citer le passage concerné entre guillemets. Aucun flag générique.
+- Si aucun problème : écrire uniquement `[NOTE CONFORME — Aucun correctif requis]`. Rien d’autre.
+- Chaque recommandation doit être actionnable : VALIDER / RETOURNER / METTRE EN ATTENTE — jamais «imposséible à déterminer».
+- Surface : superviseur uniquement.
+
+---
+
+**Version**: v1.1 — 2026-05-05 (ajout Règles absolues)
