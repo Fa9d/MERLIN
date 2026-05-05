@@ -325,3 +325,38 @@ Le `README.md` de `11_PROMPTS/` liste des fichiers qui n'existent pas :
 ### Prochaine étape : Phase C
 
 - Créer `02_METH/METH-004-triage-signaux-urgence-v1.md` documentant les patterns `_RISK_PATTERNS` et `_GAP_PATTERNS` de `intake_analysis.py`
+
+
+---
+
+## Rapport Vague 5 — Phase C (2026-05-05)
+
+### Statut global mis à jour
+
+- **Phase A (Vague 3)** : TERMINÉE
+- **Phase B (Vague 4)** : TERMINÉE
+- **Phase C (Vague 5)** : TERMINÉE — METH-004 créé, enregistré, gouvernance mise à jour
+
+### Actions Vague 5 complétées
+
+| # | Fichier | Action | ID assigné |
+|---|---|---|---|
+| 1 | app/services/intake_analysis.py | Audit complet : 13 risk_patterns, 4 gap_patterns extraits | — |
+| 2 | 02_METH/METH-004-triage-signaux-urgence-v1.md | Création avec frontmatter YAML, règles absolues, interface technique | METH-004 |
+| 3 | prompt_loader.py | METH-004 enregistré dans _PROMPT_PATHS | — |
+| 4 | INDEX_PROMPTS_V1.md | Registre METH-004 ajouté, version 1.3, 13 prompts total | — |
+
+### Bilan général bibliothèque
+
+- **Total prompts enregistrés** : 13 (METH-001/002/003/004 + PROD-001 à PROD-009)
+- **Couverture loader** : 100% des prompts `.md` gouvernés ont un ID dans `_PROMPT_PATHS`
+- **Hardcoded** : zéro prompt hardcodé détecté dans le backend
+
+### Aucune action immédiate requise
+
+Toutes les vagues planifiées (1-2-3-4-5) sont complètes.
+La prochaine évolution sera pilotée par les besoins fonctionnels (nouvelles features, nouvelles surfaces AI).
+
+| Version | Date | Auteur | Nature |
+|---|---|---|---|
+| 1.3 | 2026-05-05 | fondateur | Phase C Vague 5 terminée — METH-004, 13 prompts, zéro hardcodé |
