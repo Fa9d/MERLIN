@@ -1,3 +1,12 @@
+---
+id: PROD-002
+version: v1.0
+layer: 05_PROD
+trigger: apres_generation_note_clinique
+surface: operateur/tableau_de_bord
+statut: production
+date: 2026-05-05
+---
 # PROMPT — Résumé de session
 
 **Surface**: opérateur / tableau de bord MERLIN  
