@@ -155,3 +155,20 @@ Voir `AUDIT_PROMPTS_EXISTANTS_V1.md` pour le détail.
 | PROD-008 | PROMPT_audit_dossier.md | 04_admin/ | revue_periodique_dossier_client | production |
 | PROD-009 | PROMPT_validation_pilote.md | 05_pilote/ | fin_phase_pilote_evaluation | production |
 
+
+
+---
+
+## Registre Vague 5 — METH-004
+
+| ID | Fichier | Dossier | Trigger | Statut |
+|---|---|---|---|---|
+| METH-004 | METH-004-triage-signaux-urgence-v1.md | 02_METH/ | analyse_intake_text_appellee | production |
+
+---
+
+## Historique de révisions (suite)
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.3 | 2026-05-05 | fondateur | Vague 5 Phase C — création METH-004, enregistrement loader, 13 prompts total |
