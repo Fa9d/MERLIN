@@ -7,6 +7,8 @@ surface: backend/services
 statut: production
 date: 2026-05-05
 depend_de: app.services.intake_analysis
+test_associe: test_prompt_injection.py::test_meth004_urgence_fields
+impact_attendu: "À documenter lors de la prochaine modification"
 ---
 
 # METH-004 — Triage des signaux d'urgence à l'intake

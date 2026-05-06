@@ -11,6 +11,8 @@ version: 1.0
 modèle_cible: claude-sonnet-4-20250514
 dépend_de: [ADR-0002, ADR-0003]
 utilisé_par: [app/ai/prompts/session_note_cercle_v1.py]
+test_associe: test_json_schema_validation.py::test_meth002_schema_structure
+impact_attendu: "À documenter lors de la prochaine modification"
 remplace: []
 arbitrage_requis: oui — tout ajout ou retrait de signal contextuel
 validation_requise: fondateur

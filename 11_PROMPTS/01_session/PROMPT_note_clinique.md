@@ -6,6 +6,8 @@ trigger: apres_cloture_session_audio
 surface: operateur/backend
 statut: production
 date: 2026-05-05
+test_associe: test_json_schema_validation.py::test_prod001_output
+impact_attendu: "À documenter lors de la prochaine modification"
 ---
 # PROMPT — Note clinique
 

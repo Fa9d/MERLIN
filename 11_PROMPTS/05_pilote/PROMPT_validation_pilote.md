@@ -6,6 +6,8 @@ trigger: fin_phase_pilote_evaluation
 surface: operateur/pilote
 statut: production
 date: 2026-05-05
+test_associe: test_json_schema_validation.py::test_prod009_validation_schema
+impact_attendu: "À documenter lors de la prochaine modification"
 ---
 # PROMPT — Validation pilote
 

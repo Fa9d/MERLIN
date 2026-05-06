@@ -11,6 +11,8 @@ version: 1.0
 modèle_cible: claude-sonnet-4-20250514
 dépend_de: [ADR-0002, ADR-0003]
 utilisé_par: [app/ai/prompts/session_note_cercle_v1.py]
+test_associe: test_prompt_injection.py::test_meth001_no_diagnosis
+impact_attendu: "À documenter lors de la prochaine modification"
 remplace: []
 arbitrage_requis: oui — tout ajout ou retrait d'hypothese contextuelle
 validation_requise: fondateur

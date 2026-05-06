@@ -6,6 +6,8 @@ trigger: analyse_note_clinique_post_generation
 surface: superviseur/supervision
 statut: production
 date: 2026-05-05
+test_associe: test_json_schema_validation.py::test_prod_generic
+impact_attendu: "À documenter lors de la prochaine modification"
 ---
 # PROMPT — Détection de flags et anomalies
 
