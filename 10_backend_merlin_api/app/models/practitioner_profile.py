@@ -1,0 +1,36 @@
+﻿from datetime import datetime, timezone
+from typing import Optional
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.db.base import Base
+
+
+class PractitionerProfile(Base):
+    __tablename__ = "practitioner_profiles"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("app_users.id", ondelete="CASCADE"),
+        unique=True,
+        nullable=False,
+        index=True,
+    )
+    domaines:            Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    approches:           Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    langues:             Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    disponibilites:      Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    tarif_horaire_cents: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    actif: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+    user: Mapped["AppUser"] = relationship("AppUser", back_populates="practitioner_profile")

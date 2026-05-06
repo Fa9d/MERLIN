@@ -1,8 +1,8 @@
-from datetime import datetime, timezone
+﻿from datetime import datetime, timezone
 from uuid import uuid4
 
 from sqlalchemy import Boolean, DateTime, Enum, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 
 from app.db.base import Base
@@ -52,3 +52,7 @@ class AppUser(Base):
     email_verification_token: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
     token_expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
+
+    practitioner_profile: Mapped[Optional["PractitionerProfile"]] = relationship(
+        "PractitionerProfile", back_populates="user", uselist=False, cascade="all, delete-orphan",
+    )

@@ -1,4 +1,4 @@
-from sqlalchemy.orm import DeclarativeBase
+﻿from sqlalchemy.orm import DeclarativeBase
 
 from app.core.config import settings
 from app.db.session import engine
@@ -19,6 +19,7 @@ def load_models() -> None:
     import app.models.session  # noqa: F401
     import app.models.session_note  # noqa: F401
     import app.models.schedule  # noqa: F401
+    import app.models.practitioner_profile  # noqa: F401
 
 
 def init_models() -> None:
