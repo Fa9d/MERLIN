@@ -18,6 +18,10 @@ class PractitionerProfile(Base):
         nullable=False,
         index=True,
     )
+    display_name:             Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    title_line:               Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    intro_text:               Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    presentation_audio_url:   Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     domaines:            Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     approches:           Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     langues:             Mapped[Optional[str]] = mapped_column(Text, nullable=True)
