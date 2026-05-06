@@ -1,169 +1,171 @@
----
-titre: Livrables de validation MERLIN/IVIA — Résumé exécutif (6 livrables)
+﻿---
+titre: Livrables de validation MERLIN/IVIA â€” RÃ©sumÃ© exÃ©cutif (6 livrables)
 id: PROD-VALID-002
 statut: active
 type: audit
 couche: PROD
-périmètre: synthèse pour décision
+pÃ©rimÃ¨tre: synthÃ¨se pour dÃ©cision
 auteur: fondateur
 date: 2026-05-05
 version: 1.0
-dépend_de: [PROD-VALID-001]
+dÃ©pend_de: [PROD-VALID-001]
 remplace: []
 arbitrage_requis: non
 source_canonique: 11_PROMPTS/PROD-VALID-002-LIVRABLES_SYNTHESE_V1.md
+test_associe: test_json_schema_validation.py::test_prod009_validation_schema
+impact_attendu: "A documenter lors de la prochaine modification"
 ---
 
-# PROD-VALID — Livrables synthétiques (6/7)
+# PROD-VALID â€” Livrables synthÃ©tiques (6/7)
 
-> **Format** : exécutif (une page par livrable)
-> **Audience** : fondateur + décideur technique
-> **Lecture estimée** : 15 min total
+> **Format** : exÃ©cutif (une page par livrable)
+> **Audience** : fondateur + dÃ©cideur technique
+> **Lecture estimÃ©e** : 15 min total
 
 ---
 
-## LIVRABLE 2 — Prompts critiques reliés au moteur
+## LIVRABLE 2 â€” Prompts critiques reliÃ©s au moteur
 
-### État global
-Externalisation Phase A complétée (2026-05-05). Les 3 prompts critiques sont dans `11_PROMPTS/02_METH/` et chargés dynamiquement au runtime.
+### Ã‰tat global
+Externalisation Phase A complÃ©tÃ©e (2026-05-05). Les 3 prompts critiques sont dans `11_PROMPTS/02_METH/` et chargÃ©s dynamiquement au runtime.
 
 ### Table prompts
 
-| ID | Fichier | Rôle | Lignes | Versionné | Testé | État |
+| ID | Fichier | RÃ´le | Lignes | VersionnÃ© | TestÃ© | Ã‰tat |
 |---|---|---|---|---|---|---|
-| METH-001 | `METH-001-quebec-context-hypotheses-v1.md` | 9 hypothèses contextuelles | 10 | ✅ git | ⚠️ loader only | ✅ Actif |
-| METH-002 | `METH-002-quebec-context-signals-v1.md` | 12 signaux d'alerte | 13 | ✅ git | ⚠️ loader only | ✅ Actif |
-| METH-003 | `METH-003-session-note-cercle-system-prompt-v1.md` | Prompt système MERLIN (la persona) | 90+ | ✅ git | ❌ **NON** | **CRITIQUE** |
+| METH-001 | `METH-001-quebec-context-hypotheses-v1.md` | 9 hypothÃ¨ses contextuelles | 10 | âœ… git | âš ï¸ loader only | âœ… Actif |
+| METH-002 | `METH-002-quebec-context-signals-v1.md` | 12 signaux d'alerte | 13 | âœ… git | âš ï¸ loader only | âœ… Actif |
+| METH-003 | `METH-003-session-note-cercle-system-prompt-v1.md` | Prompt systÃ¨me MERLIN (la persona) | 90+ | âœ… git | âŒ **NON** | **CRITIQUE** |
 
-### Prompts **encore hardcodés ou fragiles**
+### Prompts **encore hardcodÃ©s ou fragiles**
 
-| Localisation | Nature | Priorité |
+| Localisation | Nature | PrioritÃ© |
 |---|---|---|
-| `app/ai/anthropic_session_note_pipeline.py` (lignes 1-60) | Pipeline API Anthropic (pas hardcodé mais pas validé) | P2 |
-| `app/ai/prompts/session_note_cercle_v1.py` (lignes 280+) | render_session_note_cercle_prompt() — logique combintoire | P1 |
-| `app/services/intake_analysis.py` (lignes 30-60) | Patterns regex (pas prompt IA mais règles métier) | P2 |
+| `app/ai/anthropic_session_note_pipeline.py` (lignes 1-60) | Pipeline API Anthropic (pas hardcodÃ© mais pas validÃ©) | P2 |
+| `app/ai/prompts/session_note_cercle_v1.py` (lignes 280+) | render_session_note_cercle_prompt() â€” logique combintoire | P1 |
+| `app/services/intake_analysis.py` (lignes 30-60) | Patterns regex (pas prompt IA mais rÃ¨gles mÃ©tier) | P2 |
 
 ### Points de risque prompts
 
-❌ **AUCUN TEST RÉEL** sur la qualité de la note générée par Claude
-❌ **AUCUN TEST** sur injection des hypothèses/signaux dans le prompt système
-⚠️ **MODIFICATION PROMPT** = modification fichier Markdown + git commit (OK mais discipline requise)
+âŒ **AUCUN TEST RÃ‰EL** sur la qualitÃ© de la note gÃ©nÃ©rÃ©e par Claude
+âŒ **AUCUN TEST** sur injection des hypothÃ¨ses/signaux dans le prompt systÃ¨me
+âš ï¸ **MODIFICATION PROMPT** = modification fichier Markdown + git commit (OK mais discipline requise)
 
 ### Recommandation
-Créer `test_prompt_injection.py` (1 jour) pour vérifier que METH-001/002/003 contiennent exactement ce qu'on attend avant tout changement.
+CrÃ©er `test_prompt_injection.py` (1 jour) pour vÃ©rifier que METH-001/002/003 contiennent exactement ce qu'on attend avant tout changement.
 
 ---
 
-## LIVRABLE 3 — Inventaire des tests existants
+## LIVRABLE 3 â€” Inventaire des tests existants
 
-### Récapitulatif
+### RÃ©capitulatif
 
-**Total tests** : ~7 fichiers, ~400 lignes, 5 tests exécutables + 2 scripts manuels
+**Total tests** : ~7 fichiers, ~400 lignes, 5 tests exÃ©cutables + 2 scripts manuels
 
-| Fichier | Nb tests | Type | Exécutable | État |
+| Fichier | Nb tests | Type | ExÃ©cutable | Ã‰tat |
 |---|---|---|---|---|
-| `test_prompt_loader.py` | 3 | unitaire | ✅ pytest | ✅ 3 passed |
-| `test_api_smoke.py` | 1 | smoke (flux) | ✅ pytest | ⚠️ moque Claude |
-| `test_register.py` | 1 | HTTP manual | ⚠️ script | exige serveur |
-| `test_register_https.py` | 1 | HTTP manual | ⚠️ script | exige serveur |
-| `check_routes.py` | — | audit | ⚠️ script | énumère routes |
+| `test_prompt_loader.py` | 3 | unitaire | âœ… pytest | âœ… 3 passed |
+| `test_api_smoke.py` | 1 | smoke (flux) | âœ… pytest | âš ï¸ moque Claude |
+| `test_register.py` | 1 | HTTP manual | âš ï¸ script | exige serveur |
+| `test_register_https.py` | 1 | HTTP manual | âš ï¸ script | exige serveur |
+| `check_routes.py` | â€” | audit | âš ï¸ script | Ã©numÃ¨re routes |
 
 ### Tests par domaine
 
 ```
-Moteur IA (Claude Sonnet 4)       : ❌ 0 tests réels  (mocké dans smoke)
-Prompts (METH-*)                   : ⚠️ 3 tests loader (pas test contenu)
-Analyse intake (regex)              : ❌ 0 tests
-Génération documents clients        : ❌ 0 tests
-Authentification/JWT                : ⚠️ ~1-2 indirect
-Supervision (validation)            : ❌ 0 tests
-Routes CRUD (clients, sessions)     : ⚠️ ~1-2 indirect (smoke moque)
-BDD/migrations (Alembic)            : ❌ 0 tests
-LiveKit integration                 : ❌ 0 tests (complexe, dépend externe)
+Moteur IA (Claude Sonnet 4)       : âŒ 0 tests rÃ©els  (mockÃ© dans smoke)
+Prompts (METH-*)                   : âš ï¸ 3 tests loader (pas test contenu)
+Analyse intake (regex)              : âŒ 0 tests
+GÃ©nÃ©ration documents clients        : âŒ 0 tests
+Authentification/JWT                : âš ï¸ ~1-2 indirect
+Supervision (validation)            : âŒ 0 tests
+Routes CRUD (clients, sessions)     : âš ï¸ ~1-2 indirect (smoke moque)
+BDD/migrations (Alembic)            : âŒ 0 tests
+LiveKit integration                 : âŒ 0 tests (complexe, dÃ©pend externe)
 ```
 
-### Couverture estimée : **~5-10%** (très faible)
+### Couverture estimÃ©e : **~5-10%** (trÃ¨s faible)
 
 ---
 
-## LIVRABLE 4 — Tests manquants prioritaires (7 tests)
+## LIVRABLE 4 â€” Tests manquants prioritaires (7 tests)
 
-### Ordre de priorité
+### Ordre de prioritÃ©
 
-#### URGENT (P1 — semaine 1)
+#### URGENT (P1 â€” semaine 1)
 
-| Nom test | Fichier | Lignes | Délai | Raison |
+| Nom test | Fichier | Lignes | DÃ©lai | Raison |
 |---|---|---|---|---|
-| `test_session_note_generation_real_claude` | `tests/test_session_note_generation.py` | ~80 | 1-2j | **Cœur du moteur** |
+| `test_session_note_generation_real_claude` | `tests/test_session_note_generation.py` | ~80 | 1-2j | **CÅ“ur du moteur** |
 | `test_json_schema_validation` | `tests/test_json_schema_validation.py` | ~60 | 1j | Garantir format sortie |
-| `test_intake_analysis_risk_patterns` | `tests/test_intake_analysis.py` | ~70 | 1-2j | **Sécurité (risque)** |
-| `test_prompt_injection` | `tests/test_prompt_injection.py` | ~40 | 0,5j | Vérifier prompts actifs |
+| `test_intake_analysis_risk_patterns` | `tests/test_intake_analysis.py` | ~70 | 1-2j | **SÃ©curitÃ© (risque)** |
+| `test_prompt_injection` | `tests/test_prompt_injection.py` | ~40 | 0,5j | VÃ©rifier prompts actifs |
 
-#### HAUTE (P2 — semaine 2)
+#### HAUTE (P2 â€” semaine 2)
 
-| Nom test | Fichier | Lignes | Délai | Raison |
+| Nom test | Fichier | Lignes | DÃ©lai | Raison |
 |---|---|---|---|---|
-| `test_e2e_session_flow_real` | `tests/test_e2e_real.py` | ~100 | 1-2j | Flux complet réel |
+| `test_e2e_session_flow_real` | `tests/test_e2e_real.py` | ~100 | 1-2j | Flux complet rÃ©el |
 | `test_supervisor_validation` | `tests/test_supervisor.py` | ~80 | 1-2j | Workflow supervison |
 | `test_intake_analysis_gaps` | `tests/test_intake_analysis.py` | ~40 | 0,5j | Data quality |
 
-### Checklist test METH-003 (avant réelle démo)
+### Checklist test METH-003 (avant rÃ©elle dÃ©mo)
 
 ```
-[ ] Claude génère JSON valide (parsable)
-[ ] Schéma contient tous les champs obligatoires
-[ ] Tous les codes énumérés sont valides
-[ ] vigilance_level_code ∈ {non_urgent, watch, priority, urgent}
-[ ] context_hypotheses_json n'apparaît pas en client_delivery
+[ ] Claude gÃ©nÃ¨re JSON valide (parsable)
+[ ] SchÃ©ma contient tous les champs obligatoires
+[ ] Tous les codes Ã©numÃ©rÃ©s sont valides
+[ ] vigilance_level_code âˆˆ {non_urgent, watch, priority, urgent}
+[ ] context_hypotheses_json n'apparaÃ®t pas en client_delivery
 [ ] metadata.prompt_version == "session_note_cercle_v1"
 ```
 
 ---
 
-## LIVRABLE 5 — MVP démontrable (1 page)
+## LIVRABLE 5 â€” MVP dÃ©montrable (1 page)
 
 ### Le pitch en 3 min (pour financeur)
 
-**"Voici comment MERLIN transforme une demande client en rapport structuré :"**
+**"Voici comment MERLIN transforme une demande client en rapport structurÃ© :"**
 
 ```
-Client saisit: "Je suis fatigué, j'ai mal, j'ai peur d'aller au travail"
-                     ↓
-        [INTAKE ANALYSIS — détecte signaux risque/santé]
-                     ↓
-        Client réserve session audio 20-30 min
-                     ↓
-        [CLAUDE MOTEUR — analyse transcription selon Cercle V1]
-        ├─ 4 dimensions (coeur/corps/esprit/etre)
-        ├─ Contextualisation québécoise (9 hypothèses)
-        ├─ Alertes de sécurité (vigilance_level)
-        └─ Document structuré pour client
-                     ↓
+Client saisit: "Je suis fatiguÃ©, j'ai mal, j'ai peur d'aller au travail"
+                     â†“
+        [INTAKE ANALYSIS â€” dÃ©tecte signaux risque/santÃ©]
+                     â†“
+        Client rÃ©serve session audio 20-30 min
+                     â†“
+        [CLAUDE MOTEUR â€” analyse transcription selon Cercle V1]
+        â”œâ”€ 4 dimensions (coeur/corps/esprit/etre)
+        â”œâ”€ Contextualisation quÃ©bÃ©coise (9 hypothÃ¨ses)
+        â”œâ”€ Alertes de sÃ©curitÃ© (vigilance_level)
+        â””â”€ Document structurÃ© pour client
+                     â†“
         Superviseur valide
-                     ↓
-        CLIENT VOIT: "Votre séance du XX — synthèse professionnelle"
+                     â†“
+        CLIENT VOIT: "Votre sÃ©ance du XX â€” synthÃ¨se professionnelle"
                      (formulation simple, rassurante, intelligible)
 ```
 
 ### Points de preuve technique
 
-1. **Moteur marche réellement** : note générée en <3s, schéma JSON valide
-2. **Grille Cercle V1 appliquée** : 4 dimensions analysées + tensions identifiées
-3. **Sécurité intégrée** : vigilance_level automatique (urgent si besoin)
-4. **Traçabilité** : version prompt + modèle enregistrée
+1. **Moteur marche rÃ©ellement** : note gÃ©nÃ©rÃ©e en <3s, schÃ©ma JSON valide
+2. **Grille Cercle V1 appliquÃ©e** : 4 dimensions analysÃ©es + tensions identifiÃ©es
+3. **SÃ©curitÃ© intÃ©grÃ©e** : vigilance_level automatique (urgent si besoin)
+4. **TraÃ§abilitÃ©** : version prompt + modÃ¨le enregistrÃ©e
 5. **Supervision fonctionnelle** : validateur humain gate-keep avant diffusion
-6. **Document client professionnel** : pas brut, formulé intelligible
+6. **Document client professionnel** : pas brut, formulÃ© intelligible
 
-### Durée démo : 8-10 min (live ou enregistré)
+### DurÃ©e dÃ©mo : 8-10 min (live ou enregistrÃ©)
 
 ---
 
-## LIVRABLE 6 — Plan 14 jours (chronologie)
+## LIVRABLE 6 â€” Plan 14 jours (chronologie)
 
 ### Semaine 1 : Tests moteur
 
 ```
-Jour 1   | test_session_note_generation_real_claude    | ← CRITICAL PATH
+Jour 1   | test_session_note_generation_real_claude    | â† CRITICAL PATH
 Jour 2   | test_json_schema_validation
 Jour 3   | test_prompt_injection (0.5j) + test_intake_analysis
 Jour 4   | Fixtures + conftest.py setup
@@ -171,97 +173,97 @@ Jour 5   | Run all tests, fix failures
 Jour 6-7 | test_e2e_session_flow_real
 ```
 
-### Semaine 2 : Finalisation + démo
+### Semaine 2 : Finalisation + dÃ©mo
 
 ```
 Jour 8    | test_supervisor_validation_flow
 Jour 9-10 | Validation Pydantic schema + logging
-Jour 11-12| Préparation démo + anonymisation données
-Jour 13   | Démo interne + refinement
-Jour 14   | Démo finale (financeur) + débriefing
+Jour 11-12| PrÃ©paration dÃ©mo + anonymisation donnÃ©es
+Jour 13   | DÃ©mo interne + refinement
+Jour 14   | DÃ©mo finale (financeur) + dÃ©briefing
 ```
 
 ### Points critique sur le path
-- J1 : `test_session_note_generation_real_claude` réussit ou démo compromise
-- J5 : tous les tests P1 passent ou pivot nécessaire
-- J8 : E2E réel exécutable
+- J1 : `test_session_note_generation_real_claude` rÃ©ussit ou dÃ©mo compromise
+- J5 : tous les tests P1 passent ou pivot nÃ©cessaire
+- J8 : E2E rÃ©el exÃ©cutable
 
-### Dépendances externes
-- ✅ Anthropic API key actif + budget
-- ✅ Pas de changements archi (use existing code)
-- ✅ LiveKit optionnel (mock OK)
+### DÃ©pendances externes
+- âœ… Anthropic API key actif + budget
+- âœ… Pas de changements archi (use existing code)
+- âœ… LiveKit optionnel (mock OK)
 
 ---
 
-## LIVRABLE 7 — Fichiers à modifier (liste exacte)
+## LIVRABLE 7 â€” Fichiers Ã  modifier (liste exacte)
 
-### À CRÉER (tests nouveaux)
+### Ã€ CRÃ‰ER (tests nouveaux)
 
 ```
 tests/
-├── test_session_note_generation.py           [CREER — Claude real]
-├── test_json_schema_validation.py            [CREER — schema check]
-├── test_prompt_injection.py                  [CREER — verify METH-*]
-├── test_intake_analysis.py                   [CREER — patterns + gaps]
-├── test_e2e_real.py                          [CREER — end-to-end]
-├── test_supervisor.py                        [CREER — validation WF]
-├── conftest.py                               [CREER — pytest fixtures]
-├── fixtures.py                               [CREER — test data]
-└── test_prompt_loader.py                     [MODIFIER — ajouter tests]
+â”œâ”€â”€ test_session_note_generation.py           [CREER â€” Claude real]
+â”œâ”€â”€ test_json_schema_validation.py            [CREER â€” schema check]
+â”œâ”€â”€ test_prompt_injection.py                  [CREER â€” verify METH-*]
+â”œâ”€â”€ test_intake_analysis.py                   [CREER â€” patterns + gaps]
+â”œâ”€â”€ test_e2e_real.py                          [CREER â€” end-to-end]
+â”œâ”€â”€ test_supervisor.py                        [CREER â€” validation WF]
+â”œâ”€â”€ conftest.py                               [CREER â€” pytest fixtures]
+â”œâ”€â”€ fixtures.py                               [CREER â€” test data]
+â””â”€â”€ test_prompt_loader.py                     [MODIFIER â€” ajouter tests]
 ```
 
-### À MODIFIER (code backend)
+### Ã€ MODIFIER (code backend)
 
 **Dossier `app/ai/`** :
-- `anthropic_session_note_pipeline.py` — ajouter validation schéma output
-- `prompts/session_note_cercle_v1.py` — ajouter docstring détaillé
+- `anthropic_session_note_pipeline.py` â€” ajouter validation schÃ©ma output
+- `prompts/session_note_cercle_v1.py` â€” ajouter docstring dÃ©taillÃ©
 
 **Dossier `app/services/`** :
-- `intake_analysis.py` — ajouter logging patterns + externaliser regex
-- `session_documents.py` — assertions d'intégrité (no supervision in client)
+- `intake_analysis.py` â€” ajouter logging patterns + externaliser regex
+- `session_documents.py` â€” assertions d'intÃ©gritÃ© (no supervision in client)
 
 **Dossier `app/api/routes/`** :
-- `session_notes.py` — ajouter endpoint validation schéma
+- `session_notes.py` â€” ajouter endpoint validation schÃ©ma
 
-### À CRÉER (documentation + gouvernance)
+### Ã€ CRÃ‰ER (documentation + gouvernance)
 
 **Backend** :
-- `10_backend_merlin_api/TESTING_STRATEGY.md` — guide test + fixtures
-- `10_backend_merlin_api/PROMPT_LOADER_USAGE.md` — how-to charger prompts
+- `10_backend_merlin_api/TESTING_STRATEGY.md` â€” guide test + fixtures
+- `10_backend_merlin_api/PROMPT_LOADER_USAGE.md` â€” how-to charger prompts
 
 **Gouvernance** :
-- `11_PROMPTS/PROD-VALID-002-LIVRABLES_SYNTHESE_V1.md` — ce document
-- `00_GOUVERNANCE/MERLIN_GOUV_REGISTRE_DECISIONS_REVISIONS_IVIA_MERLIN_V1.md` — ajouter DEC-041
+- `11_PROMPTS/PROD-VALID-002-LIVRABLES_SYNTHESE_V1.md` â€” ce document
+- `00_GOUVERNANCE/MERLIN_GOUV_REGISTRE_DECISIONS_REVISIONS_IVIA_MERLIN_V1.md` â€” ajouter DEC-041
 
-**Optionnel (post-démo)** :
-- `11_PROMPTS/PROD-VALID-003-RESULTATS_MVP.md` — résultats démo finale
-- `00_GOUVERNANCE/MERLIN_GOUV_DECISION_FINANCEMENT_MVP.md` — décision post-démo
+**Optionnel (post-dÃ©mo)** :
+- `11_PROMPTS/PROD-VALID-003-RESULTATS_MVP.md` â€” rÃ©sultats dÃ©mo finale
+- `00_GOUVERNANCE/MERLIN_GOUV_DECISION_FINANCEMENT_MVP.md` â€” dÃ©cision post-dÃ©mo
 
 ---
 
-## Sommaire 1 page — Toute l'histoire
+## Sommaire 1 page â€” Toute l'histoire
 
-| Livrable | Fichier | État | Verdict |
+| Livrable | Fichier | Ã‰tat | Verdict |
 |---|---|---|---|
-| 1 — Cartographie moteur | PROD-VALID-001 | ✅ Créé | Moteur stable, prompt externalisés, tests manquants |
-| 2 — Prompts critiques | Section 2.1-2.4 PROD-VALID-001 | ✅ Créé | 3 prompts actifs + 3 zones fragiles |
-| 3 — Tests existants | LIVRABLE 3 ci-dessus | ✅ Créé | ~7 tests, couverture 5-10%, urgent combler |
-| 4 — Tests manquants | LIVRABLE 4 ci-dessus | ✅ Créé | 7 tests prioritaires, 5-8 jours |
-| 5 — MVP démontrable | LIVRABLE 5 ci-dessus | ✅ Créé | Scénario 8-10 min, 3 points preuve |
-| 6 — Plan 14 jours | LIVRABLE 6 ci-dessus | ✅ Créé | Chronologie semaine 1-2, path critique |
-| 7 — Fichiers à modifier | LIVRABLE 7 ci-dessus | ✅ Créé | 8 fichiers test + 6 modifs backend |
+| 1 â€” Cartographie moteur | PROD-VALID-001 | âœ… CrÃ©Ã© | Moteur stable, prompt externalisÃ©s, tests manquants |
+| 2 â€” Prompts critiques | Section 2.1-2.4 PROD-VALID-001 | âœ… CrÃ©Ã© | 3 prompts actifs + 3 zones fragiles |
+| 3 â€” Tests existants | LIVRABLE 3 ci-dessus | âœ… CrÃ©Ã© | ~7 tests, couverture 5-10%, urgent combler |
+| 4 â€” Tests manquants | LIVRABLE 4 ci-dessus | âœ… CrÃ©Ã© | 7 tests prioritaires, 5-8 jours |
+| 5 â€” MVP dÃ©montrable | LIVRABLE 5 ci-dessus | âœ… CrÃ©Ã© | ScÃ©nario 8-10 min, 3 points preuve |
+| 6 â€” Plan 14 jours | LIVRABLE 6 ci-dessus | âœ… CrÃ©Ã© | Chronologie semaine 1-2, path critique |
+| 7 â€” Fichiers Ã  modifier | LIVRABLE 7 ci-dessus | âœ… CrÃ©Ã© | 8 fichiers test + 6 modifs backend |
 
 ---
 
-## Décision rapide pour fondateur
+## DÃ©cision rapide pour fondateur
 
-**PROPOSÉ** : lancer immédiatement les tests P1 (BLOC 1-2).
+**PROPOSÃ‰** : lancer immÃ©diatement les tests P1 (BLOC 1-2).
 
-**Raison** : le moteur est le cœur. Sans preuve qu'il fonctionne réellement (pas mocké), impossible de demander financement.
+**Raison** : le moteur est le cÅ“ur. Sans preuve qu'il fonctionne rÃ©ellement (pas mockÃ©), impossible de demander financement.
 
-**Effort** : 3-4 jours de dev pour avoir les 4 tests P1 passants + MVP démontrable.
+**Effort** : 3-4 jours de dev pour avoir les 4 tests P1 passants + MVP dÃ©montrable.
 
-**Risque** : si Claude API n'est pas dispo ou trop coûteux, MVP non viable.
+**Risque** : si Claude API n'est pas dispo ou trop coÃ»teux, MVP non viable.
 
 **Recommandation** : Valider avec Anthropic:
 - API key actif
@@ -274,4 +276,4 @@ tests/
 
 | Version | Date | Auteur | Nature |
 |---|---|---|---|
-| 1.0 | 2026-05-05 | fondateur | Création — 7 livrables synthétiques |
+| 1.0 | 2026-05-05 | fondateur | CrÃ©ation â€” 7 livrables synthÃ©tiques |

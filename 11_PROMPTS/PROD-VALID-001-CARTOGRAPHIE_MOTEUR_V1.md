@@ -1,170 +1,172 @@
----
-titre: Plan de validation technique MERLIN/IVIA — Cartographie du moteur
+﻿---
+titre: Plan de validation technique MERLIN/IVIA â€” Cartographie du moteur
 id: PROD-VALID-001
 statut: active
 type: audit
 couche: PROD
-périmètre: moteur backend + prompts critiques + tests
+pÃ©rimÃ¨tre: moteur backend + prompts critiques + tests
 auteur: fondateur
 date: 2026-05-05
 version: 1.0
-dépend_de: [ADR-0002, MERLIN-AUDIT-PROMPTS-V1]
+dÃ©pend_de: [ADR-0002, MERLIN-AUDIT-PROMPTS-V1]
 remplace: []
-arbitrage_requis: non — rapport d'état
+arbitrage_requis: non â€” rapport d'Ã©tat
 source_canonique: 11_PROMPTS/PROD-VALID-001-CARTOGRAPHIE_MOTEUR_V1.md
+test_associe: test_json_schema_validation.py::test_prod001_output
+impact_attendu: "A documenter lors de la prochaine modification"
 ---
 
-# MERLIN/IVIA — Validation technique pour finançabilité
+# MERLIN/IVIA â€” Validation technique pour finanÃ§abilitÃ©
 
-> **Objectif** : cartographier le moteur actuel, identifier ce qui est testable, proposer un MVP démontrable
+> **Objectif** : cartographier le moteur actuel, identifier ce qui est testable, proposer un MVP dÃ©montrable
 > **Audience** : fondateur + financeur technique
 > **Horizon** : fin mai 2026
 > **Date d'audit** : 2026-05-05
 
 ---
 
-## SECTION 1 — Cartographie du moteur actuel
+## SECTION 1 â€” Cartographie du moteur actuel
 
-### 1.1 Structure générale
+### 1.1 Structure gÃ©nÃ©rale
 
-Le moteur IVIA/MERLIN est un backend FastAPI exposant un API REST en `v1` (`/v1/*`). Il gère le flux complet d'une session de santé mentale : de la prise en charge client jusqu'à la génération d'un document structuré.
+Le moteur IVIA/MERLIN est un backend FastAPI exposant un API REST en `v1` (`/v1/*`). Il gÃ¨re le flux complet d'une session de santÃ© mentale : de la prise en charge client jusqu'Ã  la gÃ©nÃ©ration d'un document structurÃ©.
 
-**Stack technique confirmée** :
+**Stack technique confirmÃ©e** :
 - Backend: FastAPI 0.110+ (Python 3.12)
-- BDD: PostgreSQL 15 ou SQLite (développement)
+- BDD: PostgreSQL 15 ou SQLite (dÃ©veloppement)
 - Auth: JWT + bcrypt
 - IA: Anthropic Claude Sonnet 4 (2025-05-14)
-- Temps réel: LiveKit (audio/video)
+- Temps rÃ©el: LiveKit (audio/video)
 - Infrastructure: Nginx 1.27, uvicorn
 
 ### 1.2 Modules de base (app/)
 
-| Module | Rôle | État |
+| Module | RÃ´le | Ã‰tat |
 |---|---|---|
-| `api/routes/` | 15 routeurs REST | ✅ Actif |
-| `models/` | 11 entités Doctrine ORM | ✅ Schémas stables |
-| `schemas/` | Validateurs Pydantic | ✅ Validations strictes |
-| `services/` | Logique métier isolée | ✅ Testable |
-| `ai/` | Pipeline IA Anthropic | ✅ Moteur critique |
-| `db/` | Couche BDD | ✅ Alembic actif |
-| `core/` | Config + authentification | ✅ Robuste |
+| `api/routes/` | 15 routeurs REST | âœ… Actif |
+| `models/` | 11 entitÃ©s Doctrine ORM | âœ… SchÃ©mas stables |
+| `schemas/` | Validateurs Pydantic | âœ… Validations strictes |
+| `services/` | Logique mÃ©tier isolÃ©e | âœ… Testable |
+| `ai/` | Pipeline IA Anthropic | âœ… Moteur critique |
+| `db/` | Couche BDD | âœ… Alembic actif |
+| `core/` | Config + authentification | âœ… Robuste |
 
 ### 1.3 Routes API actives (v1)
 
-**Cœur du flux métier (7 routes critiques)** :
+**CÅ“ur du flux mÃ©tier (7 routes critiques)** :
 
-| Endpoint | Méthode | Rôle | Dépendances |
+| Endpoint | MÃ©thode | RÃ´le | DÃ©pendances |
 |---|---|---|---|
-| `/v1/clients` | POST | Créer/register client public | email + validation |
-| `/v1/intake-requests` | POST | Dépôt demande (entry point) | analyse texte brut (regex) |
-| `/v1/audio-sessions` | POST | Créer session (réserver room) | LiveKit API |
-| `/v1/audio-recordings` | PUT | Clôturer session + récupérer audio | FileSystem ou S3 |
-| `/v1/session-notes` | POST | Générer note (IA + structuration) | **Moteur Anthropic Claude** |
-| `/v1/derived-documents` | POST | Générer document client | Jinja2 + templates |
-| `/v1/audio-sessions/{id}` | GET | Lire état session | BDD |
+| `/v1/clients` | POST | CrÃ©er/register client public | email + validation |
+| `/v1/intake-requests` | POST | DÃ©pÃ´t demande (entry point) | analyse texte brut (regex) |
+| `/v1/audio-sessions` | POST | CrÃ©er session (rÃ©server room) | LiveKit API |
+| `/v1/audio-recordings` | PUT | ClÃ´turer session + rÃ©cupÃ©rer audio | FileSystem ou S3 |
+| `/v1/session-notes` | POST | GÃ©nÃ©rer note (IA + structuration) | **Moteur Anthropic Claude** |
+| `/v1/derived-documents` | POST | GÃ©nÃ©rer document client | Jinja2 + templates |
+| `/v1/audio-sessions/{id}` | GET | Lire Ã©tat session | BDD |
 
 **Routes de supervision (3)** :
-- `POST /v1/session-notes/{id}/validate` — superviseur valide note
-- `GET /v1/sessions` (list, filtrable) — vue opérateur/superviseur
-- `PATCH /v1/sessions/{id}` — mise à jour état de session
+- `POST /v1/session-notes/{id}/validate` â€” superviseur valide note
+- `GET /v1/sessions` (list, filtrable) â€” vue opÃ©rateur/superviseur
+- `PATCH /v1/sessions/{id}` â€” mise Ã  jour Ã©tat de session
 
 **Routes administratives (5)** :
-- `/v1/register` — enregistrement (client + praticien)
-- `/v1/verify-email` — validation email
-- `/v1/auth/login` — JWT
-- `/v1/consents` — gestion consentements
-- `/v1/schedules`, `/v1/praticiens` — référentiels
+- `/v1/register` â€” enregistrement (client + praticien)
+- `/v1/verify-email` â€” validation email
+- `/v1/auth/login` â€” JWT
+- `/v1/consents` â€” gestion consentements
+- `/v1/schedules`, `/v1/praticiens` â€” rÃ©fÃ©rentiels
 
 ### 1.4 Flux critique de la session
 
 ```
 PUBLIC FLOW:
   Client public
-    ↓
-  [POST /clients] → IntakeRequest (via demande texte libre)
-    ↓
-  [Analyse via intake_analysis.py] → risk/gap signals détectés
-    ↓
-  [POST /audio-sessions] → Réservation LiveKit (room name + tokens)
-    ↓
-  [Audio live] → Enregistrement on-the-fly
-    ↓
-  [PUT /audio-recordings?session_id=X] → Clôture + audio récupéré
-    ↓
-  [POST /session-notes] → MOTEUR: Anthropic Claude Sonnet 4
-    ├─ Prompt: SESSION_NOTE_CERCLE_SYSTEM_PROMPT (METH-003)
-    ├─ Contexte: hypothèses + signaux (METH-001, METH-002)
-    └─ Output: JSON structuré (production_note, client_delivery, supervision, research, metadata)
-    ↓
-  [POST /derived-documents] → Document client générés depuis note
-    ↓
-  [Client voit résultat] via `/suivi/documents/[CODE]`
+    â†“
+  [POST /clients] â†’ IntakeRequest (via demande texte libre)
+    â†“
+  [Analyse via intake_analysis.py] â†’ risk/gap signals dÃ©tectÃ©s
+    â†“
+  [POST /audio-sessions] â†’ RÃ©servation LiveKit (room name + tokens)
+    â†“
+  [Audio live] â†’ Enregistrement on-the-fly
+    â†“
+  [PUT /audio-recordings?session_id=X] â†’ ClÃ´ture + audio rÃ©cupÃ©rÃ©
+    â†“
+  [POST /session-notes] â†’ MOTEUR: Anthropic Claude Sonnet 4
+    â”œâ”€ Prompt: SESSION_NOTE_CERCLE_SYSTEM_PROMPT (METH-003)
+    â”œâ”€ Contexte: hypothÃ¨ses + signaux (METH-001, METH-002)
+    â””â”€ Output: JSON structurÃ© (production_note, client_delivery, supervision, research, metadata)
+    â†“
+  [POST /derived-documents] â†’ Document client gÃ©nÃ©rÃ©s depuis note
+    â†“
+  [Client voit rÃ©sultat] via `/suivi/documents/[CODE]`
 
 SUPERVISION FLOW:
   Superviseur voit liste sessions
-    ↓
+    â†“
   [GET /sessions?status=pending_review]
-    ↓
+    â†“
   [Lecture note + flags]
-    ↓
+    â†“
   [POST /session-notes/{id}/validate?decision=approve/reject]
-    ↓
-  Si approve → derived_document passe en `client_visible=true`
-  Si reject → retour opérateur pour correction
+    â†“
+  Si approve â†’ derived_document passe en `client_visible=true`
+  Si reject â†’ retour opÃ©rateur pour correction
 ```
 
 ---
 
-## SECTION 2 — Prompts critiques du moteur
+## SECTION 2 â€” Prompts critiques du moteur
 
-### 2.1 État de l'externalisation (Vague 3 - Phase A)
+### 2.1 Ã‰tat de l'externalisation (Vague 3 - Phase A)
 
-**Tous les prompts critiques sont externalisés** dans `11_PROMPTS/02_METH/` depuis le 2026-05-05.
+**Tous les prompts critiques sont externalisÃ©s** dans `11_PROMPTS/02_METH/` depuis le 2026-05-05.
 
-| ID | Fichier | Rôle | Couche | Modèle | Statut |
+| ID | Fichier | RÃ´le | Couche | ModÃ¨le | Statut |
 |---|---|---|---|---|---|
-| METH-001 | `METH-001-quebec-context-hypotheses-v1.md` | 9 hypothèses contextuelles québécoises | METH | Sonnet 4 | ✅ Actif |
-| METH-002 | `METH-002-quebec-context-signals-v1.md` | 12 signaux contextuels à détecter | METH | Sonnet 4 | ✅ Actif |
-| METH-003 | `METH-003-session-note-cercle-system-prompt-v1.md` | Prompt système principal (la *persona* MERLIN) | METH | Sonnet 4 | ✅ CRITIQUE |
+| METH-001 | `METH-001-quebec-context-hypotheses-v1.md` | 9 hypothÃ¨ses contextuelles quÃ©bÃ©coises | METH | Sonnet 4 | âœ… Actif |
+| METH-002 | `METH-002-quebec-context-signals-v1.md` | 12 signaux contextuels Ã  dÃ©tecter | METH | Sonnet 4 | âœ… Actif |
+| METH-003 | `METH-003-session-note-cercle-system-prompt-v1.md` | Prompt systÃ¨me principal (la *persona* MERLIN) | METH | Sonnet 4 | âœ… CRITIQUE |
 
-### 2.2 Composantes du prompt système METH-003
+### 2.2 Composantes du prompt systÃ¨me METH-003
 
-Le prompt système définit :
-1. **Rôle** : "Tu es MERLIN, moteur documentaire d'IVIA"
-2. **Grille d'analyse** : 4 dimensions (coeur/corps/esprit/etre) + contexte immédiat
+Le prompt systÃ¨me dÃ©finit :
+1. **RÃ´le** : "Tu es MERLIN, moteur documentaire d'IVIA"
+2. **Grille d'analyse** : 4 dimensions (coeur/corps/esprit/etre) + contexte immÃ©diat
 3. **Contraintes absolues** :
-   - ❌ Pas de diagnostic
-   - ❌ Pas de traitement prescrit
-   - ❌ Pas de spéculation métaphysique
-   - ❌ Pas de citation de traditions autochtones (sauf contexte formel)
-4. **Règles de diffusion** : ce qui va en production_note vs client_delivery vs supervision
-5. **Contexte québécois** : hypothèses + signaux (injectés depuis METH-001/002)
-6. **Format de sortie** : schéma JSON strictement défini
+   - âŒ Pas de diagnostic
+   - âŒ Pas de traitement prescrit
+   - âŒ Pas de spÃ©culation mÃ©taphysique
+   - âŒ Pas de citation de traditions autochtones (sauf contexte formel)
+4. **RÃ¨gles de diffusion** : ce qui va en production_note vs client_delivery vs supervision
+5. **Contexte quÃ©bÃ©cois** : hypothÃ¨ses + signaux (injectÃ©s depuis METH-001/002)
+6. **Format de sortie** : schÃ©ma JSON strictement dÃ©fini
 
 ### 2.3 Chargement dynamique via prompt_loader.py
 
 Depuis Vague 3:
-- Les 3 prompts sont chargés depuis le disque via `load_prompt(prompt_id)`
-- Cache mémoire simple (dict) pour éviter relecture disque répétée
+- Les 3 prompts sont chargÃ©s depuis le disque via `load_prompt(prompt_id)`
+- Cache mÃ©moire simple (dict) pour Ã©viter relecture disque rÃ©pÃ©tÃ©e
 - Erreur explicite `PromptNotFoundError` si fichier manquant
-- Modification de prompt = modification fichier Markdown (traçable dans git)
+- Modification de prompt = modification fichier Markdown (traÃ§able dans git)
 
-**Impact fondateur** : les changeants au moteur IA passent désormais par `11_PROMPTS/`, pas par code Python.
+**Impact fondateur** : les changeants au moteur IA passent dÃ©sormais par `11_PROMPTS/`, pas par code Python.
 
-### 2.4 Schéma de sortie du moteur
+### 2.4 SchÃ©ma de sortie du moteur
 
-La note de séance générée par Claude respecte ce schéma JSON :
+La note de sÃ©ance gÃ©nÃ©rÃ©e par Claude respecte ce schÃ©ma JSON :
 
 ```
 {
   "production_note": {
-    "summary_text": "résumé court (~150 mots)",
-    "observations_text": "lecture structurée",
-    "coeur_summary_text": "dimension relationnelle/émotionnelle",
+    "summary_text": "rÃ©sumÃ© court (~150 mots)",
+    "observations_text": "lecture structurÃ©e",
+    "coeur_summary_text": "dimension relationnelle/Ã©motionnelle",
     "corps_summary_text": "dimension physique/somatique",
     "esprit_summary_text": "dimension cognitive/mentale",
     "etre_summary_text": "dimension existentielle/identitaire",
-    "immediate_context_text": "environnement immédiat",
+    "immediate_context_text": "environnement immÃ©diat",
     "context_factors_json": [
       {
         "factor_family_code": "materiel|travail|logement|reseau|institutions|territoire",
@@ -193,12 +195,12 @@ La note de séance générée par Claude respecte ce schéma JSON :
     "vigilance_level_code": "non_urgent|watch|priority|urgent",  // CRITIQUE POUR SECURITE
     "vigilance_summary_text": "justification du niveau",
     "next_step_type_code": "continue_to_structure|clarify_major_point|stabilize_rhythm_and_load|mobilize_relational_resource|orient_to_appropriate_service|propose_follow_up|escalate_immediate_relay",
-    "follow_up_actions_text": "actions concrètes",
-    "next_session_focus_text": "orientation séance suivante"
+    "follow_up_actions_text": "actions concrÃ¨tes",
+    "next_session_focus_text": "orientation sÃ©ance suivante"
   },
   "client_delivery": {
     "client_visible_recommended": true,
-    "client_facing_summary_text": "formulé simple et rassurant pour client"
+    "client_facing_summary_text": "formulÃ© simple et rassurant pour client"
   },
   "supervision": {
     "supervision_summary_text": "alertes/doutes interne",
@@ -220,272 +222,272 @@ La note de séance générée par Claude respecte ce schéma JSON :
 }
 ```
 
-**Points-clés de ce schéma** :
-- ✅ `vigilance_level_code` = signal de sécurité immédiat (urgent → escalade)
-- ✅ `context_hypotheses_json` = grille québécoise appliquée (mais jamais en client_delivery)
-- ✅ `supervision` = informations cachées au client
-- ✅ `metadata` = traçabilité (version prompt + modèle)
+**Points-clÃ©s de ce schÃ©ma** :
+- âœ… `vigilance_level_code` = signal de sÃ©curitÃ© immÃ©diat (urgent â†’ escalade)
+- âœ… `context_hypotheses_json` = grille quÃ©bÃ©coise appliquÃ©e (mais jamais en client_delivery)
+- âœ… `supervision` = informations cachÃ©es au client
+- âœ… `metadata` = traÃ§abilitÃ© (version prompt + modÃ¨le)
 
 ---
 
-## SECTION 3 — Inventaire des tests existants
+## SECTION 3 â€” Inventaire des tests existants
 
 ### 3.1 Fichiers de test (5 fichiers, ~400 lignes de code)
 
-| Fichier | Nb lignes | Type | État |
+| Fichier | Nb lignes | Type | Ã‰tat |
 |---|---|---|---|
-| `test_api_smoke.py` | 150+ | Smoke test (flux complet) | ✅ Exécutable |
-| `test_prompt_loader.py` | 60+ | Unitaire (prompt loader) | ✅ 3 tests passants |
-| `test_register.py` | 20+ | Script manual (registration) | ⚠️ Manuel |
-| `test_register_https.py` | 20+ | Script manual (registration HTTPS) | ⚠️ Manuel |
-| `check_routes.py` | 30+ | Énumération routes | ⚠️ Audit uniquement |
+| `test_api_smoke.py` | 150+ | Smoke test (flux complet) | âœ… ExÃ©cutable |
+| `test_prompt_loader.py` | 60+ | Unitaire (prompt loader) | âœ… 3 tests passants |
+| `test_register.py` | 20+ | Script manual (registration) | âš ï¸ Manuel |
+| `test_register_https.py` | 20+ | Script manual (registration HTTPS) | âš ï¸ Manuel |
+| `check_routes.py` | 30+ | Ã‰numÃ©ration routes | âš ï¸ Audit uniquement |
 
 ### 3.2 Tests actifs par domaine
 
 **Moteur IA** :
-- ❌ **AUCUN TEST** sur la génération de note de séance (generate_session_note_from_transcript)
-- ❌ **AUCUN TEST** sur le parsage JSON ou validation schéma
-- ❌ **AUCUN TEST** sur l'extraction de signaux risque
+- âŒ **AUCUN TEST** sur la gÃ©nÃ©ration de note de sÃ©ance (generate_session_note_from_transcript)
+- âŒ **AUCUN TEST** sur le parsage JSON ou validation schÃ©ma
+- âŒ **AUCUN TEST** sur l'extraction de signaux risque
 
-**Flux métier** :
-- ⚠️ `test_api_smoke.py` teste le flux complet MAIS moque la génération IA (AsyncMock)
-- ❌ **AUCUN TEST** réel sur génération note
-- ✅ Tests de registration/login possibles (HTTP call ou pytest)
+**Flux mÃ©tier** :
+- âš ï¸ `test_api_smoke.py` teste le flux complet MAIS moque la gÃ©nÃ©ration IA (AsyncMock)
+- âŒ **AUCUN TEST** rÃ©el sur gÃ©nÃ©ration note
+- âœ… Tests de registration/login possibles (HTTP call ou pytest)
 
 **Prompts** :
-- ✅ `test_prompt_loader.py` : 3 tests unitaires (cache, erreur, chargement)
-- ❌ **AUCUN TEST** sur contenu prompt (logique MERLIN)
-- ❌ **AUCUN TEST** sur injection dynamique hypothèses/signaux
+- âœ… `test_prompt_loader.py` : 3 tests unitaires (cache, erreur, chargement)
+- âŒ **AUCUN TEST** sur contenu prompt (logique MERLIN)
+- âŒ **AUCUN TEST** sur injection dynamique hypothÃ¨ses/signaux
 
-**Base de données** :
-- ⚠️ Tests BDD partiels (smoke test crée/lit objets)
-- ❌ **AUCUN TEST** sur migrations Alembic (20260504_0017 = dernière)
-- ❌ **AUCUN TEST** sur contraintes d'intégrité
+**Base de donnÃ©es** :
+- âš ï¸ Tests BDD partiels (smoke test crÃ©e/lit objets)
+- âŒ **AUCUN TEST** sur migrations Alembic (20260504_0017 = derniÃ¨re)
+- âŒ **AUCUN TEST** sur contraintes d'intÃ©gritÃ©
 
-### 3.3 Couverture de test estimée
+### 3.3 Couverture de test estimÃ©e
 
-| Composante | Couverture | Priorité |
+| Composante | Couverture | PrioritÃ© |
 |---|---|---|
 | API routes (CRUD) | ~20% | P2 |
-| Moteur IA (Claude) | ~0% (moqué) | **P1** |
+| Moteur IA (Claude) | ~0% (moquÃ©) | **P1** |
 | Analyse intake (regex) | 0% | P2 |
 | Document generation | 0% | P2 |
 | Authentification | ~10% | P2 |
 | Prompts critiques | ~5% (loader) | **P1** |
-| LiveKit integration | 0% (dépend externe) | P3 |
+| LiveKit integration | 0% (dÃ©pend externe) | P3 |
 
 ---
 
-## SECTION 4 — Tests manquants prioritaires
+## SECTION 4 â€” Tests manquants prioritaires
 
-### 4.1 BLOC 1 — Tests moteur IA (URGENT — P1)
+### 4.1 BLOC 1 â€” Tests moteur IA (URGENT â€” P1)
 
-**Raison** : Le moteur est le cœur du produit. Aucun test sur la génération réelle.
+**Raison** : Le moteur est le cÅ“ur du produit. Aucun test sur la gÃ©nÃ©ration rÃ©elle.
 
-**Tests à créer** :
-1. `test_session_note_generation_real_claude.py` (intégration avec API Anthropic)
-   - Fixture: transcript de test (30-50 mots, langage naturel français)
-   - Appel réel à Claude Sonnet 4
-   - Assertion: réponse est JSON valide
-   - Assertion: schéma respecté (structure + codes énumérés)
-   - Assertion: vigilance_level_code ∈ {non_urgent, watch, priority, urgent}
+**Tests Ã  crÃ©er** :
+1. `test_session_note_generation_real_claude.py` (intÃ©gration avec API Anthropic)
+   - Fixture: transcript de test (30-50 mots, langage naturel franÃ§ais)
+   - Appel rÃ©el Ã  Claude Sonnet 4
+   - Assertion: rÃ©ponse est JSON valide
+   - Assertion: schÃ©ma respectÃ© (structure + codes Ã©numÃ©rÃ©s)
+   - Assertion: vigilance_level_code âˆˆ {non_urgent, watch, priority, urgent}
 
 2. `test_prompt_injection.py` (validation prompts METH-001/002/003)
-   - Assertion: les 9 hypothèses sont présentes dans le prompt système
-   - Assertion: les 12 signaux sont présents
-   - Assertion: le prompt système ne contient pas de caractères invalides
+   - Assertion: les 9 hypothÃ¨ses sont prÃ©sentes dans le prompt systÃ¨me
+   - Assertion: les 12 signaux sont prÃ©sents
+   - Assertion: le prompt systÃ¨me ne contient pas de caractÃ¨res invalides
 
-3. `test_json_schema_validation.py` (schéma stricte)
-   - Assertion: réponse Claude peut être parsée comme JSON
-   - Assertion: champs obligatoires présents
-   - Assertion: codes énumérés valides (vigilance, tensions, hypothesis_code, etc.)
+3. `test_json_schema_validation.py` (schÃ©ma stricte)
+   - Assertion: rÃ©ponse Claude peut Ãªtre parsÃ©e comme JSON
+   - Assertion: champs obligatoires prÃ©sents
+   - Assertion: codes Ã©numÃ©rÃ©s valides (vigilance, tensions, hypothesis_code, etc.)
    - Assertion: types corrects (array vs object vs string)
 
-**Estimé** : 3 tests, ~150 lignes, 2-3 jours de travail (si Claude API disponible)
+**EstimÃ©** : 3 tests, ~150 lignes, 2-3 jours de travail (si Claude API disponible)
 
-### 4.2 BLOC 2 — Tests analyse intake (P1)
+### 4.2 BLOC 2 â€” Tests analyse intake (P1)
 
-**Raison** : Le triage des risques au point d'entrée est critique pour la sécurité.
+**Raison** : Le triage des risques au point d'entrÃ©e est critique pour la sÃ©curitÃ©.
 
-**Tests à créer** :
+**Tests Ã  crÃ©er** :
 1. `test_intake_analysis_risk_patterns.py`
    - Test chaque pattern regex: suicide_explicite, automutilation, fin_de_vie, etc.
-   - Assertion: "je veux me suicider" → détecte "suicide_explicite" avec niveau "urgent"
-   - Assertion: "c'est pas grave" → ne détecte aucun risque
-   - Assertion: cas limites (négation, contexte) passent
+   - Assertion: "je veux me suicider" â†’ dÃ©tecte "suicide_explicite" avec niveau "urgent"
+   - Assertion: "c'est pas grave" â†’ ne dÃ©tecte aucun risque
+   - Assertion: cas limites (nÃ©gation, contexte) passent
 
 2. `test_intake_analysis_gap_signals.py`
-   - Assertion: texte vide → détecte "gap_empty"
-   - Assertion: texte très court (<10 mots) → détecte "gap_too_short"
+   - Assertion: texte vide â†’ dÃ©tecte "gap_empty"
+   - Assertion: texte trÃ¨s court (<10 mots) â†’ dÃ©tecte "gap_too_short"
 
-**Estimé** : 2 tests, ~100 lignes, 1-2 jours
+**EstimÃ©** : 2 tests, ~100 lignes, 1-2 jours
 
-### 4.3 BLOC 3 — Tests bout-à-bout real (P2)
+### 4.3 BLOC 3 â€” Tests bout-Ã -bout real (P2)
 
-**Raison** : Vérifier que le flux complet fonctionne avec de vrais appels IA.
+**Raison** : VÃ©rifier que le flux complet fonctionne avec de vrais appels IA.
 
-**Tests à créer** :
-1. `test_e2e_session_flow_real.py` (≠ smoke test qui mocke tout)
-   - Créer client public
-   - Créer intake request (texte libre)
-   - Créer audio session
-   - Générer note **réelle** depuis Claude
-   - Générer document client
-   - Vérifier état final de tous les objets BDD
+**Tests Ã  crÃ©er** :
+1. `test_e2e_session_flow_real.py` (â‰  smoke test qui mocke tout)
+   - CrÃ©er client public
+   - CrÃ©er intake request (texte libre)
+   - CrÃ©er audio session
+   - GÃ©nÃ©rer note **rÃ©elle** depuis Claude
+   - GÃ©nÃ©rer document client
+   - VÃ©rifier Ã©tat final de tous les objets BDD
 
-**Estimé** : 1 test, ~100 lignes, 1 jour (si API disponible)
+**EstimÃ©** : 1 test, ~100 lignes, 1 jour (si API disponible)
 
-### 4.4 BLOC 4 — Tests superviseur (P2)
+### 4.4 BLOC 4 â€” Tests superviseur (P2)
 
 **Raison** : Validation et publication document client sont critiques.
 
-**Tests à créer** :
+**Tests Ã  crÃ©er** :
 1. `test_supervisor_validation_flow.py`
-   - Supervisor valide note → derived_document passe en `client_visible=true`
-   - Supervisor rejette note → retour en attente d'opérateur
-   - Client ne peut pas voir document tant que superviseur n'a pas validé
+   - Supervisor valide note â†’ derived_document passe en `client_visible=true`
+   - Supervisor rejette note â†’ retour en attente d'opÃ©rateur
+   - Client ne peut pas voir document tant que superviseur n'a pas validÃ©
 
-**Estimé** : 1 test, ~80 lignes, 1-2 jours
+**EstimÃ©** : 1 test, ~80 lignes, 1-2 jours
 
-### 4.5 Récapitulatif tests manquants
+### 4.5 RÃ©capitulatif tests manquants
 
-| BLOC | Nom | Nb tests | Lignes | Délai |
+| BLOC | Nom | Nb tests | Lignes | DÃ©lai |
 |---|---|---|---|---|
 | 1 | Moteur IA | 3 | ~150 | 2-3j |
 | 2 | Analyse intake | 2 | ~100 | 1-2j |
-| 3 | E2E réel | 1 | ~100 | 1j |
+| 3 | E2E rÃ©el | 1 | ~100 | 1j |
 | 4 | Supervision | 1 | ~80 | 1-2j |
-| — | **TOTAL** | **7 tests** | **~430 lignes** | **5-8 jours** |
+| â€” | **TOTAL** | **7 tests** | **~430 lignes** | **5-8 jours** |
 
 ---
 
-## SECTION 5 — Zones fragiles pour usage sensible
+## SECTION 5 â€” Zones fragiles pour usage sensible
 
-### 5.1 Points de risque immédiat
+### 5.1 Points de risque immÃ©diat
 
-| Risque | Sévérité | Mitigation |
+| Risque | SÃ©vÃ©ritÃ© | Mitigation |
 |---|---|---|
-| Moteur IA non testé réellement | **CRITIQUE** | Créer BLOC 1 tests avant MVP |
-| Pas de validation schéma output Claude | **CRITIQUE** | Ajouter pydantic model ou jsonschema |
-| Analyse intake régex fragile (cas limites) | **ÉLEVÉ** | Écrire tests BLOC 2 |
-| Pas de contrôle qualité note avant diffusion client | **ÉLEVÉ** | Superviseur valide (implémenté mais pas testé) |
-| Prompts modifiables sans versionning immédiat | **MOYEN** | prompt_loader sérialise OK, mais git-workflow à respecter |
-| Data sensibilité classe par défaut = HIGH | **MOYEN** | OK pour MVP, à affiner selon RGPD |
+| Moteur IA non testÃ© rÃ©ellement | **CRITIQUE** | CrÃ©er BLOC 1 tests avant MVP |
+| Pas de validation schÃ©ma output Claude | **CRITIQUE** | Ajouter pydantic model ou jsonschema |
+| Analyse intake rÃ©gex fragile (cas limites) | **Ã‰LEVÃ‰** | Ã‰crire tests BLOC 2 |
+| Pas de contrÃ´le qualitÃ© note avant diffusion client | **Ã‰LEVÃ‰** | Superviseur valide (implÃ©mentÃ© mais pas testÃ©) |
+| Prompts modifiables sans versionning immÃ©diat | **MOYEN** | prompt_loader sÃ©rialise OK, mais git-workflow Ã  respecter |
+| Data sensibilitÃ© classe par dÃ©faut = HIGH | **MOYEN** | OK pour MVP, Ã  affiner selon RGPD |
 
 ### 5.2 Points stables
 
-✅ **Authentification** : JWT + bcrypt, standard FastAPI
-✅ **ORM** : SQLAlchemy bien structurée
-✅ **Routes CRUD** : patterns cohérents
-✅ **Prompts externalisés** : versioning git en place
-✅ **LiveKit intégration** : abstraite (pas critique pour MVP texte)
+âœ… **Authentification** : JWT + bcrypt, standard FastAPI
+âœ… **ORM** : SQLAlchemy bien structurÃ©e
+âœ… **Routes CRUD** : patterns cohÃ©rents
+âœ… **Prompts externalisÃ©s** : versioning git en place
+âœ… **LiveKit intÃ©gration** : abstraite (pas critique pour MVP texte)
 
 ---
 
-## SECTION 6 — MVP démontrable (proposition 1 page)
+## SECTION 6 â€” MVP dÃ©montrable (proposition 1 page)
 
 ### 6.1 Scope du MVP
 
-**Objectif** : montrer que le moteur marche d'bout en bout, de la demande client au rapport structuré.
+**Objectif** : montrer que le moteur marche d'bout en bout, de la demande client au rapport structurÃ©.
 
 **Horizon** : 14 jours (deadline fin mai avant changements structurels)
 
 **Audience** : financeur technique + praticiens de test
 
-### 6.2 Démonstration type (scénario de 10 min)
+### 6.2 DÃ©monstration type (scÃ©nario de 10 min)
 
 ```
 SCENARIO DEMO:
 
-[1] Financeur accède au portail client (frontend).
-    ↓
-[2] "Je suis fatigué, j'ai mal au dos, j'ai peur d'aller au travail"
+[1] Financeur accÃ¨de au portail client (frontend).
+    â†“
+[2] "Je suis fatiguÃ©, j'ai mal au dos, j'ai peur d'aller au travail"
     [POST /v1/intake-requests]
-    ✅ Système détecte: fatigue + peur potentielle (priority signal)
-    ↓
-[3] Financeur réserve session audio.
-    [POST /v1/audio-sessions → LiveKit room créée]
-    ✅ Lien direct vers studio audio
-    ↓
-[4] Financeur joue rôle client.
-    [Audio live 3-5 min] → Transcription fournie
-    ↓
-[5] Opérateur clôture session.
-    [PUT /v1/audio-recordings → transcription récupérée]
-    ✅ Affichage: "génération en cours"
-    ↓
+    âœ… SystÃ¨me dÃ©tecte: fatigue + peur potentielle (priority signal)
+    â†“
+[3] Financeur rÃ©serve session audio.
+    [POST /v1/audio-sessions â†’ LiveKit room crÃ©Ã©e]
+    âœ… Lien direct vers studio audio
+    â†“
+[4] Financeur joue rÃ´le client.
+    [Audio live 3-5 min] â†’ Transcription fournie
+    â†“
+[5] OpÃ©rateur clÃ´ture session.
+    [PUT /v1/audio-recordings â†’ transcription rÃ©cupÃ©rÃ©e]
+    âœ… Affichage: "gÃ©nÃ©ration en cours"
+    â†“
 [6] MOTEUR RUNS.
     [POST /v1/session-notes]
     Claude Sonnet 4 analyse la transcription
-    ✅ Applique grille Cercle V1 (coeur/corps/esprit/etre)
-    ✅ Détecte signaux contexte québécois
-    ✅ Produit vigilance_level + tensions + hypothèses
-    ↓
+    âœ… Applique grille Cercle V1 (coeur/corps/esprit/etre)
+    âœ… DÃ©tecte signaux contexte quÃ©bÃ©cois
+    âœ… Produit vigilance_level + tensions + hypothÃ¨ses
+    â†“
 [7] Superviseur valide.
-    [GET note] → voit production_note + supervision section
-    ✅ "flags de confiance basse" pointées
+    [GET note] â†’ voit production_note + supervision section
+    âœ… "flags de confiance basse" pointÃ©es
     [POST /session-notes/{id}/validate?decision=approve]
-    ↓
+    â†“
 [8] AFFICHAGE CLIENT.
     [GET /suivi/documents/{code}]
-    ✅ Client voit: client_facing_summary_text (formulé simple)
-    ✅ Document PDF généré avec synthèse de séance
-    ↓
+    âœ… Client voit: client_facing_summary_text (formulÃ© simple)
+    âœ… Document PDF gÃ©nÃ©rÃ© avec synthÃ¨se de sÃ©ance
+    â†“
 [9] Financeur voit:
-    ✅ Transcript → Note structurée (4 dimensions)
-    ✅ Alertes de sécurité détectées (vigilance_level)
-    ✅ Document formaté prêt pour client
+    âœ… Transcript â†’ Note structurÃ©e (4 dimensions)
+    âœ… Alertes de sÃ©curitÃ© dÃ©tectÃ©es (vigilance_level)
+    âœ… Document formatÃ© prÃªt pour client
 ```
 
 ### 6.3 Points de preuve pour financeur
 
-1. **Moteur IA fonctionnel** : la note est générée en <3s, schéma valide ✅
-2. **Grille Cercle V1 appliquée** : 4 dimensions + tensions + hypothèses ✅
-3. **Contextualisation québécoise** : hypothèses/signaux intégrés ✅
-4. **Sécurité** : vigilance_level détecté (urgent si besoin) ✅
-5. **Traçabilité** : metadata inclut version prompt et modèle ✅
-6. **Supervision** : superviseur peut valider/rejeter ✅
-7. **Diffusion client** : document structuré (pas brut) ✅
+1. **Moteur IA fonctionnel** : la note est gÃ©nÃ©rÃ©e en <3s, schÃ©ma valide âœ…
+2. **Grille Cercle V1 appliquÃ©e** : 4 dimensions + tensions + hypothÃ¨ses âœ…
+3. **Contextualisation quÃ©bÃ©coise** : hypothÃ¨ses/signaux intÃ©grÃ©s âœ…
+4. **SÃ©curitÃ©** : vigilance_level dÃ©tectÃ© (urgent si besoin) âœ…
+5. **TraÃ§abilitÃ©** : metadata inclut version prompt et modÃ¨le âœ…
+6. **Supervision** : superviseur peut valider/rejeter âœ…
+7. **Diffusion client** : document structurÃ© (pas brut) âœ…
 
-### 6.4 Préalables technique pour MVP
+### 6.4 PrÃ©alables technique pour MVP
 
-**À avoir en place avant démo** :
+**Ã€ avoir en place avant dÃ©mo** :
 - [ ] Anthropic API key valide (budget suffisant)
 - [ ] Tests BLOC 1 (moteur IA) passants
 - [ ] Tests BLOC 2 (analyse intake) passants
 - [ ] Frontend accessible (ou curl-based demo)
-- [ ] Données de test anonymisées/fictives
+- [ ] DonnÃ©es de test anonymisÃ©es/fictives
 - [ ] Logs propres (pas de leak data sensible)
 
 ---
 
-## SECTION 7 — Plan de travail 14 jours
+## SECTION 7 â€” Plan de travail 14 jours
 
-### 7.1 Chronologie proposée
+### 7.1 Chronologie proposÃ©e
 
 **Semaine 1 (jours 1-7)**
 
-| Jour | Tâche | Livrable | Durée |
+| Jour | TÃ¢che | Livrable | DurÃ©e |
 |---|---|---|---|
-| 1 | Tests BLOC 1.1 (génération réelle) | `test_session_note_generation_real_claude.py` | 1j |
-| 2 | Tests BLOC 1.2 (validation schéma) | `test_json_schema_validation.py` | 1j |
+| 1 | Tests BLOC 1.1 (gÃ©nÃ©ration rÃ©elle) | `test_session_note_generation_real_claude.py` | 1j |
+| 2 | Tests BLOC 1.2 (validation schÃ©ma) | `test_json_schema_validation.py` | 1j |
 | 3 | Tests BLOC 1.3 (injection prompts) | `test_prompt_injection.py` | 0,5j |
 | 4 | Tests BLOC 2 (analyse intake) | `test_intake_analysis_*.py` | 1-2j |
-| 5 | Intégration tests + fixtures | All tests passing | 1j |
-| 6-7 | Tests BLOC 3 (E2E réel) | `test_e2e_session_flow_real.py` | 1-2j |
+| 5 | IntÃ©gration tests + fixtures | All tests passing | 1j |
+| 6-7 | Tests BLOC 3 (E2E rÃ©el) | `test_e2e_session_flow_real.py` | 1-2j |
 
 **Semaine 2 (jours 8-14)**
 
-| Jour | Tâche | Livrable | Durée |
+| Jour | TÃ¢che | Livrable | DurÃ©e |
 |---|---|---|---|
 | 8 | Tests BLOC 4 (superviseur) | `test_supervisor_validation_flow.py` | 1-2j |
-| 9-10 | Validation schéma Claude (Pydantic) | Modèle SessionNoteOutput | 2j |
-| 11-12 | Préparation démo + fixtures de test | Données anonymisées + scripts | 2j |
-| 13-14 | Run de démo complet | MVP démontrable | 2j |
+| 9-10 | Validation schÃ©ma Claude (Pydantic) | ModÃ¨le SessionNoteOutput | 2j |
+| 11-12 | PrÃ©paration dÃ©mo + fixtures de test | DonnÃ©es anonymisÃ©es + scripts | 2j |
+| 13-14 | Run de dÃ©mo complet | MVP dÃ©montrable | 2j |
 
-**Heures estimées** : 12-15 jours (10-12 jours si tests partiels OK)
+**Heures estimÃ©es** : 12-15 jours (10-12 jours si tests partiels OK)
 
-### 7.2 Dépendances critiques
+### 7.2 DÃ©pendances critiques
 
 - Anthropic API key fonctionnelle + budget
 - Pas de refactor architectural (utiliser code existant)
@@ -493,40 +495,40 @@ SCENARIO DEMO:
 
 ---
 
-## SECTION 8 — Fichiers à modifier (liste exacte, sans modification)
+## SECTION 8 â€” Fichiers Ã  modifier (liste exacte, sans modification)
 
-### 8.1 Fichiers à CRÉER (nouveaux tests)
+### 8.1 Fichiers Ã  CRÃ‰ER (nouveaux tests)
 
-**Dossier tests/** (à créer/ajouter) :
+**Dossier tests/** (Ã  crÃ©er/ajouter) :
 
 ```
 tests/
-├── test_session_note_generation_real_claude.py      [CREER]
-├── test_json_schema_validation.py                   [CREER]
-├── test_prompt_injection.py                         [CREER]
-├── test_intake_analysis_risk_patterns.py            [CREER]
-├── test_intake_analysis_gap_signals.py              [CREER]
-├── test_e2e_session_flow_real.py                    [CREER]
-├── test_supervisor_validation_flow.py               [CREER]
-├── test_prompt_loader.py                            [MODIFIER — ajouter tests]
-└── conftest.py                                      [CREER — fixtures communes]
+â”œâ”€â”€ test_session_note_generation_real_claude.py      [CREER]
+â”œâ”€â”€ test_json_schema_validation.py                   [CREER]
+â”œâ”€â”€ test_prompt_injection.py                         [CREER]
+â”œâ”€â”€ test_intake_analysis_risk_patterns.py            [CREER]
+â”œâ”€â”€ test_intake_analysis_gap_signals.py              [CREER]
+â”œâ”€â”€ test_e2e_session_flow_real.py                    [CREER]
+â”œâ”€â”€ test_supervisor_validation_flow.py               [CREER]
+â”œâ”€â”€ test_prompt_loader.py                            [MODIFIER â€” ajouter tests]
+â””â”€â”€ conftest.py                                      [CREER â€” fixtures communes]
 ```
 
-### 8.2 Fichiers à MODIFIER (code existant)
+### 8.2 Fichiers Ã  MODIFIER (code existant)
 
 **Backend IA** :
 - `app/ai/anthropic_session_note_pipeline.py`
   - Ajouter validation Pydantic/jsonschema output Claude
-  - Ajouter logging structuré de requête/réponse
+  - Ajouter logging structurÃ© de requÃªte/rÃ©ponse
 
 - `app/ai/prompts/session_note_cercle_v1.py`
-  - Ajouter docstring sur les 3 prompts chargés
-  - Pas de logique métier à changer
+  - Ajouter docstring sur les 3 prompts chargÃ©s
+  - Pas de logique mÃ©tier Ã  changer
 
 **Services** :
 - `app/services/intake_analysis.py`
-  - Ajouter logging des patterns détectés
-  - Externaliser patterns regex en constantes nommées (lisibilité)
+  - Ajouter logging des patterns dÃ©tectÃ©s
+  - Externaliser patterns regex en constantes nommÃ©es (lisibilitÃ©)
 
 - `app/services/session_documents.py`
   - Validation que client_delivery ne contient pas supervision
@@ -534,79 +536,79 @@ tests/
 
 **Routes** :
 - `app/api/routes/session_notes.py`
-  - Ajouter endpoint pour vérifier intégrité d'une note (schema check)
+  - Ajouter endpoint pour vÃ©rifier intÃ©gritÃ© d'une note (schema check)
   - Ajouter logging de la validation superviseur
 
 **Gouvernance** :
 - `11_PROMPTS/AUDIT_PROMPTS_EXISTANTS_V1.md`
-  - Ajouter section "État des tests" (mise à jour post-BLOC-1-4)
+  - Ajouter section "Ã‰tat des tests" (mise Ã  jour post-BLOC-1-4)
 
 - `00_GOUVERNANCE/MERLIN_GOUV_REGISTRE_DECISIONS_REVISIONS_IVIA_MERLIN_V1.md`
-  - Ajouter DEC-041 (décision sur plan de tests)
+  - Ajouter DEC-041 (dÃ©cision sur plan de tests)
 
-### 8.3 Fichiers à CRÉER (documentation)
+### 8.3 Fichiers Ã  CRÃ‰ER (documentation)
 
 - `10_backend_merlin_api/TESTING_STRATEGY.md`
   - Approche de test du moteur
-  - Fixtures et données de test anonymisées
+  - Fixtures et donnÃ©es de test anonymisÃ©es
   - Checklist avant prod
 
 - `11_PROMPTS/PROD-VALID-002-TEST_PLAN.md`
-  - Détail exécutif des 7 tests
+  - DÃ©tail exÃ©cutif des 7 tests
   - Cas limites couverts
-  - Dépendances externes
+  - DÃ©pendances externes
 
 ---
 
-## SECTION 9 — Recommandations pour finançabilité
+## SECTION 9 â€” Recommandations pour finanÃ§abilitÃ©
 
 ### 9.1 Preuves techniques requises (pour pitch)
 
-✅ **OK pour montrer dès maintenant** :
+âœ… **OK pour montrer dÃ¨s maintenant** :
 1. API routes fonctionnent (CRUD)
 2. Authentification robuste
-3. Prompts externalisés et versionnés
-4. Supervision workflow implémenté (logique)
-5. Transcription → schéma respecté (structure)
+3. Prompts externalisÃ©s et versionnÃ©s
+4. Supervision workflow implÃ©mentÃ© (logique)
+5. Transcription â†’ schÃ©ma respectÃ© (structure)
 
-⚠️ **À montrer après tests BLOC 1** :
-1. Moteur IA génère notes réelles (pas mock)
-2. Schéma JSON valide systématiquement
-3. Vigilance level correctement détecté
-4. Contexte québécois appliqué
+âš ï¸ **Ã€ montrer aprÃ¨s tests BLOC 1** :
+1. Moteur IA gÃ©nÃ¨re notes rÃ©elles (pas mock)
+2. SchÃ©ma JSON valide systÃ©matiquement
+3. Vigilance level correctement dÃ©tectÃ©
+4. Contexte quÃ©bÃ©cois appliquÃ©
 
 ### 9.2 Risques pour investisseur technique
 
 | Risque | Mitigation |
 |---|---|
-| "Le moteur IA marche-t-il réellement ?" | **Tests BLOC 1 + démo live** |
-| "Combien coûte Claude API en volume ?" | Estimation coût/note + test 100 notes |
-| "Peut-on garantir sécurité (vigilance)?" | Tests BLOC 2 + supervision workflow |
+| "Le moteur IA marche-t-il rÃ©ellement ?" | **Tests BLOC 1 + dÃ©mo live** |
+| "Combien coÃ»te Claude API en volume ?" | Estimation coÃ»t/note + test 100 notes |
+| "Peut-on garantir sÃ©curitÃ© (vigilance)?" | Tests BLOC 2 + supervision workflow |
 | "Peut-on passer en production rapidement ?" | Alembic + CI/CD en place, juste besoin tests |
 | "Quels sont les points fragiles ?" | Section 5.1 ce document |
 
-### 9.3 Prochaines étapes post-MVP (priorité)
+### 9.3 Prochaines Ã©tapes post-MVP (prioritÃ©)
 
-1. **Vague 4** — Migration prompts héritées (01_session → 02_METH) + tests
-2. **Vague 5** — Normalisation arborescence (`01_FONDATEUR` + `01_FONDEMENTS`)
-3. **Vague 6** — API productionelle (auth raffinage, rate limiting, monitoring)
-4. **Vague 7** — UX praticien (interface validation, workflows)
+1. **Vague 4** â€” Migration prompts hÃ©ritÃ©es (01_session â†’ 02_METH) + tests
+2. **Vague 5** â€” Normalisation arborescence (`01_FONDATEUR` + `01_FONDEMENTS`)
+3. **Vague 6** â€” API productionelle (auth raffinage, rate limiting, monitoring)
+4. **Vague 7** â€” UX praticien (interface validation, workflows)
 
 ---
 
-## SECTION 10 — Historique de révisions
+## SECTION 10 â€” Historique de rÃ©visions
 
 | Version | Date | Auteur | Nature |
 |---|---|---|---|
-| 1.0 | 2026-05-05 | fondateur | Création — audit finançabilité |
+| 1.0 | 2026-05-05 | fondateur | CrÃ©ation â€” audit finanÃ§abilitÃ© |
 
 ---
 
-## Annexe A — Dépendances critiques
+## Annexe A â€” DÃ©pendances critiques
 
 **APIs externes** :
-- Anthropic Claude Sonnet 4: latence ~2-5s/note, coût ~$0.02-0.05/note
-- LiveKit (audio): optionnel pour MVP, peut être mocké
+- Anthropic Claude Sonnet 4: latence ~2-5s/note, coÃ»t ~$0.02-0.05/note
+- LiveKit (audio): optionnel pour MVP, peut Ãªtre mockÃ©
 - Email (SMTP): pour registration/verification
 
 **Infrastructure** :
@@ -619,13 +621,13 @@ tests/
 
 ---
 
-## Annexe B — Checklist de déploiement MVP
+## Annexe B â€” Checklist de dÃ©ploiement MVP
 
 - [ ] Tests BLOC 1 passants (moteur IA)
 - [ ] Tests BLOC 2 passants (analyse intake)
 - [ ] Logs pas de leak data sensible
 - [ ] Anthropic key valide + budget
-- [ ] Fixtures de test anonymisées
+- [ ] Fixtures de test anonymisÃ©es
 - [ ] Frontend accessible (curl OK)
-- [ ] Démo scénario validée
+- [ ] DÃ©mo scÃ©nario validÃ©e
 - [ ] Docs pour financeur
