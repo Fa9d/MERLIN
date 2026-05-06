@@ -1,68 +1,110 @@
-# MERLIN_GRILLE_GONOGO_PROMPT_V1
+---
+id: GRILLE-GONOGO-001
+version: V1
+date: 2026-05-06
+statut: actif
+auteur: David Phaneuf
+decision: DEC-040
+test_associe: ROD-TEST-001-A
+---
 
-**Version:** 1.0  
-**Statut:** ACTIF  
-**Date:** 2026-05-06  
-**Décision associée:** DEC-039  
-**Usage :** Gate de merge — à compléter pour tout PR modifiant un fichier prompt  
+# MERLIN — Grille Go/No-Go prompt V1
+
+> **Merge gate obligatoire.** Tout prompt soumis en PR doit passer cette grille.
+> **Un seul ❌ bloque le merge, sans exception.**
+> Check 10 doit être validé par un humain (praticien ou superviseur) — jamais IA-sur-IA.
 
 ---
 
-## Grille Go/No-Go — 10 checks obligatoires
+## Les 10 checks
 
-À cocher **avant tout merge** sur `master` impliquant un fichier prompt (METH, PROD, OPER, SYS).
-
-Un seul ❌ = **merge bloqué jusqu'à correction**.
-
----
-
-| # | Check | Critère de passage | Go ✅ / No-Go ❌ |
+| # | Check | Critère | Automatisable |
 |---|---|---|---|
-| 1 | **Frontmatter complet** | Les champs `id`, `version`, `layer`, `trigger`, `surface`, `status`, `date`, `test_associe` sont tous présents | |
-| 2 | **Version incrémentée** | Le numéro de version est plus élevé que la version précédente sur `master` | |
-| 3 | **Impact documenté** | Le champ `impact_attendu` décrit ce que ce changement est censé améliorer | |
-| 4 | **Test associé existant** | Le fichier de test référencé dans `test_associe` existe dans `tests/` | |
-| 5 | **Test associé passant** | `pytest -k <test_associe>` retourne 0 failures | |
-| 6 | **Aucun interdit présent** | Scan manuel ou automatique : aucun des interdits de MERLIN_CONTRAT_PROMPT_V1 §4 détecté | |
-| 7 | **Distinction faits/hypothèses/recommandations** | Le prompt produit (ou exige) une sortie avec ces trois niveaux séparés | |
-| 8 | **Format de sortie valide** | La sortie du prompt est conforme au schéma JSON défini dans MERLIN_CONTRAT_PROMPT_V1 §5 | |
-| 9 | **Ton neutre vérifié** | Aucune formulation évaluative, diagnostique ou prescriptive dans le prompt ou ses exemples | |
-| 10 | **Revue humaine faite** | Au moins une relecture humaine du prompt a été effectuée (pas seulement IA-sur-IA) | |
+| 1 | **Frontmatter complet** | Champs obligatoires présents : `id`, `version`, `date`, `statut`, `type_sortie`, `test_associe` | ✅ Oui |
+| 2 | **Contrat prompt référencé** | Le prompt cite explicitement `MERLIN_CONTRAT_PROMPT_V1.md` ou son successeur | ✅ Oui |
+| 3 | **Type de sortie déclaré** | `type_sortie` est l'un de : `note_clinique`, `triage_urgence`, `validation_pilote`, `synthese_dossier` | ✅ Oui |
+| 4 | **Schéma JSON déclaré** | Le prompt exige une sortie structurée avec au minimum `faits`, `hypotheses`, `recommandations` | ✅ Oui |
+| 5 | **Interdits absents** | Aucun des interdits absolus du contrat prompt n'est présent (diagnostic DSM, pronostic, prescription) | ⚠️ Semi |
+| 6 | **Ton autorisé respecté** | Le prompt utilise le ton clinique-neutre (pas de ton empathique-conversationnel ni d'assertivité médicale) | ⚠️ Semi |
+| 7 | **Niveau de preuve explicite** | Le prompt demande de distinguer faits observés vs inférences vs recommandations | ✅ Oui |
+| 8 | **Test associé existant** | Le fichier `test_associe` référencé existe dans `tests/` | ✅ Oui |
+| 9 | **Exemple bon/mauvais présent** | Le prompt inclut au moins 1 exemple de sortie conforme et 1 non conforme | ⚠️ Semi |
+| 10 | **Validation humaine** | Un praticien ou superviseur a relu la sortie produite avec ce prompt sur un cas réel ou simulé | ❌ Non — humain obligatoire |
 
 ---
 
-## Fiche de merge (à joindre au PR)
+## Fiche de PR (à joindre à chaque PR de prompt)
 
+```markdown
+## Grille Go/No-Go — [NOM_PROMPT_V1]
+
+| # | Check | Statut | Remarque |
+|---|---|---|---|
+| 1 | Frontmatter complet | ✅ / ❌ | |
+| 2 | Contrat prompt référencé | ✅ / ❌ | |
+| 3 | Type de sortie déclaré | ✅ / ❌ | |
+| 4 | Schéma JSON déclaré | ✅ / ❌ | |
+| 5 | Interdits absents | ✅ / ❌ | |
+| 6 | Ton autorisé respecté | ✅ / ❌ | |
+| 7 | Niveau de preuve explicite | ✅ / ❌ | |
+| 8 | Test associé existant | ✅ / ❌ | |
+| 9 | Exemple bon/mauvais présent | ✅ / ❌ | |
+| 10 | Validation humaine | ✅ / ❌ | Validé par : [NOM] le [DATE] |
+
+**Décision :** ✅ GO / ❌ NO-GO
+**Bloquants :** (liste si NO-GO)
 ```
-PR : #_______
-Prompt modifié : ________________
-Version : _______ → _______
-Auteur : ________________
-Date : ________________
 
-Check 1  — Frontmatter complet       : ✅ / ❌
-Check 2  — Version incrémentée       : ✅ / ❌
-Check 3  — Impact documenté          : ✅ / ❌
-Check 4  — Test associé existant     : ✅ / ❌
-Check 5  — Test associé passant      : ✅ / ❌
-Check 6  — Aucun interdit présent    : ✅ / ❌
-Check 7  — Faits/Hypothèses/Reco     : ✅ / ❌
-Check 8  — Format de sortie valide   : ✅ / ❌
-Check 9  — Ton neutre vérifié        : ✅ / ❌
-Check 10 — Revue humaine faite       : ✅ / ❌
+---
 
-RÉSULTAT : GO ✅ / NO-GO ❌
+## Automatisation recommandée (QIA-005)
+
+Les checks 1, 2, 3, 4, 7, 8 peuvent être validés par un script pre-commit ou une GitHub Action :
+
+```python
+# scripts/check_prompt_gonogo.py
+import yaml, sys
+from pathlib import Path
+
+def check_prompt(path: Path) -> list[str]:
+    errors = []
+    content = path.read_text()
+    # Extraire frontmatter YAML
+    if not content.startswith("---"):
+        errors.append("CHECK-1: Frontmatter YAML absent")
+        return errors
+    fm_raw = content.split("---")[1]
+    fm = yaml.safe_load(fm_raw)
+    for field in ["id", "version", "date", "statut", "type_sortie", "test_associe"]:
+        if field not in fm:
+            errors.append(f"CHECK-1: Champ {field} manquant")
+    if "MERLIN_CONTRAT_PROMPT" not in content:
+        errors.append("CHECK-2: Contrat prompt non référencé")
+    valid_types = ["note_clinique", "triage_urgence", "validation_pilote", "synthese_dossier"]
+    if fm.get("type_sortie") not in valid_types:
+        errors.append(f"CHECK-3: type_sortie invalide — valeurs acceptées : {valid_types}")
+    for field in ["faits", "hypotheses", "recommandations"]:
+        if field not in content:
+            errors.append(f"CHECK-4: Champ JSON {field} non déclaré dans le prompt")
+    tests_dir = Path("tests")
+    test_ref = fm.get("test_associe", "")
+    if test_ref and not any(tests_dir.rglob(f"*{test_ref}*")):
+        errors.append(f"CHECK-8: Fichier test {test_ref} introuvable dans tests/")
+    return errors
+
+if __name__ == "__main__":
+    path = Path(sys.argv[1])
+    errors = check_prompt(path)
+    if errors:
+        print("❌ NO-GO — Corrections requises :")
+        for e in errors: print(f"  • {e}")
+        sys.exit(1)
+    print("✅ Checks automatiques passés — validation humaine (check 10) requise avant merge")
 ```
 
 ---
 
-## Notes d'application
+## Évolution prévue
 
-- **Check 5** est le seul check automatisable en CI. Les autres sont sous responsabilité humaine.
-- **Check 10** ne peut pas être satisfait par l'IA seule. Une relecture humaine, même courte (5 min), est obligatoire.
-- En cas de No-Go sur check 6 ou 9 : documenter l'élément problématique dans le commentaire du PR avant de corriger.
-- Cette grille s'applique à tous les prompts, même les corrections mineures de formulation.
-
----
-
-*Document de gouvernance MERLIN — outil de merge gate, non substituable au jugement éditorial.*
+- **V2** (post-pilote) : intégration score GRILLE_QUALITE_NOTE moyen sur les 3 derniers tests comme condition supplémentaire
+- **V3** : GitHub Action automatique sur PR ciblant `03_PROMPTS/` et `04_METHODES/`
