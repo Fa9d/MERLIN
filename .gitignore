@@ -39,3 +39,6 @@ __pycache__/
 *.tgz
 *.tar.gz
 *.zip
+
+# Auth basic Dozzle (jamais commité)
+nginx/.htpasswd_dozzle
