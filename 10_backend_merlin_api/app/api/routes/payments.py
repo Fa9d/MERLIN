@@ -141,15 +141,16 @@ async def stripe_webhook(
         logger.warning("Webhook Stripe invalide: %s", exc)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Webhook invalide.") from exc
 
-    event_type = event.get("type")
+    event_type = event.type
     if event_type != "checkout.session.completed":
         return StripeWebhookAck(status="ignored")
 
-    checkout_data = event.get("data", {}).get("object", {})
-    if checkout_data.get("payment_status") != "paid":
+    checkout_data = event.data.object
+    if checkout_data.payment_status != "paid":
         return StripeWebhookAck(status="ignored")
 
-    metadata = checkout_data.get("metadata") or {}
+    _raw_metadata = checkout_data.metadata
+    metadata: dict = _raw_metadata.to_dict() if _raw_metadata else {}
     if metadata.get("flow") != "audio_async":
         return StripeWebhookAck(status="ignored")
 
