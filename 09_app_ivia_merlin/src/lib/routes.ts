@@ -14,4 +14,6 @@ export const appRoutes = {
   audioRoom: "/audio-room",
   audioTest: "/audio-test",
   login: "/login",
+  checkoutSuccess: "/checkout/success",
+  checkoutCancel: "/checkout/cancel",
 } as const;

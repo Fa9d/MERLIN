@@ -49,6 +49,13 @@ Versioning: Git / GitHub — branche master, HEAD = e569e69
 **RÈGLE CRITIQUE :** Ne jamais appeler `docker compose` sans `--env-file .env.prod`.
 Utiliser `make <cible>` ou `bash deploy/prod-up.sh` — voir `docs/ops-docker-compose.md`.
 
+**RÈGLE ARCHITECTURE DATA — frontend (09_app_ivia_merlin) :**
+- Le frontend ne doit **jamais** lire ou écrire en DB directement via Prisma Client depuis les composants ou pages.
+- `src/lib/db.ts` (PrismaClient) est **réservé aux Route Handlers Next.js** (`app/api/**`) uniquement, en attendant leur suppression progressive.
+- Toute lecture/écriture de données métier passe par `src/lib/merlin-api.ts` → Backend FastAPI.
+- Aucune PR ne sera acceptée si elle importe `db` depuis `src/lib/db.ts` dans un composant, une page, ou une action serveur non-API.
+- Objectif cible : supprimer `src/lib/db.ts` et Prisma du frontend une fois tous les Route Handlers migrés en appels API.
+
 ---
 
 ## Structure du repo
