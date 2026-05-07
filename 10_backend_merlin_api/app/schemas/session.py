@@ -20,7 +20,7 @@ class SessionCreate(MerlinSchema):
     intake_request_id: str | None = None
     session_sequence_number: int | None = None
     session_mode_code: SessionModeCode = SessionModeCode.standard
-    session_channel_code: SessionChannelCode = SessionChannelCode.direct
+    session_channel_code: SessionChannelCode = SessionChannelCode.audio_live
     scheduled_start_at: datetime | None = None
     actual_start_at: datetime | None = None
     actual_end_at: datetime | None = None
@@ -82,6 +82,14 @@ class SessionClose(MerlinSchema):
     follow_up_actions_text: str | None = None
     next_session_focus_text: str | None = None
     client_visible: bool = False
+
+
+class SessionDeliver(MerlinSchema):
+    response_text: str
+    follow_up_actions_text: str | None = None
+    next_session_focus_text: str | None = None
+    vigilance_level_code: RiskLevelCode = RiskLevelCode.non_urgent
+    client_visible_summary: str | None = None
 
 
 class SessionStart(MerlinSchema):

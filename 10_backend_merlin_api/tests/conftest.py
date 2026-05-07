@@ -1,5 +1,5 @@
-# conftest.py
-# Fixtures partagées et configuration pytest pour 10_backend_merlin_api/tests/
+﻿# conftest.py
+# Fixtures partagÃ©es et configuration pytest pour 10_backend_merlin_api/tests/
 
 import pytest
 
@@ -9,16 +9,16 @@ import pytest
 # ---------------------------------------------------------------------------
 
 def pytest_configure(config):
-    """Enregistre les marqueurs pytest custom pour éviter les PytestUnknownMarkWarning."""
+    """Enregistre les marqueurs pytest custom pour Ã©viter les PytestUnknownMarkWarning."""
     config.addinivalue_line(
         "markers",
-        "integration: tests nécessitant des ressources externes (API, réseau, clés). "
+        "integration: tests nÃ©cessitant des ressources externes (API, rÃ©seau, clÃ©s). "
         "Exclure avec: pytest -m 'not integration'"
     )
 
 
 # ---------------------------------------------------------------------------
-# Fixtures partagées
+# Fixtures partagÃ©es
 # ---------------------------------------------------------------------------
 
 @pytest.fixture(autouse=False)
@@ -37,11 +37,11 @@ def transcript_fixture() -> str:
     """Transcription de cercle minimale pour les tests unitaires."""
     return (
         "Animateur : Bonjour. Comment vous arrivez ?\n"
-        "Alice : Fatiguée mais présente.\n"
+        "Alice : FatiguÃ©e mais prÃ©sente.\n"
         "Bob : Curieux, avec des questions.\n"
-        "Animateur : Quel thème ce soir ?\n"
-        "Alice : L'épuisement et le rythme.\n"
-        "Bob : L'authenticité dans les choix.\n"
+        "Animateur : Quel thÃ¨me ce soir ?\n"
+        "Alice : L'Ã©puisement et le rythme.\n"
+        "Bob : L'authenticitÃ© dans les choix.\n"
     )
 
 
@@ -58,11 +58,11 @@ def session_context_fixture() -> dict:
 
 @pytest.fixture
 def valid_session_note_json() -> dict:
-    """Note de session valide conforme à la structure SESSION_NOTE_CERCLE_OUTPUT_SCHEMA."""
+    """Note de session valide conforme Ã  la structure SESSION_NOTE_CERCLE_OUTPUT_SCHEMA."""
     return {
         "production_note": {
-            "summary_text": "Session centrée sur l'épuisement et l'authenticité.",
-            "observations_text": "Alice et Bob ont exprimé des thèmes complémentaires.",
+            "summary_text": "Session centrÃ©e sur l'Ã©puisement et l'authenticitÃ©.",
+            "observations_text": "Alice et Bob ont exprimÃ© des thÃ¨mes complÃ©mentaires.",
             "coeur_summary_text": None,
             "corps_summary_text": None,
             "esprit_summary_text": None,
@@ -72,7 +72,7 @@ def valid_session_note_json() -> dict:
             "context_hypotheses_json": [],
             "identified_tensions_json": [],
             "vigilance_level_code": "non_urgent",
-            "vigilance_summary_text": "Aucun signal de vigilance détecté.",
+            "vigilance_summary_text": "Aucun signal de vigilance dÃ©tectÃ©.",
             "next_step_type_code": "continue_to_structure",
             "follow_up_actions_text": None,
             "next_session_focus_text": None,
@@ -99,3 +99,23 @@ def valid_session_note_json() -> dict:
             "practitioner_corrections": None,
         },
     }
+
+
+# ---------------------------------------------------------------------------
+# Reset DB avant chaque smoke test
+# ---------------------------------------------------------------------------
+
+@pytest.fixture(autouse=True)
+def reset_app_users():
+    """Vide la table AppUser avant chaque test pour garantir DB vide."""
+    from app.db.base import load_models
+    from app.db.session import engine
+    from app.models.app_user import AppUser
+    from sqlalchemy.orm import Session
+
+    load_models()
+    with Session(engine) as db:
+        db.query(AppUser).delete()
+        db.commit()
+    yield
+

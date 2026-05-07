@@ -21,6 +21,7 @@ from app.models.enums import (
     AnalysisNextStepCode,
     AudioSessionStatusCode,
     RiskLevelCode,
+    SessionChannelCode,
     SessionStatusCode,
 )
 from app.models.intake_request import IntakeRequest
@@ -39,6 +40,7 @@ from app.schemas.session import (
     SessionClose,
     SessionCloseResult,
     SessionCreate,
+    SessionDeliver,
     SessionRecordingRead,
     SessionRoomRead,
     SessionRead,
@@ -216,8 +218,15 @@ def create_session(
         )
         session_sequence_number = (latest_sequence_number or 0) + 1
 
+    initial_status = payload.session_status_code
+    if payload.session_channel_code == SessionChannelCode.audio_async:
+        initial_status = SessionStatusCode.pending_review
+
+    session_payload = payload.model_dump(exclude={"duration_minutes", "session_sequence_number"})
+    session_payload["session_status_code"] = initial_status
+
     session_record = SessionRecord(
-        **payload.model_dump(exclude={"duration_minutes", "session_sequence_number"}),
+        **session_payload,
         duration_minutes=duration_minutes,
         session_sequence_number=session_sequence_number,
         operator_user_id=current_user.id,
@@ -370,6 +379,120 @@ async def close_session(
         validated_by_practitioner=bool(metadata.get("validated_by_practitioner", False)),
         practitioner_corrections=metadata.get("practitioner_corrections"),
         client_visible=bool(payload.client_visible and client_delivery.get("client_visible_recommended", True)),
+        record_status=session_record.record_status,
+        data_sensitivity_class=session_record.data_sensitivity_class,
+        retention_class=session_record.retention_class,
+    )
+
+    db.add(generated_note)
+    db.flush()
+
+    generated_document = ensure_session_derived_document(db, session_record, generated_note)
+    db.add(session_record)
+    db.commit()
+    db.refresh(session_record)
+    db.refresh(generated_note)
+    db.refresh(generated_document)
+    return SessionCloseResult(
+        session=session_record,
+        generated_note=generated_note,
+        generated_document=generated_document,
+    )
+
+
+@router.post("/{session_id}/deliver", response_model=SessionCloseResult)
+async def deliver_audio_async_session(
+    session_id: str,
+    payload: SessionDeliver,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_operator()),
+) -> SessionCloseResult:
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
+
+    if session_record.session_channel_code != SessionChannelCode.audio_async:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="La livraison est reservee aux seances audio_async.",
+        )
+
+    if session_record.session_status_code != SessionStatusCode.pending_review:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="La seance doit etre en statut pending_review pour etre livree.",
+        )
+
+    session_record.actual_end_at = datetime.now(timezone.utc)
+    session_record.session_status_code = SessionStatusCode.completed
+
+    linked_audio_session = db.scalar(
+        select(AudioSession).where(AudioSession.session_id == session_id)
+    )
+    if linked_audio_session is not None:
+        linked_audio_session.audio_session_status_code = AudioSessionStatusCode.closed
+        db.add(linked_audio_session)
+
+    latest_note_sequence_number = db.scalar(
+        select(func.max(SessionNote.note_sequence_number)).where(SessionNote.session_id == session_id)
+    )
+
+    try:
+        ai_payload = await generate_session_note_from_transcript(
+            payload.response_text,
+            session_context={
+                "session_id": session_record.id,
+                "client_id": session_record.client_id,
+                "session_sequence_number": session_record.session_sequence_number,
+                "session_mode_code": session_record.session_mode_code.value,
+                "session_channel_code": session_record.session_channel_code.value,
+                "session_status_code": SessionStatusCode.completed.value,
+                "deliver_flow": True,
+            },
+        )
+    except AnthropicSessionNoteError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Generation IA de la note impossible: {exc}",
+        ) from exc
+
+    production_note = ai_payload.get("production_note", {}) if ai_payload else {}
+    supervision_block = ai_payload.get("supervision", {}) if ai_payload else {}
+    research_block = ai_payload.get("research", {}) if ai_payload else {}
+    metadata = ai_payload.get("metadata", {}) if ai_payload else {}
+
+    generated_note = SessionNote(
+        session_id=session_record.id,
+        client_id=session_record.client_id,
+        note_sequence_number=(latest_note_sequence_number or 0) + 1,
+        summary_text=production_note.get("summary_text") or payload.response_text,
+        observations_text=production_note.get("observations_text") or payload.response_text,
+        follow_up_actions_text=production_note.get("follow_up_actions_text")
+        or payload.follow_up_actions_text,
+        next_session_focus_text=production_note.get("next_session_focus_text")
+        or payload.next_session_focus_text,
+        coeur_summary_text=production_note.get("coeur_summary_text"),
+        corps_summary_text=production_note.get("corps_summary_text"),
+        esprit_summary_text=production_note.get("esprit_summary_text"),
+        etre_summary_text=production_note.get("etre_summary_text"),
+        immediate_context_text=production_note.get("immediate_context_text"),
+        context_factors_json=production_note.get("context_factors_json"),
+        context_hypotheses_json=production_note.get("context_hypotheses_json"),
+        identified_tensions_json=_normalize_tensions_json(
+            production_note.get("identified_tensions_json")
+        ),
+        vigilance_level_code=_coerce_vigilance_level(production_note.get("vigilance_level_code"))
+        or payload.vigilance_level_code,
+        next_step_type_code=_coerce_next_step_type(production_note.get("next_step_type_code")),
+        client_facing_summary_text=payload.client_visible_summary
+        or production_note.get("summary_text")
+        or payload.response_text,
+        supervision_summary_text=supervision_block.get("supervision_summary_text"),
+        research_notes_text=research_block.get("research_notes_text"),
+        model_used=metadata.get("model_used"),
+        prompt_version=metadata.get("prompt_version"),
+        complexity_score=metadata.get("complexity_score"),
+        validated_by_practitioner=True,
+        practitioner_corrections=metadata.get("practitioner_corrections"),
+        client_visible=True,
         record_status=session_record.record_status,
         data_sensitivity_class=session_record.data_sensitivity_class,
         retention_class=session_record.retention_class,

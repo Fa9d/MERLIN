@@ -78,6 +78,12 @@ class Settings:
     )
     assemblyai_api_key: str | None = os.getenv("ASSEMBLYAI_API_KEY")
     anthropic_api_key: str | None = os.getenv("ANTHROPIC_API_KEY")
+    stripe_secret_key: str | None = os.getenv("MERLIN_STRIPE_SECRET_KEY")
+    stripe_webhook_secret: str | None = os.getenv("MERLIN_STRIPE_WEBHOOK_SECRET")
+    stripe_checkout_success_url: str | None = os.getenv("MERLIN_STRIPE_CHECKOUT_SUCCESS_URL")
+    stripe_checkout_cancel_url: str | None = os.getenv("MERLIN_STRIPE_CHECKOUT_CANCEL_URL")
+    stripe_audio_async_amount_cents: int = int(os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_AMOUNT_CENTS", "4500"))
+    stripe_audio_async_currency: str = os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_CURRENCY", "cad")
     # SMTP
     smtp_host: str = os.getenv("SMTP_HOST", "ssl0.ovh.net")
     smtp_port: int = int(os.getenv("SMTP_PORT", "465"))

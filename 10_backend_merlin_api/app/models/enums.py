@@ -122,18 +122,18 @@ class SessionModeCode(str, Enum):
 
 
 class SessionChannelCode(str, Enum):
-    direct = "direct"
-    in_person = "in_person"
-    async_mode = "async"
+    audio_live  = "audio_live"
+    audio_async = "audio_async"
 
 
 class SessionStatusCode(str, Enum):
-    scheduled = "scheduled"
-    in_progress = "in_progress"
-    completed = "completed"
-    cancelled = "cancelled"
-    no_show = "no_show"
-    escalated = "escalated"
+    scheduled      = "scheduled"
+    pending_review = "pending_review"
+    in_progress    = "in_progress"
+    completed      = "completed"
+    cancelled      = "cancelled"
+    no_show        = "no_show"
+    escalated      = "escalated"
 
 
 class AudioProviderCode(str, Enum):

@@ -10,3 +10,4 @@ livekit-api==1.1.0
 aiosmtplib==3.0.2
 anthropic>=0.99.0
 jsonschema>=4.26.0
+stripe>=11.0.0

@@ -2,9 +2,12 @@ import os
 from pathlib import Path
 from unittest.mock import AsyncMock
 
+import pytest
 from fastapi.testclient import TestClient
 
 
+@pytest.mark.integration
+@pytest.mark.real_api
 def test_core_flow_smoke() -> None:
     tmp_db = Path("test_smoke_merlin.db").resolve()
     if tmp_db.exists():
@@ -334,7 +337,7 @@ def test_core_flow_smoke() -> None:
                 "client_id": client_id,
                 "intake_request_id": intake_id,
                 "session_mode_code": "intake",
-                "session_channel_code": "phone",
+                "session_channel_code": "audio_live",
                 "session_status_code": "scheduled",
             },
             headers=auth_headers,
@@ -350,7 +353,7 @@ def test_core_flow_smoke() -> None:
             json={
                 "client_id": client_id,
                 "session_mode_code": "follow_up",
-                "session_channel_code": "video",
+                "session_channel_code": "audio_live",
                 "session_status_code": "scheduled",
             },
             headers=auth_headers,
@@ -364,7 +367,7 @@ def test_core_flow_smoke() -> None:
                 json={
                     "client_id": client_id,
                     "session_mode_code": "standard",
-                    "session_channel_code": "phone",
+                    "session_channel_code": "audio_live",
                     "session_status_code": "scheduled",
                 },
                 headers=second_operator_headers,
@@ -760,6 +763,8 @@ def test_core_flow_smoke() -> None:
             sessions_routes.create_livekit_room_for_session = original_create_livekit_room_for_session
 
 
+@pytest.mark.integration
+@pytest.mark.real_api
 def test_canonical_audio_recording_generates_note_and_document_without_close_duplicates() -> None:
     tmp_db = Path("test_audio_pipeline_merlin.db").resolve()
     if tmp_db.exists():
@@ -908,7 +913,7 @@ def test_canonical_audio_recording_generates_note_and_document_without_close_dup
                     "client_id": client_id,
                     "intake_request_id": intake_id,
                     "session_mode_code": "follow_up",
-                    "session_channel_code": "phone",
+                    "session_channel_code": "audio_live",
                     "session_status_code": "scheduled",
                 },
                 headers=auth_headers,

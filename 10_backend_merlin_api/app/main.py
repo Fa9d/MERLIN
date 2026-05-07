@@ -21,6 +21,7 @@ from app.api.routes.register import router as register_router
 from app.api.routes.verify_email import router as verify_email_router
 from app.api.routes.bookings import router as bookings_router
 from app.api.routes.matching import router as matching_router
+from app.api.routes.payments import router as payments_router
 from app.core.config import settings
 from app.db.base import init_models
 
@@ -67,6 +68,7 @@ app.include_router(register_router, prefix=settings.api_v1_prefix)
 app.include_router(verify_email_router, prefix=settings.api_v1_prefix)
 app.include_router(bookings_router, prefix=settings.api_v1_prefix)
 app.include_router(matching_router, prefix=settings.api_v1_prefix)
+app.include_router(payments_router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/")
