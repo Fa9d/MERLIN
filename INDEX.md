@@ -63,10 +63,31 @@ Exception formalisée — corpus IVIA : `IVIA_[TYPE]_[SUJET]_v[MAJOR].[MINOR].md
 | Fichier | Rôle |
 |---|---|
 | [00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V2.md](00_GOUVERNANCE/MERLIN_CONVENTION_NOMMAGE_V2.md) | Convention de nommage active (v2) |
+| [00_GOUVERNANCE/IVIA_INDEX_BASE_DOCUMENTAIRE_v2.0.md](00_GOUVERNANCE/IVIA_INDEX_BASE_DOCUMENTAIRE_v2.0.md) | **Index complet base documentaire IVIA v2.0** (point d'entrée corpus) |
+| [00_GOUVERNANCE/IVIA_BILAN_COHERENCE_REFONTE_v2.0.md](00_GOUVERNANCE/IVIA_BILAN_COHERENCE_REFONTE_v2.0.md) | Bilan refonte v2.0 post-DÉC-V3-15 (12/12 livrées) |
+| [00_GOUVERNANCE/IVIA_HISTORIQUE_DECISIONS_STRATEGIQUES_v2.0.md](00_GOUVERNANCE/IVIA_HISTORIQUE_DECISIONS_STRATEGIQUES_v2.0.md) | Journal des décisions stratégiques (DÉC-V3-1 → V3-15) |
+| [00_GOUVERNANCE/IVIA_CHARTE_DOCTRINAIRE_v2.0.md](00_GOUVERNANCE/IVIA_CHARTE_DOCTRINAIRE_v2.0.md) | Charte doctrinaire IVIA v2.0 |
+| [00_GOUVERNANCE/IVIA_GOUVERNANCE_INTERNE_v2.0.md](00_GOUVERNANCE/IVIA_GOUVERNANCE_INTERNE_v2.0.md) | Gouvernance interne (SPA-mère + OBNL satellite) |
+| [12_JURIDIQUE_AFFAIRES/IVIA_STRUCTURE_JURIDIQUE_RECOMMANDEE_v2.0.md](12_JURIDIQUE_AFFAIRES/IVIA_STRUCTURE_JURIDIQUE_RECOMMANDEE_v2.0.md) | Structure juridique cible (DÉC-V3-15) |
+| [12_JURIDIQUE_AFFAIRES/IVIA_BP_FINANCEMENT_v2.0.md](12_JURIDIQUE_AFFAIRES/IVIA_BP_FINANCEMENT_v2.0.md) | Business Plan v2.0 (refonte post-DÉC-V3-15) |
 | [01_FONDEMENTS/IVIA_POSITIONNEMENT_STRATEGIQUE_EDITORIAL_v1.0.md](01_FONDEMENTS/IVIA_POSITIONNEMENT_STRATEGIQUE_EDITORIAL_v1.0.md) | Positionnement IVIA, cadre légal, textes site, capsules audio |
 | [01_FONDEMENTS/IVIA_DOCUMENT_DIRECTEUR_v1.0.md](01_FONDEMENTS/IVIA_DOCUMENT_DIRECTEUR_v1.0.md) | Charte philosophique — 7 principes fondateurs |
 | [04_METHODES/IVIA_PLAN_EDITORIAL_v1.0.md](04_METHODES/IVIA_PLAN_EDITORIAL_v1.0.md) | Plan 16 articles × calendrier 16 semaines |
 | [00_GOUVERNANCE/IVIA_ARBITRAGE_AXE_FREQUENCE_v1.md](00_GOUVERNANCE/IVIA_ARBITRAGE_AXE_FREQUENCE_v1.md) | Arbitrage axe FRÉQUENCE — décision APPROUVÉE |
+
+---
+
+## Refonte v2.0 (DÉC-V3-15) — État
+
+**Décision pivot :** IVIA inc. (SPA-mère LSAQ à mission, 100 % David Phaneuf) ──licence sociale──▶ IVIA OBNL (satellite LCQ III).
+Sous IVIA inc. : MERLIN, MÉSANGE, COVOITURAGE, LOGISTIQUE, NHL ANALYTICS, futurs projets civiques.
+
+- **12/12 documents refondus** (BP, structure juridique, gouvernance, modèle valorisation, etc.)
+- **3 documents archivés** (`00_GOUVERNANCE/ARCHIVES/v1_pre_DEC-V3-15/`) : ancienne structure OBNL+MERLIN inc.
+- **3 briefs juridico-fiscaux livrés** : avocat société multi-entités, fiscaliste (CRIC + RS&DE), shortlist 6 cabinets Montréal.
+- **Pilote MERLIN actif** depuis 31 mai 2026.
+
+Voir le bilan complet : [IVIA_BILAN_COHERENCE_REFONTE_v2.0.md](00_GOUVERNANCE/IVIA_BILAN_COHERENCE_REFONTE_v2.0.md)
 
 ---
 
@@ -81,4 +102,4 @@ Exception formalisée — corpus IVIA : `IVIA_[TYPE]_[SUJET]_v[MAJOR].[MINOR].md
 
 ---
 
-*Dernière mise à jour : 4 mai 2026*
+*Dernière mise à jour : 8 mai 2026 — refonte v2.0 dispatchée (DÉC-V3-15)*
