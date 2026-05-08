@@ -8,6 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
+from app.core.deps import require_operator
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
@@ -51,7 +52,15 @@ def _resolve_checkout_urls(payload: StripeAudioAsyncCheckoutCreate) -> tuple[str
 def create_audio_async_checkout_session(
     payload: StripeAudioAsyncCheckoutCreate,
     db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_operator()),
 ) -> StripeCheckoutSessionRead:
+    """Crée une session Stripe Checkout pour le flux audio-async.
+
+    Sécurité (BACK-PAY-001) : route réservée aux opérateurs internes.
+    Le webhook Stripe (POST /payments/stripe/webhook) reste public — il est
+    sécurisé par vérification de signature serveur (stripe-signature header).
+    """
+    _ = current_user  # garde appliqué par Depends ; variable conservée pour audit futur
     _ensure_stripe_config()
 
     client = db.get(Client, payload.client_id)

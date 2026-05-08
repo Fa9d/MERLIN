@@ -149,8 +149,13 @@ async def confirm_slot(
 def cancel_slot(
     body: BookingCancelIn,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(get_current_user),
+    current_user: AppUser = Depends(require_verified_email_user),
 ) -> BookingSlotOut:
+    """Annule un créneau (hold ou confirmed).
+
+    Sécurité (BACK-BOOK-001) : aligné sur hold/confirm — exige email vérifié.
+    Autorisé : client propriétaire, praticien concerné, ou opérateur.
+    """
     slot: BookingSlot | None = db.query(BookingSlot).filter(BookingSlot.id == body.slot_id).first()
     if not slot:
         raise HTTPException(status_code=404, detail="Créneau introuvable.")

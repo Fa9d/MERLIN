@@ -222,6 +222,18 @@ def create_client_join_context(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> AudioSessionJoinRead:
+    """Génère un contexte LiveKit pour le participant client (USAGE OPÉRATEUR INTERNE).
+
+    Sécurité (BACK-AUDIO-001) : route réservée à l'opérateur. Elle produit un
+    token LiveKit pour la *fente* client (`participant_identity` du client) afin
+    que l'opérateur puisse :
+      a) tester la salle (le `participant_name="Client test"` reflet de cet usage),
+      b) transmettre le lien/token au client par canal hors-bande sécurisé (courriel, SMS).
+
+    ⚠️ Le token généré ouvre la salle pour le client — le diffuser uniquement par
+    canal sécurisé et journaliser l'émission. À long terme : remplacer par un flux
+    dédié côté client authentifié (cf. ROLES-005).
+    """
     audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
 
     ws_url, _, _ = _ensure_livekit_browser_config()
