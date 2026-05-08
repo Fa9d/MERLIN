@@ -1,13 +1,32 @@
-# GLOSSAIRE — IVIA / MERLIN inc.
+# GLOSSAIRE — IVIA
 ## Vocabulaire doctrinal, technologique, économique, juridique et organisationnel
 
 ---
 
-**Organisation** : IVIA (OBNL) / MERLIN inc. (SPA)
+**Organisation** : IVIA inc. (SPA-mère LSAQ à mission) / IVIA OBNL satellite (LCQ III, à constituer P2)
 **Responsable** : David Phaneuf, Direction générale
-**Devise** : "Au sein de l'être — En actes."
+**Devises** : *Au sein de l'être — En actes.* / *Pour le peuple, par le peuple.*
 **Version** : 1.0 — 8 mai 2026
 **Portée** : ~200 entrées couvrant l'ensemble de l'univers terminologique IVIA
+
+---
+
+## ⚠️ AVERTISSEMENT DE TERMINOLOGIE — PRÉ-DÉC-V3-15
+
+Le présent glossaire a été rédigé **avant la décision stratégique DÉC-V3-15 du 8 mai 2026**. Il reflète l'**ancienne architecture** où :
+- **IVIA** était l'**OBNL mère** (LCQ Partie III)
+- **MERLIN inc.** était la **SPA filiale** d'exploitation
+
+**L'architecture cible DÉC-V3-15** inverse cette logique :
+- **IVIA inc.** est la **SPA-mère** (LSAQ à mission) détenue à 100 % par David Phaneuf au lancement
+- **IVIA OBNL** est le **satellite** (LCQ III) recevant licence sociale gratuite pour redistribuer aux publics vulnérables
+- **MERLIN** est une **sous-marque produit** (bien-être, pilote actif), pas une personne morale
+
+**Règle de lecture** : dans toute entrée ci-dessous, **« IVIA OBNL mère » se lit « IVIA inc. SPA-mère »** et **« MERLIN inc. SPA » se lit « IVIA inc. »** (substitution mécanique à effectuer à l'incorporation Q3-Q4 2026, validée par le BILAN_COHERENCE_REFONTE_v2.0 §3).
+
+Une révision intégrale du glossaire est planifiée **post-incorporation IVIA inc.** pour éliminer cette double terminologie.
+
+Voir : [`IVIA_HISTORIQUE_DECISIONS_STRATEGIQUES_v2.0.md`](IVIA_HISTORIQUE_DECISIONS_STRATEGIQUES_v2.0.md), [`IVIA_BILAN_COHERENCE_REFONTE_v2.0.md`](IVIA_BILAN_COHERENCE_REFONTE_v2.0.md), [`AUDIT_COHERENCE_POST_DEC-V3-15.md`](AUDIT_COHERENCE_POST_DEC-V3-15.md).
 
 ---
 

@@ -13,7 +13,7 @@
 
 ## NOTE DE COHÉRENCE V2.0 — POURQUOI CE DOCUMENT EST REFONDU
 
-La v1.0 raisonnait en **4 strates IVIA** (Cœur / Pro / Soins / Réseau) sous une logique *un-produit-MERLIN-élargi-progressivement*. Suite à **DÉC-V3-15** (15 mai 2026 — virage vers IVIA maison-mère multi-projets), cette logique est obsolète.
+La v1.0 raisonnait en **4 strates IVIA** (Cœur / Pro / Soins / Réseau) sous une logique *un-produit-MERLIN-élargi-progressivement*. Suite à **DÉC-V3-15** (8 mai 2026 — virage vers IVIA maison-mère multi-projets), cette logique est obsolète.
 
 **La logique v2.0** : IVIA inc. (SPA-mère LSAQ à mission) opère un **portefeuille de produits civiques distincts** (MERLIN, MÉSANGE, covoiturage, logistique producteurs, NHL Analytics, futurs) sous marque-mère endossante, avec OBNL satellite (LCQ III) recevant licence sociale gratuite pour redistribuer aux publics vulnérables.
 

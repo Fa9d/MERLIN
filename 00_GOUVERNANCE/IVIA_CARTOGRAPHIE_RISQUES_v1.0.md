@@ -3,11 +3,13 @@
 
 ---
 
-**Organisation** : IVIA (OBNL) / MERLIN inc. (SPA)
+**Organisation** : IVIA inc. (SPA-mère LSAQ à mission) / IVIA OBNL satellite (LCQ III, à constituer P2)
 **Responsable du document** : Direction générale — David Phaneuf
 **Cycle de révision** : Trimestriel (janvier, avril, juillet, octobre)
 **Prochaine révision prévue** : 1er août 2026
 **Statut** : Actif — Pilote P1
+
+> **⚠️ Note terminologique post-DÉC-V3-15 (8 mai 2026)** : ce document fait référence à « MERLIN inc. » dans plusieurs fiches de risque. Cette désignation reflète l'**ancienne architecture** (IVIA OBNL mère / MERLIN inc. SPA fille). Lire « MERLIN inc. » comme « **IVIA inc.** (SPA-mère) » et « CTO MERLIN inc. » comme « **CTO IVIA inc.** ». Substitution mécanique à effectuer lors de la révision trimestrielle suivant l'incorporation IVIA inc. (Q3-Q4 2026), conformément au BILAN_COHERENCE_REFONTE_v2.0 §3.
 
 ---
 

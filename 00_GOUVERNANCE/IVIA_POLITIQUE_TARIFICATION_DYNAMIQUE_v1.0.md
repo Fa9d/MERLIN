@@ -7,6 +7,8 @@
 **Auteur** : David Phaneuf (fondateur) + Perplexity Computer
 **Cohérence** : Aligné avec BP_FINANCEMENT_V2.md, CHARTE_DOCTRINAIRE_IVIA.md (Principe 3, C.2), CGU_PRATICIENS.md, CGU_CLIENTS.md
 
+> **⚠️ Note terminologique post-DÉC-V3-15 (8 mai 2026)** : la composition du Comité tarifaire mentionne « MERLIN inc. » à trois reprises. Lire comme « **IVIA inc.** (SPA-mère LSAQ à mission) ». Substitution mécanique à effectuer à l'incorporation IVIA inc. (Q3-Q4 2026), conformément au BILAN_COHERENCE_REFONTE_v2.0 §3.
+
 ---
 
 ## PRÉAMBULE

@@ -7,6 +7,8 @@
 **Auteur** : David Phaneuf (fondateur) + Perplexity Computer
 **Cohérence** : Aligné avec CHARTE_DOCTRINAIRE_IVIA.md (Principes 1, 2, 5), MANUEL_FORMATION_PRATICIENS.md, CARTOGRAPHIE_RISQUES.md
 
+> **⚠️ Note terminologique post-DÉC-V3-15 (8 mai 2026)** : ce document contient une référence résiduelle à « MERLIN inc. » (ligne 351). Lire comme « **IVIA inc.** (SPA-mère LSAQ à mission) ». Substitution mécanique à effectuer à l'incorporation IVIA inc. (Q3-Q4 2026), conformément au BILAN_COHERENCE_REFONTE_v2.0 §3.
+
 ---
 
 ## PRÉAMBULE
