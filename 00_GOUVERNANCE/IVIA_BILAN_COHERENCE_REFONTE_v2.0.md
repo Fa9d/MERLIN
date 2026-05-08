@@ -6,7 +6,7 @@
 | **Version** | 1.0 — Mai 2026 |
 | **Statut** | Document de synthèse — **point d'entrée v2.0** de la base documentaire après refonte |
 | **Auteur** | David Phaneuf, fondateur (avec Perplexity Computer) |
-| **Décision déclenchante** | DÉC-V3-15 (15 mai 2026) — Inflexion architecturale : IVIA inc. SPA-mère LSAQ à mission + OBNL satellite (vs ancienne logique OBNL-mère + MERLIN inc. SPA filiale) |
+| **Décision déclenchante** | DÉC-V3-15 (8 mai 2026) — Inflexion architecturale : IVIA inc. SPA-mère LSAQ à mission + OBNL satellite (vs ancienne logique OBNL-mère + MERLIN inc. SPA filiale) |
 | **Devises** | *Au sein de l'être — En actes.* / *Pour le peuple, par le peuple.* |
 | **Documents complémentaires** | INDEX_BASE_DOCUMENTAIRE.md (référence d'origine v1.0) ▪ HISTORIQUE_DECISIONS_STRATEGIQUES.md v1.3 |
 
@@ -14,7 +14,7 @@
 
 ## 1. CONTEXTE — POURQUOI CETTE REFONTE
 
-Le 15 mai 2026, suite à une réflexion approfondie du fondateur sur la propriété, le pouvoir, le financement et la pérennité, **l'architecture juridique fondatrice a été inversée** :
+Le 8 mai 2026, suite à une réflexion approfondie du fondateur sur la propriété, le pouvoir, le financement et la pérennité, **l'architecture juridique fondatrice a été inversée** :
 
 - **Avant DÉC-V3-15** : OBNL-mère IVIA + MERLIN inc. SPA filiale d'exploitation → la doctrine est protégée par l'OBNL, mais le fondateur n'a ni propriété pleine ni levier de capital optimal
 - **Après DÉC-V3-15** : **IVIA inc. SPA-mère** (LSAQ à mission, statuts opposables) + **IVIA OBNL satellite** (LCQ III, licence sociale gratuite) → le fondateur garde propriété 100 % au démarrage, peut lever du capital patient, opère un **écosystème multi-produits** (MERLIN, MÉSANGE, covoit, logistique, NHL, futurs)
