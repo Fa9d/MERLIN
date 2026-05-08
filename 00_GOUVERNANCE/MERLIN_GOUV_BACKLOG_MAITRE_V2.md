@@ -1,11 +1,12 @@
 ---
 id: BACKLOG-MAITRE
-version: V2
-date: 2026-05-06
+version: V2.1
+date: 2026-05-08
 statut: actif
 auteur: David Phaneuf
 remplace: MERLIN_GOUV_BACKLOG_MAITRE_V1.md + MERLIN_GOUV_BACKLOG_IMPLEMENTATION_ROLES_ACCES_VISIBILITE_V1.md + MERLIN_GOUV_BACKLOG_PRODUIT_MESANGE_V1.md
 decision: DEC-041
+maj_v2_1: smoke test prod 8 mai 2026 — INFRA-001→004 confirmés done, CONT-002 done
 ---
 
 # MERLIN — Backlog Maître V2
@@ -32,10 +33,10 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
-| INFRA-001 | scp docker-compose.prod.yml + 7 fichiers Python backend vers VPS | P1 | `todo` | `action-vps` | — | fichiers présents dans `/opt/merlin/` |
-| INFRA-002 | `make migrate` — appliquer migration 0017 sur DB VPS | P1 | `todo` | `action-vps` | INFRA-001 | `alembic_version = 20260504_0017` dans la DB prod |
-| INFRA-003 | `make up` — rebuild conteneurs après déploiement | P1 | `todo` | `action-vps` | INFRA-002 | `api.ivia.quebec/api/health` répond `200` |
-| INFRA-004 | Smoke test post-déploiement — vérifier routes critiques | P1 | `todo` | `recette` | INFRA-003 | health OK + `POST /intake-requests` OK + login OK |
+| INFRA-001 | scp docker-compose.prod.yml + fichiers Python backend vers VPS | P1 | `done` | `action-vps` | — | code prod = code local (51 routes vérifiées 2026-05-08) |
+| INFRA-002 | Appliquer migrations Alembic sur DB VPS | P1 | `done` | `action-vps` | INFRA-001 | schéma `PraticienPublic` prod = local (champs `title_line`, `intro_text`, `spoken_languages`, `available_channels`) |
+| INFRA-003 | Rebuild conteneurs après déploiement | P1 | `done` | `action-vps` | INFRA-002 | `api.ivia.quebec/api/health` répond `200` env=production db=ok (2026-05-08) |
+| INFRA-004 | Smoke test post-déploiement — vérifier routes critiques | P1 | `done` | `recette` | INFRA-003 | 6 endpoints testés 2026-05-08 : health 200, /praticiens 200, /auth/me 401, POST /intake-requests 422, POST /auth/login 422, POST /register/client 422 (validation Pydantic active) |
 | INFRA-005 | Recette e2e complète — rejouer flux `public → operator → supervisor → public` | P2 | `todo` | `recette` | INFRA-003 | checklist recette prod complétée |
 | INFRA-006 | Recette audio — rejouer checklist audio prod | P2 | `todo` | `recette` | INFRA-003 | checklist validation audio prod complétée |
 | INFRA-007 | Vérifier HTTPS + cookies sécurisés + CORS en production post-rebuild | P2 | `todo` | `recette` | INFRA-003 | TLS valide, réponses sans erreur CORS |
@@ -78,7 +79,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
 | CONT-001 | 16 articles IVIA écrits et pushés sur GitHub (sections 1.1 → 4.4) | P1 | `done` | `commit` | — | commit `4af888b`, 16 fichiers dans `04_METHODES/articles/` |
-| CONT-002 | Créer route `/ressources` ou `/blog` dans Next.js | P3 | `todo` | `commit` | FRONT-002 | route accessible publiquement |
+| CONT-002 | Créer route `/ressources` ou `/blog` dans Next.js | P3 | `done` | `commit` | FRONT-002 | `ivia.quebec/ressources` répond 200 (vérifié 2026-05-08) |
 | CONT-003 | Système de rendu MDX pour les articles dans Next.js | P3 | `todo` | `commit` | CONT-002 | articles lisibles sur `ivia.quebec/ressources` |
 | CONT-004 | Implémenter composant "portes d'entrée" (accordéon 3 accroches) | P4 | `todo` | `commit` | CONT-003 | composant fonctionnel sur au moins 1 article |
 | CONT-005 | Maillage interne entre articles (liens contextuels rédigés) | P4 | `todo` | `fichier-repo` | CONT-003 | liens actifs sur les articles publiés |
@@ -167,17 +168,17 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 
 | Domaine | Total | Done | Active | Todo | Blocked |
 |---|---|---|---|---|---|
-| infra | 8 | 0 | 0 | 8 | 0 |
+| infra | 8 | 4 | 0 | 4 | 0 |
 | backend | 10 | 5 | 0 | 5 | 0 |
 | frontend | 6 | 1 | 0 | 5 | 0 |
-| contenu | 5 | 1 | 0 | 4 | 0 |
+| contenu | 5 | 2 | 0 | 3 | 0 |
 | diffusion | 3 | 0 | 0 | 3 | 0 |
 | gouvernance | 6 | 0 | 1 | 5 | 0 |
 | qualité-ia | 7 | 1 | 0 | 6 | 0 |
 | rôles-accès | 10 | 0 | 0 | 10 | 0 |
 | mésange | 8 | 0 | 0 | 8 | 0 |
 | fondements | 2 | 0 | 0 | 2 | 0 |
-| **TOTAL** | **65** | **8** | **1** | **56** | **0** |
+| **TOTAL** | **65** | **13** | **1** | **51** | **0** |
 
 ---
 
