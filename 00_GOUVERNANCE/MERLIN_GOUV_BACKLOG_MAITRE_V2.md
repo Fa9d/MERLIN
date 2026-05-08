@@ -114,12 +114,12 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
 | QIA-001 | MERLIN_CONTRAT_PROMPT_V1.md — commité et opérationnel | P1 | `done` | `fichier-repo` | — | fichier dans `00_GOUVERNANCE/` |
-| QIA-002 | MERLIN_GRILLE_QUALITE_NOTE_V1.md — créer et commiter | P1 | `todo` | `fichier-repo` | QIA-001 | fichier dans `00_GOUVERNANCE/` |
-| QIA-003 | MERLIN_GRILLE_GONOGO_PROMPT_V1.md — créer et commiter | P1 | `todo` | `fichier-repo` | QIA-001 | fichier dans `00_GOUVERNANCE/` |
+| QIA-002 | MERLIN_GRILLE_QUALITE_NOTE_V1.md — créer et commiter | P1 | `done` | `fichier-repo` | QIA-001 | fichier `00_GOUVERNANCE/MERLIN_GRILLE_QUALITE_NOTE_V1.md` (DEC-039, commit 8eb2e04, Vérifié 8 mai 2026) |
+| QIA-003 | MERLIN_GRILLE_GONOGO_PROMPT_V1.md — créer et commiter | P1 | `done` | `fichier-repo` | QIA-001 | fichier `00_GOUVERNANCE/MERLIN_GRILLE_GONOGO_PROMPT_V1.md` (DEC-040, commit 8eb2e04, vérifié 8 mai 2026) |
 | QIA-004 | Ajouter champ `test_associe` dans frontmatter de tous les prompts METH+PROD | P2 | `todo` | `commit` | QIA-001 | tous les prompts existants mis à jour |
 | QIA-005 | Stratégie replay tests IA — budget token + fixtures + marqueurs pytest | P2 | `todo` | `fichier-repo` | — | pytest.ini + conftest.py updatés |
 | QIA-006 | Découpage smoke tests — sous-scénarii par type de sortie | P3 | `todo` | `fichier-repo` | QIA-005 | tests/ structurés en sous-dossiers |
-| QIA-007 | Encoder frontière hypothèse/fait dans schéma JSON (champs faits/hypotheses/recommandations) | P2 | `todo` | `commit` | QIA-001 | schéma JSON mis à jour, tests passent |
+| QIA-007 | Encoder frontière hypothèse/fait dans schéma JSON (champs faits/hypotheses/recommandations) | P2 | `active` | `commit` | QIA-001 | ADR-0005 validé (DEC-044) spécifie le patch v1.0 → v1.1 (schéma + Pydantic + migration 0019 + 2 tests). Implémentation à exécuter |
 
 ---
 
@@ -174,11 +174,11 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | contenu | 5 | 2 | 0 | 3 | 0 |
 | diffusion | 3 | 0 | 0 | 3 | 0 |
 | gouvernance | 6 | 0 | 1 | 5 | 0 |
-| qualité-ia | 7 | 1 | 0 | 6 | 0 |
+| qualité-ia | 7 | 3 | 1 | 3 | 0 |
 | rôles-accès | 10 | 0 | 0 | 10 | 0 |
 | mésange | 8 | 0 | 0 | 8 | 0 |
 | fondements | 2 | 0 | 0 | 2 | 0 |
-| **TOTAL** | **65** | **13** | **1** | **51** | **0** |
+| **TOTAL** | **65** | **15** | **2** | **48** | **0** |
 
 ---
 
