@@ -8,7 +8,7 @@ from app.core.deps import (
     is_operator_user,
     require_internal_clinical_roles,
     require_operator,
-    require_supervision_roles,
+    require_supervisor,
 )
 from app.db.session import get_db
 from app.models.app_user import AppUser
@@ -117,7 +117,7 @@ def validate_session_note(
     session_note_id: str,
     payload: SessionNoteValidationPayload,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_supervision_roles()),
+    _: AppUser = Depends(require_supervisor()),
 ) -> SessionNote:
     session_note = db.get(SessionNote, session_note_id)
     if session_note is None:

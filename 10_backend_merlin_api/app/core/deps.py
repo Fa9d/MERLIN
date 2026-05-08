@@ -92,8 +92,17 @@ def require_practitioner_or_operator():
     return require_roles(AppRole.practitioner, AppRole.operator)
 
 
-def require_supervision_roles():
+def require_supervisor():
+    """Guard réservé au rôle `supervisor` uniquement.
+
+    Renommé depuis `require_supervision_roles` (BACK-DEPS-001) pour cohérence
+    avec `require_operator` / `require_practitioner` (singulier = un seul rôle).
+    """
     return require_roles(AppRole.supervisor)
+
+
+# Alias rétroactif — à supprimer après migration complète des appels.
+require_supervision_roles = require_supervisor
 
 
 def require_production_roles():
