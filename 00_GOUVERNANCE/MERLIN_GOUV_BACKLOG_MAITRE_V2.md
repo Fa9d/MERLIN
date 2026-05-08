@@ -8,6 +8,7 @@ remplace: MERLIN_GOUV_BACKLOG_MAITRE_V1.md + MERLIN_GOUV_BACKLOG_IMPLEMENTATION_
 decision: DEC-041
 maj_v2_1: smoke test prod 8 mai 2026 — INFRA-001→004 confirmés done, CONT-002 done
 maj_v2_2: 8 mai 2026 — ROLES-001 done (enum + doc V1), ROLES-002 done (matrice 59 routes), ROLES-003 active (audit 64 % couverture explicite, 1 faille BACK-PAY-001)
+maj_v2_3: 8 mai 2026 — ROLES-003 done (PR #4 mergée : 4 tickets corrigés + 9 tests pytest)
 ---
 
 # MERLIN — Backlog Maître V2
@@ -130,7 +131,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 |---|---|---|---|---|---|---|
 | ROLES-001 | Modèle de rôles défini : public / client / praticien / opérateur / superviseur / admin | P2 | `done` | `décision` | — | enum `AppRole` (5 valeurs) + doc V1 (368 lignes) `MERLIN_GOUV_TABLEAU_ROLES_ACCES_VISIBILITE_V1.md` (22 avril 2026) |
 | ROLES-002 | Matrice d'accès par rôle et par route (back + front) | P2 | `done` | `fichier-repo` | ROLES-001 | `MERLIN_GOUV_MATRICE_ROLES_ROUTES_V1.md` (8 mai 2026, 59 routes documentées) |
-| ROLES-003 | Implémentation backend : guard par rôle sur routes protégées | P2 | `active` | `commit` | ROLES-002 | 38/59 routes guard explicite (64 %) + 13/59 publiques légitimes (22 %) ; 1 faille (BACK-PAY-001) + 4 incohérences à traiter — voir `AUDIT_ROLES_ROUTES_2026-05-08.md` |
+| ROLES-003 | Implémentation backend : guard par rôle sur routes protégées | P2 | `done` | `commit` | ROLES-002 | 4 corrections livrées PR #4 (BACK-PAY-001 P1 + BACK-BOOK-001 + BACK-DEPS-001 + BACK-AUDIO-001) ; 9 tests pytest passent ; voir `CORRECTIONS_ROLES_AUDIT_2026-05-08.md` |
 | ROLES-004 | Implémentation frontend : visibilité conditionnelle par rôle | P3 | `todo` | `commit` | ROLES-003 | composants React n'affichent que ce que le rôle autorise |
 | ROLES-005 | Interface espace praticien — accès dossiers clients assignés | P3 | `todo` | `commit` | ROLES-003 | praticien voit uniquement ses clients |
 | ROLES-006 | Interface opérateur — tableau de bord demandes + assignation | P3 | `todo` | `commit` | ROLES-003 | opérateur peut assigner, pas modifier le contenu clinique |
@@ -176,10 +177,10 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | diffusion | 3 | 0 | 0 | 3 | 0 |
 | gouvernance | 6 | 0 | 1 | 5 | 0 |
 | qualité-ia | 7 | 3 | 1 | 3 | 0 |
-| rôles-accès | 10 | 2 | 1 | 7 | 0 |
+| rôles-accès | 10 | 3 | 0 | 7 | 0 |
 | mésange | 8 | 0 | 0 | 8 | 0 |
 | fondements | 2 | 0 | 0 | 2 | 0 |
-| **TOTAL** | **65** | **17** | **4** | **44** | **0** |
+| **TOTAL** | **65** | **18** | **3** | **44** | **0** |
 
 ---
 

@@ -3,7 +3,9 @@
 **Référence** : ROLES-003 (couverture guards backend)
 **Source** : extraction automatique 59 routes + revue manuelle
 **Méthode** : grep des décorateurs `@router.*` + extraction des `Depends(...)` dans les paramètres ; cross-check avec doctrine `MERLIN_GOUV_TABLEAU_ROLES_ACCES_VISIBILITE_V1.md`.
-**Statut ROLES-003** : *active* (couverture 64 % vérifiée explicite + 22 % publique légitime ; 1 faille critique + 4 incohérences à traiter)
+**Statut ROLES-003** : **done** (post-PR #4 — 4 tickets corrigés + 9 tests pytest)
+
+> **MAJ post-PR #4** (commit `03265ab`, 8 mai 2026) : tous les tickets ouverts par cet audit ont été corrigés. Les sections §2 et §3 ci-dessous restent comme **trace historique de la découverte initiale** ; la section §5 indique le statut final de chaque ticket. Détail technique dans [`CORRECTIONS_ROLES_AUDIT_2026-05-08.md`](CORRECTIONS_ROLES_AUDIT_2026-05-08.md).
 
 ---
 
@@ -126,21 +128,21 @@ Si (a), renommer ou marquer `[INTERNAL/TEST]`. Si (b), la sécurité repose sur 
 
 ---
 
-## 5. Décisions & actions recommandées
+## 5. Décisions & actions — STATUT POST-PR #4
 
-### Priorité 1 (avant pilote payant)
+### Priorité 1 (avant pilote payant) — ✅ fermé
 
-- [ ] **BACK-PAY-001** : ajouter `require_operator` sur `POST /payments/stripe/checkout/audio-async` — bloquant pour pilote payant.
+- [x] **BACK-PAY-001** : ajouter `require_operator` sur `POST /payments/stripe/checkout/audio-async` — **✅ corrigé** (PR #4, commit `03265ab`). 3 tests pytest valident le comportement (anonyme → 401, public_client → 403, operator → passe le guard).
 
-### Priorité 2 (avant Vague 9)
+### Priorité 2 (avant Vague 9) — ✅ fermé
 
-- [ ] **BACK-BOOK-001** : aligner guard `cancel_slot` sur `require_verified_email_user`.
-- [ ] **BACK-AUDIO-001** : clarifier `client-join` (test vs production), ajouter docstring.
+- [x] **BACK-BOOK-001** : aligner guard `cancel_slot` sur `require_verified_email_user` — **✅ corrigé** (PR #4). 3 tests pytest valident.
+- [x] **BACK-AUDIO-001** : clarifier `client-join` (test vs production), ajouter docstring — **✅ corrigé** (PR #4, docstring complet ajouté).
 
-### Priorité 3 (refactoring/lisibilité)
+### Priorité 3 (refactoring/lisibilité) — partiellement fermé
 
-- [ ] **DOC-ROLES-001** : documenter pattern `_validate_create_access` dans la doctrine V1.1.
-- [ ] **BACK-DEPS-001** : renommer `require_supervision_roles` → `require_supervisor`.
+- [x] **BACK-DEPS-001** : renommer `require_supervision_roles` → `require_supervisor` — **✅ corrigé** (PR #4, alias rétroactif conservé). 3 tests pytest valident.
+- [ ] **DOC-ROLES-001** : documenter pattern `_validate_create_access` dans la doctrine V1.1 — *reporté* à la prochaine MAJ de `MERLIN_GOUV_TABLEAU_ROLES_ACCES_VISIBILITE` (non-bloquant).
 
 ### Priorité 4 (suivi)
 
