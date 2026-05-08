@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:e2e": "playwright test",
+    "test:e2e:prod": "BASE_URL=https://ivia.quebec API_BASE_URL=https://api.ivia.quebec playwright test",
+    "test:e2e:local": "BASE_URL=http://localhost:3000 API_BASE_URL=http://localhost:8000 playwright test",
+    "test:e2e:install": "playwright install chromium"
   },
   "dependencies": {
     "@prisma/client": "^7.7.0",
@@ -18,6 +22,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

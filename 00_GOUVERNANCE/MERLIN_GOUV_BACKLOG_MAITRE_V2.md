@@ -68,7 +68,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | FRONT-001 | `ClientPayload` TypeScript — `record_status` + `data_sensitivity_class` | P1 | `done` | `commit` | — | commit `62e3a46` |
 | FRONT-002 | `middleware.ts` → `proxy.ts` — corriger warning Next.js 16.2.4 | P2 | `todo` | `commit` | — | build sans warning middleware |
 | FRONT-003 | `reserver/page.tsx` → `confirmation/page.tsx` — état `confirmed` | P2 | `todo` | `commit` | — | parcours réservation complet sans régression |
-| FRONT-004 | Vérification parcours réservation bout-en-bout (hold → confirm → confirmation) | P2 | `todo` | `recette` | FRONT-003, INFRA-003 | flux sans blocage 3× de suite |
+| FRONT-004 | Vérification parcours réservation bout-en-bout (hold → confirm → confirmation) | P2 | `active` | `recette` | FRONT-003, INFRA-003 | infra Playwright en place (config + 2 specs publiques + API santé + 401/422). Reste : flux authentifié hold→confirm à couvrir |
 | FRONT-005 | Vérification page `espace-praticien` sans erreur console | P2 | `todo` | `recette` | INFRA-003 | zéro erreur console sur surfaces principales |
 | FRONT-006 | Vérifier affichage page d'accueil IVIA — performance + rendu | P3 | `todo` | `recette` | — | Lighthouse score acceptable |
 
@@ -170,7 +170,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 |---|---|---|---|---|---|
 | infra | 8 | 4 | 0 | 4 | 0 |
 | backend | 10 | 5 | 0 | 5 | 0 |
-| frontend | 6 | 1 | 0 | 5 | 0 |
+| frontend | 6 | 1 | 1 | 4 | 0 |
 | contenu | 5 | 2 | 0 | 3 | 0 |
 | diffusion | 3 | 0 | 0 | 3 | 0 |
 | gouvernance | 6 | 0 | 1 | 5 | 0 |
@@ -178,7 +178,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | rôles-accès | 10 | 0 | 0 | 10 | 0 |
 | mésange | 8 | 0 | 0 | 8 | 0 |
 | fondements | 2 | 0 | 0 | 2 | 0 |
-| **TOTAL** | **65** | **15** | **2** | **48** | **0** |
+| **TOTAL** | **65** | **15** | **3** | **47** | **0** |
 
 ---
 
