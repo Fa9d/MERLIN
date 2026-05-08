@@ -1,10 +1,12 @@
 # MERLIN — Matrice rôles ↔ routes API V1
 
 **Date** : 8 mai 2026
-**Version** : 1.0
-**Statut** : Référence active (ROLES-002 done)
+**Version** : 1.1 (post-PR #4)
+**Statut** : Référence active (ROLES-002 done, ROLES-003 done)
 **Source** : extraction automatique de `10_backend_merlin_api/app/api/routes/*.py` + helpers `app/core/deps.py`
 **Devise** : *Au sein de l'être — En actes.*
+
+> **MAJ V1.1** (PR #4, commit `03265ab`) : les 4 tickets ouverts par l'audit du 8 mai (BACK-PAY-001, BACK-BOOK-001, BACK-DEPS-001, BACK-AUDIO-001) sont corrigés. Les statuts ci-dessous reflètent l'état actuel ; voir `05_PREUVES_SOURCES/CORRECTIONS_ROLES_AUDIT_2026-05-08.md` pour le détail.
 
 ---
 
@@ -34,7 +36,8 @@
 | `require_practitioner_or_operator` | practitioner, operator | production clinique élargie |
 | `require_production_roles` | practitioner, operator | (alias sémantique du précédent) |
 | `require_internal_clinical_roles` | practitioner, operator, supervisor | tous rôles cliniques internes |
-| `require_supervision_roles` | supervisor | supervision seule |
+| `require_supervisor` | supervisor | supervision seule (renommé PR #4 — BACK-DEPS-001) |
+| `require_supervision_roles` *(alias rétroactif)* | supervisor | alias historique de `require_supervisor`, conservé pour compatibilité |
 | `require_admin_tech` | admin_tech | administration technique |
 | `require_roles(*roles)` | rôles fournis explicitement | factory générique |
 
@@ -72,7 +75,7 @@ Légende :
 |---|---|---|---|---|---|
 | POST | `/bookings/hold` | `hold_slot` | `require_verified_email_user` | 5 rôles auth + email vérifié | ✅ |
 | POST | `/bookings/confirm` | `confirm_slot` | `require_verified_email_user` | 5 rôles auth + email vérifié | ✅ |
-| POST | `/bookings/cancel` | `cancel_slot` | `get_current_user` | 5 rôles auth | ⚠️ incohérent (pas `require_verified_email_user`) — voir audit §3.1 |
+| POST | `/bookings/cancel` | `cancel_slot` | `require_verified_email_user` (corrigé PR #4) | 5 rôles auth + email vérifié | ✅ (BACK-BOOK-001 corrigé — aligné sur hold/confirm) |
 | GET  | `/bookings/my` | `my_bookings` | `get_current_user` | 5 rôles auth | ✅ (lecture propre) |
 
 ### 3.4 Calendrier praticien (/schedules)
@@ -135,7 +138,7 @@ Légende :
 | GET  | `/audio-sessions` | `list_audio_sessions` | `require_internal_clinical_roles` | practitioner, operator, supervisor | ✅ |
 | GET  | `/audio-sessions/{id}` | `get_audio_session` | `require_internal_clinical_roles` | practitioner, operator, supervisor | ✅ |
 | POST | `/audio-sessions/{id}/operator-join` | `create_operator_join_context` | `require_operator` | operator | ✅ |
-| POST | `/audio-sessions/{id}/client-join` | `create_client_join_context` | `require_operator` | operator | ⚠️ sémantique : opérateur génère un token *pour le client* — voir audit §3.3 |
+| POST | `/audio-sessions/{id}/client-join` | `create_client_join_context` | `require_operator` | operator | ✅ (BACK-AUDIO-001 corrigé — docstring documente l'usage opérateur interne) |
 
 ### 3.10 Audio recordings
 
@@ -163,7 +166,7 @@ Légende :
 
 | Méthode | Route | Fonction | Guard appliqué | Rôles autorisés | Statut |
 |---|---|---|---|---|---|
-| POST | `/payments/stripe/checkout/audio-async` | `create_audio_async_checkout_session` | aucun | tous (anonyme inclus) | 🚨 **faille potentielle** — voir audit §2.1 |
+| POST | `/payments/stripe/checkout/audio-async` | `create_audio_async_checkout_session` | `require_operator` (corrigé PR #4) | operator | ✅ (BACK-PAY-001 corrigé — faille critique fermée) |
 | POST | `/payments/stripe/webhook` | `stripe_webhook` | aucun (signature Stripe) | Stripe uniquement | 🟦 publique (vérif. signature serveur) |
 
 ### 3.13 Santé
@@ -176,18 +179,19 @@ Légende :
 
 ## 4. Synthèse
 
-### 4.1 Décompte
+### 4.1 Décompte (V1.1 post-PR #4)
 
 | Statut | Nombre | % |
 |---|---|---|
-| ✅ guard cohérent | 38 | 64 % |
+| ✅ guard cohérent | 43 | 73 % |
 | 🟦 publique intentionnelle | 13 | 22 % |
-| ⚠️ à clarifier | 4 | 7 % |
-| 🚨 faille potentielle | 1 | 2 % |
+| ⚠️ à clarifier | 0 | 0 % |
+| 🚨 faille potentielle | 0 | 0 % |
 | 🟦 dépréciée (410 GONE) | 1 | 2 % |
-| **Sous-total auth/clinique** | 42 | — |
-| **Sous-total publique légitime** | 14 | — |
+| Documenté par docstring (ex-incohérence) | 2 | 3 % |
 | **TOTAL** | 59 | 100 % |
+
+*Trace historique V1.0 : avant PR #4, on comptait 38 ✅ + 4 ⚠️ + 1 🚨. La PR #4 a converti la faille en ✅, BACK-BOOK-001 en ✅, et BACK-AUDIO-001 + DOC-ROLES-001 en routes documentées par docstring (BACK-DEPS-001 = renommage interne sans impact statut).*
 
 ### 4.2 Couverture par rôle
 
