@@ -1,11 +1,13 @@
 ---
 id: BACKLOG-MAITRE
-version: V2
-date: 2026-05-06
+version: V2.1
+date: 2026-05-08
 statut: actif
 auteur: David Phaneuf
 remplace: MERLIN_GOUV_BACKLOG_MAITRE_V1.md + MERLIN_GOUV_BACKLOG_IMPLEMENTATION_ROLES_ACCES_VISIBILITE_V1.md + MERLIN_GOUV_BACKLOG_PRODUIT_MESANGE_V1.md
 decision: DEC-041
+maj_v2_1: smoke test prod 8 mai 2026 — INFRA-001→004 confirmés done, CONT-002 done
+maj_v2_2: 8 mai 2026 — ROLES-001 done (enum + doc V1), ROLES-002 done (matrice 59 routes), ROLES-003 active (audit 64 % couverture explicite, 1 faille BACK-PAY-001)
 ---
 
 # MERLIN — Backlog Maître V2
@@ -32,10 +34,10 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
-| INFRA-001 | scp docker-compose.prod.yml + 7 fichiers Python backend vers VPS | P1 | `todo` | `action-vps` | — | fichiers présents dans `/opt/merlin/` |
-| INFRA-002 | `make migrate` — appliquer migration 0017 sur DB VPS | P1 | `todo` | `action-vps` | INFRA-001 | `alembic_version = 20260504_0017` dans la DB prod |
-| INFRA-003 | `make up` — rebuild conteneurs après déploiement | P1 | `todo` | `action-vps` | INFRA-002 | `api.ivia.quebec/api/health` répond `200` |
-| INFRA-004 | Smoke test post-déploiement — vérifier routes critiques | P1 | `todo` | `recette` | INFRA-003 | health OK + `POST /intake-requests` OK + login OK |
+| INFRA-001 | scp docker-compose.prod.yml + fichiers Python backend vers VPS | P1 | `done` | `action-vps` | — | code prod = code local (51 routes vérifiées 2026-05-08) |
+| INFRA-002 | Appliquer migrations Alembic sur DB VPS | P1 | `done` | `action-vps` | INFRA-001 | schéma `PraticienPublic` prod = local (champs `title_line`, `intro_text`, `spoken_languages`, `available_channels`) |
+| INFRA-003 | Rebuild conteneurs après déploiement | P1 | `done` | `action-vps` | INFRA-002 | `api.ivia.quebec/api/health` répond `200` env=production db=ok (2026-05-08) |
+| INFRA-004 | Smoke test post-déploiement — vérifier routes critiques | P1 | `done` | `recette` | INFRA-003 | 6 endpoints testés 2026-05-08 : health 200, /praticiens 200, /auth/me 401, POST /intake-requests 422, POST /auth/login 422, POST /register/client 422 (validation Pydantic active) |
 | INFRA-005 | Recette e2e complète — rejouer flux `public → operator → supervisor → public` | P2 | `todo` | `recette` | INFRA-003 | checklist recette prod complétée |
 | INFRA-006 | Recette audio — rejouer checklist audio prod | P2 | `todo` | `recette` | INFRA-003 | checklist validation audio prod complétée |
 | INFRA-007 | Vérifier HTTPS + cookies sécurisés + CORS en production post-rebuild | P2 | `todo` | `recette` | INFRA-003 | TLS valide, réponses sans erreur CORS |
@@ -67,7 +69,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | FRONT-001 | `ClientPayload` TypeScript — `record_status` + `data_sensitivity_class` | P1 | `done` | `commit` | — | commit `62e3a46` |
 | FRONT-002 | `middleware.ts` → `proxy.ts` — corriger warning Next.js 16.2.4 | P2 | `todo` | `commit` | — | build sans warning middleware |
 | FRONT-003 | `reserver/page.tsx` → `confirmation/page.tsx` — état `confirmed` | P2 | `todo` | `commit` | — | parcours réservation complet sans régression |
-| FRONT-004 | Vérification parcours réservation bout-en-bout (hold → confirm → confirmation) | P2 | `todo` | `recette` | FRONT-003, INFRA-003 | flux sans blocage 3× de suite |
+| FRONT-004 | Vérification parcours réservation bout-en-bout (hold → confirm → confirmation) | P2 | `active` | `recette` | FRONT-003, INFRA-003 | infra Playwright en place (config + 2 specs publiques + API santé + 401/422). Reste : flux authentifié hold→confirm à couvrir |
 | FRONT-005 | Vérification page `espace-praticien` sans erreur console | P2 | `todo` | `recette` | INFRA-003 | zéro erreur console sur surfaces principales |
 | FRONT-006 | Vérifier affichage page d'accueil IVIA — performance + rendu | P3 | `todo` | `recette` | — | Lighthouse score acceptable |
 
@@ -78,7 +80,7 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
 | CONT-001 | 16 articles IVIA écrits et pushés sur GitHub (sections 1.1 → 4.4) | P1 | `done` | `commit` | — | commit `4af888b`, 16 fichiers dans `04_METHODES/articles/` |
-| CONT-002 | Créer route `/ressources` ou `/blog` dans Next.js | P3 | `todo` | `commit` | FRONT-002 | route accessible publiquement |
+| CONT-002 | Créer route `/ressources` ou `/blog` dans Next.js | P3 | `done` | `commit` | FRONT-002 | `ivia.quebec/ressources` répond 200 (vérifié 2026-05-08) |
 | CONT-003 | Système de rendu MDX pour les articles dans Next.js | P3 | `todo` | `commit` | CONT-002 | articles lisibles sur `ivia.quebec/ressources` |
 | CONT-004 | Implémenter composant "portes d'entrée" (accordéon 3 accroches) | P4 | `todo` | `commit` | CONT-003 | composant fonctionnel sur au moins 1 article |
 | CONT-005 | Maillage interne entre articles (liens contextuels rédigés) | P4 | `todo` | `fichier-repo` | CONT-003 | liens actifs sur les articles publiés |
@@ -113,12 +115,12 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
 | QIA-001 | MERLIN_CONTRAT_PROMPT_V1.md — commité et opérationnel | P1 | `done` | `fichier-repo` | — | fichier dans `00_GOUVERNANCE/` |
-| QIA-002 | MERLIN_GRILLE_QUALITE_NOTE_V1.md — créer et commiter | P1 | `todo` | `fichier-repo` | QIA-001 | fichier dans `00_GOUVERNANCE/` |
-| QIA-003 | MERLIN_GRILLE_GONOGO_PROMPT_V1.md — créer et commiter | P1 | `todo` | `fichier-repo` | QIA-001 | fichier dans `00_GOUVERNANCE/` |
+| QIA-002 | MERLIN_GRILLE_QUALITE_NOTE_V1.md — créer et commiter | P1 | `done` | `fichier-repo` | QIA-001 | fichier `00_GOUVERNANCE/MERLIN_GRILLE_QUALITE_NOTE_V1.md` (DEC-039, commit 8eb2e04, Vérifié 8 mai 2026) |
+| QIA-003 | MERLIN_GRILLE_GONOGO_PROMPT_V1.md — créer et commiter | P1 | `done` | `fichier-repo` | QIA-001 | fichier `00_GOUVERNANCE/MERLIN_GRILLE_GONOGO_PROMPT_V1.md` (DEC-040, commit 8eb2e04, vérifié 8 mai 2026) |
 | QIA-004 | Ajouter champ `test_associe` dans frontmatter de tous les prompts METH+PROD | P2 | `todo` | `commit` | QIA-001 | tous les prompts existants mis à jour |
 | QIA-005 | Stratégie replay tests IA — budget token + fixtures + marqueurs pytest | P2 | `todo` | `fichier-repo` | — | pytest.ini + conftest.py updatés |
 | QIA-006 | Découpage smoke tests — sous-scénarii par type de sortie | P3 | `todo` | `fichier-repo` | QIA-005 | tests/ structurés en sous-dossiers |
-| QIA-007 | Encoder frontière hypothèse/fait dans schéma JSON (champs faits/hypotheses/recommandations) | P2 | `todo` | `commit` | QIA-001 | schéma JSON mis à jour, tests passent |
+| QIA-007 | Encoder frontière hypothèse/fait dans schéma JSON (champs faits/hypotheses/recommandations) | P2 | `active` | `commit` | QIA-001 | ADR-0005 validé (DEC-044) spécifie le patch v1.0 → v1.1 (schéma + Pydantic + migration 0019 + 2 tests). Implémentation à exécuter |
 
 ---
 
@@ -126,9 +128,9 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 
 | ID | Titre | Prio | Statut | Livrable attendu | Dépend de | Preuve / critère de sortie |
 |---|---|---|---|---|---|---|
-| ROLES-001 | Modèle de rôles défini : public / client / praticien / opérateur / superviseur / admin | P2 | `todo` | `décision` | — | entrée dans REGISTRE_DECISIONS |
-| ROLES-002 | Matrice d'accès par rôle et par route (back + front) | P2 | `todo` | `fichier-repo` | ROLES-001 | tableau dans `00_GOUVERNANCE/` |
-| ROLES-003 | Implémentation backend : guard par rôle sur routes protégées | P2 | `todo` | `commit` | ROLES-002 | tests unitaires passent, rôles respectés |
+| ROLES-001 | Modèle de rôles défini : public / client / praticien / opérateur / superviseur / admin | P2 | `done` | `décision` | — | enum `AppRole` (5 valeurs) + doc V1 (368 lignes) `MERLIN_GOUV_TABLEAU_ROLES_ACCES_VISIBILITE_V1.md` (22 avril 2026) |
+| ROLES-002 | Matrice d'accès par rôle et par route (back + front) | P2 | `done` | `fichier-repo` | ROLES-001 | `MERLIN_GOUV_MATRICE_ROLES_ROUTES_V1.md` (8 mai 2026, 59 routes documentées) |
+| ROLES-003 | Implémentation backend : guard par rôle sur routes protégées | P2 | `active` | `commit` | ROLES-002 | 38/59 routes guard explicite (64 %) + 13/59 publiques légitimes (22 %) ; 1 faille (BACK-PAY-001) + 4 incohérences à traiter — voir `AUDIT_ROLES_ROUTES_2026-05-08.md` |
 | ROLES-004 | Implémentation frontend : visibilité conditionnelle par rôle | P3 | `todo` | `commit` | ROLES-003 | composants React n'affichent que ce que le rôle autorise |
 | ROLES-005 | Interface espace praticien — accès dossiers clients assignés | P3 | `todo` | `commit` | ROLES-003 | praticien voit uniquement ses clients |
 | ROLES-006 | Interface opérateur — tableau de bord demandes + assignation | P3 | `todo` | `commit` | ROLES-003 | opérateur peut assigner, pas modifier le contenu clinique |
@@ -167,17 +169,17 @@ ID | Titre | Domaine | Prio | Statut | Livrable attendu | Dépend de | Preuve / 
 
 | Domaine | Total | Done | Active | Todo | Blocked |
 |---|---|---|---|---|---|
-| infra | 8 | 0 | 0 | 8 | 0 |
+| infra | 8 | 4 | 0 | 4 | 0 |
 | backend | 10 | 5 | 0 | 5 | 0 |
-| frontend | 6 | 1 | 0 | 5 | 0 |
-| contenu | 5 | 1 | 0 | 4 | 0 |
+| frontend | 6 | 1 | 1 | 4 | 0 |
+| contenu | 5 | 2 | 0 | 3 | 0 |
 | diffusion | 3 | 0 | 0 | 3 | 0 |
 | gouvernance | 6 | 0 | 1 | 5 | 0 |
-| qualité-ia | 7 | 1 | 0 | 6 | 0 |
-| rôles-accès | 10 | 0 | 0 | 10 | 0 |
+| qualité-ia | 7 | 3 | 1 | 3 | 0 |
+| rôles-accès | 10 | 2 | 1 | 7 | 0 |
 | mésange | 8 | 0 | 0 | 8 | 0 |
 | fondements | 2 | 0 | 0 | 2 | 0 |
-| **TOTAL** | **65** | **8** | **1** | **56** | **0** |
+| **TOTAL** | **65** | **17** | **4** | **44** | **0** |
 
 ---
 
