@@ -1,359 +1,530 @@
 <!DOCTYPE html>
-<html lang="fr-CA" data-theme="light">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IVIA — Un espace d'écoute pour clarifier ce que vous vivez</title>
-<meta name="description" content="Espace d'écoute audio québécois. Vous parlez à un·e praticien·ne, vous recevez un résumé clair et trois pistes concrètes. Conforme Loi 25.">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@300..600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared/coupe.css">
-<link rel="stylesheet" href="shared/public.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Une présence d'écoute</title>
+  <meta name="description" content="IVIA est un espace pour déposer ce que l'on porte. Une présence d'écoute, un accompagnement vers la clarté et l'équilibre, à votre rythme.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,30..100;1,9..144,300..900,30..100&family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="public-page">
-<div class="vrille-fixe" aria-hidden="true">
-  <svg viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="vg" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#C58A8A" stop-opacity="0.8"/>
-      <stop offset="50%" stop-color="#D9A441" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#6B8266" stop-opacity="0.4"/>
-    </linearGradient></defs>
-    <path d="M 250 0 C 100 200, 400 350, 200 500 C 50 650, 350 750, 250 800" stroke="url(#vg)" stroke-width="1.5" fill="none"/>
-    <path d="M 280 0 C 130 220, 430 360, 230 510 C 80 660, 380 760, 280 800" stroke="#C58A8A" stroke-width="0.8" stroke-opacity="0.4" fill="none"/>
-    <ellipse cx="200" cy="180" rx="14" ry="5" fill="#6B8266" fill-opacity="0.3" transform="rotate(-30 200 180)"/>
-    <ellipse cx="320" cy="280" rx="12" ry="4" fill="#D89260" fill-opacity="0.3" transform="rotate(20 320 280)"/>
-    <ellipse cx="180" cy="430" rx="16" ry="6" fill="#C58A8A" fill-opacity="0.35" transform="rotate(-15 180 430)"/>
-    <ellipse cx="290" cy="600" rx="13" ry="5" fill="#9A8AB8" fill-opacity="0.3" transform="rotate(40 290 600)"/>
-  </svg>
-</div>
-<header class="site-header">
-  <div class="container site-header__inner">
-    <a href="index.html" class="brand" aria-label="IVIA — accueil">
-      <svg class="brand__mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-  <circle cx="18" cy="18" r="14.5" stroke-opacity="0.4"/>
-  <path d="M18 4.5 C 11 12, 25 24, 18 31.5" stroke-linecap="round"/>
-  <path d="M11 18 C 14 16, 22 20, 25 18" stroke-linecap="round" stroke-opacity="0.7"/>
-  <circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
-</svg>
-      <span class="brand__name">IV<em>I</em>A</span>
-    </a>
-    <nav class="nav" aria-label="Navigation principale">
-      <a href="index.html" aria-current="page">Accueil</a>
-      <a href="comment.html">Comment ça fonctionne</a>
-      <a href="pourquoi.html">Pourquoi IVIA</a>
-      <a href="bibliotheque.html">Bibliothèque</a>
-      <a href="urgence.html">Si c'est urgent</a>
-    </nav>
-    <div class="header-actions">
-      <button class="mode-calme-toggle" data-mode-calme aria-pressed="false" aria-label="Activer le mode calme">
-        <span aria-hidden="true">◐</span> Mode calme
-      </button>
-      <a href="tests.html" class="btn btn--ghost btn--sm" style="opacity:0.85;">Espace tests</a><a href="client/audio-async.html" class="btn btn--primary btn--sm">Commencer une écoute</a>
-    </div>
+<body>
+
+  <!-- Texture papier en overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Vrille botanique fixe -->
+  <div class="vine" aria-hidden="true">
+    <svg viewBox="0 0 80 1000" preserveAspectRatio="none">
+      <path class="vine__path" d="M40 0 C 65 90, 5 180, 35 280 C 70 380, 5 480, 40 580 C 75 680, 5 780, 35 880 C 60 940, 30 980, 40 1000"/>
+      <path class="vine__leaf" d="M48 140 C 56 132, 64 134, 62 144 C 58 152, 50 152, 48 140 Z"/>
+      <path class="vine__leaf" d="M22 320 C 14 314, 8 320, 14 330 C 22 334, 28 328, 22 320 Z"/>
+      <path class="vine__leaf" d="M52 500 C 60 492, 68 496, 64 506 C 58 512, 50 510, 52 500 Z"/>
+      <path class="vine__leaf" d="M18 700 C 10 694, 6 702, 14 710 C 22 712, 26 706, 18 700 Z"/>
+      <path class="vine__leaf" d="M50 870 C 58 862, 64 868, 60 878 C 54 882, 48 878, 50 870 Z"/>
+    </svg>
   </div>
-</header>
 
-<main id="main">
+  <!-- =============== NAV =============== -->
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="#" class="logo" aria-label="IVIA — accueil">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M12 4 C 14 9, 14 15, 12 20 C 10 15, 10 9, 12 4 Z" fill="currentColor" opacity="0.6"/>
+        </svg>
+        IVIA
+      </a>
+      <nav>
+        <ul class="nav__links">
+          <li><a href="#approche">L'approche</a></li>
+          <li><a href="#outils">Outils</a></li>
+          <li><a href="#lectures">Ressources</a></li>
+          <li class="nav__links--keep">
+            <button class="calme-toggle" id="calmeToggle" type="button" aria-pressed="false">
+              Mode calme
+            </button>
+          </li>
+          <li class="nav__links--keep">
+            <a href="#rdv" class="nav__cta">Prendre rendez-vous</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <!-- Hero officiel selon MERLIN_GOUV_PAGE_SITE_CLIENT -->
-  <section class="public-hero">
-    <div class="container public-hero__inner">
-      <p class="public-hero__overline">Espace d'écoute · Québec · Conforme Loi 25</p>
-      <h1 class="public-hero__title">
-        Un espace d'<em>écoute</em><br>
-        pour clarifier ce que vous vivez<br>
-        <span class="public-hero__title-soft">et repartir avec une suite concrète.</span>
-      </h1>
-      <p class="public-hero__lede">
-        Vous nous parlez. Nous vous renvoyons un résumé clair et trois pistes concrètes —
-        sans jugement, sans diagnostic. À votre rythme.
-      </p>
-      <div class="public-hero__cta">
-        <a href="client/audio-async.html" class="btn btn--primary btn--lg">Commencer une écoute</a>
-        <a href="comment.html" class="btn btn--ghost btn--lg">Comprendre comment ça fonctionne</a>
+  <!-- =============== HERO =============== -->
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div class="hero__text reveal">
+        <p class="eyebrow">Espace d'écoute et de connaissances · IVIA — In Vivo In Actu</p>
+        <h1 class="hero__title">Déposer ce que vous <em>portez</em>.</h1>
+        <p class="hero__lead">
+          IVIA est un espace pour déposer ce que l'on porte. Une présence d'écoute, une voix apaisante, un accompagnement pour retrouver de la clarté et repartir avec un repère concret.
+        </p>
+        <div class="hero__actions">
+          <a href="#rdv" class="btn btn--primary">
+            Prendre un premier rendez-vous
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#approche" class="btn btn--ghost">Découvrir l'approche</a>
+        </div>
       </div>
-      <p class="public-hero__disclaimer">
-        IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.
-        Si vous êtes en détresse, <a href="urgence.html">cliquez ici</a> ou composez le <strong>911</strong>.
-      </p>
+
+      <div class="hero__motif reveal reveal--delay-2" aria-hidden="true">
+        <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"  stop-color="#D89260" stop-opacity="0.55"/>
+              <stop offset="60%" stop-color="#C58A8A" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#C58A8A" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="chair" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"  stop-color="#F6F0E4"/>
+              <stop offset="100%" stop-color="#E5DCC9"/>
+            </radialGradient>
+          </defs>
+          <circle cx="240" cy="240" r="220" fill="url(#halo)"/>
+          <circle cx="240" cy="240" r="170" fill="#C58A8A" opacity="0.85"/>
+          <circle cx="240" cy="240" r="148" fill="url(#chair)"/>
+          <path d="M240 130 C 290 180, 300 280, 240 370 C 180 280, 190 180, 240 130 Z"
+                fill="#D89260" opacity="0.55"/>
+          <g fill="#7B5B7E" opacity="0.85">
+            <circle cx="220" cy="180" r="3.5"/>
+            <circle cx="252" cy="172" r="3"/>
+            <circle cx="240" cy="200" r="2.8"/>
+            <circle cx="206" cy="218" r="3.2"/>
+            <circle cx="270" cy="218" r="3"/>
+            <circle cx="232" cy="232" r="3.4"/>
+            <circle cx="252" cy="252" r="2.8"/>
+            <circle cx="216" cy="258" r="3"/>
+            <circle cx="240" cy="280" r="3.4"/>
+            <circle cx="266" cy="290" r="3"/>
+            <circle cx="218" cy="298" r="2.8"/>
+            <circle cx="242" cy="320" r="3.2"/>
+            <circle cx="226" cy="340" r="2.8"/>
+            <circle cx="256" cy="338" r="3"/>
+          </g>
+          <g transform="translate(360 110)" stroke="#6B8266" stroke-width="2.5" stroke-linecap="round" fill="none">
+            <path d="M 0 0 Q 8 0, 8 -8 Q 8 -22, -8 -22 Q -28 -22, -28 -2 Q -28 24, 4 24 Q 40 24, 40 -14 Q 40 -56, -6 -56"/>
+          </g>
+          <path d="M 240 70 Q 235 95, 240 130" stroke="#6B8266" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <ellipse cx="225" cy="85" rx="9" ry="3.5" fill="#6B8266" transform="rotate(-30 225 85)"/>
+          <ellipse cx="255" cy="95" rx="8" ry="3" fill="#6B8266" transform="rotate(35 255 95)"/>
+        </svg>
+      </div>
     </div>
   </section>
 
-  <!-- Trois portes : c'est l'âme de la landing -->
-  <section class="public-section">
-    <div class="container">
-      <p class="section-overline">Trois portes</p>
-      <h2 class="section-title">Selon ce qui vous habite, en ce moment</h2>
+  <!-- =============== MANIÈRE D'ÊTRE — 6 principes =============== -->
+  <section class="principes" id="approche">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__main">
+          <p class="eyebrow">Manière d'être</p>
+          <h2>Six <em>repères</em> pour ce qu'on partage.</h2>
+        </div>
+        <p class="section-head__meta">L'esprit IVIA, en six gestes</p>
+      </div>
 
-      <div class="trois-portes">
+      <div class="principes__grid">
+        <article class="principe principe--rose reveal">
+          <span class="principe__num">01</span>
+          <h3 class="principe__title">Sans grille, sans jugement</h3>
+          <p class="principe__quote">« Chaque personne arrive avec son histoire unique. »</p>
+        </article>
 
-        <a class="porte porte--ecoute" href="client/audio-async.html">
-          <div class="porte__icon">
-            <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4">
-              <path d="M15 25 q-3 5 0 10 q3 5 0 10" stroke-linecap="round"/>
-              <path d="M22 22 q-5 8 0 16 q5 8 0 16" stroke-linecap="round" stroke-opacity="0.6"/>
-              <circle cx="35" cy="30" r="9"/>
-              <path d="M35 39 v6 m-4 0 h8" stroke-linecap="round"/>
+        <article class="principe principe--apricot reveal reveal--delay-1">
+          <span class="principe__num">02</span>
+          <h3 class="principe__title">À votre rythme</h3>
+          <p class="principe__quote">« Pas de protocole imposé. Pas de durée fixée à l'avance. »</p>
+        </article>
+
+        <article class="principe principe--moss reveal reveal--delay-2">
+          <span class="principe__num">03</span>
+          <h3 class="principe__title">Une présence, pas un service</h3>
+          <p class="principe__quote">« Une personne, une attention, une mémoire, une continuité. »</p>
+        </article>
+
+        <article class="principe principe--honey reveal">
+          <span class="principe__num">04</span>
+          <h3 class="principe__title">Repartir avec quelque chose</h3>
+          <p class="principe__quote">« Une prise de conscience, une décision, une direction. »</p>
+        </article>
+
+        <article class="principe principe--glacier reveal reveal--delay-1">
+          <span class="principe__num">05</span>
+          <h3 class="principe__title">La discrétion comme base</h3>
+          <p class="principe__quote">« Ce que vous partagez reste entre nous. »</p>
+        </article>
+
+        <article class="principe principe--plum reveal reveal--delay-2">
+          <span class="principe__num">06</span>
+          <h3 class="principe__title">Pas besoin des mots parfaits</h3>
+          <p class="principe__quote">« Vous avez juste à commencer. »</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== APPROCHE & ACCOMPAGNEMENT =============== -->
+  <section class="parcours">
+    <div class="wrap parcours__inner">
+
+      <div class="parcours__col parcours__col--approche reveal">
+        <p class="eyebrow">L'approche</p>
+        <h2>L'écoute, comme un <em>chemin</em>.</h2>
+        <p>
+          Je prends le temps de comprendre ce que vous vivez, sans grille, sans jugement. L'écoute n'est pas une étape — c'est la voie elle-même.
+        </p>
+        <p>
+          Ensemble, on cherche les chemins, les voies, les actions qui mènent vers l'équilibre et l'indépendance choisie — celle que vous gagnez par la compréhension de vous-même et de votre environnement.
+        </p>
+      </div>
+
+      <div class="parcours__col parcours__col--accompagnement reveal reveal--delay-1">
+        <p class="eyebrow">L'accompagnement</p>
+        <h2>Une rencontre. Puis une <em>autre</em>.</h2>
+        <p>
+          À chaque rencontre, on cherche quelque chose que vous pouvez garder. Une prise de conscience, une décision, une direction. Pas de transformation radicale promise — un repère concret, à chaque fois.
+        </p>
+        <p>
+          Vous n'avez pas à arriver avec les mots parfaits. Vous avez juste à commencer.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============== OUTILS INTERACTIFS =============== -->
+  <section class="outils" id="outils">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__main">
+          <p class="eyebrow">Outils</p>
+          <h2>Quelques minutes pour <em>s'y voir</em>.</h2>
+        </div>
+        <p class="section-head__meta">Quatre courts parcours · sans inscription</p>
+      </div>
+
+      <div class="outils__grid">
+
+        <a href="#" class="outil outil--rose reveal">
+          <div class="outil__icon" aria-hidden="true">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="30" r="24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+              <circle cx="30" cy="30" r="14" fill="currentColor" opacity="0.6"/>
+              <circle cx="30" cy="30" r="6" fill="currentColor"/>
             </svg>
           </div>
-          <h3>Vous voulez être écouté·e</h3>
-          <p>Une séance audio avec un·e praticien·ne IVIA — en rendez-vous direct ou en différé selon ce qui vous convient. Vous recevez ensuite un résumé écrit et trois pistes concrètes.</p>
-          <span class="porte__cta">Commencer une écoute →</span>
+          <p class="outil__meta">5 questions · 3 min</p>
+          <h3 class="outil__title">Où en êtes-vous aujourd'hui&nbsp;?</h3>
+          <p class="outil__excerpt">Cinq questions douces pour mettre des mots sur l'état du jour. À la fin, un repère et quelques pistes.</p>
+          <span class="outil__cta">Commencer <span aria-hidden="true">→</span></span>
         </a>
 
-        <a class="porte porte--lire" href="bibliotheque.html">
-          <div class="porte__icon">
-            <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4">
-              <path d="M10 18 v32 q10 -3 20 0 q10 -3 20 0 v-32 q-10 -3 -20 0 q-10 -3 -20 0 z"/>
-              <path d="M30 18 v32" stroke-opacity="0.5"/>
-              <path d="M16 27 h10 M16 33 h10 M34 27 h10 M34 33 h10" stroke-opacity="0.5"/>
+        <a href="#" class="outil outil--glacier reveal reveal--delay-1">
+          <div class="outil__icon" aria-hidden="true">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 30 12 Q 12 30, 30 48 Q 48 30, 30 12 Z" fill="currentColor" opacity="0.45"/>
+              <circle cx="30" cy="30" r="6" fill="currentColor"/>
             </svg>
           </div>
-          <h3>Vous voulez d'abord comprendre</h3>
-          <p>Seize articles courts, écrits avec soin. L'écoute, l'équilibre, les frontières, la suite. Lisez sans engagement, à votre rythme.</p>
-          <span class="porte__cta">Ouvrir la bibliothèque →</span>
+          <p class="outil__meta">6 questions · 4 min</p>
+          <h3 class="outil__title">Sommeil et apaisement</h3>
+          <p class="outil__excerpt">Comprendre ce que les nuits disent. Identifier trois axes — mental, comportemental, physique.</p>
+          <span class="outil__cta">Commencer <span aria-hidden="true">→</span></span>
         </a>
 
-        <a class="porte porte--journal" href="client/journal.html">
-          <div class="porte__icon">
-            <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4">
-              <circle cx="30" cy="30" r="20"/>
-              <path d="M30 14 v32 M14 30 h32" stroke-opacity="0.4"/>
-              <circle cx="30" cy="30" r="3" fill="currentColor"/>
-              <path d="M30 30 l10 -10" stroke-linecap="round"/>
+        <a href="#" class="outil outil--apricot reveal reveal--delay-2">
+          <div class="outil__icon" aria-hidden="true">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="30" r="22" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+              <circle cx="30" cy="30" r="14" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+              <circle cx="30" cy="30" r="6" fill="currentColor" opacity="0.8"/>
             </svg>
           </div>
-          <h3>Vous voulez vous suivre dans le temps</h3>
-          <p>Le journal de vie consigne vos écoutes, vos suites concrètes et l'évolution de vos cinq zones. Aucun diagnostic — un miroir vivant.</p>
-          <span class="porte__cta">Découvrir le journal →</span>
+          <p class="outil__meta">5 questions · 3 min</p>
+          <h3 class="outil__title">Fréquence et environnement</h3>
+          <p class="outil__excerpt">Repérer ce qui revient, ce qui pèse, ce qui résonne. Une carte personnalisée à la sortie.</p>
+          <span class="outil__cta">Commencer <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="#" class="outil outil--moss reveal">
+          <div class="outil__icon" aria-hidden="true">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M 30 30 Q 33 30, 33 27 Q 33 21, 25 21 Q 16 21, 16 30 Q 16 42, 30 42 Q 46 42, 46 26 Q 46 10, 24 10"/>
+            </svg>
+          </div>
+          <p class="outil__meta">4 étapes libres</p>
+          <h3 class="outil__title">Préparer une rencontre</h3>
+          <p class="outil__excerpt">Avant la première rencontre — ce que vous portez, ce que vous voulez garder, ce qui vous inquiète.</p>
+          <span class="outil__cta">Commencer <span aria-hidden="true">→</span></span>
         </a>
 
       </div>
     </div>
   </section>
 
-  <!-- Ce que IVIA est et n'est pas -->
-  <section class="public-section public-section--soft">
-    <div class="container ce-quivia">
-      <div>
-        <p class="section-overline">Pour qu'on se comprenne</p>
-        <h2 class="section-title">Ce qu'IVIA <em>est</em></h2>
-        <ul class="puces puces--vert">
-          <li>Un espace d'écoute audio — en direct ou en différé, selon votre rythme</li>
-          <li>Un résumé clair, doux, sans jargon, écrit pour vous</li>
-          <li>Trois pistes concrètes que vous choisissez de tenir ou non</li>
-          <li>Un journal de vie qui suit vos cycles dans la durée</li>
-          <li>Un espace conforme à la <strong>Loi 25 du Québec</strong></li>
+  <!-- =============== LECTURES =============== -->
+  <section class="lectures" id="lectures">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__main">
+          <p class="eyebrow">Lectures</p>
+          <h2>Lire pour <em>voir plus clair</em>.</h2>
+        </div>
+        <p class="section-head__meta">Mis à jour cette semaine</p>
+      </div>
+
+      <div class="lectures__grid">
+
+        <a href="lecture-exemple.html" class="article-card reveal">
+          <div class="article-card__cover cover--rose">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="100" cy="100" r="80" fill="#C58A8A" opacity="0.55"/>
+              <circle cx="100" cy="100" r="62" fill="#F6F0E4"/>
+              <path d="M100 50 C 130 80, 135 130, 100 165 C 65 130, 70 80, 100 50 Z" fill="#D89260" opacity="0.55"/>
+              <g fill="#7B5B7E" opacity="0.9">
+                <circle cx="92" cy="78" r="2"/><circle cx="108" cy="82" r="1.8"/>
+                <circle cx="98" cy="98" r="2"/><circle cx="86" cy="108" r="1.8"/>
+                <circle cx="112" cy="108" r="2"/><circle cx="100" cy="120" r="2"/>
+                <circle cx="90" cy="138" r="1.8"/><circle cx="110" cy="138" r="2"/>
+                <circle cx="100" cy="152" r="1.8"/>
+              </g>
+            </svg>
+          </div>
+          <div class="article-card__body">
+            <p class="article-card__meta">
+              <span>Fréquence</span><span class="dot"></span><span>12 min</span>
+            </p>
+            <h3 class="article-card__title">Fatigue, blues ou épuisement</h3>
+            <p class="article-card__excerpt">
+              Trois mots, trois territoires. Les distinguer ne demande pas un diagnostic — juste un peu de temps pour se regarder.
+            </p>
+            <div class="article-card__footer">
+              <span>Énergie · Sens</span>
+              <span class="article-card__cta">Lire <span aria-hidden="true">→</span></span>
+            </div>
+          </div>
+        </a>
+
+        <a href="lecture-exemple.html" class="article-card reveal reveal--delay-1">
+          <div class="article-card__cover cover--apricot">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <ellipse cx="100" cy="105" rx="78" ry="72" fill="#D89260" opacity="0.45"/>
+              <ellipse cx="100" cy="105" rx="64" ry="58" fill="#D9A441" opacity="0.55"/>
+              <ellipse cx="100" cy="105" rx="50" ry="46" fill="#F6F0E4"/>
+              <ellipse cx="100" cy="105" rx="38" ry="34" fill="#D89260" opacity="0.6"/>
+              <ellipse cx="100" cy="105" rx="24" ry="22" fill="#7B5B7E" opacity="0.75"/>
+              <ellipse cx="100" cy="105" rx="11" ry="10" fill="#F6F0E4"/>
+              <ellipse cx="100" cy="105" rx="4" ry="3.6" fill="#7B5B7E"/>
+            </svg>
+          </div>
+          <div class="article-card__body">
+            <p class="article-card__meta">
+              <span>Connaissance</span><span class="dot"></span><span>8 min</span>
+            </p>
+            <h3 class="article-card__title">Pourquoi être entendu fait une différence</h3>
+            <p class="article-card__excerpt">
+              Ce qui se passe quand quelqu'un écoute vraiment. Pas la magie. Une mécanique douce, mesurable, durable.
+            </p>
+            <div class="article-card__footer">
+              <span>Écoute · Lien</span>
+              <span class="article-card__cta">Lire <span aria-hidden="true">→</span></span>
+            </div>
+          </div>
+        </a>
+
+        <a href="lecture-exemple.html" class="article-card reveal reveal--delay-2">
+          <div class="article-card__cover cover--moss">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <g transform="translate(100 100)" fill="none" stroke="#6B8266" stroke-width="4.5" stroke-linecap="round">
+                <path d="M 0 0 Q 6 0, 6 -6 Q 6 -18, -8 -18 Q -26 -18, -26 0 Q -26 22, 0 22 Q 30 22, 30 -10 Q 30 -42, -6 -42 Q -50 -42, -50 6 Q -50 60, 12 60"/>
+              </g>
+              <g fill="#6B8266" opacity="0.7">
+                <ellipse cx="50" cy="50" rx="6" ry="2" transform="rotate(-30 50 50)"/>
+                <ellipse cx="150" cy="60" rx="7" ry="2.5" transform="rotate(35 150 60)"/>
+                <ellipse cx="60" cy="160" rx="6" ry="2" transform="rotate(-20 60 160)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="article-card__body">
+            <p class="article-card__meta">
+              <span>Fréquence</span><span class="dot"></span><span>10 min</span>
+            </p>
+            <h3 class="article-card__title">Ce que signifie vraiment « prendre soin de soi »</h3>
+            <p class="article-card__excerpt">
+              Ni récompense ni performance. Une attention quotidienne et discrète, qui se construit comme une langue qu'on réapprend.
+            </p>
+            <div class="article-card__footer">
+              <span>Soi · Quotidien</span>
+              <span class="article-card__cta">Lire <span aria-hidden="true">→</span></span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== GUIDES =============== -->
+  <section class="guides" id="guides">
+    <div class="wrap guides__inner">
+      <div class="guides__intro reveal">
+        <p class="eyebrow">Guides</p>
+        <h2>Pour mieux <em>vous orienter</em>.</h2>
+        <p>
+          Cinq repères courts, écrits pour les moments où l'on cherche à clarifier. Mis à jour quand le terrain bouge.
+        </p>
+      </div>
+
+      <div class="reveal reveal--delay-1">
+        <ul class="guides__list">
+          <li>
+            <a href="#">
+              <span class="guides__num">01</span>
+              <span class="guides__title">Pourquoi être entendu fait une différence</span>
+              <span class="guides__time">8 min</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="guides__num">02</span>
+              <span class="guides__title">Quand faut-il consulter un professionnel</span>
+              <span class="guides__time">6 min</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="guides__num">03</span>
+              <span class="guides__title">L'écoute active en famille</span>
+              <span class="guides__time">9 min</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="guides__num">04</span>
+              <span class="guides__title">La voix, le son et le soin</span>
+              <span class="guides__time">7 min</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="guides__num">05</span>
+              <span class="guides__title">Psychologue, travailleur social, psychiatre — quelle différence&nbsp;?</span>
+              <span class="guides__time">5 min</span>
+            </a>
+          </li>
         </ul>
       </div>
+    </div>
+  </section>
+
+  <!-- =============== TROIS VOIES =============== -->
+  <section class="voies" id="voies">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-head__main">
+          <p class="eyebrow">Trois voies</p>
+          <h2>Selon ce qui vous <em>appelle</em> aujourd'hui.</h2>
+        </div>
+        <p class="section-head__meta">Toutes les ressources rangées par voie</p>
+      </div>
+
+      <div class="voies__grid">
+
+        <a href="#" class="voie voie--apricot reveal">
+          <div class="voie__visual" aria-hidden="true">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="38" fill="currentColor" opacity="0.25"/>
+              <circle cx="50" cy="50" r="26" fill="currentColor" opacity="0.45"/>
+              <circle cx="50" cy="50" r="14" fill="currentColor" opacity="0.7"/>
+            </svg>
+          </div>
+          <h3 class="voie__title">Fréquence</h3>
+          <p class="voie__desc">Ce qui revient, ce qui pèse, ce qui résonne. Repérer les ondes du quotidien et les apprivoiser.</p>
+          <span class="voie__cta">Explorer cette voie <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="#" class="voie voie--glacier reveal reveal--delay-1">
+          <div class="voie__visual" aria-hidden="true">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 50 18 Q 22 50, 50 82 Q 78 50, 50 18 Z" fill="currentColor" opacity="0.45"/>
+              <circle cx="50" cy="50" r="10" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="voie__title">Sommeil</h3>
+          <p class="voie__desc">Ce que les nuits disent du jour. Comprendre, apaiser, retrouver un rythme qui tient.</p>
+          <span class="voie__cta">Explorer cette voie <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="#" class="voie voie--moss reveal reveal--delay-2">
+          <div class="voie__visual" aria-hidden="true">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+              <path d="M 50 50 Q 54 50, 54 46 Q 54 38, 42 38 Q 28 38, 28 50 Q 28 66, 50 66 Q 76 66, 76 44 Q 76 22, 42 22"/>
+            </svg>
+          </div>
+          <h3 class="voie__title">Connaissance</h3>
+          <p class="voie__desc">Mieux choisir, mieux comprendre. Repères pratiques, distinctions utiles, ressources québécoises.</p>
+          <span class="voie__cta">Explorer cette voie <span aria-hidden="true">→</span></span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== RDV =============== -->
+  <section class="contact" id="rdv">
+    <div class="wrap contact__inner">
+      <div class="reveal">
+        <p class="eyebrow">Premier rendez-vous</p>
+        <h2>Si quelque chose <em>résonne</em>, c'est peut-être le bon moment.</h2>
+        <p>
+          Il y a une personne derrière ce site, pas un service. Une attention, une mémoire, une continuité. On avance à votre rythme, selon ce dont vous avez besoin.
+        </p>
+        <div class="hero__actions">
+          <a href="#" class="btn btn--primary">
+            Prendre un premier rendez-vous
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#" class="btn btn--ghost">Comment ça se passe</a>
+        </div>
+      </div>
+      <aside class="contact__aside reveal reveal--delay-1">
+        <strong>Discrétion</strong>
+        Ce que vous partagez reste entre nous. C'est la base.
+        <br><br>
+        <strong>Rythme</strong>
+        Pas de durée fixée. Une rencontre, puis une autre — selon ce qui se présente.
+        <br><br>
+        <strong>Réponse</strong>
+        Dans les 24 heures ouvrables, par la voie que vous préférez.
+      </aside>
+    </div>
+  </section>
+
+  <!-- =============== FOOTER =============== -->
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div class="footer__legal">
+        <strong>IVIA</strong> — une présence d'écoute.<br>
+        Une initiative de MERLIN, Montréal · Québec.
+      </div>
       <div>
-        <p class="section-overline">&nbsp;</p>
-        <h2 class="section-title">Ce qu'IVIA <em>n'est pas</em></h2>
-        <ul class="puces puces--rose">
-          <li>Pas un service d'urgence — pour ça, composez le 911</li>
-          <li>Pas un diagnostic médical ou psychologique</li>
-          <li>Pas une thérapie, pas un substitut à votre suivi en santé</li>
-          <li>Pas une intelligence artificielle qui vous parle à la place d'un humain</li>
-          <li>Pas un produit qui vous garde captif·ve — vous êtes libre à chaque étape</li>
-        </ul>
+        <a href="#approche">L'approche</a>
+        &nbsp;·&nbsp;
+        <a href="#outils">Outils</a>
+        &nbsp;·&nbsp;
+        <a href="#lectures">Ressources</a>
+        &nbsp;·&nbsp;
+        <a href="reference-visuelle.html">Référence visuelle</a>
       </div>
     </div>
-  </section>
+  </footer>
 
-  <!-- Cycle visible : les 5 zones du cercle IVIA -->
-  <section class="public-section">
-    <div class="container">
-      <p class="section-overline">Le cercle IVIA</p>
-      <h2 class="section-title">Cinq zones, un seul vivant</h2>
-      <p class="section-lede">L'humain n'est pas une liste de problèmes. Il est un système vivant. Le cercle nous aide à voir où l'énergie circule et où elle se bloque.</p>
-
-      <div class="cercle-grid">
-        <div class="zone zone--corps">
-          <h3>Corps</h3>
-          <p>Le sommeil, l'énergie, les sensations. Le premier témoin de ce qui se passe.</p>
-        </div>
-        <div class="zone zone--relation">
-          <h3>Relation</h3>
-          <p>Les liens, la place que vous prenez, celle que vous laissez aux autres.</p>
-        </div>
-        <div class="zone zone--sens">
-          <h3>Sens</h3>
-          <p>Ce qui compte pour vous. Ce qui vous met en mouvement le matin.</p>
-        </div>
-        <div class="zone zone--ressources">
-          <h3>Ressources</h3>
-          <p>Le temps, l'argent, le réseau. Ce qui rend possible — ou ce qui contraint.</p>
-        </div>
-        <div class="zone zone--frequence">
-          <h3>Fréquence</h3>
-          <p>Le rythme. Pas une croyance — un état du vivant. Haut, bas, en équilibre.</p>
-        </div>
-      </div>
-
-      <p class="section-foot"><a href="bibliotheque.html#axe-equilibre">Lire « Les cinq zones du cercle IVIA » →</a></p>
-    </div>
-  </section>
-
-  <!-- Le parcours en 4 étapes -->
-  <section class="public-section public-section--soft">
-    <div class="container">
-      <p class="section-overline">Comment ça se passe</p>
-      <h2 class="section-title">Quatre étapes, à votre rythme</h2>
-
-      <ol class="parcours">
-        <li>
-          <span class="parcours__num">1</span>
-          <h3>Vous parlez</h3>
-          <p>Au calme, depuis chez vous, en une fois ou plusieurs prises. Aucun temps minimum.</p>
-        </li>
-        <li>
-          <span class="parcours__num">2</span>
-          <h3>Nous écoutons</h3>
-          <p>Une praticienne ou un praticien IVIA reçoit votre audio. Notre outil interne propose des pistes — l'humain décide toujours.</p>
-        </li>
-        <li>
-          <span class="parcours__num">3</span>
-          <h3>Vous recevez un résumé</h3>
-          <p>Un texte clair, trois pistes concrètes, et la liberté de choisir si vous voulez aller plus loin. Le délai est annoncé selon le format de séance choisi.</p>
-        </li>
-        <li>
-          <span class="parcours__num">4</span>
-          <h3>Vous tenez ou vous ne tenez pas</h3>
-          <p>Le journal vous accompagne. Vous restez maître·sse du rythme et des décisions. Toujours.</p>
-        </li>
-      </ol>
-
-      <p class="section-foot"><a href="comment.html" class="btn btn--ghost">Voir le parcours détaillé →</a></p>
-    </div>
-  </section>
-
-  <!-- Aperçu bibliothèque -->
-  <section class="public-section">
-    <div class="container">
-      <p class="section-overline">Quelques articles à lire</p>
-      <h2 class="section-title">La bibliothèque — accès libre</h2>
-      <p class="section-lede">Seize textes courts, organisés en quatre axes. Aucune inscription. Aucun mur.</p>
-
-      <div class="featured-articles">
-        
-        <a class="featured-card" href="bibliotheque.html#article-1_1">
-          <span class="featured-card__num">1.1</span>
-          <span class="featured-card__axe">Écoute & Relation</span>
-          <h3>Qu'est-ce qu'une écoute qui respecte le vivant ?</h3>
-          <p>Écouter quelqu'un, c'est souvent confondu avec attendre son tour de parler. Dans le monde IVIA, écouter c'est autre chose : c'est créer un espace où l'autre peut exister sans être réduit, interprété…</p>
-          <span class="featured-card__cta">Lire →</span>
-        </a>
-
-        <a class="featured-card" href="bibliotheque.html#article-2_3">
-          <span class="featured-card__num">2.3</span>
-          <span class="featured-card__axe">Équilibre & Vivant</span>
-          <h3>Suzuki : quand l'économie oublie qu'elle vit dans la nature</h3>
-          <p>Pas dans la nature au sens carte postale — les forêts, les rivières, les oiseaux du matin. Dans la nature au sens fondamental : elle existe à l'intérieur d'un système vivant qui a ses rythmes, ses…</p>
-          <span class="featured-card__cta">Lire →</span>
-        </a>
-
-        <a class="featured-card" href="bibliotheque.html#article-3_3">
-          <span class="featured-card__num">3.3</span>
-          <span class="featured-card__axe">Frontières & Responsabilité</span>
-          <h3>Quand soutenir devient porter — la limite saine</h3>
-          <p>Celle où l'on parle dans un groupe et où l'on sent, à mesure qu'on parle, que rien ne passe vraiment — les mots atterrissent mais ne touchent rien, les réponses sont polies mais creuses, on repart…</p>
-          <span class="featured-card__cta">Lire →</span>
-        </a>
-
-        <a class="featured-card" href="bibliotheque.html#article-4_2">
-          <span class="featured-card__num">4.2</span>
-          <span class="featured-card__axe">Réalisation & Suite</span>
-          <h3>Choisir une suite concrète</h3>
-          <p>Il y a une manière d'être dans une conversation où l'on est là sans vraiment l'être. Physiquement présent. Mentalement ailleurs. On répond, on hoche la tête, on pose les bonnes questions — mais…</p>
-          <span class="featured-card__cta">Lire →</span>
-        </a>
-      </div>
-
-      <p class="section-foot"><a href="bibliotheque.html" class="btn btn--ghost">Toute la bibliothèque (16 articles) →</a></p>
-    </div>
-  </section>
-
-  <!-- Confiance / Loi 25 / sécurité -->
-  <section class="public-section public-section--soft">
-    <div class="container confiance">
-      <p class="section-overline">La confiance est une condition</p>
-      <h2 class="section-title">Vos paroles vous appartiennent</h2>
-
-      <div class="confiance__grid">
-        <div>
-          <h3>Conforme à la Loi 25</h3>
-          <p>Tout est traité sous la loi québécoise. Vous pouvez consulter, exporter et supprimer vos données à tout moment depuis votre espace.</p>
-        </div>
-        <div>
-          <h3>Audios chiffrés, accès limité</h3>
-          <p>Seul·e le ou la praticien·ne que vous choisissez écoute votre enregistrement. Personne d'autre. Pas même nous.</p>
-        </div>
-        <div>
-          <h3>Effaçable, à votre demande</h3>
-          <p>Vos audios et résumés peuvent être effacés sur simple demande dans votre espace. Pas de procédure, pas de friction.</p>
-        </div>
-        <div>
-          <h3>L'humain au centre — toujours</h3>
-          <p>Aucune décision automatisée à votre place. Notre outil aide les praticien·ne·s ; il ne vous remplace pas, ne les remplace pas.</p>
-        </div>
-      </div>
-
-      <p class="section-foot"><a href="confidentialite.html">Lire la politique de confidentialité complète →</a></p>
-    </div>
-  </section>
-
-  <!-- Bandeau urgence persistant en bas -->
-  <section class="bandeau-urgence">
-    <div class="container bandeau-urgence__inner">
-      <div>
-        <p class="bandeau-urgence__title">Vous êtes en détresse maintenant ?</p>
-        <p class="bandeau-urgence__lede">IVIA n'est pas un service d'urgence. Si la situation est urgente, composez l'un de ces numéros — gratuit, 24/7.</p>
-      </div>
-      <div class="bandeau-urgence__nums">
-        <a href="tel:911"><strong>911</strong><span>urgence vitale</span></a>
-        <a href="tel:811"><strong>811 opt. 2</strong><span>Info-Social</span></a>
-        <a href="tel:18662773553"><strong>1 866 APPELLE</strong><span>prévention suicide</span></a>
-        <a href="urgence.html"><strong>Voir tous les recours →</strong><span></span></a>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <div class="site-footer__cols">
-      <div>
-        <p style="font-family: var(--font-display); font-size:1.6rem; margin-bottom:1rem;">IV<em style="font-style:italic; color: var(--color-rose);">I</em>A</p>
-        <p style="opacity:0.85; max-width:32ch; font-family:var(--font-serif); font-style:italic;">Au sein de l'être — En actes.</p>
-        <p style="opacity:0.5; margin-top:1rem; font-size:var(--text-xs); letter-spacing:0.16em; text-transform:uppercase;">In vivo · In actu</p>
-      </div>
-      <div><h4>Découvrir</h4><ul role="list">
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="comment.html">Comment ça fonctionne</a></li>
-        <li><a href="pourquoi.html">Pourquoi IVIA</a></li>
-        <li><a href="bibliotheque.html">Bibliothèque</a></li>
-        <li><a href="urgence.html">Si c'est urgent</a></li>
-      </ul></div>
-      <div><h4>Pratique</h4><ul role="list">
-        <li><a href="client/audio-async.html">Commencer une écoute</a></li>
-        <li><a href="client/journal.html">Journal de vie</a></li>
-        <li><a href="tests.html">Espace tests</a></li>
-        <li><a href="mailto:contact@ivia.quebec">Nous écrire</a></li>
-      </ul></div>
-      <div><h4>Mentions</h4><ul role="list">
-        <li><a href="mentions.html">Mentions légales</a></li>
-        <li><a href="confidentialite.html">Confidentialité (Loi 25)</a></li>
-        <li><a href="cgu.html">Conditions d'utilisation</a></li>
-        <li><a href="demo/index.html">Démo des interfaces</a></li>
-      </ul></div>
-    </div>
-    <div class="site-footer__bottom">
-      <span>© 2026 IVIA — Pour le peuple, par le peuple.</span>
-      <span>IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</span>
-    </div>
-  </div>
-</footer>
-<script src="shared/coupe.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

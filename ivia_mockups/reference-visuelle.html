@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Référence visuelle — IVIA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,30..100;1,9..144,300..900,30..100&family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M12 4 C 14 9, 14 15, 12 20 C 10 15, 10 9, 12 4 Z" fill="currentColor" opacity="0.6"/>
+        </svg>
+        IVIA
+      </a>
+      <nav>
+        <ul class="nav__links">
+          <li><a href="index.html">Retour à l'accueil</a></li>
+          <li class="nav__links--keep">
+            <button class="calme-toggle" id="calmeToggle" type="button" aria-pressed="false">Mode calme</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="ref-page">
+    <div class="wrap">
+
+      <header class="ref-header">
+        <p class="eyebrow">Référence visuelle · v1</p>
+        <h1>La <em>Coupe</em> — palette, typographie, voix.</h1>
+        <p class="lead measure">
+          L'univers visuel d'IVIA. Botanique, sensuel, sans personnage. Couleurs vibratoires soutenues, typographie de lecture, voix d'écoute. Tout ce qu'il faut pour qu'un visuel — où qu'il soit produit — reste reconnaissable comme IVIA.
+        </p>
+      </header>
+
+      <!-- ====== PALETTE ====== -->
+      <section class="ref-block">
+        <p class="eyebrow">01 · Palette</p>
+        <h2>Couleurs vibratoires soutenues</h2>
+        <p class="measure">
+          Saturation moyenne, valeurs claires-moyennes. Ni délavé ni saturé. Chaque ton porte une fonction émotive — ne pas les utiliser tous en même temps.
+        </p>
+
+        <h3 style="margin-top: var(--s-4);">Bases</h3>
+        <div class="ref-grid-colors">
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#F0E9DC"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Crème</span>
+              <span class="ref-color__hex">#F0E9DC</span>
+              <span class="ref-color__role">Fond principal</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#E5DCC9"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Crème profonde</span>
+              <span class="ref-color__hex">#E5DCC9</span>
+              <span class="ref-color__role">Fond alterné</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#2A1F2D"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name" style="color:#F0E9DC; background:#2A1F2D; padding:2px 6px; margin:-2px -6px 4px;">Aubergine</span>
+              <span class="ref-color__hex">#2A1F2D</span>
+              <span class="ref-color__role">Encre, fond sombre</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top: var(--s-4);">Vibrations</h3>
+        <div class="ref-grid-colors">
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#C58A8A"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Bois de rose</span>
+              <span class="ref-color__hex">#C58A8A</span>
+              <span class="ref-color__role">Racine — ancrage</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#D89260"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Abricot brûlé</span>
+              <span class="ref-color__hex">#D89260</span>
+              <span class="ref-color__role">Sacré — créativité</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#D9A441"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Miel safrané</span>
+              <span class="ref-color__hex">#D9A441</span>
+              <span class="ref-color__role">Solaire — joie</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#6B8266"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Mousse</span>
+              <span class="ref-color__hex">#6B8266</span>
+              <span class="ref-color__role">Cœur — calme (accent par défaut)</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#8DA9B8"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Bleu glacier</span>
+              <span class="ref-color__hex">#8DA9B8</span>
+              <span class="ref-color__role">Gorge — expression</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#9A8AB8"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Lavande</span>
+              <span class="ref-color__hex">#9A8AB8</span>
+              <span class="ref-color__role">Intuition</span>
+            </div>
+          </div>
+          <div class="ref-color">
+            <div class="ref-color__swatch" style="background:#7B5B7E"></div>
+            <div class="ref-color__info">
+              <span class="ref-color__name">Prune</span>
+              <span class="ref-color__hex">#7B5B7E</span>
+              <span class="ref-color__role">Couronne — profondeur</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== TYPOGRAPHIE ====== -->
+      <section class="ref-block">
+        <p class="eyebrow">02 · Typographie</p>
+        <h2>Trois polices, jamais plus</h2>
+        <p class="measure">
+          Toutes gratuites sur <a href="https://fonts.google.com" target="_blank" rel="noopener">Google Fonts</a>. Variables — un seul fichier par police, tous les poids inclus.
+        </p>
+
+        <div class="ref-typo-sample">
+          <p class="eyebrow">Display · Fraunces</p>
+          <h1 style="margin-bottom: 0;">Lire. <em>Respirer.</em> Revenir.</h1>
+          <p style="margin-top: var(--s-2); font-family: var(--font-ui); font-size: 0.825rem; color: var(--fg-mute);">
+            Titres, signature, citations. Pousser l'optical size (96–144) pour les grands titres. Italique pour l'accent.
+          </p>
+        </div>
+
+        <div class="ref-typo-sample" style="margin-top: var(--s-3);">
+          <p class="eyebrow">Texte · Lora</p>
+          <p style="font-size: 1.125rem; line-height: 1.75; margin: 0;">
+            La santé mentale ne tient pas dans une fiche imprimée. Elle se cultive comme un verger : avec saison, avec retour. Ce que vous trouvez ici est écrit pour être lu, pas téléchargé.
+          </p>
+          <p style="margin-top: var(--s-2); font-family: var(--font-ui); font-size: 0.825rem; color: var(--fg-mute);">
+            Corps des articles, paragraphes longs. 16–18px, interligne 1.7–1.8, mesure 65 caractères.
+          </p>
+        </div>
+
+        <div class="ref-typo-sample" style="margin-top: var(--s-3);">
+          <p style="font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-mute); margin-bottom: var(--s-2);">UI · Inter</p>
+          <p style="font-family: var(--font-ui); font-size: 0.9375rem; margin: 0;">
+            Boutons · navigation · métadonnées · étiquettes
+          </p>
+          <p style="margin-top: var(--s-2); font-family: var(--font-ui); font-size: 0.825rem; color: var(--fg-mute);">
+            Tout ce qui n'est pas lecture longue. Jamais pour le contenu éditorial.
+          </p>
+        </div>
+      </section>
+
+      <!-- ====== RÈGLES ====== -->
+      <section class="ref-block">
+        <p class="eyebrow">03 · Règles</p>
+        <h2>À faire, à éviter</h2>
+
+        <div class="ref-rules">
+          <div class="ref-rule ref-rule--do">
+            <h4>À faire</h4>
+            <ul>
+              <li>Utiliser la crème (#F0E9DC) comme base, presque partout</li>
+              <li>Choisir <em>une</em> vibration par section — pas deux</li>
+              <li>Privilégier les coupes botaniques (figue, agate, fougère, lichen) en illustration</li>
+              <li>Texte sérif (Lora) pour les articles, sans-serif (Inter) pour les boutons</li>
+              <li>Espace généreux : interligne 1.7+, marges 24–96px</li>
+              <li>Italique pour la chaleur, jamais le gras pour l'emphase éditoriale</li>
+              <li>Animations douces, scroll-driven, jamais bouncy</li>
+            </ul>
+          </div>
+          <div class="ref-rule ref-rule--dont">
+            <h4>À éviter</h4>
+            <ul>
+              <li>Noir pur (#000) ou blanc pur (#FFF) — toujours décalés vers crème/aubergine</li>
+              <li>Plus de deux vibrations dans un même écran</li>
+              <li>Bleu corporate type SaaS (#0066FF), violet AI-tech</li>
+              <li>Photos de personnes en stock-photo souriantes</li>
+              <li>Imagerie alimentaire (pas de fruits photographiés à manger)</li>
+              <li>Dégradés saturés type Instagram années 2010</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== VOIX & TON ====== -->
+      <section class="ref-block">
+        <p class="eyebrow">04 · Voix & Ton</p>
+        <h2>Comment IVIA <em>parle</em>.</h2>
+        <p class="measure">
+          Chaleureux mais pas familier. Direct mais pas pressant. Rassurant sans être condescendant. La voix IVIA accompagne — elle ne diagnostique pas, elle ne promet pas, elle ne dramatise pas.
+        </p>
+
+        <h3 class="ref-h3">Vocabulaire IVIA</h3>
+        <div class="ref-rules">
+          <div class="ref-rule ref-rule--do">
+            <h4>À utiliser</h4>
+            <ul>
+              <li><strong>Présence, écoute, clarté, repère</strong> — les piliers</li>
+              <li><strong>Chemins, voies, actions</strong> — l'accompagnement <em>mène vers</em></li>
+              <li><strong>Équilibre, indépendance choisie</strong> — l'horizon visé</li>
+              <li><strong>Compréhension de soi, de son environnement</strong> — l'outil du chemin</li>
+              <li><strong>Déposer, traverser, avancer</strong> — verbes du parcours</li>
+              <li><strong>Rencontre, conversation</strong> — pas « séance », pas « consultation »</li>
+              <li><strong>À votre rythme, sans grille, sans jugement</strong> — la posture</li>
+            </ul>
+          </div>
+          <div class="ref-rule ref-rule--dont">
+            <h4>À éviter</h4>
+            <ul>
+              <li><strong>Thérapie, traitement, guérison</strong> — IVIA n'est pas un soin</li>
+              <li><strong>Diagnostic, symptôme, pathologie, trouble</strong> — pas le rôle</li>
+              <li><strong>Protocole, méthode, programme</strong> — IVIA suit le chemin, pas une grille</li>
+              <li><strong>Transformation radicale, révélation</strong> — promesses creuses</li>
+              <li><strong>Urgent, immédiat, vous avez besoin d'aide</strong> — créent de la pression</li>
+              <li><strong>Définir IVIA en négatif</strong> (« pas un PDF », « pas un formulaire ») — incarner ce qui est, pas ce qui n'est pas</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 class="ref-h3">Citations-source à puiser</h3>
+        <div class="ref-typo-sample">
+          <p class="ref-quote">« IVIA, c'est un espace pour déposer ce que l'on porte. »</p>
+          <p class="ref-quote">« Une présence d'écoute, une voix apaisante, un accompagnement pour retrouver de la clarté et repartir avec un repère concret. »</p>
+          <p class="ref-quote">« À chaque rencontre, on cherche quelque chose que vous pouvez garder. Une prise de conscience, une décision, une direction. »</p>
+          <p class="ref-quote">« Il y a une personne derrière ce site, pas un service. Une attention, une mémoire, une continuité. »</p>
+          <p class="ref-quote">« Vous n'avez pas à avoir les mots parfaits. Vous avez juste à commencer. »</p>
+        </div>
+      </section>
+
+      <!-- ====== USAGES ====== -->
+      <section class="ref-block">
+        <p class="eyebrow">05 · Usages dans Canva</p>
+        <h2>Comment porter ceci dans Canva</h2>
+        <ol class="ref-steps measure">
+          <li>Dans Canva, crée un <strong>document blanc</strong> et ajoute des rectangles que tu colores avec les hex codes ci-dessus.</li>
+          <li>Pour la typo, cherche <strong>Fraunces</strong> et <strong>Lora</strong> dans la liste des polices Canva — elles y sont gratuitement.</li>
+          <li>Pour les illustrations, télécharge l'<strong>SVG</strong> de chaque carte article depuis ce site (clic droit → Inspecter → copier le bloc <code>&lt;svg&gt;</code>) et importe-les dans Canva.</li>
+          <li>Évite les filtres et effets Canva — ils trahissent la palette. Reste à plat.</li>
+        </ol>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer footer--gap">
+    <div class="wrap footer__inner">
+      <div class="footer__legal">
+        <strong>IVIA</strong> — référence visuelle interne · v1.
+      </div>
+      <div>
+        <a href="index.html">Accueil</a> &nbsp;·&nbsp;
+        <a href="lecture-exemple.html">Article exemple</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
