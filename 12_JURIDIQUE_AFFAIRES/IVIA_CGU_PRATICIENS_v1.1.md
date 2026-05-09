@@ -1,7 +1,8 @@
 # CONDITIONS GÉNÉRALES D'UTILISATION — PRATICIENS IVIA
 ## Applicable au produit MERLIN — Couvre les types de praticiens admis (élargissement séquentiel selon le plan d'intégration 36 mois)
 
-**Version** : 1.1 — Mai 2026 (alignement DÉC-V3-15 — entité contractante IVIA inc. SPA-mère)
+**Version** : 1.2 — 9 mai 2026 (patch cohérence Protocole urgence v1.1 : Niveau 2 inclut formation populations à freins help-seeking)
+**Versions antérieures** : v1.1 (mai 2026, alignement DÉC-V3-15) ; v1.0 (Vague 2)
 **Date d'entrée en vigueur opérationnelle** : 31 mai 2026 (pilote MERLIN — Mylène + Émilie)
 **Date d'effet juridique de l'entité contractante IVIA inc.** : à compter de l'incorporation IVIA inc. (Palier 1 — automne 2026, M7-M9)
 **Statut** : Document contractuel — Opposable à tout praticien admis sous la marque IVIA
@@ -131,8 +132,8 @@ La formation IVIA est organisée en trois niveaux progressifs :
 - Applicable à : toutes les strates
 
 **Niveau 2 — Pratique IVIA (12 heures)**
-- Contenu : posture d'écoute audio-only, vocabulaire de présence, outillage MERLIN, pipeline de transformation gouvernée, documents IVIA, protocoles urgence, 3 séances simulées supervisées
-- Format : modules théoriques + séances simulées avec supervision
+- Contenu : posture d'écoute audio-only, vocabulaire de présence, outillage MERLIN, pipeline de transformation gouvernée, documents IVIA, **Protocole d'urgence et de détresse v1.1 intégral incluant Partie II.bis (populations à freins spécifiques : jeunes 15-24, hommes, état de « manque de clarté »)**, 3 séances simulées supervisées
+- Format : modules théoriques + séances simulées avec supervision (un scénario obligatoire de Niveau 3 inclus)
 - Obligation : dans les 90 jours suivant l'admission (60 jours pour Strate 2)
 - Applicable à : toutes les strates (obligatoire)
 

@@ -1,7 +1,7 @@
 # PITCH DECK INVESTISSEURS — IVIA / MERLIN
 ## 20 slides — Format structuré pour conversion PowerPoint
 
-**Version** : 1.0 — Vague 1
+**Version** : 1.1 — Vague 1 (mise à jour données INSPQ/ISQ/Statistique Canada/Commissaire santé)
 **Date** : Mai 2026
 **Usage** : Présentation investisseurs, anges, fondations, partenaires
 **Format** : Chaque slide = titre + bullets + notes du conférencier
@@ -39,19 +39,19 @@ Pour la conversion PowerPoint :
 
 ---
 
-## SLIDE 2 — LE PROBLÈME
+## SLIDE 2 — LE PROBLÈME (DONNÉES OFFICIELLES QUÉBEC)
 
-**Titre** : 2,3 millions de Québécois sans soutien structuré
+**Titre** : Une détresse massive, un système saturé, un délai inadmissible
 
 **Bullets** :
-- 60 % des personnes en détresse n'ont pas accès à un accompagnement de qualité
-- Délai d'attente psychologue public : 6 à 18 mois
-- Les praticiens d'écoute n'ont pas d'outil à leur niveau
-- La documentation des séances est nulle ou non-structurée
-- Les plateformes existantes : logistique sans doctrine, ou clinique sans accessibilité
+- 38,7 % des Québécois·es 15+ en détresse psychologique élevée (INSPQ, 2020-2021) — vs 28,3 % en 2014-2015
+- 57,6 % chez les 15-24 ans, 67,8 % chez les jeunes femmes
+- 22 000 personnes en attente de service en santé mentale au public (cible MSSS : 13 261)
+- Délai moyen entre symptômes et premier traitement : 6 à 11 ans (CAMH)
+- Privé : 120-180 $ la séance — hors de portée pour la majorité
 
 **Notes du conférencier** :
-"Le problème est double. D'un côté, des personnes qui ont besoin d'un espace d'écoute et n'y accèdent pas. De l'autre, des praticiens qualifiés qui exercent sans infrastructure, sans trace, sans continuité. IVIA résout les deux simultanément."
+"Ces chiffres ne sont pas des projections. Ils viennent de l'INSPQ, de l'ISQ, du Commissaire à la santé. La détresse a augmenté de 10 points en 6 ans au Québec. Le système public est saturé, le privé est inaccessible. Entre les deux, un espace structurellement vide où des centaines de milliers de personnes restent sans réponse. C'est cet espace qu'IVIA occupe."
 
 ---
 
@@ -173,7 +173,7 @@ S4 IVIA Réseau    → Annuaire référencement éthique          M30 (sept. 202
 
 ## SLIDE 9 — LE MARCHÉ
 
-**Titre** : TAM Québec : 110-210 M$ / an, en croissance de 18-22 %
+**Titre** : TAM Québec : 110-210 M$ / an — porté par une demande structurelle documentée
 
 **Visuel texte** :
 ```
@@ -187,12 +187,14 @@ Cible IVIA M36            ~1,8 M$ ARR (0,8-1,6% TAM bas)
 ```
 
 **Bullets** :
-- Croissance marché : +18-22 %/an (santé mentale numérique, post-COVID)
-- Réglementation favorable : Loi 25 pousse les acteurs sérieux vers la conformité
-- Québec francophone : marché protégé, peu de compétition internationale directe
+- Demande structurelle : 38,7 % détresse psy 15+ (INSPQ) — 2,6 M de Québécois·es concerné·e·s
+- Le système public ne couvre que 58 % des soins dans les délais prescrits (Commissaire santé 2024-25)
+- 1,3 M de Québécois·es 15+ vivent seul·e·s — facteur structurel d'isolement (Statistique Canada)
+- Coût social CNESST : 1,01 G$ de lésions psychologiques indemnisées (2018-2022) — porte d'entrée employeurs
+- Québec francophone : marché protégé par la langue ET la Loi 25
 
 **Notes du conférencier** :
-"On ne cherche pas à conquérir le marché. On cherche à devenir la référence. 1,8 % du TAM bas à M36 — c'est un objectif défendable et prudent pour une équipe de 7-8 personnes avec 2,2 M$ de financement."
+"On ne cherche pas à conquérir le marché. On cherche à devenir la référence. Le marché n'est pas hypothétique : la détresse est documentée, l'accès est documenté, le coût social est documenté. 1,8 % du TAM bas à M36 — un objectif défendable et prudent pour une équipe de 7-8 personnes avec 2,2 M$ de financement."
 
 ---
 
@@ -343,17 +345,18 @@ TOTAL                     2 200 000 $
 
 ## SLIDE 17 — POURQUOI MAINTENANT
 
-**Titre** : La fenêtre de 24-36 mois
+**Titre** : La fenêtre de 24-36 mois — confiance, conformité, vide concurrentiel
 
 **Bullets** :
-- Loi 25 : les praticiens cherchent des outils conformes — IVIA est prêt
-- Post-COVID : la demande d'accompagnement à distance a 3× augmenté et ne recule pas
-- Le marché québécois est protégé par la langue et la réglementation locale
-- Les gros acteurs IA en santé s'intéressent au marché anglophone — la niche québécoise francophone est sous-investie
+- Effondrement de confiance dans les apps IA : cas Setzer III × Character.AI (2024-26), BetterHelp condamné 7,8 M$ FTC (2023), Mozilla épingle 32 apps santé mentale
+- Rétention apps santé mentale : 3-4 % à J30 — le format autonome ne tient pas
+- Loi 25 : les praticiens cherchent des outils conformes — IVIA est prêt, conforme dès le départ
+- Post-COVID : demande d'accompagnement à distance × 3 et stable
+- Espace structurellement vide : audio + humain + non-urgence + francophone + abordable — aucun acteur ne couvre les 5
 - Le dataset synthétique se construit maintenant — chaque mois de retard = un mois de retard sur le modèle propriétaire
 
 **Notes du conférencier** :
-"La fenêtre de 24-36 mois est réelle. Dans 3 ans, le marché québécois de l'accompagnement numérique sera structuré autour d'un ou deux acteurs dominants. On peut être l'un d'eux. Mais seulement en commençant maintenant."
+"La fenêtre de 24-36 mois est réelle. Le marché global des apps santé mentale s'effondre en confiance — Setzer, BetterHelp, Mozilla. Pendant ce temps, le besoin grandit (+10 points de détresse en 6 ans). Le créneau audio + humain + Loi 25 + francophone est vide. Dans 3 ans, le marché québécois de l'accompagnement numérique sera structuré autour d'un ou deux acteurs dominants. On peut être l'un d'eux. Mais seulement en commençant maintenant."
 
 ---
 

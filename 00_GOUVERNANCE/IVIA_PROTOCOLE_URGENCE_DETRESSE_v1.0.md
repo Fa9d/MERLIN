@@ -1,12 +1,16 @@
 # PROTOCOLE DE GESTION DES SITUATIONS D'URGENCE ET DE DÉTRESSE
 ## IVIA — Applicable à tous les praticiens actifs, toutes strates
 
-**Version** : 1.0 — Vague 2
-**Date** : Mai 2026
+**Version** : 1.1 — Vague 2
+**Date** : 9 mai 2026
 **Statut** : Document opérationnel — Formation Niveau 2 obligatoire
 **Application** : Obligatoire pour tout praticien actif IVIA avant la première séance
 **Contact urgence interne** : urgence@ivia.quebec
 **Mise à jour** : Annuelle minimum, ou en cas d'incident significatif
+
+**Historique des versions** :
+- v1.0 (mai 2026) — Version initiale Vague 2
+- v1.1 (9 mai 2026) — Ajout Partie II.bis (populations à freins spécifiques : jeunes 15-24, hommes, état de « manque de clarté ») ; enrichissement des ressources Partie III (211 Québec, Interligne, Tel-jeunes, Drogue: aide et référence)
 
 ---
 
@@ -147,19 +151,99 @@ Ne pas se préparer à ces situations serait irresponsable. Ce protocole existe 
 
 ---
 
+## PARTIE II.bis — POPULATIONS À FREINS SPÉCIFIQUES (lecture obligatoire)
+
+Les données québécoises et canadiennes 2020-2025 montrent que la détresse n'est pas répartie uniformément, et que certaines populations rencontrent des freins importants à demander de l'aide. Le praticien IVIA doit connaître ces freins pour ajuster son écoute, sans présumer ni stigmatiser.
+
+### II.bis.1 Jeunes 15-24 ans
+
+**Données de cadrage** :
+- 57,6 % des 15-24 ans rapportent un niveau élevé de détresse psychologique au Québec (INSPQ, 2020-21), contre 38,7 % dans la population générale 15+.
+- 67,8 % chez les jeunes femmes spécifiquement.
+- Les jeunes consomment en parallèle massivement des outils numériques (réseaux sociaux, chatbots IA) pour parler de leur détresse — souvent sans cadre humain ni protocole d'urgence (cas Setzer III × Character.AI 2024-26).
+
+**Signaux et expressions à reconnaître** :
+- Vocabulaire moins clinique, plus implicite : « j'suis fucké », « j'feel pas », « ça file pas », « je sais pas ce que j'ai »
+- Référence à l'épuisement scolaire ou aux réseaux sociaux comme source de souffrance
+- Mentions de comparaison sociale chronique (TikTok, Instagram)
+- Expression d'un sentiment d'irréalité ou de dissociation (« je suis là sans être là »)
+- Discours qui passe d'une prise au sérieux à un retrait humoristique défensif (« nan mais je dis ça pour rire »)
+
+**Conduite ajustée** :
+1. Ne pas surinterpréter le ton détaché — il est souvent une protection, pas une absence de souffrance
+2. Nommer l'écart possible entre le ton et le contenu : « Tu me racontes quelque chose de lourd avec un ton léger — est-ce que c'est plus difficile que ce que ça en a l'air ? »
+3. Connaître et proposer des ressources jeunesse spécifiques (voir Partie III) : Tel-jeunes (1 800 263-2266), Jeunesse, J'écoute (1 800 668-6868)
+4. Si la personne est mineure (14-17 ans) : appliquer le cadre prévu dans les CGU clients (art. 13) — l'autonomie est respectée mais la confidentialité connaît les mêmes limites de protection (LPJ)
+
+### II.bis.2 Hommes et personnes socialisées comme tels
+
+**Données de cadrage** :
+- Les hommes représentent ~75 % des décès par suicide au Québec (INSPQ).
+- Ils consultent moins, plus tard, et formulent leur détresse différemment des femmes.
+- Les freins documentés : honte de demander, identification de la détresse à de la « faiblesse », difficulté à nommer les émotions (alexithymie partielle culturellement renforcée), pression de performance.
+
+**Signaux et expressions à reconnaître** :
+- Plainte centrée sur le corps plutôt que sur l'émotion : fatigue, dos, sommeil, perte d'appétit
+- Plainte centrée sur la performance plutôt que sur la souffrance : « je n'arrive plus à travailler », « j'suis pas productif »
+- Colère ou irritabilité comme expression dominante (souvent recouvrant tristesse ou désespoir)
+- Consommation accrue d'alcool ou de substances mentionnée en passant
+- Retrait social présenté comme « j'avais juste besoin de paix »
+- Difficulté à formuler une demande d'aide directe : la séance IVIA est parfois la première
+
+**Conduite ajustée** :
+1. Prendre au sérieux la plainte somatique ou de performance comme entrée légitime — ne pas forcer la « mise en émotion »
+2. Nommer ce qui est observé sans juger : « Vous me parlez beaucoup de fatigue — est-ce que vous diriez aussi qu'il y a quelque chose qui vous pèse ? »
+3. Valoriser explicitement le fait d'avoir choisi IVIA : « Ce que vous faites en parlant ici, c'est déjà beaucoup. »
+4. Si idées suicidaires explorées : poser la question directement avec d'autant plus de soin (sous-déclaration documentée chez les hommes)
+5. Connaître les ressources qui parlent ce langage : 211, programmes employeurs (PAE), Hommes Québec et associations régionales équivalentes
+
+### II.bis.3 État de « manque de clarté » — un signal-pivot
+
+**Description** : Avant la détresse nommable comme telle, il existe souvent un état où la personne ne sait plus ce qu'elle ressent ni ce qu'elle veut. Elle dit « je ne sais pas », « tout se mélange », « j'ai pas la tête claire », « je ne sais plus ce que je veux ». Cet état est central dans la doctrine IVIA — c'est précisément le moment où IVIA peut servir, avant l'urgence.
+
+**Pourquoi c'est important** : ce n'est pas un signal de Niveau 3 ni 4. Ce n'est pas non plus un Niveau 1 ordinaire. C'est un état préliminaire qui, non écouté, peut basculer vers une détresse plus aigüe — ou se résorber par la simple mise en mots.
+
+**Signaux à reconnaître** :
+- Phrases répétées : « je sais pas », « c'est confus », « je suis perdu·e »
+- Hésitation prolongée à formuler une demande, malgré l'engagement à parler
+- Sentiment d'être « entre deux » : ni en crise, ni bien
+- Impression que la personne attend qu'on lui pose une bonne question pour pouvoir parler
+
+**Conduite ajustée** :
+1. Ne pas chercher à diagnostiquer ni à orienter trop tôt vers une ressource — ce serait fermer l'espace
+2. Tenir l'écoute lente : laisser des silences, refléter le « je ne sais pas » comme une donnée valide, pas un échec
+3. Aider à mettre en mots la confusion elle-même : « Si vous deviez décrire le brouillard, il ressemble à quoi ? »
+4. Distinguer le manque de clarté ordinaire (transitoire) de celui qui s'accompagne de signaux de Niveau 2 (épuisement intense, isolement) — alors monter en vigilance
+5. Cet état est précisément la promesse IVIA : *« Quand tout se mélange, commencez par être entendu. »* Le praticien sait que la séance peut suffire à clarifier — sans pousser, sans accélérer.
+
+---
+
 ## PARTIE III — RESSOURCES QUÉBÉCOISES DE RÉFÉRENCE
 
 ### Ressources immédiates (disponibles 24h/24, 7j/7)
 
 | Ressource | Numéro / Contact | Spécialité |
 |---|---|---|
-| Suicide Action Montréal | 1 866 APPELLE (277-3553) | Crise suicidaire, détresse intense |
-| Tel-Aide Québec | 514 935-1101 | Écoute générale, détresse émotionnelle |
-| Ligne provinciale de prévention du suicide | 1 866 APPELLE | Province entière |
 | Services d'urgence | 911 | Danger immédiat pour la vie |
-| Info-Social (811, option 2) | 811 (option 2) | Consultation avec un intervenant psychosocial |
-| CSSS / CIUSSS locaux — urgences psychiatriques | Selon région | Urgences psychiatriques |
+| Suicide Action Montréal | 1 866 APPELLE (277-3553) | Crise suicidaire, détresse intense |
+| Ligne provinciale de prévention du suicide | 1 866 APPELLE (277-3553) | Province entière |
+| Info-Social (811, option 2) | 811 (option 2) | Intervenant psychosocial, orientation |
+| Tel-Aide Québec | 514 935-1101 | Écoute générale, détresse émotionnelle |
 | Centre de crise de Montréal | 514 338-4090 | Hébergement et intervention en crise |
+| 211 Grand Montréal / 211 Québec | 211 ou 211qc.ca | Orientation vers services sociocommunautaires de proximité (province) |
+| CSSS / CIUSSS locaux — urgences psychiatriques | Selon région | Urgences psychiatriques |
+
+### Ressources spécialisées par population
+
+| Population | Ressource | Contact | Disponibilité |
+|---|---|---|---|
+| Jeunes (5-20 ans) | Tel-jeunes | 1 800 263-2266 / texto 514 600-1002 | 24/7 |
+| Jeunes (jusqu'à 20 ans) | Jeunesse, J'écoute | 1 800 668-6868 / texto PARLER au 686868 | 24/7 |
+| Personnes 2SLGBTQ+ | Interligne | 1 888 505-1010 | 24/7 |
+| Dépendances (consommation, jeu) | Drogue: aide et référence | 1 800 265-2626 | 24/7 |
+| Hommes en difficulté | SOS violence conjugale (incl. hommes) | 1 800 363-9010 | 24/7 |
+| Personnes aînées | Ligne Aide Abus Aînés | 1 888 489-2287 | 8h-20h, 7j/7 |
+| Femmes — violence | SOS violence conjugale | 1 800 363-9010 | 24/7 |
 
 ### Ressources complémentaires (non urgentes)
 
@@ -169,7 +253,9 @@ Ne pas se préparer à ces situations serait irresponsable. Ce protocole existe 
 | Association canadienne pour la santé mentale | cmha.ca | Orientation vers ressources locales |
 | Fondation des maladies mentales | fondationdesmaladiesmentales.org | Ressources et liens |
 
-**Orientation selon la région de la personne** : si la personne est hors Montréal, le 1 866 APPELLE et le 811 sont valides pour toute la province. Pour les ressources locales hors Montréal, le praticien peut référer à ca.211.ca.
+**Orientation selon la région de la personne** : si la personne est hors Montréal, le 1 866 APPELLE et le 811 sont valides pour toute la province. Pour les ressources locales hors Montréal, le praticien peut référer au 211 (211qc.ca) qui couvre l'ensemble du Québec et oriente vers les services de proximité (alimentation, logement, soutien psychosocial communautaire, etc.).
+
+**Règle pratique** : le praticien IVIA n'oriente jamais sans nommer une ressource précise et adaptée. Une orientation générique (« vous devriez consulter ») n'est pas une orientation ; c'est un renvoi. Le praticien donne un nom, un numéro, et explique pourquoi cette ressource correspond à ce qui a été partagé.
 
 ---
 
@@ -354,6 +440,6 @@ Le présent protocole est révisé annuellement par la direction IVIA, avec cont
 
 **Au sein de l'être — En actes.**
 
-*Version 1.0 — Vague 2 — Mai 2026*
+*Version 1.1 — Vague 2 — 9 mai 2026*
 *David Phaneuf, fondateur IVIA*
 *urgence@ivia.quebec*

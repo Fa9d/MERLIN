@@ -2,8 +2,8 @@
 
 ## Document de référence stratégique et financier — Écosystème IVIA inc. (SPA-mère à mission) + IVIA OBNL satellite
 
-**Version** : 2.1 (recalibrage CRIC nouveau régime budget Québec 2025-2026 — ancien BP v2.0 sous-estimait avec taux 14 % de l'ancien CIR) — Refonte intégrale post-DÉC-V3-15
-**Date** : 8 mai 2026
+**Version** : 2.2 (injection données INSPQ/ISQ/Statistique Canada/Commissaire santé et bien-être/CAMH/FTC dans la synthèse exécutive ; cf. corpus 05_PREUVES_SOURCES) — base v2.1 = recalibrage CRIC nouveau régime budget Québec 2025-2026 — Refonte intégrale post-DÉC-V3-15
+**Date** : 9 mai 2026
 **Statut** : Document confidentiel — investisseurs, conseillers, partenaires institutionnels
 **Auteur** : David Phaneuf (fondateur) + Perplexity Computer
 **Remplace** : BP_FINANCEMENT_V2 v1.0 (archivé sous `BP_FINANCEMENT_V2_v1_archive.md`)
@@ -117,13 +117,24 @@ Décomposition stratégique :
 
 ## 1.4 Pourquoi maintenant et pourquoi nous
 
-**Pourquoi maintenant** :
-- Le marché québécois de l'accompagnement émotionnel et bien-être à distance est en croissance continue post-pandémie, avec un déficit chronique d'outils francophones non-prédateurs.
-- Les institutions publiques québécoises (Investissement Québec, MEI, MEIE, fondations) financent activement l'innovation sociale et la souveraineté numérique francophone.
-- Le contexte politique et culturel québécois (souveraineté numérique, méfiance envers les plateformes mondialisées, valorisation de la mission sociale) est exceptionnellement favorable à un écosystème comme IVIA.
-- Les coûts d'IA générative ont chuté de ~50 % par an depuis 2023 et continuent à le faire, ouvrant la fenêtre d'un produit qui était économiquement irréaliste il y a 24 mois.
+**Pourquoi maintenant — contexte chiffré (sources : INSPQ, ISQ, Statistique Canada, Commissaire santé et bien-être, CAMH, FTC ; voir corpus `05_PREUVES_SOURCES/IVIA_BESOINS_SOCIETE_COMPORTEMENTS_SYNTHESE_MAITRE_v1.0.md`)** :
+
+- **Détresse psychologique massive et en hausse au Québec** : 38,7 % des 15+ en détresse élevée en 2020-2021 (INSPQ, *Portrait de l'état de santé mentale*) contre 28,3 % en 2014-2015 — +10 points en 6 ans. Chez les 15-24 ans : 57,6 %. Chez les jeunes femmes : 67,8 %. La pression sur le système ne va pas redescendre.
+- **Saturation du système public** : ~22 000 personnes en attente de service en santé mentale au Québec (cible MSSS : 13 261). Seulement 58 % des soins reçus dans les délais prescrits (Commissaire à la santé et au bien-être, rapport 2024-2025).
+- **Délai symptômes → traitement** : 6 à 11 ans en moyenne (CAMH). La littérature *help-seeking* documente que **le manque de clarté** sur ce qu'on vit précède et ralentit la recherche d'aide — c'est exactement la zone qu'IVIA adresse.
+- **Inaccessibilité du privé** : 120-180 $ par séance de psychothérapie au Québec. Hors de portée d'une majorité de ménages.
+- **Isolement structurel** : 1 317 505 Québécois·es 15+ vivent seul·e·s (Statistique Canada, recensement 2021). L'isolement social augmente le risque de mortalité de 35 % (équivalent à fumer 15 cigarettes par jour, méta-analyses Holt-Lunstad).
+- **Coût social mesurable** : 1,01 G$ de lésions psychologiques indemnisées par la CNESST de 2018 à 2022. Porte d'entrée employeurs et fonds de prévention concrets.
+- **Effondrement de confiance dans les apps IA en santé mentale** : cas Sewell Setzer III × Character.AI (mort 2024, règlement 2026), BetterHelp condamné à 7,8 M$ par la FTC pour partage de données (2023), Mozilla *Privacy Not Included* épingle 32 apps de santé mentale, rétention de 3-4 % à J30 sur la moyenne du segment. Le format « IA-seule » ne tient ni la confiance ni l'usage.
+- **Loi 25 (Québec)** : la conformité devient un signal de sérieux exigible — pour les praticiens qui choisissent un outil, pour les ordres professionnels, pour les bailleurs publics. IVIA est conforme dès le départ. C'est un avantage concurrentiel, pas seulement une contrainte.
+- **Institutions publiques québécoises** (Investissement Québec, MEI, MEIE, fondations) financent activement l'innovation sociale et la souveraineté numérique francophone.
+- **Contexte politique et culturel québécois** (souveraineté numérique, méfiance envers les plateformes mondialisées, valorisation de la mission sociale) exceptionnellement favorable.
+- **Coûts d'IA générative** ont chuté de ~50 % par an depuis 2023 et continuent à le faire, ouvrant la fenêtre d'un produit qui était économiquement irréaliste il y a 24 mois.
+
+**Lecture stratégique** : IVIA n'invente pas un marché ; elle occupe un espace structurellement vide dans une demande documentée — audio + humain + non-urgence + francophone + abordable + conforme Loi 25. Aucun acteur connu n'occupe les cinq dimensions à la fois.
 
 **Pourquoi nous** :
+- **Doctrine validée par la littérature scientifique** : la formule centrale d'IVIA — « manque de clarté avant manque d'aide » — correspond précisément aux conclusions documentées de la littérature internationale en *help-seeking* (faible littératie en santé mentale, stigma, freins masculins, jeunes 15-24 ans). Voir corpus de preuves `SOIN__synthese__comportements-recherche-aide-help-seeking__2026-05.md`.
 - **Fondateur full-stack** avec capacité d'exécution démontrée (infrastructure technique opérationnelle dès mai 2026 — `ivia.quebec`, `api.ivia.quebec`, stack 24 outils, ~80 documents stratégiques produits).
 - **Discipline doctrinale** rare : doctrine publique (CHARTE_DOCTRINAIRE_IVIA), gouvernance documentaire complète (12 documents stratégiques majeurs, 30+ politiques opérationnelles), refus assumé de la croissance prédatrice.
 - **Architecture juridique optimisée** : SPA-mère à mission + OBNL satellite = combinaison rare au Québec, qui ouvre l'accès à un mix de financements largement supérieur à une SPA classique ou à un OBNL classique.

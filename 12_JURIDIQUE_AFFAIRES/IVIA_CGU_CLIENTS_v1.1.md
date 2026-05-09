@@ -1,6 +1,7 @@
 # CONDITIONS GÉNÉRALES D'UTILISATION — CLIENTS IVIA
 
-**Version** : 1.1 — Mai 2026 (alignement DÉC-V3-15 — entité contractante IVIA inc. SPA-mère)
+**Version** : 1.2 — 9 mai 2026 (patch cohérence Protocole urgence v1.1 : ressources help-seeking visibles au client + spécificités mineurs)
+**Versions antérieures** : v1.1 (mai 2026, alignement DÉC-V3-15) ; v1.0 (Vague 2)
 **Date d'entrée en vigueur opérationnelle** : 31 mai 2026 (pilote MERLIN)
 **Date d'effet juridique de l'entité contractante IVIA inc.** : à compter de l'incorporation IVIA inc. (Palier 1 — automne 2026, M7-M9)
 **Statut** : Document contractuel — Opposable à toute personne inscrite comme client IVIA
@@ -265,6 +266,25 @@ La confidentialité peut être levée dans les cas suivants, prévus par la loi 
 
 Toute levée de confidentialité est documentée par votre praticien et notifiée à la direction IVIA. La procédure complète est décrite dans le Protocole d'urgence et de détresse (`PROTOCOLE_URGENCE_DETRESSE.md`).
 
+### 9.4 Ressources d'aide accessibles en tout temps (en dehors d'une séance IVIA)
+
+IVIA n'est pas un service d'urgence. Si vous êtes en détresse, en crise, ou si vous avez besoin de parler à quelqu'un immédiatement, les ressources québécoises suivantes sont disponibles 24h/24 et 7j/7, gratuitement :
+
+- **Urgence vitale** : 911
+- **Prévention du suicide (Québec)** : 1 866 APPELLE (1 866 277-3553)
+- **Info-Social** : 811, option 2 (intervenant psychosocial)
+- **Tel-Aide Québec** : 514 935-1101 (écoute générale)
+- **Centre de crise de Montréal** : 514 338-4090
+- **Orientation services sociocommunautaires (province)** : 211 ou 211qc.ca
+
+**Ressources spécialisées** :
+- **Jeunes** : Tel-jeunes (1 800 263-2266 / texto 514 600-1002), Jeunesse, J'écoute (1 800 668-6868)
+- **Personnes 2SLGBTQ+** : Interligne (1 888 505-1010)
+- **Dépendances** : Drogue: aide et référence (1 800 265-2626)
+- **Violence conjugale** : SOS violence conjugale (1 800 363-9010)
+
+Ces ressources sont rappelées à toute personne qui en exprime le besoin, et figurent également sur la page **Aide immédiate** d'ivia.quebec.
+
 ---
 
 ## ARTICLE 10 — PROPRIÉTÉ DES CONTENUS
@@ -347,7 +367,16 @@ Le Niveau 1 (consentement au service) peut être donné par la personne mineure 
 
 ### 13.3 Séances avec mineurs
 
-Le praticien est informé de l'âge du client mineur. Les séances avec des mineurs sont soumises aux mêmes règles de confidentialité, avec attention accrue aux obligations de signalement en vertu de la Loi sur la protection de la jeunesse.
+Le praticien est informé de l'âge du client mineur. Les séances avec des mineurs sont soumises aux mêmes règles de confidentialité, avec attention accrue aux obligations de signalement en vertu de la Loi sur la protection de la jeunesse (LPJ). Le praticien reçoit une formation spécifique aux signaux et formes d'expression de la détresse chez les jeunes 15-24 ans (cf. Protocole d'urgence v1.1, Partie II.bis.1).
+
+### 13.4 Ressources dédiées aux jeunes
+
+IVIA rappelle expressément aux personnes mineures inscrites que les ressources suivantes sont accessibles en tout temps, gratuitement et confidentiellement :
+- **Tel-jeunes** : 1 800 263-2266 ou texto au 514 600-1002 (24/7)
+- **Jeunesse, J'écoute** : 1 800 668-6868 ou texto PARLER au 686868 (24/7)
+- **Interligne** (jeunes 2SLGBTQ+) : 1 888 505-1010 (24/7)
+
+Ces ressources existent en plus du service IVIA. Une personne mineure peut les contacter à tout moment, même en parallèle d'un suivi IVIA, sans en informer ses parents ni IVIA.
 
 ---
 
