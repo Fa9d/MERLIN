@@ -53,11 +53,54 @@ def praticien_sidebar(active):
         icon = f'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="{path}"/></svg>'
         rows.append(f'<a href="{href}"{cur}>{icon}<span>{label}</span>{bdg}</a>')
 
-    profil = '''<a href="#" style="margin-top: auto;">
+    profil = '''<a href="compte.html" style="margin-top: auto;">
       <div style="width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg, #C58A8A, #D89260);"></div>
       <span>Maïté L.-T.</span>
     </a>'''
     return f'<aside class="sidebar" aria-label="Navigation espace praticien"><h4>Espace praticien</h4>{"".join(rows)}<h4 style="margin-top:var(--space-12);">Compte</h4>{profil}</aside>'
+
+
+def compte_body():
+    return '''
+<div class="workspace">
+  {sidebar}
+  <div class="workspace__content">
+    <header class="workspace__header">
+      <p style="font-size:var(--text-xs); letter-spacing:0.12em; text-transform:uppercase; color:var(--color-rose-deep);">Compte praticien</p>
+      <h1>Votre profil et vos accès.</h1>
+      <p>Un lieu simple pour vos coordonnées, vos préférences et vos façons de tenir la maison IVIA.</p>
+    </header>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:var(--space-5);">
+      <article class="card">
+        <p class="card__meta">Profil</p>
+        <h2 class="card__title">Maïté Lavoie-Therrien</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Courriel : maite@ivia.quebec</p>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-2);">Région : Montréal</p>
+      </article>
+      <article class="card">
+        <p class="card__meta">Accès</p>
+        <h2 class="card__title">Mot de passe et sécurité</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Gardez un accès stable à votre espace de travail.</p>
+        <div class="cluster" style="margin-top:var(--space-4);">
+          <a class="btn btn--ghost btn--sm" href="abonnement.html#pause">Mettre en pause</a>
+          <a class="btn btn--ghost btn--sm" href="abonnement.html">Voir l'abonnement</a>
+        </div>
+      </article>
+      <article class="card">
+        <p class="card__meta">Préférences</p>
+        <h2 class="card__title">Notifications et rythme</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Choisissez quand recevoir les rappels d'audio, les résumés et les suivis maison.</p>
+      </article>
+      <article class="card">
+        <p class="card__meta">Langue et signature</p>
+        <h2 class="card__title">Ton, signature, repère maison</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Conserver la voix IVIA : français québécois, sobre, directe, cohérente.</p>
+      </article>
+    </div>
+  </div>
+</div>
+'''.format(sidebar=praticien_sidebar("compte.html"))
 
 
 # =============================================================
@@ -763,7 +806,7 @@ def abonnement_body():
     </div>
 
     <p style="text-align:center; margin-top:var(--space-12); font-family:var(--font-serif); color:var(--color-text-muted); font-size:var(--text-sm);">
-      Vous traversez une période plus calme ? Vous pouvez mettre votre abonnement <a href="#" style="color:var(--color-rose-deep);">en pause jusqu'à 3 mois</a> sans perdre votre fiche annuaire.
+      Vous traversez une période plus calme ? Vous pouvez mettre votre abonnement <a href="compte.html#pause" style="color:var(--color-rose-deep);">en pause jusqu'à 3 mois</a> sans perdre votre fiche annuaire.
     </p>
   </div>
 </div>
@@ -1005,6 +1048,7 @@ def build():
         ("audios.html",        "Audios à traiter — Espace praticien IVIA", "File d'audios reçus en attente de réponse.",                          audios_body()),
         ("mes-offres.html",    "Mes offres — Espace praticien IVIA",       "Configuration des formats, durées et tarifs proposés aux personnes écoutées.", mes_offres_body()),
         ("audio-traiter.html", "Répondre à un audio — Espace praticien IVIA", "Écran d'écoute et rédaction de réponse à un audio asynchrone.",   audio_traiter_body()),
+      ("compte.html",        "Mon compte — Espace praticien IVIA",       "Préférences de compte et accès à votre espace praticien.",             compte_body()),
         ("clients.html",       "Mes clients — Espace praticien IVIA",      "Annuaire interne des personnes accompagnées.",                         clients_body()),
         ("outils.html",        "Mes outils — Espace praticien IVIA",       "Trames d'écoute, modèles de réponse, ressources à partager.",         outils_body()),
         ("abonnement.html",    "Mon abonnement — Espace praticien IVIA",   "Plans d'abonnement praticien IVIA.",                                   abonnement_body()),

@@ -15,14 +15,12 @@ PUBLIC_NAV = [
     ("index.html", "Accueil"),
     ("comment.html", "Comment ça fonctionne"),
     ("pourquoi.html", "Pourquoi IVIA"),
+  ("rendez-vous.html", "Rendez-vous"),
     ("bibliotheque.html", "Bibliothèque"),
     ("urgence.html", "Si c'est urgent"),
 ]
 
-PUBLIC_ACTIONS = (
-    '<a href="tests.html" class="btn btn--ghost btn--sm" style="opacity:0.85;">Espace tests</a>'
-    '<a href="client/audio-async.html" class="btn btn--primary btn--sm">Commencer une écoute</a>'
-)
+PUBLIC_ACTIONS = '<a href="tests.html" class="btn btn--ghost btn--sm" style="opacity:0.85;">Espace tests</a>'
 
 
 def public_header(current):
@@ -65,8 +63,8 @@ PUBLIC_FOOTER = '''<footer class="site-footer">
         <li><a href="urgence.html">Si c'est urgent</a></li>
       </ul></div>
       <div><h4>Pratique</h4><ul role="list">
-        <li><a href="client/audio-async.html">Commencer une écoute</a></li>
-        <li><a href="client/journal.html">Journal de vie</a></li>
+        <li><a href="rendez-vous.html">Commencer une écoute</a></li>
+        <li><a href="tests.html">Journal de vie</a></li>
         <li><a href="tests.html">Espace tests</a></li>
         <li><a href="mailto:contact@ivia.quebec">Nous écrire</a></li>
       </ul></div>
@@ -79,7 +77,7 @@ PUBLIC_FOOTER = '''<footer class="site-footer">
     </div>
     <div class="site-footer__bottom">
       <span>© 2026 IVIA — Pour le peuple, par le peuple.</span>
-      <span>IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</span>
+      <span>IVIA n'est pas un service d'urgence.</span>
     </div>
   </div>
 </footer>'''
@@ -115,246 +113,212 @@ def public_page(title, description, current, body_html, css_extra="", body_class
 def build_landing():
     body = '''
 <main id="main">
-
-  <!-- Hero officiel selon MERLIN_GOUV_PAGE_SITE_CLIENT -->
-  <section class="public-hero">
+  <section class="public-hero public-hero--home">
     <div class="container public-hero__inner">
-      <p class="public-hero__overline">Espace d'écoute · Québec · Conforme Loi 25</p>
-      <h1 class="public-hero__title">
-        Un espace d'<em>écoute</em><br>
-        pour clarifier ce que vous vivez<br>
-        <span class="public-hero__title-soft">et repartir avec une suite concrète.</span>
-      </h1>
-      <p class="public-hero__lede">
-        Vous nous parlez. Nous vous renvoyons un résumé clair et trois pistes concrètes —
-        sans jugement, sans diagnostic. À votre rythme.
-      </p>
-      <div class="public-hero__cta">
-        <a href="client/audio-async.html" class="btn btn--primary btn--lg">Commencer une écoute</a>
-        <a href="comment.html" class="btn btn--ghost btn--lg">Comprendre comment ça fonctionne</a>
+      <div class="public-hero__content">
+        <p class="public-hero__overline">Espace d'écoute · Québec · français québécois</p>
+        <h1 class="public-hero__title"><span>Quand tout se mélange,</span><span>commencez par être entendu.</span></h1>
+        <p class="public-hero__lede">Vous arrivez avec ce que vous avez. IVIA vous écoute, vous remet une suite claire, et vous laisse repartir à votre rythme.</p>
+        <div class="public-hero__cta">
+          <a href="rendez-vous.html" class="btn btn--primary btn--lg">Prendre rendez-vous →</a>
+          <a href="comment.html" class="public-hero__link">Voir comment ça marche</a>
+        </div>
       </div>
-      <p class="public-hero__disclaimer">
-        IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.
-        Si vous êtes en détresse, <a href="urgence.html">cliquez ici</a> ou composez le <strong>911</strong>.
-      </p>
+
+      <div class="public-hero__visual" aria-hidden="true">
+        <svg viewBox="0 0 520 420" role="presentation">
+          <defs>
+            <linearGradient id="hero-sheen" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#EEDCC9" stop-opacity="0.88" />
+              <stop offset="48%" stop-color="#C58A8A" stop-opacity="0.24" />
+              <stop offset="100%" stop-color="#A1B6C0" stop-opacity="0.46" />
+            </linearGradient>
+          </defs>
+          <path d="M104 310 C 75 240, 88 144, 165 108 C 232 77, 320 82, 366 130 C 419 186, 424 277, 356 321 C 287 366, 187 360, 104 310 Z" fill="url(#hero-sheen)"/>
+          <path d="M133 284 C 117 239, 127 171, 178 142 C 228 114, 303 114, 341 150 C 386 194, 389 255, 342 286 C 295 318, 184 317, 133 284 Z" fill="none" stroke="currentColor" stroke-opacity="0.18" stroke-width="2"/>
+          <path d="M167 266 C 158 231, 168 192, 208 170 C 245 149, 294 149, 324 176 C 357 205, 361 243, 327 267 C 290 293, 217 295, 167 266 Z" fill="none" stroke="currentColor" stroke-opacity="0.26" stroke-width="1.6"/>
+          <circle cx="257" cy="225" r="15" fill="currentColor" fill-opacity="0.55"/>
+          <path d="M248 211 C 238 193, 225 181, 206 176" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.45" fill="none"/>
+          <path d="M267 211 C 280 192, 294 180, 314 174" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.45" fill="none"/>
+          <path d="M257 240 C 257 264, 248 281, 232 293" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.45" fill="none"/>
+          <path d="M257 240 C 257 266, 271 283, 289 295" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-opacity="0.45" fill="none"/>
+        </svg>
+
+        <div class="public-hero__pills">
+          <span>Audio</span>
+          <span>Résumé</span>
+          <span>Suite concrète</span>
+        </div>
+      </div>
+
+      <div class="public-hero__alert" role="note" aria-label="Ressources d'urgence">
+        <strong>Si c'est pressé, ne passez pas par IVIA.</strong>
+        <a href="tel:911">911</a>
+        <a href="tel:811">811 opt. 2</a>
+        <a href="tel:18662773553">1 866 APPELLE</a>
+        <a href="urgence.html">Tous les recours</a>
+      </div>
     </div>
   </section>
 
-  <!-- Trois portes : c'est l'âme de la landing -->
-  <section class="public-section">
+  <section class="public-section public-section--soft">
     <div class="container">
-      <p class="section-overline">Trois portes</p>
-      <h2 class="section-title">Selon ce qui vous habite, en ce moment</h2>
-
+      <p class="section-overline">Ce que vous recevez</p>
+      <h2 class="section-title">Une suite courte, claire et utile.</h2>
       <div class="trois-portes">
-
-        <a class="porte porte--ecoute" href="client/audio-async.html">
-          <div class="porte__icon">
+        <article class="porte porte--ecoute">
+          <div class="porte__icon" aria-hidden="true">
             <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4">
               <path d="M15 25 q-3 5 0 10 q3 5 0 10" stroke-linecap="round"/>
               <path d="M22 22 q-5 8 0 16 q5 8 0 16" stroke-linecap="round" stroke-opacity="0.6"/>
               <circle cx="35" cy="30" r="9"/>
-              <path d="M35 39 v6 m-4 0 h8" stroke-linecap="round"/>
             </svg>
           </div>
-          <h3>Vous voulez être écouté·e</h3>
-          <p>Une séance audio avec un·e praticien·ne IVIA — en rendez-vous direct ou en différé selon ce qui vous convient. Vous recevez ensuite un résumé écrit et trois pistes concrètes.</p>
-          <span class="porte__cta">Commencer une écoute →</span>
-        </a>
-
-        <a class="porte porte--lire" href="bibliotheque.html">
-          <div class="porte__icon">
+          <h3>On vous écoute</h3>
+          <p>Une personne vous répond à l'audio, avec un ton simple et une présence stable.</p>
+        </article>
+        <article class="porte porte--lire">
+          <div class="porte__icon" aria-hidden="true">
             <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4">
               <path d="M10 18 v32 q10 -3 20 0 q10 -3 20 0 v-32 q-10 -3 -20 0 q-10 -3 -20 0 z"/>
-              <path d="M30 18 v32" stroke-opacity="0.5"/>
-              <path d="M16 27 h10 M16 33 h10 M34 27 h10 M34 33 h10" stroke-opacity="0.5"/>
             </svg>
           </div>
-          <h3>Vous voulez d'abord comprendre</h3>
-          <p>Seize articles courts, écrits avec soin. L'écoute, l'équilibre, les frontières, la suite. Lisez sans engagement, à votre rythme.</p>
-          <span class="porte__cta">Ouvrir la bibliothèque →</span>
-        </a>
-
-        <a class="porte porte--journal" href="client/journal.html">
-          <div class="porte__icon">
+          <h3>On vous résume</h3>
+          <p>Vous recevez un texte clair pour garder le fil sans avoir à tout retenir.</p>
+        </article>
+        <article class="porte porte--journal">
+          <div class="porte__icon" aria-hidden="true">
             <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4">
               <circle cx="30" cy="30" r="20"/>
               <path d="M30 14 v32 M14 30 h32" stroke-opacity="0.4"/>
-              <circle cx="30" cy="30" r="3" fill="currentColor"/>
-              <path d="M30 30 l10 -10" stroke-linecap="round"/>
             </svg>
           </div>
-          <h3>Vous voulez vous suivre dans le temps</h3>
-          <p>Le journal de vie consigne vos écoutes, vos suites concrètes et l'évolution de vos cinq zones. Aucun diagnostic — un miroir vivant.</p>
-          <span class="porte__cta">Découvrir le journal →</span>
-        </a>
-
+          <h3>On vous aide à tenir la suite</h3>
+          <p>Le journal garde vos repères et vos élans pour la prochaine fois.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- Ce que IVIA est et n'est pas -->
+  <section class="public-section">
+    <div class="container">
+      <p class="section-overline">Le cercle IVIA</p>
+      <h2 class="section-title">Cinq zones, un seul vivant.</h2>
+      <p class="section-lede">On regarde où ça circule, où ça coince et ce qui mérite de rester en avant-plan.</p>
+      <div class="cercle-grid">
+        <div class="zone zone--corps"><h3>Corps</h3><p>Sommeil, énergie, rythme.</p></div>
+        <div class="zone zone--relation"><h3>Relation</h3><p>Liens, place, proximité.</p></div>
+        <div class="zone zone--sens"><h3>Sens</h3><p>Ce qui compte, ce qui appelle.</p></div>
+        <div class="zone zone--ressources"><h3>Ressources</h3><p>Temps, argent, appui, espace.</p></div>
+        <div class="zone zone--frequence"><h3>Fréquence</h3><p>Le rythme qui vous ressemble.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="public-section public-section--soft">
+    <div class="container">
+      <p class="section-overline">Comment ça se passe</p>
+      <h2 class="section-title">Quatre temps, à votre cadence.</h2>
+      <ol class="parcours">
+        <li><span class="parcours__num">1</span><h3>Vous parlez</h3><p>Quand vous voulez, avec les mots qui vous viennent.</p></li>
+        <li><span class="parcours__num">2</span><h3>On écoute</h3><p>Une personne lit votre audio et garde le cap.</p></li>
+        <li><span class="parcours__num">3</span><h3>On vous remet une suite</h3><p>Résumé clair, repères utiles, aucune surcharge.</p></li>
+        <li><span class="parcours__num">4</span><h3>Vous reprenez le fil</h3><p>Journal, nouvelle écoute ou simple pause. C'est vous qui décidez.</p></li>
+      </ol>
+      <p class="section-foot"><a href="comment.html" class="btn btn--ghost">Voir le parcours détaillé →</a></p>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="container">
+      <p class="section-overline">Bibliothèque</p>
+      <h2 class="section-title">Seize articles, sans mur devant vous.</h2>
+      <p class="section-lede">Des textes courts pour comprendre l'esprit IVIA avant ou après une écoute.</p>
+      <div class="featured-articles">
+        ''' + featured_articles_html() + '''
+      </div>
+      <p class="section-foot"><a href="bibliotheque.html" class="btn btn--ghost">Toute la bibliothèque (16 articles) →</a></p>
+    </div>
+  </section>
+
+  <section class="public-section public-section--soft">
+    <div class="container">
+      <p class="section-overline">Rendez-vous</p>
+      <h2 class="section-title">Choisissez un·e praticien·ne.</h2>
+      <p class="section-lede">Avant de parler, vous voyez à qui vous allez confier votre parole. Trois profils pour amorcer le lien.</p>
+      <div class="rendezvous-preview">
+        <article class="rendezvous-card rendezvous-card--rose">
+          <p class="rendezvous-card__role">Écoute douce</p>
+          <h3>Camille Roy</h3>
+          <p>Présence simple, ton posé, très bon pour commencer quand tout est mêlé.</p>
+          <ul>
+            <li>Audio en différé</li>
+            <li>Résumé humain</li>
+            <li>Délai 24 à 72 h</li>
+          </ul>
+          <a href="rendez-vous.html#camille" class="btn btn--ghost btn--sm">Choisir Camille</a>
+        </article>
+        <article class="rendezvous-card rendezvous-card--mousse">
+          <p class="rendezvous-card__role">Clarté concrète</p>
+          <h3>Mylène Tremblay</h3>
+          <p>Approche structurée pour dégager un prochain pas sans pression.</p>
+          <ul>
+            <li>Audio en différé</li>
+            <li>3 pistes concrètes</li>
+            <li>Accompagnement continu</li>
+          </ul>
+          <a href="rendez-vous.html#mylene" class="btn btn--ghost btn--sm">Choisir Mylène</a>
+        </article>
+        <article class="rendezvous-card rendezvous-card--aubergine">
+          <p class="rendezvous-card__role">Écoute de fond</p>
+          <h3>David Phaneuf</h3>
+          <p>Pour les personnes qui veulent un cadre complet et des repères nets.</p>
+          <ul>
+            <li>Vue d’ensemble</li>
+            <li>Parcours simple</li>
+            <li>Suites claires</li>
+          </ul>
+          <a href="rendez-vous.html#david" class="btn btn--ghost btn--sm">Choisir David</a>
+        </article>
+      </div>
+      <p class="section-foot"><a href="rendez-vous.html" class="btn btn--primary">Voir tous les praticien·ne·s →</a></p>
+    </div>
+  </section>
+
   <section class="public-section public-section--soft">
     <div class="container ce-quivia">
       <div>
-        <p class="section-overline">Pour qu'on se comprenne</p>
+        <p class="section-overline">Le cadre</p>
         <h2 class="section-title">Ce qu'IVIA <em>est</em></h2>
         <ul class="puces puces--vert">
-          <li>Un espace d'écoute audio — en direct ou en différé, selon votre rythme</li>
-          <li>Un résumé clair, doux, sans jargon, écrit pour vous</li>
-          <li>Trois pistes concrètes que vous choisissez de tenir ou non</li>
-          <li>Un journal de vie qui suit vos cycles dans la durée</li>
-          <li>Un espace conforme à la <strong>Loi 25 du Québec</strong></li>
+          <li>Un espace d'écoute audio, en direct ou en différé</li>
+          <li>Un résumé clair, sans jargon, écrit pour vous</li>
+          <li>Trois pistes concrètes que vous choisissez ou non</li>
+          <li>Un journal de vie pour garder vos repères</li>
+          <li>Un espace conforme à la Loi 25 du Québec</li>
         </ul>
       </div>
       <div>
         <p class="section-overline">&nbsp;</p>
         <h2 class="section-title">Ce qu'IVIA <em>n'est pas</em></h2>
         <ul class="puces puces--rose">
-          <li>Pas un service d'urgence — pour ça, composez le 911</li>
-          <li>Pas un diagnostic médical ou psychologique</li>
-          <li>Pas une thérapie, pas un substitut à votre suivi en santé</li>
-          <li>Pas une intelligence artificielle qui vous parle à la place d'un humain</li>
-          <li>Pas un produit qui vous garde captif·ve — vous êtes libre à chaque étape</li>
+          <li>Pas un service d'urgence</li>
+          <li>Pas un substitut à un suivi professionnel</li>
+          <li>Pas une machine qui parle à la place d'un humain</li>
+          <li>Pas un produit qui vous garde captif·ve</li>
+          <li>Pas une promesse de résultat magique</li>
         </ul>
       </div>
     </div>
   </section>
-
-  <!-- Cycle visible : les 5 zones du cercle IVIA -->
-  <section class="public-section">
-    <div class="container">
-      <p class="section-overline">Le cercle IVIA</p>
-      <h2 class="section-title">Cinq zones, un seul vivant</h2>
-      <p class="section-lede">L'humain n'est pas une liste de problèmes. Il est un système vivant. Le cercle nous aide à voir où l'énergie circule et où elle se bloque.</p>
-
-      <div class="cercle-grid">
-        <div class="zone zone--corps">
-          <h3>Corps</h3>
-          <p>Le sommeil, l'énergie, les sensations. Le premier témoin de ce qui se passe.</p>
-        </div>
-        <div class="zone zone--relation">
-          <h3>Relation</h3>
-          <p>Les liens, la place que vous prenez, celle que vous laissez aux autres.</p>
-        </div>
-        <div class="zone zone--sens">
-          <h3>Sens</h3>
-          <p>Ce qui compte pour vous. Ce qui vous met en mouvement le matin.</p>
-        </div>
-        <div class="zone zone--ressources">
-          <h3>Ressources</h3>
-          <p>Le temps, l'argent, le réseau. Ce qui rend possible — ou ce qui contraint.</p>
-        </div>
-        <div class="zone zone--frequence">
-          <h3>Fréquence</h3>
-          <p>Le rythme. Pas une croyance — un état du vivant. Haut, bas, en équilibre.</p>
-        </div>
-      </div>
-
-      <p class="section-foot"><a href="bibliotheque.html#axe-equilibre">Lire « Les cinq zones du cercle IVIA » →</a></p>
-    </div>
-  </section>
-
-  <!-- Le parcours en 4 étapes -->
-  <section class="public-section public-section--soft">
-    <div class="container">
-      <p class="section-overline">Comment ça se passe</p>
-      <h2 class="section-title">Quatre étapes, à votre rythme</h2>
-
-      <ol class="parcours">
-        <li>
-          <span class="parcours__num">1</span>
-          <h3>Vous parlez</h3>
-          <p>Au calme, depuis chez vous, en une fois ou plusieurs prises. Aucun temps minimum.</p>
-        </li>
-        <li>
-          <span class="parcours__num">2</span>
-          <h3>Nous écoutons</h3>
-          <p>Une praticienne ou un praticien IVIA reçoit votre audio. Notre outil interne propose des pistes — l'humain décide toujours.</p>
-        </li>
-        <li>
-          <span class="parcours__num">3</span>
-          <h3>Vous recevez un résumé</h3>
-          <p>Un texte clair, trois pistes concrètes, et la liberté de choisir si vous voulez aller plus loin. Le délai est annoncé selon le format de séance choisi.</p>
-        </li>
-        <li>
-          <span class="parcours__num">4</span>
-          <h3>Vous tenez ou vous ne tenez pas</h3>
-          <p>Le journal vous accompagne. Vous restez maître·sse du rythme et des décisions. Toujours.</p>
-        </li>
-      </ol>
-
-      <p class="section-foot"><a href="comment.html" class="btn btn--ghost">Voir le parcours détaillé →</a></p>
-    </div>
-  </section>
-
-  <!-- Aperçu bibliothèque -->
-  <section class="public-section">
-    <div class="container">
-      <p class="section-overline">Quelques articles à lire</p>
-      <h2 class="section-title">La bibliothèque — accès libre</h2>
-      <p class="section-lede">Seize textes courts, organisés en quatre axes. Aucune inscription. Aucun mur.</p>
-
-      <div class="featured-articles">
-        ''' + featured_articles_html() + '''
-      </div>
-
-      <p class="section-foot"><a href="bibliotheque.html" class="btn btn--ghost">Toute la bibliothèque (16 articles) →</a></p>
-    </div>
-  </section>
-
-  <!-- Confiance / Loi 25 / sécurité -->
-  <section class="public-section public-section--soft">
-    <div class="container confiance">
-      <p class="section-overline">La confiance est une condition</p>
-      <h2 class="section-title">Vos paroles vous appartiennent</h2>
-
-      <div class="confiance__grid">
-        <div>
-          <h3>Conforme à la Loi 25</h3>
-          <p>Tout est traité sous la loi québécoise. Vous pouvez consulter, exporter et supprimer vos données à tout moment depuis votre espace.</p>
-        </div>
-        <div>
-          <h3>Audios chiffrés, accès limité</h3>
-          <p>Seul·e le ou la praticien·ne que vous choisissez écoute votre enregistrement. Personne d'autre. Pas même nous.</p>
-        </div>
-        <div>
-          <h3>Effaçable, à votre demande</h3>
-          <p>Vos audios et résumés peuvent être effacés sur simple demande dans votre espace. Pas de procédure, pas de friction.</p>
-        </div>
-        <div>
-          <h3>L'humain au centre — toujours</h3>
-          <p>Aucune décision automatisée à votre place. Notre outil aide les praticien·ne·s ; il ne vous remplace pas, ne les remplace pas.</p>
-        </div>
-      </div>
-
-      <p class="section-foot"><a href="confidentialite.html">Lire la politique de confidentialité complète →</a></p>
-    </div>
-  </section>
-
-  <!-- Bandeau urgence persistant en bas -->
-  <section class="bandeau-urgence">
-    <div class="container bandeau-urgence__inner">
-      <div>
-        <p class="bandeau-urgence__title">Vous êtes en détresse maintenant ?</p>
-        <p class="bandeau-urgence__lede">IVIA n'est pas un service d'urgence. Si la situation est urgente, composez l'un de ces numéros — gratuit, 24/7.</p>
-      </div>
-      <div class="bandeau-urgence__nums">
-        <a href="tel:911"><strong>911</strong><span>urgence vitale</span></a>
-        <a href="tel:811"><strong>811 opt. 2</strong><span>Info-Social</span></a>
-        <a href="tel:18662773553"><strong>1 866 APPELLE</strong><span>prévention suicide</span></a>
-        <a href="urgence.html"><strong>Voir tous les recours →</strong><span></span></a>
-      </div>
-    </div>
-  </section>
-
 </main>
 '''
     html = public_page(
-        "IVIA — Un espace d'écoute pour clarifier ce que vous vivez",
-        "Espace d'écoute audio québécois. Vous parlez à un·e praticien·ne, vous recevez un résumé clair et trois pistes concrètes. Conforme Loi 25.",
+      "IVIA — Quand tout se mélange, commencez par être entendu",
+      "Espace d'écoute audio québécois. Vous parlez, vous recevez un résumé clair et une suite concrète. Conforme à la Loi 25.",
         "index.html",
         body,
+      body_class="public-page public-page--home",
     )
     (ROOT / "index.html").write_text(html, encoding="utf-8")
 
@@ -382,6 +346,10 @@ def featured_articles_html():
           <span class="featured-card__cta">Lire →</span>
         </a>''')
     return "\n".join(cards)
+
+
+def article_source_href(slug):
+    return f"articles_md/IVIA_ARTICLE_{slug}_v1.0.md"
 
 
 # ============================================================================
@@ -527,11 +495,13 @@ def build_bibliotheque():
     articles_full = []
     for axe_name in AXES:
         for a in by_axe.get(axe_name, []):
+            source_href = article_source_href(a['slug'])
             articles_full.append(f'''
   <article class="article-full" id="article-{a['slug']}">
     <div class="container article-full__inner">
       <p class="article-full__breadcrumb"><a href="#axe-{AXES[a['axe']]['slug']}">{a['axe']}</a> · Article {a['num']}</p>
       <h2 class="article-full__title">{a['title']}</h2>
+      <p class="article-full__source"><a href="{source_href}">Source Markdown · IVIA_ARTICLE_{a['slug']}_v1.0.md</a></p>
       <div class="article-full__body">
 {a['html']}
       </div>
@@ -592,6 +562,87 @@ def build_bibliotheque():
         body,
     )
     (ROOT / "bibliotheque.html").write_text(html, encoding="utf-8")
+
+
+# ============================================================================
+# RESSOURCES URGENCE — urgence.html
+# ============================================================================
+def build_rendezvous():
+    body = '''
+<main id="main">
+  <section class="public-hero public-hero--small">
+    <div class="container">
+      <p class="public-hero__overline">Rendez-vous</p>
+      <h1 class="public-hero__title">Choisissez la personne qui va vous <em>recevoir</em>.</h1>
+      <p class="public-hero__lede">Avant de commencer, vous voyez le visage, l'approche et le type d'écoute. Pas de trou noir. Pas de clic sans contexte.</p>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="container">
+      <div class="rendezvous-grid">
+        <article class="rendezvous-detail" id="camille">
+          <p class="rendezvous-detail__tag">Écoute douce</p>
+          <h2>Camille Roy</h2>
+          <p>Approche calme, humaine, très simple pour une première prise de parole.</p>
+          <ul>
+            <li>Réponse en audio différé</li>
+            <li>Résumé rédigé à la main</li>
+            <li>Repères concrets et courts</li>
+          </ul>
+          <div class="rendezvous-detail__actions">
+            <a href="tests.html" class="btn btn--primary">Tester avec Camille</a>
+            <a href="comment.html" class="btn btn--ghost">Voir le parcours</a>
+          </div>
+        </article>
+
+        <article class="rendezvous-detail" id="mylene">
+          <p class="rendezvous-detail__tag">Clarté concrète</p>
+          <h2>Mylène Tremblay</h2>
+          <p>Pour les personnes qui veulent une lecture structurée sans jargon.</p>
+          <ul>
+            <li>Délais annoncés</li>
+            <li>Trois pistes de suite</li>
+            <li>Suivi cohérent</li>
+          </ul>
+          <div class="rendezvous-detail__actions">
+            <a href="tests.html" class="btn btn--primary">Tester avec Mylène</a>
+            <a href="bibliotheque.html" class="btn btn--ghost">Lire d'abord</a>
+          </div>
+        </article>
+
+        <article class="rendezvous-detail" id="david">
+          <p class="rendezvous-detail__tag">Écoute de fond</p>
+          <h2>David Phaneuf</h2>
+          <p>Un cadre plus large pour situer ce que vous vivez et quoi faire ensuite.</p>
+          <ul>
+            <li>Vision d'ensemble</li>
+            <li>Navigation simple</li>
+            <li>Orientation vers la bonne suite</li>
+          </ul>
+          <div class="rendezvous-detail__actions">
+            <a href="tests.html" class="btn btn--primary">Tester avec David</a>
+            <a href="urgence.html" class="btn btn--ghost">Voir l'urgence</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="rendezvous-foot">
+        <h2>Vous ne voyez pas encore la bonne personne ?</h2>
+        <p>Le but de cette page est de vous faire tomber sur une présence lisible, pas sur une porte fermée. Si vous préférez, vous pouvez commencer par lire la bibliothèque ou consulter les repères de comment ça fonctionne.</p>
+        <p class="long-form__back"><a href="index.html">← Retour à l'accueil</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+'''
+    html = public_page(
+        "Rendez-vous — IVIA",
+        "Choisissez un·e praticien·ne IVIA avant de commencer votre écoute. Une entrée claire vers la bonne personne.",
+        "rendez-vous.html",
+        body,
+    )
+    (ROOT / "rendez-vous.html").write_text(html, encoding="utf-8")
 
 
 # ============================================================================
@@ -817,7 +868,7 @@ def build_pourquoi():
       <h2 class="section-title">Quand tout se mélange, commencez par <em>être entendu</em>.</h2>
       <p class="section-lede">Une séance audio, en français, avec une personne qualifiée qui sait écouter. Sans urgence. Sans diagnostic. Avec une suite concrète à votre rythme.</p>
       <div class="pourquoi-cta__actions">
-        <a href="client/audio-async.html" class="btn btn--primary">Commencer une écoute</a>
+        <a href="rendez-vous.html" class="btn btn--primary">Prendre rendez-vous</a>
         <a href="comment.html" class="btn btn--ghost">Voir comment ça fonctionne</a>
       </div>
       <p class="pourquoi-cta__sources">Sources principales : INSPQ · ISQ · Statistique Canada · Commissaire à la santé et au bien-être du Québec · CAMH · Federal Trade Commission · Holt-Lunstad et al. Le corpus complet de preuves est documenté en interne et révisable annuellement.</p>
@@ -1690,6 +1741,70 @@ PUBLIC_CSS = r'''
   color: var(--color-aubergine);
 }
 
+/* ---------- Rendez-vous ---------- */
+.rendezvous-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+.rendezvous-card,
+.rendezvous-detail {
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+.rendezvous-card { border-top: 5px solid var(--card-c, var(--color-rose)); }
+.rendezvous-card--rose { --card-c: var(--color-rose); }
+.rendezvous-card--mousse { --card-c: var(--color-mousse); }
+.rendezvous-card--aubergine { --card-c: var(--color-aubergine); }
+.rendezvous-card__role,
+.rendezvous-detail__tag {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--card-c, var(--color-text-muted));
+  margin-bottom: var(--space-2);
+}
+.rendezvous-card h3,
+.rendezvous-detail h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+}
+.rendezvous-card p,
+.rendezvous-detail p,
+.rendezvous-card li,
+.rendezvous-detail li {
+  font-family: var(--font-serif);
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+.rendezvous-card ul,
+.rendezvous-detail ul {
+  margin: var(--space-4) 0;
+  padding-left: 1.3em;
+}
+.rendezvous-detail {
+  margin-bottom: var(--space-5);
+}
+.rendezvous-detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+.rendezvous-foot {
+  max-width: 60ch;
+  margin-top: var(--space-10);
+}
+.rendezvous-foot h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-3);
+}
+
 /* ---------- Confiance ---------- */
 .confiance__grid {
   display: grid;
@@ -2163,13 +2278,14 @@ def build():
     build_landing()
     build_comment()
     build_pourquoi()
+    build_rendezvous()
     build_bibliotheque()
     build_urgence()
     build_mentions()
     build_confidentialite()
     build_cgu()
     build_tests()
-    print("✓ Pages publiques générées : index, comment, pourquoi, bibliotheque, urgence, mentions, confidentialite, cgu, tests")
+    print("✓ Pages publiques générées : index, comment, pourquoi, rendez-vous, bibliotheque, urgence, mentions, confidentialite, cgu, tests")
 
 
 if __name__ == "__main__":

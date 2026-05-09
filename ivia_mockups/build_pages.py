@@ -104,12 +104,12 @@ FOOTER_CLIENT = '''<footer class="site-footer">
         <li><a href="rendez-vous.html">Prendre rendez-vous</a></li>
         <li><a href="inscription.html">S'enregistrer</a></li>
         <li><a href="dashboard.html">Mon espace</a></li>
-        <li><a href="#">Nous écrire</a></li>
+        <li><a href="mailto:contact@ivia.quebec">Nous écrire</a></li>
       </ul></div>
       <div><h4>Mentions</h4><ul role="list">
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Confidentialité (Loi 25)</a></li>
-        <li><a href="#">CGU</a></li>
+        <li><a href="../mentions.html">Mentions légales</a></li>
+        <li><a href="../confidentialite.html">Confidentialité (Loi 25)</a></li>
+        <li><a href="../cgu.html">CGU</a></li>
         <li><a href="../index.html">↩ Retour mockups</a></li>
       </ul></div>
     </div>

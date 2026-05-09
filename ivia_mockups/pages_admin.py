@@ -22,7 +22,7 @@ def admin_sidebar(active):
         bdg = f'<span class="badge">{badge}</span>' if badge else ""
         icon = f'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="{path}"/></svg>'
         rows.append(f'<a href="{href}"{cur}>{icon}<span>{label}</span>{bdg}</a>')
-    return f'<aside class="sidebar" aria-label="Navigation admin"><h4>Maison IVIA · pilotage</h4>{"".join(rows)}<h4 style="margin-top:var(--space-12);">Compte</h4><a href="#"><div style="width:24px; height:24px; border-radius:50%; background:var(--color-aubergine);"></div><span>Admin · D. Phaneuf</span></a></aside>'
+    return f'<aside class="sidebar" aria-label="Navigation admin"><h4>Maison IVIA · pilotage</h4>{"".join(rows)}<h4 style="margin-top:var(--space-12);">Compte</h4><a href="parametres.html"><div style="width:24px; height:24px; border-radius:50%; background:var(--color-aubergine);"></div><span>Admin · D. Phaneuf</span></a></aside>'
 
 
 # =============================================================
@@ -863,22 +863,22 @@ def analytique_body():
       Approfondir une question précise. Toujours sur des données agrégées — jamais sur le contenu d'un audio identifié.
     </p>
     <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:var(--space-5);">
-      <article class="card card--clickable" data-href="#" style="padding:var(--space-6); cursor:pointer;">
+      <article class="card card--clickable" data-href="analytique.html" style="padding:var(--space-6); cursor:pointer;">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--color-mousse); margin-bottom:var(--space-3);"><circle cx="11" cy="11" r="7"/><path d="M21 21 L 16 16"/></svg>
         <h3 style="font-family:var(--font-display); font-size:var(--text-base);">Recherche thématique</h3>
         <p style="font-family:var(--font-serif); font-size:var(--text-sm); color:var(--color-text-muted); margin-top:var(--space-2);">Combien de mentions « brouillard » par voie ? Comment évolue le thème « deuil » ?</p>
       </article>
-      <article class="card card--clickable" data-href="#" style="padding:var(--space-6); cursor:pointer;">
+      <article class="card card--clickable" data-href="finance.html" style="padding:var(--space-6); cursor:pointer;">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--color-glacier); margin-bottom:var(--space-3);"><path d="M3 12 H 21 M 12 3 V 21"/><circle cx="12" cy="12" r="4"/></svg>
         <h3 style="font-family:var(--font-display); font-size:var(--text-base);">Croisement voies × durée</h3>
         <p style="font-family:var(--font-serif); font-size:var(--text-sm); color:var(--color-text-muted); margin-top:var(--space-2);">Quelles voies prennent plus de temps à trouver le bon rythme ? Y a-t-il des saisons ?</p>
       </article>
-      <article class="card card--clickable" data-href="#" style="padding:var(--space-6); cursor:pointer;">
+      <article class="card card--clickable" data-href="analytique.html" style="padding:var(--space-6); cursor:pointer;">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--color-prune); margin-bottom:var(--space-3);"><path d="M12 2 V 6 M 12 18 V 22 M 4.93 4.93 L 7.76 7.76 M 16.24 16.24 L 19.07 19.07 M 2 12 H 6 M 18 12 H 22"/><circle cx="12" cy="12" r="4"/></svg>
         <h3 style="font-family:var(--font-display); font-size:var(--text-base);">Cycles & rythmes</h3>
         <p style="font-family:var(--font-serif); font-size:var(--text-sm); color:var(--color-text-muted); margin-top:var(--space-2);">Comment l'activité évolue selon le cycle lunaire, les saisons, les moments de transition.</p>
       </article>
-      <article class="card card--clickable" data-href="#" style="padding:var(--space-6); cursor:pointer;">
+      <article class="card card--clickable" data-href="parametres.html" style="padding:var(--space-6); cursor:pointer;">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="color:var(--color-rose); margin-bottom:var(--space-3);"><path d="M12 1 L 3 5 V 11 C 3 16.5, 7 21, 12 23 C 17 21, 21 16.5, 21 11 V 5 Z"/></svg>
         <h3 style="font-family:var(--font-display); font-size:var(--text-base);">Conformité Loi 25</h3>
         <p style="font-family:var(--font-serif); font-size:var(--text-sm); color:var(--color-text-muted); margin-top:var(--space-2);">Audit du respect des durées de conservation, des consentements actifs, et des suppressions effectuées.</p>

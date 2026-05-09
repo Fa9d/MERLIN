@@ -179,7 +179,7 @@ def build_inscription():
             <span style="display:block;">
               <strong style="display:block; margin-bottom:4px;">J'ai lu et j'accepte les conditions de base</strong>
               <span style="font-family:var(--font-serif); font-size:var(--text-sm); color:var(--color-text-muted);">
-                Les <a href="#" style="color:var(--color-aubergine);">CGU</a> et la <a href="#" style="color:var(--color-aubergine);">politique de confidentialité (Loi 25)</a>.
+                Les <a href="cgu.html" style="color:var(--color-aubergine);">CGU</a> et la <a href="confidentialite.html" style="color:var(--color-aubergine);">politique de confidentialité (Loi 25)</a>.
                 Vous pourrez tout retirer plus tard depuis vos préférences.
               </span>
             </span>
@@ -233,9 +233,9 @@ def build_verifier_courriel():
 
       <p class="form__hint" style="margin-top:var(--space-6);">
         Vous n'avez rien reçu dans les 5 minutes ?
-        <a href="#" style="color:var(--color-aubergine);">Renvoyer le courriel</a>
+        <a href="verifier-courriel.html" style="color:var(--color-aubergine);">Renvoyer le courriel</a>
         · ou
-        <a href="#" style="color:var(--color-aubergine);">vérifier votre adresse</a>
+        <a href="inscription.html" style="color:var(--color-aubergine);">vérifier votre adresse</a>
       </p>
     </div>
 
@@ -570,7 +570,7 @@ def build_paiement():
                 <span style="font-family:var(--font-serif); font-size:var(--text-sm); color:var(--color-text-muted);">
                   Annulation gratuite avant l'envoi de l'enregistrement.
                   Une fois l'audio envoyé, le service est considéré comme entamé.
-                  <a href="#" style="color:var(--color-aubergine);">Détails</a>.
+                  <a href="cgu.html" style="color:var(--color-aubergine);">Détails</a>.
                 </span>
               </span>
             </label>
@@ -670,7 +670,7 @@ def build_connexion():
         <div class="form__group">
           <div style="display:flex; justify-content:space-between; align-items:baseline;">
             <label class="form__label" for="login-mdp">Mot de passe</label>
-            <a href="#" style="font-size:var(--text-xs); color:var(--color-aubergine);">Oublié</a>
+            <a href="mot-de-passe-oublie.html" style="font-size:var(--text-xs); color:var(--color-aubergine);">Oublié</a>
           </div>
           <input class="form__input" type="password" id="login-mdp" placeholder="Votre mot de passe" autocomplete="current-password">
         </div>
@@ -679,7 +679,7 @@ def build_connexion():
 
         <p style="text-align:center; margin-block:var(--space-4); font-family:var(--font-serif); color:var(--color-text-muted); font-size:var(--text-sm);">— ou —</p>
 
-        <a href="#" class="btn btn--ghost" style="width:100%;">Recevoir un lien de connexion par courriel</a>
+        <a href="mot-de-passe-oublie.html" class="btn btn--ghost" style="width:100%;">Recevoir un lien de connexion par courriel</a>
       </form>
     </div>
 

@@ -4,6 +4,40 @@ from build_pages import page, CLIENT_NAV, CLIENT_ACTIONS, FOOTER_CLIENT
 
 OUT = Path(__file__).parent / "client"
 
+FOOTER_CLIENT = '''<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__cols">
+      <div>
+        <p style="font-family: var(--font-display); font-size:1.6rem; margin-bottom:1rem;">IV<em style="font-style:italic; color: var(--color-rose);">I</em>A</p>
+        <p style="opacity:0.85; max-width:32ch; font-family:var(--font-serif); font-style:italic;">Au sein de l'être — En actes.</p>
+        <p style="opacity:0.5; margin-top:1rem; font-size:var(--text-xs); letter-spacing:0.16em; text-transform:uppercase;">In vivo · In actu</p>
+      </div>
+      <div><h4>Découvrir</h4><ul role="list">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="praticiens.html">Praticiens</a></li>
+        <li><a href="ressources.html">Ressources</a></li>
+        <li><a href="journal.html">Journal de vie</a></li>
+      </ul></div>
+      <div><h4>Pratique</h4><ul role="list">
+        <li><a href="rendez-vous.html">Prendre rendez-vous</a></li>
+        <li><a href="dashboard.html">Mon espace</a></li>
+        <li><a href="compte.html">Mon compte</a></li>
+        <li><a href="mot-de-passe-oublie.html">Mot de passe oublié</a></li>
+      </ul></div>
+      <div><h4>Mentions</h4><ul role="list">
+        <li><a href="mentions.html">Mentions légales</a></li>
+        <li><a href="confidentialite.html">Confidentialité (Loi 25)</a></li>
+        <li><a href="cgu.html">CGU</a></li>
+        <li><a href="mailto:contact@ivia.quebec">Nous écrire</a></li>
+      </ul></div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 IVIA — Pour le peuple, par le peuple.</span>
+      <span>IVIA n'est pas un service d'urgence.</span>
+    </div>
+  </div>
+</footer>'''
+
 
 # =============================================================
 # PRATICIENS — annuaire public
@@ -783,11 +817,11 @@ DASHBOARD_BODY = '''
 
         <h2 style="font-family:var(--font-display); font-size:var(--text-lg); margin-top:var(--space-8); margin-bottom:var(--space-4);">À lire</h2>
         <div class="stack">
-          <a href="#" class="card card--clickable" style="text-decoration:none; padding:var(--space-4);">
+          <a href="bibliotheque.html#article-1_1" class="card card--clickable" style="text-decoration:none; padding:var(--space-4);">
             <p class="card__meta">Lecture · 4 min</p>
             <h3 style="font-size:var(--text-sm);">Pourquoi être entendu change quelque chose</h3>
           </a>
-          <a href="#" class="card card--clickable" style="text-decoration:none; padding:var(--space-4);">
+          <a href="bibliotheque.html#article-2_2" class="card card--clickable" style="text-decoration:none; padding:var(--space-4);">
             <p class="card__meta">Lecture · 6 min</p>
             <h3 style="font-size:var(--text-sm);">Sommeil — ce qui aide vraiment</h3>
           </a>
@@ -797,6 +831,92 @@ DASHBOARD_BODY = '''
   </div>
 </section>
 '''
+
+
+def build_compte():
+    body = '''
+<section class="section">
+  <div class="container container--default">
+    <span class="eyebrow">Compte</span>
+    <h1 class="section-title" style="font-size: var(--text-2xl);">Vos accès, vos préférences, votre rythme.</h1>
+    <p class="section-lede">Ici, vous voyez ce qui est lié à votre espace. Vous gardez la main sur votre mot de passe, vos préférences et vos façons d'entrer.</p>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-5);">
+      <article class="card">
+        <p class="card__meta">Profil</p>
+        <h2 class="card__title">Camille T.</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Courriel de connexion : vous@exemple.ca</p>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-2);">Langue : français québécois</p>
+      </article>
+      <article class="card">
+        <p class="card__meta">Sécurité</p>
+        <h2 class="card__title">Changer votre mot de passe</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Gardez un accès simple et stable à votre compte.</p>
+        <a href="mot-de-passe-oublie.html" class="btn btn--ghost btn--sm" style="margin-top:var(--space-4);">Réinitialiser le mot de passe</a>
+      </article>
+      <article class="card">
+        <p class="card__meta">Préférences</p>
+        <h2 class="card__title">Entrées et rappels</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Recevoir un lien de connexion par courriel, garder l'historique de vos écoutes, ou repartir de zéro au besoin.</p>
+      </article>
+      <article class="card">
+        <p class="card__meta">Accès rapide</p>
+        <h2 class="card__title">Reprendre là où vous étiez</h2>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); margin-top:var(--space-3);">Retour au tableau de bord, au journal ou à une nouvelle écoute.</p>
+        <div class="cluster" style="margin-top:var(--space-4);">
+          <a class="btn btn--ghost btn--sm" href="dashboard.html">Mon espace</a>
+          <a class="btn btn--ghost btn--sm" href="journal.html">Journal</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+'''
+    html = page(
+        "Mon compte — IVIA",
+        "Préférences de compte et accès à votre espace IVIA.",
+        CLIENT_NAV,
+        "compte.html",
+        CLIENT_ACTIONS,
+        body,
+        "index.html",
+        FOOTER_CLIENT,
+    )
+    (OUT / "compte.html").write_text(html, encoding="utf-8")
+
+
+def build_mot_de_passe_oublie():
+    body = '''
+<section class="section">
+  <div class="container container--narrow">
+    <span class="eyebrow">Accès</span>
+    <h1 class="section-title" style="font-size: var(--text-2xl);">Recevoir un lien pour revenir.</h1>
+    <p class="section-lede">Entrez votre courriel, on vous envoie un lien de connexion tout simple. Pas de détour, pas de formulaire de trop.</p>
+
+    <div class="card">
+      <div class="stack">
+        <div class="field">
+          <label for="reset-email">Courriel</label>
+          <input id="reset-email" type="email" placeholder="vous@exemple.ca">
+        </div>
+        <a href="compte.html" class="btn btn--primary">Envoyer le lien</a>
+        <p style="font-family:var(--font-serif); color:var(--color-text-muted); font-size:var(--text-sm);">Si vous avez déjà un mot de passe, vous pouvez aussi retourner à la <a href="connexion.html">page de connexion</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+'''
+    html = page(
+        "Mot de passe oublié — IVIA",
+        "Recevez un lien de connexion par courriel pour reprendre votre espace IVIA.",
+        CLIENT_NAV,
+        "mot-de-passe-oublie.html",
+        CLIENT_ACTIONS,
+        body,
+        "index.html",
+        FOOTER_CLIENT,
+    )
+    (OUT / "mot-de-passe-oublie.html").write_text(html, encoding="utf-8")
 
 
 # =============================================================
@@ -988,11 +1108,20 @@ def build():
         ("audio-attente.html",    "Audio en écoute — IVIA",            "Votre enregistrement est en cours d'écoute par un·e praticien·ne.",      AUDIO_ATTENTE_BODY),
         ("audio-resume.html",     "Réponse reçue — IVIA",              "Votre praticien·ne vous a fait parvenir un résumé écrit.",               AUDIO_RESUME_BODY),
         ("dashboard.html",        "Mon espace — IVIA",                 "Tableau de bord client : rendez-vous, notes, journal, outils.",         DASHBOARD_BODY),
+      ("compte.html",           "Mon compte — IVIA",                 "Préférences de compte et accès à votre espace IVIA.",                    None),
+      ("mot-de-passe-oublie.html", "Mot de passe oublié — IVIA",    "Recevoir un lien de connexion par courriel.",                           None),
         ("journal.html",          "Journal de vie — IVIA",             "Espace privé d'écriture personnelle : notes, rêves, repères.",          JOURNAL_BODY),
         ("ressources.html",       "Ressources — IVIA",                 "Articles et outils à votre rythme, sans rendez-vous.",                  RESSOURCES_BODY),
         ("outil-ou-en-etes-vous.html", "Où en êtes-vous ? — IVIA",     "Petit auto-questionnaire pour faire le point.",                         OUTIL_OUENETES_BODY),
     ]
     for filename, title, description, body in pages:
+      if body is None:
+        if filename == "compte.html":
+          build_compte()
+          continue
+        if filename == "mot-de-passe-oublie.html":
+          build_mot_de_passe_oublie()
+          continue
         html = page(title, description, CLIENT_NAV, filename, CLIENT_ACTIONS, body, "index.html", FOOTER_CLIENT)
         (OUT / filename).write_text(html, encoding="utf-8")
 
