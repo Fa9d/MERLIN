@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr-CA" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVIA — Un espace d'écoute pour clarifier ce que vous vivez</title>
+<meta name="description" content="IVIA vous aide à mettre de l'ordre quand tout semble confus. Un espace d'écoute, un repère, des chemins concrets — au sein de l'être, en actes.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/coupe.css">
+<style>
+  /* Page-specific : landing */
+  .principes-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-6); }
+  .principe { padding: var(--space-6); border-left: 2px solid var(--color-rose); background: var(--color-surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  .principe__num { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-rose); font-style: italic; display: block; margin-bottom: var(--space-2); }
+  .principe h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
+  .principe p { font-family: var(--font-serif); color: var(--color-text-muted); font-size: var(--text-sm); }
+
+  .voies { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-6); }
+  .voie { background: var(--color-surface-warm); border-radius: var(--radius-lg); padding: var(--space-8); position: relative; overflow: hidden; transition: transform var(--transition); }
+  .voie:hover { transform: translateY(-4px); }
+  .voie__deco { position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; opacity: 0.18; }
+  .voie h3 { font-size: var(--text-xl); margin-bottom: var(--space-3); position: relative; }
+  .voie p { font-family: var(--font-serif); color: var(--color-text-muted); position: relative; }
+
+  .outils-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); }
+  .outil { padding: var(--space-5); border: 1px solid var(--color-divider); border-radius: var(--radius-md); background: var(--color-surface-2); transition: all var(--transition); cursor: pointer; }
+  .outil:hover { border-color: var(--color-aubergine); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .outil__icon { width: 40px; height: 40px; color: var(--color-rose); margin-bottom: var(--space-3); }
+  .outil h4 { font-size: var(--text-base); margin-bottom: var(--space-1); }
+  .outil p { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+  .articles-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-6); }
+  .article-card { padding: var(--space-6); background: var(--color-surface); border-radius: var(--radius-md); border: 1px solid var(--color-divider); transition: all var(--transition); cursor: pointer; }
+  .article-card:hover { border-color: var(--color-rose); box-shadow: var(--shadow-md); }
+  .article-card__category { font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-rose-deep); margin-bottom: var(--space-2); }
+  .article-card h3 { font-size: var(--text-lg); margin-bottom: var(--space-3); }
+  .article-card p { font-family: var(--font-serif); font-size: var(--text-sm); color: var(--color-text-muted); }
+
+  .audio-async-bandeau {
+    background: linear-gradient(135deg, var(--color-rose) 0%, var(--color-prune) 100%);
+    color: var(--color-creme);
+    border-radius: var(--radius-xl);
+    padding: var(--space-12) var(--space-10);
+    margin-block: var(--space-16);
+    position: relative;
+    overflow: hidden;
+  }
+  .audio-async-bandeau::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 30%, rgba(240,233,220,0.15), transparent 60%);
+  }
+  .audio-async-bandeau__content { position: relative; max-width: 56ch; }
+  .audio-async-bandeau h2 { font-size: var(--text-xl); margin-bottom: var(--space-4); }
+  .audio-async-bandeau p { font-family: var(--font-serif); font-size: var(--text-base); margin-bottom: var(--space-6); opacity: 0.95; }
+  .audio-async-bandeau .btn--primary { background: var(--color-creme); color: var(--color-aubergine); }
+  .audio-async-bandeau .btn--primary:hover { background: white; }
+
+  .nous-quote {
+    text-align: center;
+    padding: var(--space-12) var(--space-4);
+    max-width: 56ch;
+    margin-inline: auto;
+  }
+  .nous-quote q {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-xl);
+    line-height: 1.4;
+    color: var(--color-aubergine);
+    quotes: "« " " »";
+  }
+  .nous-quote q::before { content: open-quote; color: var(--color-rose); }
+  .nous-quote q::after { content: close-quote; color: var(--color-rose); }
+  .nous-quote cite { font-style: normal; display: block; margin-top: var(--space-4); font-size: var(--text-sm); color: var(--color-text-muted); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+
+<!-- Vrille décorative -->
+<div class="vrille-fixe" aria-hidden="true">
+  <svg viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="vrille-grad" x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0%" stop-color="#C58A8A" stop-opacity="0.8"/>
+        <stop offset="50%" stop-color="#D9A441" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#6B8266" stop-opacity="0.4"/>
+      </linearGradient>
+    </defs>
+    <path d="M 250 0 C 100 200, 400 350, 200 500 C 50 650, 350 750, 250 800" stroke="url(#vrille-grad)" stroke-width="1.5" fill="none"/>
+    <path d="M 280 0 C 130 220, 430 360, 230 510 C 80 660, 380 760, 280 800" stroke="#C58A8A" stroke-width="0.8" stroke-opacity="0.4" fill="none"/>
+    <ellipse cx="200" cy="180" rx="14" ry="5" fill="#6B8266" fill-opacity="0.3" transform="rotate(-30 200 180)"/>
+    <ellipse cx="320" cy="280" rx="12" ry="4" fill="#D89260" fill-opacity="0.3" transform="rotate(20 320 280)"/>
+    <ellipse cx="180" cy="430" rx="16" ry="6" fill="#C58A8A" fill-opacity="0.35" transform="rotate(-15 180 430)"/>
+    <ellipse cx="290" cy="600" rx="13" ry="5" fill="#9A8AB8" fill-opacity="0.3" transform="rotate(40 290 600)"/>
+  </svg>
+</div>
+
+<!-- En-tête -->
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand" aria-label="IVIA — accueil">
+      <svg class="brand__mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <circle cx="18" cy="18" r="14.5" stroke-opacity="0.4"/>
+        <path d="M18 4.5 C 11 12, 25 24, 18 31.5" stroke-linecap="round"/>
+        <path d="M11 18 C 14 16, 22 20, 25 18" stroke-linecap="round" stroke-opacity="0.7"/>
+        <circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="brand__name">IV<em>I</em>A</span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html" aria-current="page">Accueil</a>
+      <a href="praticiens.html">Praticiens</a>
+      <a href="ressources.html">Ressources</a>
+      <a href="rendez-vous.html">Rendez-vous</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+    <div class="header-actions">
+      <button class="mode-calme-toggle" data-mode-calme aria-pressed="false" aria-label="Activer le mode calme">
+        <span aria-hidden="true">◐</span> Mode calme
+      </button>
+      <a href="dashboard.html" class="btn btn--ghost btn--sm">Mon espace</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <p class="hero__eyebrow">Au sein de l'être — En actes</p>
+    <h1 class="hero__title">
+      Un espace d'<em>écoute</em> pour clarifier ce que vous vivez<br>
+      et repartir avec une suite concrète.
+    </h1>
+    <p class="hero__lede">
+      Quand tout semble confus, IVIA vous aide à mettre de l'ordre. Une présence humaine, un repère,
+      des chemins possibles — sans diagnostic, sans étiquette, sans urgence.
+    </p>
+    <p class="hero__signature">La puissance du silence.</p>
+    <div class="hero__actions">
+      <a href="rendez-vous.html" class="btn btn--primary btn--lg">Prendre un rendez-vous</a>
+      <a href="inscription.html" class="btn btn--ghost btn--lg">S'enregistrer d'abord <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 6 PRINCIPES -->
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Six repères</span>
+    <h2 class="section-title">Ce qui nous tient ensemble</h2>
+    <p class="section-lede">
+      IVIA n'est ni une thérapie, ni une promesse de guérison. C'est un cadre simple, fondé sur
+      l'écoute attentive et le respect du chemin de chacun.
+    </p>
+    <div class="grid principes-grid">
+      <div class="principe">
+        <span class="principe__num">i.</span>
+        <h3>Présence</h3>
+        <p>Être là, complètement. Le temps d'une rencontre vous appartient — ni interrompu, ni précipité.</p>
+      </div>
+      <div class="principe">
+        <span class="principe__num">ii.</span>
+        <h3>Écoute sans jugement</h3>
+        <p>Vos mots ne sont pas pesés. Ce que vous traversez n'a pas à être justifié pour être entendu.</p>
+      </div>
+      <div class="principe">
+        <span class="principe__num">iii.</span>
+        <h3>Clarté</h3>
+        <p>Mettre de l'ordre dans ce qui s'embrouille. Nommer ce qui est. Distinguer ce qui presse de ce qui peut attendre.</p>
+      </div>
+      <div class="principe">
+        <span class="principe__num">iv.</span>
+        <h3>Indépendance choisie</h3>
+        <p>Vous repartez avec des repères, pas avec une dépendance. Le chemin reste le vôtre.</p>
+      </div>
+      <div class="principe">
+        <span class="principe__num">v.</span>
+        <h3>Confidentialité</h3>
+        <p>Ce que vous nous confiez reste avec vous. Aucune donnée vendue, aucune trace inutile (Loi 25, Québec).</p>
+      </div>
+      <div class="principe">
+        <span class="principe__num">vi.</span>
+        <h3>Ancrage humain</h3>
+        <p>Derrière chaque rencontre, des personnes — pas un algorithme. Nos outils servent l'humain, jamais l'inverse.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 VOIES -->
+<section class="section" style="background: var(--color-surface-2);">
+  <div class="container">
+    <span class="eyebrow">Trois voies</span>
+    <h2 class="section-title">Par où entrer ?</h2>
+    <p class="section-lede">Selon ce qui vous préoccupe, plusieurs chemins peuvent ouvrir un même espace de clarté.</p>
+    <div class="voies">
+      <article class="voie">
+        <svg class="voie__deco" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.6" aria-hidden="true" style="color: var(--color-mousse);">
+          <circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="20"/><circle cx="50" cy="50" r="10"/>
+        </svg>
+        <h3>Fréquence</h3>
+        <p>Pour quand l'environnement, les rythmes, le bruit semblent peser plus qu'avant. Retrouver une fréquence à soi.</p>
+        <a href="ressources.html" class="btn btn--ghost btn--sm" style="margin-top:1.5rem;">Explorer →</a>
+      </article>
+      <article class="voie">
+        <svg class="voie__deco" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.6" aria-hidden="true" style="color: var(--color-glacier);">
+          <path d="M10 50 Q 30 20 50 50 T 90 50"/><path d="M10 60 Q 30 30 50 60 T 90 60"/><path d="M10 40 Q 30 10 50 40 T 90 40"/>
+        </svg>
+        <h3>Sommeil</h3>
+        <p>Pour quand les nuits ne reposent plus, ou que l'apaisement semble hors d'atteinte. Renouer avec la pause.</p>
+        <a href="ressources.html" class="btn btn--ghost btn--sm" style="margin-top:1.5rem;">Explorer →</a>
+      </article>
+      <article class="voie">
+        <svg class="voie__deco" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.6" aria-hidden="true" style="color: var(--color-lavande);">
+          <path d="M50 10 L 50 90"/><path d="M30 30 L 70 30"/><path d="M25 50 L 75 50"/><path d="M30 70 L 70 70"/>
+        </svg>
+        <h3>Connaissance</h3>
+        <p>Pour quand vous voulez comprendre ce qui se joue avant d'agir. Mettre des mots, des repères, un cadre.</p>
+        <a href="ressources.html" class="btn btn--ghost btn--sm" style="margin-top:1.5rem;">Explorer →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIO-ASYNC BANDEAU -->
+<section class="container">
+  <div class="audio-async-bandeau">
+    <div class="audio-async-bandeau__content">
+      <span class="eyebrow" style="color: var(--color-creme); opacity: 0.85;">Une autre porte d'entrée</span>
+      <h2>Pas prêt·e pour un rendez-vous ? Enregistrez-vous d'abord.</h2>
+      <p>
+        Vous parlez, à votre rythme, depuis chez vous. Un·e praticien·ne vous revient avec un résumé
+        de ce qui a été entendu et un bref appel pour clarifier la suite. Sans engagement, sans mise en scène.
+      </p>
+      <a href="inscription.html" class="btn btn--primary btn--lg">Commencer un enregistrement</a>
+    </div>
+  </div>
+</section>
+
+<!-- 4 OUTILS -->
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Quatre outils</span>
+    <h2 class="section-title">Pour faire le point, seul·e</h2>
+    <p class="section-lede">Petits exercices à faire à votre rythme, qui peuvent éclairer une rencontre — ou suffire.</p>
+    <div class="grid outils-grid">
+      <a href="outil-ou-en-etes-vous.html" class="outil" style="text-decoration:none;">
+        <svg class="outil__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <circle cx="20" cy="20" r="16"/><path d="M20 8 L 20 20 L 28 26"/>
+        </svg>
+        <h4>Où en êtes-vous ?</h4>
+        <p>10 questions pour situer ce qui vous préoccupe en ce moment.</p>
+      </a>
+      <a href="outil-sommeil.html" class="outil" style="text-decoration:none;">
+        <svg class="outil__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <path d="M28 20 A 12 12 0 1 1 16 8 A 9 9 0 0 0 28 20 Z"/>
+        </svg>
+        <h4>Sommeil et apaisement</h4>
+        <p>Repérer ce qui pèse sur les nuits. Petits gestes à essayer.</p>
+      </a>
+      <a href="outil-frequence.html" class="outil" style="text-decoration:none;">
+        <svg class="outil__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <path d="M4 20 Q 12 8, 20 20 T 36 20"/><path d="M4 26 Q 12 14, 20 26 T 36 26" stroke-opacity="0.5"/>
+        </svg>
+        <h4>Fréquence et environnement</h4>
+        <p>Identifier ce qui, dehors comme dedans, dérègle votre rythme.</p>
+      </a>
+      <a href="outil-preparer.html" class="outil" style="text-decoration:none;">
+        <svg class="outil__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <rect x="8" y="6" width="24" height="28" rx="2"/><path d="M14 14 L 26 14 M 14 20 L 26 20 M 14 26 L 22 26"/>
+        </svg>
+        <h4>Préparer une rencontre</h4>
+        <p>Mettre par écrit l'essentiel avant un rendez-vous. Gagner du temps utile.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES (extraits ressources) -->
+<section class="section" style="background: var(--color-surface-warm);">
+  <div class="container">
+    <span class="eyebrow">À lire</span>
+    <h2 class="section-title">Six articles, pour commencer.</h2>
+    <p class="section-lede">Des textes courts, écrits par les praticien·ne·s d'IVIA, pour mettre des mots simples sur ce qui se vit.</p>
+    <div class="grid articles-grid">
+      <article class="article-card">
+        <p class="article-card__category">Connaissance</p>
+        <h3>Fatigue, blues, épuisement : où est la frontière ?</h3>
+        <p>Trois mots qui se ressemblent, trois réalités différentes. Comment s'y repérer.</p>
+      </article>
+      <article class="article-card">
+        <p class="article-card__category">Présence</p>
+        <h3>Pourquoi être entendu change quelque chose</h3>
+        <p>Ce qui se passe dans le corps quand quelqu'un écoute vraiment.</p>
+      </article>
+      <article class="article-card">
+        <p class="article-card__category">Cadre</p>
+        <h3>Quand consulter — et quand ce n'est pas (encore) le moment</h3>
+        <p>Quelques repères honnêtes pour décider sans pression.</p>
+      </article>
+      <article class="article-card">
+        <p class="article-card__category">Soin</p>
+        <h3>Prendre soin, sans en faire un projet de plus</h3>
+        <p>Petites pratiques sobres, pour les jours où l'on n'a pas la force d'en faire des grandes.</p>
+      </article>
+      <article class="article-card">
+        <p class="article-card__category">Famille</p>
+        <h3>L'écoute en famille : ce qui peut s'inventer</h3>
+        <p>Quand les liens deviennent tendus, comment ouvrir un espace plus calme.</p>
+      </article>
+      <article class="article-card">
+        <p class="article-card__category">Fréquence</p>
+        <h3>Voix, son et soin : une autre approche</h3>
+        <p>Pourquoi le son agit sur ce que les mots ne suffisent pas à dire.</p>
+      </article>
+    </div>
+    <p style="margin-top:var(--space-10); text-align:center;">
+      <a href="ressources.html" class="btn btn--ghost">Voir toutes les ressources</a>
+    </p>
+  </div>
+</section>
+
+<!-- CITATION (philo IVIA) -->
+<section class="section">
+  <div class="container">
+    <div class="nous-quote">
+      <q>IVIA n'invite pas à se réparer. IVIA invite à se reconnaître — et à choisir, librement, un pas suivant.</q>
+      <cite>— Doctrine fondatrice, IN VIVO · IN ACTU</cite>
+    </div>
+  </div>
+</section>
+
+<!-- CADRE ÉTHIQUE -->
+<section class="container" style="margin-bottom: var(--space-16);">
+  <div class="cadre-ethique">
+    <svg class="cadre-ethique__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/><path d="M12 8 L 12 13 M 12 16 L 12 16.01"/>
+    </svg>
+    <p>
+      <strong>IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</strong>
+      Si vous traversez une situation de détresse aiguë, contactez le 811 option 2 (Info-Social, Québec)
+      ou les services d'urgence (911). Pour une consultation médicale, votre médecin reste votre premier repère.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__cols">
+      <div>
+        <p style="font-family: var(--font-display); font-size:1.6rem; margin-bottom:1rem;">IV<em style="font-style:italic; color: var(--color-rose);">I</em>A</p>
+        <p style="opacity:0.85; max-width:32ch; font-family:var(--font-serif); font-style:italic;">
+          Au sein de l'être — En actes.
+        </p>
+        <p style="opacity:0.5; margin-top:1rem; font-size:var(--text-xs); letter-spacing:0.16em; text-transform:uppercase;">In vivo · In actu</p>
+      </div>
+      <div>
+        <h4>Découvrir</h4>
+        <ul role="list">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="praticiens.html">Praticiens</a></li>
+          <li><a href="ressources.html">Ressources</a></li>
+          <li><a href="journal.html">Journal de vie</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Pratique</h4>
+        <ul role="list">
+          <li><a href="rendez-vous.html">Prendre rendez-vous</a></li>
+          <li><a href="audio-async.html">S'enregistrer</a></li>
+          <li><a href="dashboard.html">Mon espace</a></li>
+          <li><a href="#">Nous écrire</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Mentions</h4>
+        <ul role="list">
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Confidentialité (Loi 25)</a></li>
+          <li><a href="#">CGU</a></li>
+          <li><a href="../index.html">↩ Retour mockups</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 IVIA — Pour le peuple, par le peuple.</span>
+      <span>IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../shared/coupe.js"></script>
+</body>
+</html>

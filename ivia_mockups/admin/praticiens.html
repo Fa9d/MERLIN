@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr-CA" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praticien·ne·s — Admin IVIA</title>
+<meta name="description" content="Gestion des praticien·ne·s : candidatures, charge, statuts.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/coupe.css">
+<style>
+.workspace { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 80px); }
+.sidebar { background: var(--color-surface-2); border-right: 1px solid var(--color-divider); padding: var(--space-6) 0; position: sticky; top: 80px; height: calc(100vh - 80px); overflow-y: auto; }
+.sidebar h4 { font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-faint); padding: 0 var(--space-6); margin-block: var(--space-6) var(--space-2); }
+.sidebar h4:first-child { margin-top: 0; }
+.sidebar a { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-6); color: var(--color-text-muted); text-decoration: none; font-size: var(--text-sm); border-left: 2px solid transparent; transition: all var(--transition); }
+.sidebar a:hover { color: var(--color-text); background: var(--color-surface-warm); }
+.sidebar a[aria-current="page"] { color: var(--color-aubergine); border-left-color: var(--color-rose); background: var(--color-surface-warm); font-weight: 500; }
+.sidebar .badge { margin-left: auto; background: var(--color-rose); color: var(--color-creme); font-size: var(--text-xs); padding: 2px 8px; border-radius: var(--radius-full); }
+.workspace__content { padding: var(--space-8) var(--space-10); max-width: 100%; }
+@media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } .sidebar { position: relative; height: auto; top: 0; } }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-10); }
+.kpi { padding: var(--space-5) var(--space-6); background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-md); }
+.kpi__label { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--space-2); }
+.kpi__value { font-family: var(--font-display); font-size: var(--text-xl); }
+.kpi__delta { font-size: var(--text-xs); color: var(--color-mousse); margin-top: var(--space-2); }
+.kpi__delta--down { color: var(--color-rose-deep); }
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--color-divider); font-size: var(--text-sm); }
+.data-table th { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); font-weight: 500; }
+.data-table tbody tr { transition: background var(--transition); cursor: pointer; }
+.data-table tbody tr:hover { background: var(--color-surface-warm); }
+
+.workspace__header { margin-bottom: var(--space-8); }
+.workspace__header h1 { font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-2); }
+.workspace__header p { color: var(--color-text-muted); font-family: var(--font-serif); }
+</style>
+</head>
+<body class="">
+<div class="vrille-fixe" aria-hidden="true">
+  <svg viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="vg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C58A8A" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#D9A441" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6B8266" stop-opacity="0.4"/>
+    </linearGradient></defs>
+    <path d="M 250 0 C 100 200, 400 350, 200 500 C 50 650, 350 750, 250 800" stroke="url(#vg)" stroke-width="1.5" fill="none"/>
+    <path d="M 280 0 C 130 220, 430 360, 230 510 C 80 660, 380 760, 280 800" stroke="#C58A8A" stroke-width="0.8" stroke-opacity="0.4" fill="none"/>
+    <ellipse cx="200" cy="180" rx="14" ry="5" fill="#6B8266" fill-opacity="0.3" transform="rotate(-30 200 180)"/>
+    <ellipse cx="320" cy="280" rx="12" ry="4" fill="#D89260" fill-opacity="0.3" transform="rotate(20 320 280)"/>
+    <ellipse cx="180" cy="430" rx="16" ry="6" fill="#C58A8A" fill-opacity="0.35" transform="rotate(-15 180 430)"/>
+    <ellipse cx="290" cy="600" rx="13" ry="5" fill="#9A8AB8" fill-opacity="0.3" transform="rotate(40 290 600)"/>
+  </svg>
+</div>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand" aria-label="IVIA — accueil">
+      <svg class="brand__mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+  <circle cx="18" cy="18" r="14.5" stroke-opacity="0.4"/>
+  <path d="M18 4.5 C 11 12, 25 24, 18 31.5" stroke-linecap="round"/>
+  <path d="M11 18 C 14 16, 22 20, 25 18" stroke-linecap="round" stroke-opacity="0.7"/>
+  <circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+</svg>
+      <span class="brand__name">IV<em>I</em>A</span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html">Vue d'ensemble</a>
+      <a href="analytique.html">Analytique</a>
+      <a href="praticiens.html" aria-current="page">Praticiens</a>
+      <a href="clients.html">Clients</a>
+      <a href="finance.html">Finance</a>
+      <a href="audios.html">Audios</a>
+      <a href="parametres.html">Paramètres</a>
+    </nav>
+    <div class="header-actions">
+      <button class="mode-calme-toggle" data-mode-calme aria-pressed="false" aria-label="Activer le mode calme">
+        <span aria-hidden="true">◐</span> Mode calme
+      </button>
+      <a href="../client/index.html" class="btn btn--ghost btn--sm" style="opacity:0.7;">Vue publique ↗</a>
+    </div>
+  </div>
+</header>
+
+<div class="workspace">
+  <aside class="sidebar" aria-label="Navigation admin"><h4>Maison IVIA · pilotage</h4><a href="index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 L 12 3 L 21 12 M5 10 V 21 H 19 V 10"/></svg><span>Vue d'ensemble</span></a><a href="analytique.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21 V 3 M3 21 H 21 M 7 16 V 11 M 11 16 V 8 M 15 16 V 13 M 19 16 V 6"/></svg><span>Analytique</span></a><a href="praticiens.html" aria-current="page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11 A 4 4 0 1 0 9 3 A 4 4 0 0 0 9 11 Z M2 21 V 19 A 5 5 0 0 1 7 14 H 11 A 5 5 0 0 1 16 19 V 21"/></svg><span>Praticien·ne·s</span><span class="badge">1</span></a><a href="clients.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 11 A 4 4 0 1 0 16 3 A 4 4 0 0 0 16 11 Z M8 11 A 3 3 0 1 0 8 5 A 3 3 0 0 0 8 11 Z"/></svg><span>Clients</span></a><a href="audios.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 V 19 M5 9 V 13 M9 6 V 16 M15 7 V 15 M19 9 V 13"/></svg><span>Audios</span></a><a href="finance.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 H 21 M 6 6 L 12 12 L 18 6 M 6 18 L 12 12 L 18 18"/></svg><span>Finance</span></a><a href="parametres.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8 A 4 4 0 1 1 12 16 A 4 4 0 0 1 12 8 Z"/></svg><span>Paramètres</span></a><h4 style="margin-top:var(--space-12);">Compte</h4><a href="#"><div style="width:24px; height:24px; border-radius:50%; background:var(--color-aubergine);"></div><span>Admin · D. Phaneuf</span></a></aside>
+  <div class="workspace__content">
+    <header class="workspace__header">
+      <h1>Praticien·ne·s</h1>
+      <p>23 actif·ve·s · 1 candidature en cours · 1 en pause volontaire (3 mois). Charge moyenne : 14 rencontres/sem.</p>
+    </header>
+
+    <div class="cluster" style="margin-bottom:var(--space-6);">
+      <span class="chip chip--rose">Tous (24)</span>
+      <span class="chip">Actifs (23)</span>
+      <span class="chip">Candidatures (1)</span>
+      <span class="chip">En pause (1)</span>
+      <span class="chip">Charge élevée (3)</span>
+    </div>
+
+    <!-- Candidature en cours -->
+    <div class="card" style="background: color-mix(in oklab, var(--color-miel) 12%, var(--color-creme)); border-color: var(--color-miel); margin-bottom:var(--space-8);">
+      <div class="flex-between" style="flex-wrap:wrap; gap:var(--space-4);">
+        <div>
+          <p class="card__meta" style="color: #8B6A22;">Nouvelle candidature · à examiner</p>
+          <h3 class="card__title">Karim Benhamou-Soltani</h3>
+          <p style="font-family:var(--font-serif); color:var(--color-text-muted); font-size:var(--text-sm); max-width:50ch;">
+            Voie principale : Connaissance · Voie secondaire : Famille · Montréal · DEC en intervention sociale + 8 ans de pratique en travail communautaire.
+          </p>
+        </div>
+        <div class="flex">
+          <button class="btn btn--ghost btn--sm">Voir le dossier</button>
+          <button class="btn btn--ghost btn--sm">Planifier l'entretien</button>
+          <button class="btn btn--primary btn--sm">Approuver</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="data-table">
+        <thead>
+          <tr><th>Nom</th><th>Voies</th><th>Plan</th><th>Charge (sem.)</th><th>Note maison</th><th>Statut</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Maïté Lavoie-Therrien</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Montréal</span></td>
+            <td><span class="chip chip--mousse">Fréquence</span> <span class="chip chip--glacier">Sommeil</span></td>
+            <td>Suivi régulier</td>
+            <td>14 rencontres</td>
+            <td>4,8 / 5</td>
+            <td><span class="status-dot status-dot--ok"></span> Active</td>
+            <td><button class="btn btn--ghost btn--sm">Fiche</button></td>
+          </tr>
+          <tr>
+            <td><strong>Étienne Grondin-Côté</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Québec</span></td>
+            <td><span class="chip chip--lavande">Connaissance</span></td>
+            <td>Maison & supervision</td>
+            <td>16 rencontres</td>
+            <td>4,7 / 5</td>
+            <td><span class="status-dot status-dot--ok"></span> Active</td>
+            <td><button class="btn btn--ghost btn--sm">Fiche</button></td>
+          </tr>
+          <tr style="background: color-mix(in oklab, var(--color-rose) 10%, transparent);">
+            <td><strong>Soraya Ben-Amar</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Sherbrooke</span></td>
+            <td><span class="chip chip--mousse">Fréquence</span> <span class="chip chip--rose">Famille</span></td>
+            <td>Suivi régulier</td>
+            <td><strong style="color:var(--color-rose-deep);">22 ⚠</strong></td>
+            <td>4,9 / 5</td>
+            <td><span class="status-dot status-dot--alert"></span> Charge élevée</td>
+            <td><button class="btn btn--primary btn--sm">Action</button></td>
+          </tr>
+          <tr>
+            <td><strong>Marc-André Pelletier</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Trois-Rivières</span></td>
+            <td><span class="chip chip--glacier">Sommeil</span> <span class="chip chip--lavande">Connaissance</span></td>
+            <td>Suivi régulier</td>
+            <td>11 rencontres</td>
+            <td>4,6 / 5</td>
+            <td><span class="status-dot status-dot--ok"></span> Active</td>
+            <td><button class="btn btn--ghost btn--sm">Fiche</button></td>
+          </tr>
+          <tr>
+            <td><strong>Nicole Tremblay-Roy</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Saguenay</span></td>
+            <td><span class="chip chip--rose">Famille</span></td>
+            <td>Suivi régulier</td>
+            <td>12 rencontres</td>
+            <td>4,8 / 5</td>
+            <td><span class="status-dot status-dot--ok"></span> Active</td>
+            <td><button class="btn btn--ghost btn--sm">Fiche</button></td>
+          </tr>
+          <tr>
+            <td><strong>Jean-Philippe Côté</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Gatineau</span></td>
+            <td><span class="chip chip--mousse">Fréquence</span> <span class="chip chip--glacier">Sommeil</span></td>
+            <td>Découverte</td>
+            <td>9 rencontres</td>
+            <td>4,7 / 5</td>
+            <td><span class="status-dot status-dot--ok"></span> Active</td>
+            <td><button class="btn btn--ghost btn--sm">Fiche</button></td>
+          </tr>
+          <tr style="opacity:0.7;">
+            <td><strong>François L.</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Lévis</span></td>
+            <td><span class="chip chip--mousse">Fréquence</span></td>
+            <td>Suivi régulier (en pause)</td>
+            <td>—</td>
+            <td>4,9 / 5</td>
+            <td><span class="status-dot"></span> En pause (j 12/90)</td>
+            <td><button class="btn btn--ghost btn--sm">Fiche</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex" style="margin-top:var(--space-8); justify-content:flex-end;">
+      <button class="btn btn--ghost">⤓ Exporter (CSV)</button>
+      <button class="btn btn--primary">＋ Inviter un·e praticien·ne</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer" style="margin-top:var(--space-16); padding-block:var(--space-8);">
+  <div class="container site-footer__bottom" style="border:none; padding-top:0;">
+    <span>© 2026 IVIA · Espace de travail interne</span>
+    <span><a href="../index.html">↩ Retour mockups</a></span>
+  </div>
+</footer>
+<script src="../shared/coupe.js"></script>
+</body>
+</html>

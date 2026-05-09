@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr-CA" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audios à traiter — Espace praticien IVIA</title>
+<meta name="description" content="File d'audios reçus en attente de réponse.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/coupe.css">
+<style>
+.workspace { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 80px); }
+.sidebar { background: var(--color-surface-2); border-right: 1px solid var(--color-divider); padding: var(--space-6) 0; position: sticky; top: 80px; height: calc(100vh - 80px); overflow-y: auto; }
+.sidebar h4 { font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-faint); padding: 0 var(--space-6); margin-block: var(--space-6) var(--space-2); }
+.sidebar h4:first-child { margin-top: 0; }
+.sidebar a { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-6); color: var(--color-text-muted); text-decoration: none; font-size: var(--text-sm); border-left: 2px solid transparent; transition: all var(--transition); }
+.sidebar a:hover { color: var(--color-text); background: var(--color-surface-warm); }
+.sidebar a[aria-current="page"] { color: var(--color-aubergine); border-left-color: var(--color-rose); background: var(--color-surface-warm); font-weight: 500; }
+.sidebar .badge { margin-left: auto; background: var(--color-rose); color: var(--color-creme); font-size: var(--text-xs); padding: 2px 8px; border-radius: var(--radius-full); }
+.workspace__content { padding: var(--space-8) var(--space-10); max-width: 100%; }
+@media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } .sidebar { position: relative; height: auto; top: 0; } }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-10); }
+.kpi { padding: var(--space-5) var(--space-6); background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-md); }
+.kpi__label { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--space-2); }
+.kpi__value { font-family: var(--font-display); font-size: var(--text-xl); }
+.kpi__delta { font-size: var(--text-xs); color: var(--color-mousse); margin-top: var(--space-2); }
+.kpi__delta--down { color: var(--color-rose-deep); }
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--color-divider); font-size: var(--text-sm); }
+.data-table th { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); font-weight: 500; }
+.data-table tbody tr { transition: background var(--transition); cursor: pointer; }
+.data-table tbody tr:hover { background: var(--color-surface-warm); }
+
+.workspace__header { margin-bottom: var(--space-8); }
+.workspace__header h1 { font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-2); }
+.workspace__header p { color: var(--color-text-muted); font-family: var(--font-serif); }
+</style>
+</head>
+<body class="">
+<div class="vrille-fixe" aria-hidden="true">
+  <svg viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="vg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C58A8A" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#D9A441" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6B8266" stop-opacity="0.4"/>
+    </linearGradient></defs>
+    <path d="M 250 0 C 100 200, 400 350, 200 500 C 50 650, 350 750, 250 800" stroke="url(#vg)" stroke-width="1.5" fill="none"/>
+    <path d="M 280 0 C 130 220, 430 360, 230 510 C 80 660, 380 760, 280 800" stroke="#C58A8A" stroke-width="0.8" stroke-opacity="0.4" fill="none"/>
+    <ellipse cx="200" cy="180" rx="14" ry="5" fill="#6B8266" fill-opacity="0.3" transform="rotate(-30 200 180)"/>
+    <ellipse cx="320" cy="280" rx="12" ry="4" fill="#D89260" fill-opacity="0.3" transform="rotate(20 320 280)"/>
+    <ellipse cx="180" cy="430" rx="16" ry="6" fill="#C58A8A" fill-opacity="0.35" transform="rotate(-15 180 430)"/>
+    <ellipse cx="290" cy="600" rx="13" ry="5" fill="#9A8AB8" fill-opacity="0.3" transform="rotate(40 290 600)"/>
+  </svg>
+</div>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand" aria-label="IVIA — accueil">
+      <svg class="brand__mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+  <circle cx="18" cy="18" r="14.5" stroke-opacity="0.4"/>
+  <path d="M18 4.5 C 11 12, 25 24, 18 31.5" stroke-linecap="round"/>
+  <path d="M11 18 C 14 16, 22 20, 25 18" stroke-linecap="round" stroke-opacity="0.7"/>
+  <circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+</svg>
+      <span class="brand__name">IV<em>I</em>A</span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html">Tableau de bord</a>
+      <a href="agenda.html">Agenda</a>
+      <a href="audios.html" aria-current="page">Audios à traiter</a>
+      <a href="clients.html">Mes clients</a>
+      <a href="mes-offres.html">Mes offres</a>
+      <a href="outils.html">Outils</a>
+      <a href="abonnement.html">Mon abonnement</a>
+    </nav>
+    <div class="header-actions">
+      <button class="mode-calme-toggle" data-mode-calme aria-pressed="false" aria-label="Activer le mode calme">
+        <span aria-hidden="true">◐</span> Mode calme
+      </button>
+      <a href="../client/index.html" class="btn btn--ghost btn--sm" style="opacity:0.7;">Vue client ↗</a>
+    </div>
+  </div>
+</header>
+
+<div class="workspace">
+  <aside class="sidebar" aria-label="Navigation espace praticien"><h4>Espace praticien</h4><a href="index.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12 L 12 3 L 21 12 M5 10 V 21 H 19 V 10"/></svg><span>Tableau de bord</span></a><a href="agenda.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2 V 6 M16 2 V 6 M3 10 H 21 M3 6 H 21 V 22 H 3 Z"/></svg><span>Agenda</span></a><a href="audios.html" aria-current="page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 V 19 M5 9 V 13 M9 6 V 16 M15 7 V 15 M19 9 V 13"/></svg><span>Audios à traiter</span><span class="badge">3</span></a><a href="clients.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11 A 4 4 0 1 0 9 3 A 4 4 0 0 0 9 11 Z M2 21 V 19 A 5 5 0 0 1 7 14 H 11 A 5 5 0 0 1 16 19 V 21"/></svg><span>Mes clients</span></a><a href="mes-offres.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7 H 21 L 19 21 H 5 Z M 8 7 V 4 A 3 3 0 0 1 11 1 H 13 A 3 3 0 0 1 16 4 V 7"/></svg><span>Mes offres</span></a><a href="outils.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4 H 5 V 20 H 19 V 12 M15 3 H 21 V 9 M21 3 L 11 13"/></svg><span>Mes outils</span></a><a href="abonnement.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7 H 22 V 17 H 2 Z M2 11 H 22"/></svg><span>Mon abonnement</span></a><h4 style="margin-top:var(--space-12);">Compte</h4><a href="#" style="margin-top: auto;">
+      <div style="width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg, #C58A8A, #D89260);"></div>
+      <span>Maïté L.-T.</span>
+    </a></aside>
+  <div class="workspace__content">
+    <header class="workspace__header">
+      <h1>Audios à traiter</h1>
+      <p>Trois audios reçus en attente d'écoute. L'engagement de la maison : réponse écrite sous 48 h ouvrables.</p>
+    </header>
+
+    <div class="cluster" style="margin-bottom: var(--space-6);">
+      <span class="chip chip--rose">Tous (3)</span>
+      <span class="chip">Urgents (1)</span>
+      <span class="chip">Nouveaux clients (1)</span>
+      <span class="chip">Suivis (2)</span>
+    </div>
+
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Personne</th>
+            <th>Reçu</th>
+            <th>Durée</th>
+            <th>Échéance réponse</th>
+            <th>Statut</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Camille T.</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Suivi · 4<sup>e</sup> audio</span></td>
+            <td>9 mai · 14 h 22</td>
+            <td>5 min 41 s</td>
+            <td><span style="color:var(--color-mousse);">Demain · 14 h</span></td>
+            <td><span class="chip chip--miel"><span class="status-dot status-dot--pending"></span> En attente</span></td>
+            <td><a href="audio-traiter.html" class="btn btn--primary btn--sm">Écouter</a></td>
+          </tr>
+          <tr>
+            <td><strong>Personne (1<sup>er</sup> contact)</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Audio d'arrivée</span></td>
+            <td>8 mai · 22 h 04</td>
+            <td>8 min 03 s</td>
+            <td><span style="color:var(--color-rose-deep);">Aujourd'hui · 22 h</span></td>
+            <td><span class="chip chip--miel"><span class="status-dot status-dot--alert"></span> Urgent</span></td>
+            <td><a href="audio-traiter.html" class="btn btn--primary btn--sm">Écouter</a></td>
+          </tr>
+          <tr>
+            <td><strong>Léa B.</strong><br><span style="font-size:var(--text-xs); color:var(--color-text-muted);">Suivi · 2<sup>e</sup> audio</span></td>
+            <td>8 mai · 11 h 17</td>
+            <td>3 min 28 s</td>
+            <td>Demain · 11 h</td>
+            <td><span class="chip chip--miel"><span class="status-dot status-dot--pending"></span> En attente</span></td>
+            <td><a href="audio-traiter.html" class="btn btn--ghost btn--sm">Écouter</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="font-family:var(--font-display); font-size:var(--text-lg); margin-block: var(--space-12) var(--space-4);">Récemment répondu</h2>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="data-table">
+        <thead><tr><th>Personne</th><th>Répondu le</th><th>Suite</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Marc V.</strong></td><td>7 mai · 16 h 12</td><td><span class="chip chip--mousse">A pris RV</span></td></tr>
+          <tr><td><strong>Nadia O.</strong></td><td>6 mai · 9 h 47</td><td><span class="chip">Sans suite (OK)</span></td></tr>
+          <tr><td><strong>Hugo P.</strong></td><td>5 mai · 17 h 30</td><td><span class="chip chip--glacier">Appel court prévu</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer" style="margin-top:var(--space-16); padding-block:var(--space-8);">
+  <div class="container site-footer__bottom" style="border:none; padding-top:0;">
+    <span>© 2026 IVIA · Espace de travail interne</span>
+    <span><a href="../index.html">↩ Retour mockups</a></span>
+  </div>
+</footer>
+<script src="../shared/coupe.js"></script>
+</body>
+</html>
