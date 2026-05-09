@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>En direct du collectif — IVIA</title>
+
+  <!-- Typographie : Fraunces (display) + Lora (corps) via Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       PALETTE "LA COUPE" — IVIA
+       ============================================================ */
+    :root {
+      --color-creme:        #F0E0DC;
+      --color-creme-deep:   #EEDCC9;
+      --color-aubergine:    #2A1A22;
+      --color-bois-rose:    #C58A8A;
+      --color-abricot:      #DA9266;
+      --color-miel:         #D9A841;
+      --color-mousse:       #6B8568;
+      --color-glacier:      #A1B6C0;
+      --color-lavande:      #B6AAC8;
+      --color-prune:        #8C5876;
+
+      /* Typographie */
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body:    'Lora', 'Georgia', serif;
+
+      /* Espacement */
+      --space-xs:  8px;
+      --space-sm:  16px;
+      --space-md:  24px;
+      --space-lg:  48px;
+      --space-xl:  80px;
+    }
+
+    /* ============================================================
+       RESET MINIMAL
+       ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ============================================================
+       BASE
+       ============================================================ */
+    body {
+      background-color: var(--color-creme);
+      color: var(--color-aubergine);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================================
+       PANNEAU "EN DIRECT DU COLLECTIF"
+       Conteneur principal — mobile-first
+       ============================================================ */
+    .panneau-collectif {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-md);
+    }
+
+    /* --- En-tête du panneau --- */
+    .panneau-entete {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .panneau-surtitre {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      /* Aubergine à 65% sur crème : ratio ~4.7:1 — AA texte normal */
+      color: var(--color-aubergine);
+      opacity: 0.65;
+      margin-bottom: var(--space-sm);
+    }
+
+    .panneau-titre {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      line-height: 1.15;
+      color: var(--color-aubergine);
+      margin-bottom: var(--space-sm);
+    }
+
+    .panneau-sous-titre {
+      font-family: var(--font-body);
+      font-size: 16px;
+      color: var(--color-aubergine);
+      opacity: 0.72;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Trait séparateur décoratif — élément non textuel, bois-rose acceptable */
+    .trait {
+      width: 40px;
+      height: 1px;
+      background-color: var(--color-bois-rose);
+      margin: var(--space-md) auto 0;
+    }
+
+    /* ============================================================
+       GRILLE DES INDICATEURS
+       Mobile : 1 colonne. Desktop (640px+) : 2 colonnes.
+       ============================================================ */
+    .grille-indicateurs {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    @media (min-width: 640px) {
+      .grille-indicateurs {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-md) var(--space-lg);
+      }
+    }
+
+    /* --- Carte indicateur --- */
+    .carte {
+      background-color: var(--color-creme-deep);
+      border-radius: 6px;
+      padding: var(--space-md) var(--space-md) var(--space-lg);
+      position: relative;
+    }
+
+    /* Ligne d'accent colorée en haut de chaque carte */
+    .carte::before {
+      content: '';
+      display: block;
+      height: 2px;
+      border-radius: 2px 2px 0 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .carte--mousse::before  { background-color: var(--color-mousse); }
+    .carte--prune::before   { background-color: var(--color-prune); }
+    .carte--abricot::before { background-color: var(--color-abricot); }
+    .carte--lavande::before { background-color: var(--color-lavande); }
+
+    .carte-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      /* Aubergine à 75% sur crème-deep : ratio ~6.2:1 — AA */
+      color: var(--color-aubergine);
+      opacity: 0.75;
+      margin-bottom: var(--space-sm);
+    }
+
+    /* ============================================================
+       INDICATEUR 1 — Personnes accompagnées
+       ============================================================ */
+    .chiffre-principal {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(3.5rem, 10vw, 5.5rem);
+      line-height: 1;
+      color: var(--color-aubergine);
+      margin-bottom: var(--space-xs);
+    }
+
+    .chiffre-unite {
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--color-aubergine);
+      opacity: 0.65;
+    }
+
+    .chiffre-periode {
+      display: block;
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--color-mousse);
+      margin-top: 6px;
+    }
+
+    /* ============================================================
+       INDICATEUR 2 — Fréquences mobilisées (barres SVG)
+       ============================================================ */
+    .frequences-liste {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .frequence-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .frequence-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .frequence-nom {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-aubergine);
+    }
+
+    .frequence-pct {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-prune);
+    }
+
+    /* Barre SVG — dessinée inline, largeur 100% */
+    .frequence-barre-conteneur {
+      width: 100%;
+      height: 6px;
+    }
+
+    /* ============================================================
+       INDICATEUR 3 — Régions touchées
+       ============================================================ */
+    .regions-liste {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .region-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .region-point {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background-color: var(--color-abricot);
+    }
+
+    .region-point--autres {
+      background-color: var(--color-lavande);
+    }
+
+    .region-nom {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-aubergine);
+      flex: 1;
+    }
+
+    .region-pct {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-aubergine);
+      opacity: 0.75;
+    }
+
+    /* Barre de distribution régionale */
+    .region-barre-conteneur {
+      width: 100%;
+      height: 6px;
+      margin-top: var(--space-sm);
+    }
+
+    /* ============================================================
+       INDICATEUR 4 — Motifs récurrents (syntagmes verbaux)
+       ============================================================ */
+    .motifs-liste {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .motif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .motif-tiret {
+      /* Prune sur crème-deep : ratio 4.17:1 — AA grand texte (18px) */
+      color: var(--color-prune);
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.3;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .motif-texte {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--color-aubergine);
+    }
+
+    /* ============================================================
+       ENCART NARRATIF — "Ce que les motifs nous disent ce mois-ci"
+       ============================================================ */
+    .encart-narratif {
+      background-color: var(--color-aubergine);
+      border-radius: 6px;
+      padding: var(--space-lg) var(--space-md);
+      margin-bottom: var(--space-lg);
+      position: relative;
+    }
+
+    /* Guillemet décoratif SVG en fond, haut gauche */
+    .encart-guillemet {
+      position: absolute;
+      top: var(--space-md);
+      left: var(--space-md);
+      opacity: 0.12;
+    }
+
+    .encart-narratif-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      /* Crème-deep à 80% sur aubergine : ratio ~4.6:1 — AA */
+      color: var(--color-creme-deep);
+      opacity: 0.80;
+      margin-bottom: var(--space-md);
+      position: relative;
+    }
+
+    .encart-narratif-texte {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--color-creme);
+      position: relative;
+    }
+
+    .encart-narratif-texte p + p {
+      margin-top: var(--space-sm);
+    }
+
+    /* ============================================================
+       PIED DE SECTION — mention légale
+       ============================================================ */
+    .panneau-pied {
+      text-align: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid rgba(42, 26, 34, 0.12);
+    }
+
+    .panneau-pied-texte {
+      font-family: var(--font-body);
+      font-size: 11px;
+      /* Aubergine à 65% sur crème : ratio ~4.7:1 — AA */
+      color: var(--color-aubergine);
+      opacity: 0.65;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       DÉMO — fond page neutre pour visualiser le panneau seul.
+       À retirer lors de l'intégration dans la landing IVIA.
+       ============================================================ */
+    body {
+      min-height: 100vh;
+      padding: var(--space-md) 0;
+    }
+
+    /* Ligne de séparation subtile en haut du panneau (comme sur la landing) */
+    .panneau-collectif {
+      border-top: 1px solid rgba(42, 26, 34, 0.10);
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     PANNEAU "EN DIRECT DU COLLECTIF"
+     Composant autonome — s'intègre dans la landing IVIA (index.html)
+     Données : mai 2026 — simulées, anonymisées, réalistes
+     Conformité : Loi 25, strate D (données agrégées anonymisées)
+     ============================================================ -->
+<section class="panneau-collectif" aria-labelledby="titre-collectif">
+
+  <!-- En-tête -->
+  <header class="panneau-entete">
+    <span class="panneau-surtitre">Données agrégées · Mai 2026</span>
+    <h2 class="panneau-titre" id="titre-collectif">En direct du collectif</h2>
+    <p class="panneau-sous-titre">Ce que la plateforme observe ce mois-ci, sans nom, sans visage — seulement ce qui se passe.</p>
+    <div class="trait" aria-hidden="true"></div>
+  </header>
+
+  <!-- Grille des quatre indicateurs -->
+  <div class="grille-indicateurs">
+
+    <!-- ========================================================
+         INDICATEUR 1 — Personnes accompagnées ce mois
+         Source : indicateurs_praticien_v1.md §5 (lectures livrées)
+         ======================================================== -->
+    <div class="carte carte--mousse" role="region" aria-label="Personnes accompagnées ce mois">
+      <p class="carte-label">Personnes accompagnées</p>
+      <p class="chiffre-principal" aria-label="247 personnes">247</p>
+      <p class="chiffre-unite">lectures livrées ce mois</p>
+      <span class="chiffre-periode">Mai 2026</span>
+    </div>
+
+    <!-- ========================================================
+         INDICATEUR 2 — Fréquences les plus mobilisées
+         Top 3 fréquences IVIA — barres SVG inline
+         ======================================================== -->
+    <div class="carte carte--prune" role="region" aria-label="Fréquences les plus mobilisées">
+      <p class="carte-label">Fréquences mobilisées</p>
+
+      <ul class="frequences-liste" aria-label="Top 3 fréquences ce mois">
+
+        <li class="frequence-item">
+          <div class="frequence-meta">
+            <span class="frequence-nom">Présence</span>
+            <span class="frequence-pct" aria-label="38 pourcent">38 %</span>
+          </div>
+          <!-- Barre SVG : longueur proportionnelle à 38% de la largeur maximale -->
+          <svg class="frequence-barre-conteneur" viewBox="0 0 200 6" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <rect x="0" y="0" width="200" height="6" rx="3" fill="#EEDCC9"/>
+            <rect x="0" y="0" width="76" height="6" rx="3" fill="#8C5876"/>
+          </svg>
+        </li>
+
+        <li class="frequence-item">
+          <div class="frequence-meta">
+            <span class="frequence-nom">Sommeil</span>
+            <span class="frequence-pct" aria-label="24 pourcent">24 %</span>
+          </div>
+          <svg class="frequence-barre-conteneur" viewBox="0 0 200 6" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <rect x="0" y="0" width="200" height="6" rx="3" fill="#EEDCC9"/>
+            <rect x="0" y="0" width="48" height="6" rx="3" fill="#8C5876" opacity="0.75"/>
+          </svg>
+        </li>
+
+        <li class="frequence-item">
+          <div class="frequence-meta">
+            <span class="frequence-nom">Reconnaissance</span>
+            <span class="frequence-pct" aria-label="19 pourcent">19 %</span>
+          </div>
+          <svg class="frequence-barre-conteneur" viewBox="0 0 200 6" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <rect x="0" y="0" width="200" height="6" rx="3" fill="#EEDCC9"/>
+            <rect x="0" y="0" width="38" height="6" rx="3" fill="#8C5876" opacity="0.55"/>
+          </svg>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- ========================================================
+         INDICATEUR 3 — Régions touchées
+         Distribution géographique agrégée, sans granularité infra-régionale
+         ======================================================== -->
+    <div class="carte carte--abricot" role="region" aria-label="Régions touchées">
+      <p class="carte-label">Régions du Québec</p>
+
+      <!-- Barre de distribution empilée en SVG -->
+      <svg
+        class="region-barre-conteneur"
+        viewBox="0 0 320 8"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+        style="margin-bottom: var(--space-md);"
+      >
+        <!-- Montréal 52% -->
+        <rect x="0"   y="0" width="166" height="8" rx="0" fill="#DA9266"/>
+        <!-- Montérégie 14% -->
+        <rect x="166" y="0" width="45"  height="8" rx="0" fill="#D9A841"/>
+        <!-- Québec-Capitale 11% -->
+        <rect x="211" y="0" width="35"  height="8" rx="0" fill="#6B8568"/>
+        <!-- Autres 23% -->
+        <rect x="246" y="0" width="74"  height="8" rx="0" fill="#B6AAC8"/>
+        <!-- Arrondi gauche -->
+        <rect x="0"   y="0" width="4"   height="8" rx="4" fill="#DA9266"/>
+        <!-- Arrondi droit -->
+        <rect x="316" y="0" width="4"   height="8" rx="4" fill="#B6AAC8"/>
+      </svg>
+
+      <ul class="regions-liste" aria-label="Distribution géographique">
+
+        <li class="region-item">
+          <span class="region-point" style="background-color: #DA9266;" aria-hidden="true"></span>
+          <span class="region-nom">Montréal</span>
+          <span class="region-pct" aria-label="52 pourcent">52 %</span>
+        </li>
+
+        <li class="region-item">
+          <span class="region-point" style="background-color: #D9A841;" aria-hidden="true"></span>
+          <span class="region-nom">Montérégie</span>
+          <span class="region-pct" aria-label="14 pourcent">14 %</span>
+        </li>
+
+        <li class="region-item">
+          <span class="region-point" style="background-color: #6B8568;" aria-hidden="true"></span>
+          <span class="region-nom">Québec-Capitale</span>
+          <span class="region-pct" aria-label="11 pourcent">11 %</span>
+        </li>
+
+        <li class="region-item">
+          <span class="region-point region-point--autres" aria-hidden="true"></span>
+          <span class="region-nom">Autres régions</span>
+          <span class="region-pct" aria-label="23 pourcent">23 %</span>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- ========================================================
+         INDICATEUR 4 — Motifs récurrents anonymisés ce mois
+         Syntagmes verbaux — jamais de verbatim client, jamais de chiffres
+         ======================================================== -->
+    <div class="carte carte--lavande" role="region" aria-label="Motifs récurrents anonymisés">
+      <p class="carte-label">Motifs ce mois-ci</p>
+
+      <ul class="motifs-liste" aria-label="Cinq motifs récurrents anonymisés de mai 2026">
+
+        <li class="motif-item">
+          <span class="motif-tiret" aria-hidden="true">—</span>
+          <span class="motif-texte">Recommencer après un départ</span>
+        </li>
+
+        <li class="motif-item">
+          <span class="motif-tiret" aria-hidden="true">—</span>
+          <span class="motif-texte">Se déposer sans grille</span>
+        </li>
+
+        <li class="motif-item">
+          <span class="motif-tiret" aria-hidden="true">—</span>
+          <span class="motif-texte">Retrouver le sommeil</span>
+        </li>
+
+        <li class="motif-item">
+          <span class="motif-tiret" aria-hidden="true">—</span>
+          <span class="motif-texte">Avancer à son rythme</span>
+        </li>
+
+        <li class="motif-item">
+          <span class="motif-tiret" aria-hidden="true">—</span>
+          <span class="motif-texte">Reconnaître ce qui s'use</span>
+        </li>
+
+      </ul>
+    </div>
+
+  </div><!-- /grille-indicateurs -->
+
+  <!-- ============================================================
+       ENCART NARRATIF — Lecture qualitative du mois
+       Rédigé à partir des données agrégées, sans verbatim client
+       ============================================================ -->
+  <div class="encart-narratif" role="region" aria-label="Ce que les motifs nous disent ce mois-ci">
+
+    <!-- Guillemet typographique décoratif en SVG -->
+    <svg class="encart-guillemet" width="72" height="56" viewBox="0 0 72 56" fill="none" aria-hidden="true" focusable="false">
+      <text x="0" y="52" font-family="Georgia, serif" font-size="80" fill="#F0E0DC">"</text>
+    </svg>
+
+    <p class="encart-narratif-label">Ce que les motifs nous disent ce mois-ci</p>
+
+    <div class="encart-narratif-texte">
+      <p>Mai porte avec lui une fatigue tardive de l'hiver. Les fréquences les plus mobilisées sont celles de l'apaisement : la présence à soi avant tout, le sommeil comme porte d'entrée vers autre chose.</p>
+      <p>Ce qui revient dans les dépôts de ce mois, c'est moins une urgence qu'une lassitude douce — quelque chose qui cherche à se reposer, pas à se résoudre. Le collectif traverse une saison de transition lente.</p>
+    </div>
+
+  </div><!-- /encart-narratif -->
+
+  <!-- Pied de section — mention légale discrète -->
+  <footer class="panneau-pied">
+    <p class="panneau-pied-texte">
+      Données agrégées anonymisées &middot; Conformité Loi 25 &middot; Recalculées le 1<sup>er</sup> du mois
+    </p>
+  </footer>
+
+</section>
+
+</body>
+</html>
