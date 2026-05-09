@@ -117,7 +117,7 @@ def build_landing():
     <div class="container public-hero__inner">
       <div class="public-hero__content">
         <p class="public-hero__overline">Espace d'écoute · Québec · français québécois</p>
-        <h1 class="public-hero__title"><span>Quand tout se mélange,</span><span>commencez par être entendu.</span></h1>
+        <h1 class="public-hero__title"><span>Quand tout se mélange,</span> <span>commencez par être entendu.</span></h1>
         <p class="public-hero__lede">Vous arrivez avec ce que vous avez. IVIA vous écoute, vous remet une suite claire, et vous laisse repartir à votre rythme.</p>
         <div class="public-hero__cta">
           <a href="rendez-vous.html" class="btn btn--primary btn--lg">Prendre rendez-vous →</a>

@@ -1,7 +1,14 @@
-"""Service d'envoi de courriels via SMTP (SSL)."""
+"""Service d'envoi de courriels via SMTP (SSL).
+
+Mode pilote : si MERLIN_PILOT_EMAIL_OVERRIDE est activé,
+tous les courriels sont redirigés vers les adresses Gmail de pilote
+(davidphaneuf@gmail.com pour clients/praticiens, lagent009@gmail.com pour admin).
+Le destinataire d'origine est conservé dans l'objet du courriel pour traçabilité.
+"""
 from __future__ import annotations
 
 import logging
+import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -12,21 +19,57 @@ from app.core.config import settings
 logger = logging.getLogger(__name__)
 
 
+# ---------------------------------------------------------------------------
+# Mode pilote — override courriels vers Gmail David
+# ---------------------------------------------------------------------------
+
+_PILOT_OVERRIDE_ENABLED = os.getenv("MERLIN_PILOT_EMAIL_OVERRIDE", "0").strip().lower() in {"1", "true", "yes", "on"}
+_PILOT_CLIENT_PRACTITIONER_EMAIL = os.getenv("MERLIN_PILOT_CLIENT_PRACTITIONER_EMAIL", "davidphaneuf@gmail.com")
+_PILOT_ADMIN_EMAIL = os.getenv("MERLIN_PILOT_ADMIN_EMAIL", "lagent009@gmail.com")
+
+
+def _resolve_pilot_recipient(to_email: str, audience: str = "client") -> tuple[str, str]:
+    """Résout l'adresse de destination en mode pilote.
+
+    Retourne (effective_to, prefix_for_subject).
+    Si pilote désactivé, retourne (to_email, "").
+    """
+    if not _PILOT_OVERRIDE_ENABLED:
+        return to_email, ""
+    target = _PILOT_ADMIN_EMAIL if audience == "admin" else _PILOT_CLIENT_PRACTITIONER_EMAIL
+    prefix = f"[PILOTE→{to_email}] "
+    return target, prefix
+
+
 async def send_email(
     to_email: str,
     subject: str,
     html_body: str,
     text_body: str | None = None,
+    audience: str = "client",
 ) -> bool:
-    """Envoie un courriel. Retourne True si succès, False si erreur."""
+    """Envoie un courriel. Retourne True si succès, False si erreur.
+
+    En mode pilote (MERLIN_PILOT_EMAIL_OVERRIDE=1), redirige vers les Gmail
+    de pilote selon l'audience : 'client'/'praticien' → davidphaneuf@gmail.com,
+    'admin' → lagent009@gmail.com. L'objet du courriel est préfixé par
+    [PILOTE→adresse_originale] pour traçabilité.
+    """
     if not settings.smtp_username or not settings.smtp_password:
         logger.warning("SMTP non configuré — courriel non envoyé à %s", to_email)
         return False
 
+    effective_to, subject_prefix = _resolve_pilot_recipient(to_email, audience)
+    final_subject = f"{subject_prefix}{subject}"
+
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
+    msg["Subject"] = final_subject
     msg["From"] = f"{settings.smtp_from_name} <{settings.smtp_from_email}>"
-    msg["To"] = to_email
+    msg["To"] = effective_to
+    msg["X-IVIA-Original-Recipient"] = to_email
+    msg["X-IVIA-Audience"] = audience
+    if _PILOT_OVERRIDE_ENABLED:
+        msg["X-IVIA-Pilot-Mode"] = "1"
 
     if text_body:
         msg.attach(MIMEText(text_body, "plain", "utf-8"))
@@ -42,10 +85,16 @@ async def send_email(
             use_tls=settings.smtp_use_ssl,       # SSL immédiat (port 465)
             start_tls=settings.smtp_use_tls,     # STARTTLS (port 587)
         )
-        logger.info("Courriel envoyé à %s — %s", to_email, subject)
+        if _PILOT_OVERRIDE_ENABLED and effective_to != to_email:
+            logger.info(
+                "Courriel pilote envoyé à %s (override depuis %s, audience=%s) — %s",
+                effective_to, to_email, audience, subject,
+            )
+        else:
+            logger.info("Courriel envoyé à %s — %s", effective_to, subject)
         return True
     except Exception as exc:  # pylint: disable=broad-except
-        logger.error("Erreur envoi courriel à %s: %s", to_email, exc)
+        logger.error("Erreur envoi courriel à %s: %s", effective_to, exc)
         return False
 
 
