@@ -2,30 +2,24 @@
 (function () {
   'use strict';
 
-  /* ---------- Stockage in-memory (compatibilité iframe sandboxée) ---------- */
-  /* Substitut local à localStorage : persiste pendant la visite, pas entre sessions. */
-  const memStore = Object.create(null);
-  const store = {
-    getItem: function (k) { return Object.prototype.hasOwnProperty.call(memStore, k) ? memStore[k] : null; },
-    setItem: function (k, v) { memStore[k] = String(v); },
-    removeItem: function (k) { delete memStore[k]; }
-  };
-
   /* ---------- 1. Mode Calme ---------- */
   const STORAGE_KEY = 'ivia.calme';
   const body = document.body;
   const toggle = document.getElementById('calmeToggle');
 
-  if (store.getItem(STORAGE_KEY) === '1') {
-    body.classList.add('calme');
-    if (toggle) toggle.setAttribute('aria-pressed', 'true');
-  }
+  // Restore on load
+  try {
+    if (localStorage.getItem(STORAGE_KEY) === '1') {
+      body.classList.add('calme');
+      if (toggle) toggle.setAttribute('aria-pressed', 'true');
+    }
+  } catch (_) { /* localStorage indisponible */ }
 
   if (toggle) {
     toggle.addEventListener('click', function () {
       const active = body.classList.toggle('calme');
       toggle.setAttribute('aria-pressed', active ? 'true' : 'false');
-      store.setItem(STORAGE_KEY, active ? '1' : '0');
+      try { localStorage.setItem(STORAGE_KEY, active ? '1' : '0'); } catch (_) {}
     });
   }
 
@@ -67,18 +61,18 @@
     const id = saveBtn.getAttribute('data-id') || location.pathname;
     const KEY = 'ivia.saved';
     const getSaved = function () {
-      try { return JSON.parse(store.getItem(KEY) || '[]'); }
+      try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
       catch (_) { return []; }
     };
     const setSaved = function (arr) {
-      store.setItem(KEY, JSON.stringify(arr));
+      try { localStorage.setItem(KEY, JSON.stringify(arr)); } catch (_) {}
     };
     const refresh = function () {
       const list = getSaved();
       const isSaved = list.indexOf(id) !== -1;
       saveBtn.setAttribute('aria-pressed', isSaved ? 'true' : 'false');
-      const label = saveBtn.querySelector('.label');
-      if (label) label.textContent = isSaved ? 'Sauvegardé' : 'Sauvegarder pour plus tard';
+      saveBtn.querySelector('.label').textContent =
+        isSaved ? 'Sauvegardé' : 'Sauvegarder pour plus tard';
     };
     saveBtn.addEventListener('click', function () {
       const list = getSaved();
