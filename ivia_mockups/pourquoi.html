@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr-CA" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pourquoi IVIA — ce qui rend ce projet nécessaire</title>
+<meta name="description" content="Les chiffres officiels sur la détresse psychologique, l'accès aux soins et l'isolement au Québec. Ce qu'IVIA décide de faire — et ce qu'IVIA ne fera pas. Honnêteté radicale, sources publiques.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/coupe.css">
+<link rel="stylesheet" href="shared/public.css">
+<style>
+.pourquoi-faits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+@media (max-width: 720px) {
+  .pourquoi-faits { grid-template-columns: 1fr; gap: 1.75rem; }
+}
+.fait-card {
+  background: var(--color-creme);
+  border: 1px solid rgba(74, 47, 74, 0.12);
+  border-radius: 14px;
+  padding: 2.25rem 2rem 2rem;
+  box-shadow: 0 1px 3px rgba(74, 47, 74, 0.06);
+}
+.fait-card__chiffre {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.5vw, 3.6rem);
+  font-weight: 500;
+  color: var(--color-aubergine);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.fait-card__titre {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-aubergine);
+  margin: 0 0 1rem;
+  line-height: 1.35;
+}
+.fait-card__source {
+  font-size: 0.86rem;
+  color: var(--color-prune);
+  margin: 0 0 1rem;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+.fait-card__lecture {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--color-aubergine);
+  margin: 0;
+  line-height: 1.6;
+  border-top: 1px solid rgba(74, 47, 74, 0.12);
+  padding-top: 1rem;
+}
+.pourquoi-deux-colonnes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin: 2.5rem 0 2rem;
+}
+@media (max-width: 720px) {
+  .pourquoi-deux-colonnes { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+.pourquoi-bloc {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.pourquoi-bloc__chiffre {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  font-weight: 500;
+  color: var(--color-rose-deep);
+  margin: 0 0 1rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.pourquoi-bloc__texte {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--color-aubergine);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 36ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pourquoi-bilan {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--color-aubergine);
+  line-height: 1.65;
+  max-width: 64ch;
+  margin: 2rem auto 0;
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(74, 47, 74, 0.15);
+}
+.pourquoi-liste-faits {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 1rem;
+  max-width: 70ch;
+}
+.pourquoi-liste-faits li {
+  font-size: 1rem;
+  color: var(--color-aubergine);
+  line-height: 1.6;
+  padding: 1rem 1.25rem;
+  background: var(--color-creme);
+  border-left: 3px solid var(--color-rose);
+  border-radius: 0 8px 8px 0;
+}
+.pourquoi-liste-faits strong {
+  color: var(--color-aubergine);
+  font-weight: 600;
+}
+.pourquoi-creneau {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.creneau-pilier {
+  background: var(--color-creme);
+  border: 1px solid rgba(74, 47, 74, 0.12);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  position: relative;
+}
+.creneau-pilier__num {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--color-rose);
+  opacity: 0.55;
+  line-height: 1;
+}
+.creneau-pilier h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-aubergine);
+  margin: 0 0 0.75rem;
+}
+.creneau-pilier p {
+  font-size: 0.95rem;
+  color: var(--color-aubergine);
+  line-height: 1.55;
+  margin: 0;
+  opacity: 0.9;
+}
+.pourquoi-limites {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 0.85rem;
+  max-width: 70ch;
+}
+.pourquoi-limites li {
+  font-size: 1rem;
+  color: var(--color-aubergine);
+  line-height: 1.6;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-left: 3px solid var(--color-aubergine);
+  border-radius: 0 8px 8px 0;
+}
+.public-section--accent {
+  background: linear-gradient(135deg, var(--color-aubergine) 0%, var(--color-prune) 100%);
+  color: var(--color-creme);
+}
+.public-section--accent .section-overline,
+.public-section--accent .section-title,
+.public-section--accent .section-lede,
+.public-section--accent em {
+  color: var(--color-creme);
+}
+.public-section--accent em {
+  font-style: italic;
+  color: var(--color-rose);
+}
+.pourquoi-cta {
+  text-align: center;
+  max-width: 64ch;
+}
+.pourquoi-cta__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2rem 0 1.5rem;
+}
+.pourquoi-cta__sources {
+  font-size: 0.82rem;
+  color: var(--color-creme);
+  opacity: 0.75;
+  line-height: 1.55;
+  margin: 1rem auto 0;
+  max-width: 60ch;
+}
+</style>
+</head>
+<body class="public-page">
+<div class="vrille-fixe" aria-hidden="true">
+  <svg viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="vg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C58A8A" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#D9A441" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6B8266" stop-opacity="0.4"/>
+    </linearGradient></defs>
+    <path d="M 250 0 C 100 200, 400 350, 200 500 C 50 650, 350 750, 250 800" stroke="url(#vg)" stroke-width="1.5" fill="none"/>
+    <path d="M 280 0 C 130 220, 430 360, 230 510 C 80 660, 380 760, 280 800" stroke="#C58A8A" stroke-width="0.8" stroke-opacity="0.4" fill="none"/>
+    <ellipse cx="200" cy="180" rx="14" ry="5" fill="#6B8266" fill-opacity="0.3" transform="rotate(-30 200 180)"/>
+    <ellipse cx="320" cy="280" rx="12" ry="4" fill="#D89260" fill-opacity="0.3" transform="rotate(20 320 280)"/>
+    <ellipse cx="180" cy="430" rx="16" ry="6" fill="#C58A8A" fill-opacity="0.35" transform="rotate(-15 180 430)"/>
+    <ellipse cx="290" cy="600" rx="13" ry="5" fill="#9A8AB8" fill-opacity="0.3" transform="rotate(40 290 600)"/>
+  </svg>
+</div>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand" aria-label="IVIA — accueil">
+      <svg class="brand__mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+  <circle cx="18" cy="18" r="14.5" stroke-opacity="0.4"/>
+  <path d="M18 4.5 C 11 12, 25 24, 18 31.5" stroke-linecap="round"/>
+  <path d="M11 18 C 14 16, 22 20, 25 18" stroke-linecap="round" stroke-opacity="0.7"/>
+  <circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+</svg>
+      <span class="brand__name">IV<em>I</em>A</span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="comment.html">Comment ça fonctionne</a>
+      <a href="pourquoi.html" aria-current="page">Pourquoi IVIA</a>
+      <a href="bibliotheque.html">Bibliothèque</a>
+      <a href="urgence.html">Si c'est urgent</a>
+    </nav>
+    <div class="header-actions">
+      <button class="mode-calme-toggle" data-mode-calme aria-pressed="false" aria-label="Activer le mode calme">
+        <span aria-hidden="true">◐</span> Mode calme
+      </button>
+      <a href="tests.html" class="btn btn--ghost btn--sm" style="opacity:0.85;">Espace tests</a><a href="client/audio-async.html" class="btn btn--primary btn--sm">Commencer une écoute</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="public-hero public-hero--small">
+    <div class="container">
+      <p class="public-hero__overline">Pourquoi IVIA · ce qui rend ce projet nécessaire</p>
+      <h1 class="public-hero__title">Le besoin n'est pas une <em>impression</em>. Il est <em>documenté</em>.</h1>
+      <p class="public-hero__lede">Il y a une manière facile de présenter un projet : multiplier les promesses. Nous avons choisi l'autre. Voici les chiffres qui nous font lever le matin, et la ligne de crête qu'IVIA décide d'occuper.</p>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="container">
+      <p class="section-overline">L'état des lieux</p>
+      <h2 class="section-title">Quatre faits qui ne reculent pas</h2>
+      <p class="section-lede">Ces données viennent d'institutions publiques québécoises et canadiennes. Elles ne sont pas notre interprétation. Elles sont le sol sur lequel IVIA s'appuie.</p>
+
+      <div class="pourquoi-faits">
+        <article class="fait-card">
+          <p class="fait-card__chiffre">38,7&nbsp;%</p>
+          <h3 class="fait-card__titre">des Québécois·es de 15&nbsp;ans et plus vivent une détresse psychologique élevée</h3>
+          <p class="fait-card__source">INSPQ, <em>Portrait de l'état de santé mentale de la population québécoise</em>, 2020-2021. Vs 28,3&nbsp;% en 2014-2015. Chez les 15-24&nbsp;ans : 57,6&nbsp;%. Chez les jeunes femmes : 67,8&nbsp;%.</p>
+          <p class="fait-card__lecture">Ce n'est pas un pic conjoncturel. C'est une trajectoire qui monte depuis dix ans. La pression sur les vies, sur les familles, sur les milieux de travail ne va pas redescendre toute seule.</p>
+        </article>
+
+        <article class="fait-card">
+          <p class="fait-card__chiffre">22&nbsp;000</p>
+          <h3 class="fait-card__titre">personnes en attente d'un service en santé mentale au Québec</h3>
+          <p class="fait-card__source">Ministère de la Santé et des Services sociaux (cible : 13&nbsp;261). Commissaire à la santé et au bien-être, rapport 2024-2025 : seulement 58&nbsp;% des soins reçus dans les délais prescrits.</p>
+          <p class="fait-card__lecture">Le système public fait ce qu'il peut, et ce qu'il peut n'est pas suffisant. Pour les troubles diagnostiqués, l'attente est cliniquement dangereuse. Pour ceux qui ne savent même pas s'ils ont «&nbsp;quelque chose&nbsp;», il n'y a souvent aucune porte.</p>
+        </article>
+
+        <article class="fait-card">
+          <p class="fait-card__chiffre">6 à 11&nbsp;ans</p>
+          <h3 class="fait-card__titre">entre l'apparition des symptômes et le premier traitement</h3>
+          <p class="fait-card__source">CAMH (Centre de toxicomanie et de santé mentale). Littérature internationale en <em>help-seeking</em> : le manque de clarté sur ce qu'on vit précède et ralentit la recherche d'aide.</p>
+          <p class="fait-card__lecture">Avant qu'on parle d'un «&nbsp;trouble&nbsp;», il y a souvent dix ans pendant lesquels la personne ne sait pas comment nommer ce qui ne va pas. C'est là, dans cet espace de manque de clarté, qu'IVIA s'inscrit.</p>
+        </article>
+
+        <article class="fait-card">
+          <p class="fait-card__chiffre">120 à 180&nbsp;$</p>
+          <h3 class="fait-card__titre">la séance de psychothérapie en cabinet privé</h3>
+          <p class="fait-card__source">Tarifs courants Québec 2024-2025. La psychothérapie n'est pas couverte par la RAMQ. Seules certaines assurances privées la remboursent partiellement.</p>
+          <p class="fait-card__lecture">Pour une majorité de ménages, c'est un budget impossible — surtout si plusieurs séances sont nécessaires. Entre l'attente publique et le coût du privé, il y a un trou. C'est ce trou qu'on a décidé de combler, en partie, sans prétendre remplacer ni l'un ni l'autre.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="public-section public-section--soft">
+    <div class="container">
+      <p class="section-overline">Le contexte humain</p>
+      <h2 class="section-title">L'isolement n'est pas une <em>métaphore</em></h2>
+      <p class="section-lede">Vivre seul·e, ce n'est pas être seul·e — mais l'un favorise l'autre. Et l'isolement social a des effets mesurables sur le corps autant que sur l'esprit.</p>
+
+      <div class="pourquoi-deux-colonnes">
+        <div class="pourquoi-bloc">
+          <p class="pourquoi-bloc__chiffre">1,3&nbsp;million</p>
+          <p class="pourquoi-bloc__texte">de Québécois·es de 15&nbsp;ans et plus vivent seul·e·s (Statistique Canada, recensement 2021). Le phénomène s'amplifie chez les jeunes adultes urbains et chez les aîné·e·s.</p>
+        </div>
+        <div class="pourquoi-bloc">
+          <p class="pourquoi-bloc__chiffre">+35&nbsp;%</p>
+          <p class="pourquoi-bloc__texte">de risque de mortalité lié à l'isolement social, équivalent à fumer 15&nbsp;cigarettes par jour (méta-analyses Holt-Lunstad). Ce n'est pas une métaphore littéraire — c'est une donnée épidémiologique.</p>
+        </div>
+      </div>
+
+      <p class="pourquoi-bilan">Quand quelqu'un cherche un espace pour se déposer, ce n'est pas un confort. C'est, parfois, une question de longue durée — voire de santé tout court. IVIA n'est pas une réponse à l'isolement. C'est un point d'appui pour des gens qui peuvent en ressentir les effets, et qui méritent d'être entendus avant tout.</p>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="container">
+      <p class="section-overline">Pourquoi pas une autre app</p>
+      <h2 class="section-title">Le format «&nbsp;IA-seule&nbsp;» ne tient pas la confiance</h2>
+      <p class="section-lede">L'industrie des applications de santé mentale a connu une expansion massive depuis 2020. Et un effondrement de confiance récent, documenté, qu'il serait malhonnête d'ignorer.</p>
+
+      <ul class="pourquoi-liste-faits">
+        <li><strong>Rétention de 3 à 4&nbsp;%</strong> à J30 sur la moyenne du segment des apps de santé mentale (analyses sectorielles 2024-2025). Le format autonome ne tient ni la confiance ni l'usage.</li>
+        <li><strong>BetterHelp</strong> a été condamné à 7,8&nbsp;M$ par la <em>Federal Trade Commission</em> en 2023 pour partage de données de santé mentale avec des régies publicitaires.</li>
+        <li><strong>Mozilla</strong> (<em>Privacy Not Included</em>, 2023) a épinglé 32&nbsp;applications de santé mentale et de prière pour pratiques de données opaques ou prédatrices.</li>
+        <li><strong>Le cas de Sewell Setzer&nbsp;III</strong> (mort en 2024, règlement civil avec Character.AI en 2026) a rendu visible le risque de relations émotionnelles intenses avec des IA conversationnelles, particulièrement chez les jeunes.</li>
+      </ul>
+
+      <p class="pourquoi-bilan">Ces événements ne disqualifient pas le numérique en santé mentale. Ils disqualifient un certain modèle : opaque sur les données, automatisé sans humain, optimisé pour l'engagement plutôt que pour la sortie. IVIA prend le contrepied de chacun de ces choix.</p>
+    </div>
+  </section>
+
+  <section class="public-section public-section--soft">
+    <div class="container">
+      <p class="section-overline">Le créneau d'IVIA</p>
+      <h2 class="section-title">Cinq dimensions, un seul espace</h2>
+      <p class="section-lede">Aucun acteur connu, au Québec, ne réunit ces cinq dimensions à la fois. C'est exactement la place qu'IVIA décide d'occuper.</p>
+
+      <div class="pourquoi-creneau">
+        <div class="creneau-pilier"><span class="creneau-pilier__num">1</span><h3>Audio</h3><p>La voix porte ce que le texte aplatit. Pas de caméra, pas de mise en scène, pas d'avatar. Juste la parole.</p></div>
+        <div class="creneau-pilier"><span class="creneau-pilier__num">2</span><h3>Humain</h3><p>Une personne qualifiée écoute, pas une intelligence artificielle. L'IA est dans la coulisse, jamais dans le siège.</p></div>
+        <div class="creneau-pilier"><span class="creneau-pilier__num">3</span><h3>Non-urgence</h3><p>IVIA n'est pas un service de crise. Pour les urgences, il y a le 911, le 811 option 2, le 1 866 APPELLE. IVIA est l'espace d'avant ou d'après.</p></div>
+        <div class="creneau-pilier"><span class="creneau-pilier__num">4</span><h3>Francophone</h3><p>Pensé, formulé, opéré en français québécois. Pas une traduction. Une langue.</p></div>
+        <div class="creneau-pilier"><span class="creneau-pilier__num">5</span><h3>Conforme Loi 25</h3><p>Dès le départ. Vos données ne sont pas notre produit. La voix est effacée à J+30, l'extraction d'apprentissage anonymisée, le consentement granulaire.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="container">
+      <p class="section-overline">Honnêteté radicale</p>
+      <h2 class="section-title">Ce qu'IVIA <em>n'est pas</em>, dit clairement</h2>
+      <p class="section-lede">La meilleure preuve qu'on a réfléchi, c'est de nommer ce qu'on ne peut pas faire. Voici nos limites, sans habillage.</p>
+
+      <ul class="pourquoi-limites">
+        <li><strong>IVIA ne remplace pas la psychothérapie</strong> pour un trouble diagnostiqué. Si vous avez un diagnostic ou des symptômes intenses, la psychothérapie clinique reste le bon recours.</li>
+        <li><strong>IVIA n'est pas un service d'urgence.</strong> Si une vie est en danger, composez le 911 ou le 1&nbsp;866 APPELLE (1&nbsp;866 277-3553).</li>
+        <li><strong>IVIA ne couvre pas spontanément</strong> les besoins spécifiques des communautés autochtones, 2SLGBTQ+ ou racisé·e·s sans partenariats explicites avec ces communautés. Ce travail est en cours.</li>
+        <li><strong>IVIA ne réduit pas les inégalités structurelles d'accès aux soins.</strong> Tarif accessible, oui ; gratuit pour tous, non. La redistribution se construit via l'OBNL satellite, progressivement.</li>
+        <li><strong>IVIA ne garantit pas de résultats thérapeutiques mesurables.</strong> Nous mesurons l'usage, la satisfaction, la clarté ressentie. Pas la «&nbsp;guérison&nbsp;». Ce serait une promesse malhonnête.</li>
+      </ul>
+
+      <p class="pourquoi-bilan">Ces limites ne sont pas des défauts à cacher. Ce sont les conditions mêmes de la confiance qu'on souhaite construire avec les personnes qui nous écoutent et avec celles qui nous confient leur voix.</p>
+    </div>
+  </section>
+
+  <section class="public-section public-section--accent">
+    <div class="container pourquoi-cta">
+      <h2 class="section-title">Quand tout se mélange, commencez par <em>être entendu</em>.</h2>
+      <p class="section-lede">Une séance audio, en français, avec une personne qualifiée qui sait écouter. Sans urgence. Sans diagnostic. Avec une suite concrète à votre rythme.</p>
+      <div class="pourquoi-cta__actions">
+        <a href="client/audio-async.html" class="btn btn--primary">Commencer une écoute</a>
+        <a href="comment.html" class="btn btn--ghost">Voir comment ça fonctionne</a>
+      </div>
+      <p class="pourquoi-cta__sources">Sources principales : INSPQ · ISQ · Statistique Canada · Commissaire à la santé et au bien-être du Québec · CAMH · Federal Trade Commission · Holt-Lunstad et al. Le corpus complet de preuves est documenté en interne et révisable annuellement.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__cols">
+      <div>
+        <p style="font-family: var(--font-display); font-size:1.6rem; margin-bottom:1rem;">IV<em style="font-style:italic; color: var(--color-rose);">I</em>A</p>
+        <p style="opacity:0.85; max-width:32ch; font-family:var(--font-serif); font-style:italic;">Au sein de l'être — En actes.</p>
+        <p style="opacity:0.5; margin-top:1rem; font-size:var(--text-xs); letter-spacing:0.16em; text-transform:uppercase;">In vivo · In actu</p>
+      </div>
+      <div><h4>Découvrir</h4><ul role="list">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="comment.html">Comment ça fonctionne</a></li>
+        <li><a href="pourquoi.html">Pourquoi IVIA</a></li>
+        <li><a href="bibliotheque.html">Bibliothèque</a></li>
+        <li><a href="urgence.html">Si c'est urgent</a></li>
+      </ul></div>
+      <div><h4>Pratique</h4><ul role="list">
+        <li><a href="client/audio-async.html">Commencer une écoute</a></li>
+        <li><a href="client/journal.html">Journal de vie</a></li>
+        <li><a href="tests.html">Espace tests</a></li>
+        <li><a href="mailto:contact@ivia.quebec">Nous écrire</a></li>
+      </ul></div>
+      <div><h4>Mentions</h4><ul role="list">
+        <li><a href="mentions.html">Mentions légales</a></li>
+        <li><a href="confidentialite.html">Confidentialité (Loi 25)</a></li>
+        <li><a href="cgu.html">Conditions d'utilisation</a></li>
+        <li><a href="demo/index.html">Démo des interfaces</a></li>
+      </ul></div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 IVIA — Pour le peuple, par le peuple.</span>
+      <span>IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</span>
+    </div>
+  </div>
+</footer>
+<script src="shared/coupe.js"></script>
+</body>
+</html>

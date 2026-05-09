@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr-CA" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace tests — IVIA</title>
+<meta name="description" content="Hub d'accès direct aux 3 comptes fictifs (client, praticien, admin) pour la phase pilote.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Lora:ital,wght@0,400..600;1,400..500&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/coupe.css">
+<link rel="stylesheet" href="shared/public.css">
+
+</head>
+<body class="public-page">
+<div class="vrille-fixe" aria-hidden="true">
+  <svg viewBox="0 0 500 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="vg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C58A8A" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#D9A441" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6B8266" stop-opacity="0.4"/>
+    </linearGradient></defs>
+    <path d="M 250 0 C 100 200, 400 350, 200 500 C 50 650, 350 750, 250 800" stroke="url(#vg)" stroke-width="1.5" fill="none"/>
+    <path d="M 280 0 C 130 220, 430 360, 230 510 C 80 660, 380 760, 280 800" stroke="#C58A8A" stroke-width="0.8" stroke-opacity="0.4" fill="none"/>
+    <ellipse cx="200" cy="180" rx="14" ry="5" fill="#6B8266" fill-opacity="0.3" transform="rotate(-30 200 180)"/>
+    <ellipse cx="320" cy="280" rx="12" ry="4" fill="#D89260" fill-opacity="0.3" transform="rotate(20 320 280)"/>
+    <ellipse cx="180" cy="430" rx="16" ry="6" fill="#C58A8A" fill-opacity="0.35" transform="rotate(-15 180 430)"/>
+    <ellipse cx="290" cy="600" rx="13" ry="5" fill="#9A8AB8" fill-opacity="0.3" transform="rotate(40 290 600)"/>
+  </svg>
+</div>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="index.html" class="brand" aria-label="IVIA — accueil">
+      <svg class="brand__mark" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+  <circle cx="18" cy="18" r="14.5" stroke-opacity="0.4"/>
+  <path d="M18 4.5 C 11 12, 25 24, 18 31.5" stroke-linecap="round"/>
+  <path d="M11 18 C 14 16, 22 20, 25 18" stroke-linecap="round" stroke-opacity="0.7"/>
+  <circle cx="18" cy="18" r="2.5" fill="currentColor" stroke="none"/>
+</svg>
+      <span class="brand__name">IV<em>I</em>A</span>
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="comment.html">Comment ça fonctionne</a>
+      <a href="pourquoi.html">Pourquoi IVIA</a>
+      <a href="bibliotheque.html">Bibliothèque</a>
+      <a href="urgence.html">Si c'est urgent</a>
+    </nav>
+    <div class="header-actions">
+      <button class="mode-calme-toggle" data-mode-calme aria-pressed="false" aria-label="Activer le mode calme">
+        <span aria-hidden="true">◐</span> Mode calme
+      </button>
+      <a href="tests.html" class="btn btn--ghost btn--sm" style="opacity:0.85;">Espace tests</a><a href="client/audio-async.html" class="btn btn--primary btn--sm">Commencer une écoute</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="public-hero public-hero--small public-hero--tests">
+    <div class="container">
+      <p class="public-hero__overline">Espace tests · Accès direct sans authentification</p>
+      <h1 class="public-hero__title">Trois comptes <em>fictifs</em>, déjà ouverts.</h1>
+      <p class="public-hero__lede">
+        En phase pilote, vous pouvez tester l'outil bout-en-bout sans inscription ni mot de passe.
+        Les comptes ci-dessous sont alimentés avec des données représentatives pour rendre le test crédible.
+      </p>
+    </div>
+  </section>
+
+  <section class="public-section">
+    <div class="container">
+
+      <div class="tests-grid">
+
+        <article class="test-card test-card--client">
+          <header class="test-card__head">
+            <span class="test-card__role">Client·e</span>
+            <h2>Camille Leblanc</h2>
+            <p class="test-card__sub">35 ans · Montréal · 2 écoutes effectuées · 1 résumé reçu</p>
+          </header>
+          <div class="test-card__body">
+            <p>Vue de la personne qui vit l'écoute IVIA : ses audios, son résumé, son journal, ses outils.</p>
+            <ul class="test-card__features">
+              <li>Tableau de bord personnel</li>
+              <li>Lancer une nouvelle écoute audio</li>
+              <li>Recevoir un résumé écrit (mockup)</li>
+              <li>Tenir un journal de vie</li>
+              <li>4 outils interactifs (cercle, fréquence, sommeil, préparer)</li>
+              <li>Choisir un·e praticien·ne et payer (mockup Stripe)</li>
+            </ul>
+          </div>
+          <footer class="test-card__foot">
+            <a href="client/dashboard.html" class="btn btn--primary">Entrer comme Camille →</a>
+            <a href="client/audio-async.html" class="btn btn--ghost btn--sm">Aller direct à l'écoute</a>
+          </footer>
+        </article>
+
+        <article class="test-card test-card--praticien">
+          <header class="test-card__head">
+            <span class="test-card__role">Praticien·ne</span>
+            <h2>Mylène Tremblay</h2>
+            <p class="test-card__sub">Plan Standard · 4 client·e·s actif·ve·s · 3 audios à traiter</p>
+          </header>
+          <div class="test-card__body">
+            <p>Vue du ou de la praticien·ne qui reçoit, écoute, rédige le résumé et accompagne sa clientèle.</p>
+            <ul class="test-card__features">
+              <li>Tableau de bord praticien·ne</li>
+              <li>Agenda et rendez-vous</li>
+              <li>Audios à traiter avec timeline + transcription assistée</li>
+              <li>Rédaction du résumé client</li>
+              <li>Mes offres et tarifs personnalisés</li>
+              <li>Mon abonnement et facturation</li>
+              <li>Outils internes (cercle, fréquence, préparer)</li>
+            </ul>
+          </div>
+          <footer class="test-card__foot">
+            <a href="praticien/index.html" class="btn btn--primary">Entrer comme Mylène →</a>
+            <a href="praticien/audios.html" class="btn btn--ghost btn--sm">Voir les audios à traiter</a>
+          </footer>
+        </article>
+
+        <article class="test-card test-card--admin">
+          <header class="test-card__head">
+            <span class="test-card__role">Admin</span>
+            <h2>David Phaneuf</h2>
+            <p class="test-card__sub">Fondateur · Vue plateforme complète · Pilote M1-M3</p>
+          </header>
+          <div class="test-card__body">
+            <p>Vue de pilotage de la plateforme — santé du service, croissance, finance, qualité de l'outil.</p>
+            <ul class="test-card__features">
+              <li>Vue d'ensemble (KPIs pilote)</li>
+              <li>Section Analytique : finance, données, résultats</li>
+              <li>Gestion des praticien·ne·s</li>
+              <li>Gestion des client·e·s</li>
+              <li>Suivi audios (toute la plateforme)</li>
+              <li>Finance et abonnements</li>
+              <li>Paramètres système</li>
+            </ul>
+          </div>
+          <footer class="test-card__foot">
+            <a href="admin/index.html" class="btn btn--primary">Entrer comme David →</a>
+            <a href="admin/analytique.html" class="btn btn--ghost btn--sm">Voir l'analytique</a>
+          </footer>
+        </article>
+
+      </div>
+
+      <div class="tests-extras">
+        <h2>Phase de test — ce qu'on cherche à valider</h2>
+        <p>Avant l'ouverture publique avec un réseau de praticien·ne·s, nous voulons valider trois choses :</p>
+        <ol>
+          <li><strong>La qualité de l'analyse</strong> que produit notre outil interne sur des audios réels (sans praticien·ne dans la boucle pour cette phase).</li>
+          <li><strong>La fluidité du parcours client</strong> de A à Z : enregistrer, attendre, recevoir, lire, agir.</li>
+          <li><strong>L'expérience praticien·ne</strong> : est-ce qu'on lui fait gagner du temps ? Est-ce qu'on respecte sa pratique ?</li>
+        </ol>
+        <p>L'écoute en mode test fonctionne <strong>sans praticien·ne assigné·e</strong> : l'enregistrement est traité par notre outil interne, qui produit directement un résumé de démonstration. C'est exactement la phase 1 décrite dans le plan d'affaires.</p>
+
+        <h3>Liens utiles pendant les tests</h3>
+        <ul>
+          <li><a href="index.html">Vue publique (la « vraie » landing)</a></li>
+          <li><a href="comment.html">Comment ça fonctionne</a></li>
+          <li><a href="bibliotheque.html">Bibliothèque (16 articles)</a></li>
+          <li><a href="urgence.html">Ressources d'urgence</a></li>
+          <li><a href="demo/index.html">Vue mockups originale (toutes les pages d'un coup)</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__cols">
+      <div>
+        <p style="font-family: var(--font-display); font-size:1.6rem; margin-bottom:1rem;">IV<em style="font-style:italic; color: var(--color-rose);">I</em>A</p>
+        <p style="opacity:0.85; max-width:32ch; font-family:var(--font-serif); font-style:italic;">Au sein de l'être — En actes.</p>
+        <p style="opacity:0.5; margin-top:1rem; font-size:var(--text-xs); letter-spacing:0.16em; text-transform:uppercase;">In vivo · In actu</p>
+      </div>
+      <div><h4>Découvrir</h4><ul role="list">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="comment.html">Comment ça fonctionne</a></li>
+        <li><a href="pourquoi.html">Pourquoi IVIA</a></li>
+        <li><a href="bibliotheque.html">Bibliothèque</a></li>
+        <li><a href="urgence.html">Si c'est urgent</a></li>
+      </ul></div>
+      <div><h4>Pratique</h4><ul role="list">
+        <li><a href="client/audio-async.html">Commencer une écoute</a></li>
+        <li><a href="client/journal.html">Journal de vie</a></li>
+        <li><a href="tests.html">Espace tests</a></li>
+        <li><a href="mailto:contact@ivia.quebec">Nous écrire</a></li>
+      </ul></div>
+      <div><h4>Mentions</h4><ul role="list">
+        <li><a href="mentions.html">Mentions légales</a></li>
+        <li><a href="confidentialite.html">Confidentialité (Loi 25)</a></li>
+        <li><a href="cgu.html">Conditions d'utilisation</a></li>
+        <li><a href="demo/index.html">Démo des interfaces</a></li>
+      </ul></div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 IVIA — Pour le peuple, par le peuple.</span>
+      <span>IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</span>
+    </div>
+  </div>
+</footer>
+<script src="shared/coupe.js"></script>
+</body>
+</html>
