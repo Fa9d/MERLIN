@@ -1,9 +1,7 @@
 import "server-only";
 
-import type { PrismaClient } from "@/generated/prisma/client";
-
 declare global {
-  var __merlinPrisma: PrismaClient | undefined;
+  var __merlinPrisma: unknown;
 }
 
 // The frontend app currently goes through the FastAPI backend rather than
