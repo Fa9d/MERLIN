@@ -44,10 +44,35 @@ import {
 
 const STORAGE_KEY = "merlin_operator_session";
 const INTAKE_CONSENT_TYPES = [
+  "consent_recording",
+  "consent_transcription",
   "consent_session",
   "consent_session_note",
   "consent_history",
 ] as const;
+
+const REQUIRED_INTAKE_CONSENT_TYPES = new Set<string>([
+  "consent_recording",
+  "consent_transcription",
+  "consent_session",
+  "consent_session_note",
+]);
+
+const CONSENT_LABELS: Record<(typeof INTAKE_CONSENT_TYPES)[number], string> = {
+  consent_recording: "Enregistrement",
+  consent_transcription: "Transcription",
+  consent_session: "Seance",
+  consent_session_note: "Note",
+  consent_history: "Historique",
+};
+
+const CONSENT_SHORT_LABELS: Record<(typeof INTAKE_CONSENT_TYPES)[number], string> = {
+  consent_recording: "E",
+  consent_transcription: "T",
+  consent_session: "S",
+  consent_session_note: "N",
+  consent_history: "H",
+};
 
 const SESSION_MODE_LABELS: Record<string, string> = {
   intake: "Premier RDV",
@@ -379,6 +404,7 @@ export default function OperatorPage() {
       const createdSession = await createSession(
         {
           client_id: selectedClientId,
+          intake_request_id: selectedClientLatestIntakeRequest?.id ?? null,
           session_mode_code: sessionModeCode,
           session_channel_code: sessionChannelCode,
           scheduled_start_at: scheduledStartAt
@@ -454,6 +480,7 @@ export default function OperatorPage() {
       const createdSession = await createSession(
         {
           client_id: selectedClientId,
+          intake_request_id: selectedClientLatestIntakeRequest?.id ?? null,
           session_mode_code: sessionModeCode,
           session_channel_code: sessionChannelCode,
           scheduled_start_at: scheduledStartAt
@@ -675,17 +702,13 @@ export default function OperatorPage() {
   );
   const selectedClientIntakeConsentSummary = INTAKE_CONSENT_TYPES.map((consentType) => {
     const consent = latestSelectedClientConsentByType.get(consentType) ?? null;
-    const labelByType = {
-      consent_session: "Seance",
-      consent_session_note: "Note",
-      consent_history: "Historique",
-    } as const;
 
     return {
       consentType,
-      label: labelByType[consentType],
+      label: CONSENT_LABELS[consentType],
       status: consent ? (consent.consent_value ? "Accorde" : "Refuse") : "Manquant",
       grantedAt: consent?.granted_at ?? null,
+      required: REQUIRED_INTAKE_CONSENT_TYPES.has(consentType),
     };
   });
   const selectedClientIntakeRequests = selectedClientId
@@ -716,6 +739,35 @@ export default function OperatorPage() {
     ? derivedDocuments.filter((document) => document.session_id === selectedSessionId)
     : derivedDocuments;
   const selectedSessionDerivedDocument = visibleDerivedDocuments[0] ?? null;
+  const sessionsByIntakeRequestId = new Map(
+    sessions
+      .filter((sessionRecord) => sessionRecord.intake_request_id)
+      .map((sessionRecord) => [sessionRecord.intake_request_id, sessionRecord]),
+  );
+  const prospectQueue = intakeRequests.map((intakeRequest) => {
+    const client = clients.find((item) => item.id === intakeRequest.client_id) ?? null;
+    const linkedSession = sessionsByIntakeRequestId.get(intakeRequest.id) ?? null;
+    const clientConsents = client
+      ? consents.filter((consent) => consent.client_id === client.id)
+      : [];
+    const consentSummary = INTAKE_CONSENT_TYPES.map((consentType) => {
+      const consent = clientConsents.find((item) => item.consent_type_code === consentType);
+      return {
+        consentType,
+        status: consent ? (consent.consent_value ? "oui" : "non") : "-",
+      };
+    });
+
+    return {
+      intakeRequest,
+      client,
+      linkedSession,
+      consentSummary,
+      statusLabel: linkedSession
+        ? SESSION_STATUS_LABELS[linkedSession.session_status_code] ?? linkedSession.session_status_code
+        : "A traiter",
+    };
+  });
 
   return (
     <div className="page-shell">
@@ -804,6 +856,84 @@ export default function OperatorPage() {
             </article>
 
             <article className="card">
+              <div className="stack-md">
+                <div>
+                  <h3>File prospects</h3>
+                  <p className="inline-note">
+                    Traite les demandes publiques avant creation de seance. Un prospect devient
+                    client actif quand une seance est planifiee et rattachee a sa demande.
+                  </p>
+                </div>
+
+                {prospectQueue.length === 0 ? (
+                  <p>Aucune demande publique ou operateur a traiter.</p>
+                ) : (
+                  <div className="table-wrap">
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>Recu</th>
+                          <th>Client</th>
+                          <th>Contact</th>
+                          <th>Besoin</th>
+                          <th>Consentements</th>
+                          <th>Statut</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {prospectQueue.map(({ intakeRequest, client, linkedSession, consentSummary, statusLabel }) => (
+                          <tr key={intakeRequest.id}>
+                            <td>{new Date(intakeRequest.created_at).toLocaleString("fr-CA")}</td>
+                            <td>
+                              <span className="mono">
+                                {client?.public_client_code ?? intakeRequest.client_id.slice(0, 8)}
+                              </span>
+                              <br />
+                              {client?.first_name_or_alias ?? "Client introuvable"}
+                            </td>
+                            <td>
+                              {client?.email ?? "Sans courriel"}
+                              <br />
+                              {client?.phone ?? "Sans telephone"}
+                            </td>
+                            <td>
+                              {NEED_LABELS[intakeRequest.primary_need_code] ?? intakeRequest.primary_need_code}
+                              <br />
+                              <span className="inline-note">
+                                {URGENCY_LABELS[intakeRequest.perceived_urgency_code] ?? intakeRequest.perceived_urgency_code}
+                              </span>
+                            </td>
+                            <td>
+                              {consentSummary
+                                .map((item) => `${CONSENT_SHORT_LABELS[item.consentType]}:${item.status}`)
+                                .join("  ")}
+                            </td>
+                            <td>{statusLabel}</td>
+                            <td>
+                              <button
+                                className="button button-ghost"
+                                onClick={() => {
+                                  setSelectedClientId(intakeRequest.client_id);
+                                  if (linkedSession) {
+                                    setSelectedSessionId(linkedSession.id);
+                                  }
+                                }}
+                                type="button"
+                              >
+                                Traiter
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </article>
+
+            <article className="card">
               <div className="stack-lg">
                 <div>
                   <h3>Creer un creneau d'ecoute</h3>
@@ -856,8 +986,8 @@ export default function OperatorPage() {
                             ))}
                           </div>
                           <p className="inline-note">
-                            Enregistrement, transcription et transmission tiers restent hors du
-                            consentement public initial.
+                            Les quatre premiers consentements sont requis pour le parcours public.
+                            L&apos;historique reste optionnel; la transmission tiers reste protegee.
                           </p>
                         </div>
                         <div className="card">
@@ -1094,17 +1224,12 @@ export default function OperatorPage() {
                                       item.client_id === client.id &&
                                       item.consent_type_code === consentType,
                                   );
-                                  const shortLabelByType = {
-                                    consent_session: "S",
-                                    consent_session_note: "N",
-                                    consent_history: "H",
-                                  } as const;
                                   const status = consent
                                     ? consent.consent_value
                                       ? "oui"
                                       : "non"
                                     : "-";
-                                  return `${shortLabelByType[consentType]}:${status}`;
+                                  return `${CONSENT_SHORT_LABELS[consentType]}:${status}`;
                                 }).join("  ")}
                               </td>
                               <td>
