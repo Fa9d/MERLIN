@@ -64,3 +64,14 @@ test.describe('Console errors — pas d\'erreur JS critique sur les pages publiq
     });
   }
 });
+
+test.describe('Rendez-vous — parcours public pilote', () => {
+  test('/rendez-vous/reserver redirige vers le formulaire public sans mur de compte', async ({ page }) => {
+    await page.goto('/rendez-vous/reserver');
+
+    await expect(page).toHaveURL(/\/rendez-vous$/);
+    await expect(page.getByRole('button', { name: 'Demander ma seance' })).toBeVisible();
+    await expect(page.getByText('Créer mon compte')).toHaveCount(0);
+    await expect(page.getByText('Déjà inscrit')).toHaveCount(0);
+  });
+});

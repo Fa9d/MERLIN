@@ -320,9 +320,8 @@ export default function RendezVousPage() {
               </label>
 
               <p className="inline-note">
-                Les deux premiers consentements sont requis. Ils sont la base
-                de la méthode IVIA. Les trois suivants permettent de personnaliser
-                votre suivi.
+                Les quatre premiers consentements sont requis pour une première séance
+                IVIA avec note structurée. L&apos;historique de suivi reste optionnel.
               </p>
             </div>
 
