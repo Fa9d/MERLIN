@@ -19,10 +19,13 @@ Decision produit confirmee: le prospect et le client doivent rester separes. Le 
 - Frontend: `/rendez-vous/reserver` redirige vers `/rendez-vous` afin d'eviter un mur de compte pour les prospects.
 - Frontend: suppression de la dependance de build a `src/generated/prisma/client` dans `src/lib/db.ts`, car le frontend production passe par l'API FastAPI et le client Prisma genere n'est pas archive.
 
-## Commits deployes
+## Commits deployes et pousses
 
-- `81ea32a fix(rendez-vous): align public prospect intake flow`
-- `fbead84 fix(frontend): remove generated prisma build dependency`
+- `3312c79 fix(rendez-vous): align public prospect intake flow`
+- `662f002 fix(frontend): remove generated prisma build dependency`
+- `1497096 docs(deploy): journal public rendez-vous production fix`
+
+Note: le deploiement VPS a ete effectue avant le rebase final sur `origin/master`, depuis les memes contenus source. Les SHA pre-rebase etaient `81ea32a` et `fbead84`.
 
 ## Validation locale
 
