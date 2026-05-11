@@ -605,6 +605,14 @@ a {
   background: var(--surface-alt);
 }
 
+.prospect-handling-status {
+  min-width: 10rem;
+}
+
+.prospect-handling-actions {
+  min-width: 14rem;
+}
+
 /* ─── Messages d'erreur inline ─── */
 .error-msg {
   color: oklch(45% 0.14 22);

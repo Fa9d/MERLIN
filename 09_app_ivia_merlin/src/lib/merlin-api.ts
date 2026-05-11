@@ -89,8 +89,26 @@ export type IntakeRequestRecord = {
   support_already_in_place: boolean;
   requested_outcome_text: string | null;
   entry_summary_text: string | null;
+  handling_status_code: string;
+  handling_notes: string | null;
+  handled_by_user_id: string | null;
+  handled_at: string | null;
   created_at: string;
   updated_at: string;
+};
+
+export type IntakeHandlingStatusCode =
+  | "new"
+  | "a_rappeler"
+  | "contacte"
+  | "planifie"
+  | "vigilance"
+  | "hors_cadre"
+  | "archive";
+
+export type IntakeRequestHandlingPayload = {
+  handling_status_code: IntakeHandlingStatusCode;
+  handling_notes?: string | null;
 };
 
 export type ConsentTypeCode =
@@ -372,6 +390,18 @@ export async function listIntakeRequests(
     : "";
 
   return request<IntakeRequestRecord[]>(`/api/v1/intake-requests${query}`, {
+    token,
+  });
+}
+
+export async function updateIntakeRequestHandling(
+  intakeRequestId: string,
+  payload: IntakeRequestHandlingPayload,
+  token: string,
+): Promise<IntakeRequestRecord> {
+  return request<IntakeRequestRecord>(`/api/v1/intake-requests/${intakeRequestId}/handling`, {
+    method: "PATCH",
+    body: payload,
     token,
   });
 }

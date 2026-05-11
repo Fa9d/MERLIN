@@ -7,7 +7,6 @@ import { jwtVerify } from "jose";
  */
 const PROTECTED_PREFIXES = [
   "/espace-praticien",
-  "/operator",
   "/supervision",
   "/admin",
   "/suivi",
@@ -20,6 +19,7 @@ const PROTECTED_PREFIXES = [
 const PUBLIC_PATHS = new Set([
   "/",
   "/login",
+  "/operator",
   "/rendez-vous",
   "/rendez-vous/reserver",
   "/rendez-vous/confirmation",
