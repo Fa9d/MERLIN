@@ -63,6 +63,16 @@ class RequestChannelCode(str, Enum):
     other = "other"
 
 
+class IntakeHandlingStatusCode(str, Enum):
+    new = "new"
+    a_rappeler = "a_rappeler"
+    contacte = "contacte"
+    planifie = "planifie"
+    vigilance = "vigilance"
+    hors_cadre = "hors_cadre"
+    archive = "archive"
+
+
 class ConsentTypeCode(str, Enum):
     consent_session = "consent_session"
     consent_session_note = "consent_session_note"

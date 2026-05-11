@@ -5,7 +5,14 @@ from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
-from app.models.enums import NeedCode, RecordStatus, RequestChannelCode, RequestForCode, RiskLevelCode
+from app.models.enums import (
+    IntakeHandlingStatusCode,
+    NeedCode,
+    RecordStatus,
+    RequestChannelCode,
+    RequestForCode,
+    RiskLevelCode,
+)
 
 
 class IntakeRequest(Base):
@@ -37,6 +44,14 @@ class IntakeRequest(Base):
     support_already_in_place: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     requested_outcome_text: Mapped[str | None] = mapped_column(Text, nullable=True)
     entry_summary_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    handling_status_code: Mapped[IntakeHandlingStatusCode] = mapped_column(
+        Enum(IntakeHandlingStatusCode, native_enum=False),
+        nullable=False,
+        default=IntakeHandlingStatusCode.new,
+    )
+    handling_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    handled_by_user_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    handled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     referential_version: Mapped[str] = mapped_column(String(32), nullable=False, default="v1")
     record_status: Mapped[RecordStatus] = mapped_column(
         Enum(RecordStatus, native_enum=False),

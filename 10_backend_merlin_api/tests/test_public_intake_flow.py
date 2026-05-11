@@ -100,3 +100,91 @@ def test_public_intake_still_rejects_third_party_transmission_consent() -> None:
             },
         )
         assert consent_response.status_code == 401
+
+
+def test_operator_can_update_public_intake_handling_status() -> None:
+    from app.main import app
+
+    with TestClient(app) as client:
+        client_response = client.post(
+            "/api/v1/clients",
+            json={
+                "first_name_or_alias": "Client suivi",
+                "email": "client-suivi@example.com",
+                "is_adult_confirmed": True,
+            },
+        )
+        assert client_response.status_code == 201, client_response.text
+        client_id = client_response.json()["id"]
+
+        intake_response = client.post(
+            "/api/v1/intake-requests",
+            json={
+                "client_id": client_id,
+                "request_channel_code": "web_form",
+                "request_for_code": "self",
+                "primary_need_code": "distress",
+                "perceived_urgency_code": "non_urgent",
+                "support_already_in_place": False,
+                "requested_outcome_text": "Je veux etre rappele demain.",
+            },
+        )
+        assert intake_response.status_code == 201, intake_response.text
+        intake_id = intake_response.json()["id"]
+        assert intake_response.json()["handling_status_code"] == "new"
+
+        unauth_response = client.patch(
+            f"/api/v1/intake-requests/{intake_id}/handling",
+            json={"handling_status_code": "a_rappeler", "handling_notes": "A rappeler."},
+        )
+        assert unauth_response.status_code == 401
+
+        admin_response = client.post(
+            "/api/v1/auth/register",
+            json={
+                "email": "admin-pilote@example.com",
+                "password": "MotDePasseTest123!",
+                "display_name": "Admin pilote",
+                "role": "admin_tech",
+            },
+        )
+        assert admin_response.status_code == 201, admin_response.text
+        admin_login = client.post(
+            "/api/v1/auth/login",
+            json={"email": "admin-pilote@example.com", "password": "MotDePasseTest123!"},
+        )
+        assert admin_login.status_code == 200, admin_login.text
+        admin_token = admin_login.json()["access_token"]
+
+        operator_response = client.post(
+            "/api/v1/auth/register",
+            headers={"Authorization": f"Bearer {admin_token}"},
+            json={
+                "email": "operator-pilote@example.com",
+                "password": "MotDePasseTest123!",
+                "display_name": "Operateur pilote",
+                "role": "operator",
+            },
+        )
+        assert operator_response.status_code == 201, operator_response.text
+        operator_login = client.post(
+            "/api/v1/auth/login",
+            json={"email": "operator-pilote@example.com", "password": "MotDePasseTest123!"},
+        )
+        assert operator_login.status_code == 200, operator_login.text
+        operator_token = operator_login.json()["access_token"]
+
+        update_response = client.patch(
+            f"/api/v1/intake-requests/{intake_id}/handling",
+            headers={"Authorization": f"Bearer {operator_token}"},
+            json={
+                "handling_status_code": "a_rappeler",
+                "handling_notes": "A rappeler avant 17h.",
+            },
+        )
+        assert update_response.status_code == 200, update_response.text
+        payload = update_response.json()
+        assert payload["handling_status_code"] == "a_rappeler"
+        assert payload["handling_notes"] == "A rappeler avant 17h."
+        assert payload["handled_by_user_id"] is not None
+        assert payload["handled_at"] is not None

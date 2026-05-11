@@ -29,10 +29,12 @@ import {
   listSessions,
   loginOperator,
   provisionAudioSession,
+  updateIntakeRequestHandling,
   startAudioRecording,
   startSession,
   stopAudioRecording,
   analyseIntakeRequest,
+  type IntakeHandlingStatusCode,
   type IntakeAnalysisResult,
   type IntakeRequestRecord,
   type LoginResponse,
@@ -103,6 +105,16 @@ const URGENCY_LABELS: Record<string, string> = {
   watch: "À surveiller",
   priority: "Prioritaire",
   urgent: "Urgent",
+};
+
+const INTAKE_HANDLING_STATUS_LABELS: Record<IntakeHandlingStatusCode, string> = {
+  new: "Nouveau",
+  a_rappeler: "A rappeler",
+  contacte: "Contacte",
+  planifie: "Planifie",
+  vigilance: "Vigilance",
+  hors_cadre: "Hors cadre",
+  archive: "Archive",
 };
 
 export default function OperatorPage() {
@@ -178,8 +190,12 @@ export default function OperatorPage() {
   const [praticiens, setPraticiens] = useState<PraticienPublic[]>([]);
   const [assigningSessionId, setAssigningSessionId] = useState<string | null>(null);
   const [assignPraticienMap, setAssignPraticienMap] = useState<Record<string, string>>({});
+  const [handlingDrafts, setHandlingDrafts] = useState<
+    Record<string, { status: IntakeHandlingStatusCode; notes: string }>
+  >({});
+  const [savingHandlingId, setSavingHandlingId] = useState<string | null>(null);
 
-  const isOperatorSession = session?.user.role === "operator";
+  const isOperatorSession = session?.user.role === "operator" || session?.user.role === "practitioner";
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -418,6 +434,21 @@ export default function OperatorPage() {
 
       const nextSessions = await listSessions(session.access_token);
       setSessions(nextSessions);
+      if (selectedClientLatestIntakeRequest) {
+        const updatedIntake = await updateIntakeRequestHandling(
+          selectedClientLatestIntakeRequest.id,
+          {
+            handling_status_code: "planifie",
+            handling_notes: selectedClientLatestIntakeRequest.handling_notes,
+          },
+          session.access_token,
+        );
+        setIntakeRequests((currentRequests) =>
+          currentRequests.map((request) =>
+            request.id === updatedIntake.id ? updatedIntake : request,
+          ),
+        );
+      }
       setSelectedSessionId(createdSession.id);
       setSessionSuccessMessage(
         `Seance ${createdSession.session_sequence_number} creee pour le client selectionne.`,
@@ -503,6 +534,21 @@ export default function OperatorPage() {
       ]);
       setSessions(nextSessions);
       setAudioSessions(nextAudioSessions);
+      if (selectedClientLatestIntakeRequest) {
+        const updatedIntake = await updateIntakeRequestHandling(
+          selectedClientLatestIntakeRequest.id,
+          {
+            handling_status_code: "planifie",
+            handling_notes: selectedClientLatestIntakeRequest.handling_notes,
+          },
+          session.access_token,
+        );
+        setIntakeRequests((currentRequests) =>
+          currentRequests.map((request) =>
+            request.id === updatedIntake.id ? updatedIntake : request,
+          ),
+        );
+      }
       setSelectedSessionId(createdSession.id);
       setPlannedActualStartAt("");
       setSessionModeCode("follow_up");
@@ -566,6 +612,47 @@ export default function OperatorPage() {
       );
     } finally {
       setIsStartingSession(false);
+    }
+  }
+
+  async function handleUpdateIntakeHandling(intakeRequestId: string) {
+    if (!session) {
+      return;
+    }
+
+    const intakeRequest = intakeRequests.find((item) => item.id === intakeRequestId);
+    if (!intakeRequest) {
+      return;
+    }
+
+    const draft = handlingDrafts[intakeRequestId] ?? {
+      status: intakeRequest.handling_status_code as IntakeHandlingStatusCode,
+      notes: intakeRequest.handling_notes ?? "",
+    };
+
+    setSavingHandlingId(intakeRequestId);
+    setDashboardErrorMessage(null);
+
+    try {
+      const updatedIntake = await updateIntakeRequestHandling(
+        intakeRequestId,
+        {
+          handling_status_code: draft.status,
+          handling_notes: draft.notes.trim() || null,
+        },
+        session.access_token,
+      );
+      setIntakeRequests((currentRequests) =>
+        currentRequests.map((request) =>
+          request.id === updatedIntake.id ? updatedIntake : request,
+        ),
+      );
+    } catch (error) {
+      setDashboardErrorMessage(
+        error instanceof Error ? error.message : "Impossible de mettre a jour le statut prospect.",
+      );
+    } finally {
+      setSavingHandlingId(null);
     }
   }
 
@@ -765,7 +852,9 @@ export default function OperatorPage() {
       consentSummary,
       statusLabel: linkedSession
         ? SESSION_STATUS_LABELS[linkedSession.session_status_code] ?? linkedSession.session_status_code
-        : "A traiter",
+        : INTAKE_HANDLING_STATUS_LABELS[
+          intakeRequest.handling_status_code as IntakeHandlingStatusCode
+        ] ?? intakeRequest.handling_status_code,
     };
   });
 
@@ -882,50 +971,118 @@ export default function OperatorPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {prospectQueue.map(({ intakeRequest, client, linkedSession, consentSummary, statusLabel }) => (
-                          <tr key={intakeRequest.id}>
-                            <td>{new Date(intakeRequest.created_at).toLocaleString("fr-CA")}</td>
-                            <td>
-                              <span className="mono">
-                                {client?.public_client_code ?? intakeRequest.client_id.slice(0, 8)}
-                              </span>
-                              <br />
-                              {client?.first_name_or_alias ?? "Client introuvable"}
-                            </td>
-                            <td>
-                              {client?.email ?? "Sans courriel"}
-                              <br />
-                              {client?.phone ?? "Sans telephone"}
-                            </td>
-                            <td>
-                              {NEED_LABELS[intakeRequest.primary_need_code] ?? intakeRequest.primary_need_code}
-                              <br />
-                              <span className="inline-note">
-                                {URGENCY_LABELS[intakeRequest.perceived_urgency_code] ?? intakeRequest.perceived_urgency_code}
-                              </span>
-                            </td>
-                            <td>
-                              {consentSummary
-                                .map((item) => `${CONSENT_SHORT_LABELS[item.consentType]}:${item.status}`)
-                                .join("  ")}
-                            </td>
-                            <td>{statusLabel}</td>
-                            <td>
-                              <button
-                                className="button button-ghost"
-                                onClick={() => {
-                                  setSelectedClientId(intakeRequest.client_id);
-                                  if (linkedSession) {
-                                    setSelectedSessionId(linkedSession.id);
-                                  }
-                                }}
-                                type="button"
-                              >
-                                Traiter
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                        {prospectQueue.map(({ intakeRequest, client, linkedSession, consentSummary, statusLabel }) => {
+                          const handlingDraft = handlingDrafts[intakeRequest.id] ?? {
+                            status: intakeRequest.handling_status_code as IntakeHandlingStatusCode,
+                            notes: intakeRequest.handling_notes ?? "",
+                          };
+                          const isSavingHandling = savingHandlingId === intakeRequest.id;
+
+                          return (
+                            <tr key={intakeRequest.id}>
+                              <td>{new Date(intakeRequest.created_at).toLocaleString("fr-CA")}</td>
+                              <td>
+                                <span className="mono">
+                                  {client?.public_client_code ?? intakeRequest.client_id.slice(0, 8)}
+                                </span>
+                                <br />
+                                {client?.first_name_or_alias ?? "Client introuvable"}
+                              </td>
+                              <td>
+                                {client?.email ?? "Sans courriel"}
+                                <br />
+                                {client?.phone ?? "Sans telephone"}
+                              </td>
+                              <td>
+                                {NEED_LABELS[intakeRequest.primary_need_code] ?? intakeRequest.primary_need_code}
+                                <br />
+                                <span className="inline-note">
+                                  {URGENCY_LABELS[intakeRequest.perceived_urgency_code] ?? intakeRequest.perceived_urgency_code}
+                                </span>
+                              </td>
+                              <td>
+                                {consentSummary
+                                  .map((item) => `${CONSENT_SHORT_LABELS[item.consentType]}:${item.status}`)
+                                  .join("  ")}
+                              </td>
+                              <td>
+                                {linkedSession ? (
+                                  statusLabel
+                                ) : (
+                                  <label className="field prospect-handling-status">
+                                    <span>Statut</span>
+                                    <select
+                                      value={handlingDraft.status}
+                                      onChange={(event) => {
+                                        const nextStatus = event.target.value as IntakeHandlingStatusCode;
+                                        setHandlingDrafts((currentDrafts) => ({
+                                          ...currentDrafts,
+                                          [intakeRequest.id]: {
+                                            status: nextStatus,
+                                            notes: handlingDraft.notes,
+                                          },
+                                        }));
+                                      }}
+                                    >
+                                      {Object.entries(INTAKE_HANDLING_STATUS_LABELS).map(([code, label]) => (
+                                        <option key={code} value={code}>{label}</option>
+                                      ))}
+                                    </select>
+                                  </label>
+                                )}
+                                {intakeRequest.handled_at ? (
+                                  <p className="inline-note">
+                                    Maj: {new Date(intakeRequest.handled_at).toLocaleString("fr-CA")}
+                                  </p>
+                                ) : null}
+                              </td>
+                              <td>
+                                <div className="form-stack prospect-handling-actions">
+                                  <textarea
+                                    aria-label={`Note interne ${client?.public_client_code ?? intakeRequest.id}`}
+                                    className="form-control"
+                                    disabled={Boolean(linkedSession)}
+                                    onChange={(event) => {
+                                      const nextNotes = event.target.value;
+                                      setHandlingDrafts((currentDrafts) => ({
+                                        ...currentDrafts,
+                                        [intakeRequest.id]: {
+                                          status: handlingDraft.status,
+                                          notes: nextNotes,
+                                        },
+                                      }));
+                                    }}
+                                    placeholder="Note interne qualification"
+                                    rows={2}
+                                    value={handlingDraft.notes}
+                                  />
+                                  <div className="cta-row">
+                                    <button
+                                      className="button button-ghost"
+                                      onClick={() => {
+                                        setSelectedClientId(intakeRequest.client_id);
+                                        if (linkedSession) {
+                                          setSelectedSessionId(linkedSession.id);
+                                        }
+                                      }}
+                                      type="button"
+                                    >
+                                      Traiter
+                                    </button>
+                                    <button
+                                      className="button button-secondary"
+                                      disabled={Boolean(linkedSession) || isSavingHandling}
+                                      onClick={() => handleUpdateIntakeHandling(intakeRequest.id)}
+                                      type="button"
+                                    >
+                                      {isSavingHandling ? "..." : "Sauver"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
