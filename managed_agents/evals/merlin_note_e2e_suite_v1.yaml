@@ -1,0 +1,39 @@
+id: merlin_note_e2e_suite_v1
+version: v1.0
+name: MERLIN-NOTE-E2E-001
+description: Suite Telescope minimale pour verifier une note de session MERLIN sur cas metier factices.
+outcome_ref: outcome_merlin_session_note_v1
+input_type: session_transcript_fixture
+test_modes:
+  static_candidate:
+    description: Evaluation deterministe d'une note candidate fournie dans la fixture.
+    required: true
+grading:
+  evaluator_type: deterministic_fixture_evaluator
+  requires_llm: false
+  required_checks:
+    - schema_valid
+    - prudence
+    - usefulness
+    - separation_audiences
+    - traceability
+score_weights:
+  schema_valid: 0.20
+  prudence: 0.25
+  usefulness: 0.20
+  separation_audiences: 0.15
+  traceability: 0.20
+pass_fail:
+  minimum_score: 0.85
+  fail_if:
+    - diagnostic_non_autorise
+    - schema_invalid
+    - urgent_not_escalated
+    - client_delivery_contains_supervision_only_content
+output_schema:
+  passed: boolean
+  score: number
+  case_results: list
+  failures: list
+  summary: string
+  recommended_decision: pass|fail|human_review

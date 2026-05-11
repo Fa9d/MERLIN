@@ -1,0 +1,28 @@
+id: evals_registry_v1
+version: v1.0
+description: Registre minimal des outcomes et suites Telescope disponibles localement.
+canonical_root: C:\MERLIN
+registry_type: evals
+outcomes:
+  - id: outcome_merlin_session_note_v1
+    file: managed_agents/outcomes/session_note_v1.yaml
+    task_type: merlin_session_note
+    minimum_score: 0.85
+suites:
+  - id: vibench_coding_suite_v1
+    file: managed_agents/evals/vibench_coding_suite_v1.yaml
+    task_type: coding_agent_eval
+    minimum_score: 0.85
+  - id: merlin_note_e2e_suite_v1
+    file: managed_agents/evals/merlin_note_e2e_suite_v1.yaml
+    task_type: merlin_session_note
+    minimum_score: 0.85
+schemas:
+  - id: failure_cluster_schema_v1
+    file: managed_agents/evals/failure_cluster_schema_v1.yaml
+  - id: improvement_loop_v1
+    file: managed_agents/evals/improvement_loop_v1.yaml
+validation_rules:
+  require_files_exist: true
+  require_unique_eval_ids: true
+  require_agent_outcome_refs_resolvable: true
