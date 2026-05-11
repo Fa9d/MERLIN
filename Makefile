@@ -1,7 +1,7 @@
 ENV_FILE ?= .env.prod
 COMPOSE = docker compose --env-file $(ENV_FILE) -f docker-compose.prod.yml
 
-.PHONY: up down restart logs migrate ps prod-ps prod-logs-api prod-logs config-check
+.PHONY: up down restart logs migrate ps prod-ps prod-logs-api prod-logs config-check validate-managed-agents telescope-minimal
 
 up:
 	$(COMPOSE) up -d --build
@@ -33,3 +33,9 @@ prod-logs:
 
 config-check:
 	$(COMPOSE) config --quiet && echo "CONFIG VALIDE"
+
+validate-managed-agents:
+	python tools/validate_managed_agents.py
+
+telescope-minimal:
+	python tools/run_telescope_minimal.py

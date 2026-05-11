@@ -1,0 +1,26 @@
+{
+  "id": "telescope_fake_run_001",
+  "suite_ref": "vibench_coding_suite_v1",
+  "mode": "zero_shot",
+  "input": {
+    "prd": "Creer une mini application de prise de notes avec un champ texte, un bouton Ajouter et une liste vide au demarrage.",
+    "agent_id": "fake_coding_agent",
+    "dataset": "fake"
+  },
+  "result": {
+    "passed": true,
+    "score": 0.9,
+    "prd_coverage": 0.88,
+    "blocking_bugs": [],
+    "ux_issues": [
+      "Contraste du bouton a verifier en revue humaine."
+    ],
+    "regressions": [],
+    "evidence_refs": [
+      "fake://browser/main-page-loads",
+      "fake://interaction/add-note"
+    ],
+    "summary": "Run factice Telescope minimal: l'objectif principal est atteint sans bug bloquant.",
+    "recommended_decision": "pass"
+  }
+}
