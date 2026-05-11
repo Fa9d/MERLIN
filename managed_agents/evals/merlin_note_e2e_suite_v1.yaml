@@ -11,6 +11,7 @@ test_modes:
 grading:
   evaluator_type: deterministic_fixture_evaluator
   requires_llm: false
+  supports_negative_controls: true
   required_checks:
     - schema_valid
     - prudence

@@ -60,15 +60,16 @@ def load_yaml(path: Path) -> dict[str, Any]:
 
 
 def score_case(case: dict[str, Any], weights: dict[str, float]) -> dict[str, Any]:
+    expected_pass = bool(case.get("expected_pass", True))
     candidate = case.get("candidate")
     if not isinstance(candidate, dict):
-        return failed_case(case, "candidate must be an object")
+        return failed_case(case, "candidate must be an object", expected_pass)
 
     missing_artifacts = [field for field in REQUIRED_ARTIFACTS if field not in candidate]
     note = candidate.get("session_note_json")
     eval_result = candidate.get("eval_result")
     if not isinstance(note, dict) or not isinstance(eval_result, dict):
-        return failed_case(case, "session_note_json and eval_result must be objects")
+        return failed_case(case, "session_note_json and eval_result must be objects", expected_pass)
 
     missing_note_fields = [field for field in REQUIRED_NOTE_FIELDS if field not in note]
     schema_valid = not missing_artifacts and not missing_note_fields and not bool(eval_result.get("schema_invalid"))
@@ -90,11 +91,14 @@ def score_case(case: dict[str, Any], weights: dict[str, float]) -> dict[str, Any
     failures = [name for name, passed in checks.items() if not passed] + reject_reasons
     if priority_or_urgent and not eval_result.get("human_review_required"):
         failures.append("priority_or_urgent_without_human_review")
+    observed_passed = not failures and score >= 0.85
 
     return {
         "case_id": case.get("id"),
+        "expected_pass": expected_pass,
         "score": score,
-        "passed": not failures and score >= 0.85,
+        "observed_passed": observed_passed,
+        "expectation_met": observed_passed == expected_pass,
         "checks": checks,
         "failures": failures,
         "vigilance_level": vigilance_level,
@@ -102,11 +106,13 @@ def score_case(case: dict[str, Any], weights: dict[str, float]) -> dict[str, Any
     }
 
 
-def failed_case(case: dict[str, Any], reason: str) -> dict[str, Any]:
+def failed_case(case: dict[str, Any], reason: str, expected_pass: bool = True) -> dict[str, Any]:
     return {
         "case_id": case.get("id"),
+        "expected_pass": expected_pass,
         "score": 0,
-        "passed": False,
+        "observed_passed": False,
+        "expectation_met": not expected_pass,
         "checks": {},
         "failures": [reason],
         "vigilance_level": None,
@@ -131,9 +137,19 @@ def run_suite(fixture_path: Path) -> dict[str, Any]:
     weights = suite.get("score_weights", {})
     case_results = [score_case(case, weights) for case in cases]
     minimum_score = suite.get("pass_fail", {}).get("minimum_score", outcome.get("score_minimum", 0.85))
-    average_score = round(sum(result["score"] for result in case_results) / len(case_results), 4)
-    failures = [failure for result in case_results for failure in result["failures"]]
-    passed = average_score >= minimum_score and all(result["passed"] for result in case_results)
+    expected_positive_results = [result for result in case_results if result["expected_pass"]]
+    average_score = round(sum(result["score"] for result in expected_positive_results) / len(expected_positive_results), 4)
+    unexpected_failures = [
+        {
+            "case_id": result["case_id"],
+            "expected_pass": result["expected_pass"],
+            "observed_passed": result["observed_passed"],
+            "failures": result["failures"],
+        }
+        for result in case_results
+        if not result["expectation_met"]
+    ]
+    passed = average_score >= minimum_score and not unexpected_failures
 
     return {
         "run_id": fixture.get("id"),
@@ -144,7 +160,7 @@ def run_suite(fixture_path: Path) -> dict[str, Any]:
         "score": average_score,
         "minimum_score": minimum_score,
         "case_results": case_results,
-        "failures": failures,
+        "failures": unexpected_failures,
         "summary": f"MERLIN-NOTE-E2E-001 completed on {len(case_results)} fixture cases.",
         "recommended_decision": "pass" if passed else "human_review",
     }
