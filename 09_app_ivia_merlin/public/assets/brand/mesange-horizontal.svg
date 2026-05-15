@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MESANGE — VERSION HORIZONTALE
+  Icône carrée + wordmark à droite. Pour en-têtes, signatures, factures.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 200" width="820" height="200" role="img" aria-label="MESANGE">
+  <title>MESANGE</title>
+  <style>
+    .bg     { fill: #0a0a0a; }
+    .figure { fill: #fdfaf2; }
+    .eye    { fill: #0a0a0a; }
+  </style>
+
+  <!-- Icône carrée -->
+  <rect class="bg" x="10" y="0" width="200" height="200" rx="8"/>
+  <g transform="translate(40, 65)">
+    <path class="figure" d="M 80 70
+             Q 72 12 118 -4
+             Q 155 -12 182 6
+             Q 208 -4 240 6
+             Q 262 16 268 42
+             Q 245 48 218 46
+             Q 245 76 255 112
+             Q 218 94 182 89
+             Q 175 122 150 134
+             Q 128 122 128 94
+             Q 95 86 80 70 Z"/>
+    <polygon class="figure" points="75,24 50,30 75,36"/>
+    <circle class="eye" cx="108" cy="22" r="4.2"/>
+  </g>
+
+  <!-- Wordmark : MESANGE en sans-serif léger, espacé -->
+  <text x="250" y="118"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="58" font-weight="300" fill="#0a0a0a"
+        letter-spacing="14">MESANGE</text>
+</svg>
