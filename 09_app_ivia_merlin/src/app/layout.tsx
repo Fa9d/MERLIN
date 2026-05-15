@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "IVIA — Écoute structurée | Québec",
+  title: "IVIA — La maison du vivant | Québec",
   description:
-    "Un espace d'écoute pour nommer ce que vous vivez, comprendre ce qui pèse le plus, et repartir avec une prochaine étape concrète. En ligne, confidentiel, sans diagnostic.",
+    "IVIA — In Vivo In Actu. Un espace pour déposer, comprendre et remettre en relation ce qui agit en nous : corps, liens, mémoire, territoire. Au Québec, sous consentement, sans diagnostic.",
 };
 
 export default function RootLayout({

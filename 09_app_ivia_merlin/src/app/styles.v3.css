@@ -19,9 +19,24 @@
   --v3-blue:      var(--blue-calm);
   --v3-ink-deep:  #0a0a0a;
   --v3-cream:     #fdfaf2;
+  /* Rose argile — accent vivant, à utiliser parcimonieusement */
+  --v3-argile:        oklch(72% 0.072 28);
+  --v3-argile-soft:   oklch(72% 0.072 28 / 0.16);
+  --v3-argile-deep:   oklch(48% 0.078 28);
+  /* Nuit québécoise — pour fond contrastant */
+  --v3-nuit:          oklch(22% 0.024 250);
+  --v3-nuit-deep:     oklch(16% 0.022 250);
 
   background: var(--v3-bg);
   color: var(--v3-ink);
+}
+
+[data-theme="dark"] .hp--v3 {
+  --v3-argile:        oklch(76% 0.072 28);
+  --v3-argile-soft:   oklch(76% 0.072 28 / 0.18);
+  --v3-argile-deep:   oklch(60% 0.080 28);
+  --v3-nuit:          oklch(12% 0.024 250);
+  --v3-nuit-deep:     oklch(8% 0.022 250);
 }
 
 .hp--v3 main { display: block; }
@@ -1094,4 +1109,708 @@
 @keyframes v3-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%      { opacity: 0.55; transform: scale(0.86); }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   REFONTE STRATÉGIQUE — La maison du vivant
+   Ajouts : hero éditorial, 4 voies, sections concept, dimensions, accompagnement,
+   collectivités vivantes, espace praticien, souveraineté, final CTA enrichi.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── HERO — refonte premium ───────────────────────────────────────────── */
+.v3-hero--maison {
+  padding: clamp(5rem, 11vw, 9rem) 0 clamp(4rem, 8vw, 6.5rem);
+  background:
+    radial-gradient(70% 110% at 50% -5%, oklch(94% 0.028 148 / 0.7), transparent 65%),
+    radial-gradient(60% 80% at 100% 110%, oklch(72% 0.072 28 / 0.18), transparent 60%),
+    radial-gradient(40% 60% at 0% 60%, oklch(93% 0.038 62 / 0.45), transparent 60%),
+    var(--v3-bg);
+}
+
+[data-theme="dark"] .v3-hero--maison {
+  background:
+    radial-gradient(70% 110% at 50% -5%, oklch(28% 0.030 148 / 0.6), transparent 65%),
+    radial-gradient(60% 80% at 100% 110%, oklch(40% 0.060 28 / 0.20), transparent 60%),
+    var(--v3-bg);
+}
+
+.v3-hero__grain {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(oklch(20% 0.02 78 / 0.04) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .v3-hero__grain {
+  background-image:
+    radial-gradient(oklch(100% 0 0 / 0.025) 1px, transparent 1px);
+  mix-blend-mode: screen;
+}
+
+.v3-hero__inner--maison {
+  max-width: 960px;
+  gap: var(--sp-6);
+}
+
+.v3-hero__h1--maison {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8.5vw, 6rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+  max-width: 14ch;
+}
+
+.v3-hero__h1--maison em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--v3-argile);
+}
+
+.v3-hero__lede--maison {
+  font-size: clamp(1.125rem, 1.7vw, 1.3125rem);
+  line-height: 1.65;
+  max-width: 62ch;
+  color: var(--v3-ink-soft);
+}
+
+.v3-hero__lede--maison strong {
+  color: var(--v3-ink);
+  font-weight: 600;
+}
+
+.v3-h2--center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 24ch;
+}
+
+/* ── QUATRE VOIES — cartes éditoriales ────────────────────────────────── */
+.v3-pathways {
+  background: var(--v3-surface);
+  padding: clamp(4.5rem, 9vw, 7rem) 0;
+}
+
+.v3-pathways__grid {
+  list-style: none;
+  margin: var(--sp-10) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-5);
+}
+
+.v3-pathway {
+  display: flex;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+              box-shadow 0.3s ease;
+}
+
+.v3-pathway:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px oklch(20% 0.02 78 / 0.14);
+}
+
+.v3-pathway__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: clamp(1.75rem, 3.4vw, 2.5rem) clamp(1.75rem, 3.4vw, 2.75rem);
+  text-decoration: none;
+  border-radius: inherit;
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+}
+
+.v3-pathway--ink .v3-pathway__inner {
+  background: var(--v3-ink-deep);
+  color: var(--v3-cream);
+}
+
+.v3-pathway--argile .v3-pathway__inner {
+  background: linear-gradient(160deg, var(--v3-argile-deep), var(--v3-argile));
+  color: var(--v3-cream);
+}
+
+.v3-pathway--sage .v3-pathway__inner {
+  background: linear-gradient(160deg, var(--v3-sage), oklch(46% 0.075 148));
+  color: #fff;
+}
+
+.v3-pathway--cream .v3-pathway__inner {
+  background: var(--v3-bg);
+  color: var(--v3-ink);
+  border: 1px solid var(--v3-line);
+}
+
+.v3-pathway__kicker {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.v3-pathway__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2.6vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  max-width: 18ch;
+}
+
+.v3-pathway--cream .v3-pathway__title { color: var(--v3-ink); }
+
+.v3-pathway__body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.88;
+  max-width: 36ch;
+}
+
+.v3-pathway__cta {
+  margin-top: auto;
+  padding-top: var(--sp-4);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.v3-pathway__arrow {
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.v3-pathway:hover .v3-pathway__arrow {
+  transform: translateX(5px);
+}
+
+@media (max-width: 760px) {
+  .v3-pathways__grid { grid-template-columns: 1fr; }
+}
+
+/* ── MAISON DU VIVANT — section concept ───────────────────────────────── */
+.v3-maison {
+  background: var(--v3-bg);
+}
+
+.v3-maison__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.v3-maison__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.v3-maison__paragraph {
+  font-size: clamp(1rem, 1.5vw, 1.0625rem);
+  line-height: 1.75;
+  color: var(--v3-ink-soft);
+  max-width: 58ch;
+  margin: 0;
+}
+
+.v3-maison__visual {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.v3-maison__rings {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.v3-maison__ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--v3-line);
+  animation: v3-ring-breath 8s ease-in-out infinite;
+}
+
+.v3-maison__ring--1 { width: 92%; height: 92%; animation-delay: 0s; border-color: var(--v3-argile-soft); }
+.v3-maison__ring--2 { width: 68%; height: 68%; animation-delay: 0.6s; }
+.v3-maison__ring--3 { width: 44%; height: 44%; animation-delay: 1.2s; border-color: var(--v3-sage-soft); }
+
+.v3-maison__core {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--v3-argile), var(--v3-argile-deep));
+  box-shadow: 0 0 60px var(--v3-argile-soft);
+  animation: v3-core-pulse 5s ease-in-out infinite;
+}
+
+.v3-maison__labels {
+  list-style: none;
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.v3-maison__labels li {
+  position: absolute;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.9375rem;
+  color: var(--v3-ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.v3-maison__labels li:nth-child(1) { top: 6%; left: 50%; transform: translateX(-50%); }
+.v3-maison__labels li:nth-child(2) { top: 28%; right: 4%; }
+.v3-maison__labels li:nth-child(3) { bottom: 28%; right: 4%; }
+.v3-maison__labels li:nth-child(4) { bottom: 6%; left: 50%; transform: translateX(-50%); }
+.v3-maison__labels li:nth-child(5) { bottom: 28%; left: 4%; }
+.v3-maison__labels li:nth-child(6) { top: 28%; left: 4%; }
+
+@keyframes v3-ring-breath {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%      { transform: scale(1.04); opacity: 1; }
+}
+
+@keyframes v3-core-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+
+@media (max-width: 860px) {
+  .v3-maison__inner { grid-template-columns: 1fr; }
+  .v3-maison__visual { max-width: 380px; margin: 0 auto; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-maison__ring,
+  .v3-maison__core { animation: none; }
+}
+
+/* ── DIMENSIONS — grille éditoriale ───────────────────────────────────── */
+.v3-dimensions {
+  background: var(--v3-surface);
+}
+
+.v3-dimensions__grid {
+  list-style: none;
+  margin: var(--sp-10) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--v3-line);
+  border: 1px solid var(--v3-line);
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+.v3-dimension {
+  background: var(--v3-bg);
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  transition: background 0.25s ease;
+}
+
+.v3-dimension:hover {
+  background: var(--v3-surface);
+}
+
+.v3-dimension__num {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--v3-argile);
+  font-weight: 600;
+}
+
+.v3-dimension__label {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  font-weight: 500;
+  color: var(--v3-ink);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.v3-dimension__body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--v3-ink-soft);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .v3-dimensions__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .v3-dimensions__grid { grid-template-columns: 1fr; }
+}
+
+/* ── ACCOMPAGNEMENT — six pas ────────────────────────────────────────── */
+.v3-accompagnement {
+  background: var(--v3-bg);
+}
+
+.v3-steps {
+  list-style: none;
+  margin: var(--sp-10) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-5);
+  counter-reset: step;
+}
+
+.v3-step {
+  position: relative;
+  padding: clamp(1.5rem, 2.4vw, 1.875rem) clamp(1.5rem, 2.4vw, 1.875rem);
+  border-radius: 1rem;
+  background: var(--v3-surface);
+  border: 1px solid var(--v3-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.v3-step__num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--v3-argile);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.v3-step__label {
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 1.8vw, 1.1875rem);
+  font-weight: 500;
+  color: var(--v3-ink);
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.v3-step__body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--v3-ink-soft);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .v3-steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .v3-steps { grid-template-columns: 1fr; }
+}
+
+/* ── COLLECTIVITÉS VIVANTES ──────────────────────────────────────────── */
+.v3-collectivites {
+  background: var(--v3-nuit);
+  color: var(--v3-cream);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.v3-collectivites::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(50% 60% at 80% 20%, oklch(72% 0.072 28 / 0.18), transparent 60%),
+    radial-gradient(40% 50% at 10% 90%, oklch(52% 0.072 148 / 0.20), transparent 60%);
+  z-index: -1;
+}
+
+.v3-collectivites .v3-kicker {
+  color: oklch(82% 0.020 78);
+}
+
+.v3-collectivites .v3-h2 {
+  color: var(--v3-cream);
+}
+
+.v3-collectivites .v3-h2 em {
+  color: var(--v3-argile);
+}
+
+.v3-collectivites .v3-section__intro {
+  color: oklch(82% 0.014 78);
+}
+
+.v3-collectivites__head {
+  max-width: 64ch;
+  margin-bottom: var(--sp-10);
+}
+
+.v3-publics {
+  list-style: none;
+  margin: var(--sp-6) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+}
+
+.v3-publics li {
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid oklch(100% 0 0 / 0.18);
+  background: oklch(100% 0 0 / 0.04);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  color: var(--v3-cream);
+}
+
+.v3-promises {
+  list-style: none;
+  margin: 0 0 var(--sp-8);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-5);
+}
+
+.v3-promise {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  padding: var(--sp-5);
+  border-radius: 1rem;
+  background: oklch(100% 0 0 / 0.04);
+  border: 1px solid oklch(100% 0 0 / 0.10);
+}
+
+.v3-promise__bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--v3-argile);
+  box-shadow: 0 0 0 4px var(--v3-argile-soft);
+  flex-shrink: 0;
+  margin-top: 0.5em;
+}
+
+.v3-promise p {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.5;
+  color: var(--v3-cream);
+  margin: 0;
+  max-width: 32ch;
+}
+
+.v3-collectivites__not {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: oklch(82% 0.014 78);
+  max-width: 72ch;
+  padding: var(--sp-5);
+  border-left: 3px solid var(--v3-argile);
+  background: oklch(100% 0 0 / 0.03);
+  border-radius: 0 0.75rem 0.75rem 0;
+  margin: 0;
+}
+
+.v3-collectivites__not strong {
+  color: var(--v3-cream);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .v3-promises { grid-template-columns: 1fr; }
+}
+
+/* ── ESPACE PRATICIEN STRATÉGIQUE ────────────────────────────────────── */
+.v3-praticien-strat {
+  background: var(--v3-surface-2);
+}
+
+.v3-praticien-strat__inner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.v3-praticien-strat__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 44ch;
+  position: sticky;
+  top: 80px;
+}
+
+.v3-prat-value {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-5);
+}
+
+.v3-prat-value__card {
+  padding: var(--sp-6);
+  border-radius: 1rem;
+  background: var(--v3-bg);
+  border: 1px solid var(--v3-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.v3-prat-value__num {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  color: var(--v3-argile);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.v3-prat-value__label {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--v3-ink);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.v3-prat-value__body {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--v3-ink-soft);
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .v3-praticien-strat__inner { grid-template-columns: 1fr; }
+  .v3-praticien-strat__head { position: static; }
+}
+
+@media (max-width: 540px) {
+  .v3-prat-value { grid-template-columns: 1fr; }
+}
+
+/* ── SOUVERAINETÉ — reprend trust grid ────────────────────────────────── */
+.v3-souverainete {
+  background: var(--v3-bg);
+}
+
+.v3-souverainete .v3-trust__card {
+  background: var(--v3-surface);
+}
+
+/* ── FINAL CTA — quatre voies ─────────────────────────────────────────── */
+.v3-final__paths {
+  list-style: none;
+  margin: var(--sp-6) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  width: 100%;
+  max-width: 760px;
+}
+
+.v3-final__path {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: 100px;
+  background: var(--v3-surface);
+  border: 1px solid var(--v3-line);
+  text-decoration: none;
+  color: var(--v3-ink);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+}
+
+.v3-final__path:hover {
+  border-color: var(--v3-argile);
+  background: var(--v3-bg);
+  transform: translateY(-2px);
+}
+
+.v3-final__path-kicker {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v3-final__path-arrow {
+  transition: transform 0.2s;
+  color: var(--v3-argile);
+}
+
+.v3-final__path:hover .v3-final__path-arrow {
+  transform: translateX(4px);
+}
+
+.v3-final__text strong {
+  font-weight: 600;
+  color: var(--v3-ink);
+  letter-spacing: 0.02em;
+}
+
+.v3-final__text em {
+  color: var(--v3-argile);
+}
+
+@media (max-width: 860px) {
+  .v3-final__paths { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .v3-final__paths { grid-template-columns: 1fr; }
+}
+
+/* ── Architecture sur fond cream ──────────────────────────────────────── */
+.v3-arch__name strong {
+  letter-spacing: 0.04em;
+}
+
+.v3-arch__role {
+  color: var(--v3-argile);
+}
+
+.v3-arch__num {
+  color: var(--v3-argile);
 }

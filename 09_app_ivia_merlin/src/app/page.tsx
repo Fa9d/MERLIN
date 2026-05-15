@@ -6,130 +6,248 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   IVIA — Refonte V3 (branche refonte-ivia-site-unifie)
-   Portail de conversion clair : Client / Praticien.
-   Concept central : IVIA, In Vivo In Actu — au sein de l'être, en actes.
+   IVIA — Refonte stratégique (branche refonte-ivia-site-unifie)
+   Concept : La maison du vivant. Pas un lieu — le vivant lui-même.
    Architecture : MÉSANGES accueille · MERLIN structure · IVIA accompagne.
+   Posture : non médicale, québécoise, sous consentement, sans diagnostic.
    ────────────────────────────────────────────────────────────────────────── */
 
-/* Voix client : ce qu'on peut déposer, écrit à la première personne. */
-const CLIENT_THEMES = [
-  "ce qui pèse depuis trop longtemps",
-  "une transition que je n'arrive pas à nommer",
-  "un doute, une fatigue, un signal du corps",
-  "une relation qui demande de la clarté",
-  "une intuition qu'il est temps de changer",
+/* Quatre voies publiques — pas de tarification, pas de promesse de soin. */
+const PATHWAYS = [
+  {
+    id: "pour-moi",
+    kicker: "Pour moi",
+    title: "Déposer ce que je vis",
+    body:
+      "Je veux déposer ce que je vis, comprendre ce qui se répète et retrouver une voie d’équilibre.",
+    href: "/demarche",
+    cta: "Commencer mon espace privé",
+    tone: "ink",
+  },
+  {
+    id: "pour-mon-collectif",
+    kicker: "Pour mon collectif",
+    title: "Explorer Collectivités vivantes",
+    body:
+      "Nous sommes une famille, une communauté, un organisme ou un groupe humain — et quelque chose demande à être nommé.",
+    href: "#collectivites-vivantes",
+    cta: "Explorer Collectivités vivantes",
+    tone: "argile",
+  },
+  {
+    id: "pour-praticiens",
+    kicker: "Pour les praticiens",
+    title: "Découvrir l’espace praticien",
+    body:
+      "Je veux intégrer une approche d’interprétation, de suivi et d’amélioration continue de ma pratique.",
+    href: "/espace-praticien",
+    cta: "Découvrir l’espace praticien",
+    tone: "sage",
+  },
+  {
+    id: "comprendre-ivia",
+    kicker: "Comprendre IVIA",
+    title: "Lire l’approche",
+    body:
+      "Je veux comprendre la maison du vivant, MERLIN, MÉSANGES, les données au Québec et la posture non médicale.",
+    href: "#approche",
+    cta: "Lire l’approche",
+    tone: "cream",
+  },
+] as const;
+
+/* Dimensions observées — ce que la maison du vivant abrite réellement. */
+const DIMENSIONS = [
+  {
+    label: "Corps & métabolisme",
+    body: "Signaux somatiques, énergie, inflammation, sommeil, rythme circadien.",
+  },
+  {
+    label: "Émotions & états intérieurs",
+    body: "Ce qui traverse, ce qui appuie, ce qui veut être nommé sans étiquette.",
+  },
+  {
+    label: "Relations & famille",
+    body: "Liens proches, tensions, transmissions, ce qui circule entre les êtres.",
+  },
+  {
+    label: "Temporalité & répétitions",
+    body: "Ce qui revient, les cycles, les boucles, les angles morts récurrents.",
+  },
+  {
+    label: "Alimentation, sommeil, inflammation",
+    body: "Le quotidien comme terrain — gestes, rythmes, équilibres physiologiques.",
+  },
+  {
+    label: "Héritages & transgénérationnel",
+    body: "Mémoires familiales, savoirs ancestraux, ce qui se transmet sans mot.",
+  },
+  {
+    label: "Pression sociale & culturelle",
+    body: "Attentes, normes, injonctions, ce qui pèse sans qu’on le voie.",
+  },
+  {
+    label: "Territoire & appartenance",
+    body: "Lieu, paysage, communauté, racines québécoises et liens au vivant.",
+  },
+  {
+    label: "Autonomie & action",
+    body: "Marges de manœuvre, gestes possibles, ce qui peut se remettre en mouvement.",
+  },
 ];
 
-/* Sorties tangibles du parcours client. */
-const CLIENT_OUTPUTS = [
+/* Six pas — comment IVIA accompagne, sans révéler le système. */
+const ACCOMPAGNEMENT = [
   {
-    label: "Mon espace privé",
-    body:
-      "Un endroit calme pour écrire à mon rythme. Personne d'autre que moi n'y accède sans mon accord.",
+    num: "01",
+    label: "Vous déposez",
+    body: "À votre rythme, dans vos mots. Choix doux + espace libre.",
   },
   {
-    label: "Ma carte IVIA",
-    body:
-      "Une lecture en cinq dimensions de ce que je traverse — vécu, corps, relations, lignées, sens.",
+    num: "02",
+    label: "MERLIN structure",
+    body: "Une mise en forme interne, traçable, sous validation humaine.",
   },
   {
-    label: "Une synthèse claire",
-    body:
-      "Un texte court, structuré, que je peux relire, retravailler ou partager à un·e praticien·ne.",
+    num: "03",
+    label: "Nous interprétons",
+    body: "Une lecture sensible, multi-dimensionnelle, jamais diagnostique.",
   },
   {
-    label: "Une orientation",
-    body:
-      "Si je le souhaite, IVIA m'oriente vers un·e praticien·ne au Québec — au bon moment, pas avant.",
-  },
-];
-
-/* Voix praticien·ne — bénéfices concrets, prudence sur statut. */
-const PRACTITIONER_BENEFITS = [
-  {
-    label: "Interprétation des séances",
-    body:
-      "Une lecture structurée de ce qui s'est dit, ce qui revient, ce qui demande à être rouvert.",
+    num: "04",
+    label: "Nous orientons",
+    body: "Si vous le souhaitez, vers la modalité ou la personne juste.",
   },
   {
-    label: "Structuration des interactions",
-    body:
-      "Un fil clair entre rencontres, sans grille rigide — un cadre qui sert l'écoute, pas l'inverse.",
+    num: "05",
+    label: "Vous agissez",
+    body: "Des gestes proportionnés à ce que vous traversez, à votre tempo.",
   },
   {
-    label: "Évolution de la pratique",
-    body:
-      "Une vue d'ensemble de vos interprétations, interactions, compétences déclarées — qui évolue avec vous.",
-  },
-  {
-    label: "Statuts accueillis",
-    body:
-      "Praticien·ne diplômé·e, en formation, ou hors-ordre — chaque statut est cadré, jamais effacé.",
+    num: "06",
+    label: "Nous suivons l’évolution",
+    body: "Ce qui se déplace, ce qui se stabilise, ce qui demande à être rouvert.",
   },
 ];
 
+/* Architecture trinitaire — trois noms, une seule attention. */
 const ARCHITECTURE = [
   {
     name: "MÉSANGES",
     role: "accueille",
     body:
-      "Le premier seuil — un espace sobre, sensible, québécois, qui reçoit ce que vous arrivez avec.",
+      "Le seuil, la voix, l’interface relationnelle. L’oiseau noir et crème qui accueille ce que vous arrivez avec.",
   },
   {
     name: "MERLIN",
     role: "structure",
     body:
-      "L'infrastructure interne — gouvernance, méthodes, traçabilité, sous validation humaine.",
+      "L’infrastructure interne — analyse, classification, connecteurs privés, temporalité, sous validation humaine.",
   },
   {
     name: "IVIA",
     role: "accompagne",
     body:
-      "L'expérience que vous vivez — questionnaires calmes, synthèses, orientation au bon moment.",
+      "L’expérience vécue — un accompagnement humain vers l’autonomie, l’équilibre et l’action.",
   },
 ];
 
-const TRUST = [
-  { glyph: "QC", title: "Hébergé au Québec", body: "Serveurs et données sur le territoire, sous Loi 25." },
-  { glyph: "✓", title: "Consentement par étape", body: "Vous décidez, à chaque pas, ce qui peut être partagé." },
-  { glyph: "◯", title: "Sans pixels tiers", body: "Aucune analyse publicitaire, aucun traceur externe." },
-  { glyph: "⟲", title: "Retrait possible", body: "Vous pouvez exporter ou effacer vos traces à tout moment." },
+/* Promesses pour les collectifs — pas de performance corporative. */
+const COLLECTIF_PROMISES = [
+  "Clarifier ce qui circule entre les êtres.",
+  "Cartographier les tensions et les zones de soin.",
+  "Identifier les répétitions, les angles morts, les ressources.",
+  "Soutenir une action commune, à la mesure du collectif.",
+];
+
+const COLLECTIF_PUBLICS = [
+  "Familles",
+  "Organismes communautaires",
+  "Communautés territoriales",
+  "Groupes de praticiens",
+  "Équipes de terrain",
+  "Milieux humains en transition",
+];
+
+/* Espace praticien — valeur concrète, posture éthique. */
+const PRATICIEN_VALUE = [
+  {
+    label: "Interprétation structurée",
+    body: "Une lecture sensible des séances, de ce qui revient, de ce qui demande à être rouvert.",
+  },
+  {
+    label: "Préparation des rencontres",
+    body: "Un fil clair entre séances — sans grille rigide, un cadre qui sert l’écoute.",
+  },
+  {
+    label: "Compétences & limites déclarées",
+    body: "Diplômé·e, en formation, hors-ordre : chaque statut est cadré, jamais effacé.",
+  },
+  {
+    label: "Boucle de feedback éthique",
+    body: "Vos interprétations nourrissent votre pratique. Posture prudente, jamais prescriptive.",
+  },
+];
+
+/* Souveraineté — sans jargon, sans corporate. */
+const SOUVERAINETE = [
+  {
+    glyph: "QC",
+    title: "Données au Québec",
+    body: "Serveurs et données sur le territoire, sous Loi 25.",
+  },
+  {
+    glyph: "✓",
+    title: "Consentement par étape",
+    body: "Vous décidez, à chaque pas, ce qui peut être partagé.",
+  },
+  {
+    glyph: "◯",
+    title: "Connecteurs privés",
+    body: "Pas de pixels tiers, pas de scraping externe. Internes uniquement.",
+  },
+  {
+    glyph: "⚕",
+    title: "Posture non médicale",
+    body: "IVIA n’est pas une clinique. Pas de diagnostic, pas de prescription.",
+  },
 ];
 
 /* ── Composant ────────────────────────────────────────────────────────────── */
 export default function HomePage() {
   return (
     <PublicLayout>
-      <div className="hp hp--v3">
+      <div className="hp hp--v3 hp--maison">
         <main>
-          {/* ── HERO ──────────────────────────────────────────────────────── */}
-          <section className="v3-hero">
+          {/* ── HERO — La maison du vivant ─────────────────────────────── */}
+          <section className="v3-hero v3-hero--maison">
             <div className="v3-hero__bg" aria-hidden="true">
               <span className="v3-hero__glow v3-hero__glow--a" />
               <span className="v3-hero__glow v3-hero__glow--b" />
+              <span className="v3-hero__grain" />
             </div>
 
-            <div className="v3-hero__inner">
+            <div className="v3-hero__inner v3-hero__inner--maison">
               <p className="v3-eyebrow">
                 <span className="v3-eyebrow__dot" aria-hidden="true" />
-                IVIA · In Vivo In Actu · Québec
+                IVIA · In Vivo In Actu · Au sein de l’être, en actes
               </p>
 
-              <h1 className="v3-hero__h1">
-                Au sein de l’être, <em>en actes.</em>
+              <h1 className="v3-hero__h1 v3-hero__h1--maison">
+                La maison <em>du vivant.</em>
               </h1>
 
-              <p className="v3-hero__lede">
-                IVIA est un espace québécois d’écoute et de compréhension du
-                vivant. Pas une clinique. Pas un site de soins. Un seuil pour
-                déposer ce que vous portez — et, si vous le souhaitez, être
-                accompagné·e vers une prochaine étape.
+              <p className="v3-hero__lede v3-hero__lede--maison">
+                Nous avons appris à traiter le vivant en morceaux. Le corps
+                d’un côté, l’esprit de l’autre. La famille d’un côté, la
+                société de l’autre. IVIA propose un autre espace :{" "}
+                <strong>déposer</strong>, <strong>comprendre</strong> et{" "}
+                <strong>remettre en relation</strong> ce qui agit en nous.
               </p>
 
               <div className="v3-hero__mesange-wrap">
                 <MesangeMark
-                  size={132}
+                  size={120}
                   withSong
                   ariaLabel="Mésange — symbole d’accueil IVIA"
                 />
@@ -138,26 +256,6 @@ export default function HomePage() {
                   <strong>MERLIN</strong> structure ·{" "}
                   <strong>IVIA</strong> accompagne
                 </p>
-              </div>
-
-              <div className="v3-paths" role="group" aria-label="Choisir votre voie d’entrée">
-                <Link href="#voie-client" className="v3-path v3-path--client">
-                  <span className="v3-path__kicker">Je viens déposer ce que je vis</span>
-                  <span className="v3-path__title">Entrer dans mon espace privé</span>
-                  <span className="v3-path__hint">Pour moi · à mon rythme · confidentiel</span>
-                  <span className="v3-path__arrow" aria-hidden="true">→</span>
-                </Link>
-                <Link
-                  href="#voie-praticien"
-                  className="v3-path v3-path--praticien"
-                >
-                  <span className="v3-path__kicker">Je suis praticien·ne</span>
-                  <span className="v3-path__title">Découvrir l’espace praticien</span>
-                  <span className="v3-path__hint">
-                    Diplômé·e, en formation, ou hors-ordre
-                  </span>
-                  <span className="v3-path__arrow" aria-hidden="true">→</span>
-                </Link>
               </div>
 
               <ul className="v3-signals" aria-label="Repères IVIA">
@@ -172,7 +270,207 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── ARCHITECTURE ──────────────────────────────────────────────── */}
+          {/* ── QUATRE VOIES ───────────────────────────────────────────── */}
+          <section className="v3-section v3-pathways" id="voies">
+            <div className="v3-section__inner">
+              <p className="v3-kicker">Choisir votre voie d’entrée</p>
+              <h2 className="v3-h2 v3-h2--center">
+                Quatre portes, <em>une même maison.</em>
+              </h2>
+              <ul className="v3-pathways__grid" aria-label="Voies IVIA">
+                {PATHWAYS.map((p) => (
+                  <li
+                    key={p.id}
+                    className={`v3-pathway v3-pathway--${p.tone}`}
+                  >
+                    <Link href={p.href} className="v3-pathway__inner">
+                      <span className="v3-pathway__kicker">{p.kicker}</span>
+                      <h3 className="v3-pathway__title">{p.title}</h3>
+                      <p className="v3-pathway__body">{p.body}</p>
+                      <span className="v3-pathway__cta">
+                        {p.cta}
+                        <span className="v3-pathway__arrow" aria-hidden="true">
+                          →
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* ── LA MAISON DU VIVANT — section concept ──────────────────── */}
+          <section className="v3-section v3-maison" id="maison">
+            <div className="v3-section__inner v3-maison__inner">
+              <div className="v3-maison__copy">
+                <p className="v3-kicker">La maison du vivant</p>
+                <h2 className="v3-h2">
+                  Ce n’est pas un lieu. <em>C’est le vivant lui-même.</em>
+                </h2>
+                <p className="v3-section__intro">
+                  La maison du vivant n’est pas une bâtisse. C’est ce qui
+                  vit autour et en nous — le corps, la voix, la mémoire, la
+                  famille, les liens, le territoire, les pressions sociales,
+                  les savoirs ancestraux, les couches métaboliques,
+                  émotionnelles, relationnelles.
+                </p>
+                <p className="v3-maison__paragraph">
+                  IVIA est un seuil pour entrer dans cette maison, y déposer
+                  ce qu’on porte, comprendre ce qui s’y joue, et remettre en
+                  relation ce qui a été séparé. Sans promesse de soin, sans
+                  diagnostic, sans jargon — au rythme du vivant.
+                </p>
+              </div>
+              <aside className="v3-maison__visual" aria-hidden="true">
+                <div className="v3-maison__rings">
+                  <span className="v3-maison__ring v3-maison__ring--1" />
+                  <span className="v3-maison__ring v3-maison__ring--2" />
+                  <span className="v3-maison__ring v3-maison__ring--3" />
+                  <span className="v3-maison__core" />
+                </div>
+                <ul className="v3-maison__labels">
+                  <li>corps</li>
+                  <li>liens</li>
+                  <li>mémoire</li>
+                  <li>territoire</li>
+                  <li>société</li>
+                  <li>gestes</li>
+                </ul>
+              </aside>
+            </div>
+          </section>
+
+          {/* ── CE QUE NOUS OBSERVONS — dimensions ─────────────────────── */}
+          <section className="v3-section v3-dimensions" id="dimensions">
+            <div className="v3-section__inner">
+              <p className="v3-kicker">Ce que nous observons</p>
+              <h2 className="v3-h2">
+                Neuf dimensions, <em>une seule lecture.</em>
+              </h2>
+              <p className="v3-section__intro">
+                IVIA ne sépare pas ce que la vie tient ensemble. Voici les
+                couches que la maison du vivant abrite — sans hiérarchie,
+                sans grille rigide, sans étiquette clinique.
+              </p>
+              <ul className="v3-dimensions__grid">
+                {DIMENSIONS.map((d, i) => (
+                  <li key={d.label} className="v3-dimension">
+                    <span className="v3-dimension__num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="v3-dimension__label">{d.label}</h3>
+                    <p className="v3-dimension__body">{d.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* ── COMMENT IVIA ACCOMPAGNE — six pas ──────────────────────── */}
+          <section className="v3-section v3-accompagnement" id="approche">
+            <div className="v3-section__inner">
+              <p className="v3-kicker">Comment IVIA accompagne</p>
+              <h2 className="v3-h2">
+                Six pas, <em>au rythme du vivant.</em>
+              </h2>
+              <p className="v3-section__intro">
+                IVIA ne court pas. À chaque pas, vous décidez du tempo, du
+                niveau de partage, et de ce qui peut être ouvert ou refermé.
+              </p>
+              <ol className="v3-steps">
+                {ACCOMPAGNEMENT.map((s) => (
+                  <li key={s.num} className="v3-step">
+                    <span className="v3-step__num">{s.num}</span>
+                    <h3 className="v3-step__label">{s.label}</h3>
+                    <p className="v3-step__body">{s.body}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </section>
+
+          {/* ── COLLECTIVITÉS VIVANTES ──────────────────────────────────── */}
+          <section
+            className="v3-section v3-collectivites"
+            id="collectivites-vivantes"
+          >
+            <div className="v3-section__inner v3-collectivites__inner">
+              <header className="v3-collectivites__head">
+                <p className="v3-kicker">Collectivités vivantes</p>
+                <h2 className="v3-h2">
+                  Pour les familles, les organismes, <em>les milieux humains.</em>
+                </h2>
+                <p className="v3-section__intro">
+                  Un collectif n’est pas une entreprise à optimiser. C’est un
+                  milieu vivant — avec ses tensions, ses répétitions, ses
+                  ressources, ses angles morts. IVIA aide à nommer ce qui
+                  circule.
+                </p>
+                <ul className="v3-publics" aria-label="Publics accueillis">
+                  {COLLECTIF_PUBLICS.map((pub) => (
+                    <li key={pub}>{pub}</li>
+                  ))}
+                </ul>
+              </header>
+
+              <ul className="v3-promises">
+                {COLLECTIF_PROMISES.map((p) => (
+                  <li key={p} className="v3-promise">
+                    <span className="v3-promise__bullet" aria-hidden="true" />
+                    <p>{p}</p>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="v3-collectivites__not">
+                <strong>Ce que ce n’est pas :</strong> une mesure de performance,
+                un substitut à la thérapie, un outil de diagnostic. IVIA
+                soutient l’action commune — elle ne la prescrit pas.
+              </p>
+            </div>
+          </section>
+
+          {/* ── ESPACE PRATICIEN ───────────────────────────────────────── */}
+          <section className="v3-section v3-praticien-strat">
+            <div className="v3-section__inner v3-praticien-strat__inner">
+              <header className="v3-praticien-strat__head">
+                <p className="v3-kicker">Espace praticien</p>
+                <h2 className="v3-h2">
+                  Structurer l’écoute, <em>évoluer dans sa pratique.</em>
+                </h2>
+                <p className="v3-section__intro">
+                  IVIA n’est pas un annuaire. C’est un outil d’interprétation,
+                  de préparation et d’amélioration continue — pour les
+                  praticien·nes diplômé·es, en formation, ou hors-ordre. La
+                  posture reste prudente, jamais prescriptive.
+                </p>
+                <div className="v3-cta-row">
+                  <Link
+                    href="/espace-praticien"
+                    className="v3-btn v3-btn--primary"
+                  >
+                    Découvrir l’espace praticien
+                    <span className="v3-btn__arrow" aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </header>
+
+              <ul className="v3-prat-value">
+                {PRATICIEN_VALUE.map((b, i) => (
+                  <li key={b.label} className="v3-prat-value__card">
+                    <span className="v3-prat-value__num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="v3-prat-value__label">{b.label}</h3>
+                    <p className="v3-prat-value__body">{b.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* ── ARCHITECTURE ──────────────────────────────────────────── */}
           <section className="v3-section v3-arch" id="architecture">
             <div className="v3-section__inner">
               <p className="v3-kicker">L’architecture</p>
@@ -180,14 +478,17 @@ export default function HomePage() {
                 Trois noms, <em>une seule attention.</em>
               </h2>
               <p className="v3-section__intro">
-                Pour qu’un espace d’écoute soit fiable, il faut le penser à
-                trois niveaux. IVIA n’est pas un produit isolé — c’est ce que
-                vous voyez d’un système plus large, pensé au Québec.
+                IVIA n’est pas un produit isolé. C’est ce que vous voyez d’un
+                ensemble plus large — pensé au Québec, sous validation
+                humaine, avec une maison commune appelée{" "}
+                <strong>ivia.quebec</strong>.
               </p>
               <ol className="v3-arch__list">
                 {ARCHITECTURE.map((a, i) => (
                   <li key={a.name} className="v3-arch__row">
-                    <span className="v3-arch__num">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="v3-arch__num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     <div className="v3-arch__name">
                       <strong>{a.name}</strong>
                       <span className="v3-arch__role">{a.role}</span>
@@ -199,201 +500,28 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── VOIE CLIENT ───────────────────────────────────────────────── */}
-          <section className="v3-section v3-client" id="voie-client">
-            <div className="v3-section__inner v3-two-col">
-              <header className="v3-two-col__head">
-                <p className="v3-kicker">Voie client · pour vous</p>
-                <h2 className="v3-h2">
-                  Un journal qui <em>vous appartient</em>, qui éclaire ce qui vient.
-                </h2>
-                <p className="v3-section__intro">
-                  Avant même une rencontre, vous pouvez écrire à votre rythme
-                  ce que vous traversez. IVIA organise ce que vous déposez
-                  pour le restituer sous une forme claire — utile à vous
-                  d’abord, et, si vous le souhaitez, à un·e praticien·ne.
-                </p>
-                <p className="v3-card__note">
-                  Ce que vous écrivez est <strong>récompensé</strong> par une
-                  lecture plus rapide et plus juste de votre situation. Vous
-                  gagnez du temps quand vous décidez d’en parler.
-                </p>
-                <div className="v3-cta-row">
-                  <Link href="/demarche" className="v3-btn v3-btn--primary">
-                    Commencer mon espace privé
-                    <span className="v3-btn__arrow" aria-hidden="true">→</span>
-                  </Link>
-                  <Link href="#trust" className="v3-btn v3-btn--ghost">
-                    Voir mes garanties
-                  </Link>
-                </div>
-              </header>
-
-              <div className="v3-mock v3-mock--client" aria-label="Aperçu — espace client IVIA">
-                <header className="v3-mock__head">
-                  <span className="v3-mock__dot" aria-hidden="true" />
-                  <span className="v3-mock__title">Mon espace privé</span>
-                  <span className="v3-mock__tag">Privé · Québec</span>
-                </header>
-                <div className="v3-mock__body">
-                  <p className="v3-mock__eyebrow">Je dépose</p>
-                  <ul className="v3-mock__themes">
-                    {CLIENT_THEMES.map((t, i) => (
-                      <li
-                        key={t}
-                        className={i < 2 ? "is-checked" : ""}
-                      >
-                        <span className="v3-mock__check" aria-hidden="true" />
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="v3-mock__eyebrow">Ce que j’ajoute en mes mots</p>
-                  <p className="v3-mock__field">
-                    « Je sens que je tiens debout, mais il y a quelque chose
-                    que je ne nomme pas encore. Je voudrais arriver à le
-                    voir. »
-                  </p>
-                </div>
-                <footer className="v3-mock__foot">
-                  <span>Brouillon · enregistré localement</span>
-                  <span className="v3-mock__cta">Continuer →</span>
-                </footer>
-              </div>
-
-              <ul className="v3-outputs v3-two-col__full">
-                {CLIENT_OUTPUTS.map((o, i) => (
-                  <li key={o.label} className="v3-output">
-                    <span className="v3-output__num">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="v3-output__label">{o.label}</h3>
-                    <p className="v3-output__body">{o.body}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* ── VOIE PRATICIEN ────────────────────────────────────────────── */}
-          <section className="v3-section v3-praticien" id="voie-praticien">
-            <div className="v3-section__inner v3-two-col v3-two-col--reverse">
-              <header className="v3-two-col__head">
-                <p className="v3-kicker">Voie praticien · pour vous</p>
-                <h2 className="v3-h2">
-                  Lire ce qui se passe en séance, <em>structurer votre pratique.</em>
-                </h2>
-                <p className="v3-section__intro">
-                  IVIA assiste votre travail entre les rencontres : lecture
-                  des séances, repérage de ce qui revient, mise en forme des
-                  interactions. Votre pratique évolue avec vous —
-                  diplômé·e, en formation, ou hors-ordre.
-                </p>
-                <p className="v3-card__note">
-                  Aucune affirmation de statut médical n’est faite à votre
-                  place. Vous restez seul·e responsable de votre cadre, et
-                  votre profil affiche clairement ce que vous déclarez.
-                </p>
-                <div className="v3-cta-row">
-                  <Link href="/espace-praticien" className="v3-btn v3-btn--primary">
-                    Découvrir l’espace praticien
-                    <span className="v3-btn__arrow" aria-hidden="true">→</span>
-                  </Link>
-                  <Link href="#trust" className="v3-btn v3-btn--ghost">
-                    Souveraineté &amp; données
-                  </Link>
-                </div>
-              </header>
-
-              <div className="v3-mock v3-mock--praticien" aria-label="Aperçu — espace praticien IVIA">
-                <header className="v3-mock__head">
-                  <span className="v3-mock__dot v3-mock__dot--earth" aria-hidden="true" />
-                  <span className="v3-mock__title">Lecture de séance</span>
-                  <span className="v3-mock__tag">14 mai · 50 min</span>
-                </header>
-                <div className="v3-mock__body">
-                  <p className="v3-mock__eyebrow">Ce qui revient</p>
-                  <ul className="v3-mock__chips">
-                    <li>Fatigue de fin de semaine</li>
-                    <li>Voix intérieure sévère</li>
-                    <li>Rythme imposé</li>
-                  </ul>
-                  <p className="v3-mock__eyebrow">À rouvrir</p>
-                  <p className="v3-mock__field">
-                    « Lien à la mère — évoqué brièvement, à reprendre quand
-                    le terrain sera prêt. »
-                  </p>
-                  <p className="v3-mock__eyebrow">Évolution déclarée</p>
-                  <div className="v3-mock__progress" aria-hidden="true">
-                    <span style={{ ["--w" as string]: "62%" }} />
-                  </div>
-                  <p className="v3-mock__progress-label">
-                    Écoute structurée · 62 % des séances cadrées ces 3 mois
-                  </p>
-                </div>
-                <footer className="v3-mock__foot">
-                  <span>Vue praticien — privé</span>
-                  <span className="v3-mock__cta">Ouvrir la séance →</span>
-                </footer>
-              </div>
-
-              <ul className="v3-outputs v3-two-col__full">
-                {PRACTITIONER_BENEFITS.map((b, i) => (
-                  <li key={b.label} className="v3-output">
-                    <span className="v3-output__num">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="v3-output__label">{b.label}</h3>
-                    <p className="v3-output__body">{b.body}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* ── COLLECTE STRATÉGIQUE ──────────────────────────────────────── */}
-          <section className="v3-section v3-collecte">
+          {/* ── SOUVERAINETÉ & PRUDENCE ─────────────────────────────────── */}
+          <section className="v3-section v3-souverainete" id="souverainete">
             <div className="v3-section__inner">
-              <p className="v3-kicker">Comment IVIA pose ses questions</p>
+              <p className="v3-kicker">Souveraineté &amp; prudence</p>
               <h2 className="v3-h2">
-                Choix multiples, <em>plus l’espace de vos mots.</em>
+                Vos mots <em>restent les vôtres.</em>
               </h2>
-              <p className="v3-section__intro">
-                IVIA ne vous fait pas remplir un formulaire clinique. À chaque
-                étape, vous choisissez parmi quelques propositions et — surtout —
-                vous précisez librement, en quelques phrases, ce qui ne rentre
-                pas dans les cases.
-              </p>
-              <div className="v3-collecte__grid">
-                <article className="v3-collecte__card">
-                  <span className="v3-collecte__step">01</span>
-                  <h3>Choix multiples doux</h3>
-                  <p>
-                    Quelques propositions courtes, écrites en langage humain.
-                    Aucun jargon clinique, aucune obligation d’en cocher.
-                  </p>
-                </article>
-                <article className="v3-collecte__card">
-                  <span className="v3-collecte__step">02</span>
-                  <h3>Espace libre, en vos mots</h3>
-                  <p>
-                    Un champ ouvert pour préciser ce que les options n’atteignent
-                    pas. C’est cet espace qui rend la lecture juste.
-                  </p>
-                </article>
-                <article className="v3-collecte__card">
-                  <span className="v3-collecte__step">03</span>
-                  <h3>Orientation, si vous le souhaitez</h3>
-                  <p>
-                    IVIA vous propose une modalité adaptée — texte, voix, ou
-                    rencontre avec un·e praticien·ne. Vous décidez du tempo.
-                  </p>
-                </article>
-              </div>
+              <ul className="v3-trust__grid">
+                {SOUVERAINETE.map((t) => (
+                  <li key={t.title} className="v3-trust__card">
+                    <span className="v3-trust__glyph" aria-hidden="true">
+                      {t.glyph}
+                    </span>
+                    <strong>{t.title}</strong>
+                    <span>{t.body}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
 
-          {/* ── VOIX DU FONDATEUR (vidéo) ─────────────────────────────────── */}
+          {/* ── VOIX DU FONDATEUR (vidéo) ───────────────────────────────── */}
           <section className="v3-section v3-voice">
             <div className="v3-section__inner v3-voice__inner">
               <div className="v3-voice__copy">
@@ -425,8 +553,8 @@ export default function HomePage() {
                     aria-label="Trace vocale d’introduction d’IVIA par David Phaneuf"
                   >
                     <p>
-                      Trace vocale d’introduction d’IVIA — votre navigateur ne
-                      supporte pas la lecture vidéo HTML5.
+                      Trace vocale d’introduction d’IVIA — votre navigateur
+                      ne supporte pas la lecture vidéo HTML5.
                     </p>
                   </video>
                 </div>
@@ -435,63 +563,55 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── TRUST / SOUVERAINETÉ ──────────────────────────────────────── */}
-          <section className="v3-section v3-trust" id="trust">
-            <div className="v3-section__inner">
-              <p className="v3-kicker">Confidentialité &amp; souveraineté</p>
-              <h2 className="v3-h2">
-                Vos mots <em>restent les vôtres.</em>
-              </h2>
-              <ul className="v3-trust__grid">
-                {TRUST.map((t) => (
-                  <li key={t.title} className="v3-trust__card">
-                    <span className="v3-trust__glyph" aria-hidden="true">
-                      {t.glyph}
-                    </span>
-                    <strong>{t.title}</strong>
-                    <span>{t.body}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* ── DISCLAIMER ────────────────────────────────────────────────── */}
-          <section className="v3-disclaimer" aria-label="Avertissement non médical">
+          {/* ── DISCLAIMER ──────────────────────────────────────────────── */}
+          <section
+            className="v3-disclaimer"
+            aria-label="Avertissement non médical"
+          >
             <div className="v3-section__inner">
               <p>
-                <strong>IVIA n’est pas un service médical.</strong> IVIA ne pose
-                pas de diagnostic, ne prescrit pas de traitement et ne remplace
-                pas un·e professionnel·le de la santé. En cas de détresse,
-                composez le <strong>988</strong> (ligne canadienne d’aide en cas
-                de crise suicidaire) ou rendez-vous à l’urgence la plus proche.
+                <strong>IVIA n’est pas un service médical.</strong> IVIA ne
+                pose pas de diagnostic, ne prescrit pas de traitement et ne
+                remplace pas un·e professionnel·le de la santé. En cas de
+                détresse, composez le <strong>988</strong> (ligne canadienne
+                d’aide en cas de crise suicidaire) ou rendez-vous à l’urgence
+                la plus proche.
               </p>
             </div>
           </section>
 
-          {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
+          {/* ── CTA FINAL ───────────────────────────────────────────────── */}
           <section className="v3-final">
             <div className="v3-final__halo" aria-hidden="true" />
             <div className="v3-section__inner v3-final__inner">
-              <MesangeMark size={64} withSong className="v3-final__mark" />
+              <MesangeMark
+                size={64}
+                withSong
+                className="v3-final__mark"
+              />
               <p className="v3-eyebrow v3-eyebrow--center">
                 <span className="v3-eyebrow__dot" aria-hidden="true" />
                 Quand vous êtes prêt·e
               </p>
               <p className="v3-final__text">
-                Vous pouvez entrer doucement.
+                <strong>MÉSANGES</strong> accueille.
                 <br />
-                <em>Vous choisissez la voie.</em>
+                <strong>MERLIN</strong> structure.
+                <br />
+                <em>IVIA accompagne.</em>
               </p>
-              <div className="v3-cta-row v3-cta-row--center">
-                <Link href="/demarche" className="v3-btn v3-btn--primary">
-                  Commencer mon espace privé
-                  <span className="v3-btn__arrow" aria-hidden="true">→</span>
-                </Link>
-                <Link href="/espace-praticien" className="v3-btn v3-btn--ghost">
-                  Je suis praticien·ne
-                </Link>
-              </div>
+              <ul className="v3-final__paths" aria-label="Quatre voies">
+                {PATHWAYS.map((p) => (
+                  <li key={p.id}>
+                    <Link href={p.href} className="v3-final__path">
+                      <span className="v3-final__path-kicker">{p.kicker}</span>
+                      <span className="v3-final__path-arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
         </main>
