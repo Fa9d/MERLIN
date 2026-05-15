@@ -15,6 +15,14 @@ type MesangeMarkProps = {
   ariaLabel?: string;
 };
 
+// Tracés SVG en une seule ligne (sans CRLF ni indentation) pour garantir
+// un rendu SSR/client strictement identique — sinon CRLF côté Windows
+// déclenche un hydration mismatch sur l'attribut `d`.
+const MESANGE_BODY_D = "M 80 70 Q 72 12 118 -4 Q 155 -12 182 6 Q 208 -4 240 6 Q 262 16 268 42 Q 245 48 218 46 Q 245 76 255 112 Q 218 94 182 89 Q 175 122 150 134 Q 128 122 128 94 Q 95 86 80 70 Z";
+const SONG_WAVE_1_D = "M -2 0 Q -16 -10 -28 0";
+const SONG_WAVE_2_D = "M -2 0 Q -22 -16 -42 0";
+const SONG_WAVE_3_D = "M -2 0 Q -28 -22 -56 0";
+
 /**
  * Mésange — symbole MÉSANGES.
  *
@@ -70,20 +78,7 @@ export function MesangeMark({
           transform="translate(60, 130)"
           className="mesange-mark__body"
         >
-          <path
-            fill={figure}
-            d="M 80 70
-               Q 72 12 118 -4
-               Q 155 -12 182 6
-               Q 208 -4 240 6
-               Q 262 16 268 42
-               Q 245 48 218 46
-               Q 245 76 255 112
-               Q 218 94 182 89
-               Q 175 122 150 134
-               Q 128 122 128 94
-               Q 95 86 80 70 Z"
-          />
+          <path fill={figure} d={MESANGE_BODY_D} />
           <polygon fill={figure} points="75,24 50,30 75,36" />
           <circle fill={eye} cx="108" cy="22" r="4.2" />
         </g>
@@ -99,17 +94,17 @@ export function MesangeMark({
           >
             <path
               className="mesange-mark__song-wave mesange-mark__song-wave--1"
-              d="M -2 0 Q -16 -10 -28 0"
+              d={SONG_WAVE_1_D}
               strokeWidth="2.5"
             />
             <path
               className="mesange-mark__song-wave mesange-mark__song-wave--2"
-              d="M -2 0 Q -22 -16 -42 0"
+              d={SONG_WAVE_2_D}
               strokeWidth="2"
             />
             <path
               className="mesange-mark__song-wave mesange-mark__song-wave--3"
-              d="M -2 0 Q -28 -22 -56 0"
+              d={SONG_WAVE_3_D}
               strokeWidth="1.5"
             />
           </g>
