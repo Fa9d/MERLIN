@@ -20,6 +20,10 @@ Formule:
 
 `MERLIN structure`
 
+`MÉSANGES accompagne`
+
+> Trinité complète — IVIA est le seuil public et le champ commun, MERLIN classe et interprète, MÉSANGES porte la voix subtile d'accompagnement (présence orientante, résonance, accompagnement inconscient). À porter avec retenue : la symbolique des « anges » de MÉSANGES est doctrine intérieure, jamais slogan.
+
 ---
 
 ## 2) Idee directrice

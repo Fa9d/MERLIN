@@ -11,13 +11,15 @@
 ## 1. Identité du frontend
 
 **IVIA — la maison du vivant.** Ce frontend n'est pas un site corporate ni une marketplace : c'est un **lieu**.
-La phrase directrice du repo s'applique ici, mais c'est **IVIA qui accompagne** :
+Le frontend incarne le seuil public — c'est **IVIA qui accueille** :
 
-> **MÉSANGES accueille. MERLIN structure. IVIA accompagne.**
+> **IVIA accueille. MERLIN structure. MÉSANGES accompagne.**
 
-- **MÉSANGES** est la voix d'accueil et l'interface relationnelle — visuellement portée par la mésange (mark animé, voix, première écoute).
-- **MERLIN** est invisible côté public : il classe, trace, garde la mémoire.
-- **IVIA** est l'expérience publique : autonomie, équilibre, action.
+- **IVIA** est la maison commune, le seuil public, le champ partagé où la personne arrive et est reçue.
+- **MERLIN** est invisible côté public : il classe, interprète, trace, garde la mémoire.
+- **MÉSANGES** est la voix subtile d'accompagnement — orientation, résonance, écho discret à travers les sujets qui touchent la personne. Visuellement portée par la mésange (mark animé, voix, présence discrète).
+
+> Note doctrine (à porter avec retenue, jamais comme slogan) : MÉSANGES porte symboliquement *nos anges* — voix tutélaires, accompagnement inconscient. Posture intérieure, pas argumentaire marketing.
 
 Toute décision de copy, d'interaction, ou de design doit pouvoir se relire à travers cette trinité.
 
@@ -83,10 +85,10 @@ Toute formulation client doit suivre la triade **Observation / Hypothèse / Orie
 
 L'expérience publique IVIA se structure autour de quatre voies d'accompagnement (à exposer clairement dans la navigation et la home) :
 
-1. **Accueil / écoute** — premier contact, MÉSANGES, voix.
-2. **Lecture multidimensionnelle** — restitution de ce qui est entendu, en plusieurs axes (corps, émotions, mental, relations, etc.).
+1. **Accueil / écoute** — premier contact, seuil IVIA, posture d'accueil sans tri.
+2. **Lecture multidimensionnelle** — restitution de ce qui est entendu, en plusieurs axes (territoire, corps, émotions, mental, relations, etc.) — voir ordre canonique dans `../00_DOCTRINE/correspondances-vivantes.md`.
 3. **Mise en lien** — orientation vers un praticien dont la voie et la voix résonnent, par carte abstraite (pas de photo, voir doctrine).
-4. **Suivi / équilibre** — retour, durée, autonomie progressive.
+4. **Suivi / équilibre** — accompagnement MÉSANGES dans la durée : voix subtiles, orientation, résonance, autonomie progressive.
 
 ### 4.3 Identité visuelle MÉSANGES
 

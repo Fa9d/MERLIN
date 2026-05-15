@@ -8,7 +8,7 @@ import { MesangeMark } from "@/components/MesangeMark";
 /* ──────────────────────────────────────────────────────────────────────────
    IVIA — Refonte stratégique (branche refonte-ivia-site-unifie)
    Concept : La maison du vivant. Pas un lieu — le vivant lui-même.
-   Architecture : MÉSANGES accueille · MERLIN structure · IVIA accompagne.
+   Architecture : IVIA accueille · MERLIN structure · MÉSANGES accompagne.
    Posture : non médicale, québécoise, sous consentement, sans diagnostic.
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -96,7 +96,7 @@ const DIMENSIONS = [
   },
 ];
 
-/* Six pas — comment IVIA accompagne, sans révéler le système. */
+/* Six pas — comment la maison accueille et accompagne, sans révéler le système. */
 const ACCOMPAGNEMENT = [
   {
     num: "01",
@@ -133,22 +133,22 @@ const ACCOMPAGNEMENT = [
 /* Architecture trinitaire — trois noms, une seule attention. */
 const ARCHITECTURE = [
   {
-    name: "MÉSANGES",
+    name: "IVIA",
     role: "accueille",
     body:
-      "Le seuil, la voix, l’interface relationnelle. L’oiseau noir et crème qui accueille ce que vous arrivez avec.",
+      "La maison commune, le seuil public — le champ partagé où vous arrivez et déposez ce que vous portez, sans tri ni diagnostic.",
   },
   {
     name: "MERLIN",
     role: "structure",
     body:
-      "L’infrastructure interne — analyse, classification, connecteurs privés, temporalité, sous validation humaine.",
+      "L’infrastructure interne — classifier, interpréter, tracer, garder la mémoire. Sous validation humaine.",
   },
   {
-    name: "IVIA",
+    name: "MÉSANGES",
     role: "accompagne",
     body:
-      "L’expérience vécue — un accompagnement humain vers l’autonomie, l’équilibre et l’action.",
+      "Les voix subtiles d’accompagnement — orientation, résonance, présence discrète à travers les sujets qui vous touchent.",
   },
 ];
 
@@ -252,9 +252,9 @@ export default function HomePage() {
                   ariaLabel="Mésange — symbole d’accueil IVIA"
                 />
                 <p className="v3-hero__mesange-caption">
-                  <strong>MÉSANGES</strong> accueille ·{" "}
+                  <strong>IVIA</strong> accueille ·{" "}
                   <strong>MERLIN</strong> structure ·{" "}
-                  <strong>IVIA</strong> accompagne
+                  <strong>MÉSANGES</strong> accompagne
                 </p>
               </div>
 
@@ -367,10 +367,10 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── COMMENT IVIA ACCOMPAGNE — six pas ──────────────────────── */}
+          {/* ── COMMENT LA MAISON ACCUEILLE ET ACCOMPAGNE — six pas ───── */}
           <section className="v3-section v3-accompagnement" id="approche">
             <div className="v3-section__inner">
-              <p className="v3-kicker">Comment IVIA accompagne</p>
+              <p className="v3-kicker">Comment la maison accueille et accompagne</p>
               <h2 className="v3-h2">
                 Six pas, <em>au rythme du vivant.</em>
               </h2>
@@ -594,11 +594,11 @@ export default function HomePage() {
                 Quand vous êtes prêt·e
               </p>
               <p className="v3-final__text">
-                <strong>MÉSANGES</strong> accueille.
+                <strong>IVIA</strong> accueille.
                 <br />
                 <strong>MERLIN</strong> structure.
                 <br />
-                <em>IVIA accompagne.</em>
+                <em>MÉSANGES accompagne.</em>
               </p>
               <ul className="v3-final__paths" aria-label="Quatre voies">
                 {PATHWAYS.map((p) => (

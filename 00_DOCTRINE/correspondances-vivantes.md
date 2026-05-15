@@ -52,22 +52,27 @@ Si un seuil d'urgence est franchi (idées suicidaires, violence, mineur en dange
 ## 3. Axes MERLIN (référentiel)
 
 Les axes utilisés par le lexique. Cette liste est **autoritative** pour le champ `axes_merlin` du YAML.
+**Le territoire est placé en premier — c'est doctrinal, pas accessoire.** Le territoire est le sol vivant qui précède et conditionne tout le reste : le corps, le métabolisme, les émotions, les liens, la famille, la mémoire transgénérationnelle, la société, le spirituel. On ne pense pas d'abord à partir d'un individu abstrait que l'on inscrirait *ensuite* dans un lieu ; on pense à partir de **cette terre qui nous constitue**, à laquelle le corps et la psyché appartiennent déjà. Cette posture rejoint — sans la confisquer ni la mimer — la conception territoriale portée par les peuples autochtones et, plus largement, par toute pensée qui reconnaît l'appartenance incarnée des humains au vivant (arbres, plantes, eaux, climat, saisons).
 
-| Axe | Description courte |
-|-----|---------------------|
-| `corps` | Sensations physiques, douleurs, tension, sommeil, énergie corporelle. |
-| `metabolisme` | Faim, soif, digestion, poids, sucre, alcool, énergie chimique. |
-| `emotions` | Tristesse, peur, colère, joie, honte, vide, surcharge émotionnelle. |
-| `mental` | Pensées, ruminations, concentration, mémoire, sens, repères. |
-| `relations` | Liens proches actuels : couple, amitiés, collègues, voisinage. |
-| `famille` | Famille d'origine, fratrie, parentalité, conflits familiaux actuels. |
-| `transgenerationnel` | Loyautés, répétitions sur plusieurs générations, secrets, héritage. |
-| `societe` | Travail, statut, économie, exclusion, racisme, classe, marginalisation. |
-| `territoire` | Lieu, déracinement, migration, rapport à la terre, environnement, climat. |
-| `spirituel_existentiel` | Sens, mort, transcendance, vide existentiel, foi, quête. |
-| `urgence_reference` | Détresse aiguë, risque suicidaire, violence, mineur en danger, crise médicale. |
+Cette priorité du territoire est traitée avec **respect et sans appropriation** : IVIA ne parle pas *à la place* des Nations, ne s'approprie pas leurs cosmologies, mais reconnaît que la réalité du territoire **transcende les peuples** et précède l'individualité moderne.
+
+| Ordre | Axe | Description courte |
+|-------|-----|---------------------|
+| 1 | `territoire` | Lieu vivant, sol qui nous constitue. Rapport à la terre, appartenance incarnée, déracinement, migration, environnement, climat, saisons, langue du lieu. *Axe fondateur — précède et conditionne les autres.* |
+| 2 | `corps` | Sensations physiques, douleurs, tension, sommeil, énergie corporelle. |
+| 3 | `metabolisme` | Faim, soif, digestion, poids, sucre, alcool, énergie chimique. |
+| 4 | `emotions` | Tristesse, peur, colère, joie, honte, vide, surcharge émotionnelle. |
+| 5 | `mental` | Pensées, ruminations, concentration, mémoire, sens, repères. |
+| 6 | `relations` | Liens proches actuels : couple, amitiés, collègues, voisinage. |
+| 7 | `famille` | Famille d'origine, fratrie, parentalité, conflits familiaux actuels. |
+| 8 | `transgenerationnel` | Loyautés, répétitions sur plusieurs générations, secrets, héritage. |
+| 9 | `societe` | Travail, statut, économie, exclusion, racisme, classe, marginalisation. |
+| 10 | `spirituel_existentiel` | Sens, mort, transcendance, vide existentiel, foi, quête. |
+| 11 | `urgence_reference` | Détresse aiguë, risque suicidaire, violence, mineur en danger, crise médicale. |
 
 Une expression active **typiquement plusieurs axes**. C'est attendu — c'est même la doctrine.
+
+> **Note d'usage pour les entrées du lexique** : le fait que `territoire` soit l'axe fondateur **n'implique pas** qu'il soit mécaniquement présent dans le tableau `axes_merlin` de chaque entrée. On l'inscrit lorsqu'il est **sémantiquement actif** dans l'expression (déracinement, migration, lien au lieu, rupture avec l'environnement, climat, saison). L'ordre canonique ci-dessus régit la **taxonomie globale** et l'ordre de citation, pas un forçage entrée par entrée.
 
 ---
 

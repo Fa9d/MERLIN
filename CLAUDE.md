@@ -14,19 +14,21 @@
 ## 0. Trinité fondatrice — MÉSANGES · MERLIN · IVIA
 
 **Phrase directrice** :
-> **MÉSANGES accueille. MERLIN structure. IVIA accompagne.**
+> **IVIA accueille. MERLIN structure. MÉSANGES accompagne.**
 
 | Composante | Rôle | Posture |
 |------------|------|---------|
-| **MÉSANGES** | Voix, accueil, interface relationnelle et éditoriale. Premier contact, écoute, traduction sensible du besoin. | Accueillir sans diagnostiquer. |
-| **MERLIN** | Cœur d'analyse et de gouvernance : classification multidimensionnelle, temporalité, connecteurs privés/internes, lecture client / lecture praticien. | Structurer, tracer, garder la mémoire. |
-| **IVIA** | Couche d'accompagnement publique (`ivia.quebec`) — *In Vivo, In Actu — Au sein de l'être, en actes*. Autonomie, équilibre, action. | Accompagner sans prescrire. |
+| **IVIA** | Maison commune, seuil public (`ivia.quebec`) — *In Vivo, In Actu — Au sein de l'être, en actes*. Le champ commun où la personne arrive, est reçue, s'oriente. | Accueillir sans trier, sans diagnostiquer. |
+| **MERLIN** | Cœur d'analyse et de gouvernance : classification multidimensionnelle, temporalité, connecteurs privés/internes, lecture client / lecture praticien. | Structurer, classer, interpréter, tracer, garder la mémoire. |
+| **MÉSANGES** | Voix subtiles d'accompagnement à travers les sujets qui nous touchent. Petite présence orientante, en résonance, en écho discret. | Accompagner sans prescrire — orienter par la voix, la résonance, l'accompagnement inconscient. |
+
+> Note symbolique (interne, doctrine) : MÉSANGES porte discrètement *nos anges* — voix tutélaires, accompagnement inconscient. À ne pas exploiter comme slogan marketing ; à honorer comme posture intérieure.
 
 ### Glossaire opérationnel
 
 - **IVIA** — *In Vivo, In Actu*. **Maison du vivant** : portail commun, expérience publique, lieu où la personne arrive, s'oriente, revient.
 - **Maison du vivant** — métaphore directrice de l'expérience IVIA : un lieu habité, pas un service marchand ni une marketplace.
-- **Correspondances vivantes** — table de traduction entre les **expressions ordinaires** des personnes (français/québécois courant) et les **axes multidimensionnels MERLIN** (corps, métabolisme, émotions, mental, relations, famille, transgénérationnel, société, territoire, spirituel/existentiel, urgence/référence). Voir `00_DOCTRINE/correspondances-vivantes.md`.
+- **Correspondances vivantes** — table de traduction entre les **expressions ordinaires** des personnes (français/québécois courant) et les **axes multidimensionnels MERLIN**. Ordre canonique des axes (territoire en premier, comme sol vivant qui précède et conditionne tout le reste) : **territoire**, corps, métabolisme, émotions, mental, relations, famille, transgénérationnel, société, spirituel/existentiel, urgence/référence. Voir `00_DOCTRINE/correspondances-vivantes.md`.
 - **Observation / Hypothèse / Orientation** — triade obligatoire de toute sortie IA orientée client. **Jamais** « diagnostic / pronostic / prescription ». On *observe* ce qui est dit, on *formule des hypothèses* prudentes, on *oriente* vers une ressource humaine compétente.
 - **Posture non-médicale** — IVIA / MERLIN **ne posent pas de diagnostic, ne prescrivent pas, ne décident pas cliniquement, ne se substituent pas aux services d'urgence, ne promettent aucune guérison.** Le système peut **éduquer, orienter, structurer, soutenir l'autonomie**.
 - **Quatre voies d'accompagnement IVIA** — les chemins publics offerts par la maison du vivant (à expliciter côté frontend) : accueil/écoute, lecture multidimensionnelle, mise en lien avec praticiens, suivi/équilibre dans la durée.
@@ -39,9 +41,9 @@
 MERLIN n'est pas seulement une app clinique — c'est un **repo-système canonique**.
 
 ```
-MÉSANGES  →  accueille (voix, première interface, éditorial)
-MERLIN    →  pense, gouverne, classe, trace, décide
-IVIA      →  expose, accompagne, organise les parcours
+IVIA      →  accueille (maison commune, seuil public, champ partagé)
+MERLIN    →  structure, classe, interprète, trace, décide
+MÉSANGES  →  accompagne (voix subtiles, orientation, résonance, accompagnement inconscient)
 Modules   →  exécutent des fonctions assistées sous validation humaine
 ```
 

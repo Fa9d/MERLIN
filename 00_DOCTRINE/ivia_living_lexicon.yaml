@@ -10,11 +10,18 @@
 # - Toute modification de wording autorisé/interdit nécessite relecture humaine.
 
 id: ivia_living_lexicon
-version: v0.1
+version: v0.2
 date: 2026-05-15
 statut: scaffolding
 langue: fr-CA
+# Ordre canonique des axes. `territoire` est placé EN PREMIER : c'est doctrinal.
+# Le territoire est le sol vivant qui précède et conditionne corps, métabolisme, émotions,
+# relations, famille, mémoire transgénérationnelle, société, spirituel/existentiel.
+# Voir doctrine : 00_DOCTRINE/correspondances-vivantes.md §3.
+# Cet ordre régit la taxonomie globale et l'ordre de citation — il ne force PAS
+# `territoire` dans toutes les entrées : on l'inscrit lorsqu'il est sémantiquement actif.
 axes_referentiel:
+  - territoire
   - corps
   - metabolisme
   - emotions
@@ -23,7 +30,6 @@ axes_referentiel:
   - famille
   - transgenerationnel
   - societe
-  - territoire
   - spirituel_existentiel
   - urgence_reference
 
