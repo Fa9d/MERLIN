@@ -66,23 +66,33 @@ export default function HomePage() {
         <section className="hp-hero">
           <div className="hp-hero__inner">
             <div className="hp-hero__copy">
-              <p className="hp-kicker">Accompagnement individuel · Montréal</p>
+              <p className="hp-kicker">IVIA · Québec</p>
               <h1 className="hp-hero__h1">
-                Un espace pour déposer<br />
-                ce que vous portez
+                Parlez en toute liberté<br />
+                dans votre espace privé.
               </h1>
               <p className="hp-hero__sub">
-                Je vous accompagne avec calme et une vraie présence — pour retrouver de la clarté et repartir avec quelque chose de concret.
+                Une présence calme, à votre rythme — vos mots restent chez vous, hébergés au Québec.
               </p>
               <Link href="/rendez-vous" className="hp-btn hp-btn--primary">
                 Prendre un premier rendez-vous
               </Link>
             </div>
-            <div className="hp-hero__visual" aria-hidden="true">
+            <div className="hp-hero__visual">
               <div className="hp-hero__art">
-                <span className="hp-hero__art-word hp-hero__art-word--1">présence</span>
-                <span className="hp-hero__art-word hp-hero__art-word--2">écoute</span>
-                <span className="hp-hero__art-word hp-hero__art-word--3">clarté</span>
+                <video
+                  className="hp-hero__video"
+                  src="/assets/video/ivia_accueil_trace_vocale.mp4"
+                  controls
+                  preload="metadata"
+                  playsInline
+                  aria-label="Trace vocale d’introduction d’IVIA par David Phaneuf"
+                >
+                  <p className="hp-hero__video-fallback">
+                    Trace vocale d’introduction d’IVIA — votre navigateur ne supporte pas la
+                    lecture vidéo HTML5.
+                  </p>
+                </video>
               </div>
             </div>
           </div>

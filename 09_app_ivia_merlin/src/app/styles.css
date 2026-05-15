@@ -351,13 +351,29 @@
   opacity: 0.10;
 }
 
+/* Trace vocale du fondateur — vidéo d’accueil */
+.hp-hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--sand-deep);
+}
+
+.hp-hero__video-fallback {
+  padding: var(--sp-4);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
 @media (max-width: 760px) {
   .hp-hero__inner {
     grid-template-columns: 1fr;
     gap: var(--sp-10);
   }
 
-  .hp-hero__visual { display: none; }
+  .hp-hero__art { max-width: 320px; }
 }
 
 /* ── PONT ────────────────────────────────────────────────────────────────────── */
