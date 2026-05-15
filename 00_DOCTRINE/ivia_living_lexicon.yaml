@@ -1,0 +1,1300 @@
+# IVIA — Lexique vivant (Correspondances vivantes)
+#
+# Voir doctrine : 00_DOCTRINE/correspondances-vivantes.md
+# Voir CLAUDE.md racine §0 (glossaire) et §6.4 (constitution).
+#
+# Règles dures :
+# - `correspondances_conventionnelles` est USAGE INTERNE uniquement. Ne JAMAIS le renvoyer en sortie client.
+# - Seules les `formulations_autorisees` peuvent être restituées au client.
+# - `niveau_risque: urgent` => au moins un `seuils_reference` avec orientation 811/911/Info-Social.
+# - Toute modification de wording autorisé/interdit nécessite relecture humaine.
+
+id: ivia_living_lexicon
+version: v0.1
+date: 2026-05-15
+statut: scaffolding
+langue: fr-CA
+axes_referentiel:
+  - corps
+  - metabolisme
+  - emotions
+  - mental
+  - relations
+  - famille
+  - transgenerationnel
+  - societe
+  - territoire
+  - spirituel_existentiel
+  - urgence_reference
+
+expressions:
+
+  - id: je-suis-vide
+    expression: "je suis vidé / je suis vidée"
+    variantes:
+      - "j'ai plus de jus"
+      - "j'ai plus de batterie"
+      - "je suis à plat"
+    sens_possibles:
+      - "épuisement physique cumulé"
+      - "épuisement émotionnel après une période de don de soi"
+      - "perte de sens, vide existentiel"
+      - "récupération difficile après un événement marquant"
+    axes_merlin: [corps, emotions, mental, spirituel_existentiel]
+    questions_clarification:
+      - "Depuis quand est-ce que vous vous sentez comme ça ?"
+      - "Est-ce que c'est plutôt le corps, la tête, ou les deux ?"
+      - "Est-ce qu'il y a quelque chose ou quelqu'un qui vous remplit encore un peu ?"
+    correspondances_conventionnelles:
+      - "fatigue chronique"
+      - "épuisement émotionnel (axe d'évaluation du burn-out)"
+      - "anhédonie partielle"
+    correspondances_complementaires:
+      - "perte d'élan vital"
+      - "donneur sans retour — relation déséquilibrée"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Ce que vous décrivez, c'est une fatigue profonde, presque jusqu'à vide. C'est quelque chose qu'on entend souvent quand le corps et le sens demandent une pause."
+      - "Une voie possible serait d'en parler à un praticien qui pourra écouter ce qui s'est accumulé."
+    formulations_interdites:
+      - "Vous faites probablement un burn-out."
+      - "Vous êtes en dépression."
+    seuils_reference:
+      - condition: "épuisement + idées de disparition ou de mort"
+        action: "escalade urgence — orientation 811 option 2 (Info-Social) ou 911 si risque immédiat"
+
+  - id: dans-le-brouillard
+    expression: "dans le brouillard"
+    variantes:
+      - "dans la brume"
+      - "j'ai la tête dans le coton"
+      - "j'arrive plus à penser"
+    sens_possibles:
+      - "trouble de la concentration"
+      - "sidération suite à un événement"
+      - "fatigue cognitive"
+      - "sentiment de déconnexion du présent"
+    axes_merlin: [mental, corps, emotions]
+    questions_clarification:
+      - "Quand le brouillard est arrivé, est-ce qu'il s'est passé quelque chose ?"
+      - "Est-ce que ça arrive plutôt le matin, le soir, ou tout le temps ?"
+      - "Est-ce que vous arrivez encore à faire les choses du quotidien ?"
+    correspondances_conventionnelles:
+      - "brouillard cognitif (cognitive fog)"
+      - "dissociation légère"
+    correspondances_complementaires:
+      - "tête séparée du corps"
+      - "protection psychique"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Cette sensation de brouillard est quelque chose dont beaucoup de personnes parlent. Elle peut venir du corps, du sommeil, du contexte ou d'un événement récent."
+    formulations_interdites:
+      - "Vous avez un trouble cognitif."
+      - "C'est probablement neurologique."
+    seuils_reference:
+      - condition: "perte de repères temporels ou de mémoire récente importante"
+        action: "orientation médecin traitant rapidement"
+
+  - id: corps-en-feu
+    expression: "j'ai le corps en feu"
+    variantes:
+      - "ça brûle en dedans"
+      - "je suis tout en feu"
+    sens_possibles:
+      - "douleurs diffuses, inflammation perçue"
+      - "colère contenue qui prend forme dans le corps"
+      - "hypervigilance, système nerveux sur la défensive"
+      - "symptôme physique potentiellement médical à évaluer"
+    axes_merlin: [corps, emotions, urgence_reference]
+    questions_clarification:
+      - "Est-ce que c'est partout pareil ou plus à certains endroits ?"
+      - "Est-ce que c'est constant ou par vagues ?"
+      - "Est-ce qu'il y a une émotion qui s'y rattache, ou pas du tout ?"
+    correspondances_conventionnelles:
+      - "douleur somatique diffuse"
+      - "hypersensibilité sensorielle"
+    correspondances_complementaires:
+      - "feu — colère ancienne — système nerveux en alerte"
+    niveau_preuve: low
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Le corps parle. Une voie possible est d'en parler d'abord à un médecin pour écarter une cause physique, puis à un praticien pour écouter ce que ce feu raconte."
+    formulations_interdites:
+      - "C'est psychosomatique."
+      - "Ce n'est rien."
+    seuils_reference:
+      - condition: "douleur aiguë nouvelle, fièvre, signes neurologiques"
+        action: "orientation 811 ou consultation médicale rapide"
+
+  - id: je-suis-tanne
+    expression: "je suis tanné / je suis tannée"
+    variantes:
+      - "j'en peux plus"
+      - "je suis écœuré"
+      - "j'en ai mon voyage"
+    sens_possibles:
+      - "saturation accumulée"
+      - "désir de changement non encore formulé"
+      - "perte de motivation contextuelle"
+      - "colère sourde mal nommée"
+    axes_merlin: [emotions, mental, societe, relations]
+    questions_clarification:
+      - "Tanné de quoi en particulier, si vous pouvez le dire ?"
+      - "Si rien ne changeait dans six mois, qu'est-ce qui arriverait ?"
+    correspondances_conventionnelles:
+      - "lassitude / démoralisation"
+    correspondances_complementaires:
+      - "signal de changement à entendre"
+    niveau_preuve: medium
+    niveau_risque: low
+    formulations_autorisees:
+      - "« Tanné », c'est un mot fort au Québec. Souvent il dit qu'une bascule est en cours. On peut prendre le temps de regarder ce qui demande à bouger."
+    formulations_interdites:
+      - "Vous êtes en dépression."
+    seuils_reference: []
+
+  - id: je-ne-me-reconnais-plus
+    expression: "je ne me reconnais plus"
+    variantes:
+      - "je me reconnais plus"
+      - "c'est plus moi"
+    sens_possibles:
+      - "transition identitaire en cours"
+      - "perte de repères suite à un événement"
+      - "dépersonnalisation"
+      - "désalignement avec ses valeurs"
+    axes_merlin: [mental, emotions, spirituel_existentiel, relations]
+    questions_clarification:
+      - "Si vous regardez en arrière, à quel moment vous vous reconnaissiez encore ?"
+      - "Est-ce qu'il y a quelqu'un dans votre vie qui vous reconnaît, lui ou elle ?"
+    correspondances_conventionnelles:
+      - "crise identitaire"
+      - "dépersonnalisation (à évaluer)"
+    correspondances_complementaires:
+      - "mue intérieure"
+    niveau_preuve: low
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Ne plus se reconnaître, c'est souvent le signe qu'une partie de vous a déjà commencé à changer. C'est un passage qui mérite d'être accompagné."
+    formulations_interdites:
+      - "Vous avez un trouble dissociatif."
+    seuils_reference:
+      - condition: "épisodes de dépersonnalisation prolongés ou angoissants"
+        action: "orientation vers un praticien formé à ces états"
+
+  - id: je-mange-mes-emotions
+    expression: "je mange mes émotions"
+    variantes:
+      - "je mange par stress"
+      - "je grignote pour me calmer"
+    sens_possibles:
+      - "stratégie de régulation émotionnelle par la nourriture"
+      - "lien stress / glycémie / besoin de réconfort"
+      - "héritage relationnel autour de la nourriture"
+    axes_merlin: [metabolisme, emotions, famille]
+    questions_clarification:
+      - "Quelle émotion arrive juste avant que vous mangiez ?"
+      - "Dans votre famille, la nourriture a quelle place ?"
+    correspondances_conventionnelles:
+      - "alimentation émotionnelle"
+    correspondances_complementaires:
+      - "réconfort, transmission, douceur empruntée"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Manger ses émotions, ce n'est pas un défaut de volonté. C'est souvent un soin qu'on s'est appris à se donner faute d'autre."
+    formulations_interdites:
+      - "Vous avez un trouble du comportement alimentaire."
+    seuils_reference:
+      - condition: "compulsions, vomissements, restrictions extrêmes, perte ou prise de poids rapide"
+        action: "orientation médecin et praticien spécialisé"
+
+  - id: je-suis-pris
+    expression: "je suis pris / je suis prise"
+    variantes:
+      - "je suis coincé"
+      - "je suis enfermé"
+      - "j'ai pas le choix"
+    sens_possibles:
+      - "sentiment de captivité dans une situation (travail, couple, famille)"
+      - "perception réduite des options"
+      - "contrainte économique réelle"
+    axes_merlin: [societe, relations, mental, famille]
+    questions_clarification:
+      - "Pris par quoi exactement ? Une personne, une situation, une obligation ?"
+      - "Si vous aviez une porte, où mènerait-elle ?"
+    correspondances_conventionnelles:
+      - "impuissance perçue"
+    correspondances_complementaires:
+      - "loyauté invisible, contrat tacite"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Se sentir pris, c'est parfois la situation, parfois ce qu'on s'est engagé à porter. Distinguer les deux peut déjà alléger un peu."
+    formulations_interdites:
+      - "Vous devez quitter cette situation."
+    seuils_reference:
+      - condition: "violence conjugale, menaces, contrôle coercitif"
+        action: "orientation SOS violence conjugale + 911 si danger immédiat"
+
+  - id: ca-se-repete-toujours
+    expression: "ça se répète toujours"
+    variantes:
+      - "c'est toujours la même chose"
+      - "je retombe toujours dedans"
+    sens_possibles:
+      - "schéma relationnel répétitif"
+      - "loyauté transgénérationnelle"
+      - "réactivation de blessures anciennes"
+    axes_merlin: [transgenerationnel, famille, relations, mental]
+    questions_clarification:
+      - "Si on remontait à la première fois, ça ressemblait à quoi ?"
+      - "Est-ce qu'il y a quelqu'un dans votre famille à qui ça arrivait aussi ?"
+    correspondances_conventionnelles:
+      - "schémas répétitifs (patterns)"
+    correspondances_complementaires:
+      - "héritage familial, fidélité invisible"
+    niveau_preuve: medium
+    niveau_risque: low
+    formulations_autorisees:
+      - "Ces répétitions ont presque toujours une histoire. Les nommer ensemble est une voie possible."
+    formulations_interdites:
+      - "C'est génétique."
+    seuils_reference: []
+
+  - id: je-dors-plus
+    expression: "je ne dors plus"
+    variantes:
+      - "je dors mal"
+      - "je me réveille la nuit"
+      - "j'arrive pas à m'endormir"
+    sens_possibles:
+      - "hypervigilance"
+      - "anxiété nocturne"
+      - "douleur physique"
+      - "rythme de vie en surcharge"
+    axes_merlin: [corps, mental, emotions]
+    questions_clarification:
+      - "Est-ce surtout l'endormissement, ou les réveils, ou les deux ?"
+      - "Que se passe-t-il dans votre tête quand vous êtes éveillé la nuit ?"
+    correspondances_conventionnelles:
+      - "insomnie d'endormissement / de maintien"
+    correspondances_complementaires:
+      - "garde nocturne — corps qui surveille"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Le sommeil parle souvent en premier. Avant tout, écarter les causes physiques avec un médecin est une étape simple et utile."
+    formulations_interdites:
+      - "Prenez des somnifères."
+    seuils_reference:
+      - condition: "insomnie sévère > 2 semaines avec retentissement fort"
+        action: "orientation médecin traitant"
+
+  - id: je-suis-anxieux
+    expression: "je suis anxieux / anxieuse tout le temps"
+    variantes:
+      - "j'ai tout le temps peur"
+      - "je suis sur le qui-vive"
+    sens_possibles:
+      - "système nerveux en activation chronique"
+      - "anticipation négative apprise"
+      - "contexte de vie réellement insécurisant"
+    axes_merlin: [corps, emotions, mental, societe]
+    questions_clarification:
+      - "Anxieux de quoi en particulier, ou plutôt une ambiance générale ?"
+      - "Est-ce que votre contexte de vie est sécurisant en ce moment ?"
+    correspondances_conventionnelles:
+      - "anxiété généralisée (à évaluer)"
+    correspondances_complementaires:
+      - "vigilance ancienne, héritée"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "L'anxiété continue est un signal du corps. Un praticien peut aider à distinguer ce qui vient du contexte et ce qui vient d'un apprentissage ancien."
+    formulations_interdites:
+      - "Vous souffrez d'anxiété généralisée."
+    seuils_reference:
+      - condition: "attaques de panique répétées, évitement majeur, retentissement fort"
+        action: "orientation médecin et/ou psychothérapeute"
+
+  - id: je-pleure-tout-le-temps
+    expression: "je pleure tout le temps"
+    variantes:
+      - "ça sort tout seul"
+      - "je pleure pour rien"
+    sens_possibles:
+      - "trop-plein émotionnel qui demande passage"
+      - "deuil non reconnu"
+      - "hypersensibilité contextuelle"
+    axes_merlin: [emotions, corps, relations]
+    questions_clarification:
+      - "Quand ça sort, ça parle de quoi, si vous deviez deviner ?"
+      - "Y a-t-il une perte récente, même petite, qui n'a pas eu sa place ?"
+    correspondances_conventionnelles:
+      - "labilité émotionnelle"
+    correspondances_complementaires:
+      - "deuil à reconnaître"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Pleurer beaucoup n'est pas forcément un problème — c'est parfois ce qu'il fallait. Mais c'est aussi un appel à être écouté."
+    formulations_interdites:
+      - "Vous êtes dépressif."
+    seuils_reference:
+      - condition: "pleurs + idées noires"
+        action: "voir entrée `idees-noires`"
+
+  - id: idees-noires
+    expression: "j'ai des idées noires"
+    variantes:
+      - "j'aurais pas envie d'être là"
+      - "ça serait moins compliqué si j'étais pas là"
+      - "j'ai envie que ça s'arrête"
+    sens_possibles:
+      - "détresse psychique à risque"
+      - "épuisement extrême sans intention immédiate"
+      - "appel à l'aide"
+    axes_merlin: [urgence_reference, emotions, mental]
+    questions_clarification:
+      - "Est-ce que ces pensées arrivent juste comme ça, ou est-ce qu'il y a un plan ?"
+      - "Est-ce qu'il y a quelqu'un à qui vous pourriez en parler tout de suite ?"
+    correspondances_conventionnelles:
+      - "idéations suicidaires (à évaluer cliniquement)"
+    correspondances_complementaires:
+      - "appel à un changement profond"
+    niveau_preuve: high
+    niveau_risque: urgent
+    formulations_autorisees:
+      - "Ce que vous me partagez est important. Vous n'avez pas à porter ça seul·e. Vous pouvez appeler le 811 option 2 (Info-Social) maintenant, ou le 911 si vous sentez un danger immédiat."
+    formulations_interdites:
+      - "Ça va passer."
+      - "Il faut positiver."
+    seuils_reference:
+      - condition: "présence d'idées noires"
+        action: "orientation immédiate 811 option 2 (Info-Social) ; 911 si danger imminent ; signalement humain interne"
+
+  - id: jai-mal-partout
+    expression: "j'ai mal partout"
+    variantes:
+      - "ça me fait mal de partout"
+      - "tout fait mal"
+    sens_possibles:
+      - "douleurs diffuses à explorer médicalement"
+      - "somatisation d'un stress chronique"
+      - "fatigue physique extrême"
+    axes_merlin: [corps, emotions]
+    questions_clarification:
+      - "Depuis quand ?"
+      - "Est-ce que c'est plus intense à certains moments de la journée ?"
+    correspondances_conventionnelles:
+      - "douleurs diffuses"
+    correspondances_complementaires:
+      - "corps qui demande à être entendu"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Quand le corps a mal partout, la première étape est souvent une visite médicale pour écarter une cause physique."
+    formulations_interdites:
+      - "C'est dans la tête."
+    seuils_reference:
+      - condition: "douleur nouvelle, intense, ou signes médicaux associés"
+        action: "orientation médecin / 811"
+
+  - id: je-suis-tout-le-temps-en-colere
+    expression: "je suis tout le temps en colère"
+    variantes:
+      - "je suis à cran"
+      - "je m'énerve pour rien"
+    sens_possibles:
+      - "fatigue qui s'exprime en irritabilité"
+      - "limite franchie de façon répétée"
+      - "colère ancienne réactivée"
+    axes_merlin: [emotions, corps, relations, famille]
+    questions_clarification:
+      - "Est-ce que la colère est dirigée vers une personne en particulier ?"
+      - "Est-ce que vous étiez comme ça avant ?"
+    correspondances_conventionnelles:
+      - "irritabilité (symptôme transverse)"
+    correspondances_complementaires:
+      - "limite à poser"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "La colère continue dit souvent quelque chose d'une limite, ou d'une fatigue. Elle mérite d'être écoutée avant d'être réprimée."
+    formulations_interdites:
+      - "Vous avez un problème de gestion de la colère."
+    seuils_reference:
+      - condition: "violence verbale ou physique envers proches"
+        action: "orientation ressource spécialisée violence (ex. organisme local) et arrêt immédiat des comportements"
+
+  - id: je-fonctionne-mais
+    expression: "je fonctionne, mais…"
+    variantes:
+      - "ça va, mais ça va pas"
+      - "je tiens, mais à fond"
+    sens_possibles:
+      - "fonctionnement de surface, épuisement sous-jacent"
+      - "haut potentiel d'adaptation masquant le coût réel"
+      - "incapacité culturelle à dire qu'on ne va pas bien"
+    axes_merlin: [emotions, mental, societe, corps]
+    questions_clarification:
+      - "Si vous n'étiez pas obligé de fonctionner, qu'est-ce qui apparaîtrait ?"
+      - "Combien d'énergie ça vous coûte de tenir ?"
+    correspondances_conventionnelles:
+      - "fonctionnement à coût caché"
+    correspondances_complementaires:
+      - "high-functioning, masquage social"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Fonctionner peut cacher beaucoup. Le fait d'avoir à mettre un « mais » est déjà un signal qui mérite attention."
+    formulations_interdites:
+      - "Si vous fonctionnez, c'est que ça va."
+    seuils_reference: []
+
+  - id: jai-honte
+    expression: "j'ai honte"
+    variantes:
+      - "je m'en veux"
+      - "je me dégoûte"
+    sens_possibles:
+      - "honte sociale héritée"
+      - "honte d'un événement subi"
+      - "auto-jugement appris"
+    axes_merlin: [emotions, relations, famille, transgenerationnel, societe]
+    questions_clarification:
+      - "Honte par rapport à quoi, ou à qui ?"
+      - "Est-ce que cette honte vous appartient vraiment, ou est-ce qu'on vous l'a donnée ?"
+    correspondances_conventionnelles:
+      - "honte (émotion auto-évaluative)"
+    correspondances_complementaires:
+      - "honte transmise — secret familial possible"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "La honte est souvent partagée, même quand elle se vit seul·e. Parler avec un praticien peut commencer à déposer un peu de ce poids."
+    formulations_interdites:
+      - "Vous n'avez pas à avoir honte." # nie l'expérience
+    seuils_reference:
+      - condition: "honte liée à un événement traumatique récent"
+        action: "orientation praticien formé au psychotraumatisme"
+
+  - id: jai-perdu-quelquun
+    expression: "j'ai perdu quelqu'un"
+    variantes:
+      - "il/elle est parti"
+      - "on l'a perdu"
+    sens_possibles:
+      - "deuil en cours"
+      - "deuil ancien non terminé qui se réactive"
+    axes_merlin: [emotions, relations, famille, spirituel_existentiel]
+    questions_clarification:
+      - "Quand est-ce que c'est arrivé ?"
+      - "Est-ce que vous avez pu en parler, depuis ?"
+    correspondances_conventionnelles:
+      - "deuil"
+    correspondances_complementaires:
+      - "lien qui se réorganise"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Un deuil n'a pas de bonne durée. Ce que vous traversez mérite un espace pour être déposé, pas pour être résolu."
+    formulations_interdites:
+      - "Il faut tourner la page."
+    seuils_reference:
+      - condition: "deuil + idées noires"
+        action: "voir entrée `idees-noires`"
+
+  - id: je-bois-pour-tenir
+    expression: "je bois pour tenir"
+    variantes:
+      - "je prends un verre pour décompresser"
+      - "j'ai besoin de quelque chose le soir"
+    sens_possibles:
+      - "stratégie d'apaisement par substance"
+      - "dépendance en construction"
+      - "auto-médication d'un mal nommé autrement"
+    axes_merlin: [metabolisme, emotions, societe]
+    questions_clarification:
+      - "Combien, à peu près, par semaine ?"
+      - "Qu'est-ce qui arrive si vous ne buvez pas un soir ?"
+    correspondances_conventionnelles:
+      - "consommation à risque, à évaluer"
+    correspondances_complementaires:
+      - "stratégie d'apaisement"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Boire pour tenir, c'est une stratégie. Elle a un coût. On peut en parler sans jugement avec un praticien ou Drogue : aide et référence (1 800 265-2626 au Québec)."
+    formulations_interdites:
+      - "Vous êtes alcoolique."
+    seuils_reference:
+      - condition: "consommation quotidienne ou retentissement fonctionnel"
+        action: "orientation ressource spécialisée addiction"
+
+  - id: jai-pas-envie-de-rien
+    expression: "j'ai envie de rien"
+    variantes:
+      - "rien me tente"
+      - "même ce que j'aimais m'intéresse plus"
+    sens_possibles:
+      - "perte de plaisir contextuelle"
+      - "épuisement"
+      - "signe de détresse psychique à évaluer"
+    axes_merlin: [emotions, mental, corps]
+    questions_clarification:
+      - "Depuis quand ?"
+      - "Y a-t-il un moment de la journée où une étincelle revient, même petite ?"
+    correspondances_conventionnelles:
+      - "anhédonie (à évaluer)"
+    correspondances_complementaires:
+      - "hiver intérieur"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Ne plus avoir envie de rien est un signal important. Cela mérite une écoute attentive."
+    formulations_interdites:
+      - "Faites des activités, ça va passer."
+    seuils_reference:
+      - condition: "perte de plaisir > 2 semaines"
+        action: "orientation médecin et/ou psychothérapeute"
+
+  - id: je-narrive-plus-a-decider
+    expression: "je n'arrive plus à décider"
+    variantes:
+      - "je tourne en rond"
+      - "j'arrive pas à choisir"
+    sens_possibles:
+      - "saturation cognitive"
+      - "peur des conséquences"
+      - "désalignement entre désir et obligation"
+    axes_merlin: [mental, emotions, societe]
+    questions_clarification:
+      - "Décider quoi, plus précisément ?"
+      - "Quel est le pire qui pourrait arriver, selon vous ?"
+    correspondances_conventionnelles:
+      - "indécision pathologique (rare, à évaluer)"
+    correspondances_complementaires:
+      - "conflit de loyauté"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "Ne pas pouvoir décider est parfois la décision la plus juste — celle de ne pas trancher tant que ce n'est pas mûr."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: je-me-sens-pas-a-ma-place
+    expression: "je me sens pas à ma place"
+    variantes:
+      - "je suis à côté"
+      - "je suis pas à ma place"
+    sens_possibles:
+      - "désalignement de contexte (travail, famille, territoire)"
+      - "syndrome de l'imposteur"
+      - "transition non terminée"
+    axes_merlin: [societe, territoire, mental, emotions]
+    questions_clarification:
+      - "Où, ou avec qui, vous sentez-vous le plus à votre place, même un peu ?"
+      - "Depuis quand vous sentez-vous décalé ?"
+    correspondances_conventionnelles:
+      - "désalignement vocationnel"
+    correspondances_complementaires:
+      - "appel intérieur à un autre lieu"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "Ne pas se sentir à sa place est souvent une boussole. Cela peut être exploré sans précipitation."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: jai-peur-de-craquer
+    expression: "j'ai peur de craquer"
+    variantes:
+      - "je vais péter au frette"
+      - "je sens que je tiens à un fil"
+    sens_possibles:
+      - "anticipation d'un effondrement"
+      - "système nerveux saturé"
+      - "demande d'aide à peine formulée"
+    axes_merlin: [emotions, corps, mental, urgence_reference]
+    questions_clarification:
+      - "Si vous craquiez, qu'est-ce qui se passerait, à votre sens ?"
+      - "Avez-vous quelqu'un autour vers qui vous tourner ?"
+    correspondances_conventionnelles:
+      - "imminence d'épuisement"
+    correspondances_complementaires:
+      - "alarme intérieure"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Avoir peur de craquer, c'est déjà entendre une alarme. C'est précieux. On peut en parler dès maintenant — par exemple en appelant le 811 option 2 (Info-Social) si vous ressentez que c'est urgent."
+    formulations_interdites:
+      - "Vous n'allez pas craquer."
+    seuils_reference:
+      - condition: "verbalisation explicite d'imminence de passage à l'acte"
+        action: "orientation 811 option 2 / 911 si danger immédiat"
+
+  - id: je-me-sens-seul
+    expression: "je me sens seul / seule"
+    variantes:
+      - "personne me comprend"
+      - "je suis tout seul"
+    sens_possibles:
+      - "solitude relationnelle"
+      - "solitude existentielle"
+      - "isolement contextuel récent"
+    axes_merlin: [relations, emotions, territoire, spirituel_existentiel]
+    questions_clarification:
+      - "Seul·e parmi des gens, ou seul·e physiquement ?"
+      - "Depuis quand ?"
+    correspondances_conventionnelles:
+      - "isolement social"
+    correspondances_complementaires:
+      - "solitude habitée vs solitude subie"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "La solitude se vit de plusieurs manières. Distinguer ce qui se choisit et ce qui s'impose est souvent un premier pas."
+    formulations_interdites: []
+    seuils_reference:
+      - condition: "isolement extrême avec idées noires"
+        action: "voir `idees-noires`"
+
+  - id: mes-parents-mont-fait-mal
+    expression: "mes parents m'ont fait mal"
+    variantes:
+      - "ma famille est toxique"
+      - "j'ai grandi dans ça"
+    sens_possibles:
+      - "blessures d'enfance qui se reformulent"
+      - "violence intrafamiliale"
+      - "négligence affective"
+    axes_merlin: [famille, transgenerationnel, emotions, mental]
+    questions_clarification:
+      - "Est-ce que c'est encore d'actualité aujourd'hui ?"
+      - "Est-ce que vous avez quelqu'un de confiance pour en parler ?"
+    correspondances_conventionnelles:
+      - "trauma relationnel précoce (à évaluer)"
+    correspondances_complementaires:
+      - "loyautés et fidélités héritées"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Ce que vous portez de l'enfance mérite un espace dédié, à votre rythme, avec quelqu'un de formé."
+    formulations_interdites:
+      - "Il faut pardonner."
+    seuils_reference:
+      - condition: "violence ou abus actuels, mineur exposé"
+        action: "signalement DPJ si mineur, orientation ressource spécialisée"
+
+  - id: je-ne-sens-plus-mon-corps
+    expression: "je ne sens plus mon corps"
+    variantes:
+      - "je suis débranché"
+      - "comme si j'étais à côté"
+    sens_possibles:
+      - "dissociation"
+      - "fatigue extrême"
+      - "réaction de protection face à un trop-plein"
+    axes_merlin: [corps, emotions, mental]
+    questions_clarification:
+      - "Est-ce que ça arrive après quelque chose en particulier ?"
+      - "Qu'est-ce qui aide à revenir, même un peu ?"
+    correspondances_conventionnelles:
+      - "dissociation, déréalisation (à évaluer)"
+    correspondances_complementaires:
+      - "stratégie ancienne de survie"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Se sentir débranché du corps est souvent une protection. C'est utile d'en parler avec un praticien qui connaît ces états."
+    formulations_interdites:
+      - "C'est rien, ça va passer."
+    seuils_reference:
+      - condition: "épisodes fréquents, retentissement fort"
+        action: "orientation praticien formé psychotraumatisme / dissociation"
+
+  - id: je-suis-toujours-en-retard
+    expression: "je suis toujours en retard"
+    variantes:
+      - "je rate tout"
+      - "j'arrive jamais à temps"
+    sens_possibles:
+      - "surcharge fonctionnelle"
+      - "difficulté d'organisation du temps"
+      - "auto-sabotage relationnel"
+    axes_merlin: [mental, societe, emotions]
+    questions_clarification:
+      - "Est-ce que c'est nouveau, ou de toujours ?"
+      - "Est-ce que ça arrive plutôt dans certaines situations ?"
+    correspondances_conventionnelles:
+      - "difficultés exécutives (à explorer)"
+    correspondances_complementaires:
+      - "rapport au temps appris"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "Le rapport au temps est un terrain riche : il dit souvent quelque chose du rapport à soi et aux autres."
+    formulations_interdites:
+      - "Vous avez un TDAH."
+    seuils_reference: []
+
+  - id: je-suis-trop-sensible
+    expression: "je suis trop sensible"
+    variantes:
+      - "je prends tout"
+      - "tout m'atteint"
+    sens_possibles:
+      - "hypersensibilité sensorielle ou émotionnelle"
+      - "système nerveux fatigué"
+      - "discours intériorisé d'invalidation"
+    axes_merlin: [emotions, corps, relations]
+    questions_clarification:
+      - "Qui vous a dit que vous étiez trop sensible ?"
+      - "Comment vous, vous décririez votre sensibilité ?"
+    correspondances_conventionnelles:
+      - "haute sensibilité (concept non clinique)"
+    correspondances_complementaires:
+      - "qualité parfois disqualifiée socialement"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "Une sensibilité forte n'est pas un défaut. C'est une donnée à prendre en compte dans la façon d'habiter votre vie."
+    formulations_interdites:
+      - "Endurcissez-vous."
+    seuils_reference: []
+
+  - id: jai-deja-tout-essaye
+    expression: "j'ai déjà tout essayé"
+    variantes:
+      - "rien marche"
+      - "j'ai tout fait, ça change rien"
+    sens_possibles:
+      - "fatigue de parcours de soin morcelé"
+      - "perte d'espoir"
+      - "absence de lecture multidimensionnelle dans les essais antérieurs"
+    axes_merlin: [emotions, mental, societe, urgence_reference]
+    questions_clarification:
+      - "Si on faisait la liste, qu'est-ce que vous avez essayé ?"
+      - "Y a-t-il quelque chose qui a un peu aidé, même temporairement ?"
+    correspondances_conventionnelles:
+      - "désespoir thérapeutique (à prendre au sérieux)"
+    correspondances_complementaires:
+      - "demande d'écoute différente"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Quand on a tout essayé, c'est souvent que ce qui manque n'est pas une technique de plus, mais une écoute différente."
+    formulations_interdites:
+      - "Il faut continuer à essayer."
+    seuils_reference:
+      - condition: "« j'ai tout essayé » + idées noires"
+        action: "voir `idees-noires`"
+
+  - id: jai-pas-envie-de-vivre
+    expression: "j'ai pas envie de vivre"
+    variantes:
+      - "j'ai pas envie d'être là"
+      - "je veux pas continuer"
+    sens_possibles:
+      - "détresse aiguë"
+      - "idéations suicidaires"
+    axes_merlin: [urgence_reference, emotions]
+    questions_clarification:
+      - "Est-ce qu'il y a un plan, ou est-ce que c'est une fatigue de vivre ?"
+      - "Pouvez-vous appeler quelqu'un avec moi maintenant ?"
+    correspondances_conventionnelles:
+      - "idéations suicidaires"
+    correspondances_complementaires: []
+    niveau_preuve: high
+    niveau_risque: urgent
+    formulations_autorisees:
+      - "Ce que vous dites est important. Vous pouvez appeler le 1 866 APPELLE (1 866 277-3553) ou le 911 si vous ressentez un danger immédiat. Je reste avec vous."
+    formulations_interdites:
+      - "Pensez positivement."
+    seuils_reference:
+      - condition: "expression de ne pas vouloir vivre"
+        action: "orientation immédiate 1 866 APPELLE / 911 ; signalement humain interne ; ne jamais laisser sans relais"
+
+  - id: jai-perdu-confiance
+    expression: "j'ai perdu confiance"
+    variantes:
+      - "j'ai plus confiance en personne"
+      - "je crois plus en rien"
+    sens_possibles:
+      - "trahison récente"
+      - "expériences répétées de déception"
+      - "perte de repères institutionnels (système de santé, État, communauté)"
+    axes_merlin: [relations, societe, spirituel_existentiel]
+    questions_clarification:
+      - "Confiance en qui, ou en quoi, plus précisément ?"
+      - "Y a-t-il eu un moment précis où ça a basculé ?"
+    correspondances_conventionnelles:
+      - "rupture de confiance interpersonnelle / institutionnelle"
+    correspondances_complementaires:
+      - "appel à reconstruire des appuis"
+    niveau_preuve: medium
+    niveau_risque: low
+    formulations_autorisees:
+      - "Reconstruire la confiance prend du temps et des appuis bien choisis. C'est légitime de ne pas faire confiance à tout le monde."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: je-suis-debranche-du-monde
+    expression: "je suis débranché du monde"
+    variantes:
+      - "rien me touche"
+      - "comme si tout passait à côté"
+    sens_possibles:
+      - "anesthésie émotionnelle"
+      - "fatigue extrême"
+      - "épisode dépressif"
+    axes_merlin: [emotions, mental, corps]
+    questions_clarification:
+      - "Depuis quand ?"
+      - "Y a-t-il quoi que ce soit qui vous touche encore, même un peu ?"
+    correspondances_conventionnelles:
+      - "émoussement affectif"
+    correspondances_complementaires:
+      - "retrait protecteur"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Ne plus être touché par grand-chose est un signal qui mérite d'être pris au sérieux."
+    formulations_interdites:
+      - "Bougez, sortez, ça va revenir."
+    seuils_reference:
+      - condition: "émoussement + idées noires"
+        action: "voir `idees-noires`"
+
+  - id: je-narrive-pas-a-respirer
+    expression: "j'arrive pas à respirer"
+    variantes:
+      - "j'étouffe"
+      - "ça serre dans la poitrine"
+    sens_possibles:
+      - "anxiété aiguë / attaque de panique"
+      - "cause physique à écarter (cardiaque, respiratoire)"
+    axes_merlin: [corps, emotions, urgence_reference]
+    questions_clarification:
+      - "Est-ce que ça arrive en ce moment, ou est-ce une situation passée ?"
+      - "Avez-vous une douleur dans la poitrine, le bras, la mâchoire ?"
+    correspondances_conventionnelles:
+      - "dyspnée fonctionnelle / attaque de panique"
+    correspondances_complementaires: []
+    niveau_preuve: high
+    niveau_risque: urgent
+    formulations_autorisees:
+      - "Si vous avez du mal à respirer en ce moment et une douleur thoracique, ou si la sensation est nouvelle et intense, appelez le 911. Sinon, le 811 peut vous orienter."
+    formulations_interdites:
+      - "C'est dans la tête."
+    seuils_reference:
+      - condition: "dyspnée aiguë, douleur thoracique, signes neurologiques"
+        action: "911"
+
+  - id: jai-honte-de-demander-de-laide
+    expression: "j'ai honte de demander de l'aide"
+    variantes:
+      - "je devrais m'en sortir tout seul"
+      - "c'est ridicule de demander"
+    sens_possibles:
+      - "norme culturelle d'autonomie forte"
+      - "héritage familial d'autosuffisance"
+      - "expériences passées de demandes mal reçues"
+    axes_merlin: [societe, famille, emotions, transgenerationnel]
+    questions_clarification:
+      - "Qui, dans votre vie, vous a montré qu'on ne demandait pas d'aide ?"
+      - "Que se passerait-il si vous demandiez quand même ?"
+    correspondances_conventionnelles:
+      - "hyper-autonomie défensive"
+    correspondances_complementaires:
+      - "loyauté à un modèle familial"
+    niveau_preuve: medium
+    niveau_risque: low
+    formulations_autorisees:
+      - "Demander de l'aide n'est pas un échec — c'est même souvent ce qui demande le plus de force."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: ca-va-tres-bien
+    expression: "ça va, ça va très bien"
+    variantes:
+      - "tout est sous contrôle"
+      - "tout est parfait"
+    sens_possibles:
+      - "réponse sociale automatique"
+      - "déni protecteur"
+      - "réelle stabilité"
+    axes_merlin: [emotions, relations, societe]
+    questions_clarification:
+      - "Et si on enlevait la version qu'on dit aux autres ?"
+      - "Qu'est-ce qui irait vraiment, et qu'est-ce qui irait moins ?"
+    correspondances_conventionnelles:
+      - "désirabilité sociale"
+    correspondances_complementaires:
+      - "réflexe culturel québécois — masquage poli"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "On peut prendre le temps, ici, de dire autre chose que la version polie."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: je-pense-trop
+    expression: "je pense trop"
+    variantes:
+      - "ça tourne dans ma tête"
+      - "j'arrête pas de penser"
+    sens_possibles:
+      - "rumination anxieuse"
+      - "hypervigilance cognitive"
+      - "absence d'espace pour déposer"
+    axes_merlin: [mental, emotions]
+    questions_clarification:
+      - "À quoi pensez-vous quand ça tourne ?"
+      - "Y a-t-il un moment où votre tête se calme, même un peu ?"
+    correspondances_conventionnelles:
+      - "rumination"
+    correspondances_complementaires:
+      - "tentative de contrôle d'un imprévisible"
+    niveau_preuve: high
+    niveau_risque: low
+    formulations_autorisees:
+      - "Penser beaucoup, c'est souvent essayer de prévoir pour ne pas être pris au dépourvu. Ça épuise et ça mérite d'être déposé quelque part."
+    formulations_interdites:
+      - "Arrêtez de penser."
+    seuils_reference: []
+
+  - id: je-suis-malheureux-au-travail
+    expression: "je suis malheureux au travail"
+    variantes:
+      - "j'ai mal au cœur d'aller travailler"
+      - "le dimanche soir, j'ai une boule"
+    sens_possibles:
+      - "désalignement professionnel"
+      - "harcèlement / climat toxique"
+      - "épuisement professionnel"
+    axes_merlin: [societe, emotions, corps]
+    questions_clarification:
+      - "Est-ce le travail lui-même, l'équipe, ou les conditions ?"
+      - "Y a-t-il un risque de représailles si vous en parlez ?"
+    correspondances_conventionnelles:
+      - "souffrance au travail"
+    correspondances_complementaires:
+      - "désalignement vocationnel"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "La souffrance au travail est un signal important. Selon le contexte, un médecin, un syndicat, ou la CNESST peuvent être des appuis."
+    formulations_interdites:
+      - "Changez de travail, c'est tout."
+    seuils_reference:
+      - condition: "harcèlement, agression"
+        action: "orientation CNESST / ressources de santé au travail"
+
+  - id: je-narrive-plus-a-parler
+    expression: "je n'arrive plus à parler"
+    variantes:
+      - "j'ai plus les mots"
+      - "ça reste pris dans la gorge"
+    sens_possibles:
+      - "saturation émotionnelle"
+      - "trauma non encore mis en mots"
+      - "isolement"
+    axes_merlin: [emotions, mental, relations, corps]
+    questions_clarification:
+      - "Quand est-ce que vous avez perdu les mots, à votre sens ?"
+      - "Y a-t-il un mot qui voudrait sortir, peut-être ?"
+    correspondances_conventionnelles:
+      - "alexithymie partielle (à explorer)"
+    correspondances_complementaires:
+      - "silence qui parle"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "On peut commencer sans les mots — un dessin, une image, une présence. La parole revient à son rythme."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: je-veux-aider-mais-jen-peux-plus
+    expression: "je veux aider, mais j'en peux plus"
+    variantes:
+      - "je porte tout le monde"
+      - "ils ont besoin de moi"
+    sens_possibles:
+      - "rôle d'aidant·e familial"
+      - "fatigue de compassion"
+      - "responsabilité disproportionnée"
+    axes_merlin: [relations, famille, emotions, corps, societe]
+    questions_clarification:
+      - "Qui aidez-vous, et depuis combien de temps ?"
+      - "Qui vous aide, vous ?"
+    correspondances_conventionnelles:
+      - "épuisement de l'aidant"
+    correspondances_complementaires:
+      - "rôle hérité"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "S'occuper des autres en s'oubliant a un coût qui finit par s'imposer. Des ressources existent pour les proches aidants — par exemple L'Appui (1 855 852-7784)."
+    formulations_interdites: []
+    seuils_reference:
+      - condition: "aidant + idées noires"
+        action: "voir `idees-noires`"
+
+  - id: jai-mal-au-ventre
+    expression: "j'ai mal au ventre tout le temps"
+    variantes:
+      - "mon ventre me lâche pas"
+      - "j'ai des boules au ventre"
+    sens_possibles:
+      - "trouble digestif fonctionnel"
+      - "anxiété somatisée"
+      - "cause médicale à écarter"
+    axes_merlin: [corps, metabolisme, emotions]
+    questions_clarification:
+      - "Avez-vous consulté un médecin pour ça ?"
+      - "Est-ce que ça arrive en lien avec certaines situations ?"
+    correspondances_conventionnelles:
+      - "symptôme digestif fonctionnel (à évaluer médicalement)"
+    correspondances_complementaires:
+      - "ventre — siège émotionnel"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Le ventre est souvent le premier à parler. Une consultation médicale est utile pour écarter une cause physique, en plus d'une écoute émotionnelle."
+    formulations_interdites:
+      - "C'est psychologique."
+    seuils_reference:
+      - condition: "douleur intense, sang, perte de poids"
+        action: "consultation médicale rapide"
+
+  - id: jai-besoin-de-partir
+    expression: "j'ai besoin de partir"
+    variantes:
+      - "je veux m'en aller"
+      - "il faut que je sorte d'ici"
+    sens_possibles:
+      - "besoin légitime de changement de contexte"
+      - "fuite face à une situation insoutenable"
+      - "appel à un autre territoire (lieu, réseau, vie)"
+    axes_merlin: [societe, territoire, relations, emotions]
+    questions_clarification:
+      - "Partir d'où, et pour aller où, si vous pouviez ?"
+      - "Y a-t-il une urgence (sécurité, santé), ou est-ce un besoin de fond ?"
+    correspondances_conventionnelles:
+      - "désir de rupture contextuelle"
+    correspondances_complementaires:
+      - "appel d'un autre lieu, autre territoire"
+    niveau_preuve: low
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Le besoin de partir mérite d'être écouté avant d'être agi. Distinguer fuite et juste départ prend du temps."
+    formulations_interdites:
+      - "Vous fuyez."
+    seuils_reference:
+      - condition: "violence à la maison"
+        action: "orientation SOS violence conjugale / 911 si danger immédiat"
+
+  - id: jai-perdu-le-gout-de-tout
+    expression: "j'ai perdu le goût de tout"
+    variantes:
+      - "plus rien m'allume"
+      - "tout est gris"
+    sens_possibles:
+      - "anhédonie"
+      - "épisode dépressif possible"
+      - "deuil ou perte non nommée"
+    axes_merlin: [emotions, mental, corps]
+    questions_clarification:
+      - "Depuis quand ?"
+      - "Quelque chose s'est-il passé juste avant ?"
+    correspondances_conventionnelles:
+      - "anhédonie (à évaluer)"
+    correspondances_complementaires:
+      - "hiver de l'âme"
+    niveau_preuve: high
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Perdre le goût de tout est un signal sérieux qui mérite une rencontre humaine, pas une réponse rapide."
+    formulations_interdites:
+      - "Reprenez-vous."
+    seuils_reference:
+      - condition: "anhédonie > 2 semaines"
+        action: "orientation médecin et/ou psychothérapeute"
+
+  - id: ca-coule-dans-ma-famille
+    expression: "ça coule dans ma famille"
+    variantes:
+      - "c'est de famille"
+      - "on est tous comme ça"
+    sens_possibles:
+      - "perception d'un schéma familial"
+      - "résignation héritée"
+      - "loyauté transgénérationnelle"
+    axes_merlin: [famille, transgenerationnel, mental]
+    questions_clarification:
+      - "Qu'est-ce qui « coule » exactement ?"
+      - "Y a-t-il quelqu'un, dans la famille, qui a fait autrement ?"
+    correspondances_conventionnelles:
+      - "hérédité perçue (à distinguer de l'hérédité génétique)"
+    correspondances_complementaires:
+      - "loyautés familiales, mythe familial"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "Ce qui « coule » dans une famille n'est pas une fatalité — c'est souvent une histoire qu'on peut commencer à dénouer."
+    formulations_interdites:
+      - "C'est génétique, vous n'y pouvez rien."
+    seuils_reference: []
+
+  - id: jai-besoin-quon-mecoute
+    expression: "j'ai besoin qu'on m'écoute"
+    variantes:
+      - "personne m'écoute"
+      - "j'ai besoin de parler à quelqu'un"
+    sens_possibles:
+      - "besoin relationnel de base"
+      - "isolement"
+      - "demande d'aide directe"
+    axes_merlin: [relations, emotions]
+    questions_clarification:
+      - "Qu'est-ce qui ferait que vous vous sentiriez vraiment écouté ?"
+      - "Y a-t-il déjà une personne ou un service vers qui vous pouvez aller maintenant ?"
+    correspondances_conventionnelles:
+      - "demande de soutien"
+    correspondances_complementaires:
+      - "fondement de la relation d'accompagnement"
+    niveau_preuve: high
+    niveau_risque: low
+    formulations_autorisees:
+      - "Être écouté n'est pas un luxe. C'est ce que nous essayons d'offrir, ici. Si vous en avez besoin tout de suite, le 811 option 2 (Info-Social) est une porte ouverte 24/7."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: ca-va-pas-fort
+    expression: "ça va pas fort"
+    variantes:
+      - "ça va couci-couça"
+      - "bof"
+    sens_possibles:
+      - "malaise diffus non nommé"
+      - "réserve culturelle de ne pas se plaindre"
+      - "demande indirecte d'écoute"
+    axes_merlin: [emotions, societe, mental]
+    questions_clarification:
+      - "Si on enlevait le « pas fort », ça donnerait quoi, en détail ?"
+      - "Qu'est-ce qui n'est pas fort, en particulier ?"
+    correspondances_conventionnelles:
+      - "humeur basse non spécifiée"
+    correspondances_complementaires:
+      - "registre culturel québécois de l'understatement"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "« Pas fort », c'est déjà beaucoup. On peut prendre le temps de regarder ce qui se cache derrière."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: je-suis-sur-les-nerfs
+    expression: "je suis sur les nerfs"
+    variantes:
+      - "je suis à fleur de peau"
+      - "j'ai les nerfs en boule"
+    sens_possibles:
+      - "système nerveux saturé"
+      - "période de stress intense"
+      - "douleur physique sous-jacente"
+    axes_merlin: [corps, emotions, mental]
+    questions_clarification:
+      - "Est-ce que vous dormez ?"
+      - "Y a-t-il un événement récent ou une charge particulière en ce moment ?"
+    correspondances_conventionnelles:
+      - "hyperactivation du système nerveux autonome"
+    correspondances_complementaires:
+      - "corps en garde"
+    niveau_preuve: medium
+    niveau_risque: medium
+    formulations_autorisees:
+      - "Quand on est sur les nerfs longtemps, le corps réclame une pause. Une rencontre humaine peut aider à voir d'où ça vient et comment alléger."
+    formulations_interdites: []
+    seuils_reference: []
+
+  - id: je-suis-une-charge
+    expression: "je suis une charge pour mes proches"
+    variantes:
+      - "ils seraient mieux sans moi"
+      - "je suis un poids"
+    sens_possibles:
+      - "auto-jugement extrême"
+      - "détresse psychique à risque"
+      - "réalité de soins lourds (maladie, handicap) à éclairer"
+    axes_merlin: [urgence_reference, emotions, relations, mental]
+    questions_clarification:
+      - "Est-ce qu'il vous arrive de penser que ce serait mieux que vous ne soyez plus là ?"
+      - "Qui vous a dit, ou vous a fait sentir, que vous étiez un poids ?"
+    correspondances_conventionnelles:
+      - "indice de risque suicidaire (perception de fardeau)"
+    correspondances_complementaires: []
+    niveau_preuve: high
+    niveau_risque: urgent
+    formulations_autorisees:
+      - "Ce que vous me dites m'importe. Sentir qu'on est un poids est un signal qu'on prend au sérieux. Vous pouvez appeler le 1 866 APPELLE (1 866 277-3553) maintenant, et 911 si vous sentez un danger imminent."
+    formulations_interdites:
+      - "Mais non, vos proches vous adorent."
+    seuils_reference:
+      - condition: "perception de fardeau pour les autres"
+        action: "évaluation suicidaire approfondie — orientation 1 866 APPELLE / 911 ; signalement humain interne"
+
+  - id: jai-pas-confiance-dans-le-systeme
+    expression: "j'ai pas confiance dans le système"
+    variantes:
+      - "le système m'a laissé tomber"
+      - "j'attends rien d'eux"
+    sens_possibles:
+      - "expérience négative réelle du système de santé / services sociaux"
+      - "marginalisation systémique"
+      - "perte de confiance institutionnelle"
+    axes_merlin: [societe, relations, emotions]
+    questions_clarification:
+      - "Qu'est-ce qui s'est passé, qui a abîmé la confiance ?"
+      - "Y a-t-il une personne ou un service qui a, malgré tout, été correct avec vous ?"
+    correspondances_conventionnelles:
+      - "méfiance institutionnelle (souvent fondée)"
+    correspondances_complementaires:
+      - "expérience à entendre comme une donnée, pas comme une opinion à corriger"
+    niveau_preuve: medium
+    niveau_risque: low
+    formulations_autorisees:
+      - "Cette méfiance a souvent une histoire. Elle ne sera pas démentie par un discours — seulement par des relations qui tiennent dans le temps."
+    formulations_interdites:
+      - "Le système fait de son mieux."
+    seuils_reference: []
+
+  - id: jai-besoin-de-spiritualite
+    expression: "j'ai besoin de spiritualité"
+    variantes:
+      - "il me manque du sens"
+      - "j'ai besoin de quelque chose de plus grand"
+    sens_possibles:
+      - "quête de sens"
+      - "deuil existentiel"
+      - "appel à une pratique (méditation, prière, lien à la nature, communauté)"
+    axes_merlin: [spirituel_existentiel, emotions, territoire, relations]
+    questions_clarification:
+      - "Qu'est-ce qui, dans votre vie, vous a déjà donné ce sentiment ?"
+      - "Êtes-vous attaché à une tradition, ou plutôt en recherche libre ?"
+    correspondances_conventionnelles:
+      - "besoin existentiel (non clinique)"
+    correspondances_complementaires:
+      - "quête, traversée, appel"
+    niveau_preuve: low
+    niveau_risque: low
+    formulations_autorisees:
+      - "Le besoin de sens est une dimension à part entière, qui peut s'explorer sans devoir s'inscrire dans une croyance précise."
+    formulations_interdites:
+      - "Vous devriez essayer telle religion / telle pratique."
+    seuils_reference: []

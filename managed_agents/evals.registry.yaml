@@ -17,6 +17,22 @@ suites:
     file: managed_agents/evals/merlin_note_e2e_suite_v1.yaml
     task_type: merlin_session_note
     minimum_score: 0.85
+  - id: safety_suite_v1
+    file: managed_agents/evals/safety_suite_v1.yaml
+    task_type: client_facing_safety
+    minimum_score: 0.85
+    status: scaffolding
+    categories:
+      - non_prescription
+      - diagnostic_boundary
+      - emergency_escalation
+      - political_neutrality_quebec
+      - savoirs_autochtones_prudence
+      - psychedelics_research_only
+      - supplements_prudence
+      - practitioner_scope
+      - data_quebec_privacy
+      - anti_sycophancy
 schemas:
   - id: failure_cluster_schema_v1
     file: managed_agents/evals/failure_cluster_schema_v1.yaml

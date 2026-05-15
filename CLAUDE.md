@@ -3,18 +3,46 @@
 > Ce fichier est lu automatiquement par Claude Code à chaque session.
 > Il contient tout ce qu'il faut savoir pour travailler efficacement sur ce repo.
 >
-> **Mise à jour 2026-05-05** — Aligné avec l'état réel du repo et la structuration MERLIN/IVIA.
+> **Mise à jour 2026-05-15** — Ajout de la trinité MÉSANGES · MERLIN · IVIA, glossaire,
+> section Agents & IA Anthropic, politique laboratoire Ruvnet, évaluations & traçabilité,
+> règle de journalisation, règle de maintenance documentaire.
+> **Branche active courante** : `refonte-ivia-site-unifie` (refonte stratégique « maison du vivant »).
+> La branche `master` reste la branche d'intégration ; `main` héberge un autre lignage technique — ne pas confondre.
 
 ---
 
-## Architecture globale
+## 0. Trinité fondatrice — MÉSANGES · MERLIN · IVIA
+
+**Phrase directrice** :
+> **MÉSANGES accueille. MERLIN structure. IVIA accompagne.**
+
+| Composante | Rôle | Posture |
+|------------|------|---------|
+| **MÉSANGES** | Voix, accueil, interface relationnelle et éditoriale. Premier contact, écoute, traduction sensible du besoin. | Accueillir sans diagnostiquer. |
+| **MERLIN** | Cœur d'analyse et de gouvernance : classification multidimensionnelle, temporalité, connecteurs privés/internes, lecture client / lecture praticien. | Structurer, tracer, garder la mémoire. |
+| **IVIA** | Couche d'accompagnement publique (`ivia.quebec`) — *In Vivo, In Actu — Au sein de l'être, en actes*. Autonomie, équilibre, action. | Accompagner sans prescrire. |
+
+### Glossaire opérationnel
+
+- **IVIA** — *In Vivo, In Actu*. **Maison du vivant** : portail commun, expérience publique, lieu où la personne arrive, s'oriente, revient.
+- **Maison du vivant** — métaphore directrice de l'expérience IVIA : un lieu habité, pas un service marchand ni une marketplace.
+- **Correspondances vivantes** — table de traduction entre les **expressions ordinaires** des personnes (français/québécois courant) et les **axes multidimensionnels MERLIN** (corps, métabolisme, émotions, mental, relations, famille, transgénérationnel, société, territoire, spirituel/existentiel, urgence/référence). Voir `00_DOCTRINE/correspondances-vivantes.md`.
+- **Observation / Hypothèse / Orientation** — triade obligatoire de toute sortie IA orientée client. **Jamais** « diagnostic / pronostic / prescription ». On *observe* ce qui est dit, on *formule des hypothèses* prudentes, on *oriente* vers une ressource humaine compétente.
+- **Posture non-médicale** — IVIA / MERLIN **ne posent pas de diagnostic, ne prescrivent pas, ne décident pas cliniquement, ne se substituent pas aux services d'urgence, ne promettent aucune guérison.** Le système peut **éduquer, orienter, structurer, soutenir l'autonomie**.
+- **Quatre voies d'accompagnement IVIA** — les chemins publics offerts par la maison du vivant (à expliciter côté frontend) : accueil/écoute, lecture multidimensionnelle, mise en lien avec praticiens, suivi/équilibre dans la durée.
+- **Connecteurs privés** — toute intégration externe (paiement, courriel, calendrier, IA) doit être **interne ou contractuellement encadrée**, hébergée Québec/Canada quand possible, et minimiser l'exposition de données personnelles.
+
+---
+
+## 1. Architecture globale
 
 MERLIN n'est pas seulement une app clinique — c'est un **repo-système canonique**.
 
 ```
-MERLIN  →  pense, gouverne, trace, décide
-IVIA    →  traduit, expose, organise les parcours
-Modules →  exécutent des fonctions assistées sous validation humaine
+MÉSANGES  →  accueille (voix, première interface, éditorial)
+MERLIN    →  pense, gouverne, classe, trace, décide
+IVIA      →  expose, accompagne, organise les parcours
+Modules   →  exécutent des fonctions assistées sous validation humaine
 ```
 
 **MERLIN** est la source unique de vérité : gouvernance, méthodes, prompts, preuves, décisions stratégiques, composants applicatifs. Tout ce qui est produit (code, interfaces, documents) en dérive.
@@ -26,10 +54,11 @@ Modules →  exécutent des fonctions assistées sous validation humaine
 - Fondateur : David Phaneuf (Montréal, Québec)
 - Domaine : santé mentale, première ligne, contexte québécois/canadien
 - Phase actuelle : stack prod déployée — backend API live, frontend live, migrations appliquées
+- **Données** : hébergement Québec, posture *data Quebec privacy* (Loi 25, LPRPDE). Aucune sortie vers un service tiers sans validation explicite.
 
 ---
 
-## Stack technique — état réel (prod)
+## 2. Stack technique — état réel (prod)
 
 ```
 Backend   : Python / FastAPI / SQLAlchemy / Alembic
@@ -39,7 +68,7 @@ Frontend  : Next.js 16.2.4 + Turbopack + Prisma (09_app_ivia_merlin/)
 Media     : LiveKit v1.8.3 (sessions audio/vidéo)
 Infra     : Docker Compose — OVH VPS ubuntu@137.74.42.121:/opt/merlin
 Reverse   : Nginx 1.27 (TLS Let's Encrypt)
-Versioning: Git / GitHub — branche master, HEAD = e569e69
+Versioning: Git / GitHub — branche d'intégration master ; branche refonte courante refonte-ivia-site-unifie
 ```
 
 **URLs prod :**
@@ -58,44 +87,51 @@ Utiliser `make <cible>` ou `bash deploy/prod-up.sh` — voir `docs/ops-docker-co
 
 ---
 
-## Structure du repo
+## 3. Structure du repo
 
 ```
 MERLIN/
+├── 00_DOCTRINE/             # Doctrine vivante (carte abstraite, correspondances vivantes, veille)
 ├── 00_GOUVERNANCE/          # Gouvernance, décisions, backlog, journal
 ├── 01_FONDATEUR/            # Fondements et visées
+├── 01_FONDEMENTS/           # Documents fondateurs IVIA (charte, cercle, positionnement)
 ├── 02_NATIONS_QC/           # Cadre des 11 Nations du Québec
+├── 03_DESIGN/               # Design system, identité visuelle MÉSANGES
 ├── 03_MODELE_GOUVERNANCE/   # Modèle opératoire
 ├── 04_METHODES/             # Méthodes, cas simulés, articles
+├── 05_JOURNAUX/             # Journaux d'opération et de handoff (chronologique)
 ├── 05_PREUVES_SOURCES/      # Audits, preuves, base de connaissance
-├── 06_IMPORTS_MESANGE/      # Imports depuis Mésange
-├── 07_EXPORTS/              # Exports (site preview IVIA)
-├── 08_EMPLOI/               # Runbooks, checklists opérationnelles
 ├── 09_app_ivia_merlin/      # Frontend Next.js (IVIA)
 ├── 10_backend_merlin_api/   # Backend FastAPI (MERLIN API)
 ├── 11_PROMPTS/              # Bibliothèque de prompts système (markdown)
 ├── 12_JURIDIQUE_AFFAIRES/   # Documents stratégiques et juridiques
+├── DAVID_CORPUS/            # Corpus personnel du fondateur
 ├── deploy/                  # Scripts de déploiement (prod-up.sh)
-├── docs/                    # Documentation d'exploitation
+├── docs/                    # Documentation d'exploitation et notes labo
+│   └── labs/                # Notes laboratoire (ruvnet, expérimentations)
+├── managed_agents/          # Registre d'agents IA, evals, fixtures
 ├── nginx/                   # Config Nginx + Certbot
 ├── docker-compose.prod.yml  # Stack Docker prod
 ├── Makefile                 # Commandes officielles prod
-└── CLAUDE.md               # Ce fichier
+└── CLAUDE.md                # Ce fichier
 ```
 
 ---
 
-## Conventions de code
+## 4. Conventions de code
 
 - **Langue** : commentaires et docstrings en français, code en anglais
 - **Commits** : format `feat|fix|docs|refactor|test(scope): message court`
-- **Branche principale** : `master` — commits directs acceptés en phase solo
+- **Branches** :
+  - `master` — branche d'intégration, commits directs acceptés en phase solo
+  - `refonte-ivia-site-unifie` — branche courante de la refonte « maison du vivant »
+  - Toute nouvelle branche doit être nommée et justifiée explicitement
 - **Variables d'environnement** : toujours dans `.env` (jamais en dur dans le code)
 - **Prompts IA** : toujours chargés depuis `11_PROMPTS/` — jamais hardcodés
 
 ---
 
-## Conventions des prompts (11_PROMPTS/)
+## 5. Conventions des prompts (11_PROMPTS/)
 
 Chaque prompt `.md` respecte la structure suivante :
 
@@ -116,28 +152,176 @@ Chaque prompt `.md` respecte la structure suivante :
 
 **Règle** : tout prompt modifié doit bumper sa version (v1.0 → v1.1).
 
+Tout prompt qui produit une sortie destinée au client doit inclure, dans ses **Règles absolues** :
+- triade **Observation / Hypothèse / Orientation** au lieu de diagnostic/prescription ;
+- escalade explicite si un signal d'urgence (suicidaire, violence, mineur en danger) est détecté ;
+- limitation aux **formulations autorisées** définies dans `00_DOCTRINE/correspondances-vivantes.md`.
+
 ---
 
-## Comportement attendu de Claude Code
+## 6. Agents & IA Anthropic
+
+MERLIN est conçu pour collaborer avec **Claude Code** (CLI/IDE) et l'**Anthropic Agent SDK** (managed_agents, skills, evals).
+
+### 6.1 Skills
+
+- Les skills disponibles côté CLI sont listés en début de session (system reminders) — ne pas en inventer.
+- Skills coding fréquemment utilisés : `coding-workflow`, `commit-push-pr`, `pr-description`, `code-review`, `code-simplifier`, `repo-skills`.
+- Skill Anthropic SDK : `claude-api` (à mobiliser dès qu'on touche au code qui importe `anthropic` / `@anthropic-ai/sdk`, ou qu'on ajuste prompt caching / thinking / tool use / batch).
+- Skill `security-review` à passer **avant tout merge** touchant à l'authentification, aux données client, aux connecteurs externes, aux secrets.
+
+### 6.2 Claude Code
+
+- Toujours lire `CLAUDE.md` (ce fichier) et `09_app_ivia_merlin/CLAUDE.md` en début de session.
+- Utiliser `TodoWrite` pour structurer les tâches multi-étapes.
+- Privilégier les outils dédiés (`Read`, `Edit`, `Write`, `Glob`, `Grep`) à `Bash` quand c'est possible.
+- **Discipline du contexte** : déléguer les explorations larges à un sous-agent (`Agent` tool, sous-type `Explore`) plutôt que de charger tout le repo dans le contexte principal.
+
+### 6.3 Agent SDK & managed_agents
+
+- Registre d'agents et de suites d'évaluation : `managed_agents/evals.registry.yaml`.
+- Toute nouvelle suite d'évaluation doit y être déclarée avec : `id`, `file`, `task_type`, `minimum_score`.
+- Toute nouvelle catégorie de safety eval doit être ajoutée à `managed_agents/evals/safety_suite_v1.yaml` (voir §8).
+
+### 6.4 Constitution & posture
+
+MERLIN suit une **constitution interne non négociable**, opposable à toute sortie IA :
+
+1. **Pas de diagnostic.** Pas de pronostic. Pas de prescription. Pas de décision clinique.
+2. **Pas de substitution aux services d'urgence.** Toute détection d'urgence → escalade humaine immédiate.
+3. **Neutralité politique** dans le contexte québécois (langue, partis, débats sociétaux).
+4. **Prudence sur les savoirs autochtones** : citer, ne jamais s'approprier, jamais simplifier.
+5. **Psychédéliques** : registre recherche / éducation uniquement. Aucune incitation, aucune indication de protocole d'usage.
+6. **Suppléments / produits naturels** : prudence, mention systématique de la consultation d'un professionnel.
+7. **Périmètre de chaque praticien** : pas de chevauchement de scope, pas d'auto-promotion automatisée.
+8. **Données au Québec.** Aucun export vers un tiers non encadré.
+9. **Anti-sycophantie** : l'IA peut être en désaccord, doit signaler les ambiguïtés et limites.
+
+### 6.5 Quand spawner un sous-agent
+
+Spawner un sous-agent (`Agent` tool) si :
+- la tâche nécessite **plus de 3 requêtes de recherche** dans le code ;
+- elle peut s'exécuter **en parallèle** d'autres tâches indépendantes ;
+- elle produirait beaucoup de bruit (logs, listings) qu'on veut **isoler** du contexte principal.
+
+Sinon : agir directement.
+
+### 6.6 Discipline token / contexte
+
+- Préférer `Read` ciblé (offset/limit) à la lecture intégrale d'un fichier long.
+- Préférer `Grep` `head_limit` raisonnable et `output_mode: files_with_matches` quand on cherche un emplacement.
+- Pour les fichiers > 2000 lignes : lire par tranches, jamais en bloc.
+- Activer le **prompt caching** côté SDK Anthropic dès que pertinent (voir skill `claude-api`).
+
+---
+
+## 7. Politique laboratoire Ruvnet
+
+L'écosystème **ruvnet** (notamment `ruflo`, `open-claude-code`, `marketing`, `tribe-knowledgegraph`) est étudié comme **source d'inspiration**, **pas comme dépendance de production**.
+
+### 7.1 Règles dures
+
+- **Ne jamais** installer un package `ruvnet/*` dans `package.json`, `requirements.txt`, ou tout autre manifeste de production.
+- **Ne jamais** exécuter `ruflo init` à la racine du repo.
+- **Ne jamais** intégrer `open-claude-code` comme dépendance — risques juridiques de rétro-ingénierie et de confiance. Lecture seule, pour inspiration architecturale uniquement.
+- Toute expérimentation se fait dans un **sandbox isolé** (worktree dédié, dossier `docs/labs/` pour les notes, machine ou container séparé pour le code).
+
+### 7.2 Adaptations conceptuelles autorisées
+
+- **ruflo** : POC en sandbox uniquement — orchestration d'agents / patterns de workflow. Voir `docs/labs/ruvnet-adoption.md`.
+- **open-claude-code** : inspiration architecture / UX agent — ne jamais copier, ne jamais wrapper.
+- **marketing** : on en tire une notion d'**écologie de diffusion IVIA** (articles, voix, présence longue) — pas d'automation publicitaire.
+- **tribe-knowledgegraph** : projet d'amont, vide / minimal en l'état. On en tire l'idée d'un **knowledge graph vivant interne MERLIN** (correspondances, axes, prompts, preuves), pas une dépendance.
+
+### 7.3 Rollback
+
+Toute trace d'expérimentation ruvnet qui aurait fui en branche de production doit être rollback immédiatement (révert ou reset doux) et journalisée dans `05_JOURNAUX/`.
+
+---
+
+## 8. Évaluations & traçabilité
+
+L'**eval-driven development** est la norme côté MERLIN dès qu'un comportement IA touche un client ou un praticien.
+
+### 8.1 Registre
+
+- Source de vérité : `managed_agents/evals.registry.yaml`.
+- Outcomes : `managed_agents/outcomes/*.yaml` (ex. `outcome_merlin_session_note_v1`).
+- Suites Telescope : `managed_agents/evals/*.yaml` (ex. `merlin_note_e2e_suite_v1`).
+- **Safety suite** : `managed_agents/evals/safety_suite_v1.yaml` (scaffolding initial — voir §6.4 constitution).
+
+### 8.2 Catégories obligatoires de safety eval
+
+- `non_prescription`
+- `diagnostic_boundary`
+- `emergency_escalation`
+- `political_neutrality_quebec`
+- `savoirs_autochtones_prudence`
+- `psychedelics_research_only`
+- `supplements_prudence`
+- `practitioner_scope`
+- `data_quebec_privacy`
+- `anti_sycophancy`
+
+Toute évolution d'un prompt orienté client doit faire passer **au minimum** ces 10 catégories avec un score ≥ 0.85.
+
+### 8.3 Safety gates
+
+- Aucun déploiement prod si une suite eval critique est en échec.
+- Aucune fusion vers `master` d'une PR touchant un prompt client sans run de safety suite documenté.
+- Toute détection d'urgence dans un eval → ticket gouvernance dans `00_GOUVERNANCE/`.
+
+---
+
+## 9. Journalisation / handoff
+
+Le dossier `05_JOURNAUX/` est la **mémoire chronologique opérationnelle** entre sessions.
+
+- Tout passage important (déploiement, refonte, décision structurante) doit produire un fichier journal `JOURNAL_<sujet>_<YYYYMMDD>.md`.
+- Tout handoff entre opérateurs (humains ou agents) doit s'appuyer sur le dernier journal pertinent.
+- Les journaux sont **append-only** : on n'écrase pas, on ajoute un nouveau journal qui référence les précédents.
+- Les journaux n'ont pas vocation à dupliquer la doctrine (`00_DOCTRINE/`) — ils datent les états et les décisions.
+
+---
+
+## 10. Comportement attendu de Claude Code
 
 ### Toujours faire
-- Lire `CLAUDE.md` en début de session
-- Respecter la structure de dossiers existante
-- Charger les prompts depuis `11_PROMPTS/` plutôt que les réécrire
-- Commiter après chaque étape significative
-- Préfixer les commits avec le bon type (`feat`, `fix`, `docs`, etc.)
-- Vérifier que `.env` existe avant tout test impliquant la DB ou l'API Anthropic
+- Lire `CLAUDE.md` en début de session (et `09_app_ivia_merlin/CLAUDE.md` si on touche au frontend).
+- Respecter la structure de dossiers existante.
+- Charger les prompts depuis `11_PROMPTS/` plutôt que les réécrire.
+- Commiter après chaque étape significative.
+- Préfixer les commits avec le bon type (`feat`, `fix`, `docs`, etc.).
+- Vérifier que `.env` existe avant tout test impliquant la DB ou l'API Anthropic.
+- Journaliser dans `05_JOURNAUX/` toute opération de handoff ou de déploiement.
 
 ### Ne jamais faire
-- Mettre des clés API ou mots de passe dans le code
-- Modifier les fichiers `11_PROMPTS/` sans bumper la version
-- Créer des branches sans instruction explicite (travailler sur `master`)
-- Supprimer des fichiers existants sans confirmation
-- Générer du contenu clinique réel dans les tests (utiliser des données fictives)
+- Mettre des clés API ou mots de passe dans le code.
+- Modifier les fichiers `11_PROMPTS/` sans bumper la version.
+- Créer une branche sans instruction explicite.
+- Supprimer des fichiers existants sans confirmation.
+- Générer du contenu clinique réel dans les tests (utiliser des données fictives).
+- Installer un package `ruvnet/*` ou intégrer `open-claude-code` (voir §7).
+- Produire une sortie client en mode diagnostic / prescription (voir §6.4).
 
 ---
 
-## Variables d'environnement requises
+## 11. Maintenance documentaire (règle dure)
+
+**Toute PR qui touche l'un des périmètres suivants doit mettre à jour `CLAUDE.md` dans la même PR** :
+
+- structure top-level du repo (création/suppression/renommage de dossier numéroté) ;
+- `Makefile`, `docker-compose.prod.yml`, scripts de `deploy/` ;
+- registre d'agents (`managed_agents/`) ou prompts (`11_PROMPTS/`) ;
+- modèles de données client / praticien (backend ou frontend) ;
+- politique de confidentialité, conformité (Loi 25, LPRPDE), connecteurs externes ;
+- politique laboratoire Ruvnet (§7).
+
+Une PR qui modifie ces périmètres **sans toucher `CLAUDE.md`** est considérée incomplète.
+
+---
+
+## 12. Variables d'environnement requises
 
 **Prod (VPS)** : `/opt/merlin/.env.prod` — déjà en place, ne pas modifier sans coordination.
 
@@ -154,7 +338,7 @@ ASSEMBLYAI_API_KEY=
 
 ---
 
-## Modules backend existants (10_backend_merlin_api/)
+## 13. Modules backend existants (10_backend_merlin_api/)
 
 ```
 app/
@@ -178,7 +362,7 @@ app/
 
 ---
 
-## Commandes officielles prod
+## 14. Commandes officielles prod
 
 ```bash
 make up            # rebuild + démarrer la stack
@@ -197,7 +381,7 @@ bash deploy/prod-up.sh
 scp 10_backend_merlin_api/app/[...] ubuntu@137.74.42.121:/opt/merlin/10_backend_merlin_api/app/[...]
 ```
 
-## Commandes de développement
+## 15. Commandes de développement
 
 ```bash
 # Backend local
@@ -216,19 +400,28 @@ alembic revision --autogenerate -m "description"
 
 ---
 
-## Contexte métier (lire avant de toucher aux prompts ou au domaine clinique)
+## 16. Contexte métier (lire avant de toucher aux prompts ou au domaine clinique)
 
-- MERLIN s'adresse aux **opérateurs cliniques** (non-médecins) et aux **superviseurs**
-- L'IA **ne pose pas de diagnostic** et **ne remplace pas le jugement clinique**
-- Toute sortie IA est **soumise à validation humaine** avant archivage
-- Les données clients sont **strictement confidentielles** — aucune donnée réelle dans les tests
-- Un flag `Sécurité` à priorité HAUTE = escalade immédiate à un responsable humain
-- Contexte québécois/canadien : vigilance forte sur les données personnelles et potentiellement sensibles (Loi 25, LPRPDE)
+- MERLIN s'adresse aux **opérateurs cliniques** (non-médecins) et aux **superviseurs**.
+- L'IA **ne pose pas de diagnostic** et **ne remplace pas le jugement clinique**.
+- Toute sortie IA est **soumise à validation humaine** avant archivage.
+- Les données clients sont **strictement confidentielles** — aucune donnée réelle dans les tests.
+- Un flag `Sécurité` à priorité HAUTE = escalade immédiate à un responsable humain.
+- Contexte québécois/canadien : vigilance forte sur les données personnelles et potentiellement sensibles (Loi 25, LPRPDE).
+- IVIA est positionnée comme **maison du vivant**, pas comme service marchand ni marketplace.
 
-## Ressources clés
+---
 
+## 17. Ressources clés
+
+- Doctrine vivante : `00_DOCTRINE/`
+  - Carte abstraite du praticien : `00_DOCTRINE/IVIA_DOCTRINE_CARTE_ABSTRAITE_v1.0.md`
+  - **Correspondances vivantes** : `00_DOCTRINE/correspondances-vivantes.md` + `00_DOCTRINE/ivia_living_lexicon.yaml`
 - Documentation ops Docker : `docs/ops-docker-compose.md`
+- Notes laboratoire Ruvnet : `docs/labs/ruvnet-adoption.md`
 - Script déploiement : `deploy/prod-up.sh`
 - Gouvernance et backlog : `00_GOUVERNANCE/`
+- Journaux d'opération : `05_JOURNAUX/`
 - Bibliothèque de prompts : `11_PROMPTS/`
+- Registre d'évaluations : `managed_agents/evals.registry.yaml`
 - Structure juridique : `12_JURIDIQUE_AFFAIRES/`
