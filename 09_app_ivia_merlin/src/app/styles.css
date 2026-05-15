@@ -255,7 +255,29 @@
   color: oklch(14% 0.016 82);
 }
 
+.hp-btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border-soft);
+}
+
+[data-theme="dark"] .hp-btn--ghost {
+  color: var(--ink);
+  border-color: var(--border-soft);
+}
+
+.hp-btn--ghost:hover {
+  border-color: var(--sage);
+  color: var(--sage);
+}
+
 .hp-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.hp-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
 
 /* ── HERO ───────────────────────────────────────────────────────────────────── */
 .hp-hero {
@@ -297,58 +319,38 @@
   max-width: 44ch;
 }
 
-/* Hero visual — composition typographique */
+/* Hero visual — vidéo trace vocale (refonte 2026-05-15) */
 .hp-hero__visual {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.hp-hero__art {
+.hp-hero__video-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
-  max-width: 420px;
+  max-width: 460px;
+  aspect-ratio: 4 / 5;
   background: var(--sand-deep);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 1.25rem;
   overflow: hidden;
+  box-shadow: 0 1px 2px oklch(20% 0.02 78 / 0.06),
+              0 8px 30px oklch(20% 0.02 78 / 0.08);
 }
 
-.hp-hero__art-word {
-  position: absolute;
-  font-family: var(--font-display);
-  font-weight: 400;
-  color: var(--ink);
-  opacity: 0.18;
-  user-select: none;
-  pointer-events: none;
+.hp-hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--sand-deep);
 }
 
-.hp-hero__art-word--1 {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  top: 22%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0.22;
-}
-
-.hp-hero__art-word--2 {
-  font-size: clamp(2rem, 6vw, 3.75rem);
-  top: 45%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0.14;
-}
-
-.hp-hero__art-word--3 {
-  font-size: clamp(1.5rem, 4.5vw, 2.75rem);
-  top: 65%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0.10;
+.hp-hero__video-fallback {
+  padding: var(--sp-4);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 @media (max-width: 760px) {
@@ -357,7 +359,10 @@
     gap: var(--sp-10);
   }
 
-  .hp-hero__visual { display: none; }
+  .hp-hero__video-wrap {
+    max-width: 360px;
+    aspect-ratio: 4 / 5;
+  }
 }
 
 /* ── PONT ────────────────────────────────────────────────────────────────────── */
@@ -675,4 +680,241 @@
 @media (max-width: 600px) {
   .hp-footer__inner { flex-direction: column; align-items: flex-start; gap: var(--sp-4); }
   .hp-footer__copy { margin-left: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REFONTE 2026-05-15 — sections nouvelles
+   Branche : refonte-ivia-site-unifie
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Intro réutilisable sous un h2 */
+.hp-section__intro {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin-bottom: var(--sp-10);
+}
+
+/* ── Ce que vous pouvez déposer ───────────────────────────────────────────── */
+.hp-depots {
+  background: var(--sand);
+}
+
+.hp-depots__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 58ch;
+  margin-top: var(--sp-6);
+}
+
+.hp-depots__item {
+  position: relative;
+  padding: var(--sp-4) var(--sp-5) var(--sp-4) var(--sp-8);
+  background: var(--background);
+  border-radius: 0.75rem;
+  border-left: 3px solid var(--sage);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+[data-theme="dark"] .hp-depots__item {
+  background: oklch(24% 0.018 82);
+}
+
+/* ── 5 Dimensions ─────────────────────────────────────────────────────────── */
+.hp-dimensions {
+  background: var(--background);
+}
+
+.hp-dim-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-6);
+}
+
+.hp-dim-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-6);
+  background: var(--sand);
+  border-radius: 1rem;
+  border-top: 3px solid var(--sage);
+}
+
+[data-theme="dark"] .hp-dim-card {
+  background: oklch(24% 0.018 82);
+}
+
+.hp-dim-card:nth-child(2) { border-top-color: var(--earth); }
+.hp-dim-card:nth-child(3) { border-top-color: var(--blue-calm); }
+.hp-dim-card:nth-child(4) { border-top-color: var(--sage); }
+.hp-dim-card:nth-child(5) { border-top-color: var(--earth); }
+
+.hp-dim-card__num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--sage);
+  line-height: 1;
+}
+
+.hp-dim-card__title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.hp-dim-card__body {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 900px) {
+  .hp-dim-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .hp-dim-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Accompagnement (3 étapes en ordre) ───────────────────────────────────── */
+.hp-accompagne {
+  background: var(--sand);
+}
+
+/* On réutilise .hp-etapes / .hp-etape mais l'élément est <ol> ici. */
+.hp-accompagne .hp-etapes {
+  grid-template-columns: 1fr;
+  list-style: none;
+  counter-reset: none;
+}
+
+/* ── Souveraineté ─────────────────────────────────────────────────────────── */
+.hp-souverainete {
+  background: var(--background);
+}
+
+.hp-souverainete__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-12);
+  align-items: start;
+}
+
+.hp-souverainete__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.hp-souverainete__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.hp-souverainete__list li {
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--sand);
+  border-radius: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+[data-theme="dark"] .hp-souverainete__list li {
+  background: oklch(24% 0.018 82);
+}
+
+.hp-souverainete__list strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .hp-souverainete__inner { grid-template-columns: 1fr; gap: var(--sp-8); }
+}
+
+/* ── Savoirs du vivant ────────────────────────────────────────────────────── */
+.hp-savoirs {
+  background: var(--sage-light);
+}
+
+[data-theme="dark"] .hp-savoirs {
+  background: oklch(22% 0.032 148);
+}
+
+.hp-savoirs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-5);
+}
+
+.hp-savoir-card {
+  padding: var(--sp-6);
+  background: var(--background);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.hp-savoir-card__tag {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--sage);
+  text-transform: uppercase;
+}
+
+.hp-savoir-card__body {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.hp-savoirs__note {
+  margin-top: var(--sp-8);
+}
+
+@media (max-width: 900px) {
+  .hp-savoirs__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .hp-savoirs__grid { grid-template-columns: 1fr; }
+}
+
+/* ── Disclaimer non médical ───────────────────────────────────────────────── */
+.hp-disclaimer {
+  background: var(--sand-deep);
+  padding: var(--sp-8) 0;
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.hp-disclaimer .hp-section__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 3rem);
+}
+
+.hp-disclaimer p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 80ch;
+}
+
+.hp-disclaimer strong {
+  color: var(--ink);
+  font-weight: 600;
 }

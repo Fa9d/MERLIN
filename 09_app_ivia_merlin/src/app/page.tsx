@@ -1,206 +1,313 @@
-﻿"use client";
-import { useState } from "react";
+"use client";
 import Link from "next/link";
 import "./styles.css";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 
-/* ── Data ─────────────────────────────────────────────────────────────────── */
-const PILIERS = [
+/* ── Données éditoriales ──────────────────────────────────────────────────────
+   Refonte 2026-05-15 — branche `refonte-ivia-site-unifie`.
+   Positionnement : IVIA n'est pas une clinique. Pas une promesse de guérison.
+   C'est un espace québécois d'écoute, de compréhension du vivant et
+   d'accompagnement vers l'autonomie.
+   ────────────────────────────────────────────────────────────────────────── */
+
+const DEPOTS = [
+  "Un poids que vous portez seul·e depuis longtemps.",
+  "Une transition qui ne se laisse pas nommer.",
+  "Un doute, une fatigue, une perte de sens.",
+  "Une question sur votre corps, votre rythme, vos liens.",
+  "Une intuition que quelque chose doit changer.",
+];
+
+const DIMENSIONS = [
   {
     num: "01",
-    title: "L\u2019\u00e9coute avant tout",
-    body: "Je prends le temps de comprendre ce que vous vivez, sans grille, sans jugement. Chaque personne arrive avec son histoire unique.",
+    title: "Vécu",
+    body: "Ce que vous traversez en ce moment, mis en mots à votre rythme.",
   },
   {
     num: "02",
-    title: "Des rep\u00e8res concrets",
-    body: "À chaque rencontre, on cherche quelque chose que vous pouvez garder — une prise de conscience, une d\u00e9cision, une direction.",
+    title: "Corps & métabolisme",
+    body: "Sommeil, énergie, alimentation, rythme — le corps comme témoin et indicateur.",
   },
   {
     num: "03",
-    title: "Un rythme qui vous appartient",
-    body: "Pas de protocole impos\u00e9. On avance \u00e0 votre rythme, selon ce dont vous avez besoin.",
-  },
-];
-
-const AUDIENCE = [
-  {
-    tag: "Adultes",
-    mod: "--adults",
-    body: "Vous traversez une p\u00e9riode difficile, une transition, un doute profond. Vous cherchez \u00e0 comprendre ce qui se passe en vous — et \u00e0 trouver une direction.",
+    title: "Relations",
+    body: "Les liens qui portent, ceux qui pèsent, ceux qu'on cherche à clarifier.",
   },
   {
-    tag: "Adolescents",
-    mod: "--ados",
-    body: "L\u2019adolescence peut \u00eatre un temps de turbulence int\u00e9rieure. Je cr\u00e9e un espace s\u00e9curitaire o\u00f9 parler devient possible, sans pression, sans jugement.",
+    num: "04",
+    title: "Temps & lignées",
+    body: "Ce qui se transmet, ce qui se répète, ce qui demande à être reposé.",
   },
   {
-    tag: "Parents \u0026 familles",
-    mod: "--families",
-    body: "Parfois c\u2019est la dynamique familiale qui a besoin d\u2019attention. On regarde ensemble ce qui se passe et comment retrouver un terrain commun.",
+    num: "05",
+    title: "Sens",
+    body: "Vos repères, ce qui compte, la direction que vous reconnaissez comme vôtre.",
   },
 ];
 
 const ETAPES = [
-  { num: "01", title: "Vous arrivez comme vous \u00eates", body: "Pas besoin de pr\u00e9parer quoi que ce soit. Vous arrivez avec ce qui est l\u00e0." },
-  { num: "02", title: "On prend le temps d\u2019\u00e9couter", body: "Je pose des questions, j\u2019\u00e9coute, je refl\u00e8te. On explore ce que vous portez." },
-  { num: "03", title: "On cherche ensemble", body: "Pas de r\u00e9ponses toutes faites. On cherche ce qui a du sens pour vous, maintenant." },
-  { num: "04", title: "Vous repartez avec quelque chose", body: "Une clart\u00e9, une d\u00e9cision, une prochaine \u00e9tape. Quelque chose qui vous appartient." },
+  {
+    num: "01",
+    title: "Un questionnaire calme",
+    body: "Quelques questions, à votre rythme, pour déposer ce qui est là — sans grille clinique, sans diagnostic.",
+  },
+  {
+    num: "02",
+    title: "Une synthèse personnelle",
+    body: "IVIA organise ce que vous avez partagé en une lecture claire, que vous gardez et que vous pouvez retravailler.",
+  },
+  {
+    num: "03",
+    title: "Un·e praticien·ne, si vous le souhaitez",
+    body: "Si une rencontre humaine fait sens, IVIA vous oriente vers un·e praticien·ne au Québec, en respectant votre consentement.",
+  },
 ];
 
-/* ── Component ────────────────────────────────────────────────────────────── */
+const SAVOIRS = [
+  {
+    tag: "Corps & métabolisme",
+    body: "Sommeil, glycémie, microbiote, charge inflammatoire : ce qu'on commence à comprendre du vivant — sans recette universelle.",
+  },
+  {
+    tag: "Relations & attachement",
+    body: "Comment les liens se forment, se réparent, se choisissent. Ce que la recherche dit, ce qu'elle ne dit pas encore.",
+  },
+  {
+    tag: "Temporalité & lignées",
+    body: "Ce qui se transmet d'une génération à l'autre, dans les histoires et dans les corps. Lecture exploratoire, prudente.",
+  },
+  {
+    tag: "Recherche émergente",
+    body: "Travaux en cours sur les états de conscience modifiés (méditation, respiration, molécules à l'étude). Cadre, prudence, et sources.",
+  },
+  {
+    tag: "Autonomie & souveraineté",
+    body: "Prévention, soin de soi, données personnelles : reprendre du pouvoir sur sa santé sans dépendre d'une autorité unique.",
+  },
+];
+
+/* ── Composant ────────────────────────────────────────────────────────────── */
 export default function HomePage() {
-  const [emailVal, setEmailVal] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
-
-  function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (emailVal.trim()) setEmailSent(true);
-  }
-
   return (
     <PublicLayout>
       <div className="hp">
-      <main>
-        {/* ── HERO ──────────────────────────────────────────────────────── */}
-        <section className="hp-hero">
-          <div className="hp-hero__inner">
-            <div className="hp-hero__copy">
-              <p className="hp-kicker">Accompagnement individuel · Montréal</p>
-              <h1 className="hp-hero__h1">
-                Un espace pour déposer<br />
-                ce que vous portez
-              </h1>
-              <p className="hp-hero__sub">
-                Je vous accompagne avec calme et une vraie présence — pour retrouver de la clarté et repartir avec quelque chose de concret.
-              </p>
-              <Link href="/rendez-vous" className="hp-btn hp-btn--primary">
-                Prendre un premier rendez-vous
-              </Link>
-            </div>
-            <div className="hp-hero__visual" aria-hidden="true">
-              <div className="hp-hero__art">
-                <span className="hp-hero__art-word hp-hero__art-word--1">présence</span>
-                <span className="hp-hero__art-word hp-hero__art-word--2">écoute</span>
-                <span className="hp-hero__art-word hp-hero__art-word--3">clarté</span>
+        <main>
+          {/* ── HERO ──────────────────────────────────────────────────────── */}
+          <section className="hp-hero">
+            <div className="hp-hero__inner">
+              <div className="hp-hero__copy">
+                <p className="hp-kicker">IVIA · Québec</p>
+                <h1 className="hp-hero__h1">
+                  Parlez en toute liberté
+                  <br />
+                  dans votre espace privé.
+                </h1>
+                <p className="hp-hero__sub">
+                  IVIA n’est ni une clinique ni un site de soins. C’est un espace
+                  d’écoute et de compréhension du vivant — vos mots restent chez
+                  vous, hébergés au Québec.
+                </p>
+                <div className="hp-hero__ctas">
+                  <Link href="/demarche" className="hp-btn hp-btn--primary">
+                    Commencer dans mon espace privé
+                  </Link>
+                  <Link href="#savoirs" className="hp-btn hp-btn--ghost">
+                    Explorer les savoirs du vivant
+                  </Link>
+                </div>
+              </div>
+              <div className="hp-hero__visual">
+                <div className="hp-hero__video-wrap">
+                  <video
+                    className="hp-hero__video"
+                    src="/assets/video/ivia_accueil_trace_vocale_v2.mp4"
+                    controls
+                    preload="metadata"
+                    playsInline
+                    aria-label="Trace vocale d'introduction d'IVIA par David Phaneuf"
+                  >
+                    <p className="hp-hero__video-fallback">
+                      Trace vocale d’introduction d’IVIA — votre navigateur ne
+                      supporte pas la lecture vidéo HTML5.
+                    </p>
+                  </video>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── PONT ──────────────────────────────────────────────────────── */}
-        <section className="hp-pont">
-          <p className="hp-pont__text">
-            Vous n’avez pas à avoir les mots parfaits.<br />
-            <em>Vous avez juste à commencer.</em>
-          </p>
-        </section>
-
-        {/* ── APPROCHE ──────────────────────────────────────────────────── */}
-        <section className="hp-section hp-approche" id="approche">
-          <div className="hp-section__inner">
-            <p className="hp-kicker">Ma manière d’accompagner</p>
-            <h2 className="hp-h2">Je ne suis pas là pour diagnostiquer<br className="hp-br" /> ni pour diriger.</h2>
-            <p className="hp-approche__intro">
-              Je suis là pour écouter vraiment, poser les bonnes questions, et vous aider à voir plus clair.
+          {/* ── POSITIONNEMENT / PONT ─────────────────────────────────────── */}
+          <section className="hp-pont">
+            <p className="hp-pont__text">
+              IVIA n’apporte pas de diagnostic, pas de protocole, pas de
+              promesse de guérison.
+              <br />
+              <em>
+                IVIA fait de la place pour que vous puissiez vous entendre vous-même.
+              </em>
             </p>
-            <div className="hp-piliers">
-              {PILIERS.map((p) => (
-                <div key={p.num} className="hp-pilier">
-                  <span className="hp-pilier__num">{p.num}</span>
-                  <h3 className="hp-pilier__title">{p.title}</h3>
-                  <p className="hp-pilier__body">{p.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── POUR QUI ──────────────────────────────────────────────────── */}
-        <section className="hp-section hp-pourqui" id="pour-qui">
-          <div className="hp-section__inner">
-            <p className="hp-kicker">Pour qui</p>
-            <h2 className="hp-h2">Chaque personne arrive avec son histoire.</h2>
-            <div className="hp-audience">
-              {AUDIENCE.map((a) => (
-                <div key={a.tag} className={`hp-audience__card hp-audience__card${a.mod}`}>
-                  <h3 className="hp-audience__tag">{a.tag}</h3>
-                  <p className="hp-audience__body">{a.body}</p>
-                  <a href="#rencontre" className="hp-link">Je veux en savoir plus →</a>
-                </div>
-              ))}
+          {/* ── CE QUE VOUS POUVEZ DÉPOSER ────────────────────────────────── */}
+          <section className="hp-section hp-depots" id="deposer">
+            <div className="hp-section__inner">
+              <p className="hp-kicker">Ce que vous pouvez déposer</p>
+              <h2 className="hp-h2">
+                Vous n’avez pas besoin d’avoir les mots parfaits.
+              </h2>
+              <ul className="hp-depots__list">
+                {DEPOTS.map((d) => (
+                  <li key={d} className="hp-depots__item">
+                    {d}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── RENCONTRE ─────────────────────────────────────────────────── */}
-        <section className="hp-section hp-rencontre" id="rencontre">
-          <div className="hp-section__inner">
-            <p className="hp-kicker">Comment se passe une rencontre</p>
-            <h2 className="hp-h2">50 minutes de présence complète.</h2>
-            <div className="hp-etapes">
-              {ETAPES.map((e) => (
-                <div key={e.num} className="hp-etape">
-                  <span className="hp-etape__num">{e.num}</span>
-                  <div>
-                    <h3 className="hp-etape__title">{e.title}</h3>
-                    <p className="hp-etape__body">{e.body}</p>
-                  </div>
-                </div>
-              ))}
+          {/* ── 5 DIMENSIONS ──────────────────────────────────────────────── */}
+          <section className="hp-section hp-dimensions" id="dimensions">
+            <div className="hp-section__inner">
+              <p className="hp-kicker">Les cinq dimensions IVIA</p>
+              <h2 className="hp-h2">
+                Une lecture du vivant, sans le réduire.
+              </h2>
+              <p className="hp-section__intro">
+                Vous n’êtes pas un symptôme, ni une case. IVIA propose une
+                lecture en cinq dimensions — comme cinq portes d’entrée pour
+                comprendre ce qui se passe pour vous, à votre rythme.
+              </p>
+              <div className="hp-dim-grid">
+                {DIMENSIONS.map((d) => (
+                  <article key={d.num} className="hp-dim-card">
+                    <span className="hp-dim-card__num">{d.num}</span>
+                    <h3 className="hp-dim-card__title">{d.title}</h3>
+                    <p className="hp-dim-card__body">{d.body}</p>
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── CAPSULES ──────────────────────────────────────────────────── */}
-        <section className="hp-section hp-capsules">
-          <div className="hp-section__inner hp-capsules__inner">
-            <div className="hp-capsules__copy">
-              <p className="hp-kicker">Capsules audio · À venir</p>
-              <h2 className="hp-h2 hp-h2--sm">De courtes écoutes pour<br />les moments difficiles.</h2>
-              <p className="hp-capsules__body">
-                La fatigue décisionnelle, l’anxiété du dimanche soir, la voix intérieure trop sévère. Je travaille en ce moment à vous les offrir.
+          {/* ── COMMENT IVIA ACCOMPAGNE ───────────────────────────────────── */}
+          <section className="hp-section hp-accompagne" id="accompagnement">
+            <div className="hp-section__inner">
+              <p className="hp-kicker">Comment IVIA accompagne</p>
+              <h2 className="hp-h2">
+                Trois temps, à votre rythme.
+              </h2>
+              <ol className="hp-etapes">
+                {ETAPES.map((e) => (
+                  <li key={e.num} className="hp-etape">
+                    <span className="hp-etape__num">{e.num}</span>
+                    <div>
+                      <h3 className="hp-etape__title">{e.title}</h3>
+                      <p className="hp-etape__body">{e.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </section>
+
+          {/* ── CONFIDENTIALITÉ & SOUVERAINETÉ ────────────────────────────── */}
+          <section className="hp-section hp-souverainete" id="souverainete">
+            <div className="hp-section__inner hp-souverainete__inner">
+              <div className="hp-souverainete__copy">
+                <p className="hp-kicker">Confidentialité &amp; souveraineté</p>
+                <h2 className="hp-h2">
+                  Vos mots restent les vôtres.
+                </h2>
+                <p className="hp-section__intro">
+                  IVIA est conçu au Québec, pour le Québec. Vos données sont
+                  hébergées ici, sous le cadre de la Loi 25. Aucun partage par
+                  défaut. Aucun envoi sans votre consentement explicite.
+                </p>
+              </div>
+              <ul className="hp-souverainete__list">
+                <li>
+                  <strong>Hébergement québécois.</strong> Les serveurs et la
+                  base de données restent sur le territoire.
+                </li>
+                <li>
+                  <strong>Connecteurs privés.</strong> Aucune analyse publicitaire,
+                  aucun pixel tiers sur votre parcours.
+                </li>
+                <li>
+                  <strong>Consentement par étape.</strong> Vous décidez à
+                  chaque pas ce qui peut être partagé, et avec qui.
+                </li>
+                <li>
+                  <strong>Retrait possible.</strong> Vous pouvez exporter ou
+                  effacer vos traces à tout moment.
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          {/* ── SAVOIRS DU VIVANT ─────────────────────────────────────────── */}
+          <section className="hp-section hp-savoirs" id="savoirs">
+            <div className="hp-section__inner">
+              <p className="hp-kicker">Savoirs du vivant · Bibliothèque éditoriale</p>
+              <h2 className="hp-h2">
+                Comprendre, sans prescrire.
+              </h2>
+              <p className="hp-section__intro">
+                IVIA rassemble des lectures, des synthèses et des sujets de
+                recherche émergente. On y parle du corps, des liens, du temps
+                long, et des frontières mouvantes de la conscience — toujours
+                avec prudence, sources, et sans recommandation thérapeutique.
+              </p>
+              <div className="hp-savoirs__grid">
+                {SAVOIRS.map((s) => (
+                  <article key={s.tag} className="hp-savoir-card">
+                    <h3 className="hp-savoir-card__tag">{s.tag}</h3>
+                    <p className="hp-savoir-card__body">{s.body}</p>
+                  </article>
+                ))}
+              </div>
+              <p className="hp-savoirs__note">
+                <Link href="/ressources" className="hp-link">
+                  Parcourir la bibliothèque complète →
+                </Link>
               </p>
             </div>
-            <div className="hp-capsules__form-wrap">
-              {emailSent ? (
-                <p className="hp-capsules__confirm">Merci — je vous écrirai à leur sortie.</p>
-              ) : (
-                <form className="hp-capsules__form" onSubmit={handleEmailSubmit} aria-label="Notification capsules audio">
-                  <label htmlFor="capsule-email" className="hp-capsules__label">
-                    Recevoir un mot à leur sortie
-                  </label>
-                  <div className="hp-capsules__row">
-                    <input
-                      id="capsule-email"
-                      type="email"
-                      required
-                      placeholder="votre@courriel.com"
-                      className="hp-input"
-                      value={emailVal}
-                      onChange={(e) => setEmailVal(e.target.value)}
-                    />
-                    <button type="submit" className="hp-btn hp-btn--secondary">M’avertir</button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
-        <section className="hp-cta-final">
-          <div className="hp-section__inner hp-cta-final__inner">
-            <p className="hp-cta-final__text">
-              Si quelque chose résonne,<br />
-              c’est peut-être le bon moment.
-            </p>
-            <Link href="/rendez-vous" className="hp-btn hp-btn--primary">
-              Prendre un premier rendez-vous →
-            </Link>
-          </div>
-        </section>
-      </main>
+          {/* ── DISCLAIMER NON MÉDICAL ────────────────────────────────────── */}
+          <section className="hp-disclaimer" aria-label="Avertissement non médical">
+            <div className="hp-section__inner">
+              <p>
+                <strong>IVIA n’est pas un service médical.</strong> IVIA ne pose pas
+                de diagnostic, ne prescrit pas de traitement et ne remplace pas
+                un·e professionnel·le de la santé. Si vous vivez une situation
+                de détresse, composez le <strong>988</strong> (ligne canadienne
+                d’aide en cas de crise suicidaire) ou rendez-vous à l’urgence
+                la plus proche.
+              </p>
+            </div>
+          </section>
+
+          {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
+          <section className="hp-cta-final">
+            <div className="hp-section__inner hp-cta-final__inner">
+              <p className="hp-cta-final__text">
+                Si quelque chose résonne,
+                <br />
+                vous pouvez entrer doucement.
+              </p>
+              <div className="hp-hero__ctas">
+                <Link href="/demarche" className="hp-btn hp-btn--primary">
+                  Entrer dans IVIA
+                </Link>
+                <Link href="#savoirs" className="hp-btn hp-btn--ghost">
+                  Continuer à explorer
+                </Link>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </PublicLayout>
   );
