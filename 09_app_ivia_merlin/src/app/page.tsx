@@ -1,37 +1,38 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import "./styles.css";
 import "./styles.v3.css";
+import "./styles.orientation.css";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
+import { OrientationFlow } from "@/components/orientation/OrientationFlow";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   IVIA — Refonte stratégique (branche refonte-ivia-site-unifie)
-   Concept : La maison du vivant.
+   IVIA — Refonte UI/UX du seuil public
+   Concept : La maison du vivant — cartographie vivante, lumière hivernale.
    Doctrine : IVIA accueille · MERLIN structure · MÉSANGES accompagne.
    Posture : non médicale, québécoise, sous consentement, sans diagnostic.
-   Source de copy : ivia_textes_accueil_fusion_v1.md (approuvée).
    ────────────────────────────────────────────────────────────────────────── */
 
-/* Quatre portes publiques — pas de tarification, pas de promesse de soin. */
 const PATHWAYS = [
   {
     id: "pour-moi",
     kicker: "Pour moi",
     title: "Déposer ce que je vis",
     body:
-      "Je veux mieux comprendre ce qui m’arrive, ce qui se répète et ce qui pourrait m’aider à retrouver une voie d’équilibre.",
-    href: "/demarche",
-    cta: "Commencer mon espace privé",
+      "Comprendre ce qui se répète, ce qui pèse et ce qui pourrait retrouver une voie d'équilibre.",
+    href: "#orientation",
+    cta: "Commencer le parcours d'orientation",
     tone: "ink",
   },
   {
     id: "pour-une-collectivite",
     kicker: "Pour une collectivité",
-    title: "Explorer · Analyser · Relier",
+    title: "Cartographier ce qui circule",
     body:
-      "Nous sommes une famille, une communauté, un organisme ou un groupe humain, et quelque chose demande à être nommé.",
-    href: "#collectivites-vivantes",
+      "Une famille, une équipe, un organisme, une communauté. Ce qui se nomme ensemble est déjà un premier pas.",
+    href: "#orientation",
     cta: "Ouvrir un espace commun",
     tone: "argile",
   },
@@ -40,59 +41,58 @@ const PATHWAYS = [
     kicker: "Pour les praticiens",
     title: "Structurer ma pratique",
     body:
-      "Je veux intégrer une approche différente de préparation, d’interprétation et d’amélioration continue, sans perdre ma posture ni mon jugement.",
-    href: "/espace-praticien",
-    cta: "Découvrir l’espace praticien",
+      "Préparer, interpréter, ajuster. Sans grille rigide, sans effacer mon jugement professionnel.",
+    href: "#orientation",
+    cta: "Découvrir l'espace praticien",
     tone: "sage",
   },
   {
     id: "comprendre-ivia",
     kicker: "Comprendre IVIA",
-    title: "Lire l’approche",
+    title: "Lire l'approche",
     body:
-      "Je veux comprendre la maison du vivant, IVIA, MERLIN, MÉSANGES et le positionnement de cette démarche.",
+      "La maison du vivant, la doctrine IVIA · MERLIN · MÉSANGES, et le positionnement de cette démarche.",
     href: "#approche",
-    cta: "Lire l’approche",
+    cta: "Lire l'approche",
     tone: "cream",
   },
 ] as const;
 
-/* Neuf dimensions observées — territoire en premier axe. */
 const DIMENSIONS = [
   {
     label: "Territoire & terrain vivant",
     body:
-      "La terre, les lieux, les saisons, les paysages, les communautés et l’appartenance. Ce qui nous porte avant même que nous sachions le nommer.",
+      "La terre, les lieux, les saisons, les paysages, les communautés et l'appartenance. Ce qui nous porte avant même que nous sachions le nommer.",
   },
   {
     label: "Corps & métabolisme",
     body:
-      "Signaux somatiques, énergie, inflammation, sommeil, rythme circadien, digestion et capacité du corps à retrouver un mouvement plus juste.",
+      "Signaux somatiques, énergie, sommeil, rythme circadien, digestion et capacité du corps à retrouver un mouvement plus juste.",
   },
   {
-    label: "Émotions & états intérieurs",
+    label: "États intérieurs",
     body:
       "Ce qui traverse, ce qui appuie, ce qui déborde ou ce qui demande à être nommé sans être réduit à une étiquette.",
   },
   {
-    label: "Relations & famille",
+    label: "Liens & famille",
     body:
       "Liens proches, tensions, transmissions, rôles, silences et ce qui circule entre les êtres.",
   },
   {
     label: "Temporalité & répétitions",
     body:
-      "Ce qui revient, les cycles, les boucles, les angles morts et les moments où l’histoire semble se répéter.",
+      "Ce qui revient, les cycles, les boucles, les angles morts et les moments où l'histoire semble se répéter.",
   },
   {
-    label: "Alimentation, sommeil & rythmes",
+    label: "Numérique & attention",
     body:
-      "Le quotidien comme terrain vivant : gestes, habitudes, repos, repas, mouvements, excès, manques et équilibres physiologiques.",
+      "Liens artificiels, écrans, fil sans fin, notifications, IA conversationnelles. Ce qui détourne, ce qui isole, ce qui peut aussi soutenir.",
   },
   {
     label: "Héritages & transgénérationnel",
     body:
-      "Mémoires familiales, traces de l’histoire, savoirs ancestraux, loyautés, blessures et transmissions parfois inscrites sans mots.",
+      "Mémoires familiales, traces de l'histoire, savoirs ancestraux, loyautés, blessures et transmissions parfois inscrites sans mots.",
   },
   {
     label: "Pression sociale & culturelle",
@@ -100,37 +100,36 @@ const DIMENSIONS = [
       "Attentes, normes, injonctions, isolement, performance, précarité, appartenance et ce qui pèse parfois sans être nommé.",
   },
   {
-    label: "Autonomie, échange & action",
+    label: "Autonomie & action",
     body:
       "Ce qui peut se remettre en mouvement lorsque la personne retrouve un rapport plus juste à elle-même, aux autres, au territoire et au vivant.",
   },
 ];
 
-/* Six pas — comment IVIA accueille et accompagne, au rythme du vivant. */
 const ACCOMPAGNEMENT = [
   {
     num: "01",
     label: "Vous déposez",
     body:
-      "Dans vos mots, avec votre histoire, votre situation, vos questions et ce que vous êtes prêt à nommer.",
+      "Dans vos mots, avec votre histoire, votre situation, vos questions et ce que vous êtes prêt·e à nommer.",
   },
   {
     num: "02",
     label: "MERLIN structure",
     body:
-      "MERLIN met en ordre les éléments transmis, repère les liens possibles et prépare une lecture structurée, toujours sous validation humaine.",
+      "MERLIN met en ordre les éléments transmis, repère les liens possibles et prépare une lecture, toujours sous validation humaine.",
   },
   {
     num: "03",
     label: "Nous ouvrons une lecture",
     body:
-      "Une lecture sensible et multidimensionnelle, sans diagnostic, pour faire apparaître des pistes de compréhension, de clarification et d’orientation.",
+      "Une lecture sensible et multidimensionnelle, sans diagnostic, pour faire apparaître des pistes de compréhension et de clarification.",
   },
   {
     num: "04",
     label: "MÉSANGES accompagne",
     body:
-      "Les mésanges ne quittent pas le Québec lorsque vient l’hiver. Elles restent, traversent le froid et rappellent qu’une présence demeure possible. MÉSANGES accompagne ainsi par petites touches : une question, une nuance, une piste.",
+      "Les mésanges ne quittent pas le Québec lorsque vient l'hiver. Elles restent, traversent le froid et rappellent qu'une présence demeure possible. MÉSANGES accompagne par petites touches : une question, une nuance, une piste.",
   },
   {
     num: "05",
@@ -140,40 +139,38 @@ const ACCOMPAGNEMENT = [
   },
   {
     num: "06",
-    label: "Nous suivons l’évolution",
+    label: "Nous suivons l'évolution",
     body:
-      "Ensemble, grâce aux outils proposés, nous observons ce qui change, ce qui résiste, ce qui revient et ce qui demande une attention nouvelle.",
+      "Ensemble, nous observons ce qui change, ce qui résiste, ce qui revient et ce qui demande une attention nouvelle.",
   },
 ];
 
-/* Architecture trinitaire — trois noms, une seule attention. */
 const ARCHITECTURE = [
   {
     name: "IVIA",
     role: "accueille",
     body:
-      "IVIA est le seuil, la maison commune et le concept. IVIA signifie In Vivo In Actu : Au sein de l’être, en actes.",
+      "IVIA est le seuil et la maison commune. IVIA signifie In Vivo In Actu : au sein de l'être, en actes.",
   },
   {
     name: "MERLIN",
     role: "structure",
     body:
-      "MERLIN est l’infrastructure interne : écoute, analyse, classification, mise en relation et structuration, sous validation humaine.",
+      "MERLIN est l'infrastructure interne : écoute, analyse, mise en relation et structuration, sous validation humaine.",
   },
   {
     name: "MÉSANGES",
     role: "accompagne",
     body:
-      "MÉSANGES accompagne par la voix, les nuances, les pistes et les petites orientations qui aident à reprendre direction.",
+      "MÉSANGES accompagne par la voix, les nuances et les petites orientations qui aident à reprendre direction.",
   },
 ];
 
-/* Collectivités vivantes — clarifier, sans imposer une lecture unique. */
 const COLLECTIF_PROMISES = [
   "Cartographier les tensions, mais aussi ce qui est sain, vivant et déjà présent.",
   "Identifier les difficultés, les craintes, les répétitions et les angles morts.",
-  "Soutenir une action commune, réaliste et partagée, sans imposer une lecture unique.",
-  "Ouvrir des pistes d’action plutôt que prescrire une direction.",
+  "Soutenir une action commune et partagée, sans imposer une lecture unique.",
+  "Ouvrir des pistes plutôt que prescrire une direction.",
 ];
 
 const COLLECTIF_PUBLICS = [
@@ -185,7 +182,6 @@ const COLLECTIF_PUBLICS = [
   "Milieux humains en transition",
 ];
 
-/* Espace praticien — valeur concrète, posture éthique. */
 const PRATICIEN_VALUE = [
   {
     label: "Interprétation structurée",
@@ -195,21 +191,20 @@ const PRATICIEN_VALUE = [
   {
     label: "Préparation des rencontres",
     body:
-      "Un fil clair entre les séances, sans grille rigide. Un cadre qui sert l’écoute, la mémoire, la préparation et la continuité.",
+      "Un fil clair entre les séances, sans grille rigide. Un cadre au service de l'écoute, de la mémoire et de la continuité.",
   },
   {
     label: "Compétences & limites déclarées",
     body:
-      "Diplômé·e, en formation, hors ordre ou issu·e d’une pratique complémentaire : chaque statut est nommé, cadré et jamais effacé.",
+      "Diplômé·e, en formation, hors ordre ou issu·e d'une pratique complémentaire : chaque statut est nommé, cadré et jamais effacé.",
   },
   {
     label: "Boucle de feedback éthique",
     body:
-      "Vos interprétations nourrissent votre pratique. IVIA propose un miroir structuré pour enrichir votre préparation, votre interprétation et votre suivi.",
+      "Vos interprétations nourrissent votre pratique. IVIA propose un miroir structuré pour enrichir votre préparation et votre suivi.",
   },
 ];
 
-/* Souveraineté & prudence — sans jargon, sans corporate. */
 const SOUVERAINETE = [
   {
     glyph: "QC",
@@ -225,53 +220,56 @@ const SOUVERAINETE = [
     glyph: "◯",
     title: "Connecteurs privés",
     body:
-      "Pas de pixels tiers, pas de branchement externe imposé. Les connecteurs sont pensés comme internes, privés et consentis.",
+      "Pas de pixels tiers, pas de branchement externe imposé. Les connecteurs restent internes et consentis.",
   },
   {
     glyph: "⚕",
     title: "Posture non médicale",
     body:
-      "IVIA n’est pas une clinique. Nous ne diagnostiquons pas et nous ne prescrivons rien.",
+      "IVIA n'est pas une clinique. Nous ne diagnostiquons pas et nous ne prescrivons rien.",
   },
 ];
 
-/* ── Composant ────────────────────────────────────────────────────────────── */
 export default function HomePage() {
   return (
     <PublicLayout>
-      <div className="hp hp--v3 hp--maison">
+      <div className="hp hp--v3 hp--maison hp--seuil">
         <main>
           {/* ── HERO — La maison du vivant ─────────────────────────────── */}
-          <section className="v3-hero v3-hero--maison">
-            <div className="v3-hero__bg" aria-hidden="true">
-              <span className="v3-hero__glow v3-hero__glow--a" />
-              <span className="v3-hero__glow v3-hero__glow--b" />
-              <span className="v3-hero__grain" />
+          <section className="v3-hero v3-hero--seuil" aria-labelledby="hero-title">
+            <div className="v3-hero__media" aria-hidden="true">
+              <Image
+                src="/assets/imagery/territoire-vivant-hero.png"
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="v3-hero__img"
+              />
+              <span className="v3-hero__veil" />
             </div>
 
-            <div className="v3-hero__inner v3-hero__inner--maison">
+            <div className="v3-hero__inner v3-hero__inner--seuil">
               <p className="v3-eyebrow">
                 <span className="v3-eyebrow__dot" aria-hidden="true" />
-                IVIA · In Vivo In Actu · Au sein de l’être, en actes
+                IVIA · In Vivo In Actu · Au sein de l&apos;être, en actes
               </p>
 
-              <h1 className="v3-hero__h1 v3-hero__h1--maison">
+              <h1 id="hero-title" className="v3-hero__h1 v3-hero__h1--seuil">
                 La maison <em>du vivant.</em>
               </h1>
 
-              <p className="v3-hero__lede v3-hero__lede--maison">
-                Le corps d’un côté, l’esprit de l’autre. La famille ici, la
-                société là. IVIA propose un espace pour{" "}
-                <strong>déposer</strong>, <strong>comprendre</strong> et{" "}
-                <strong>remettre en relation</strong> ce que la vie tient
-                ensemble.
+              <p className="v3-hero__lede v3-hero__lede--seuil">
+                Une maison ouverte au Québec pour déposer ce qui pèse,
+                clarifier ce qui se répète et orienter ce qui peut reprendre
+                mouvement. Sans diagnostic, sous consentement.
               </p>
 
               <div className="v3-hero__mesange-wrap">
                 <MesangeMark
-                  size={120}
+                  size={96}
                   withSong
-                  ariaLabel="Mésange — symbole d’accueil IVIA"
+                  ariaLabel="Mésange — symbole d'accueil IVIA"
                 />
                 <p className="v3-hero__mesange-caption">
                   <strong>IVIA</strong> accueille ·{" "}
@@ -280,8 +278,25 @@ export default function HomePage() {
                 </p>
               </div>
 
+              <div className="v3-hero__cta-row">
+                <Link
+                  href="#orientation"
+                  className="v3-btn v3-btn--primary"
+                  data-testid="hero-cta-orientation"
+                >
+                  Commencer un parcours d&apos;orientation
+                  <span className="v3-btn__arrow" aria-hidden="true">↓</span>
+                </Link>
+                <Link
+                  href="#approche"
+                  className="v3-btn v3-btn--ghost"
+                >
+                  Lire l&apos;approche
+                </Link>
+              </div>
+
               <ul className="v3-signals" aria-label="Repères IVIA">
-                <li>Pensé au Québec, à partir du Québec</li>
+                <li>Pensé au Québec</li>
                 <li aria-hidden="true">·</li>
                 <li>Sans diagnostic</li>
                 <li aria-hidden="true">·</li>
@@ -292,12 +307,39 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── QUATRE PORTES ──────────────────────────────────────────── */}
+          {/* ── ORIENTATION — parcours interactif ──────────────────────── */}
+          <section
+            className="v3-section v3-orientation"
+            id="orientation"
+            aria-labelledby="orientation-title"
+          >
+            <div className="v3-section__inner v3-orientation__inner">
+              <header className="v3-orientation__head">
+                <p className="v3-kicker">Parcours d&apos;orientation</p>
+                <h2 id="orientation-title" className="v3-h2">
+                  Quelques questions pour <em>préparer une conversation.</em>
+                </h2>
+                <p className="v3-section__intro">
+                  Quatre portes, une même maison. Le parcours est court,
+                  mobile-first, et reste dans cette fenêtre. À la fin, un
+                  portrait d&apos;orientation propose trois couches
+                  prioritaires et un prochain pas. Ce n&apos;est pas un
+                  diagnostic, c&apos;est un point de départ.
+                </p>
+              </header>
+
+              <div className="v3-orientation__panel">
+                <OrientationFlow />
+              </div>
+            </div>
+          </section>
+
+          {/* ── QUATRE PORTES — vue d'ensemble ────────────────────────── */}
           <section className="v3-section v3-pathways" id="voies">
             <div className="v3-section__inner">
-              <p className="v3-kicker">Choisir votre porte</p>
+              <p className="v3-kicker">Quatre portes</p>
               <h2 className="v3-h2 v3-h2--center">
-                Quatre portes, <em>une même maison.</em>
+                Choisir une porte, <em>retrouver la maison.</em>
               </h2>
               <ul className="v3-pathways__grid" aria-label="Portes IVIA">
                 {PATHWAYS.map((p) => (
@@ -322,7 +364,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── LA MAISON DU VIVANT — section concept ──────────────────── */}
+          {/* ── LA MAISON DU VIVANT — cartographie vivante ─────────────── */}
           <section className="v3-section v3-maison" id="maison">
             <div className="v3-section__inner v3-maison__inner">
               <div className="v3-maison__copy">
@@ -343,29 +385,23 @@ export default function HomePage() {
                 </p>
                 <p className="v3-maison__paragraph">
                   IVIA est un seuil pour entrer dans cette maison. On y
-                  dépose ce que l’on porte. On tente de comprendre ce qui
-                  arrive. On remet en relation ce qui a été séparé, figé ou
-                  rendu difficile à nommer. Nous croyons qu’il est possible
-                  d’apprendre, de comprendre et d’agir, à partir de ce qui
-                  est vivant, réel et présent.
+                  dépose ce que l&apos;on porte. On tente de comprendre ce qui
+                  arrive. On remet en relation ce qui a été séparé. Apprendre,
+                  comprendre, agir : à partir de ce qui est vivant et présent.
                 </p>
               </div>
-              <aside className="v3-maison__visual" aria-hidden="true">
-                <div className="v3-maison__rings">
-                  <span className="v3-maison__ring v3-maison__ring--1" />
-                  <span className="v3-maison__ring v3-maison__ring--2" />
-                  <span className="v3-maison__ring v3-maison__ring--3" />
-                  <span className="v3-maison__core" />
-                </div>
-                <ul className="v3-maison__labels">
-                  <li>territoire</li>
-                  <li>corps</li>
-                  <li>liens</li>
-                  <li>mémoire</li>
-                  <li>société</li>
-                  <li>gestes</li>
-                </ul>
-              </aside>
+              <figure className="v3-maison__figure" aria-hidden="true">
+                <Image
+                  src="/assets/imagery/correspondances-vivantes.png"
+                  alt=""
+                  width={720}
+                  height={720}
+                  className="v3-maison__img"
+                />
+                <figcaption className="v3-maison__cap">
+                  Graphe des correspondances vivantes — esquisse.
+                </figcaption>
+              </figure>
             </div>
           </section>
 
@@ -395,6 +431,47 @@ export default function HomePage() {
             </div>
           </section>
 
+          {/* ── NUMÉRIQUE & LIENS ARTIFICIELS ───────────────────────────── */}
+          <section className="v3-section v3-numerique" id="numerique">
+            <div className="v3-section__inner v3-numerique__inner">
+              <figure className="v3-numerique__media" aria-hidden="true">
+                <Image
+                  src="/assets/imagery/numerique-liens-artificiels.png"
+                  alt=""
+                  width={720}
+                  height={720}
+                  className="v3-numerique__img"
+                />
+              </figure>
+              <div className="v3-numerique__copy">
+                <p className="v3-kicker">Numérique &amp; liens artificiels</p>
+                <h2 className="v3-h2">
+                  Quand l&apos;attention se déplace <em>vers l&apos;écran.</em>
+                </h2>
+                <p className="v3-section__intro">
+                  Le fil sans fin, les notifications, les IA conversationnelles
+                  et les liens artificiels redessinent la manière dont nous
+                  pensons, ressentons et nous relions. IVIA observe ce
+                  glissement avec sobriété, sans diaboliser ni célébrer.
+                </p>
+                <ul className="v3-numerique__list">
+                  <li>
+                    <strong>Observer</strong> ce que la vie numérique fait à
+                    l&apos;attention, au sommeil, aux liens.
+                  </li>
+                  <li>
+                    <strong>Clarifier</strong> ce qui soutient, ce qui isole, ce
+                    qui détourne du vivant.
+                  </li>
+                  <li>
+                    <strong>Orienter</strong> vers des gestes simples, sans
+                    promesse de désintoxication miracle.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
           {/* ── COMMENT IVIA VOUS ACCOMPAGNE — six pas ───────────────── */}
           <section className="v3-section v3-accompagnement" id="approche">
             <div className="v3-section__inner">
@@ -419,6 +496,38 @@ export default function HomePage() {
             </div>
           </section>
 
+          {/* ── MÉSANGES — présence subtile ─────────────────────────────── */}
+          <section className="v3-section v3-mesanges" aria-labelledby="mesanges-title">
+            <div className="v3-section__inner v3-mesanges__inner">
+              <div className="v3-mesanges__copy">
+                <p className="v3-kicker">MÉSANGES accompagne</p>
+                <h2 id="mesanges-title" className="v3-h2">
+                  Une présence <em>qui reste, même en hiver.</em>
+                </h2>
+                <p className="v3-section__intro">
+                  Les mésanges sont parmi les rares oiseaux qui ne quittent
+                  pas le Québec quand vient le froid. Elles restent, elles
+                  traversent, elles signalent qu&apos;une présence demeure
+                  possible. MÉSANGES accompagne dans cet esprit : petites
+                  voix, nuances, pistes — jamais à la place de votre jugement.
+                </p>
+                <p className="v3-section__intro">
+                  Aucune voix tutélaire ne remplace une décision. La présence
+                  reste subtile, et c&apos;est vous qui choisissez le rythme.
+                </p>
+              </div>
+              <figure className="v3-mesanges__media" aria-hidden="true">
+                <Image
+                  src="/assets/imagery/mesanges-hiver.png"
+                  alt=""
+                  width={720}
+                  height={720}
+                  className="v3-mesanges__img"
+                />
+              </figure>
+            </div>
+          </section>
+
           {/* ── COLLECTIVITÉS VIVANTES ──────────────────────────────────── */}
           <section
             className="v3-section v3-collectivites"
@@ -432,12 +541,12 @@ export default function HomePage() {
                   <em>et lieux de vie.</em>
                 </h2>
                 <p className="v3-section__intro">
-                  Un collectif n’est pas une entreprise à optimiser. C’est un
-                  milieu vivant, avec ses tensions, ses difficultés, ses
-                  contraintes, ses ressources et ses façons propres de tenir
-                  ensemble. IVIA aide à nommer ce qui circule, à clarifier ce
-                  qui pèse et à soutenir un repositionnement plus sain, plus
-                  lisible et plus favorable à l’épanouissement de chacun.
+                  Un collectif n&apos;est pas une entreprise à optimiser.
+                  C&apos;est un milieu vivant, avec ses tensions, ses
+                  difficultés, ses contraintes, ses ressources et ses façons
+                  propres de tenir ensemble. IVIA aide à nommer ce qui circule,
+                  à clarifier ce qui pèse et à soutenir un repositionnement
+                  plus lisible, favorable à l&apos;épanouissement de chacun.
                 </p>
                 <ul className="v3-publics" aria-label="Milieux concernés">
                   {COLLECTIF_PUBLICS.map((pub) => (
@@ -456,13 +565,12 @@ export default function HomePage() {
               </ul>
 
               <p className="v3-collectivites__not">
-                <strong>Ce que ce n’est pas :</strong> IVIA Collectivités
-                vivantes ne remplace pas une thérapie familiale, une
-                médiation juridique, une intervention clinique, un arbitrage
-                de conflit ou une démarche d’urgence. IVIA ne pose pas de
-                diagnostic collectif : IVIA aide à structurer une lecture
-                commune, à clarifier les besoins et à ouvrir des pistes
-                d’action.
+                <strong>Ce que ce n&apos;est pas :</strong> IVIA Collectivités
+                vivantes ne remplace pas une thérapie familiale, une médiation
+                juridique, une intervention clinique, un arbitrage de conflit
+                ou une démarche d&apos;urgence. IVIA ne pose pas de diagnostic
+                collectif : IVIA aide à structurer une lecture commune et à
+                ouvrir des pistes d&apos;action.
               </p>
             </div>
           </section>
@@ -473,24 +581,23 @@ export default function HomePage() {
               <header className="v3-praticien-strat__head">
                 <p className="v3-kicker">Espace praticien</p>
                 <h2 className="v3-h2">
-                  Structurer l’écoute, <em>évoluer dans sa pratique.</em>
+                  Structurer l&apos;écoute, <em>évoluer dans sa pratique.</em>
                 </h2>
                 <p className="v3-section__intro">
-                  IVIA n’est pas un annuaire. C’est un outil
-                  d’interprétation, de préparation et d’amélioration continue
-                  pour les praticien·nes diplômé·es, en formation ou hors
-                  ordre. La posture reste prudente, jamais prescriptive.
-                  IVIA n’appartient à aucun courant de pensée. Sa fonction
-                  est d’offrir une lecture claire, indépendante et
-                  structurée de ce qui se dit, se répète et demande à être
-                  mieux compris.
+                  IVIA n&apos;est pas un annuaire. C&apos;est un outil
+                  d&apos;interprétation, de préparation et d&apos;amélioration
+                  continue pour les praticien·nes diplômé·es, en formation ou
+                  hors ordre. La posture reste prudente, jamais prescriptive.
+                  IVIA n&apos;appartient à aucun courant de pensée : sa
+                  fonction est d&apos;offrir une lecture claire et structurée
+                  de ce qui se dit, se répète et demande à être mieux compris.
                 </p>
                 <div className="v3-cta-row">
                   <Link
                     href="/espace-praticien"
                     className="v3-btn v3-btn--primary"
                   >
-                    Découvrir l’espace praticien
+                    Découvrir l&apos;espace praticien
                     <span className="v3-btn__arrow" aria-hidden="true">→</span>
                   </Link>
                 </div>
@@ -509,10 +616,10 @@ export default function HomePage() {
               </ul>
 
               <p className="v3-collectivites__not">
-                IVIA ne remplace pas la supervision, la formation continue,
-                la consultation entre pairs ni le jugement professionnel.
-                Vous restez maître à bord, mais vous n’êtes pas laissé seul
-                devant la complexité.
+                IVIA ne remplace pas la supervision, la formation continue, la
+                consultation entre pairs ni le jugement professionnel. Vous
+                restez maître à bord, sans être laissé·e seul·e devant la
+                complexité.
               </p>
             </div>
           </section>
@@ -520,14 +627,14 @@ export default function HomePage() {
           {/* ── ARCHITECTURE ──────────────────────────────────────────── */}
           <section className="v3-section v3-arch" id="architecture">
             <div className="v3-section__inner">
-              <p className="v3-kicker">L’architecture</p>
+              <p className="v3-kicker">L&apos;architecture</p>
               <h2 className="v3-h2">
                 Trois noms, <em>une seule attention.</em>
               </h2>
               <p className="v3-section__intro">
-                IVIA n’est pas un produit isolé. C’est ce que vous voyez
-                d’un ensemble plus large, pensé au Québec, sous validation
-                humaine, avec une maison commune appelée{" "}
+                IVIA n&apos;est pas un produit isolé. C&apos;est ce que vous
+                voyez d&apos;un ensemble plus large, pensé au Québec, sous
+                validation humaine, avec une maison commune appelée{" "}
                 <strong>ivia.quebec</strong>.
               </p>
               <ol className="v3-arch__list">
@@ -583,15 +690,15 @@ export default function HomePage() {
               <div className="v3-voice__copy">
                 <p className="v3-kicker">La voix du fondateur</p>
                 <h2 className="v3-h2">
-                  Une trace vocale, <em>plutôt qu’un slogan.</em>
+                  Une trace vocale, <em>plutôt qu&apos;un slogan.</em>
                 </h2>
                 <p className="v3-section__intro">
-                  Je m’appelle David. Laissez-moi vous expliquer ce qu’IVIA
-                  cherche à faire, et ce qu’IVIA refuse de faire. Sans
-                  jargon, sans promesse de soin, je vous accueille dans
-                  cette démarche : comprendre ce qui agit, respecter ce qui
-                  est vivant et ouvrir une voie plus claire vers
-                  l’autonomie, l’équilibre et l’action.
+                  Je m&apos;appelle David. Laissez-moi vous expliquer ce
+                  qu&apos;IVIA cherche à faire, et ce qu&apos;IVIA refuse de
+                  faire. Sans jargon, sans promesse de soin, je vous accueille
+                  dans cette démarche : comprendre ce qui agit, respecter ce
+                  qui est vivant et ouvrir une voie plus claire vers
+                  l&apos;autonomie, l&apos;équilibre et l&apos;action.
                 </p>
                 <p className="v3-voice__hint">
                   Audio + vidéo · sous-titres à venir · 1 min 48
@@ -609,11 +716,11 @@ export default function HomePage() {
                     controls
                     preload="metadata"
                     playsInline
-                    aria-label="Trace vocale d’introduction d’IVIA par David Phaneuf"
+                    aria-label="Trace vocale d'introduction d'IVIA par David Phaneuf"
                   >
                     <p>
-                      Trace vocale d’introduction d’IVIA — votre navigateur
-                      ne supporte pas la lecture vidéo HTML5.
+                      Trace vocale d&apos;introduction d&apos;IVIA — votre
+                      navigateur ne supporte pas la lecture vidéo HTML5.
                     </p>
                   </video>
                 </div>
@@ -629,18 +736,19 @@ export default function HomePage() {
           >
             <div className="v3-section__inner">
               <p>
-                <strong>IVIA n’est pas une clinique.</strong> Nous ne
+                <strong>IVIA n&apos;est pas une clinique.</strong> Nous ne
                 diagnostiquons pas et nous ne prescrivons rien. IVIA ne
                 remplace pas un·e professionnel·le de la santé.
               </p>
               <p>
-                <strong>Situation d’urgence.</strong> IVIA n’est pas un
-                service d’urgence. Si vous êtes en danger immédiat, si vous
-                craignez de poser un geste contre vous-même ou contre
-                quelqu’un d’autre, appelez les services d’urgence de votre
-                région. Au Canada, vous pouvez aussi appeler ou texter le{" "}
+                <strong>Situation d&apos;urgence.</strong> IVIA n&apos;est pas
+                un service d&apos;urgence. Si vous êtes en danger immédiat, si
+                vous craignez de poser un geste contre vous-même ou contre
+                quelqu&apos;un d&apos;autre, appelez le <strong>911</strong>.
+                Au Canada, vous pouvez aussi appeler ou texter le{" "}
                 <strong>988</strong> pour obtenir du soutien en cas de crise
-                suicidaire.
+                suicidaire. Au Québec, Info-Social est joignable au{" "}
+                <strong>811</strong>.
               </p>
             </div>
           </section>
