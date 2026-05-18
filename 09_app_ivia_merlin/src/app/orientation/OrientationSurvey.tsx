@@ -32,12 +32,27 @@ const STEPS: Step[] = [
   {
     id: "intro",
     kind: "intro",
-    title: "Quelques minutes pour situer votre demande.",
+    title: "Quelques minutes pour situer ce que vous vivez.",
     hint:
-      "Ce court parcours nous aide à préparer une écoute juste, à votre rythme. Aucune réponse n'est obligatoire, et rien n'est partagé sans votre accord.",
+      "Ce court parcours nous aide à préparer une écoute juste, à votre rythme. Nous commençons par ce qui se ressent, puis nous situons votre profil et la suite possible.",
   },
   {
-    id: "voie",
+    id: "emotion",
+    kind: "single",
+    title: "Quelle émotion ou quel état vous amène ici en premier ?",
+    options: [
+      { value: "anxiete", label: "Anxiété, inquiétude" },
+      { value: "tristesse", label: "Tristesse, vide" },
+      { value: "epuisement", label: "Fatigue, épuisement" },
+      { value: "colere", label: "Colère, tension" },
+      { value: "confusion", label: "Confusion, brouillard" },
+      { value: "isolement", label: "Isolement, retrait" },
+      { value: "transition", label: "Transition, perte de repères" },
+      { value: "elan", label: "Je veux surtout clarifier et avancer" },
+    ],
+  },
+  {
+    id: "demarche",
     kind: "single",
     title: "Pour qui faites-vous cette démarche ?",
     options: [
@@ -216,7 +231,8 @@ function Safeguard() {
 // ─── État du formulaire ───────────────────────────────────────────────────
 
 type Answers = {
-  voie?: string;
+  emotion?: string;
+  demarche?: string;
   genre?: string;
   age?: string;
   localisation?: string;
@@ -248,6 +264,44 @@ type Axe = { title: string; body: string };
 
 function buildPortrait(a: Answers): { lead: string; axes: Axe[]; suite: string[] } {
   const axes: Axe[] = [];
+
+  if (a.emotion) {
+    const emotionMap: Record<string, Axe> = {
+      anxiete: {
+        title: "Une inquiétude à déposer",
+        body: "Vos réponses suggèrent d'abord le besoin de ralentir, de clarifier et de réduire ce qui tourne en boucle.",
+      },
+      tristesse: {
+        title: "Une part plus lourde à reconnaître",
+        body: "Ce qui se présente ici demande une écoute sobre, sans forcer une conclusion trop rapide.",
+      },
+      epuisement: {
+        title: "Un niveau de charge trop élevé",
+        body: "Le premier enjeu semble être la charge portée : énergie, rythme, récupération, bande passante.",
+      },
+      colere: {
+        title: "Une tension qui cherche sa forme",
+        body: "Il y a possiblement quelque chose à nommer plus nettement pour retrouver un axe d'action clair.",
+      },
+      confusion: {
+        title: "Un besoin de clarté",
+        body: "Vos réponses pointent vers le besoin de distinguer, ordonner et comprendre ce qui se mêle en ce moment.",
+      },
+      isolement: {
+        title: "Un lien à retisser",
+        body: "La solitude ou le retrait semblent occuper une place importante dans ce que vous traversez actuellement.",
+      },
+      transition: {
+        title: "Un passage en cours",
+        body: "Vous semblez traverser un moment de bascule où il faut reconnaître ce qui change et ce qui reste à reconstruire.",
+      },
+      elan: {
+        title: "Un désir d'avancer avec justesse",
+        body: "Vous arrivez avec l'élan de mieux comprendre et de choisir une suite cohérente, sans dramatiser ce que vous vivez.",
+      },
+    };
+    axes.push(emotionMap[a.emotion]);
+  }
 
   if (a.intention) {
     const map: Record<string, Axe> = {
@@ -361,7 +415,7 @@ function buildPortrait(a: Answers): { lead: string; axes: Axe[]; suite: string[]
   suite.push("La possibilité d'ouvrir un espace privé pour vos notes, sous consentement.");
 
   const lead =
-    "Voici un portrait d'orientation MÉSANGES. Ce n'est ni un diagnostic, ni une conclusion : c'est ce que vos réponses indiquent, à confirmer avec vous.";
+    "Voici un portrait d'orientation MÉSANGES. Ce n'est ni un diagnostic, ni une conclusion : c'est une première lecture de ce que vos réponses laissent apparaître, à confirmer avec vous.";
 
   return { lead, axes: axes.slice(0, 3), suite };
 }

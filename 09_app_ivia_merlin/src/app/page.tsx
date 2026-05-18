@@ -7,7 +7,6 @@ import "./styles.v3.css";
 import "./styles.orientation.css";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
-import { OrientationFlow } from "@/components/orientation/OrientationFlow";
 
 /* ──────────────────────────────────────────────────────────────────────────
    IVIA — Refonte UI/UX du seuil public
@@ -201,22 +200,24 @@ export default function HomePage() {
           >
             <div className="v3-section__inner v3-orientation__inner">
               <header className="v3-orientation__head">
-                <p className="v3-kicker">Parcours d&apos;orientation</p>
+                <p className="v3-kicker">MÉSANGES</p>
                 <h2 id="orientation-title" className="v3-h2">
                   Quelques questions pour <em>préparer une conversation.</em>
                 </h2>
                 <p className="v3-section__intro">
-                  Quatre portes, une même maison. Le parcours est court,
-                  mobile-first, et reste dans cette fenêtre. À la fin, un
-                  portrait d&apos;orientation propose trois couches
+                  Le parcours commence par ce que vous ressentez, puis affine
+                  votre situation pour ouvrir une première réponse utile. À la
+                  fin, un portrait d&apos;orientation propose trois axes
                   prioritaires et un prochain pas. Ce n&apos;est pas un
                   diagnostic, c&apos;est un point de départ.
                 </p>
+                <div className="v3-orientation__cta-row">
+                  <Link href="/orientation" className="v3-btn v3-btn--primary">
+                    Faire le Parcours
+                    <span className="v3-btn__arrow" aria-hidden="true">↗</span>
+                  </Link>
+                </div>
               </header>
-
-              <div className="v3-orientation__panel">
-                <OrientationFlow />
-              </div>
             </div>
           </section>
 
