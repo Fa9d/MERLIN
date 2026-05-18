@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ThemeToggle } from "@/components/theme-toggle";
 import "@/app/styles.css";
 
 const MESANGES_LOGO_SRC = "/assets/brand/ivia-mesanges-logo2000.png";
@@ -81,7 +80,6 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
           </nav>
 
           <div className="hp-nav__actions">
-            <ThemeToggle />
             <Link href="/rendez-vous" className="hp-nav__cta">
               Prendre rendez-vous
             </Link>

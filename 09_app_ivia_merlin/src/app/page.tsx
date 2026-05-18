@@ -9,8 +9,6 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
 import { OrientationFlow } from "@/components/orientation/OrientationFlow";
 
-const MESANGES_LOGO_SRC = "/assets/brand/ivia-mesanges-logo2000.png";
-
 /* ──────────────────────────────────────────────────────────────────────────
    IVIA — Refonte UI/UX du seuil public
    Concept : La maison du vivant — cartographie vivante, lumière hivernale.
@@ -187,23 +185,13 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              <p className="v3-hero__trinity">
-                IVIA — In Vivo In Actu — Au sein de l&apos;être, en actes.
-              </p>
-
               <p className="v3-signals v3-signals--statement">
                 IVIA — MÉSANGES — Pensé par et pour les Québécois
               </p>
             </div>
 
             <div className="v3-hero__brand-mark" aria-hidden="true">
-              <Image
-                src={MESANGES_LOGO_SRC}
-                alt=""
-                width={132}
-                height={132}
-                className="v3-hero__brand-mark-img"
-              />
+              <MesangeMark size={112} bare ariaLabel="" className="v3-hero__brand-mark-bird" />
             </div>
           </section>
 
