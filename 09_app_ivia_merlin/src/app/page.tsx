@@ -54,83 +54,37 @@ const ACCOMPAGNEMENT = [
     num: "01",
     label: "Vous déposez",
     body:
-      "Dans vos mots, avec votre histoire, votre situation, vos questions et ce que vous êtes prêt·e à nommer.",
+      "Dans vos mots, votre histoire, votre situation, vos questions et ce que vous êtes prêt·e à nommer, ce que vous voulez acquérir, surmonter, parfaire.",
   },
   {
     num: "02",
     label: "MERLIN structure",
     body:
-      "MERLIN met en ordre les éléments transmis, repère les liens possibles et prépare une lecture, toujours sous validation humaine.",
+      "IVIA repère les possibles, prépare son analyse, sous validation humaine.",
   },
   {
     num: "03",
-    label: "Nous ouvrons une lecture",
+    label: "Les possibles - VOS SOLUTIONS",
     body:
-      "Une lecture sensible et multidimensionnelle, sans diagnostic, pour faire apparaître des pistes de compréhension et de clarification.",
+      "Une interprétation sensible, multidimensionnelle, sans diagnostic et en compréhension et clarification.",
   },
   {
     num: "04",
     label: "MÉSANGES accompagne",
     body:
-      "Les mésanges ne quittent pas le Québec lorsque vient l'hiver. Elles restent, traversent le froid et rappellent qu'une présence demeure possible. MÉSANGES accompagne par petites touches : une question, une nuance, une piste.",
+      "Les mésanges ne quittent pas le Québec, même en hiver. Elles restent. Elles rappellent qu'une présence demeure possible. MÉSANGES accompagne en force de proposition. Qu'enfin vous puissiez y voir clair, entendre et comprendre votre plein potentiel.",
   },
   {
     num: "05",
     label: "Vous agissez",
     body:
-      "Le simple fait de déposer ce que vous vivez peut devenir un premier acte de clarté. IVIA soutient ce mouvement sans décider à votre place.",
+      "Le simple fait de déposer ce que vous vivez peut devenir un premier acte de clarté. MÉSANGES soutient ce mouvement sans décider à votre place. Ce regard extérieur et totalement objectif peut dépeindre une réalité qui parfois nous échape.",
   },
   {
     num: "06",
     label: "Nous suivons l'évolution",
     body:
-      "Ensemble, nous observons ce qui change, ce qui résiste, ce qui revient et ce qui demande une attention nouvelle.",
-  },
-];
-
-const ARCHITECTURE = [
-  {
-    name: "IVIA",
-    role: "accueille",
-    body:
-      "IVIA est le seuil et la maison commune. IVIA signifie In Vivo In Actu : au sein de l'être, en actes.",
-  },
-  {
-    name: "MERLIN",
-    role: "structure",
-    body:
-      "MERLIN est l'infrastructure interne : écoute, analyse, mise en relation et structuration, sous validation humaine.",
-  },
-  {
-    name: "MÉSANGES",
-    role: "accompagne",
-    body:
-      "MÉSANGES accompagne par la voix, les nuances et les petites orientations qui aident à reprendre direction.",
-  },
-];
-
-const SOUVERAINETE = [
-  {
-    glyph: "QC",
-    title: "Données au Québec",
-    body: "Serveurs et données sur le territoire, sous Loi 25.",
-  },
-  {
-    glyph: "✓",
-    title: "Consentement",
-    body: "Vous décidez, à chaque pas, ce que vous partagez ici.",
-  },
-  {
-    glyph: "◯",
-    title: "Connecteurs privés",
-    body:
-      "Pas de pixels tiers, pas de branchement externe imposé. Les connecteurs restent internes et consentis.",
-  },
-  {
-    glyph: "⚕",
-    title: "Posture non médicale",
-    body:
-      "IVIA n'est pas une clinique. Nous ne diagnostiquons pas et nous ne prescrivons rien.",
+      "Ensemble, nous observons ce qui change, ce qui résiste, ce qui revient et ce qui demande une attention nouvelle. Trouver vos solutions est peut-être plus simple que vous le pensiez. Les outils d'analyse et de performance développés chez IVIA offrent objectivité, clairvoyance et autonomie. À vous de jouer maintenant.",
   },
 ];
 
@@ -219,14 +173,13 @@ export default function HomePage() {
           <section className="v3-section v3-accompagnement" id="approche">
             <div className="v3-section__inner">
               <h2 className="v3-h2">
-                IVIA — MÉSANGES vous accompagne.
+                IVIA — MÉSANGES
                 <br />
                 <em>Pas à pas, à votre rythme.</em>
               </h2>
               <p className="v3-section__intro">
-                IVIA est un espace structuré pour vous accueillir. Vous
-                décidez du tempo, du niveau de partage et de ce qui peut être
-                partagé ou non.
+                Un espace structuré pour vous accueillir. À votre tempo,
+                votre niveau de partage, votre réussite.
               </p>
               <ol className="v3-steps">
                 {ACCOMPAGNEMENT.map((s) => (
@@ -326,120 +279,6 @@ export default function HomePage() {
                   className="v3-mesanges__img"
                 />
               </figure>
-            </div>
-          </section>
-
-          {/* ── ARCHITECTURE — IVIA · MERLIN · MÉSANGES (concis) ──────── */}
-          <section className="v3-section v3-arch" id="architecture">
-            <div className="v3-section__inner">
-              <p className="v3-kicker">L&apos;architecture, en bref</p>
-              <h2 className="v3-h2">
-                Trois noms, <em>une seule attention.</em>
-              </h2>
-              <p className="v3-section__intro">
-                MÉSANGES est la voix qui vous reçoit. Derrière, deux noms
-                travaillent en silence : <strong>IVIA</strong>, la maison
-                commune (In Vivo In Actu — au sein de l&apos;être, en actes),
-                et <strong>MERLIN</strong>, le noyau interne qui aide à
-                structurer ce qui est entendu, sous validation humaine.
-              </p>
-              <ol className="v3-arch__list">
-                {ARCHITECTURE.map((a, i) => (
-                  <li key={a.name} className="v3-arch__row">
-                    <span className="v3-arch__num">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div className="v3-arch__name">
-                      <strong>{a.name}</strong>
-                      <span className="v3-arch__role">{a.role}</span>
-                    </div>
-                    <p className="v3-arch__body">{a.body}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </section>
-
-          {/* ── SOUVERAINETÉ & PRUDENCE ─────────────────────────────────── */}
-          <section className="v3-section v3-souverainete" id="souverainete">
-            <div className="v3-section__inner">
-              <p className="v3-kicker">Souveraineté &amp; prudence</p>
-              <h2 className="v3-h2">
-                Vos mots <em>restent les vôtres.</em>
-              </h2>
-              <ul className="v3-trust__grid">
-                {SOUVERAINETE.map((t) => (
-                  <li key={t.title} className="v3-trust__card">
-                    <span className="v3-trust__glyph" aria-hidden="true">
-                      {t.glyph}
-                    </span>
-                    <strong>{t.title}</strong>
-                    <span>{t.body}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="v3-collectivites__not">
-                IVIA aide à structurer ce que vous exprimez, à clarifier les
-                choix possibles et à reconnaître les prochaines étapes à
-                considérer.
-              </p>
-            </div>
-          </section>
-
-          {/* ── DISCLAIMER — Posture non médicale + urgence 988 ────────── */}
-          <section
-            className="v3-disclaimer"
-            aria-label="Avertissement non médical et urgence"
-          >
-            <div className="v3-section__inner">
-              <p>
-                <strong>IVIA n&apos;est pas une clinique.</strong> Nous ne
-                diagnostiquons pas et nous ne prescrivons rien. IVIA ne
-                remplace pas un·e professionnel·le de la santé.
-              </p>
-              <p>
-                <strong>Situation d&apos;urgence.</strong> IVIA n&apos;est pas
-                un service d&apos;urgence. Si vous êtes en danger immédiat, si
-                vous craignez de poser un geste contre vous-même ou contre
-                quelqu&apos;un d&apos;autre, appelez le <strong>911</strong>.
-                Au Canada, vous pouvez aussi appeler ou texter le{" "}
-                <strong>988</strong> pour obtenir du soutien en cas de crise
-                suicidaire. Au Québec, Info-Social est joignable au{" "}
-                <strong>811</strong>.
-              </p>
-            </div>
-          </section>
-
-          {/* ── APPEL FINAL ─────────────────────────────────────────────── */}
-          <section className="v3-final">
-            <div className="v3-final__halo" aria-hidden="true" />
-            <div className="v3-section__inner v3-final__inner">
-              <MesangeMark
-                size={64}
-                withSong
-                className="v3-final__mark"
-              />
-              <p className="v3-eyebrow v3-eyebrow--center">
-                <span className="v3-eyebrow__dot" aria-hidden="true" />
-                Quand vous êtes prêt·e
-              </p>
-              <p className="v3-final__text">
-                <strong>In Vivo In Actu</strong>
-                <br />
-                <em>: au sein de l&apos;être, en actes.</em>
-              </p>
-              <ul className="v3-final__paths" aria-label="Quatre portes">
-                {PATHWAYS.map((p) => (
-                  <li key={p.id}>
-                    <Link href={p.href} className="v3-final__path">
-                      <span className="v3-final__path-kicker">{p.kicker}</span>
-                      <span className="v3-final__path-arrow" aria-hidden="true">
-                        →
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
             </div>
           </section>
         </main>
