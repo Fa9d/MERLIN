@@ -6,6 +6,8 @@ import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "@/app/styles.css";
 
+const MESANGES_LOGO_SRC = "/assets/brand/ivia-mesanges-logo2000.png";
+
 type PublicLayoutProps = {
   children: React.ReactNode;
   /**
@@ -27,8 +29,8 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
         <div className="hp-nav__inner">
           <Link href="/" className="hp-nav__logo" aria-label="IVIA - MÉSANGES, accueil">
             <Image
-              src="/assets/brand/mesange-logo.svg"
-              alt="MÉSANGE — logo officiel"
+              src={MESANGES_LOGO_SRC}
+              alt="IVIA - MÉSANGES"
               width={36}
               height={36}
               priority
@@ -103,8 +105,8 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
         <div className="hp-section__inner hp-footer__inner">
           <Link href="/" className="hp-footer__logo" aria-label="MÉSANGES — un service IVIA">
             <Image
-              src="/assets/brand/mesange-logo.svg"
-              alt="MÉSANGE"
+              src={MESANGES_LOGO_SRC}
+              alt="IVIA - MÉSANGES"
               width={28}
               height={28}
               className="hp-footer__logo-img"
