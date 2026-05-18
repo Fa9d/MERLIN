@@ -183,12 +183,14 @@ export default function HomePage() {
 
               <div className="v3-hero__cta-row">
                 <Link
-                  href="#orientation"
+                  href="/orientation"
                   className="v3-btn v3-btn--primary"
                   data-testid="hero-cta-orientation"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Commencer mon orientation
-                  <span className="v3-btn__arrow" aria-hidden="true">↓</span>
+                  <span className="v3-btn__arrow" aria-hidden="true">↗</span>
                 </Link>
                 <Link
                   href="/rendez-vous"
@@ -228,15 +230,13 @@ export default function HomePage() {
             <div className="v3-section__inner v3-mesanges-intro__inner">
               <p className="v3-kicker">MÉSANGES</p>
               <h2 id="mesanges-intro-title" className="v3-h2">
-                Une voix qui accompagne <em>sans prendre votre place.</em>
+                Une voix et une écoute qui <em>respecte votre parcours.</em>
               </h2>
               <p className="v3-section__intro">
-                Comme la mésange qui reste présente à travers les saisons du
-                Québec, MÉSANGES propose une écoute attentive, sobre et
-                indépendante. Nous ne remplaçons ni la médecine, ni les
-                services d&apos;urgence. Nous aidons à mettre des mots, à
-                reconnaître les troubles, en vous accompagnant tout en vous
-                laissant choisir et déterminer votre voie d&apos;action.
+                MÉSANGES ne remplace ni la médecine, ni les services
+                d&apos;urgence. Nous vous aidons à mettre des mots, à
+                reconnaître les troubles, en vous laissant choisir et
+                déterminer votre voie d&apos;action.
               </p>
             </div>
           </section>
