@@ -103,16 +103,17 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
 
       <footer className="hp-footer">
         <div className="hp-section__inner hp-footer__inner">
-          <Link href="/" className="hp-footer__logo" aria-label="MÉSANGES — un service IVIA">
-            <span>MÉSANGES</span>
+          <div className="hp-footer__mark" aria-hidden="true">
             <Image
               src={MESANGES_LOGO_SRC}
-              alt="IVIA - MÉSANGES"
-              width={28}
-              height={28}
-              className="hp-footer__logo-img"
+              alt=""
+              width={96}
+              height={96}
+              className="hp-footer__mark-img"
             />
-            <span>Québec</span>
+          </div>
+          <Link href="/" className="hp-footer__logo" aria-label="MÉSANGES — un service IVIA">
+            <span>MÉSANGES · Québec</span>
           </Link>
           <p className="hp-footer__copy">
             &copy; {new Date().getFullYear()} IVIA. Montréal. Données au Québec.

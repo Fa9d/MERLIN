@@ -154,27 +154,16 @@ export default function HomePage() {
             </div>
 
             <div className="v3-hero__inner v3-hero__inner--seuil">
-              <p className="v3-eyebrow">
-                <span className="v3-eyebrow__dot" aria-hidden="true" />
-                Un service IVIA · au Québec · sous consentement
-              </p>
-
               <h1 id="hero-title" className="v3-hero__h1 v3-hero__h1--seuil">
                 MÉSANGES
               </h1>
 
               <p className="v3-hero__tagline">
-                L&apos;écoute empathique, <em>ancrée au Québec.</em>
+                Écoute empathique, ancrée au Québec.
               </p>
 
               <p className="v3-hero__lede v3-hero__lede--seuil">
-                MÉSANGES vous aide à clarifier, à mieux comprendre ce que vous
-                traversez et à préparer la suite.
-              </p>
-
-              <p className="v3-hero__depth">
-                Ici, nous vous écoutons en toute bienveillance et vous
-                accompagnons au rythme du vivant.
+                Votre PRATICIEN MÉSANGES vous aide à clarifier et à préparer la suite.
               </p>
 
               <div className="v3-hero__cta-row">
@@ -185,31 +174,24 @@ export default function HomePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Commencer mon orientation
+                  M&apos;inscrire
                   <span className="v3-btn__arrow" aria-hidden="true">↗</span>
                 </Link>
                 <Link
                   href="/rendez-vous"
                   className="v3-btn v3-btn--ghost"
                 >
-                  Prendre rendez-vous
+                  Prendre RDV
                 </Link>
               </div>
 
               <p className="v3-hero__trinity">
-                Un service <strong>IVIA</strong> — In Vivo In Actu :{" "}
-                <em>au sein de l&apos;être, en actes.</em>
+                IVIA — In Vivo In Actu — Au sein de l&apos;être, en actes.
               </p>
 
-              <ul className="v3-signals" aria-label="Repères MÉSANGES">
-                <li>Pensé au Québec</li>
-                <li aria-hidden="true">·</li>
-                <li>Sans diagnostic</li>
-                <li aria-hidden="true">·</li>
-                <li>À votre rythme</li>
-                <li aria-hidden="true">·</li>
-                <li>Sous consentement</li>
-              </ul>
+              <p className="v3-signals v3-signals--statement">
+                IVIA — MÉSANGES — Pensé par et pour les Québécois
+              </p>
             </div>
 
             <div className="v3-hero__mesange-corner" aria-hidden="true">
