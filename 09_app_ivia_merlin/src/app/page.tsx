@@ -9,6 +9,8 @@ import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
 import { OrientationFlow } from "@/components/orientation/OrientationFlow";
 
+const MESANGES_LOGO_SRC = "/assets/brand/ivia-mesanges-logo2000.png";
+
 /* ──────────────────────────────────────────────────────────────────────────
    IVIA — Refonte UI/UX du seuil public
    Concept : La maison du vivant — cartographie vivante, lumière hivernale.
@@ -194,8 +196,14 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="v3-hero__mesange-corner" aria-hidden="true">
-              <MesangeMark size={148} bare withSong ariaLabel="" />
+            <div className="v3-hero__brand-mark" aria-hidden="true">
+              <Image
+                src={MESANGES_LOGO_SRC}
+                alt=""
+                width={132}
+                height={132}
+                className="v3-hero__brand-mark-img"
+              />
             </div>
           </section>
 

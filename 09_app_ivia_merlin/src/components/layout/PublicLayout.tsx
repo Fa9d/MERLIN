@@ -103,15 +103,6 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
 
       <footer className="hp-footer">
         <div className="hp-section__inner hp-footer__inner">
-          <div className="hp-footer__mark" aria-hidden="true">
-            <Image
-              src={MESANGES_LOGO_SRC}
-              alt=""
-              width={96}
-              height={96}
-              className="hp-footer__mark-img"
-            />
-          </div>
           <Link href="/" className="hp-footer__logo" aria-label="MÉSANGES — un service IVIA">
             <span>MÉSANGES · Québec</span>
           </Link>

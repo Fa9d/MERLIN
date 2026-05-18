@@ -1858,28 +1858,40 @@
   color: var(--v3-ink);
 }
 
-/* Mésange tronquée — coin inférieur droit de la fenêtre du hero */
-.v3-hero__mesange-corner {
+/* Logo MÉSANGES — repère décoratif dans le hero, hors du flux typographique */
+.v3-hero__brand-mark {
   position: absolute;
-  right: -32px;
-  bottom: -36px;
+  right: clamp(7%, 12vw, 16%);
+  top: clamp(9.25rem, 34%, 13rem);
   pointer-events: none;
-  opacity: 0.85;
-  transform: rotate(-8deg);
-  filter: drop-shadow(0 6px 14px oklch(20% 0.02 78 / 0.18));
-  z-index: 1;
+  z-index: 0;
+  transform: translateY(-50%) rotate(-5deg);
+}
+
+.v3-hero__brand-mark-img {
+  width: clamp(76px, 9vw, 112px);
+  height: auto;
+  display: block;
+  opacity: 0.14;
+  border-radius: 14px;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 1px oklch(22% 0.018 78 / 0.1);
+  filter: saturate(0.92);
 }
 
 @media (max-width: 720px) {
-  .v3-hero__mesange-corner {
-    right: -24px;
-    bottom: -24px;
-    transform: rotate(-8deg) scale(0.7);
+  .v3-hero__brand-mark {
+    right: 7%;
+    top: clamp(8.5rem, 31%, 11rem);
+    transform: translateY(-50%) rotate(-5deg);
   }
+
+  .v3-hero__brand-mark-img { width: 72px; opacity: 0.11; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .v3-hero__mesange-corner { transform: none; }
+[data-theme="dark"] .v3-hero__brand-mark-img {
+  box-shadow: 0 0 0 1px oklch(93% 0.012 78 / 0.18);
+  opacity: 0.22;
 }
 
 /* Section sobre — voix qui accompagne sans prendre la place */
