@@ -668,13 +668,15 @@
 .hp-footer__logo {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
+  gap: 0.65rem;
   text-decoration: none;
   color: var(--foreground);
   font-family: var(--font-display);
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .hp-footer__copy {
@@ -1849,14 +1851,15 @@
 }
 
 .hp-footer__logo-img {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 5px;
-  display: inline-block;
+  display: block;
   flex-shrink: 0;
   object-fit: contain;
   background: #0a0a0a;
   box-shadow: 0 0 0 1px oklch(22% 0.018 78 / 0.12);
+  transform: translateY(2px);
 }
 
 [data-theme="dark"] .hp-nav__logo-img,

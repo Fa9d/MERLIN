@@ -163,10 +163,6 @@ export default function HomePage() {
                 MÉSANGES
               </h1>
 
-              <div className="v3-hero__mesange-emblem" aria-hidden="true">
-                <MesangeMark size={112} withSong ariaLabel="" />
-              </div>
-
               <p className="v3-hero__tagline">
                 L&apos;écoute empathique, <em>ancrée au Québec.</em>
               </p>
