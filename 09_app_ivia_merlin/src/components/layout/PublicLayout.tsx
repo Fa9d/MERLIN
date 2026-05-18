@@ -25,7 +25,7 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
 
       <header className="hp-nav">
         <div className="hp-nav__inner">
-          <Link href="/" className="hp-nav__logo" aria-label="MÉSANGES — un service IVIA, accueil">
+          <Link href="/" className="hp-nav__logo" aria-label="IVIA - MÉSANGES, accueil">
             <Image
               src="/assets/brand/mesange-logo.svg"
               alt="MÉSANGE — logo officiel"
@@ -34,10 +34,7 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
               priority
               className="hp-nav__logo-img"
             />
-            <span className="hp-nav__brand">MÉSANGES</span>
-            <span className="hp-nav__brand-sub" aria-hidden="true">
-              un service IVIA
-            </span>
+            <span className="hp-nav__brand">IVIA - MÉSANGES</span>
           </Link>
 
           <nav

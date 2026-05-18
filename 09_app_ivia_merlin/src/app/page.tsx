@@ -168,16 +168,13 @@ export default function HomePage() {
               </p>
 
               <p className="v3-hero__lede v3-hero__lede--seuil">
-                Déposez ce qui pèse. MÉSANGES vous aide à clarifier ce qui se
-                répète, à mieux comprendre ce que vous traversez et à préparer
-                la suite — sans diagnostic, sans prescription et sous
-                consentement.
+                MÉSANGES vous aide à clarifier, à mieux comprendre ce que vous
+                traversez et à préparer la suite.
               </p>
 
               <p className="v3-hero__depth">
-                Ici, l&apos;écoute tient compte du territoire, du corps, des
-                liens, des émotions, du rythme du vivant et de ce qui cherche
-                à reprendre mouvement.
+                Ici, nous vous écoutons en toute bienveillance et vous
+                accompagnons au rythme du vivant.
               </p>
 
               <div className="v3-hero__cta-row">
@@ -232,10 +229,10 @@ export default function HomePage() {
               <p className="v3-section__intro">
                 Comme la mésange qui reste présente à travers les saisons du
                 Québec, MÉSANGES propose une écoute attentive, sobre et
-                indépendante. Nous ne remplaçons ni la médecine, ni la
-                thérapie, ni les services d&apos;urgence. Nous aidons à mettre
-                des mots, à reconnaître les liens, à préparer les rencontres
-                et à retrouver une voie d&apos;action.
+                indépendante. Nous ne remplaçons ni la médecine, ni les
+                services d&apos;urgence. Nous aidons à mettre des mots, à
+                reconnaître les troubles, en vous accompagnant tout en vous
+                laissant choisir et déterminer votre voie d&apos;action.
               </p>
             </div>
           </section>
