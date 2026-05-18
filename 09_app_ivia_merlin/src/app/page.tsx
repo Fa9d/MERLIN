@@ -198,10 +198,8 @@ export default function HomePage() {
               </div>
 
               <p className="v3-hero__trinity">
-                Un service IVIA :{" "}
-                <strong>IVIA</strong> accueille ·{" "}
-                <strong>MERLIN</strong> structure ·{" "}
-                <strong>MÉSANGES</strong> accompagne
+                Un service <strong>IVIA</strong> — In Vivo In Actu :{" "}
+                <em>au sein de l&apos;être, en actes.</em>
               </p>
 
               <ul className="v3-signals" aria-label="Repères MÉSANGES">
@@ -450,11 +448,9 @@ export default function HomePage() {
                 Quand vous êtes prêt·e
               </p>
               <p className="v3-final__text">
-                <strong>IVIA</strong> accueille.
+                <strong>In Vivo In Actu</strong>
                 <br />
-                <strong>MERLIN</strong> structure.
-                <br />
-                <em>MÉSANGES accompagne.</em>
+                <em>: au sein de l&apos;être, en actes.</em>
               </p>
               <ul className="v3-final__paths" aria-label="Quatre portes">
                 {PATHWAYS.map((p) => (

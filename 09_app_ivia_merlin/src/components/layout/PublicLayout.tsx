@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { MesangeMark } from "@/components/MesangeMark";
 import "@/app/styles.css";
 
 type PublicLayoutProps = {
@@ -26,11 +26,13 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
       <header className="hp-nav">
         <div className="hp-nav__inner">
           <Link href="/" className="hp-nav__logo" aria-label="MÉSANGES — un service IVIA, accueil">
-            <MesangeMark
-              size={28}
-              bare
-              ariaLabel="MÉSANGES — accueil"
-              className="hp-nav__logo-mark"
+            <Image
+              src="/assets/brand/mesange-logo.svg"
+              alt="MÉSANGE — logo officiel"
+              width={36}
+              height={36}
+              priority
+              className="hp-nav__logo-img"
             />
             <span className="hp-nav__brand">MÉSANGES</span>
             <span className="hp-nav__brand-sub" aria-hidden="true">
@@ -62,6 +64,13 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
               onClick={() => setMenuOpen(false)}
             >
               Praticiens
+            </Link>
+            <Link
+              href="/collectivites"
+              className="hp-nav__link"
+              onClick={() => setMenuOpen(false)}
+            >
+              Collectivités
             </Link>
             <Link
               href="/ressources"
@@ -96,7 +105,13 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
       <footer className="hp-footer">
         <div className="hp-section__inner hp-footer__inner">
           <Link href="/" className="hp-footer__logo" aria-label="MÉSANGES — un service IVIA">
-            <MesangeMark size={24} bare ariaLabel="" className="hp-nav__logo-mark" />
+            <Image
+              src="/assets/brand/mesange-logo.svg"
+              alt="MÉSANGE"
+              width={28}
+              height={28}
+              className="hp-footer__logo-img"
+            />
             <span>MÉSANGES · IVIA</span>
           </Link>
           <p className="hp-footer__copy">
