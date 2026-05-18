@@ -1814,3 +1814,96 @@
 .v3-arch__num {
   color: var(--v3-argile);
 }
+
+/* ── REFONTE MÉSANGES — pivot accueil public ─────────────────────────────── */
+.v3-hero--seuil { position: relative; }
+
+.v3-hero__h1--seuil {
+  font-size: clamp(3rem, 9vw, 6rem);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  margin: 0;
+}
+
+.v3-hero__tagline {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  font-weight: 400;
+  color: var(--v3-ink);
+  margin: var(--sp-2) 0 var(--sp-3);
+  line-height: 1.3;
+}
+
+.v3-hero__tagline em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--v3-sage);
+}
+
+.v3-hero__depth {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--v3-ink-soft);
+  max-width: 54ch;
+  margin: var(--sp-3) 0 0;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.v3-hero__trinity {
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  color: var(--v3-ink-soft);
+  margin: var(--sp-5) 0 0;
+  opacity: 0.85;
+}
+
+.v3-hero__trinity strong {
+  font-weight: 600;
+  color: var(--v3-ink);
+}
+
+/* Mésange tronquée — coin inférieur droit de la fenêtre du hero */
+.v3-hero__mesange-corner {
+  position: absolute;
+  right: -32px;
+  bottom: -36px;
+  pointer-events: none;
+  opacity: 0.85;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 6px 14px oklch(20% 0.02 78 / 0.18));
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .v3-hero__mesange-corner {
+    right: -24px;
+    bottom: -24px;
+    transform: rotate(-8deg) scale(0.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-hero__mesange-corner { transform: none; }
+}
+
+/* Section sobre — voix qui accompagne sans prendre la place */
+.v3-mesanges-intro {
+  padding-block: var(--sp-12);
+  background: var(--v3-surface);
+  border-top: 1px solid var(--v3-line);
+  border-bottom: 1px solid var(--v3-line);
+}
+
+.v3-mesanges-intro__inner {
+  max-width: 720px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.v3-mesanges-intro .v3-section__intro {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--v3-ink);
+  margin-top: var(--sp-4);
+}

@@ -3,19 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MesangeMark } from "@/components/MesangeMark";
 import "@/app/styles.css";
-
-function IviaLogo({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
-      <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="16" cy="16" r="2.5" fill="currentColor" />
-      <line x1="16" y1="2" x2="16" y2="13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="16" y1="18.5" x2="16" y2="30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="2" y1="16" x2="13.5" y2="16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 type PublicLayoutProps = {
   children: React.ReactNode;
@@ -36,9 +25,17 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
 
       <header className="hp-nav">
         <div className="hp-nav__inner">
-          <Link href="/" className="hp-nav__logo" aria-label="IVIA — accueil">
-            <IviaLogo className="hp-nav__logo-svg" />
-            <span className="hp-nav__brand">IVIA</span>
+          <Link href="/" className="hp-nav__logo" aria-label="MÉSANGES — un service IVIA, accueil">
+            <MesangeMark
+              size={28}
+              bare
+              ariaLabel="MÉSANGES — accueil"
+              className="hp-nav__logo-mark"
+            />
+            <span className="hp-nav__brand">MÉSANGES</span>
+            <span className="hp-nav__brand-sub" aria-hidden="true">
+              un service IVIA
+            </span>
           </Link>
 
           <nav
@@ -51,6 +48,13 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
               onClick={() => setMenuOpen(false)}
             >
               Accueil
+            </Link>
+            <Link
+              href="/demarche"
+              className="hp-nav__link"
+              onClick={() => setMenuOpen(false)}
+            >
+              Pour moi
             </Link>
             <Link
               href="/praticiens"
@@ -91,12 +95,12 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
 
       <footer className="hp-footer">
         <div className="hp-section__inner hp-footer__inner">
-          <Link href="/" className="hp-footer__logo" aria-label="IVIA">
-            <IviaLogo className="hp-nav__logo-svg" />
-            <span>IVIA</span>
+          <Link href="/" className="hp-footer__logo" aria-label="MÉSANGES — un service IVIA">
+            <MesangeMark size={24} bare ariaLabel="" className="hp-nav__logo-mark" />
+            <span>MÉSANGES · IVIA</span>
           </Link>
           <p className="hp-footer__copy">
-            &copy; {new Date().getFullYear()} IVIA. Montréal, Québec.
+            &copy; {new Date().getFullYear()} IVIA. Montréal, Québec. Données au Québec.
           </p>
           <nav className="hp-footer__links" aria-label="Liens du pied de page">
             <Link href="/confidentialite" className="hp-footer__link">
