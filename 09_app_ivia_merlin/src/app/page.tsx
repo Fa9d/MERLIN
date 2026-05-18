@@ -215,6 +215,31 @@ export default function HomePage() {
             </div>
           </section>
 
+          {/* ── IVIA — MÉSANGES VOUS ACCOMPAGNE — pas à pas ─────────── */}
+          <section className="v3-section v3-accompagnement" id="approche">
+            <div className="v3-section__inner">
+              <h2 className="v3-h2">
+                IVIA — MÉSANGES vous accompagne.
+                <br />
+                <em>Pas à pas, à votre rythme.</em>
+              </h2>
+              <p className="v3-section__intro">
+                IVIA est un espace structuré pour vous accueillir. Vous
+                décidez du tempo, du niveau de partage et de ce qui peut être
+                partagé ou non.
+              </p>
+              <ol className="v3-steps">
+                {ACCOMPAGNEMENT.map((s) => (
+                  <li key={s.num} className="v3-step">
+                    <span className="v3-step__num">{s.num}</span>
+                    <h3 className="v3-step__label">{s.label}</h3>
+                    <p className="v3-step__body">{s.body}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </section>
+
           {/* ── ORIENTATION — parcours interactif ──────────────────────── */}
           <section
             className="v3-section v3-orientation"
@@ -269,30 +294,6 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </section>
-
-          {/* ── COMMENT MÉSANGES VOUS ACCOMPAGNE — pas à pas ─────────── */}
-          <section className="v3-section v3-accompagnement" id="approche">
-            <div className="v3-section__inner">
-              <p className="v3-kicker">Comment IVIA vous accompagne</p>
-              <h2 className="v3-h2">
-                Pas à pas, <em>à votre rythme.</em>
-              </h2>
-              <p className="v3-section__intro">
-                IVIA est un espace structuré pour vous accueillir. Vous
-                décidez du tempo, du niveau de partage et de ce qui peut être
-                partagé ou non.
-              </p>
-              <ol className="v3-steps">
-                {ACCOMPAGNEMENT.map((s) => (
-                  <li key={s.num} className="v3-step">
-                    <span className="v3-step__num">{s.num}</span>
-                    <h3 className="v3-step__label">{s.label}</h3>
-                    <p className="v3-step__body">{s.body}</p>
-                  </li>
-                ))}
-              </ol>
             </div>
           </section>
 
