@@ -1,6 +1,18 @@
-export const MERLIN_API_BASE_URL =
-  process.env.NEXT_PUBLIC_MERLIN_API_BASE_URL?.replace(/\/$/, "") ??
-  "http://127.0.0.1:8000";
+function resolveMerlinApiBaseUrl(): string {
+  const explicitBaseUrl = process.env.NEXT_PUBLIC_MERLIN_API_BASE_URL?.replace(/\/$/, "");
+  if (explicitBaseUrl) {
+    return explicitBaseUrl;
+  }
+
+  if (typeof window !== "undefined") {
+    const protocol = window.location.protocol === "https:" ? "https:" : "http:";
+    return `${protocol}//${window.location.hostname}:8000`;
+  }
+
+  return "http://127.0.0.1:8000";
+}
+
+export const MERLIN_API_BASE_URL = resolveMerlinApiBaseUrl();
 
 type RequestOptions = {
   method?: "GET" | "POST" | "PATCH";
@@ -9,14 +21,24 @@ type RequestOptions = {
 };
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const response = await fetch(`${MERLIN_API_BASE_URL}${path}`, {
-    method: options.method ?? "GET",
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
-    },
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  });
+  const baseUrl = resolveMerlinApiBaseUrl();
+  let response: Response;
+
+  try {
+    response = await fetch(`${baseUrl}${path}`, {
+      method: options.method ?? "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.token ? { Authorization: `Bearer ${options.token}` } : {}),
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
+  } catch (error) {
+    const suffix = error instanceof Error && error.message ? ` (${error.message})` : "";
+    throw new Error(
+      `Connexion au serveur IVIA impossible. Verifiez que l'API repond sur ${baseUrl}.${suffix}`,
+    );
+  }
 
   if (!response.ok) {
     let detail = `Erreur API (${response.status})`;
@@ -137,6 +159,20 @@ export type ConsentRecord = {
   updated_at: string;
 };
 
+export type ClientEntitlementRecord = {
+  id: string;
+  client_id: string;
+  payment_order_id: string | null;
+  entitlement_type_code: "intake_session_credit" | "follow_up_session_credit" | "journal_day";
+  quantity_total: number;
+  quantity_remaining: number;
+  starts_at: string;
+  expires_at: string | null;
+  record_status: "draft" | "active" | "validated" | "closed" | "deprecated" | "archived";
+  created_at: string;
+  updated_at: string;
+};
+
 export type DerivedDocumentRecord = {
   id: string;
   client_id: string;
@@ -168,6 +204,8 @@ export type LoginResponse = {
   token_type: string;
   user: AuthUser;
 };
+
+export const PUBLIC_CLIENT_STORAGE_KEY = "merlin_public_client_session";
 
 export type SessionPayload = {
   client_id: string;
@@ -412,6 +450,25 @@ export async function listConsents(
     : "";
 
   return request<ConsentRecord[]>(`/api/v1/consents${query}`, {
+    token,
+  });
+}
+
+export async function listClientEntitlements(
+  token: string,
+  options?: { clientId?: string },
+): Promise<ClientEntitlementRecord[]> {
+  const query = options?.clientId
+    ? `?client_id=${encodeURIComponent(options.clientId)}`
+    : "";
+
+  return request<ClientEntitlementRecord[]>(`/api/v1/client-entitlements${query}`, {
+    token,
+  });
+}
+
+export async function listMyEntitlements(token: string): Promise<ClientEntitlementRecord[]> {
+  return request<ClientEntitlementRecord[]>("/api/v1/client-entitlements/me", {
     token,
   });
 }
@@ -774,6 +831,7 @@ export type ClientRegisterPayload = {
   email: string;
   password: string;
   display_name: string;
+  redirect_path?: string | null;
 };
 
 export type ClientRegisterResult = {
@@ -790,6 +848,31 @@ export async function registerClient(
     method: "POST",
     body: payload,
   });
+}
+
+export async function loginUser(
+  email: string,
+  password: string,
+): Promise<LoginResponse> {
+  return loginOperator(email, password);
+}
+
+export function readStoredPublicClientSession(): LoginResponse | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const raw = window.localStorage.getItem(PUBLIC_CLIENT_STORAGE_KEY)
+    ?? window.sessionStorage.getItem(PUBLIC_CLIENT_STORAGE_KEY);
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(raw) as LoginResponse;
+  } catch {
+    return null;
+  }
 }
 
 export type VerifyEmailResult = {
@@ -817,6 +900,73 @@ export type BookingSlotRecord = {
   notes: string | null;
   created_at: string;
   updated_at: string;
+};
+
+export type InteracEtransferPayload = {
+  client_id: string;
+  operator_user_id?: string | null;
+  intake_request_id?: string | null;
+  slot_id?: string | null;
+  product_code: string;
+  product_label: string;
+  product_kind_code:
+    | "session_intake"
+    | "session_follow_up"
+    | "journal_days_pack"
+    | "audio_async_follow_up"
+    | "custom";
+  fulfillment_mode_code:
+    | "grant_entitlement_only"
+    | "grant_entitlement_and_create_audio_async_session";
+  amount_cents: number;
+  currency?: string;
+  entitlement_type_code?: "intake_session_credit" | "follow_up_session_credit" | "journal_day" | null;
+  entitlement_quantity?: number | null;
+};
+
+export type InteracEtransferRequestRecord = {
+  order_id: string;
+  status: string;
+  amount_cents: number;
+  currency: string;
+  recipient_name: string;
+  recipient_email: string;
+  transfer_reference: string;
+  instructions_text: string;
+  instructions_emailed: boolean;
+};
+
+export type StripeCheckoutPayload = {
+  client_id: string;
+  operator_user_id?: string | null;
+  intake_request_id?: string | null;
+  slot_id?: string | null;
+  product_code: string;
+  product_label: string;
+  product_kind_code:
+    | "session_intake"
+    | "session_follow_up"
+    | "journal_days_pack"
+    | "audio_async_follow_up"
+    | "custom";
+  fulfillment_mode_code:
+    | "grant_entitlement_only"
+    | "grant_entitlement_and_create_audio_async_session";
+  amount_cents: number;
+  currency?: string;
+  entitlement_type_code?: "intake_session_credit" | "follow_up_session_credit" | "journal_day" | null;
+  entitlement_quantity?: number | null;
+  success_url?: string | null;
+  cancel_url?: string | null;
+};
+
+export type StripeCheckoutSessionRecord = {
+  order_id: string;
+  product_code: string;
+  checkout_session_id: string;
+  checkout_url: string;
+  amount_cents: number;
+  currency: string;
 };
 
 export async function holdSlot(slotId: string, token: string): Promise<BookingSlotRecord> {
@@ -849,5 +999,122 @@ export async function cancelSlot(slotId: string, token: string): Promise<Booking
 
 export async function listMyBookings(token: string): Promise<BookingSlotRecord[]> {
   return request<BookingSlotRecord[]>("/api/v1/bookings/my", { token });
+}
+
+export async function requestInteracEtransfer(
+  payload: InteracEtransferPayload,
+): Promise<InteracEtransferRequestRecord> {
+  return request<InteracEtransferRequestRecord>("/api/v1/payments/interac/etransfer/request", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export async function requestPublicStripeCheckout(
+  payload: StripeCheckoutPayload,
+): Promise<StripeCheckoutSessionRecord> {
+  return request<StripeCheckoutSessionRecord>("/api/v1/payments/stripe/public-checkout", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Parcours public d'entrée — un seul appel orchestre intake + magic link.
+// Le mail d'activation est envoyé automatiquement par le backend si email fourni.
+// ---------------------------------------------------------------------------
+
+export type PublicIntakeStartPayload = {
+  first_name_or_alias: string;
+  email?: string | null;
+  phone?: string | null;
+  is_adult_confirmed: boolean;
+  primary_need_code:
+    | "clarification"
+    | "support"
+    | "orientation"
+    | "loneliness"
+    | "distress"
+    | "other";
+  perceived_urgency_code?: "non_urgent" | "watch" | "priority" | "urgent";
+  support_already_in_place?: boolean;
+  requested_outcome_text?: string | null;
+  entry_summary_text?: string | null;
+  consent_session: boolean;
+  consent_session_note: boolean;
+  consent_history: boolean;
+};
+
+export type PublicIntakeStartResult = {
+  client_id: string;
+  public_client_code: string;
+  intake_request_id: string;
+  magic_link_sent: boolean;
+  email_used: string | null;
+  message: string;
+};
+
+export async function startPublicIntake(
+  payload: PublicIntakeStartPayload,
+): Promise<PublicIntakeStartResult> {
+  return request<PublicIntakeStartResult>("/api/v1/public/intake/start", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export type PublicActivateResult = {
+  access_token: string;
+  token_type: string;
+  user_id: string;
+  email: string;
+  display_name: string;
+  role: string;
+  client_id: string;
+  public_client_code: string;
+  password_needed: boolean;
+  message: string;
+};
+
+export async function consumeMagicLink(token: string): Promise<PublicActivateResult> {
+  return request<PublicActivateResult>(
+    `/api/v1/public/activate/${encodeURIComponent(token)}`,
+    { method: "POST" },
+  );
+}
+
+export type PublicActivatePreview = {
+  valid: boolean;
+  expires_at?: string | null;
+  display_name?: string | null;
+  email?: string | null;
+};
+
+export async function previewMagicLink(token: string): Promise<PublicActivatePreview> {
+  return request<PublicActivatePreview>(
+    `/api/v1/public/activate/preview/${encodeURIComponent(token)}`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Fiche client durable — utilisée par /mon-espace
+// ---------------------------------------------------------------------------
+
+export type MyClientRecord = ClientRecord & {
+  app_user_id: string | null;
+  activation_invited_at: string | null;
+  activation_accepted_at: string | null;
+};
+
+export async function getMyClient(token: string): Promise<MyClientRecord | null> {
+  try {
+    return await request<MyClientRecord>("/api/v1/clients/me", { token });
+  } catch (error) {
+    // 404 = aucun dossier client lié — comportement attendu pour /acces-client first.
+    if (error instanceof Error && /404|introuvable/i.test(error.message)) {
+      return null;
+    }
+    throw error;
+  }
 }
 
