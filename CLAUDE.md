@@ -358,8 +358,10 @@ app/
 ├── api/routes/
 │   ├── sessions.py      # POST /sessions/{id}/room → 410 Gone
 │   ├── bookings.py      # hold_slot, confirm_slot (require_verified_email)
+│   ├── public_intake.py # POST /public/intake/start (orchestrateur) + POST /public/activate/{token}
+│   ├── clients.py       # GET /clients/me (fiche durable liée au compte connecté)
 │   └── ...
-└── alembic/versions/    # Migrations — HEAD = 20260504_0017
+└── alembic/versions/    # Migrations — head courant = 20260513_0022 (activation bridge) ; revisions ultérieures (0025, 0026 payment/entitlement) en cours d'intégration
 ```
 
 ---
@@ -411,6 +413,21 @@ alembic revision --autogenerate -m "description"
 - Un flag `Sécurité` à priorité HAUTE = escalade immédiate à un responsable humain.
 - Contexte québécois/canadien : vigilance forte sur les données personnelles et potentiellement sensibles (Loi 25, LPRPDE).
 - IVIA est positionnée comme **maison du vivant**, pas comme service marchand ni marketplace.
+
+### Parcours public d'entrée — magic link
+
+Le formulaire `/rendez-vous` (frontend) appelle un **unique** endpoint orchestrateur `POST /api/v1/public/intake/start` (backend). Ce endpoint :
+
+1. crée le `Client` + l'`IntakeRequest` + les 3 consentements publics autorisés (`consent_session`, `consent_session_note`, `consent_history`) ;
+2. si un courriel est fourni, crée l'`AppUser` lié et envoie automatiquement un magic link de 7 jours à l'adresse fournie (template `make_magic_link_email`) ;
+3. le client clique le lien, atterrit sur `/activer?token=...` qui consomme le token via `POST /api/v1/public/activate/{token}`, reçoit un JWT et arrive directement dans `/mon-espace`.
+
+Règles à respecter pour toute évolution de ce parcours :
+
+- **trois consentements maximum** sur le formulaire public — `consent_recording` et `consent_transcription` ne sont **jamais** demandés en entrée publique. Ils seront capturés au moment d'une séance réelle, avec une explication détaillée ;
+- **un seul appel orchestrateur** depuis le frontend pour soumettre l'intake (pas de cascade de 5 fetch) ;
+- le mail d'activation part **automatiquement** côté serveur si email fourni — pas de gate opérateur intercalé ;
+- `password_hash` d'un compte créé via magic link contient un secret aléatoire jamais communiqué : l'utilisateur peut définir un mot de passe plus tard depuis `/mon-espace`, mais le magic link reste la voie d'entrée privilégiée.
 
 ---
 
