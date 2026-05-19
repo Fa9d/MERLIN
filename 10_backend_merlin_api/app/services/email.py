@@ -186,3 +186,80 @@ def make_booking_confirmation_email(
         f"Pour annuler : {cancel_url}\n\n— IVIA"
     )
     return html, text
+
+
+def make_magic_link_email(
+    display_name: str,
+    magic_link_url: str,
+    ttl_days: int = 7,
+) -> tuple[str, str]:
+    """Lien magique post-intake : un clic, le compte est actif, l'espace membre s'ouvre."""
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Nous avons bien reçu votre demande. Pour ouvrir votre espace IVIA et poursuivre votre démarche, cliquez sur le bouton ci-dessous.</p>
+    <a class="btn" href="{magic_link_url}">Ouvrir mon espace IVIA</a>
+    <p style="color:#888;font-size:13px;">Ce lien est valide {ttl_days} jours. Vous pourrez ensuite, si vous le souhaitez, définir un mot de passe pour revenir facilement.</p>
+    <p style="color:#888;font-size:13px;">Si vous n'êtes pas à l'origine de cette demande, ignorez ce message — aucun compte n'est activé tant que le lien n'est pas suivi.</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Nous avons bien reçu votre demande. Pour ouvrir votre espace IVIA "
+        "et poursuivre votre démarche, suivez ce lien :\n"
+        f"{magic_link_url}\n\n"
+        f"Ce lien est valide {ttl_days} jours.\n\n"
+        "— IVIA"
+    )
+    return html, text
+
+
+def make_interac_etransfer_email(
+    display_name: str,
+    recipient_name: str,
+    recipient_email: str,
+    transfer_reference: str,
+    amount_cents: int,
+    currency: str,
+    instructions_text: str,
+) -> tuple[str, str]:
+    amount = f"{amount_cents / 100:.2f} {currency.upper()}"
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Votre demande de paiement par <strong>Interac e-Transfer</strong> est prête.</p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      <tr><td style="padding:8px 0;color:#888;width:160px;">Montant</td>
+          <td style="padding:8px 0;font-weight:600;">{amount}</td></tr>
+      <tr><td style="padding:8px 0;color:#888;">Destinataire</td>
+          <td style="padding:8px 0;font-weight:600;">{recipient_name}</td></tr>
+      <tr><td style="padding:8px 0;color:#888;">Courriel Interac</td>
+          <td style="padding:8px 0;font-weight:600;">{recipient_email}</td></tr>
+      <tr><td style="padding:8px 0;color:#888;">Reference</td>
+          <td style="padding:8px 0;font-weight:600;">{transfer_reference}</td></tr>
+    </table>
+    <p>{instructions_text}</p>
+    <p style="color:#888;font-size:13px;">Important: indiquez exactement la reference <strong>{transfer_reference}</strong> dans le message du virement pour accelerer la reconciliation.</p>
+  </div>
+  <div class="footer">IVIA · Plateforme de soins intégrée · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Votre demande de paiement par Interac e-Transfer est prête.\n\n"
+        f"Montant        : {amount}\n"
+        f"Destinataire   : {recipient_name}\n"
+        f"Courriel       : {recipient_email}\n"
+        f"Reference      : {transfer_reference}\n\n"
+        f"{instructions_text}\n\n"
+        f"Utilisez la reference {transfer_reference} dans le message du virement.\n\n— IVIA"
+    )
+    return html, text

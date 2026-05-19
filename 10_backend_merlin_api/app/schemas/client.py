@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import EmailStr
 
 from app.models.enums import DataSensitivityClass, RecordStatus
@@ -30,3 +32,6 @@ class ClientRead(TimestampedReadSchema):
     is_adult_confirmed: bool
     record_status: RecordStatus
     data_sensitivity_class: DataSensitivityClass
+    app_user_id: str | None = None
+    activation_invited_at: datetime | None = None
+    activation_accepted_at: datetime | None = None

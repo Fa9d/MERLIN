@@ -2,7 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_optional_current_user, require_internal_clinical_roles
+from app.core.deps import (
+    get_current_user,
+    get_optional_current_user,
+    require_internal_clinical_roles,
+)
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
@@ -59,10 +63,44 @@ def create_client(
 ) -> Client:
     _validate_create_access(payload, current_user)
 
-    client = Client(**payload.model_dump())
+    payload_data = payload.model_dump()
+    if current_user is not None:
+        existing = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+        payload_data["app_user_id"] = current_user.id
+        if not payload_data.get("email"):
+            payload_data["email"] = current_user.email
+
+        if existing is not None:
+            for key, value in payload_data.items():
+                setattr(existing, key, value)
+            db.add(existing)
+            db.commit()
+            db.refresh(existing)
+            return existing
+
+    client = Client(**payload_data)
     db.add(client)
     db.commit()
     db.refresh(client)
+    return client
+
+
+@router.get("/me", response_model=ClientRead)
+def get_my_client(
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> Client:
+    """Retourne le dossier `Client` durablement lié au compte connecté.
+
+    Utilisé par `/mon-espace` pour afficher la fiche du client après activation
+    via magic link ou inscription via `/acces-client`.
+    """
+    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+    if client is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Aucun dossier client n'est rattaché à ce compte.",
+        )
     return client
 
 

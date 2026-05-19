@@ -9,11 +9,13 @@ from app.api.routes.audio_sessions import router as audio_sessions_router
 from app.api.routes.audio_recordings import router as audio_recordings_router
 from app.api.routes.auth import router as auth_router
 from app.api.routes.clients import router as clients_router
+from app.api.routes.client_entitlements import router as client_entitlements_router
 from app.api.routes.consents import router as consents_router
 from app.api.routes.derived_documents import router as derived_documents_router
 from app.api.routes.health import router as health_router
 from app.api.routes.intake_requests import router as intake_requests_router
 from app.api.routes.praticiens import router as praticiens_router
+from app.api.routes.public_intake import router as public_intake_router
 from app.api.routes.sessions import router as sessions_router
 from app.api.routes.session_notes import router as session_notes_router
 from app.api.routes.schedules import router as schedules_router
@@ -57,10 +59,12 @@ app.include_router(auth_router, prefix=settings.api_v1_prefix)
 app.include_router(audio_recordings_router, prefix=settings.api_v1_prefix)
 app.include_router(audio_sessions_router, prefix=settings.api_v1_prefix)
 app.include_router(clients_router, prefix=settings.api_v1_prefix)
+app.include_router(client_entitlements_router, prefix=settings.api_v1_prefix)
 app.include_router(intake_requests_router, prefix=settings.api_v1_prefix)
 app.include_router(consents_router, prefix=settings.api_v1_prefix)
 app.include_router(derived_documents_router, prefix=settings.api_v1_prefix)
 app.include_router(praticiens_router, prefix=settings.api_v1_prefix)
+app.include_router(public_intake_router, prefix=settings.api_v1_prefix)
 app.include_router(sessions_router, prefix=settings.api_v1_prefix)
 app.include_router(session_notes_router, prefix=settings.api_v1_prefix)
 app.include_router(schedules_router, prefix=settings.api_v1_prefix)
