@@ -1118,3 +1118,23 @@ export async function getMyClient(token: string): Promise<MyClientRecord | null>
   }
 }
 
+export type MyClientUpdatePayload = {
+  first_name_or_alias?: string | null;
+  last_name?: string | null;
+  phone?: string | null;
+  language_code?: string | null;
+  timezone?: string | null;
+  territory_code?: string | null;
+};
+
+export async function updateMyClient(
+  payload: MyClientUpdatePayload,
+  token: string,
+): Promise<MyClientRecord> {
+  return request<MyClientRecord>("/api/v1/clients/me", {
+    method: "PATCH",
+    body: payload,
+    token,
+  });
+}
+

@@ -511,6 +511,208 @@
   .hp-audience { grid-template-columns: 1fr; }
 }
 
+/* ── PRATICIENS PUBLICS ───────────────────────────────────────────────────── */
+.praticiens-page-shell,
+.praticien-public-shell {
+  padding-bottom: 4rem;
+}
+
+.praticiens-page-hero {
+  padding-bottom: 1.5rem;
+}
+
+.praticiens-page-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.03em;
+}
+
+.praticiens-page-intro,
+.praticien-public-intro {
+  max-width: 56ch;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.praticiens-page-state,
+.praticiens-page-error {
+  font-size: 0.95rem;
+}
+
+.praticiens-page-state {
+  color: var(--muted);
+}
+
+.praticiens-page-error {
+  color: #c0392b;
+}
+
+.praticiens-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.praticiens-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.praticiens-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.praticiens-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.praticiens-card-intro {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.praticiens-card-tags,
+.praticien-public-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.praticiens-card-tags {
+  margin-top: auto;
+}
+
+.praticiens-tag {
+  font-size: 0.75rem;
+  padding: 0.24rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.praticiens-tag--language {
+  background: rgba(76, 100, 84, 0.1);
+  color: var(--accent-deep);
+}
+
+.praticiens-tag--channel {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+}
+
+.praticien-public-main {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.praticien-public-backlink {
+  width: fit-content;
+}
+
+.praticien-public-hero {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+}
+
+.praticien-public-copy {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.praticien-public-title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+}
+
+.praticien-public-subtitle {
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.praticien-public-urgence {
+  display: grid;
+  gap: 0.9rem;
+  align-self: start;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.praticien-public-urgence-kicker {
+  margin-bottom: 0.4rem;
+}
+
+.praticien-public-urgence-title,
+.praticien-public-slots-title {
+  font-size: 1.15rem;
+}
+
+.praticien-public-urgence-note {
+  line-height: 1.6;
+}
+
+.praticien-public-slots-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.praticien-public-slots-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.praticien-public-empty-state {
+  margin: 0;
+}
+
+.praticien-public-slots-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.praticien-public-slot-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.praticien-public-slot-copy {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.praticien-public-slot-title {
+  font-size: 0.98rem;
+}
+
+.rendezvous-context-card {
+  margin-bottom: 1.25rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+@media (max-width: 820px) {
+  .praticien-public-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .praticien-public-slot-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── RENCONTRE ──────────────────────────────────────────────────────────────── */
 .hp-rencontre {
   background: var(--background);
@@ -1319,6 +1521,114 @@
   margin: var(--sp-8) auto 0;
 }
 
+.rendezvous-access-box {
+  display: grid;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.public-access-main {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.public-access-header {
+  max-width: 52rem;
+}
+
+.public-access-grid {
+  align-items: start;
+}
+
+.public-access-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.verify-email-card {
+  max-width: 30rem;
+  margin: 5rem auto;
+  text-align: center;
+}
+
+.verify-email-success {
+  color: var(--color-success, #16a34a);
+  margin-bottom: 1.5rem;
+}
+
+.verify-email-error {
+  margin-bottom: 1.5rem;
+}
+
+.rendezvous-payment-box {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rendezvous-payment-instructions {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  background: rgba(62, 74, 66, 0.06);
+}
+
+.checkout-status-page {
+  max-width: 35rem;
+  margin: 5rem auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.checkout-status-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.checkout-status-icon--success {
+  color: var(--accent, #4a7c59);
+}
+
+.checkout-status-icon--cancel {
+  color: var(--muted, #888);
+}
+
+.checkout-status-title {
+  margin-bottom: 1rem;
+}
+
+.checkout-status-body {
+  color: var(--muted, #666);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.checkout-status-body--wide {
+  margin-bottom: 2rem;
+}
+
+.checkout-status-reference {
+  font-size: 0.75rem;
+  color: var(--muted, #999);
+  margin-bottom: 2rem;
+  font-family: monospace;
+}
+
+.checkout-status-spacer {
+  margin-bottom: 2rem;
+}
+
+.checkout-status-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .hp-pont--v2 .hp-pont__text {
   font-family: var(--font-display);
   font-size: clamp(1.375rem, 3vw, 1.875rem);
@@ -2012,4 +2322,205 @@
 [data-theme="dark"] .v3-btn--ghost:hover {
   background: rgba(253, 250, 242, 0.12);
 }
+
+/* ── Auth dans la nav : "Se connecter" + menu utilisateur connecté ──────── */
+.hp-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.hp-nav__login {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--foreground);
+  text-decoration: none;
+}
+.hp-nav__login:hover { color: var(--sage); }
+
+.hp-nav__user {
+  position: relative;
+}
+
+.hp-nav__user-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  border-radius: 100px;
+  padding: var(--sp-2) var(--sp-4);
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  transition: background 0.15s;
+}
+.hp-nav__user-trigger:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] .hp-nav__user-trigger:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.hp-nav__user-greeting strong {
+  font-weight: 600;
+}
+
+.hp-nav__user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--background, #fff);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 6px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.hp-nav__user-menu-item {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  color: var(--foreground);
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+}
+.hp-nav__user-menu-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] .hp-nav__user-menu-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.hp-nav__user-menu-item--danger {
+  color: #c0392b;
+}
+
+/* ── Popup login ─────────────────────────────────────────────────────────── */
+.login-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--sp-4);
+}
+
+.login-popup {
+  position: relative;
+  background: var(--background, #fff);
+  border-radius: 16px;
+  padding: var(--sp-6) var(--sp-6) var(--sp-5);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.login-popup h3 {
+  margin: 0 0 var(--sp-2);
+}
+
+.login-popup__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--foreground);
+  border-radius: 8px;
+}
+.login-popup__close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.login-popup__divider {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-5) 0 var(--sp-3);
+  color: var(--text-muted, #888);
+  font-size: 0.8rem;
+}
+.login-popup__divider::before,
+.login-popup__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border, rgba(0, 0, 0, 0.12));
+}
+
+.login-popup__alt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+/* ── Section "Compléter mon profil" dans /mon-espace ─────────────────────── */
+.profile-edit-form .form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+@media (max-width: 600px) {
+  .profile-edit-form .form-grid-2 { grid-template-columns: 1fr; }
+}
+
+.profile-edit-saved {
+  font-size: 0.85rem;
+  color: var(--sage, #4a7c59);
+  margin-top: var(--sp-2);
+}
+
+/* ── Layout du dashboard mon-espace ─────────────────────────────────────── */
+.mon-espace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+
+.list-plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.list-plain li { padding: 0; }
+
+.section-footer {
+  margin-top: var(--sp-6);
+  display: flex;
+  justify-content: flex-end;
+}
+.button-text {
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+.button-text:hover { color: var(--foreground); }
 

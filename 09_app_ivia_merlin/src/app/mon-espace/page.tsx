@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import {
@@ -11,6 +11,7 @@ import {
   listMyEntitlements,
   PUBLIC_CLIENT_STORAGE_KEY,
   readStoredPublicClientSession,
+  updateMyClient,
   type BookingSlotRecord,
   type ClientEntitlementRecord,
   type LoginResponse,
@@ -255,6 +256,16 @@ function MonEspaceContent() {
                   consentements d&apos;enregistrement et de transcription nécessaires pour vos séances.
                 </p>
               </article>
+
+              {data.client ? (
+                <ProfileEditCard
+                  client={data.client}
+                  token={data.session.access_token}
+                  onUpdated={(updated) =>
+                    setData((d) => (d ? { ...d, client: updated } : d))
+                  }
+                />
+              ) : null}
             </div>
           ) : null}
 
@@ -268,6 +279,138 @@ function MonEspaceContent() {
         </main>
       </div>
     </PublicLayout>
+  );
+}
+
+type ProfileEditCardProps = {
+  client: MyClientRecord;
+  token: string;
+  onUpdated: (next: MyClientRecord) => void;
+};
+
+const LANGUAGE_OPTIONS: { code: string; label: string }[] = [
+  { code: "fr-CA", label: "Français (Québec)" },
+  { code: "en-CA", label: "English (Canada)" },
+  { code: "es-CA", label: "Español" },
+];
+
+const TERRITORY_OPTIONS: { code: string; label: string }[] = [
+  { code: "QC", label: "Québec" },
+  { code: "ON", label: "Ontario" },
+  { code: "NB", label: "Nouveau-Brunswick" },
+  { code: "AUTRE", label: "Autre / hors Canada" },
+];
+
+function ProfileEditCard({ client, token, onUpdated }: ProfileEditCardProps) {
+  const [firstNameOrAlias, setFirstNameOrAlias] = useState(client.first_name_or_alias);
+  const [lastName, setLastName] = useState(client.last_name ?? "");
+  const [phone, setPhone] = useState(client.phone ?? "");
+  const [languageCode, setLanguageCode] = useState(client.language_code);
+  const [territoryCode, setTerritoryCode] = useState(client.territory_code);
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsSaving(true);
+    setErrorMessage(null);
+    try {
+      const updated = await updateMyClient(
+        {
+          first_name_or_alias: firstNameOrAlias.trim() || null,
+          last_name: lastName.trim() || null,
+          phone: phone.trim() || null,
+          language_code: languageCode || null,
+          territory_code: territoryCode || null,
+        },
+        token,
+      );
+      onUpdated(updated);
+      setSavedAt(new Date());
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Erreur inconnue.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  return (
+    <article className="card stack-md">
+      <h3>Compléter mon profil</h3>
+      <p className="inline-note">
+        Quelques précisions facultatives nous aident à mieux orienter votre accompagnement.
+        Vous pouvez sauter cette étape pour l&apos;instant — rien n&apos;est obligatoire ici.
+      </p>
+
+      <form className="form-stack profile-edit-form" onSubmit={handleSubmit}>
+        <label className="field">
+          <span>Comment souhaitez-vous être appelé ?</span>
+          <input
+            value={firstNameOrAlias}
+            onChange={(e) => setFirstNameOrAlias(e.target.value)}
+            placeholder="Prénom ou alias"
+          />
+        </label>
+
+        <div className="form-grid-2">
+          <label className="field">
+            <span>Nom (optionnel)</span>
+            <input
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Nom de famille"
+            />
+          </label>
+
+          <label className="field">
+            <span>Téléphone (optionnel)</span>
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="514 000 0000"
+            />
+          </label>
+        </div>
+
+        <div className="form-grid-2">
+          <label className="field">
+            <span>Langue de préférence</span>
+            <select
+              value={languageCode}
+              onChange={(e) => setLanguageCode(e.target.value)}
+            >
+              {LANGUAGE_OPTIONS.map((o) => (
+                <option key={o.code} value={o.code}>{o.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label className="field">
+            <span>Territoire</span>
+            <select
+              value={territoryCode}
+              onChange={(e) => setTerritoryCode(e.target.value)}
+            >
+              {TERRITORY_OPTIONS.map((o) => (
+                <option key={o.code} value={o.code}>{o.label}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <button type="submit" className="button button-primary" disabled={isSaving}>
+          {isSaving ? "Enregistrement…" : "Enregistrer mes informations"}
+        </button>
+
+        {errorMessage ? <p className="message message-error">{errorMessage}</p> : null}
+        {savedAt && !errorMessage ? (
+          <p className="profile-edit-saved">
+            Enregistré à {savedAt.toLocaleTimeString("fr-CA")}.
+          </p>
+        ) : null}
+      </form>
+    </article>
   );
 }
 

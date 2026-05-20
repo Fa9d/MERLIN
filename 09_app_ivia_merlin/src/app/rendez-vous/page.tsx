@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useMemo, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 
 import { PublicLayout } from "@/components/layout/PublicLayout";
-import { startPublicIntake, type PublicIntakeStartResult } from "@/lib/merlin-api";
+import {
+  readStoredPublicClientSession,
+  startPublicIntake,
+  type PublicIntakeStartResult,
+} from "@/lib/merlin-api";
 
 type Need =
   | "clarification"
@@ -36,6 +40,18 @@ function RendezVousContent() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [isAdultConfirmed, setIsAdultConfirmed] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Pré-remplir si l'utilisateur est déjà connecté (parcours retour).
+    const session = readStoredPublicClientSession();
+    if (session) {
+      setIsAuthenticated(true);
+      if (!firstNameOrAlias) setFirstNameOrAlias(session.user.display_name || "");
+      if (!email) setEmail(session.user.email || "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [consentSession, setConsentSession] = useState(false);
   const [consentSessionNote, setConsentSessionNote] = useState(false);
@@ -124,6 +140,16 @@ function RendezVousContent() {
               Pas de case à cocher parfaitement. Juste ce qui vous ressemble.
             </p>
           </div>
+
+          {isAuthenticated && !result ? (
+            <section className="card message message-success">
+              <p>
+                Vous êtes connecté. Vos coordonnées sont déjà pré-remplies.
+                Vous pouvez aussi <Link href="/rendez-vous/reserver">choisir directement un créneau</Link>
+                {" "}sans repasser par ce formulaire.
+              </p>
+            </section>
+          ) : null}
 
           {contextSummary ? (
             <section className="card rendezvous-context-card">
