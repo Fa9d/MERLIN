@@ -1040,9 +1040,13 @@ export type PublicIntakeStartPayload = {
   support_already_in_place?: boolean;
   requested_outcome_text?: string | null;
   entry_summary_text?: string | null;
-  consent_session: boolean;
-  consent_session_note: boolean;
-  consent_history: boolean;
+  /**
+   * Acceptation omnibus des CGU + politique de confidentialité.
+   * Le backend en dérive automatiquement les trois entrées de registre Loi 25
+   * (consent_session, consent_session_note, consent_history) pour le registre légal.
+   */
+  consent_terms_accepted: boolean;
+  consent_terms_version?: string;
 };
 
 export type PublicIntakeStartResult = {

@@ -151,9 +151,7 @@ function RendezVousContent() {
   const [isAdultConfirmed, setIsAdultConfirmed] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const [consentSession, setConsentSession] = useState(false);
-  const [consentSessionNote, setConsentSessionNote] = useState(false);
-  const [consentHistory, setConsentHistory] = useState(false);
+  const [consentTermsAccepted, setConsentTermsAccepted] = useState(false);
 
   const [need, setNeed] = useState<Need>("support");
   const [requestText, setRequestText] = useState("");
@@ -249,8 +247,10 @@ function RendezVousContent() {
       return;
     }
 
-    if (!consentSession || !consentSessionNote) {
-      setErrorMessage("Les consentements de séance et de note sont requis pour continuer.");
+    if (!consentTermsAccepted) {
+      setErrorMessage(
+        "Vous devez accepter les CGU et la politique de confidentialité pour continuer.",
+      );
       setIsSubmitting(false);
       return;
     }
@@ -266,9 +266,8 @@ function RendezVousContent() {
         support_already_in_place: supportInPlace,
         requested_outcome_text: requestText.trim() || null,
         entry_summary_text: entrySummary,
-        consent_session: consentSession,
-        consent_session_note: consentSessionNote,
-        consent_history: consentHistory,
+        consent_terms_accepted: consentTermsAccepted,
+        consent_terms_version: "v1.2",
       });
       setResult(response);
       // À la soumission réussie, on purge les réponses d'orientation pour ne
@@ -455,43 +454,24 @@ function RendezVousContent() {
                 </label>
 
                 <div className="stack-sm consent-block">
-                  <h4>Consentements pour commencer votre démarche</h4>
-                  <p className="inline-note">
-                    Ces trois consentements suffisent pour soumettre votre demande. Les autorisations techniques
-                    (enregistrement, transcription) ne sont demandées que plus tard, au moment d&apos;une séance réelle,
-                    avec une explication détaillée.
-                  </p>
-
                   <label className="checkbox-row">
                     <input
                       type="checkbox"
-                      checked={consentSession}
-                      onChange={(event) => setConsentSession(event.target.checked)}
+                      checked={consentTermsAccepted}
+                      onChange={(event) => setConsentTermsAccepted(event.target.checked)}
                     />
                     <span>
-                      J&apos;accepte qu&apos;IVIA prépare une <strong>séance d&apos;accueil</strong> à partir de cette demande.
-                    </span>
-                  </label>
-
-                  <label className="checkbox-row">
-                    <input
-                      type="checkbox"
-                      checked={consentSessionNote}
-                      onChange={(event) => setConsentSessionNote(event.target.checked)}
-                    />
-                    <span>
-                      J&apos;accepte qu&apos;une <strong>note de séance</strong> structurée soit produite pour assurer la continuité de mon suivi.
-                    </span>
-                  </label>
-
-                  <label className="checkbox-row">
-                    <input
-                      type="checkbox"
-                      checked={consentHistory}
-                      onChange={(event) => setConsentHistory(event.target.checked)}
-                    />
-                    <span>
-                      J&apos;accepte que mes <strong>séances soient mises en lien</strong> entre elles pour préserver le fil de ma démarche (optionnel).
+                      J&apos;accepte les{" "}
+                      <Link href="/cgu" target="_blank" rel="noopener">
+                        Conditions générales d&apos;utilisation
+                      </Link>{" "}
+                      et la{" "}
+                      <Link href="/confidentialite" target="_blank" rel="noopener">
+                        politique de confidentialité
+                      </Link>{" "}
+                      d&apos;IVIA. Mes données restent au Québec (Loi 25). L&apos;enregistrement
+                      audio d&apos;une séance, s&apos;il a lieu, fera l&apos;objet d&apos;un
+                      consentement distinct au moment de la première séance.
                     </span>
                   </label>
                 </div>

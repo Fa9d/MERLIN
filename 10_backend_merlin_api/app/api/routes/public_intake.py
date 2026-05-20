@@ -60,7 +60,18 @@ router = APIRouter(prefix="/public", tags=["public_intake"])
 
 
 class PublicIntakeStartIn(BaseModel):
-    """Charge utile soumise par `/rendez-vous` (utilisateur non authentifié)."""
+    """Charge utile soumise par `/rendez-vous` (utilisateur non authentifié).
+
+    Le consentement est omnibus : une seule case « J'accepte les CGU et la politique
+    de confidentialité » couvre toutes les finalités énumérées dans ces documents
+    (Loi 25 art. 14 — consentement présenté distinctement, fins spécifiques nommées
+    explicitement dans le document accepté). Le backend en dérive les entrées
+    individuelles dans la table `Consent` pour la tenue du registre légal.
+
+    Le consentement biométrique (enregistrement + transcription) reste en dehors
+    de cet omnibus : il sera demandé séparément au moment de la première séance,
+    conformément à Loi 25 art. 8.1.
+    """
 
     first_name_or_alias: str = Field(min_length=1, max_length=120)
     email: EmailStr | None = None
@@ -73,9 +84,8 @@ class PublicIntakeStartIn(BaseModel):
     requested_outcome_text: str | None = Field(default=None, max_length=6000)
     entry_summary_text: str | None = None
 
-    consent_session: bool
-    consent_session_note: bool
-    consent_history: bool
+    consent_terms_accepted: bool
+    consent_terms_version: str = Field(default="v1.2", max_length=16)
 
 
 class PublicIntakeStartOut(BaseModel):
@@ -113,11 +123,11 @@ def _ensure_adult(payload: PublicIntakeStartIn) -> None:
         )
 
 
-def _ensure_core_consents(payload: PublicIntakeStartIn) -> None:
-    if not payload.consent_session or not payload.consent_session_note:
+def _ensure_terms_accepted(payload: PublicIntakeStartIn) -> None:
+    if not payload.consent_terms_accepted:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Les consentements de séance et de note sont requis pour continuer.",
+            detail="Vous devez accepter les CGU et la politique de confidentialité pour continuer.",
         )
 
 
@@ -188,7 +198,7 @@ async def start_public_intake(
     db: Session = Depends(get_db),
 ) -> PublicIntakeStartOut:
     _ensure_adult(payload)
-    _ensure_core_consents(payload)
+    _ensure_terms_accepted(payload)
 
     # 1) Création du Client (email/téléphone optionnels)
     client = Client(
@@ -217,20 +227,24 @@ async def start_public_intake(
     )
     db.add(intake)
 
-    # 3) Trois consentements publics (séance, note, historique)
-    for type_code, value in (
-        (ConsentTypeCode.consent_session, payload.consent_session),
-        (ConsentTypeCode.consent_session_note, payload.consent_session_note),
-        (ConsentTypeCode.consent_history, payload.consent_history),
+    # 3) Registre légal : un seul opt-in omnibus côté UX est décomposé en trois
+    #    entrées `Consent` pour la tenue de registre Loi 25 (art. 14 + politique
+    #    gouvernance §5). L'utilisateur n'a jamais vu trois cases : il a accepté
+    #    les CGU + politique de confidentialité qui nomment ces trois finalités.
+    for type_code in (
+        ConsentTypeCode.consent_session,
+        ConsentTypeCode.consent_session_note,
+        ConsentTypeCode.consent_history,
     ):
         db.add(
             Consent(
                 client_id=client.id,
                 consent_type_code=type_code,
-                consent_value=value,
-                consent_version_code="v1",
+                consent_value=True,
+                consent_version_code=payload.consent_terms_version,
                 granted_by_actor_code=GrantedByActorCode.client,
                 record_status=RecordStatus.active,
+                notes=f"Dérivé de l'acceptation omnibus CGU/Confidentialité {payload.consent_terms_version}",
             )
         )
 

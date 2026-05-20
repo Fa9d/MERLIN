@@ -63,9 +63,8 @@ export function RegisterPopup({ isOpen, onClose, source }: RegisterPopupProps) {
         support_already_in_place: false,
         requested_outcome_text: null,
         entry_summary_text: source ?? "Inscription rapide depuis le site",
-        consent_session: true,
-        consent_session_note: true,
-        consent_history: false,
+        consent_terms_accepted: true,
+        consent_terms_version: "v1.2",
       });
       setResult(response);
     } catch (error) {
