@@ -1,8 +1,13 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PublicLayout } from "@/components/layout/PublicLayout";
+import { RegisterPopup } from "@/components/auth/RegisterPopup";
+import {
+  readStoredPublicClientSession,
+  type LoginResponse,
+} from "@/lib/merlin-api";
 
 const CATEGORIES = [
   {
@@ -84,6 +89,12 @@ const ARTICLES = [
 
 export default function RessourcesPage() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [session, setSession] = useState<LoginResponse | null>(null);
+  const [registerOpen, setRegisterOpen] = useState(false);
+
+  useEffect(() => {
+    setSession(readStoredPublicClientSession());
+  }, []);
 
   const filtered = activeFilter ? ARTICLES.filter((a) => a.cat === activeFilter) : ARTICLES;
 
@@ -163,15 +174,69 @@ export default function RessourcesPage() {
         </section>
 
         {/* CTA */}
-        <div style={{ marginTop: "4rem", padding: "3rem", border: "1px solid var(--border)", borderRadius: "var(--r-lg, 2rem)", background: "var(--surface)", textAlign: "center", display: "grid", gap: "1rem", justifyItems: "center" }}>
+        <div style={{ marginTop: "4rem", padding: "3rem", border: "1px solid var(--border)", borderRadius: "var(--r-lg, 2rem)", background: "var(--surface)", textAlign: "center", display: "grid", gap: "1.25rem", justifyItems: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display, serif)", fontWeight: 400, fontSize: "clamp(1.7rem,4vw,2.4rem)", letterSpacing: "-0.03em", color: "var(--foreground)", margin: 0 }}>
-            Prêt à vous accorder une heure d'écoute?
+            {session
+              ? "Continuez votre démarche IVIA."
+              : "Allez plus loin avec IVIA."}
           </h2>
-          <Link href="/rendez-vous/reserver" style={{ display: "inline-flex", alignItems: "center", minHeight: "44px", padding: "0 1.75rem", borderRadius: "999px", background: "var(--accent-deep)", color: "oklch(95% 0.01 80)", textDecoration: "none", fontWeight: 600, fontSize: "0.97rem", boxShadow: "0 12px 28px oklch(30% 0.07 145 / 0.3)" }}>
-            Réserver une séance — 65&nbsp;$
-          </Link>
+          <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.6, maxWidth: "52ch", margin: 0 }}>
+            {session
+              ? "Vous êtes déjà connecté. Réservez une séance ou retournez dans votre espace personnel."
+              : "Réservez une première séance d'écoute (65 $), ou créez votre compte pour accéder aux ressources réservées aux membres."}
+          </p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", justifyContent: "center", marginTop: "0.5rem" }}>
+            <Link
+              href={session ? "/rendez-vous/reserver" : "/rendez-vous"}
+              style={{
+                display: "inline-flex", alignItems: "center", minHeight: "44px",
+                padding: "0 1.75rem", borderRadius: "999px",
+                background: "var(--accent-deep)", color: "oklch(95% 0.01 80)",
+                textDecoration: "none", fontWeight: 600, fontSize: "0.97rem",
+                boxShadow: "0 12px 28px oklch(30% 0.07 145 / 0.3)",
+              }}
+            >
+              {session ? "Réserver un créneau" : "Prendre rendez-vous"}
+            </Link>
+
+            {session ? (
+              <Link
+                href="/mon-espace"
+                style={{
+                  display: "inline-flex", alignItems: "center", minHeight: "44px",
+                  padding: "0 1.75rem", borderRadius: "999px",
+                  background: "var(--surface)", color: "var(--foreground)",
+                  textDecoration: "none", fontWeight: 600, fontSize: "0.97rem",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                Mon espace
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setRegisterOpen(true)}
+                style={{
+                  display: "inline-flex", alignItems: "center", minHeight: "44px",
+                  padding: "0 1.75rem", borderRadius: "999px",
+                  background: "var(--surface)", color: "var(--foreground)",
+                  cursor: "pointer", fontWeight: 600, fontSize: "0.97rem",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                S&apos;inscrire
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
+      <RegisterPopup
+        isOpen={registerOpen}
+        onClose={() => setRegisterOpen(false)}
+        source="Inscription depuis /ressources"
+      />
     </div>
     </PublicLayout>
   );
