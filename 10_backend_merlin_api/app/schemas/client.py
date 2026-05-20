@@ -19,6 +19,17 @@ class ClientCreate(MerlinSchema):
     data_sensitivity_class: DataSensitivityClass = DataSensitivityClass.high
 
 
+class MyClientUpdate(MerlinSchema):
+    """Mise à jour partielle de la fiche client par son propre titulaire."""
+
+    first_name_or_alias: str | None = None
+    last_name: str | None = None
+    phone: str | None = None
+    language_code: str | None = None
+    timezone: str | None = None
+    territory_code: str | None = None
+
+
 class ClientRead(TimestampedReadSchema):
     id: str
     public_client_code: str
