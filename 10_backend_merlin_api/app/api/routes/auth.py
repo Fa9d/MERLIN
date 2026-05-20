@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, Field
 from sqlalchemy import func
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -79,3 +80,39 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse
 @router.get("/me", response_model=UserRead)
 def me(current_user: AppUser = Depends(get_current_user)) -> UserRead:
     return UserRead.model_validate(current_user)
+
+
+class SetPasswordRequest(BaseModel):
+    new_password: str = Field(min_length=8, max_length=128)
+    current_password: str | None = Field(default=None, max_length=128)
+
+
+class SetPasswordResponse(BaseModel):
+    message: str
+
+
+@router.post("/set-password", response_model=SetPasswordResponse)
+def set_password(
+    payload: SetPasswordRequest,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> SetPasswordResponse:
+    """Permet à l'utilisateur connecté de définir ou changer son mot de passe.
+
+    - Si `current_password` est fourni, il est vérifié contre le hash actuel
+      (cas d'un utilisateur qui a déjà un mot de passe et veut le changer).
+    - Si `current_password` est omis, on accepte le changement uniquement
+      sur la base du JWT (cas d'un utilisateur magic-link qui n'a jamais
+      défini de mot de passe : son `password_hash` est un placeholder
+      aléatoire jamais communiqué).
+    """
+    if payload.current_password is not None:
+        if not verify_password(payload.current_password, current_user.password_hash):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Mot de passe actuel incorrect.",
+            )
+
+    current_user.password_hash = hash_password(payload.new_password)
+    db.commit()
+    return SetPasswordResponse(message="Mot de passe mis à jour.")

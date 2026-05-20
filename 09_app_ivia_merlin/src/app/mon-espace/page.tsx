@@ -11,6 +11,7 @@ import {
   listMyEntitlements,
   PUBLIC_CLIENT_STORAGE_KEY,
   readStoredPublicClientSession,
+  setMyPassword,
   updateMyClient,
   type BookingSlotRecord,
   type ClientEntitlementRecord,
@@ -266,6 +267,11 @@ function MonEspaceContent() {
                   }
                 />
               ) : null}
+
+              <SetPasswordCard
+                token={data.session.access_token}
+                firstTime={isMagicWelcome}
+              />
             </div>
           ) : null}
 
@@ -410,6 +416,144 @@ function ProfileEditCard({ client, token, onUpdated }: ProfileEditCardProps) {
           </p>
         ) : null}
       </form>
+    </article>
+  );
+}
+
+type SetPasswordCardProps = {
+  token: string;
+  firstTime: boolean;
+};
+
+function SetPasswordCard({ token, firstTime }: SetPasswordCardProps) {
+  const [isOpen, setIsOpen] = useState(firstTime);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    if (newPassword.length < 8) {
+      setErrorMessage("Le mot de passe doit contenir au moins 8 caractères.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("Les deux mots de passe ne correspondent pas.");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const result = await setMyPassword(
+        {
+          new_password: newPassword,
+          current_password: firstTime || !currentPassword ? null : currentPassword,
+        },
+        token,
+      );
+      setSuccessMessage(result.message);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Erreur inconnue.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  return (
+    <article className="card stack-md">
+      <h3>{firstTime ? "Définir un mot de passe (optionnel)" : "Changer mon mot de passe"}</h3>
+      <p className="inline-note">
+        {firstTime
+          ? "Vous êtes entré via un lien magique. Si vous voulez revenir plus facilement à votre espace, vous pouvez définir un mot de passe maintenant — ou plus tard, depuis cette page."
+          : "Choisissez un nouveau mot de passe pour votre compte IVIA."}
+      </p>
+
+      {!isOpen ? (
+        <button
+          type="button"
+          className="button button-secondary"
+          onClick={() => setIsOpen(true)}
+        >
+          {firstTime ? "Définir mon mot de passe" : "Changer mon mot de passe"}
+        </button>
+      ) : (
+        <form className="form-stack" onSubmit={handleSubmit}>
+          {!firstTime ? (
+            <label className="field">
+              <span>Mot de passe actuel</span>
+              <input
+                type="password"
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+              <span className="inline-note">
+                Laissez vide si vous n&apos;en avez jamais défini.
+              </span>
+            </label>
+          ) : null}
+
+          <label className="field">
+            <span>Nouveau mot de passe</span>
+            <input
+              required
+              minLength={8}
+              type="password"
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Au moins 8 caractères"
+            />
+          </label>
+
+          <label className="field">
+            <span>Confirmer le nouveau mot de passe</span>
+            <input
+              required
+              minLength={8}
+              type="password"
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Re-saisissez"
+            />
+          </label>
+
+          <div className="public-access-actions">
+            <button type="submit" className="button button-primary" disabled={isSaving}>
+              {isSaving ? "Enregistrement…" : "Enregistrer"}
+            </button>
+            {!firstTime ? (
+              <button
+                type="button"
+                className="button button-secondary"
+                onClick={() => {
+                  setIsOpen(false);
+                  setErrorMessage(null);
+                  setSuccessMessage(null);
+                }}
+              >
+                Annuler
+              </button>
+            ) : null}
+          </div>
+
+          {errorMessage ? <p className="message message-error">{errorMessage}</p> : null}
+          {successMessage ? (
+            <p className="profile-edit-saved">{successMessage}</p>
+          ) : null}
+        </form>
+      )}
     </article>
   );
 }

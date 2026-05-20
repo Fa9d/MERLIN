@@ -1138,3 +1138,23 @@ export async function updateMyClient(
   });
 }
 
+export type SetPasswordPayload = {
+  new_password: string;
+  current_password?: string | null;
+};
+
+export type SetPasswordResult = {
+  message: string;
+};
+
+export async function setMyPassword(
+  payload: SetPasswordPayload,
+  token: string,
+): Promise<SetPasswordResult> {
+  return request<SetPasswordResult>("/api/v1/auth/set-password", {
+    method: "POST",
+    body: payload,
+    token,
+  });
+}
+
