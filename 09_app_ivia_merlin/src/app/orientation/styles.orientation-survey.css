@@ -228,14 +228,22 @@
 .os-field__textarea {
   font: inherit;
   font-size: 1rem;
-  background: #f6f4ee;
-  border: 1.5px solid transparent;
+  background: #ffffff;
+  border: 1.5px solid rgba(31, 42, 38, 0.22);
   color: var(--ink-strong, #1f2a26);
   padding: 0.75rem 0.9rem;
   border-radius: 12px;
   outline: none;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   width: 100%;
+  /* Évite que les valeurs auto-remplies par le navigateur écrasent
+     le contraste — Chrome/Edge ajoutent sinon un fond jaune pâle. */
+  -webkit-text-fill-color: var(--ink-strong, #1f2a26);
+}
+
+.os-field__input::placeholder,
+.os-field__textarea::placeholder {
+  color: rgba(31, 42, 38, 0.45);
 }
 
 .os-field__textarea {
@@ -243,10 +251,24 @@
   min-height: 80px;
 }
 
+.os-field__input:hover,
+.os-field__textarea:hover {
+  border-color: rgba(31, 42, 38, 0.35);
+}
+
 .os-field__input:focus,
 .os-field__textarea:focus {
-  border-color: #8fa794;
+  border-color: #5d7e6a;
   background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(143, 167, 148, 0.25);
+}
+
+/* Auto-fill (navigateur) : on force notre style propre */
+.os-field__input:-webkit-autofill,
+.os-field__textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  -webkit-text-fill-color: var(--ink-strong, #1f2a26);
+  border-color: rgba(31, 42, 38, 0.22);
 }
 
 .os-field__hint {
@@ -498,12 +520,37 @@
 }
 
 [data-theme="dark"] .os-option,
-[data-theme="dark"] .os-field__input,
-[data-theme="dark"] .os-field__textarea,
 [data-theme="dark"] .os-consent,
 [data-theme="dark"] .os-axe {
   background: #232b29;
   color: #eef2ec;
+}
+
+[data-theme="dark"] .os-field__input,
+[data-theme="dark"] .os-field__textarea {
+  background: #1c2422;
+  color: #eef2ec;
+  border-color: rgba(238, 242, 236, 0.24);
+  -webkit-text-fill-color: #eef2ec;
+}
+
+[data-theme="dark"] .os-field__input::placeholder,
+[data-theme="dark"] .os-field__textarea::placeholder {
+  color: rgba(238, 242, 236, 0.45);
+}
+
+[data-theme="dark"] .os-field__input:focus,
+[data-theme="dark"] .os-field__textarea:focus {
+  border-color: #a8c1ad;
+  background: #232b29;
+  box-shadow: 0 0 0 3px rgba(168, 193, 173, 0.22);
+}
+
+[data-theme="dark"] .os-field__input:-webkit-autofill,
+[data-theme="dark"] .os-field__textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #1c2422 inset;
+  -webkit-text-fill-color: #eef2ec;
+  border-color: rgba(238, 242, 236, 0.24);
 }
 
 [data-theme="dark"] .os-option--selected {
