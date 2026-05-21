@@ -19,14 +19,36 @@ Tu connais déjà ce projet. Tu as contribué à plusieurs phases : discours mar
 
 ## 2. ARCHITECTURE DU PROJET
 
-### Entités
-| Entité | Rôle | Public |
-|--------|------|--------|
-| **IVIA** | L'institution. La maison éthique et doctrinaire. Garant de la qualité, de la légalité, de la doctrine. | Praticiens, investisseurs, institutionnel |
-| **MÉSANGES** | Le service client. L'outil d'écoute de première ligne. Ce que le client voit et utilise. | Clients (grand public QC) |
-| **MERLIN** | Le moteur. La plateforme IA + structurée derrière MÉSANGES. Ne s'expose pas au client. | Interne (praticiens + équipe IVIA) |
+### Structure juridique et économique (DÉC-V3-15, 8 mai 2026)
 
-**Règle de présentation** : MÉSANGES, un service IVIA. MERLIN n'est jamais nommé côté client.
+```
+IVIA inc. (SPA-mère)  ←  structure économique et juridique (David Phaneuf 100%)
+│                         héberge tous les produits comme divisions
+│
+├── MERLIN              ←  noyau d'analyse
+│                          moteur IA/analytique, pipeline, modèle
+│                          actif technologique principal, cessible sous conditions
+│
+├── MÉSANGES            ←  plateforme d'écoute
+│                          interface client de première ligne
+│                          ce que le client voit et utilise
+│
+└── [divisions futures]    covoiturage, NHL, etc.
+
+IVIA OBNL (satellite)  ←  entité philanthropique distincte
+                           reçoit licences sociales d'IVIA inc.
+                           redistribution à coût négocié / gratuit / subventionné
+```
+
+### Rôles fonctionnels
+| Entité | Rôle | Visibilité publique |
+|--------|------|--------------------|
+| **IVIA inc.** | Structure économique et juridique (SPA-mère). Détient les actifs, signe les contrats, génère les revenus, emploie les praticiens. | Marque institutionnelle, face aux investisseurs et aux ordres professionnels |
+| **MERLIN** | Noyau d'analyse. Moteur IA, pipeline de traitement, mémoire de parcours, synthèses. L'actif technologique central d'IVIA inc. | Jamais nommé côté client — outil interne et praticien |
+| **MÉSANGES** | Plateforme d'écoute. L'interface de première ligne que le client utilise directement. | Face client principale |
+| **IVIA OBNL** | Satellite philanthropique. Redistribution sociale à coût réduit ou gratuit via licences d'IVIA inc. | Subventions, bailleurs, populations en besoin |
+
+**Règle de présentation** : côté client → "MÉSANGES, un service IVIA". MERLIN n'est jamais nommé côté client.
 
 ### Stack technique (pour référence)
 - Frontend : Next.js — `09_app_ivia_merlin/`

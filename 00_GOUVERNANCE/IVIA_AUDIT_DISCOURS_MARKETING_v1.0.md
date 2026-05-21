@@ -28,9 +28,15 @@
 
 ---
 
-## II. CE QUE LA CHARTE V2.0 DÉFINIT
+## II. CE QUE LES DOCUMENTS FONDATEURS DÉFINISSENT
 
-La Charte doctrinaire IVIA v2.0 (21 mai 2026, `00_GOUVERNANCE/IVIA_CHARTE_DOCTRINAIRE_v2.0.md`) définit le positionnement suivant :
+### Architecture décidée (DÉC-V3-15, 8 mai 2026)
+- **IVIA inc. (SPA-mère)** = structure économique et juridique. Héberge MERLIN, MÉSANGES et les divisions futures. Propriétaire : David Phaneuf à 100 %.
+- **MERLIN** = noyau d'analyse. Moteur IA/analytique, pipeline, mémoire de parcours. L'actif technologique principal. Ne s'expose pas au client.
+- **MÉSANGES** = plateforme d'écoute de première ligne. L'interface client de MÉSANGES est ce que le public voit et utilise.
+- **IVIA OBNL (satellite)** = entité philanthropique distincte, reçoit des licences sociales d'IVIA inc. pour redistribution à des populations en besoin.
+
+### Positionnement client (Charte v2.0, 21 mai 2026)
 
 **Identité** : Centre d'écoute, d'orientation individuelle et d'accompagnement vers l'équilibre, l'autonomie et l'indépendance.
 
