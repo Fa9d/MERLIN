@@ -178,6 +178,23 @@ def _ensure_schedule(bind, user_id: str, now: datetime) -> None:
 
 def upgrade() -> None:
     bind = op.get_bind()
+    inspector = sa.inspect(bind)
+
+    # Add columns that were lost from missing migrations 0019/0020
+    existing_cols = {col["name"] for col in inspector.get_columns("practitioner_profiles")}
+    cols_to_add = {
+        "abstract_palette": sa.Column("abstract_palette", sa.String(length=50), nullable=True),
+        "abstract_texture": sa.Column("abstract_texture", sa.String(length=50), nullable=True),
+        "abstract_motif": sa.Column("abstract_motif", sa.String(length=50), nullable=True),
+        "listening_modality": sa.Column("listening_modality", sa.String(length=100), nullable=True),
+        "pilot_persona_label": sa.Column("pilot_persona_label", sa.String(length=50), nullable=True),
+    }
+    missing = {k: v for k, v in cols_to_add.items() if k not in existing_cols}
+    if missing:
+        with op.batch_alter_table("practitioner_profiles") as batch_op:
+            for col in missing.values():
+                batch_op.add_column(col)
+
     now = datetime.now(timezone.utc)
 
     for persona in PERSONAS:

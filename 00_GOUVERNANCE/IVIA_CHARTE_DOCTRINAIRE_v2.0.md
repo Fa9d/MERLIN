@@ -1,27 +1,26 @@
 # CHARTE DOCTRINAIRE IVIA
 ## Fondation doctrinaire, principes opposables et gouvernance de l'intégrité
 
-**Version** : 1.1 — Mise à jour post-DÉC-V3-15 (architecture SPA-mère + OBNL satellite)
-**Date** : 8 mai 2026 (v1.0 mai 2026 — fondations ; v1.1 mai 2026 — patch architectural)
+**Version** : 2.0 — Recentrage sur l'écoute, l'accompagnement individuel et le marché de la santé de première ligne au Québec
+**Date** : 21 mai 2026 (v1.0 mai 2026 — fondations ; v1.1 mai 2026 — patch architectural ; v2.0 mai 2026 — recentrage marché)
 **Statut** : Document fondateur — Opposable à toutes les entités et personnes opérant sous la marque IVIA
-**Auteur** : David Phaneuf (fondateur) + Perplexity Computer
-**Devises** : *Au sein de l'être — En actes.* + *Pour le peuple, par le peuple.*
+**Auteur** : David Phaneuf (fondateur)
+**Devise** : *Au sein de l'être — En actes.*
 
 ---
 
-## NOTE DE VERSION (v1.1)
+## NOTE DE VERSION (v2.0)
 
-Les 7 principes directeurs (Partie I), les règles fermes opposables (Partie II), la doctrine de monétisation (Partie III), la gouvernance doctrinaire (Partie IV), l'audit (Partie V) et l'engagement de non-cession des données personnelles brutes (Partie VI) **ne sont pas modifiés** par la version 1.1. Ils constituent le socle stable de l'écosystème IVIA et ont été validés intégralement (Bloc 1 de la base documentaire).
+Les 7 principes directeurs (Partie I), les règles fermes opposables (Partie II), la doctrine de monétisation (Partie III), la gouvernance doctrinaire (Partie IV), l'audit (Partie V) et l'engagement de non-cession des données personnelles brutes (Partie VI) **ne sont pas modifiés** par la version 2.0. Ils constituent le socle stable et demeurent pleinement applicables.
 
-Les modifications v1.1 portent **uniquement** sur :
+La version 2.0 apporte les ajustements suivants :
 
-- L'élargissement explicite du périmètre IVIA (multi-projets : MERLIN, MÉSANGE, covoiturage, logistique producteurs, NHL Analytics, futurs projets) — la Charte couvre désormais l'ensemble de l'écosystème, pas uniquement MERLIN
-- La Partie VII (Statuts protecteurs) **entièrement réécrite** pour refléter la nouvelle architecture : IVIA inc. comme société par actions à mission (LSAQ) maison-mère + IVIA OBNL satellite licencié, à la place de l'ancienne structure OBNL-mère + MERLIN inc. SPA fille
-- L'ajout du principe statutaire de la **société par actions à mission (LSAQ)** comme support juridique principal de la doctrine
-- La référence à la convention de licence sociale IVIA inc. → IVIA OBNL
-- L'intégration explicite de la seconde devise *« Pour le peuple, par le peuple »* (devise rattachée historiquement à MÉSANGE et désormais aux ambitions civiques de l'écosystème)
+- **Recentrage du périmètre documenté** : la présente Charte couvre exclusivement l'activité actuelle d'IVIA — l'écoute structurée, l'accompagnement individuel et l'orientation vers l'autonomie, dans le marché québécois de la santé de première ligne. Les projets à vocation civique plus large (analyses sociales, MÉSANGE, covoiturage, etc.) sont connus du fondateur et font partie de la vision à long terme, mais ne sont pas documentés ici afin de maintenir un positionnement clair, cohérent et conforme au marché actuel.
+- **Refonte du Préambule** : la vision fondatrice est reformulée pour nommer précisément ce qu'IVIA fait aujourd'hui — combler le vide entre les besoins émotionnels non cliniques de la population québécoise et l'accès réel à un espace d'écoute qualifié.
+- **Retrait de la devise secondaire** : *« Pour le peuple, par le peuple »* est retirée du document principal. Elle reste associée aux développements civiques futurs et sera réintégrée le moment venu dans les chartes de projets concernés.
+- **Mise à jour de la clause statutaire G.2** : retrait des références à des projets non encore documentés publiquement.
 
-La décision DÉC-V3-15 (HISTORIQUE_DECISIONS_STRATEGIQUES.md v1.3) acte ce basculement architectural en pleine lucidité du fondateur. Le compromis honnêtement assumé est nommé en STRUCTURE_JURIDIQUE_RECOMMANDEE.md v2.0 et CADRE_PROPRIETE_INTELLECTUELLE_DONNEES.md v2.0 : la protection doctrinale juridique externe est moins forte qu'avec une OBNL maison-mère, mais elle est compensée par les statuts à mission, les renforcements progressifs prévus, et la rigueur des engagements opposables maintenus dans la présente Charte.
+L'architecture juridique (IVIA inc. SPA à mission LSAQ + IVIA OBNL satellite) découlant de DÉC-V3-15 reste inchangée.
 
 ---
 
@@ -37,23 +36,31 @@ Une charte doctrinaire n'est pas un document de marketing. C'est un engagement q
 
 ### La vision fondatrice
 
-IVIA est née d'un constat simple : les personnes qui traversent une difficulté — émotionnelle, sociale, économique, civique — ont besoin, avant tout, d'être entendues et de retrouver une capacité d'agir. Non pas diagnostiquées, catégorisées ou orientées vers une consommation de services — mais véritablement entendues, dans un espace où leur parole a de la valeur et où la relation n'est pas contaminée par un intérêt économique caché.
+IVIA est née d'un constat précis, documenté et chiffré.
 
-IVIA est un **écosystème d'innovation civique et humaine**. Chacun de ses produits — MERLIN (accompagnement vers l'autonomie émotionnelle), MÉSANGE (recentrage du débat politique au Québec), et les projets en bac (covoiturage citoyen, logistique des producteurs québécois, dérivés analytiques, futurs projets) — est traversé par les mêmes principes directeurs.
+Au Québec, **385 000 personnes** n'ont pas de médecin de famille à Montréal seul (début 2024). **15 % des adultes** ont un trouble anxieux diagnostiqué (ISQ, 2024). Entre **25 et 35 % de la population québécoise** présente une détresse psychologique élevée selon les enquêtes K6/K10 (EQSP 2020-2024). **20 % des Canadiens** vivent un épisode de trouble mental ou de consommation problématique dans une période de 12 mois (ESCC, Statistique Canada). Un tiers des Montréalais de 55 ans et plus sont en situation d'isolement social — un effet sur la mortalité comparable à 15 cigarettes par jour (méta-analyse Holt-Lunstad).
 
-Ce n'est pas un slogan. C'est une position qui exclut autant qu'elle inclut. Elle exclut la dépendance cultivée, l'orientation monétisée, le diagnostic déguisé, la promesse thérapeutique non fondée, la captation d'attention pour l'attention. Elle inclut la présence réelle, l'écoute structurée, la trace utile, l'autonomie comme horizon, le pouvoir rendu aux personnes plutôt que pris à leur place.
+En face de cette réalité : un système de soins qui consacre 26 % de ses dépenses aux hôpitaux et 13 % aux médecins (ICIS, 2024), où le délai d'accès à un psychologue se compte en mois, et où le médecin de famille dispose de sept minutes par consultation.
 
-### Les devises comme boussole opérationnelle
+**Le vide est documenté. IVIA l'occupe.**
+
+IVIA est un **centre d'écoute, d'orientation individuelle et d'accompagnement vers l'équilibre, l'autonomie et l'indépendance**. Son outil opérationnel est MERLIN — une plateforme audio structurée qui permet à chaque personne de mettre des mots sur ce qu'elle vit, d'être entendue par un praticien qualifié, et de repartir avec des repères concrets plutôt qu'une ordonnance ou un diagnostic.
+
+IVIA se positionne dans la **zone de compétence non réservée** au sens du *Code des professions du Québec* (art. 187.1, Loi 21) : l'écoute empathique, l'accompagnement de mieux-être préventif, l'orientation vers les ressources, les pratiques contemplatives. Ce que IVIA n'est pas, et ne sera jamais : un service de psychothérapie, un outil diagnostique, un substitut au professionnel réglementé. Ce que IVIA est : la première porte, accessible, non stigmatisante, qui donne à une personne les moyens de comprendre ce qu'elle vit et de se diriger vers la ressource juste — qu'elle soit communautaire, professionnelle ou interne à elle-même.
+
+IVIA ne remplace pas les professionnels réglementés. Elle les précède, les complète, et souvent les rend moins nécessaires — parce qu'une personne qui a appris à s'écouter, à nommer ce qu'elle ressent et à activer ses propres ressources a moins besoin d'une intervention externe.
+
+Le marché que sert IVIA aujourd'hui est celui de la santé de première ligne au Québec : anxiété, stress chronique, transitions professionnelles, isolement, crises relationnelles, deuils ordinaires — les besoins que le système de soins ne capture pas mais que la population porte seule chaque jour. Ce positionnement est délibéré, fondé sur les données, et aligné sur le cadre légal québécois en vigueur.
+
+*Source principale : Rapport stratégique MÉSANGE — État des soins au Québec, mai 2026 (IVIA / MERLIN, confidentiel). Données originales : ISQ, ICIS, INSPQ, ESCC, EQSP.*
+
+### La devise comme boussole opérationnelle
 
 **Au sein de l'être — En actes.**
 
-Deux pôles indissociables. Le premier désigne le lieu : l'intériorité de la personne, son vécu, sa réalité subjective. Le second désigne l'exigence : ce qui est reconnu doit se manifester concrètement, dans des comportements, des décisions, des structures. La doctrine d'IVIA ne se contente pas d'être pensée. Elle se démontre à chaque interaction, à chaque ligne de code, à chaque clause contractuelle.
+Deux pôles indissociables. Le premier désigne le lieu : l'intériorité de la personne, son vécu, sa réalité subjective — ce qui se passe vraiment, avant les mots, avant les stratégies, avant les solutions. Le second désigne l'exigence : ce qui est reconnu doit se manifester concrètement, dans des comportements, des décisions, des structures. La doctrine d'IVIA ne se contente pas d'être pensée. Elle se démontre à chaque interaction, à chaque ligne de code, à chaque clause contractuelle.
 
-**Pour le peuple, par le peuple.**
-
-Devise civique de l'écosystème. Elle énonce que les outils produits par IVIA sont au service des personnes — pas de l'extraction, pas de la performance financière maximale, pas du pouvoir d'une élite technique. Elle inscrit l'écosystème dans une tradition de souveraineté populaire, en particulier québécoise, où l'autonomie collective et l'autonomie individuelle se nourrissent l'une l'autre. Cette devise gouverne particulièrement les produits à dimension civique (MÉSANGE, covoiturage, logistique producteurs) et oriente l'usage social licencié à IVIA OBNL.
-
-Les deux devises ne sont pas concurrentes : elles sont complémentaires. La première inscrit l'attention dans le vécu intérieur ; la seconde inscrit l'action dans le tissu collectif.
+Appliquée à la pratique quotidienne, cette devise signifie : l'accompagnement commence dans le vécu réel de la personne (*au sein de l'être*) et produit des repères, des outils et des directions concrètes (*en actes*). Pas de belles intentions sans engagement mesurable. Pas de résultats cliniques simulés sans présence réelle.
 
 ---
 
@@ -492,7 +499,7 @@ La doctrine est protégée par une architecture en quatre couches juridiques, do
 
 Les statuts constitutifs d'IVIA inc. intègrent la clause suivante (rédaction définitive à arrêter avec l'avocat au Palier 1, M7-M9) :
 
-> « IVIA inc. est constituée comme société par actions à mission au sens de la *Loi sur les sociétés par actions du Québec*. Sa mission spécifique est de développer, exploiter et faire rayonner un écosystème d'outils civiques et humains — actuellement composé de MERLIN, MÉSANGE et de tout autre produit développé sous la marque-ombrelle IVIA — en conformité permanente avec la Charte doctrinaire IVIA, telle qu'adoptée et éventuellement modifiée selon les procédures qu'elle prévoit (Partie IV). Le ou les administrateurs et le ou les actionnaires sont tenus de prendre la mission en compte dans toute décision sociale. Aucune résolution des actionnaires, aucune décision d'administration et aucun accord contractuel ne peut avoir pour effet de soustraire la société à cette obligation pour les matières relevant des Parties I, II, III et VI de la Charte. »
+> « IVIA inc. est constituée comme société par actions à mission au sens de la *Loi sur les sociétés par actions du Québec*. Sa mission spécifique est de développer, exploiter et faire rayonner des outils d'écoute, d'accompagnement individuel et d'orientation vers l'autonomie — actuellement incarnés dans MERLIN et dans tout autre produit développé sous la marque-ombrelle IVIA — en conformité permanente avec la Charte doctrinaire IVIA, telle qu'adoptée et éventuellement modifiée selon les procédures qu'elle prévoit (Partie IV). Le ou les administrateurs et le ou les actionnaires sont tenus de prendre la mission en compte dans toute décision sociale. Aucune résolution des actionnaires, aucune décision d'administration et aucun accord contractuel ne peut avoir pour effet de soustraire la société à cette obligation pour les matières relevant des Parties I, II, III et VI de la Charte. »
 
 ### G.3 — Le rôle de IVIA OBNL — partenaire social, pas autorité de tutelle
 
@@ -567,8 +574,8 @@ Toute personne rejoignant l'écosystème — praticien, utilisateur avancé, emp
 ---
 
 **Au sein de l'être — En actes.**
-**Pour le peuple, par le peuple.**
 
+*Version 2.0 — 21 mai 2026 — Recentrage sur l'écoute et l'accompagnement individuel, marché de la santé de première ligne au Québec*
 *Version 1.1 — 8 mai 2026 — Patch architectural post-DÉC-V3-15*
 *Version 1.0 — Mai 2026 — Fondations doctrinaires*
 *David Phaneuf, fondateur IVIA*
