@@ -45,10 +45,12 @@ IVIA OBNL (satellite)  ←  entité philanthropique distincte
 |--------|------|--------------------|
 | **IVIA inc.** | Structure économique et juridique (SPA-mère). Détient les actifs, signe les contrats, génère les revenus, emploie les praticiens. | Marque institutionnelle, face aux investisseurs et aux ordres professionnels |
 | **MERLIN** | Noyau d'analyse. Moteur IA, pipeline de traitement, mémoire de parcours, synthèses. L'actif technologique central d'IVIA inc. | Jamais nommé côté client — outil interne et praticien |
-| **MÉSANGES** | Plateforme d'écoute. L'interface de première ligne que le client utilise directement. | Face client principale |
+| **MÉSANGES** | **Espace d'écoute et d'accompagnement vers l'autonomie.** L'interface de première ligne. La personne arrive avec ce qu'elle vit, repart avec une lecture plus claire et des repères concrets pour avancer par elle-même. La trajectoire est toujours : écoute → clarification → orientation → **autonomie**. | Face client principale |
 | **IVIA OBNL** | Satellite philanthropique. Redistribution sociale à coût réduit ou gratuit via licences d'IVIA inc. | Subventions, bailleurs, populations en besoin |
 
-**Règle de présentation** : côté client → "MÉSANGES, un service IVIA". MERLIN n'est jamais nommé côté client.
+**Règle de présentation** : côté client → « MÉSANGES, un service IVIA ». MERLIN n'est jamais nommé côté client.
+
+**Ce que MÉSANGES n'est pas** : une plateforme de contenu, une appli de méditation, un annuaire de professionnels, un service de psychothérapie déguisé. MÉSANGES est un **espace relationnel structuré** dont l'horizon est l'indépendance de la personne — pas sa fidélisation.
 
 ### Stack technique (pour référence)
 - Frontend : Next.js — `09_app_ivia_merlin/`
@@ -60,7 +62,22 @@ IVIA OBNL (satellite)  ←  entité philanthropique distincte
 
 ## 3. POSITIONNEMENT ACTUEL (v2.0 — 21 mai 2026)
 
-**Définition** : IVIA / MÉSANGES est un centre d'écoute, d'orientation individuelle et d'accompagnement vers l'équilibre, l'autonomie et l'indépendance.
+### Couche philosophique fondatrice
+
+**IVIA = In Vivo In Actu** — *Au sein de l'être — En actes.*
+
+Ce n'est pas un nom de marque : c'est la déclaration philosophique qui conditionne tout. In Vivo = dans le vivant réel de la personne, pas dans l'abstraction. In Actu = en manifestation concrète, mesurable, pas en promesse vague. Les deux pôles sont indissociables.
+
+La Charte doctrinaire (7 principes) est le cadre d'intégration universel d'IVIA : tout développement futur, tout système, tout partenariat est intégrable dans l'écosystème IVIA s'il respecte ces principes. C'est le verrou doctrinal — et le différenciateur fondamental.
+
+### Positionnement produit
+
+**Définition de MÉSANGES** : Espace d'écoute et d'accompagnement vers l'autonomie.
+
+La trajectoire MÉSANGES est toujours :
+> **Écoute** (la personne nomme ce qu'elle vit) → **Clarification** (ce qui pèse est rendu lisible) → **Orientation** (les prochains pas concrets) → **Autonomie** (la personne repart avec sa propre capacité renforcée)
+
+MÉSANGES ne vise pas la fidélisation. Elle vise l'indépendance de la personne. C'est un positionnement radicalement opposé aux plateformes de bien-être qui capitalisent sur le retour compulsif.
 
 **Marché** : Santé de première ligne au Québec.
 
@@ -156,23 +173,42 @@ Tous ces fichiers sont dans le repo `Fa9d/MERLIN`, branche `refonte-ivia-site-un
 
 ## 7. CE QUE TU DOIS PRODUIRE EN RÉPONSE À CE BRIEF
 
-**Session marketing (mode standard)** :
+### Grille de validation obligatoire
 
-Quand tu reçois ce document + une demande marketing, ta réponse doit systématiquement :
+Tout fragment de discours que tu produis doit passer ce filtre avant d'être proposé :
 
-1. **Vérifier la conformité légale** : tout fragment de discours proposé est scanné contre le tableau du §4
-2. **Vérifier la cohérence doctrinaire** : aligner sur la Charte v2.0
-3. **Ancrer sur les données** : utiliser les stats QC du §3 là où c'est pertinent
-4. **Proposer en format utilisable** : les copies finales sont en français québécois, prêtes à copier-coller dans le code ou dans les docs MERLIN
-5. **Indiquer les fichiers à modifier** : nommer le fichier `.tsx` ou `.md` concerné
+| Critère | Question de vérification |
+|---------|-------------------------|
+| **Conformité légale** | Le vocabulaire respecte-t-il le tableau §4 (pas de thérapie, diagnostic, etc.) ? |
+| **Trajectoire** | Est-ce que le discours implique la trajectoire écoute → clarification → orientation → autonomie ? |
+| **In Vivo In Actu** | Le discours ancre-t-il dans le vécu réel de la personne (pas l'abstraction) ET se manifeste-t-il en acte concret (pas la promesse vague) ? |
+| **Anti-dépendance** | Le discours suggère-t-il la fidélisation ou l'autonomie ? Tout ce qui pousse vers le retour compulsif est contraire à la doctrine. |
+| **Ancrage QC** | Le discours utilise-t-il les données réelles du marché QC (§3) ou reste-t-il générique ? |
+| **Lisibilité client** | La personne sans médecin de famille qui arrive sur le site comprend-elle en 10 secondes ce que MÉSANGES fait pour elle ? |
 
-**Session stratégie (mode approfondi)** :
+### Mode standard (demande marketing)
 
-Quand la demande est stratégique (positionnement, architecture marque, offre), tu produis :
-1. Analyse du problème avec référence aux docs MERLIN
-2. 2–3 options avec avantages/risques
+1. Appliquer la grille ci-dessus
+2. Produire en français québécois, prêt à copier-coller dans le code ou les docs MERLIN
+3. Nommer le fichier `.tsx` ou `.md` à modifier
+4. Toujours proposer une version courte (héro/tagline) ET une version longue (section corps de page)
+
+### Mode stratégie (demande de positionnement)
+
+1. Analyser le problème avec référence aux docs MERLIN sur GitHub
+2. 2–3 options avec avantages/risques doctrinaux
 3. Recommandation tranchée avec rationale
-4. Next steps exécutables pour Claude Code
+4. Next steps exécutables pour Claude Code (Copilot)
+
+### Mode repositionnement MÉSANGES (session actuelle)
+
+Nous sommes en repositionnement actif. L'objectif prioritaire est que le visiteur du site comprenne immédiatement :
+1. **Qui** est concerné (Québécois sans accès au soin, en détresse de première ligne)
+2. **Ce que MÉSANGES fait** (écoute + accompagnement + orientation vers l'autonomie — pas une appli, pas un thérapeute, pas un annuaire)
+3. **Ce que ce n'est pas** (rassurant sur le cadre légal, non clinique, non stigmatisant)
+4. **Comment commencer** (un seul CTA, une seule porte d'entrée)
+
+Ta première livraison pour cette session doit être une **réécriture complète du hero section** du site (H1 + sous-titre + 1 CTA) qui respecte tous ces critères. Ensuite : réécriture de la section processus (5 étapes max, point de vue client, sans nommer MERLIN).
 
 ---
 

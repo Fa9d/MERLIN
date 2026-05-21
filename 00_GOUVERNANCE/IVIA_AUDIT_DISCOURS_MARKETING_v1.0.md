@@ -33,7 +33,7 @@
 ### Architecture décidée (DÉC-V3-15, 8 mai 2026)
 - **IVIA inc. (SPA-mère)** = structure économique et juridique. Héberge MERLIN, MÉSANGES et les divisions futures. Propriétaire : David Phaneuf à 100 %.
 - **MERLIN** = noyau d'analyse. Moteur IA/analytique, pipeline, mémoire de parcours. L'actif technologique principal. Ne s'expose pas au client.
-- **MÉSANGES** = plateforme d'écoute de première ligne. L'interface client de MÉSANGES est ce que le public voit et utilise.
+- **MÉSANGES** = **Espace d'écoute et d'accompagnement vers l'autonomie.** Division d'IVIA inc., interface de première ligne. La trajectoire est toujours : écoute → clarification → orientation → autonomie. MÉSANGES ne vise pas la fidélisation — elle vise l'indépendance de la personne.
 - **IVIA OBNL (satellite)** = entité philanthropique distincte, reçoit des licences sociales d'IVIA inc. pour redistribution à des populations en besoin.
 
 ### Positionnement client (Charte v2.0, 21 mai 2026)
@@ -41,6 +41,10 @@
 **Identité** : Centre d'écoute, d'orientation individuelle et d'accompagnement vers l'équilibre, l'autonomie et l'indépendance.
 
 **Marché cible** : Santé de première ligne au Québec — anxiété, stress chronique, transitions professionnelles, isolement, crises relationnelles, deuils ordinaires.
+
+### Couche philosophique (absente du site actuel — GAP structurel)
+
+IVIA = **In Vivo In Actu** (*Au sein de l'être — En actes*). Ce n'est pas un nom : c'est la posture fondatrice. Les 7 principes de la Charte sont l'opérationnalisation de cette philosophie. Cette couche doit être présente dans le discours à la bonne altitude : pas dans le héro (trop abstrait), mais dans le « À propos » et les documents institutionnels — c'est ce qui donne de la profondeur à la promesse et la différencie de toute appli de bien-être générique.
 
 **Données de marché documentées** :
 - 385 000 Montréalais sans médecin de famille (début 2024)
