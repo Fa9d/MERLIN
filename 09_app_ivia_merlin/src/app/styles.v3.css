@@ -1914,3 +1914,242 @@
   color: var(--v3-ink);
   margin-top: var(--sp-4);
 }
+
+/* Liste de réassurance (Pas d'appli / Pas de liste / Pas de dossier) */
+.v3-mesanges-intro__reassurance {
+  list-style: none;
+  margin: var(--sp-6) auto 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-3) var(--sp-6);
+}
+
+.v3-mesanges-intro__reassurance li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--v3-ink-soft);
+  letter-spacing: 0.01em;
+}
+
+.v3-mesanges-intro__reassurance li::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--v3-sage-soft);
+  color: var(--v3-sage);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── OFFRES — trois façons de commencer ──────────────────────────────── */
+.v3-offres {
+  background: var(--v3-bg);
+}
+
+.v3-offres .v3-h2 {
+  max-width: 30ch;
+}
+
+.v3-offres__grid {
+  list-style: none;
+  margin: var(--sp-8) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-5);
+}
+
+.v3-offre {
+  position: relative;
+  padding: clamp(1.75rem, 2.8vw, 2.25rem);
+  border-radius: 1.25rem;
+  background: var(--v3-surface);
+  border: 1px solid var(--v3-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: border-color 0.2s, box-shadow 0.25s, transform 0.2s;
+}
+
+.v3-offre::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(1.75rem, 2.8vw, 2.25rem);
+  width: 2.5rem;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--v3-argile);
+  opacity: 0.6;
+}
+
+.v3-offre:hover {
+  border-color: var(--v3-argile-soft);
+  box-shadow: 0 16px 48px oklch(20% 0.02 78 / 0.08);
+  transform: translateY(-2px);
+}
+
+.v3-offre__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1.8vw, 1.25rem);
+  font-weight: 500;
+  color: var(--v3-ink);
+  margin: 0;
+  letter-spacing: -0.005em;
+  padding-top: var(--sp-3);
+}
+
+.v3-offre__body {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--v3-ink-soft);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .v3-offres__grid { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .v3-offre:hover { transform: none; }
+}
+
+/* ── POUR MOI ? — qualification + frontières ──────────────────────────── */
+.v3-pour-moi {
+  background: var(--v3-surface);
+  border-top: 1px solid var(--v3-line);
+  border-bottom: 1px solid var(--v3-line);
+}
+
+.v3-pour-moi .v3-h2 {
+  max-width: 28ch;
+}
+
+.v3-pour-moi__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  margin-top: var(--sp-8);
+}
+
+.v3-pour-moi__col {
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  border-radius: 1.25rem;
+  border: 1px solid var(--v3-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.v3-pour-moi__col--oui {
+  background: oklch(97% 0.015 148);
+  border-color: oklch(88% 0.035 148);
+}
+
+[data-theme="dark"] .v3-pour-moi__col--oui {
+  background: oklch(20% 0.022 148);
+  border-color: oklch(32% 0.040 148);
+}
+
+.v3-pour-moi__col--non {
+  background: var(--v3-bg);
+  border-color: var(--v3-line);
+}
+
+.v3-pour-moi__subtitle {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--v3-ink-soft);
+  margin: 0;
+}
+
+.v3-pour-moi__col--oui .v3-pour-moi__subtitle {
+  color: oklch(40% 0.072 148);
+}
+
+[data-theme="dark"] .v3-pour-moi__col--oui .v3-pour-moi__subtitle {
+  color: oklch(70% 0.072 148);
+}
+
+.v3-pour-moi__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.v3-pour-moi__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--v3-ink);
+}
+
+.v3-pour-moi__col--oui .v3-pour-moi__list li::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  background: oklch(52% 0.072 148 / 0.14);
+  color: oklch(40% 0.072 148);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+[data-theme="dark"] .v3-pour-moi__col--oui .v3-pour-moi__list li::before {
+  background: oklch(52% 0.072 148 / 0.22);
+  color: oklch(70% 0.072 148);
+}
+
+.v3-pour-moi__col--non .v3-pour-moi__list li::before {
+  content: "–";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 50%;
+  background: oklch(92% 0.008 78);
+  color: var(--v3-ink-soft);
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-top: 2px;
+  line-height: 1;
+}
+
+[data-theme="dark"] .v3-pour-moi__col--non .v3-pour-moi__list li::before {
+  background: oklch(24% 0.008 78);
+}
+
+.v3-pour-moi__list strong {
+  font-weight: 700;
+  color: oklch(50% 0.18 25);
+}
+
+@media (max-width: 720px) {
+  .v3-pour-moi__cols {
+    grid-template-columns: 1fr;
+    gap: var(--sp-4);
+  }
+}
