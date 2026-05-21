@@ -22,7 +22,8 @@ const PATHWAYS = [
     id: "pour-moi",
     kicker: "Pour moi",
     title: "Déposer ce que je vis",
-    body: "Comprendre ce qui se répète, ce qui pèse et ce qui pourrait retrouver une voie d'équilibre.",
+    body:
+      "Comprendre ce qui se répète, ce qui pèse et ce qui pourrait retrouver une voie d'équilibre.",
     href: "#orientation",
     cta: "Commencer mon orientation",
     tone: "ink",
@@ -31,7 +32,8 @@ const PATHWAYS = [
     id: "pour-praticiens",
     kicker: "Pour les praticiens",
     title: "Structurer ma pratique",
-    body: "Préparer, interpréter, ajuster. Sans grille rigide, sans effacer mon jugement professionnel.",
+    body:
+      "Préparer, interpréter, ajuster. Sans grille rigide, sans effacer mon jugement professionnel.",
     href: "/praticiens",
     cta: "Découvrir l'espace praticien",
     tone: "sage",
@@ -40,7 +42,8 @@ const PATHWAYS = [
     id: "ressources",
     kicker: "Ressources",
     title: "Lire et s'orienter",
-    body: "Articles, repères et lexique vivant pour mieux saisir ce que MÉSANGES propose, à votre rythme.",
+    body:
+      "Articles, repères et lexique vivant pour mieux saisir ce que MÉSANGES propose, à votre rythme.",
     href: "/ressources",
     cta: "Parcourir les ressources",
     tone: "cream",
@@ -50,28 +53,21 @@ const PATHWAYS = [
 const ACCOMPAGNEMENT = [
   {
     num: "01",
-    label: "Vous nommez ce qui pèse",
-    body: "Dans vos mots, à votre rythme. Ce que vous vivez, ce qui se répète, ce que vous aimeriez comprendre ou changer — il n'y a pas de bonne façon de commencer.",
+    label: "Vous réservez",
+    body:
+      "En ligne, en moins de 2 minutes, sans dossier ni formulaire médical. Vous choisissez le moment qui vous convient.",
   },
   {
     num: "02",
-    label: "MÉSANGES écoute, vraiment",
-    body: "Ce que vous avez déposé est lu avec attention, sans grille rigide ni jugement. Rien n'est interprété à la hâte — l'écoute précède toujours la réponse.",
+    label: "Vous vous retrouvez",
+    body:
+      "Votre praticien MÉSANGES vous rejoint par audio à l\u2019heure convenue. Vous parlez. Il écoute, pose des questions, vous aide à nommer ce qui se passe — sans jugement, sans étiquette.",
   },
   {
     num: "03",
-    label: "Ce qui pèse devient lisible",
-    body: "Une lecture de votre situation vous est proposée — sensible, multidimensionnelle, sans étiquette. Ce que vous viviez de façon confuse commence à prendre une forme que vous pouvez regarder.",
-  },
-  {
-    num: "04",
-    label: "Vos prochains pas se dessinent",
-    body: "Ensemble, on identifie deux ou trois directions concrètes. Pas une liste d'objectifs à cocher — des pistes qui vous ressemblent et que vous choisissez d'explorer ou non.",
-  },
-  {
-    num: "05",
-    label: "Vous repartez avec vos repères",
-    body: "Vous repartez avec une lecture plus claire de ce que vous vivez et les repères pour avancer par vous-même. MÉSANGES reste disponible si le besoin revient — mais l'autonomie est toujours l'horizon.",
+    label: "Vous repartez avec quelque chose",
+    body:
+      "Une lecture plus claire de votre situation, des pistes concrètes pour la suite — et, si vous le souhaitez, un document récapitulatif que vous gardez. Pas de prescription. Pas de dossier. Vos propres repères.",
   },
 ];
 
@@ -129,7 +125,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── PRÉSENTATION SOBRE — la voix qui accompagne ────────────── */}
+          {/* ── QU’EST-CE QUE MÉSANGES — concret, humain ───────────────── */}
           <section
             className="v3-section v3-mesanges-intro"
             id="mesanges-intro"
@@ -138,28 +134,101 @@ export default function HomePage() {
             <div className="v3-section__inner v3-mesanges-intro__inner">
               <p className="v3-kicker">MÉSANGES</p>
               <h2 id="mesanges-intro-title" className="v3-h2">
-                Une voix et une écoute qui <em>respecte votre parcours.</em>
+                Une rencontre avec <em>une vraie personne.</em>
               </h2>
               <p className="v3-section__intro">
-                MÉSANGES ne remplace ni la médecine, ni les services
-                d&apos;urgence. Nous vous aidons à nommer ce que vous vivez
-                et à déterminer votre voie d&apos;action.
+                Vous prenez rendez-vous. Un praticien MÉSANGES vous rejoint par audio.
+                Vous parlez. Il écoute, pose des questions, vous aide à nommer ce qui
+                se passe. À la fin, vous repartez avec une lecture plus claire de votre
+                situation — et, si vous le souhaitez, un document récapitulatif que vous gardez.
               </p>
+              <ul className="v3-mesanges-intro__reassurance">
+                <li>Pas d&apos;appli à installer</li>
+                <li>Pas de liste d&apos;attente</li>
+                <li>Pas de dossier médical requis</li>
+              </ul>
             </div>
           </section>
 
-          {/* ── LE PARCOURS — 5 étapes, point de vue client ───────────── */}
+          {/* ── OFFRES — trois façons de commencer ─────────────────────── */}
+          <section
+            className="v3-section v3-offres"
+            id="offres"
+            aria-labelledby="offres-title"
+          >
+            <div className="v3-section__inner">
+              <p className="v3-kicker">MÉSANGES</p>
+              <h2 id="offres-title" className="v3-h2">
+                Trois façons de <em>commencer.</em>
+              </h2>
+              <ul className="v3-offres__grid">
+                <li className="v3-offre">
+                  <h3 className="v3-offre__title">Rencontre d&apos;écoute</h3>
+                  <p className="v3-offre__body">
+                    Une séance, un praticien, une heure pour déposer ce qui pèse.
+                    Vous repartez avec une direction.
+                  </p>
+                </li>
+                <li className="v3-offre">
+                  <h3 className="v3-offre__title">Écoute avec compte rendu</h3>
+                  <p className="v3-offre__body">
+                    La même rencontre, plus un résumé écrit de ce que vous avez
+                    exploré ensemble et des pistes concrètes pour la suite.
+                  </p>
+                </li>
+                <li className="v3-offre">
+                  <h3 className="v3-offre__title">Parcours de soutien</h3>
+                  <p className="v3-offre__body">
+                    Plusieurs rencontres dans le temps, avec un suivi documenté
+                    à chaque étape. Pour ceux qui traversent quelque chose de plus long.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          {/* ── POUR MOI ? — qualification + frontières ───────────────────── */}
+          <section
+            className="v3-section v3-pour-moi"
+            id="pour-moi"
+            aria-labelledby="pour-moi-title"
+          >
+            <div className="v3-section__inner">
+              <p className="v3-kicker">MÉSANGES</p>
+              <h2 id="pour-moi-title" className="v3-h2">
+                Est-ce que c&apos;est <em>pour moi ?</em>
+              </h2>
+              <div className="v3-pour-moi__cols">
+                <div className="v3-pour-moi__col v3-pour-moi__col--oui">
+                  <p className="v3-pour-moi__subtitle">MÉSANGES est fait pour vous si :</p>
+                  <ul className="v3-pour-moi__list">
+                    <li>Vous n&apos;avez pas de médecin de famille et vous portez quelque chose seul·e</li>
+                    <li>Vous traversez une transition difficile (travail, relation, deuil, isolement)</li>
+                    <li>Vous voulez comprendre ce qui se répète dans votre vie — sans passer par le système de santé</li>
+                    <li>Vous cherchez quelqu&apos;un à qui parler, sans étiquette, sans jugement</li>
+                  </ul>
+                </div>
+                <div className="v3-pour-moi__col v3-pour-moi__col--non">
+                  <p className="v3-pour-moi__subtitle">MÉSANGES n&apos;est pas :</p>
+                  <ul className="v3-pour-moi__list">
+                    <li>Un service d&apos;urgence — si vous êtes en crise, composez le <strong>3114</strong></li>
+                    <li>Un service de psychothérapie réglementée</li>
+                    <li>Une application de méditation ou de contenu</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── PROCESSUS — une rencontre en 3 temps ────────────────────── */}
           <section className="v3-section v3-accompagnement" id="approche">
             <div className="v3-section__inner">
               <h2 className="v3-h2">
-                Comment ça se passe
-                <br />
-                <em>À votre rythme, pas à pas.</em>
+                Une rencontre <em>en 3 temps.</em>
               </h2>
               <p className="v3-section__intro">
-                Pas de formulaire interminable. Pas de liste d&apos;attente.
-                Un espace pour déposer ce que vous vivez, comprendre ce qui se passe,
-                et repartir avec ce qu&apos;il vous faut pour avancer.
+                Simple, concret, sans démarche administrative. Voici ce qui se passe
+                de votre côté, du début à la fin.
               </p>
               <ol className="v3-steps">
                 {ACCOMPAGNEMENT.map((s) => (
