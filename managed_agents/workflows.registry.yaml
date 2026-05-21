@@ -1,0 +1,21 @@
+id: workflows_registry_v1
+version: v1.0
+description: Registre racine des workflows Temper declares localement pour MERLIN.
+canonical_root: C:\MERLIN
+registry_type: workflows
+workflows:
+  - id: merlin_note_validation
+    file: workflows/merlin_note_validation.yaml
+    agent_ref: note_session
+    outcome_ref: outcome_merlin_session_note_v1
+    status: active_contract
+    criticality: high
+    human_review_required: true
+validation_rules:
+  require_workflow_file_exists: true
+  require_workflow_id_matches_file_id: true
+  require_agent_ref_exists: true
+  require_outcome_ref_exists: true
+  require_initial_state_exists: true
+  require_transition_targets_exist: true
+  require_terminal_states_exist: true

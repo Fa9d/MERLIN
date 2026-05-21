@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MESANGE — SYMBOLE SEUL
+  Silhouette noire sur fond transparent.
+  Utilisable sur n'importe quelle couleur.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 140" width="280" height="140" role="img" aria-label="MESANGE">
+  <title>MESANGE</title>
+  <g fill="#0a0a0a">
+    <path d="M 80 70
+             Q 72 12 118 -4
+             Q 155 -12 182 6
+             Q 208 -4 240 6
+             Q 262 16 268 42
+             Q 245 48 218 46
+             Q 245 76 255 112
+             Q 218 94 182 89
+             Q 175 122 150 134
+             Q 128 122 128 94
+             Q 95 86 80 70 Z"/>
+    <polygon points="75,24 50,30 75,36"/>
+  </g>
+  <!-- Œil : cercle "vide" via opacité, ou pour fond clair -->
+  <circle cx="108" cy="22" r="4.2" fill="#fdfaf2"/>
+</svg>

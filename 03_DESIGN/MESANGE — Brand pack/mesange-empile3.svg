@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  MESANGE — VERSION EMPILÉE
+  Icône au-dessus, wordmark en dessous. Pour cartes de visite, packaging.
+-->
+
+<svg
+   viewBox="0 0 387.79797 399.87878"
+   width="387.79797"
+   height="399.87878"
+   role="img"
+   aria-label="MESANGE"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="mesange-empile3.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.076087"
+     inkscape:cx="194.22222"
+     inkscape:cy="231.85859"
+     inkscape:window-width="1366"
+     inkscape:window-height="697"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <title
+     id="title1">MESANGE</title>
+  <style
+     id="style1">
+    .bg     { fill: #0a0a0a; }
+    .figure { fill: #fdfaf2; }
+    .eye    { fill: #0a0a0a; }
+  </style>
+  <rect
+     class="bg"
+     x="0"
+     y="-387.79797"
+     width="399.87878"
+     height="387.79797"
+     rx="17.137663"
+     id="rect1"
+     style="stroke-width:1.4064"
+     transform="rotate(90)" />
+  <g
+     transform="matrix(1.5413771,0,0,1.4763517,-51.513317,105.69413)"
+     id="g1">
+    <path
+       class="figure"
+       d="m 80,70 q -8,-58 38,-74 37,-8 64,10 26,-10 58,0 22,10 28,36 -23,6 -50,4 27,30 37,66 -37,-18 -73,-23 -7,33 -32,45 Q 128,122 128,94 95,86 80,70 Z"
+       id="path1" />
+    <polygon
+       class="figure"
+       points="75,36 75,24 50,30 "
+       id="polygon1" />
+    <circle
+       class="eye"
+       cx="108"
+       cy="22"
+       r="4.1999998"
+       id="circle1" />
+  </g>
+  <!-- Filet décoratif fin -->
+  <!-- Tagline optionnelle (modifiable) -->
+  <metadata
+     id="metadata2">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>MESANGE</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

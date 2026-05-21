@@ -1,0 +1,31 @@
+id: memory_registry_v1
+version: v1.0
+description: Registre racine des politiques, schemas et processus de memoire gouvernee MERLIN.
+canonical_root: C:\MERLIN
+registry_type: memory
+policies:
+  - id: memory_policy_v1
+    file: managed_agents/memory/memory_policy_v1.yaml
+    status: superseded_by_v2
+  - id: memory_policy_v2
+    file: managed_agents/memory/memory_policy_v2.yaml
+    status: active_contract
+schemas:
+  - id: memory_item_schema_v1
+    file: managed_agents/memory/memory_item_schema_v1.yaml
+    status: active_contract
+processes:
+  - id: dreaming_process_v1
+    file: managed_agents/memory/dreaming_process_v1.yaml
+    status: active_contract
+permission_sets:
+  - id: memory_permissions_v1
+    file: managed_agents/memory/permissions_v1.yaml
+    status: active_contract
+validation_rules:
+  require_files_exist: true
+  require_unique_memory_contract_ids: true
+  require_contract_id_matches_file_id: true
+  require_active_policy: memory_policy_v2
+  require_permissions_contract: memory_permissions_v1
+  require_dreaming_process: dreaming_process_v1
