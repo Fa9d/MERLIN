@@ -113,6 +113,12 @@
   margin: 0 auto var(--sp-10);
 }
 
+.v3-orientation__cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-6);
+}
+
 .v3-orientation__panel {
   width: 100%;
   max-width: 720px;

@@ -1,0 +1,364 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   NumeriqueSondagePopup — styles
+   Réutilise les classes .login-popup-backdrop / .login-popup existantes.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Popup size override ─────────────────────────────────────────────────── */
+.login-popup--sondage {
+  max-width: 36rem;
+  width: 92vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ── CSS custom properties par niveau (élimine les inline styles dynamiques) */
+.sondage-level[data-level="equilibre"]   { --lvl-color: #3a7c5f; --lvl-bg: #f0f7f4; --lvl-border: #3a7c5f40; --lvl-tag-bg: #3a7c5f18; --lvl-tag-border: #3a7c5f30; }
+.sondage-level[data-level="attention"]   { --lvl-color: #8a6820; --lvl-bg: #fdf8ee; --lvl-border: #8a682040; --lvl-tag-bg: #8a682018; --lvl-tag-border: #8a682030; }
+.sondage-level[data-level="tensions"]    { --lvl-color: #b04a1a; --lvl-bg: #fdf2ee; --lvl-border: #b04a1a40; --lvl-tag-bg: #b04a1a18; --lvl-tag-border: #b04a1a30; }
+.sondage-level[data-level="prioritaire"] { --lvl-color: #8b2020; --lvl-bg: #fdf0f0; --lvl-border: #8b202040; --lvl-tag-bg: #8b202018; --lvl-tag-border: #8b202030; }
+
+/* ── Wrapper barre de progression ───────────────────────────────────────── */
+.sondage-progress-wrapper {
+  margin-bottom: 1.25rem;
+}
+
+/* ── En-tête popup ──────────────────────────────────────────────────────── */
+.sondage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+.sondage-header__meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 0.25rem;
+}
+.sondage-header__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ── Étape contact ──────────────────────────────────────────────────────── */
+.sondage-intro {
+  margin-bottom: 1.5rem;
+  opacity: 0.75;
+  line-height: 1.6;
+}
+.sondage-prefill-banner {
+  background: #f0f7f4;
+  border: 1px solid #b8d9ca;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+}
+.sondage-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.sondage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.sondage-field__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.7;
+}
+.sondage-field__label-note {
+  font-weight: 400;
+  opacity: 0.6;
+}
+.sondage-field__input {
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid rgba(0, 0, 0, 0.18);
+  font-size: 0.95rem;
+  background: var(--color-surface, #fff);
+}
+.sondage-field__input:focus {
+  outline: 2px solid var(--color-sage, #3a7c5f);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+.sondage-rgpd-note {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.sondage-btn-primary {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--color-ink, #1f2a26);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.sondage-btn-primary:hover {
+  opacity: 0.88;
+}
+
+/* ── Étape resume ──────────────────────────────────────────────────────── */
+.sondage-resume-info {
+  margin-bottom: 1.25rem;
+  opacity: 0.75;
+}
+.sondage-resume-badge {
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: var(--lvl-bg, #f0f7f4);
+  border: 1.5px solid var(--lvl-border, #3a7c5f40);
+}
+.sondage-resume-badge__kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--lvl-color, #3a7c5f);
+  margin-bottom: 0.25rem;
+}
+.sondage-resume-badge__score {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--lvl-color, #3a7c5f);
+  margin: 0;
+}
+.sondage-resume-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sondage-btn-ghost {
+  padding: 0.8rem;
+  background: transparent;
+  color: inherit;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.sondage-btn-ghost:hover {
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+/* ── Étape question ─────────────────────────────────────────────────────── */
+.sondage-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+.sondage-progress-counter {
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+.sondage-progress-dimension {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.5;
+}
+.sondage-progress-bar-track {
+  height: 4px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.sondage-progress-bar-fill {
+  height: 100%;
+  background: var(--color-sage, #3a7c5f);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.sondage-question-text {
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+.sondage-question-note {
+  font-size: 0.8rem;
+  opacity: 0.55;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+.sondage-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.sondage-option {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.sondage-option:hover {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+.sondage-option--selected {
+  border: 2px solid var(--color-sage, #3a7c5f);
+  background: #f0f7f4;
+  font-weight: 600;
+}
+.sondage-btn-back {
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+.sondage-btn-back:hover {
+  opacity: 0.8;
+}
+
+/* ── Étape résultat ─────────────────────────────────────────────────────── */
+.sondage-result-badge {
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background: var(--lvl-bg, #f0f7f4);
+  border: 1.5px solid var(--lvl-border, #3a7c5f35);
+}
+.sondage-result-alias {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  margin-bottom: 0.25rem;
+}
+.sondage-result-score {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+  color: var(--lvl-color, #3a7c5f);
+}
+.sondage-result-score-max {
+  font-size: 1rem;
+  font-weight: 400;
+  opacity: 0.6;
+}
+.sondage-result-label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--lvl-color, #3a7c5f);
+}
+.sondage-result-bar-track {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.sondage-result-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--lvl-color, #3a7c5f);
+}
+.sondage-result-summary {
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.sondage-result-detail {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.sondage-dimensions {
+  margin-bottom: 1.25rem;
+}
+.sondage-dimensions__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.55;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.5rem;
+}
+.sondage-dimension-tag {
+  display: inline-block;
+  border-radius: 1rem;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--lvl-tag-bg, #3a7c5f18);
+  color: var(--lvl-color, #3a7c5f);
+  border: 1px solid var(--lvl-tag-border, #3a7c5f30);
+}
+.sondage-result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sondage-btn-cta {
+  display: block;
+  text-align: center;
+  padding: 0.85rem;
+  color: #fff;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+  background: var(--lvl-color, #3a7c5f);
+}
+.sondage-btn-cta:hover {
+  opacity: 0.88;
+}
+.sondage-btn-restart {
+  padding: 0.7rem;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  opacity: 0.65;
+}
+.sondage-btn-restart:hover {
+  opacity: 1;
+}
+.sondage-disclaimer {
+  font-size: 0.7rem;
+  opacity: 0.4;
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+
+/* ── Bouton dans la section landing ──────────────────────────────────────── */
+.sondage-cta-wrap {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.sondage-cta-caption {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  opacity: 0.55;
+}
+.sondage-section-intro {
+  text-align: center;
+  max-width: 52rem;
+  margin: 0 auto 2.5rem;
+}

@@ -10,6 +10,7 @@ type Status = "loading" | "success" | "error" | "no-token";
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const redirect = searchParams.get("redirect") || "/rendez-vous";
   const [status, setStatus] = useState<Status>(token ? "loading" : "no-token");
   const [message, setMessage] = useState("");
 
@@ -28,7 +29,7 @@ function VerifyEmailContent() {
 
   return (
     <main className="page-center">
-      <div className="card" style={{ maxWidth: 480, margin: "80px auto", textAlign: "center" }}>
+      <div className="card verify-email-card">
         <h1 className="card-title">Vérification de courriel</h1>
 
         {status === "loading" && <p className="text-muted">Vérification en cours…</p>}
@@ -39,22 +40,22 @@ function VerifyEmailContent() {
 
         {status === "success" && (
           <>
-            <p style={{ color: "var(--color-success, #16a34a)", marginBottom: "1.5rem" }}>
+            <p className="verify-email-success">
               ✓ {message}
             </p>
-            <Link href="/rendez-vous/reserver" className="btn btn-primary">
-              Réserver un rendez-vous
+            <Link href={redirect} className="button button-primary">
+              Continuer
             </Link>
           </>
         )}
 
         {status === "error" && (
           <>
-            <p className="error-msg" style={{ marginBottom: "1.5rem" }}>
+            <p className="error-msg verify-email-error">
               {message}
             </p>
-            <Link href="/rendez-vous/reserver" className="btn btn-outline">
-              Retour à la réservation
+            <Link href={redirect} className="button button-secondary">
+              Retour au parcours
             </Link>
           </>
         )}

@@ -1,12 +1,14 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import "./styles.css";
-
 import "./styles.v3.css";
 import "./styles.orientation.css";
+import "./styles.sondage.css";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
+import { NumeriqueSondagePopup } from "@/components/sondage/NumeriqueSondagePopup";
 
 /* ──────────────────────────────────────────────────────────────────────────
    IVIA — Refonte UI/UX du seuil public
@@ -88,6 +90,8 @@ const ACCOMPAGNEMENT = [
 ];
 
 export default function HomePage() {
+  const [showSondage, setShowSondage] = useState(false);
+
   return (
     <PublicLayout>
       <div className="hp hp--v3 hp--maison hp--seuil">
@@ -221,69 +225,83 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── QUATRE PORTES — vue d'ensemble ────────────────────────── */}
-          <section className="v3-section v3-pathways" id="voies">
+          {/* ── PROBLÈMES NUMÉRIQUES — ce que le numérique fait à nos vies ── */}
+          <section className="v3-section v3-pathways" id="voies" aria-labelledby="numerique-title">
             <div className="v3-section__inner">
-              <p className="v3-kicker">Quatre portes</p>
-              <h2 className="v3-h2 v3-h2--center">
-                Choisir une porte, <em>retrouver la maison.</em>
+              <p className="v3-kicker">Le numérique et nous</p>
+              <h2 id="numerique-title" className="v3-h2 v3-h2--center">
+                Ce que le numérique <em>fait à votre équilibre.</em>
               </h2>
-              <ul className="v3-pathways__grid" aria-label="Portes IVIA">
-                {PATHWAYS.map((p) => (
-                  <li
-                    key={p.id}
-                    className={`v3-pathway v3-pathway--${p.tone}`}
-                  >
-                    <Link href={p.href} className="v3-pathway__inner">
-                      <span className="v3-pathway__kicker">{p.kicker}</span>
-                      <h3 className="v3-pathway__title">{p.title}</h3>
-                      <p className="v3-pathway__body">{p.body}</p>
-                      <span className="v3-pathway__cta">
-                        {p.cta}
-                        <span className="v3-pathway__arrow" aria-hidden="true">
-                          →
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* ── MÉSANGES — présence subtile ─────────────────────────────── */}
-          <section className="v3-section v3-mesanges" aria-labelledby="mesanges-title">
-            <div className="v3-section__inner v3-mesanges__inner">
-              <div className="v3-mesanges__copy">
-                <p className="v3-kicker">MÉSANGES accompagne</p>
-                <h2 id="mesanges-title" className="v3-h2">
-                  Une présence <em>qui reste, même en hiver.</em>
-                </h2>
-                <p className="v3-section__intro">
-                  Les mésanges sont parmi les rares oiseaux qui ne quittent
-                  pas le Québec quand vient le froid. Elles restent, elles
-                  traversent, elles signalent qu&apos;une présence demeure
-                  possible. MÉSANGES accompagne dans cet esprit : petites
-                  voix, nuances, pistes — jamais à la place de votre jugement.
-                </p>
-                <p className="v3-section__intro">
-                  Aucune voix tutélaire ne remplace une décision. La présence
-                  reste subtile, et c&apos;est vous qui choisissez le rythme.
+              <p className="v3-section__intro sondage-section-intro">
+                La connexion permanente crée des charges invisibles. MÉSANGES
+                aide à les nommer, sans jugement — pour retrouver un rapport
+                sain à la technologie et à soi-même.
+              </p>
+              <div className="sondage-cta-wrap">
+                <button
+                  onClick={() => setShowSondage(true)}
+                  className="v3-btn v3-btn--primary"
+                >
+                  Sonder mon rapport au numérique
+                  <span aria-hidden="true">↗</span>
+                </button>
+                <p className="sondage-cta-caption">
+                  3 minutes · 7 questions · résultat immédiat
                 </p>
               </div>
-              <figure className="v3-mesanges__media" aria-hidden="true">
-                <Image
-                  src="/assets/imagery/mesanges-hiver.png"
-                  alt=""
-                  width={720}
-                  height={720}
-                  className="v3-mesanges__img"
-                />
-              </figure>
+              <ul className="v3-pathways__grid" aria-label="Problèmes liés au numérique">
+                <li className="v3-pathway v3-pathway--ink">
+                  <div className="v3-pathway__inner">
+                    <span className="v3-pathway__kicker">Isolation</span>
+                    <h3 className="v3-pathway__title">Connecté·e, mais seul·e</h3>
+                    <p className="v3-pathway__body">
+                      Les réseaux sociaux donnent l&apos;illusion de proximité tout
+                      en creusant la distance réelle. Comparaison, validation
+                      externe, peur de rater — une solitude paradoxale s&apos;installe.
+                    </p>
+                  </div>
+                </li>
+                <li className="v3-pathway v3-pathway--sage">
+                  <div className="v3-pathway__inner">
+                    <span className="v3-pathway__kicker">Surcharge</span>
+                    <h3 className="v3-pathway__title">Trop d&apos;informations, trop peu de clarté</h3>
+                    <p className="v3-pathway__body">
+                      Notifications, flux continus, décisions impossibles à
+                      prioriser. Le bruit numérique épuise la capacité de
+                      concentration et brouille ce qui compte vraiment.
+                    </p>
+                  </div>
+                </li>
+                <li className="v3-pathway v3-pathway--cream">
+                  <div className="v3-pathway__inner">
+                    <span className="v3-pathway__kicker">Disponibilité constante</span>
+                    <h3 className="v3-pathway__title">Jamais vraiment au repos</h3>
+                    <p className="v3-pathway__body">
+                      Toujours joignable, toujours réactif·ve. La frontière entre
+                      vie personnelle et exigences extérieures s&apos;efface — le
+                      repos devient difficile, la récupération incomplète.
+                    </p>
+                  </div>
+                </li>
+                <li className="v3-pathway v3-pathway--ink">
+                  <div className="v3-pathway__inner">
+                    <span className="v3-pathway__kicker">Identité fragmentée</span>
+                    <h3 className="v3-pathway__title">Soi en ligne, soi réel</h3>
+                    <p className="v3-pathway__body">
+                      Maintenir une image numérique cohérente épuise. La
+                      dissonance entre ce qu&apos;on projette et ce qu&apos;on vit
+                      crée une tension sourde, difficile à nommer.
+                    </p>
+                  </div>
+                </li>
+              </ul>
             </div>
           </section>
         </main>
       </div>
+      {showSondage && (
+        <NumeriqueSondagePopup onClose={() => setShowSondage(false)} />
+      )}
     </PublicLayout>
   );
 }

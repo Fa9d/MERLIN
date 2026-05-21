@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { appRoutes } from "@/lib/routes";
 
 /**
@@ -8,42 +10,47 @@ import { appRoutes } from "@/lib/routes";
  *
  * Affiché quand l'utilisateur abandonne le checkout Stripe.
  */
-export default function CheckoutCancelPage() {
+function CheckoutCancelContent() {
+  const searchParams = useSearchParams();
+  const clientCode = searchParams.get("client_code");
+  const intakeId = searchParams.get("intake_id");
+  const retryHref = clientCode && intakeId
+    ? `${appRoutes.suivi}?code=${encodeURIComponent(clientCode)}&intake=${encodeURIComponent(intakeId)}`
+    : appRoutes.booking;
+
   return (
-    <main
-      style={{
-        maxWidth: 560,
-        margin: "80px auto",
-        padding: "0 1.5rem",
-        textAlign: "center",
-      }}
-    >
-      <div
-        style={{
-          fontSize: "3rem",
-          marginBottom: "1.5rem",
-          color: "var(--muted, #888)",
-        }}
-      >
+    <main className="checkout-status-page">
+      <div className="checkout-status-icon checkout-status-icon--cancel">
         ←
       </div>
 
-      <h1 style={{ marginBottom: "1rem" }}>Paiement annulé</h1>
+      <h1 className="checkout-status-title">Paiement annulé</h1>
 
-      <p style={{ color: "var(--muted, #666)", marginBottom: "2rem", lineHeight: 1.6 }}>
+      <p className="checkout-status-body checkout-status-body--wide">
         Votre paiement n&apos;a pas été complété. Aucun montant n&apos;a été débité.
         <br />
-        Vous pouvez relancer une demande à tout moment.
+        Vous pouvez reprendre le parcours ou choisir Interac a tout moment.
       </p>
 
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+      <div className="checkout-status-actions">
         <Link href={appRoutes.booking} className="btn btn-primary">
-          Réessayer
+          Revenir au paiement
+        </Link>
+        <Link href={retryHref} className="btn btn-outline">
+          Suivre ma demande
         </Link>
         <Link href={appRoutes.home} className="btn btn-outline">
           Retour à l&apos;accueil
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function CheckoutCancelPage() {
+  return (
+    <Suspense fallback={<main className="checkout-status-page">Chargement…</main>}>
+      <CheckoutCancelContent />
+    </Suspense>
   );
 }

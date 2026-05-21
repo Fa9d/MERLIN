@@ -8,52 +8,49 @@ import { appRoutes } from "@/lib/routes";
 function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const orderId = searchParams.get("order_id");
+  const clientCode = searchParams.get("client_code");
+  const intakeId = searchParams.get("intake_id");
+  const productCode = searchParams.get("product_code");
+  const suiviHref =
+    clientCode && intakeId
+      ? `${appRoutes.suivi}?code=${encodeURIComponent(clientCode)}&intake=${encodeURIComponent(intakeId)}`
+      : appRoutes.suivi;
 
   return (
-    <main
-      style={{
-        maxWidth: 560,
-        margin: "80px auto",
-        padding: "0 1.5rem",
-        textAlign: "center",
-      }}
-    >
-      <div
-        style={{
-          fontSize: "3rem",
-          marginBottom: "1.5rem",
-          color: "var(--accent, #4a7c59)",
-        }}
-      >
+    <main className="checkout-status-page">
+      <div className="checkout-status-icon checkout-status-icon--success">
         ✓
       </div>
 
-      <h1 style={{ marginBottom: "1rem" }}>Paiement reçu</h1>
+      <h1 className="checkout-status-title">Paiement reçu</h1>
 
-      <p style={{ color: "var(--muted, #666)", marginBottom: "1rem", lineHeight: 1.6 }}>
-        Votre demande de consultation audio a été transmise à votre praticien.
+      <p className="checkout-status-body">
+        Votre paiement a bien ete enregistre pour votre parcours IVIA.
         <br />
-        Vous recevrez une réponse audio dans les prochaines 24–48 heures.
+        La confirmation clinique ou operative suit maintenant le mode de service choisi.
       </p>
 
-      {sessionId && (
-        <p
-          style={{
-            fontSize: "0.75rem",
-            color: "var(--muted, #999)",
-            marginBottom: "2rem",
-            fontFamily: "monospace",
-          }}
-        >
-          Référence : {sessionId}
+      {productCode ? (
+        <p className="checkout-status-body">
+          Produit regle: <strong>{productCode}</strong>
+        </p>
+      ) : null}
+
+      {(sessionId || orderId) && (
+        <p className="checkout-status-reference">
+          Référence : {orderId ?? sessionId}
         </p>
       )}
 
-      {!sessionId && <div style={{ marginBottom: "2rem" }} />}
+      {!sessionId && !orderId && <div className="checkout-status-spacer" />}
 
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-        <Link href={appRoutes.suivi} className="btn btn-primary">
+      <div className="checkout-status-actions">
+        <Link href={suiviHref} className="btn btn-primary">
           Suivre ma demande
+        </Link>
+        <Link href={appRoutes.booking} className="btn btn-outline">
+          Retour au rendez-vous
         </Link>
         <Link href={appRoutes.home} className="btn btn-outline">
           Retour à l&apos;accueil
@@ -65,7 +62,7 @@ function CheckoutSuccessContent() {
 
 export default function CheckoutSuccessPage() {
   return (
-    <Suspense fallback={<main style={{ maxWidth: 560, margin: "80px auto", padding: "0 1.5rem", textAlign: "center" }}>Chargement…</main>}>
+    <Suspense fallback={<main className="checkout-status-page">Chargement…</main>}>
       <CheckoutSuccessContent />
     </Suspense>
   );

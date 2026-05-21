@@ -324,52 +324,92 @@ a {
 
 .field {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.5rem;
 }
 
 .field span {
   font-size: 0.92rem;
   font-weight: 600;
+  color: var(--foreground);
 }
 
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-solid);
   border-radius: 16px;
-  background: rgba(255, 252, 247, 0.85);
+  background: color-mix(in oklab, var(--surface) 94%, white 6%);
   color: var(--foreground);
   padding: 0.9rem 1rem;
   font: inherit;
+  line-height: 1.55;
+  caret-color: var(--accent-deep);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
 }
 
 .field textarea {
   resize: vertical;
+  min-height: 10rem;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.92;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 16%, transparent);
+}
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+  border-color: color-mix(in oklab, var(--accent) 26%, var(--border-solid));
 }
 
 .checkbox-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.7rem;
-  color: var(--muted);
+  color: var(--foreground);
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--border-solid);
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--surface) 96%, var(--accent-surf) 4%);
+}
+
+.checkbox-row input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+
+.checkbox-row span {
+  line-height: 1.55;
 }
 
 .message {
   border-radius: 16px;
   padding: 0.9rem 1rem;
   line-height: 1.6;
+  color: var(--foreground);
 }
 
 .message-success {
-  background: rgba(22, 58, 51, 0.08);
-  border: 1px solid rgba(22, 58, 51, 0.18);
+  background: color-mix(in oklab, var(--accent-surf) 82%, white 18%);
+  border: 1px solid color-mix(in oklab, var(--accent) 26%, var(--border-solid));
 }
 
 .message-error {
-  background: rgba(150, 49, 36, 0.08);
-  border: 1px solid rgba(150, 49, 36, 0.18);
-  color: #842d22;
+  background: color-mix(in oklab, var(--earth-surf) 78%, white 22%);
+  border: 1px solid color-mix(in oklab, var(--earth) 28%, var(--border-solid));
+  color: color-mix(in oklab, var(--earth) 82%, black 18%);
 }
 
 .operator-auth-card {
@@ -695,8 +735,23 @@ a {
 }
 
 .inline-note {
-  color: var(--muted);
+  color: color-mix(in oklab, var(--muted) 76%, var(--foreground) 24%);
   font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.form-meta-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.field-counter {
+  color: var(--foreground);
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .table-wrap {
@@ -750,11 +805,21 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-solid);
   border-radius: 16px;
-  background: rgba(255, 252, 247, 0.7);
+  background: color-mix(in oklab, var(--surface) 92%, white 8%);
   padding: 0.9rem 1rem;
-  color: var(--muted);
+  color: color-mix(in oklab, var(--muted) 62%, var(--foreground) 38%);
+}
+
+@media (max-width: 760px) {
+  .form-meta-row {
+    flex-direction: column;
+  }
+
+  .field-counter {
+    align-self: flex-end;
+  }
 }
 
 .status-pill {
