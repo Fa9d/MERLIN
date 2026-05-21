@@ -22,8 +22,7 @@ const PATHWAYS = [
     id: "pour-moi",
     kicker: "Pour moi",
     title: "Déposer ce que je vis",
-    body:
-      "Comprendre ce qui se répète, ce qui pèse et ce qui pourrait retrouver une voie d'équilibre.",
+    body: "Comprendre ce qui se répète, ce qui pèse et ce qui pourrait retrouver une voie d'équilibre.",
     href: "#orientation",
     cta: "Commencer mon orientation",
     tone: "ink",
@@ -32,8 +31,7 @@ const PATHWAYS = [
     id: "pour-praticiens",
     kicker: "Pour les praticiens",
     title: "Structurer ma pratique",
-    body:
-      "Préparer, interpréter, ajuster. Sans grille rigide, sans effacer mon jugement professionnel.",
+    body: "Préparer, interpréter, ajuster. Sans grille rigide, sans effacer mon jugement professionnel.",
     href: "/praticiens",
     cta: "Découvrir l'espace praticien",
     tone: "sage",
@@ -42,8 +40,7 @@ const PATHWAYS = [
     id: "ressources",
     kicker: "Ressources",
     title: "Lire et s'orienter",
-    body:
-      "Articles, repères et lexique vivant pour mieux saisir ce que MÉSANGES propose, à votre rythme.",
+    body: "Articles, repères et lexique vivant pour mieux saisir ce que MÉSANGES propose, à votre rythme.",
     href: "/ressources",
     cta: "Parcourir les ressources",
     tone: "cream",
@@ -53,39 +50,28 @@ const PATHWAYS = [
 const ACCOMPAGNEMENT = [
   {
     num: "01",
-    label: "Vous déposez",
-    body:
-      "Dans vos mots, votre histoire, votre situation, vos questions et ce que vous êtes prêt·e à nommer, ce que vous voulez acquérir, surmonter, parfaire.",
+    label: "Vous nommez ce qui pèse",
+    body: "Dans vos mots, à votre rythme. Ce que vous vivez, ce qui se répète, ce que vous aimeriez comprendre ou changer — il n'y a pas de bonne façon de commencer.",
   },
   {
     num: "02",
-    label: "MÉSANGES analyse",
-    body:
-      "MÉSANGES repère les possibles, prépare son analyse, sous validation humaine.",
+    label: "MÉSANGES écoute, vraiment",
+    body: "Ce que vous avez déposé est lu avec attention, sans grille rigide ni jugement. Rien n'est interprété à la hâte — l'écoute précède toujours la réponse.",
   },
   {
     num: "03",
-    label: "Les possibles — vos pistes",
-    body:
-      "Une interprétation sensible, multidimensionnelle, sans diagnostic et en compréhension et clarification.",
+    label: "Ce qui pèse devient lisible",
+    body: "Une lecture de votre situation vous est proposée — sensible, multidimensionnelle, sans étiquette. Ce que vous viviez de façon confuse commence à prendre une forme que vous pouvez regarder.",
   },
   {
     num: "04",
-    label: "MÉSANGES accompagne",
-    body:
-      "Les mésanges ne quittent pas le Québec, même en hiver. Elles restent. Elles rappellent qu'une présence demeure possible. MÉSANGES accompagne en force de proposition. Qu'enfin vous puissiez y voir clair, entendre et comprendre votre plein potentiel.",
+    label: "Vos prochains pas se dessinent",
+    body: "Ensemble, on identifie deux ou trois directions concrètes. Pas une liste d'objectifs à cocher — des pistes qui vous ressemblent et que vous choisissez d'explorer ou non.",
   },
   {
     num: "05",
-    label: "Vous agissez",
-    body:
-      "Le simple fait de déposer ce que vous vivez peut devenir un premier acte de clarté. MÉSANGES soutient ce mouvement sans décider à votre place. Ce regard extérieur et totalement objectif peut dépeindre une réalité qui parfois nous échappe.",
-  },
-  {
-    num: "06",
-    label: "Nous suivons l'évolution",
-    body:
-      "Ensemble, nous observons ce qui change, ce qui résiste, ce qui revient et ce qui demande une attention nouvelle. Trouver vos solutions est peut-être plus simple que vous le pensiez. Les outils d'analyse et de performance développés chez IVIA offrent objectivité, clairvoyance et autonomie. À vous de jouer maintenant.",
+    label: "Vous repartez avec vos repères",
+    body: "Vous repartez avec une lecture plus claire de ce que vous vivez et les repères pour avancer par vous-même. MÉSANGES reste disponible si le besoin revient — mais l'autonomie est toujours l'horizon.",
   },
 ];
 
@@ -162,17 +148,18 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── IVIA — MÉSANGES VOUS ACCOMPAGNE — pas à pas ─────────── */}
+          {/* ── LE PARCOURS — 5 étapes, point de vue client ───────────── */}
           <section className="v3-section v3-accompagnement" id="approche">
             <div className="v3-section__inner">
               <h2 className="v3-h2">
-                MÉSANGES
+                Comment ça se passe
                 <br />
-                <em>Pas à pas, à votre rythme.</em>
+                <em>À votre rythme, pas à pas.</em>
               </h2>
               <p className="v3-section__intro">
-                Un espace structuré pour vous accueillir. À votre tempo,
-                votre niveau de partage, votre réussite.
+                Pas de formulaire interminable. Pas de liste d&apos;attente.
+                Un espace pour déposer ce que vous vivez, comprendre ce qui se passe,
+                et repartir avec ce qu&apos;il vous faut pour avancer.
               </p>
               <ol className="v3-steps">
                 {ACCOMPAGNEMENT.map((s) => (
