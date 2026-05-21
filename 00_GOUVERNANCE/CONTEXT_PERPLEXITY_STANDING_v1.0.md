@@ -208,7 +208,34 @@ Nous sommes en repositionnement actif. L'objectif prioritaire est que le visiteu
 3. **Ce que ce n'est pas** (rassurant sur le cadre légal, non clinique, non stigmatisant)
 4. **Comment commencer** (un seul CTA, une seule porte d'entrée)
 
-Ta première livraison pour cette session doit être une **réécriture complète du hero section** du site (H1 + sous-titre + 1 CTA) qui respecte tous ces critères. Ensuite : réécriture de la section processus (5 étapes max, point de vue client, sans nommer MERLIN).
+### Tâche active — Processus 6 étapes (session 21 mai 2026)
+
+Le hero section a déjà été reécrit et committé (variante B retenue). Le P0-LÉGAL est corrigé ("reconnaître les troubles" → "nommer ce que vous vivez"). MERLIN retiré côté client.
+
+**Tâche en cours : réécriture du processus 6 étapes.**
+
+État actuel des 6 étapes sur le site :
+1. Vous déposez
+2. ~~MERLIN structure~~ → "MÉSANGES analyse" (proposé, mais contesté — voir ci-dessous)
+3. Les possibles — VOS SOLUTIONS
+4. MÉSANGES accompagne
+5. Vous agissez
+6. Nous suivons l'évolution
+
+**Problème à résoudre :**
+L'étape 02 n'a pas encore de formulation satisfaisante :
+- "MÉSANGES analyse" = trop froid, connotation clinique/diagnostic
+- "MÉSANGES accompagne" = déjà utilisé à l'étape 04, crée une confusion de progression
+
+**Ce que tu dois produire :**
+1. Une analyse des options pour l'étape 02 — qu'est-ce qui se passe réellement à ce moment du parcours client ? Quelle formulation est la plus juste, la plus chaleureuse, et la plus cohérente avec la trajectoire (écoute → clarification → orientation → autonomie) ?
+2. Une réécriture complète des 6 étapes — titres + corps de paragraphe — entièrement du point de vue de la personne accompagnée, sans vocabulaire interne (pas de MERLIN, pas d'"analyse", pas de "diagnostic"), en alternant idéalement le sujet (vous / MÉSANGES) pour créer un rythme dialogique.
+3. Une version "courte" (titres seuls, 3-5 mots chacun) et une version "longue" (titre + 2 phrases corps).
+
+**Contraintes** :
+- Maximum 6 étapes, idéalement 5
+- La trajectoire autonomie doit être lisible dans la progression des titres
+- Le dernier pas doit laisser la personne dans une posture d'action, pas de dépendance
 
 ---
 
