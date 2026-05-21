@@ -63,6 +63,16 @@ class RequestChannelCode(str, Enum):
     other = "other"
 
 
+class IntakeHandlingStatusCode(str, Enum):
+    new = "new"
+    a_rappeler = "a_rappeler"
+    contacte = "contacte"
+    planifie = "planifie"
+    vigilance = "vigilance"
+    hors_cadre = "hors_cadre"
+    archive = "archive"
+
+
 class ConsentTypeCode(str, Enum):
     consent_session = "consent_session"
     consent_session_note = "consent_session_note"
@@ -163,3 +173,38 @@ class AnalysisNextStepCode(str, Enum):
     orient_to_appropriate_service = "orient_to_appropriate_service"
     propose_follow_up = "propose_follow_up"
     escalate_immediate_relay = "escalate_immediate_relay"
+
+
+class PaymentProviderCode(str, Enum):
+    stripe = "stripe"
+    interac_terminal = "interac_terminal"
+    interac_etransfer = "interac_etransfer"
+
+
+class PaymentOrderStatusCode(str, Enum):
+    pending = "pending"
+    paid = "paid"
+    failed = "failed"
+    cancelled = "cancelled"
+    refunded = "refunded"
+
+
+class PaymentProductKindCode(str, Enum):
+    session_intake = "session_intake"
+    session_follow_up = "session_follow_up"
+    journal_days_pack = "journal_days_pack"
+    audio_async_follow_up = "audio_async_follow_up"
+    custom = "custom"
+
+
+class PaymentFulfillmentModeCode(str, Enum):
+    grant_entitlement_only = "grant_entitlement_only"
+    grant_entitlement_and_create_audio_async_session = (
+        "grant_entitlement_and_create_audio_async_session"
+    )
+
+
+class ClientEntitlementTypeCode(str, Enum):
+    intake_session_credit = "intake_session_credit"
+    follow_up_session_credit = "follow_up_session_credit"
+    journal_day = "journal_day"

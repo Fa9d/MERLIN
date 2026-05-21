@@ -93,6 +93,18 @@ class Settings:
     smtp_from_name: str = os.getenv("SMTP_FROM_NAME", "IVIA")
     smtp_use_tls: bool = _as_bool(os.getenv("SMTP_USE_TLS"), default=False)
     smtp_use_ssl: bool = _as_bool(os.getenv("SMTP_USE_SSL"), default=True)
+    interac_etransfer_email: str = os.getenv(
+        "INTERAC_ETRANSFER_EMAIL",
+        os.getenv("SMTP_FROM_EMAIL", "noreply@ivia.quebec"),
+    )
+    interac_etransfer_recipient_name: str = os.getenv(
+        "INTERAC_ETRANSFER_RECIPIENT_NAME",
+        os.getenv("SMTP_FROM_NAME", "IVIA"),
+    )
+    interac_etransfer_notice: str = os.getenv(
+        "INTERAC_ETRANSFER_NOTICE",
+        "Envoyez le virement a l'adresse ci-dessous et utilisez la reference indiquee dans le message du virement.",
+    )
     frontend_url: str = os.getenv("FRONTEND_URL", "https://ivia.quebec")
     cors_origins: list[str] = field(
         default_factory=lambda: _as_list(

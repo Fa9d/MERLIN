@@ -17,8 +17,6 @@ PUBLIC_INTAKE_CONSENT_TYPES = {
     ConsentTypeCode.consent_session,
     ConsentTypeCode.consent_session_note,
     ConsentTypeCode.consent_history,
-    ConsentTypeCode.consent_recording,
-    ConsentTypeCode.consent_transcription,
 }
 
 

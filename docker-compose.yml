@@ -53,10 +53,23 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       MERLIN_CORS_ORIGINS: ${MERLIN_CORS_ORIGINS:-https://ivia.quebec,https://api.ivia.quebec,http://localhost:3000,http://127.0.0.1:3000}
       MERLIN_AUTO_CREATE_TABLES: ${MERLIN_AUTO_CREATE_TABLES:-false}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-465}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-IVIA}
+      SMTP_USE_SSL: ${SMTP_USE_SSL:-true}
+      SMTP_USE_TLS: ${SMTP_USE_TLS:-false}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      MERLIN_PILOT_EMAIL_OVERRIDE: ${MERLIN_PILOT_EMAIL_OVERRIDE:-0}
+      MERLIN_PILOT_CLIENT_PRACTITIONER_EMAIL: ${MERLIN_PILOT_CLIENT_PRACTITIONER_EMAIL:-}
+      MERLIN_PILOT_ADMIN_EMAIL: ${MERLIN_PILOT_ADMIN_EMAIL:-}
     ports:
       - "8000:8000"
     volumes:
       - audio_data:/app/storage/recordings
+      - ./11_PROMPTS:/11_PROMPTS:ro
 
   frontend:
     build:

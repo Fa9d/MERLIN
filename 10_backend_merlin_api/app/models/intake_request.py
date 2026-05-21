@@ -5,7 +5,14 @@ from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
-from app.models.enums import NeedCode, RecordStatus, RequestChannelCode, RequestForCode, RiskLevelCode
+from app.models.enums import (
+    IntakeHandlingStatusCode,
+    NeedCode,
+    RecordStatus,
+    RequestChannelCode,
+    RequestForCode,
+    RiskLevelCode,
+)
 
 
 class IntakeRequest(Base):
@@ -43,6 +50,14 @@ class IntakeRequest(Base):
         nullable=False,
         default=RecordStatus.active,
     )
+    handling_status_code: Mapped[IntakeHandlingStatusCode] = mapped_column(
+        Enum(IntakeHandlingStatusCode, native_enum=False),
+        nullable=False,
+        default=IntakeHandlingStatusCode.new,
+    )
+    handling_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    handled_by_user_id: Mapped[str | None] = mapped_column(ForeignKey("app_users.id"), nullable=True)
+    handled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,

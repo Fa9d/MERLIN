@@ -48,7 +48,10 @@ def _validate_create_access(payload: IntakeRequestCreate, current_user: AppUser 
             detail="Authentification requise pour ce type de demande d'entree.",
         )
 
-    if payload.perceived_urgency_code != RiskLevelCode.non_urgent:
+    if payload.perceived_urgency_code not in {
+        RiskLevelCode.non_urgent,
+        RiskLevelCode.priority,
+    }:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Authentification requise pour ce niveau d'urgence.",

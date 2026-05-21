@@ -22,6 +22,7 @@ def test_core_flow_smoke() -> None:
     os.environ["MERLIN_MEDIA_RECORDING_STRATEGY"] = "metadata_only"
 
     from app.main import app
+    from app.core.config import settings
     from app.api.routes import audio_recordings as audio_recordings_routes
     from app.api.routes import sessions as sessions_routes
 
@@ -294,7 +295,8 @@ def test_core_flow_smoke() -> None:
                     "support_already_in_place": False,
                 },
             )
-            assert public_priority_intake_resp.status_code == 401
+            assert public_priority_intake_resp.status_code == 201
+            assert public_priority_intake_resp.json()["perceived_urgency_code"] == "priority"
 
             anonymous_intake_resp = client.post(
                 "/api/v1/intake-requests",
@@ -380,19 +382,13 @@ def test_core_flow_smoke() -> None:
                 f"/api/v1/sessions/{second_session['id']}/room",
                 headers=auth_headers,
             )
-            assert room_resp.status_code == 200
-            room_payload = room_resp.json()
-            assert room_payload["room_name"] == "merlin-session-test-room"
-            assert room_payload["room_sid"] == "RM_test_room_sid"
-            assert room_payload["livekit_url"] == "wss://livekit.example.test"
-            assert room_payload["practitioner_token"] == "jwt-practitioner-test-token"
-            assert room_payload["client_token"] == "jwt-client-test-token"
+            assert room_resp.status_code == 410
 
             hidden_room_resp = client.post(
                 f"/api/v1/sessions/{second_session['id']}/room",
                 headers=second_operator_headers,
             )
-            assert hidden_room_resp.status_code == 404
+            assert hidden_room_resp.status_code == 410
 
             start_session_resp = client.post(
             f"/api/v1/sessions/{second_session['id']}/start",
@@ -439,7 +435,7 @@ def test_core_flow_smoke() -> None:
             headers=auth_headers,
         )
             assert join_resp.status_code == 200
-            assert join_resp.json()["ws_url"] == "wss://livekit.example.test"
+            assert join_resp.json()["ws_url"] == settings.media_livekit_public_ws_url
             assert isinstance(join_resp.json()["token"], str)
             assert len(join_resp.json()["token"]) > 20
 
@@ -454,7 +450,7 @@ def test_core_flow_smoke() -> None:
             headers=auth_headers,
         )
             assert client_join_resp.status_code == 200
-            assert client_join_resp.json()["ws_url"] == "wss://livekit.example.test"
+            assert client_join_resp.json()["ws_url"] == settings.media_livekit_public_ws_url
             assert client_join_resp.json()["participant_identity"].startswith("client-")
             assert isinstance(client_join_resp.json()["token"], str)
             assert len(client_join_resp.json()["token"]) > 20

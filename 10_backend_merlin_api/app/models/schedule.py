@@ -104,6 +104,10 @@ class BookingSlot(Base):
     status: Mapped[str] = mapped_column(
         Enum(SlotStatus, native_enum=False), nullable=False, default=SlotStatus.available
     )
+    consumed_entitlement_id: Mapped[str | None] = mapped_column(
+        String(36), ForeignKey("client_entitlements.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    consumed_entitlement_units: Mapped[int | None] = mapped_column(Integer, nullable=True)
     hold_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(

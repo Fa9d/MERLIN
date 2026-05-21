@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, Enum, String
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -30,10 +30,22 @@ class Client(Base):
     last_name: Mapped[str | None] = mapped_column(String(120), nullable=True)
     email: Mapped[str | None] = mapped_column(String(255), nullable=True)
     phone: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    app_user_id: Mapped[str | None] = mapped_column(
+        ForeignKey("app_users.id", ondelete="SET NULL"),
+        nullable=True,
+        unique=True,
+        index=True,
+    )
     language_code: Mapped[str] = mapped_column(String(16), nullable=False, default="fr-CA")
     timezone: Mapped[str] = mapped_column(String(64), nullable=False, default="America/Toronto")
     territory_code: Mapped[str] = mapped_column(String(16), nullable=False, default="QC")
     is_adult_confirmed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    activation_token_hash: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    activation_token_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    activation_invited_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    activation_accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     record_status: Mapped[RecordStatus] = mapped_column(
         Enum(RecordStatus, native_enum=False),
         nullable=False,

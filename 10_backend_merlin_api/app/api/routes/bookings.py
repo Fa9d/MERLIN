@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
@@ -11,10 +10,19 @@ from sqlalchemy.orm import Session
 from app.core.deps import get_current_user, require_verified_email_user
 from app.db.session import get_db
 from app.models.app_user import AppUser
-from app.models.enums import AppRole, SlotStatus
+from app.models.enums import (
+    AppRole,
+    SlotStatus,
+)
 from app.models.schedule import BookingSlot
 from app.schemas.schedule import BookingSlotOut
-from app.services.email import make_booking_confirmation_email, send_email
+from app.services.booking_flow import (
+    confirm_slot_for_client_record,
+    expire_hold,
+    get_client_record_for_user,
+    restore_entitlement_for_slot,
+    send_booking_confirmation_email_for_slot,
+)
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
 
@@ -58,7 +66,7 @@ def hold_slot(
         raise HTTPException(status_code=404, detail="Créneau introuvable.")
 
     # Libérer les holds expirés sur ce créneau
-    _expire_hold(slot)
+    expire_hold(slot)
 
     if slot.status != SlotStatus.available:
         raise HTTPException(
@@ -93,7 +101,7 @@ async def confirm_slot(
     if not slot:
         raise HTTPException(status_code=404, detail="Créneau introuvable.")
 
-    _expire_hold(slot)
+    expire_hold(slot)
 
     if slot.status != SlotStatus.hold or slot.client_id != current_user.id:
         raise HTTPException(
@@ -101,37 +109,18 @@ async def confirm_slot(
             detail="Ce créneau ne peut pas être confirmé (hold expiré ou appartient à un autre client).",
         )
 
-    if body.notes:
-        slot.notes = body.notes
-    slot.status = SlotStatus.confirmed
-    slot.hold_expires_at = None
+    client_record = get_client_record_for_user(db, current_user)
+    confirm_slot_for_client_record(
+        db,
+        slot,
+        client_record,
+        user_id=current_user.id,
+        notes=body.notes,
+    )
     db.commit()
     db.refresh(slot)
 
-    # Envoi courriel de confirmation
-    praticien: AppUser | None = db.query(AppUser).filter(AppUser.id == slot.praticien_id).first()
-    if praticien:
-        from app.schemas.schedule import SESSION_TYPE_LABELS
-        import locale
-        slot_date_str = slot.slot_date.strftime("%A %d %B %Y")
-        slot_time_str = slot.start_time.strftime("%Hh%M")
-        session_label = SESSION_TYPE_LABELS.get(slot.session_type, slot.session_type)
-        from app.core.config import settings
-        cancel_url = f"{settings.frontend_url}/rendez-vous/annuler?slot={slot.id}"
-        html, text = make_booking_confirmation_email(
-            display_name=current_user.display_name,
-            praticien_name=praticien.display_name,
-            slot_date=slot_date_str,
-            slot_time=slot_time_str,
-            session_type_label=session_label,
-            cancel_url=cancel_url,
-        )
-        await send_email(
-            current_user.email,
-            f"Votre rendez-vous le {slot_date_str} — IVIA",
-            html,
-            text,
-        )
+    await send_booking_confirmation_email_for_slot(db, slot, current_user)
 
     return BookingSlotOut.model_validate(slot)
 
@@ -170,6 +159,9 @@ def cancel_slot(
     if slot.status not in (SlotStatus.hold, SlotStatus.confirmed):
         raise HTTPException(status_code=409, detail="Ce créneau ne peut pas être annulé.")
 
+    if slot.status == SlotStatus.confirmed:
+        restore_entitlement_for_slot(db, slot)
+
     slot.status = SlotStatus.cancelled
     slot.hold_expires_at = None
     db.commit()
@@ -202,19 +194,5 @@ def my_bookings(
     return [BookingSlotOut.model_validate(s) for s in slots]
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _expire_hold(slot: BookingSlot) -> None:
-    """Libère un hold expiré (in-place, sans commit)."""
-    if (
-        slot.status == SlotStatus.hold
-        and slot.hold_expires_at
-        and slot.hold_expires_at < datetime.now(timezone.utc)
-    ):
-        slot.status = SlotStatus.available
-        slot.client_id = None
-        slot.hold_expires_at = None
 
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import secrets
 from datetime import datetime, timedelta, timezone
+from urllib.parse import urlencode
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, field_validator
@@ -24,6 +25,7 @@ class ClientRegisterIn(BaseModel):
     email: EmailStr
     password: str
     display_name: str
+    redirect_path: str | None = None
 
     @field_validator("password")
     @classmethod
@@ -32,11 +34,21 @@ class ClientRegisterIn(BaseModel):
             raise ValueError("Le mot de passe doit contenir au moins 8 caractères.")
         return v
 
+    @field_validator("redirect_path")
+    @classmethod
+    def redirect_must_be_relative(cls, v: str | None) -> str | None:
+        if v is None or v == "":
+            return None
+        if not v.startswith("/"):
+            raise ValueError("Le chemin de redirection doit être relatif.")
+        return v
+
 
 class ClientRegisterOut(BaseModel):
     id: str
     email: str
     display_name: str
+    email_sent: bool
     message: str
 
 
@@ -74,13 +86,26 @@ async def register_client(
     db.commit()
     db.refresh(user)
 
-    verification_url = f"{settings.frontend_url}/verify-email?token={token}"
+    query = {"token": token}
+    if body.redirect_path:
+        query["redirect"] = body.redirect_path
+
+    verification_url = f"{settings.frontend_url}/verify-email?{urlencode(query)}"
     html, text = make_verification_email(user.display_name, verification_url)
-    await send_email(user.email, "Confirmez votre adresse — IVIA", html, text)
+    email_sent = await send_email(user.email, "Confirmez votre adresse — IVIA", html, text)
+
+    if email_sent:
+        message = "Compte créé. Vérifiez votre courriel pour activer votre compte."
+    else:
+        message = (
+            "Compte créé, mais l'envoi du courriel de vérification a échoué temporairement. "
+            "Réessayez plus tard ou contactez l'équipe IVIA."
+        )
 
     return ClientRegisterOut(
         id=user.id,
         email=user.email,
         display_name=user.display_name,
-        message="Compte créé. Vérifiez votre courriel pour activer votre compte.",
+        email_sent=email_sent,
+        message=message,
     )
