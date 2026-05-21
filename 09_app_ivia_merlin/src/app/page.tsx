@@ -13,7 +13,7 @@ import { NumeriqueSondagePopup } from "@/components/sondage/NumeriqueSondagePopu
 /* ──────────────────────────────────────────────────────────────────────────
    IVIA — Refonte UI/UX du seuil public
    Concept : La maison du vivant — cartographie vivante, lumière hivernale.
-   Doctrine : IVIA accueille · MERLIN structure · MÉSANGES accompagne.
+   Doctrine : IVIA accueille · MÉSANGES accompagne.
    Posture : non médicale, québécoise, sous consentement, sans diagnostic.
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -59,13 +59,13 @@ const ACCOMPAGNEMENT = [
   },
   {
     num: "02",
-    label: "MERLIN structure",
+    label: "MÉSANGES analyse",
     body:
-      "IVIA repère les possibles, prépare son analyse, sous validation humaine.",
+      "MÉSANGES repère les possibles, prépare son analyse, sous validation humaine.",
   },
   {
     num: "03",
-    label: "Les possibles - VOS SOLUTIONS",
+    label: "Les possibles — vos pistes",
     body:
       "Une interprétation sensible, multidimensionnelle, sans diagnostic et en compréhension et clarification.",
   },
@@ -79,7 +79,7 @@ const ACCOMPAGNEMENT = [
     num: "05",
     label: "Vous agissez",
     body:
-      "Le simple fait de déposer ce que vous vivez peut devenir un premier acte de clarté. MÉSANGES soutient ce mouvement sans décider à votre place. Ce regard extérieur et totalement objectif peut dépeindre une réalité qui parfois nous échape.",
+      "Le simple fait de déposer ce que vous vivez peut devenir un premier acte de clarté. MÉSANGES soutient ce mouvement sans décider à votre place. Ce regard extérieur et totalement objectif peut dépeindre une réalité qui parfois nous échappe.",
   },
   {
     num: "06",
@@ -96,7 +96,7 @@ export default function HomePage() {
     <PublicLayout>
       <div className="hp hp--v3 hp--maison hp--seuil">
         <main>
-          {/* ── HERO — La maison du vivant ─────────────────────────────── */}
+          {/* ── HERO — Variante B (repositionnement MÉSANGES, 21 mai 2026) ─── */}
           <section className="v3-hero v3-hero--seuil" aria-labelledby="hero-title">
             <div className="v3-hero__media" aria-hidden="true">
               <Image
@@ -112,38 +112,29 @@ export default function HomePage() {
 
             <div className="v3-hero__inner v3-hero__inner--seuil">
               <h1 id="hero-title" className="v3-hero__h1 v3-hero__h1--seuil">
-                MÉSANGES
+                Ce que vous vivez mérite d&apos;être entendu.<br />
+                Pas mis en liste d&apos;attente.
               </h1>
 
-              <p className="v3-hero__tagline">
-                Écoute empathique, ancrée au Québec.
-              </p>
-
               <p className="v3-hero__lede v3-hero__lede--seuil">
-                Votre PRATICIEN MÉSANGES vous aide à clarifier et à préparer la suite.
+                Au Québec, 1 adulte sur 4 porte une détresse psychologique que le système
+                de soins ne peut pas absorber. MÉSANGES vous accompagne pour nommer
+                ce qui pèse, le clarifier — et repartir avec vos propres repères.
               </p>
 
               <div className="v3-hero__cta-row">
                 <Link
-                  href="/orientation"
-                  className="v3-btn v3-btn--primary"
-                  data-testid="hero-cta-orientation"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  M&apos;inscrire
-                  <span className="v3-btn__arrow" aria-hidden="true">↗</span>
-                </Link>
-                <Link
                   href="/rendez-vous"
-                  className="v3-btn v3-btn--ghost"
+                  className="v3-btn v3-btn--primary"
+                  data-testid="hero-cta-rendez-vous"
                 >
-                  Prendre RDV
+                  Parler à quelqu&apos;un aujourd&apos;hui
+                  <span className="v3-btn__arrow" aria-hidden="true">↗</span>
                 </Link>
               </div>
 
               <p className="v3-signals v3-signals--statement">
-                IVIA — MÉSANGES — Pensé par et pour les Québécois
+                MÉSANGES — un service IVIA — Pensé par et pour les Québécois
               </p>
             </div>
 
@@ -165,9 +156,8 @@ export default function HomePage() {
               </h2>
               <p className="v3-section__intro">
                 MÉSANGES ne remplace ni la médecine, ni les services
-                d&apos;urgence. Nous vous aidons à mettre des mots, à
-                reconnaître les troubles, en vous laissant choisir et
-                déterminer votre voie d&apos;action.
+                d&apos;urgence. Nous vous aidons à nommer ce que vous vivez
+                et à déterminer votre voie d&apos;action.
               </p>
             </div>
           </section>
@@ -176,7 +166,7 @@ export default function HomePage() {
           <section className="v3-section v3-accompagnement" id="approche">
             <div className="v3-section__inner">
               <h2 className="v3-h2">
-                IVIA — MÉSANGES
+                MÉSANGES
                 <br />
                 <em>Pas à pas, à votre rythme.</em>
               </h2>
