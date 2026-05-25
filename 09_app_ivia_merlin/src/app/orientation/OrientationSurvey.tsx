@@ -1,20 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 
 /* ──────────────────────────────────────────────────────────────────────────
    Orientation MÉSANGES — Survey téléphone
    - Une question par écran, barre de progression, navigation précédent/suivant.
-   - Réponses persistées dans `localStorage` (clé ORIENTATION_STORAGE_KEY) pour
-     permettre : (a) la reprise si l'utilisateur ferme et revient, (b) la
-     transmission douce vers `/rendez-vous` qui pré-remplit son formulaire à
-     partir de ces réponses. Données purgées au clic « Recommencer le parcours »
-     et au moment où `/rendez-vous` confirme la soumission.
+   - Données conservées **uniquement en React state**. Aucune persistance
+     (localStorage, sessionStorage, cookies) — voir CLAUDE.md §5 (PII).
    - Posture non médicale, FR québécois, sous consentement.
    ────────────────────────────────────────────────────────────────────────── */
-
-export const ORIENTATION_STORAGE_KEY = "merlin_orientation_answers";
 
 type OptionDef = { value: string; label: string; hint?: string };
 type StepKind = "single" | "multi" | "text" | "contact" | "intro" | "result";
@@ -430,34 +425,6 @@ function buildPortrait(a: Answers): { lead: string; axes: Axe[]; suite: string[]
 export function OrientationSurvey() {
   const [stepIdx, setStepIdx] = useState(0);
   const [answers, setAnswers] = useState<Answers>(EMPTY_ANSWERS);
-  const [hydrated, setHydrated] = useState(false);
-
-  // Reprise : on lit les réponses précédemment sauvegardées au mount.
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(ORIENTATION_STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<Answers>;
-        setAnswers({ ...EMPTY_ANSWERS, ...parsed });
-      }
-    } catch {
-      // ignore parse errors, garder EMPTY_ANSWERS
-    } finally {
-      setHydrated(true);
-    }
-  }, []);
-
-  // Persistance : on sauvegarde à chaque changement de réponses,
-  // mais seulement après l'hydratation initiale pour éviter d'écraser
-  // les réponses existantes par EMPTY_ANSWERS pendant le 1er render.
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      window.localStorage.setItem(ORIENTATION_STORAGE_KEY, JSON.stringify(answers));
-    } catch {
-      // localStorage plein ou bloqué : on continue sans persister
-    }
-  }, [answers, hydrated]);
 
   const step = STEPS[stepIdx];
   const total = STEPS.length;
@@ -535,17 +502,6 @@ export function OrientationSurvey() {
   function restart() {
     setAnswers(EMPTY_ANSWERS);
     setStepIdx(0);
-    try {
-      window.localStorage.removeItem(ORIENTATION_STORAGE_KEY);
-    } catch {
-      // tolerant
-    }
-  }
-
-  function editAnswers() {
-    // Revient à l'étape contact (avant-dernière) pour permettre la modification
-    // tout en gardant les réponses déjà saisies.
-    setStepIdx(total - 2);
   }
 
   return (
@@ -768,19 +724,9 @@ export function OrientationSurvey() {
                   </p>
 
                   <div className="os-result__actions">
-                    <Link
-                      href="/rendez-vous?from=orientation"
-                      className="os-btn os-btn--primary"
-                    >
+                    <Link href="/rendez-vous" className="os-btn os-btn--primary">
                       Prendre rendez-vous
                     </Link>
-                    <button
-                      type="button"
-                      className="os-btn os-btn--ghost"
-                      onClick={editAnswers}
-                    >
-                      ← Modifier mes réponses
-                    </button>
                     <button
                       type="button"
                       className="os-btn os-btn--ghost"

@@ -84,6 +84,8 @@ function ActiverContent() {
       const serialized = JSON.stringify(sessionPayload);
       window.localStorage.setItem(PUBLIC_CLIENT_STORAGE_KEY, serialized);
       window.sessionStorage.setItem(PUBLIC_CLIENT_STORAGE_KEY, serialized);
+      // Cookie pour le middleware (cohérence avec /acces-client)
+      document.cookie = `session_token=${result.access_token}; path=/; max-age=${60 * 60 * 24}; samesite=lax`;
 
       const nextParams = new URLSearchParams();
       if (result.password_needed) nextParams.set("welcome", "magic");

@@ -6,6 +6,7 @@ import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import {
+  cancelSlot,
   getMyClient,
   listMyBookings,
   listMyEntitlements,
@@ -34,15 +35,52 @@ function MonEspaceContent() {
   const [data, setData] = useState<Dashboard | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // Skip hub when arriving from magic-link activation or when no praticien session
+  const [view, setView] = useState<"hub" | "dashboard">(isMagicWelcome ? "dashboard" : "hub");
+  const [hasPraticienSession, setHasPraticienSession] = useState(false);
+  const [praticienName, setPraticienName] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"apercu" | "rendez-vous" | "ressources" | "profil">("apercu");
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
+
+  async function handleCancelSlot(slotId: string) {
+    const session = readStoredPublicClientSession();
+    if (!session) return;
+    setCancellingId(slotId);
+    try {
+      const updated = await cancelSlot(slotId, session.access_token);
+      setData((prev) =>
+        prev
+          ? { ...prev, bookings: prev.bookings.map((b) => (b.id === slotId ? updated : b)) }
+          : prev,
+      );
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors de l'annulation.");
+    } finally {
+      setCancellingId(null);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
+      let ps: { user?: { display_name?: string } } | null = null;
+      try {
+        const raw = window.localStorage.getItem("merlin_praticien_session");
+        if (raw) ps = JSON.parse(raw) as { user?: { display_name?: string } };
+      } catch {}
+
       const session = readStoredPublicClientSession();
       if (!session) {
-        router.replace("/acces-client");
+        router.replace(ps ? "/espace-praticien" : "/acces-client");
         return;
+      }
+
+      if (!cancelled) {
+        setHasPraticienSession(!!ps);
+        setPraticienName(ps?.user?.display_name ?? null);
+        // Si client seul (aucune session praticien) et pas de magic welcome → aller direct au dashboard
+        if (!ps && !isMagicWelcome) setView("dashboard");
       }
 
       try {
@@ -56,6 +94,14 @@ function MonEspaceContent() {
       } catch (error) {
         if (cancelled) return;
         const message = error instanceof Error ? error.message : "Erreur inconnue.";
+        // Token expired or invalid → clear session and redirect to login
+        if (/token invalide|authentification requise|expired/i.test(message)) {
+          window.localStorage.removeItem(PUBLIC_CLIENT_STORAGE_KEY);
+          window.sessionStorage.removeItem(PUBLIC_CLIENT_STORAGE_KEY);
+          document.cookie = "session_token=; path=/; max-age=0; samesite=lax";
+          router.replace("/acces-client");
+          return;
+        }
         setErrorMessage(message);
       } finally {
         if (!cancelled) setIsLoading(false);
@@ -76,6 +122,15 @@ function MonEspaceContent() {
       .sort((a, b) => a.slot_date.localeCompare(b.slot_date));
   }, [data]);
 
+  const pastBookings = useMemo(() => {
+    if (!data) return [] as BookingSlotRecord[];
+    const today = new Date().toISOString().slice(0, 10);
+    return data.bookings
+      .filter((b) => b.slot_date < today || b.status === "cancelled")
+      .sort((a, b) => b.slot_date.localeCompare(a.slot_date))
+      .slice(0, 12);
+  }, [data]);
+
   const activeEntitlements = useMemo(() => {
     if (!data) return [] as ClientEntitlementRecord[];
     return data.entitlements.filter(
@@ -86,202 +141,379 @@ function MonEspaceContent() {
   function handleSignOut() {
     window.localStorage.removeItem(PUBLIC_CLIENT_STORAGE_KEY);
     window.sessionStorage.removeItem(PUBLIC_CLIENT_STORAGE_KEY);
+    document.cookie = "session_token=; path=/; max-age=0; samesite=lax";
     router.replace("/");
+  }
+
+  if (view === "hub") {
+    return (
+      <PublicLayout>
+        <div className="page-shell">
+          <main className="section mon-espace-main">
+            <div className="section-header">
+              <div className="eyebrow">Mon espace IVIA</div>
+              <h1>
+                {data?.session.user.display_name
+                  ? `Bonjour, ${data.session.user.display_name}.`
+                  : "Votre espace"}
+              </h1>
+              <p>Choisissez l&apos;espace auquel vous souhaitez accéder.</p>
+            </div>
+
+            {isLoading ? (
+              <section className="card">
+                <p className="inline-note">Vérification de votre session…</p>
+              </section>
+            ) : errorMessage ? (
+              <section className="card message message-error">
+                <p>{errorMessage}</p>
+              </section>
+            ) : (
+              <div className="mon-espace-gateway">
+                <article className="card mon-espace-gateway-card stack-md">
+                  <div className="eyebrow">Espace client</div>
+                  <h3>{data?.session.user.display_name ?? "Espace personnel"}</h3>
+                  <p className="inline-note">
+                    Vos rendez-vous, votre dossier et vos ressources personnelles.
+                  </p>
+                  <button
+                    type="button"
+                    className="button button-primary"
+                    onClick={() => setView("dashboard")}
+                  >
+                    Ouvrir mon espace personnel
+                  </button>
+                </article>
+
+                {hasPraticienSession ? (
+                  <article className="card mon-espace-gateway-card stack-md">
+                    <div className="eyebrow">Espace praticien · opérateur</div>
+                    <h3>{praticienName ?? "Tableau de bord"}</h3>
+                    <p className="inline-note">
+                      Gestion des séances, dossiers clients et opérations.
+                    </p>
+                    <Link href="/espace-praticien" className="button button-secondary">
+                      Accéder au tableau de bord
+                    </Link>
+                  </article>
+                ) : null}
+              </div>
+            )}
+
+            <div className="section-footer">
+              <button type="button" className="button button-text" onClick={handleSignOut}>
+                Me déconnecter
+              </button>
+            </div>
+          </main>
+        </div>
+      </PublicLayout>
+    );
   }
 
   return (
     <PublicLayout>
       <div className="page-shell">
         <main className="section mon-espace-main">
-          <div className="section-header">
-            <div className="eyebrow">Mon espace IVIA</div>
-            <h2>
-              {data?.session.user.display_name
-                ? `Bonjour ${data.session.user.display_name}.`
-                : "Votre espace personnel"}
-            </h2>
-            <p>
-              Voici votre démarche en cours, vos prochains rendez-vous, et les ressources réservées aux membres.
-            </p>
+
+          {/* ── En-tête + onglets ── */}
+          <div className="mon-espace-header">
+            <div className="mon-espace-header__top">
+              <div>
+                <div className="eyebrow">Mon espace IVIA</div>
+                <h2 className="mon-espace-header__title">
+                  {data?.session.user.display_name
+                    ? `Bonjour, ${data.session.user.display_name}.`
+                    : "Votre espace personnel"}
+                </h2>
+              </div>
+              <div className="mon-espace-header__actions">
+                {hasPraticienSession ? (
+                  <Link href="/espace-praticien" className="button button-secondary button-sm">
+                    Espace praticien
+                  </Link>
+                ) : null}
+                <button type="button" className="button button-text" onClick={handleSignOut}>
+                  Déconnexion
+                </button>
+              </div>
+            </div>
+            <nav className="mon-espace-tabs" aria-label="Sections de votre espace">
+              {(["apercu", "rendez-vous", "ressources", "profil"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  className={`mon-espace-tab${activeTab === tab ? " is-active" : ""}`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab === "apercu" && "Vue d\u2019ensemble"}
+                  {tab === "rendez-vous" && (upcomingBookings.length > 0 ? `Rendez-vous\u00a0(${upcomingBookings.length})` : "Rendez-vous")}
+                  {tab === "ressources" && "Ressources"}
+                  {tab === "profil" && "Profil"}
+                </button>
+              ))}
+            </nav>
           </div>
 
-          {isMagicWelcome ? (
-            <section className="card message message-success">
-              <p>
-                <strong>Votre compte est activé.</strong> Vous êtes connecté sans avoir eu à retenir
-                de mot de passe.
-              </p>
-              <p className="inline-note">
-                Si vous souhaitez revenir facilement plus tard, vous pourrez définir un mot de passe
-                dans les paramètres de votre compte — c&apos;est optionnel.
-              </p>
-            </section>
-          ) : null}
+          {/* ── Corps ── */}
+          <div className="mon-espace-body">
 
-          {errorMessage ? (
-            <section className="card message message-error">
-              <p>{errorMessage}</p>
-            </section>
-          ) : null}
-
-          {isLoading ? (
-            <section className="card">
-              <p className="inline-note">Chargement de votre espace…</p>
-            </section>
-          ) : data ? (
-            <div className="grid mon-espace-grid">
-              <article className="card stack-md">
-                <h3>Mon dossier</h3>
-                {data.client ? (
-                  <>
-                    <p>
-                      <strong>{data.client.first_name_or_alias}</strong>
-                      {data.client.last_name ? ` ${data.client.last_name}` : ""}
-                    </p>
-                    {data.client.email ? (
-                      <p className="inline-note">
-                        Courriel : <span className="mono">{data.client.email}</span>
-                      </p>
-                    ) : null}
-                    <p className="inline-note">
-                      Référence dossier : <span className="mono">{data.client.public_client_code}</span>
-                    </p>
-                    {data.client.activation_accepted_at ? (
-                      <p className="inline-note">
-                        Espace ouvert le{" "}
-                        {new Date(data.client.activation_accepted_at).toLocaleDateString("fr-CA")}
-                      </p>
-                    ) : null}
-                  </>
-                ) : (
-                  <>
-                    <p>Aucune fiche client n&apos;est encore rattachée à votre compte.</p>
-                    <p className="inline-note">
-                      Faites votre première demande pour ouvrir un dossier durable.
-                    </p>
-                    <Link href="/rendez-vous" className="button button-primary">
-                      Faire une demande
-                    </Link>
-                  </>
-                )}
-              </article>
-
-              <article className="card stack-md">
-                <h3>Prochaines actions</h3>
+            {isMagicWelcome ? (
+              <section className="card message message-success mon-espace-welcome">
+                <p><strong>Votre compte est activé.</strong> Vous êtes connecté sans mot de passe.</p>
                 <p className="inline-note">
-                  Une demande déposée n&apos;est pas un rendez-vous confirmé. Pour réserver un créneau,
-                  passez par la page de réservation.
+                  Vous pouvez définir un mot de passe dans l&apos;onglet{" "}
+                  <button type="button" className="link-inline" onClick={() => setActiveTab("profil")}>
+                    Profil
+                  </button>{" "}
+                  quand vous le souhaitez — c&apos;est optionnel.
                 </p>
-                <div className="public-access-actions">
-                  <Link href="/rendez-vous/reserver" className="button button-primary">
-                    Réserver un créneau
-                  </Link>
-                  <Link href="/praticiens" className="button button-secondary">
-                    Découvrir les praticiens
-                  </Link>
-                </div>
-              </article>
+              </section>
+            ) : null}
 
-              <article className="card stack-md">
-                <h3>Mes rendez-vous</h3>
-                {upcomingBookings.length === 0 ? (
-                  <p className="inline-note">
-                    Aucun rendez-vous à venir pour l&apos;instant.
-                  </p>
-                ) : (
-                  <ul className="list-plain">
-                    {upcomingBookings.map((slot) => (
-                      <li key={slot.id} className="stack-xs">
-                        <strong>
-                          {new Date(slot.slot_date).toLocaleDateString("fr-CA", {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "long",
-                          })}
-                        </strong>{" "}
-                        à <strong>{slot.start_time.slice(0, 5)}</strong>
-                        <span className="inline-note">
-                          {" "}
-                          · {slot.session_type} · statut {slot.status}
+            {errorMessage ? (
+              <section className="card message message-error"><p>{errorMessage}</p></section>
+            ) : null}
+
+            {isLoading ? (
+              <section className="card"><p className="inline-note">Chargement de votre espace…</p></section>
+            ) : data ? (
+              <>
+                {/* ══ TAB : Vue d'ensemble ══ */}
+                {activeTab === "apercu" && (
+                  <div className="mon-espace-tab-panel stack-md">
+                    <div className="mon-espace-stats">
+                      <div className="stat-card">
+                        <span className="stat-card__value">{upcomingBookings.length}</span>
+                        <span className="stat-card__label">RDV à venir</span>
+                      </div>
+                      <div className="stat-card">
+                        <span className="stat-card__value">
+                          {activeEntitlements.reduce((s, e) => s + e.quantity_remaining, 0)}
                         </span>
-                      </li>
-                    ))}
-                  </ul>
+                        <span className="stat-card__label">crédits</span>
+                      </div>
+                      <div className="stat-card">
+                        <span className="stat-card__value stat-card__value--text">
+                          {data.client ? "Actif" : "À ouvrir"}
+                        </span>
+                        <span className="stat-card__label">dossier</span>
+                      </div>
+                    </div>
+
+                    <div className="mon-espace-apercu-grid">
+                      <article className="card stack-sm">
+                        <h3>Mon dossier</h3>
+                        {data.client ? (
+                          <>
+                            <p>
+                              <strong>{data.client.first_name_or_alias}{data.client.last_name ? ` ${data.client.last_name}` : ""}</strong>
+                            </p>
+                            {data.client.email ? (
+                              <p className="inline-note">Courriel : <span className="mono">{data.client.email}</span></p>
+                            ) : null}
+                            <p className="inline-note">Réf. : <span className="mono">{data.client.public_client_code}</span></p>
+                            {data.client.activation_accepted_at ? (
+                              <p className="inline-note">
+                                Ouvert le {new Date(data.client.activation_accepted_at).toLocaleDateString("fr-CA")}
+                              </p>
+                            ) : null}
+                            <button
+                              type="button"
+                              className="link-inline"
+                              onClick={() => setActiveTab("profil")}
+                            >
+                              Modifier le profil →
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <p className="inline-note">Aucun dossier rattaché pour l&apos;instant.</p>
+                            <Link href="/rendez-vous/reserver" className="button button-primary">
+                              Réserver une séance
+                            </Link>
+                          </>
+                        )}
+                      </article>
+
+                      <article className="card stack-sm">
+                        <div className="card-row-header">
+                          <h3>Prochain rendez-vous</h3>
+                          {data.bookings.length > 0 ? (
+                            <button type="button" className="link-inline" onClick={() => setActiveTab("rendez-vous")}>
+                              Tous →
+                            </button>
+                          ) : null}
+                        </div>
+                        {upcomingBookings.length > 0 ? (
+                          <div className="rdv-preview">
+                            <p className="rdv-preview__date">
+                              {new Date(upcomingBookings[0].slot_date).toLocaleDateString("fr-CA", {
+                                weekday: "long", day: "numeric", month: "long",
+                              })}
+                            </p>
+                            <p className="rdv-preview__time">{upcomingBookings[0].start_time.slice(0, 5)}</p>
+                            <p className="inline-note">{upcomingBookings[0].session_type}</p>
+                          </div>
+                        ) : (
+                          <>
+                            <p className="inline-note">Aucun rendez-vous à venir.</p>
+                            <Link href="/rendez-vous/reserver" className="button button-primary">
+                              Réserver un créneau
+                            </Link>
+                          </>
+                        )}
+                      </article>
+                    </div>
+
+                    <article className="card stack-sm">
+                      <h3>Accès rapide</h3>
+                      <div className="mon-espace-quick-actions">
+                        <Link href="/rendez-vous/reserver" className="quick-action-btn">Réserver un créneau</Link>
+                        <Link href="/praticiens" className="quick-action-btn">Découvrir les praticiens</Link>
+                        <Link href="/ressources" className="quick-action-btn">Ressources membres</Link>
+                        <Link href="/suivi" className="quick-action-btn">Mon suivi</Link>
+                      </div>
+                    </article>
+                  </div>
                 )}
-              </article>
 
-              <article className="card stack-md">
-                <h3>Mes crédits IVIA</h3>
-                {activeEntitlements.length === 0 ? (
-                  <p className="inline-note">
-                    Aucun crédit actif. Les crédits sont activés à la suite d&apos;un paiement.
-                  </p>
-                ) : (
-                  <ul className="list-plain">
-                    {activeEntitlements.map((e) => (
-                      <li key={e.id}>
-                        <strong>{e.entitlement_type_code}</strong> ·{" "}
-                        {e.quantity_remaining} sur {e.quantity_total} disponible
-                        {e.expires_at ? (
-                          <span className="inline-note">
-                            {" "}
-                            · expire le {new Date(e.expires_at).toLocaleDateString("fr-CA")}
-                          </span>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
+                {/* ══ TAB : Rendez-vous ══ */}
+                {activeTab === "rendez-vous" && (
+                  <div className="mon-espace-tab-panel stack-md">
+                    <div className="card-row-header">
+                      <h3>Rendez-vous à venir</h3>
+                      <Link href="/rendez-vous/reserver" className="button button-primary button-sm">
+                        + Réserver
+                      </Link>
+                    </div>
+                    {upcomingBookings.length === 0 ? (
+                      <section className="card stack-sm">
+                        <p className="inline-note">Aucun rendez-vous à venir pour l&apos;instant.</p>
+                        <Link href="/rendez-vous/reserver" className="button button-primary">
+                          Réserver un créneau
+                        </Link>
+                      </section>
+                    ) : (
+                      <ul className="rdv-list">
+                        {upcomingBookings.map((slot) => (
+                          <li key={slot.id} className="rdv-list__item card">
+                            <div className="rdv-list__date">
+                              <span className="rdv-list__day">
+                                {new Date(slot.slot_date).toLocaleDateString("fr-CA", { day: "numeric", month: "short" })}
+                              </span>
+                              <span className="rdv-list__weekday">
+                                {new Date(slot.slot_date).toLocaleDateString("fr-CA", { weekday: "long" })}
+                              </span>
+                            </div>
+                            <div className="rdv-list__info">
+                              <strong>{slot.start_time.slice(0, 5)}</strong>
+                              <span className="inline-note">{slot.session_type}</span>
+                            </div>
+                            <span className={`rdv-list__badge rdv-badge--${slot.status}`}>
+                              {slot.status === "confirmed" ? "Confirmé" : slot.status === "hold" ? "En attente" : slot.status === "cancelled" ? "Annulé" : slot.status}
+                            </span>
+                            <button
+                              type="button"
+                              className="button button-ghost button-sm"
+                              disabled={cancellingId === slot.id}
+                              onClick={() => {
+                                if (window.confirm("Annuler ce rendez-vous ?")) void handleCancelSlot(slot.id);
+                              }}
+                            >
+                              {cancellingId === slot.id ? "…" : "Annuler"}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {pastBookings.length > 0 ? (
+                      <>
+                        <p className="section-subheading">Historique</p>
+                        <ul className="rdv-list rdv-list--past">
+                          {pastBookings.map((slot) => (
+                            <li key={slot.id} className="rdv-list__item card card--muted">
+                              <div className="rdv-list__date">
+                                <span className="rdv-list__day">
+                                  {new Date(slot.slot_date).toLocaleDateString("fr-CA", { day: "numeric", month: "short" })}
+                                </span>
+                                <span className="rdv-list__weekday">
+                                  {new Date(slot.slot_date).toLocaleDateString("fr-CA", { weekday: "long" })}
+                                </span>
+                              </div>
+                              <div className="rdv-list__info">
+                                <strong>{slot.start_time.slice(0, 5)}</strong>
+                                <span className="inline-note">{slot.session_type}</span>
+                              </div>
+                              <span className={`rdv-list__badge rdv-badge--${slot.status}`}>
+                                {slot.status === "confirmed" ? "Confirmé" : slot.status === "hold" ? "En attente" : slot.status === "cancelled" ? "Annulé" : slot.status}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
+                  </div>
                 )}
-              </article>
 
-              <article className="card stack-md">
-                <h3>Ressources réservées aux membres</h3>
-                <p className="inline-note">
-                  Articles, supports, fiches de réflexion — accès libre une fois votre espace ouvert.
-                </p>
-                <div className="public-access-actions">
-                  <Link href="/ressources" className="button button-secondary">
-                    Lire les ressources
-                  </Link>
-                  <Link href="/suivi" className="button button-secondary">
-                    Mon suivi public
-                  </Link>
-                </div>
-              </article>
+                {/* ══ TAB : Ressources ══ */}
+                {activeTab === "ressources" && (
+                  <div className="mon-espace-tab-panel stack-md">
+                    <div className="mon-espace-ressources-grid">
+                      <article className="card stack-md">
+                        <h3>Ressources membres</h3>
+                        <p className="inline-note">Articles, supports et fiches de réflexion accessibles depuis votre espace.</p>
+                        <Link href="/ressources" className="button button-secondary">Lire les ressources</Link>
+                      </article>
+                      <article className="card stack-md">
+                        <h3>Mon suivi</h3>
+                        <p className="inline-note">Consultez l&apos;avancement de votre démarche.</p>
+                        <Link href="/suivi" className="button button-secondary">Voir mon suivi</Link>
+                      </article>
+                      {activeEntitlements.length > 0 ? (
+                        <article className="card stack-md">
+                          <h3>Mes crédits IVIA</h3>
+                          <ul className="list-plain">
+                            {activeEntitlements.map((e) => (
+                              <li key={e.id}>
+                                <strong>{e.entitlement_type_code}</strong>{" "}
+                                · {e.quantity_remaining}/{e.quantity_total} disponible
+                                {e.expires_at ? (
+                                  <span className="inline-note">
+                                    {" "}· expire le {new Date(e.expires_at).toLocaleDateString("fr-CA")}
+                                  </span>
+                                ) : null}
+                              </li>
+                            ))}
+                          </ul>
+                        </article>
+                      ) : null}
+                      <article className="card stack-md card--muted">
+                        <h3>Mon journal <span className="badge-soon">à venir</span></h3>
+                        <p className="inline-note">Un espace pour noter ce qui traverse votre démarche. Les consentements d&apos;enregistrement seront gérés ici.</p>
+                      </article>
+                    </div>
+                  </div>
+                )}
 
-              <article className="card stack-md">
-                <h3>Mon journal (à venir)</h3>
-                <p className="inline-note">
-                  Un journal personnel pour noter ce qui traverse votre démarche sera bientôt disponible
-                  dans votre espace. C&apos;est à ce moment-là que vous activerez, si vous le souhaitez, les
-                  consentements d&apos;enregistrement et de transcription nécessaires pour vos séances.
-                </p>
-              </article>
+                {/* ══ TAB : Profil ══ */}
+                {activeTab === "profil" && (
+                  <div className="mon-espace-tab-panel stack-md">
+                    {data.client ? (
+                      <ProfileEditCard
+                        client={data.client}
+                        token={data.session.access_token}
+                        onUpdated={(updated) => setData((d) => (d ? { ...d, client: updated } : d))}
+                      />
+                    ) : null}
+                    <SetPasswordCard token={data.session.access_token} firstTime={isMagicWelcome} />
+                  </div>
+                )}
+              </>
+            ) : null}
+          </div>
 
-              {data.client ? (
-                <ProfileEditCard
-                  client={data.client}
-                  token={data.session.access_token}
-                  onUpdated={(updated) =>
-                    setData((d) => (d ? { ...d, client: updated } : d))
-                  }
-                />
-              ) : null}
-
-              <SetPasswordCard
-                token={data.session.access_token}
-                firstTime={isMagicWelcome}
-              />
-            </div>
-          ) : null}
-
-          {data ? (
-            <div className="section-footer">
-              <button type="button" className="button button-text" onClick={handleSignOut}>
-                Me déconnecter
-              </button>
-            </div>
-          ) : null}
         </main>
       </div>
     </PublicLayout>
@@ -451,11 +683,11 @@ function SetPasswordCard({ token, firstTime }: SetPasswordCardProps) {
     setIsSaving(true);
     try {
       const result = await setMyPassword(
+        token,
         {
           new_password: newPassword,
           current_password: firstTime || !currentPassword ? null : currentPassword,
         },
-        token,
       );
       setSuccessMessage(result.message);
       setCurrentPassword("");

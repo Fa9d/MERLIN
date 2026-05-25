@@ -1,7 +1,7 @@
 """Routes de réservation de créneaux (client authentifié ou vérifié)."""
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
@@ -12,6 +12,7 @@ from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.enums import (
     AppRole,
+    SessionTypeCode,
     SlotStatus,
 )
 from app.models.schedule import BookingSlot
@@ -34,7 +35,14 @@ _HOLD_MINUTES = 15  # durée du hold avant libération automatique
 # ---------------------------------------------------------------------------
 
 class BookingHoldIn(BaseModel):
-    slot_id: str  # ID d'un BookingSlot existant (status=available)
+    # Option A : ID d'un BookingSlot existant
+    slot_id: str | None = None
+    # Option B : créneau virtuel (non encore persisté en base)
+    praticien_id: str | None = None
+    slot_date: date | None = None
+    start_time: time | None = None
+    end_time: time | None = None
+    session_type: SessionTypeCode | None = None
 
 
 class BookingConfirmIn(BaseModel):
@@ -61,22 +69,65 @@ def hold_slot(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_verified_email_user),
 ) -> BookingSlotOut:
-    slot: BookingSlot | None = db.query(BookingSlot).filter(BookingSlot.id == body.slot_id).first()
-    if not slot:
-        raise HTTPException(status_code=404, detail="Créneau introuvable.")
+    now_utc = datetime.now(timezone.utc)
+    hold_expires = now_utc + timedelta(minutes=_HOLD_MINUTES)
 
-    # Libérer les holds expirés sur ce créneau
-    expire_hold(slot)
+    if body.slot_id:
+        # ── Cas A : slot déjà persisté ──
+        slot: BookingSlot | None = db.query(BookingSlot).filter(BookingSlot.id == body.slot_id).first()
+        if not slot:
+            raise HTTPException(status_code=404, detail="Créneau introuvable.")
+        expire_hold(slot)
+        if slot.status != SlotStatus.available:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Ce créneau n'est plus disponible.",
+            )
+    else:
+        # ── Cas B : créneau virtuel (gabarit) ──
+        if not all([body.praticien_id, body.slot_date, body.start_time, body.end_time]):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Fournissez slot_id ou praticien_id+slot_date+start_time+end_time.",
+            )
+        praticien = db.get(AppUser, body.praticien_id)
+        if praticien is None or praticien.role != AppRole.practitioner:
+            raise HTTPException(status_code=404, detail="Praticien introuvable.")
 
-    if slot.status != SlotStatus.available:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Ce créneau n'est plus disponible.",
+        # Cherche un slot existant pour ce créneau
+        existing: BookingSlot | None = (
+            db.query(BookingSlot)
+            .filter(
+                BookingSlot.praticien_id == body.praticien_id,
+                BookingSlot.slot_date == body.slot_date,
+                BookingSlot.start_time == body.start_time,
+            )
+            .first()
         )
+        if existing:
+            expire_hold(existing)
+            db.flush()
+            if existing.status in (SlotStatus.hold, SlotStatus.confirmed):
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Ce créneau n'est plus disponible.",
+                )
+            slot = existing
+        else:
+            slot = BookingSlot(
+                praticien_id=body.praticien_id,
+                slot_date=body.slot_date,
+                start_time=body.start_time,
+                end_time=body.end_time,
+                session_type=body.session_type or SessionTypeCode.standard,
+                status=SlotStatus.available,
+            )
+            db.add(slot)
+            db.flush()
 
     slot.status = SlotStatus.hold
     slot.client_id = current_user.id
-    slot.hold_expires_at = datetime.now(timezone.utc) + timedelta(minutes=_HOLD_MINUTES)
+    slot.hold_expires_at = hold_expires
     db.commit()
     db.refresh(slot)
     return BookingSlotOut.model_validate(slot)

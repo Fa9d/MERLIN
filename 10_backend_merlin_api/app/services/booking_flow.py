@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import logging
+from datetime import date, datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy import or_
@@ -17,7 +18,13 @@ from app.models.enums import (
     SlotStatus,
 )
 from app.models.schedule import BookingSlot
-from app.services.email import make_booking_confirmation_email, send_email
+from app.services.email import (
+    make_appointment_reminder_email,
+    make_booking_confirmation_email,
+    send_email,
+)
+
+logger = logging.getLogger(__name__)
 
 
 def expire_hold(slot: BookingSlot) -> None:
@@ -152,3 +159,82 @@ async def send_booking_confirmation_email_for_slot(
         html,
         text,
     )
+
+
+# ---------------------------------------------------------------------------
+# Rappel automatique 24h avant le rendez-vous
+# ---------------------------------------------------------------------------
+
+_REMINDER_FLAG_PREFIX = "reminder_24h_sent:"
+
+
+async def send_appointment_reminders(db: Session) -> int:
+    """Envoie les rappels 24h pour tous les créneaux confirmés qui ont lieu demain.
+
+    Utilise le champ `notes` pour marquer les créneaux déjà notifiés
+    (préfixe «reminder_24h_sent:») afin d'éviter les doublons.
+    Retourne le nombre de rappels envoyés.
+    """
+    from app.schemas.schedule import SESSION_TYPE_LABELS
+
+    now = datetime.now(timezone.utc)
+    tomorrow: date = (now + timedelta(hours=24)).date()
+
+    slots = (
+        db.query(BookingSlot)
+        .filter(
+            BookingSlot.status == SlotStatus.confirmed,
+            BookingSlot.slot_date == tomorrow,
+        )
+        .all()
+    )
+
+    sent = 0
+    for slot in slots:
+        # Déduplication : on vérifie si le flag est déjà dans notes
+        if slot.notes and _REMINDER_FLAG_PREFIX in slot.notes:
+            continue
+
+        client_user: AppUser | None = (
+            db.query(AppUser).filter(AppUser.id == slot.client_id).first()
+        )
+        praticien: AppUser | None = (
+            db.query(AppUser).filter(AppUser.id == slot.praticien_id).first()
+        )
+
+        if client_user is None or not client_user.email or praticien is None:
+            continue
+
+        slot_date_str = slot.slot_date.strftime("%A %d %B %Y")
+        slot_time_str = slot.start_time.strftime("%Hh%M")
+        session_label = SESSION_TYPE_LABELS.get(slot.session_type, str(slot.session_type))
+        join_url = f"{settings.frontend_url}/mon-espace"
+
+        html, text = make_appointment_reminder_email(
+            display_name=client_user.display_name,
+            praticien_name=praticien.display_name,
+            slot_date=slot_date_str,
+            slot_time=slot_time_str,
+            session_type_label=session_label,
+            join_url=join_url,
+        )
+
+        ok = await send_email(
+            client_user.email,
+            f"Rappel — votre rendez-vous demain à {slot_time_str} — IVIA",
+            html,
+            text,
+        )
+
+        if ok:
+            # Marquer comme notifié
+            flag = f"{_REMINDER_FLAG_PREFIX}{now.isoformat()}"
+            slot.notes = (slot.notes or "") + f"\n{flag}" if slot.notes else flag
+            db.add(slot)
+            sent += 1
+            logger.info("Rappel 24h envoyé pour slot %s → %s", slot.id, client_user.email)
+
+    if sent > 0:
+        db.commit()
+
+    return sent

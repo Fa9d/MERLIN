@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2026-05-23" />
+  <title>Procedure de test IVIA/MERLIN — 23 mai 2026</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        background-color: #ffffff;
+        color: #a0a0a0;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+    div.sourceCode
+      { color: #1f1c1b; background-color: #ffffff; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #1f1c1b; } /* Normal */
+    code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
+    code span.an { color: #ca60ca; } /* Annotation */
+    code span.at { color: #0057ae; } /* Attribute */
+    code span.bn { color: #b08000; } /* BaseN */
+    code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+    code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #924c9d; } /* Char */
+    code span.cn { color: #aa5500; } /* Constant */
+    code span.co { color: #898887; } /* Comment */
+    code span.cv { color: #0095ff; } /* CommentVar */
+    code span.do { color: #607880; } /* Documentation */
+    code span.dt { color: #0057ae; } /* DataType */
+    code span.dv { color: #b08000; } /* DecVal */
+    code span.er { color: #bf0303; text-decoration: underline; } /* Error */
+    code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+    code span.fl { color: #b08000; } /* Float */
+    code span.fu { color: #644a9b; } /* Function */
+    code span.im { color: #ff5500; } /* Import */
+    code span.in { color: #b08000; } /* Information */
+    code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+    code span.op { color: #1f1c1b; } /* Operator */
+    code span.ot { color: #006e28; } /* Other */
+    code span.pp { color: #006e28; } /* Preprocessor */
+    code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
+    code span.sc { color: #3daee9; } /* SpecialChar */
+    code span.ss { color: #ff5500; } /* SpecialString */
+    code span.st { color: #bf0303; } /* String */
+    code span.va { color: #0057ae; } /* Variable */
+    code span.vs { color: #bf0303; } /* VerbatimString */
+    code span.wa { color: #bf0303; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Procedure de test IVIA/MERLIN — 23 mai 2026</h1>
+<p class="date">2026-05-23</p>
+</header>
+<h1 id="procédure-de-test-complète-iviamerlin-local">Procédure de test
+complète — IVIA/MERLIN local</h1>
+<h2 id="guide-pas-à-pas-23-mai-2026">Guide pas à pas — 23 mai 2026</h2>
+<hr />
+<blockquote>
+<p><strong>Comment lire ce document</strong> Chaque étape indique
+exactement <strong>où aller</strong>, <strong>quoi taper</strong>, et
+<strong>ce que tu dois voir</strong>. Les blocs de code sont à
+copier-coller tels quels dans PowerShell. Une case à cocher confirme que
+l’étape est passée.</p>
+</blockquote>
+<hr />
+<h2 id="corrections-intégrées-23-mai-2026">Corrections intégrées — 23
+mai 2026</h2>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 35%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Correction</th>
+<th>Fichiers touchés</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>/acces-client</code> devient le point d’entrée universel
+(client, praticien, opérateur) — redirect auto selon le rôle</td>
+<td><code>acces-client/page.tsx</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Login praticien pose le cookie <code>session_token</code>
+(nécessaire au middleware)</td>
+<td><code>acces-client/page.tsx</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Login praticien sauvegarde aussi dans
+<code>merlin_praticien_session</code> (lu par
+<code>/espace-praticien</code>)</td>
+<td><code>acces-client/page.tsx</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Middleware corrigé : vérification HMAC-SHA256 (format JWT custom
+backend, non standard RFC 7519)</td>
+<td><code>proxy.ts</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>JWT_SECRET</code> ajouté au <code>.env</code> Next.js
+(correspondance avec <code>MERLIN_AUTH_SECRET_KEY</code> backend)</td>
+<td><code>.env</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Middleware redirige vers <code>/acces-client</code> (au lieu de
+<code>/login</code> inexistant)</td>
+<td><code>proxy.ts</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="étape-0-vérifier-que-linfrastructure-tourne">ÉTAPE 0 — Vérifier
+que l’infrastructure tourne</h2>
+<h3 id="a.-ouvrir-un-terminal-powershell">0-A. Ouvrir un terminal
+PowerShell</h3>
+<ol type="1">
+<li>Appuyer sur <code>Win + X</code> → choisir <strong>Terminal
+Windows</strong> (ou <strong>PowerShell</strong>)</li>
+<li>Tu dois voir un prompt du type : <code>PS C:\&gt;</code></li>
+</ol>
+<h3 id="b.-vérifier-docker-desktop">0-B. Vérifier Docker Desktop</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>docker <span class="fu">ps</span> <span class="op">--</span>format <span class="st">&quot;table {{.Names}}\t{{.Status}}\t{{.Ports}}&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>NAMES                   STATUS          PORTS
+merlin-backend-1        Up X minutes    0.0.0.0:8000-&gt;8000/tcp
+merlin-postgres-1       Up X minutes    0.0.0.0:5432-&gt;5432/tcp</code></pre>
+<blockquote>
+<p><strong>Si tu vois “Cannot connect to the Docker daemon”</strong> →
+Docker Desktop n’est pas démarré. Ouvrir Docker Desktop depuis le bureau
+ou le menu Démarrer. Attendre que l’icône Docker soit stable, puis
+relancer.</p>
+</blockquote>
+<blockquote>
+<p><strong>Si les conteneurs ne sont pas là</strong> :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-Location</span> C<span class="op">:</span>\MERLIN</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>docker compose up <span class="op">-</span>d</span></code></pre></div>
+<p>Attendre 15 secondes, puis relancer la vérification.</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>merlin-postgres-1</code>
+apparaît avec statut <code>Up</code></label></li>
+<li><label><input type="checkbox" /><code>merlin-backend-1</code>
+apparaît avec statut <code>Up</code></label></li>
+</ul>
+<h3 id="c.-vérifier-lapi-backend">0-C. Vérifier l’API backend</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Invoke-RestMethod</span> <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/health&#39;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>status      : ok
+service     : MERLIN API
+environment : production
+database    : ok</code></pre>
+<blockquote>
+<p><strong>Note :</strong> <code>environment: production</code> est
+normal — le conteneur Docker local est configuré en mode production.
+L’important est <code>database: ok</code>.</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>status : ok</code> et
+<code>database : ok</code></label></li>
+</ul>
+<h3 id="d.-démarrer-le-serveur-next.js-frontend-de-développement">0-D.
+Démarrer le serveur Next.js (frontend de développement)</h3>
+<p>Le frontend de développement tourne <strong>en dehors de
+Docker</strong>, directement sur ta machine.</p>
+<ol type="1">
+<li>Ouvrir un <strong>deuxième terminal PowerShell</strong></li>
+<li>Taper :</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-Location</span> C<span class="op">:</span>\MERLIN\09_app_ivia_merlin</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>npm run dev</span></code></pre></div>
+<ol start="3" type="1">
+<li>Attendre jusqu’à voir :</li>
+</ol>
+<pre><code>▲ Next.js 16.x
+- Local: http://localhost:3000
+✓ Ready in Xs</code></pre>
+<blockquote>
+<p><strong>Ne pas fermer ce terminal</strong> — le serveur doit rester
+actif pendant toute la procédure.</p>
+</blockquote>
+<ol start="4" type="1">
+<li>Dans le <strong>premier terminal</strong>, vérifier que le frontend
+répond :</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Invoke-WebRequest</span> <span class="op">-</span>Uri <span class="st">&#39;http://localhost:3000&#39;</span> <span class="op">-</span>UseBasicParsing <span class="op">|</span> <span class="fu">Select-Object</span> StatusCode</span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>StatusCode
+----------
+       200</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />StatusCode 200</label></li>
+</ul>
+<hr />
+<h2 id="étape-1-obtenir-les-tokens-dauthentification">ÉTAPE 1 — Obtenir
+les tokens d’authentification</h2>
+<blockquote>
+<p>On récupère les 4 tokens (admin, praticien Aelis, opérateur Jean,
+client Marie) et on les stocke dans des variables.</p>
+</blockquote>
+<p>Dans le <strong>premier terminal PowerShell</strong>, copier-coller
+ce bloc entier :</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TOKEN ADMIN ---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">$adminToken</span> <span class="op">=</span> <span class="op">(</span><span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/auth/login&#39;</span> `</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span>email<span class="op">=</span><span class="st">&#39;admin@ivia.quebec&#39;</span><span class="op">;</span> password<span class="op">=</span><span class="st">&#39;AdminIVIA2026!&#39;</span><span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span><span class="op">).</span><span class="fu">access_token</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TOKEN PRATICIEN (Aelis) ---</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="va">$aelisToken</span> <span class="op">=</span> <span class="op">(</span><span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/auth/login&#39;</span> `</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span>email<span class="op">=</span><span class="st">&#39;pilote.aelis@ivia.quebec&#39;</span><span class="op">;</span> password<span class="op">=</span><span class="st">&#39;IVIA2026!&#39;</span><span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span><span class="op">).</span><span class="fu">access_token</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TOKEN OPÉRATEUR (Jean) ---</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="va">$jeanToken</span> <span class="op">=</span> <span class="op">(</span><span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/auth/login&#39;</span> `</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span>email<span class="op">=</span><span class="st">&#39;jean.beaumont@example.com&#39;</span><span class="op">;</span> password<span class="op">=</span><span class="st">&#39;IVIA2026!&#39;</span><span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span><span class="op">).</span><span class="fu">access_token</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># --- TOKEN CLIENT (Marie) ---</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="va">$marieToken</span> <span class="op">=</span> <span class="op">(</span><span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/auth/login&#39;</span> `</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span>email<span class="op">=</span><span class="st">&#39;marie.tremblay@example.com&#39;</span><span class="op">;</span> password<span class="op">=</span><span class="st">&#39;TestIVIA2026!&#39;</span><span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span><span class="op">).</span><span class="fu">access_token</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- VÉRIFICATION ---</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Admin  : </span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$adminToken</span><span class="op">)</span><span class="st"> { &#39;OK&#39; } else { &#39;ECHEC&#39; })&quot;</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Aelis  : </span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$aelisToken</span><span class="op">)</span><span class="st"> { &#39;OK&#39; } else { &#39;ECHEC&#39; })&quot;</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Jean   : </span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$jeanToken</span><span class="op">)</span><span class="st">  { &#39;OK&#39; } else { &#39;ECHEC&#39; })&quot;</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Marie  : </span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$marieToken</span><span class="op">)</span><span class="st"> { &#39;OK&#39; } else { &#39;ECHEC&#39; })&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Admin  : OK
+Aelis  : OK
+Jean   : OK
+Marie  : OK</code></pre>
+<blockquote>
+<p><strong>Si tu vois ECHEC</strong> → l’un des comptes n’existe pas.
+Relancer le script de seeding :</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>powershell <span class="op">-</span>ExecutionPolicy Bypass <span class="op">-</span>File <span class="st">&quot;C:\MERLIN\04_METHODES\seed_full_v2.ps1&quot;</span></span></code></pre></div>
+<p>Puis relancer ce bloc.</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" />Les 4 tokens sont OK</label></li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Important</strong> : Ces variables sont actives dans ce
+terminal uniquement. Si tu fermes le terminal, relancer ce bloc.</p>
+</blockquote>
+<hr />
+<h2 id="étape-2-parcours-a-visiteur-public">ÉTAPE 2 — PARCOURS A :
+Visiteur public</h2>
+<blockquote>
+<p>Aucune connexion requise. Ouvrir Firefox.</p>
+</blockquote>
+<h3 id="a.-tester-les-pages-publiques-dans-firefox">2-A. Tester les
+pages publiques dans Firefox</h3>
+<p>Ouvrir <strong>Firefox</strong> et naviguer vers chacune de ces
+adresses :</p>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 15%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr>
+<th>Page</th>
+<th>URL</th>
+<th>Ce que tu dois voir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accueil</td>
+<td><code>http://localhost:3000</code></td>
+<td>Page d’accueil IVIA, navigation en haut</td>
+</tr>
+<tr>
+<td>Praticiens</td>
+<td><code>http://localhost:3000/praticiens</code></td>
+<td>Liste des praticiens pilotes</td>
+</tr>
+<tr>
+<td>Démarche</td>
+<td><code>http://localhost:3000/demarche</code></td>
+<td>Explication du service</td>
+</tr>
+<tr>
+<td>Ressources</td>
+<td><code>http://localhost:3000/ressources</code></td>
+<td>Page ressources</td>
+</tr>
+<tr>
+<td>Rendez-vous</td>
+<td><code>http://localhost:3000/rendez-vous</code></td>
+<td>Formulaire de prise de contact</td>
+</tr>
+</tbody>
+</table>
+<ul class="task-list">
+<li><label><input type="checkbox" />Toutes les pages s’affichent sans
+écran blanc ni erreur</label></li>
+</ul>
+<h3
+id="b.-vérifier-le-texte-du-héros-sur-la-page-daccueil-nouveau-23-05">2-B.
+Vérifier le texte du héros sur la page d’accueil <em>(nouveau
+23-05)</em></h3>
+<ol type="1">
+<li>Sur <code>http://localhost:3000</code>, regarder le grand titre en
+haut</li>
+<li>Le titre doit lire exactement :</li>
+</ol>
+<pre><code>Quelqu&#39;un à votre écoute.</code></pre>
+<blockquote>
+<p><strong>Correction 23-05</strong> : Le texte était “Quelqu’un qui
+vous écoute.” — corrigé en “Quelqu’un à votre écoute.”</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" />Le titre affiché est bien
+<strong>“Quelqu’un à votre écoute.”</strong></label></li>
+</ul>
+<h3 id="c.-vérifier-la-navigation-persistante-nouveau-23-05">2-C.
+Vérifier la navigation persistante <em>(nouveau 23-05)</em></h3>
+<ol type="1">
+<li>Sur chaque page publique, faire défiler vers le bas</li>
+<li>La barre de navigation doit rester visible en haut (sticky)</li>
+<li>Le bouton CTA doit afficher <strong>“Connexion”</strong> (car non
+connecté)</li>
+</ol>
+<blockquote>
+<p><strong>Correction 23-05</strong> : La barre sticky était cassée par
+<code>overflow-x: hidden</code> sur <code>html/body</code> — remplacé
+par <code>overflow-x: clip</code>.</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" />La nav reste visible en défilant sur
+toutes les pages</label></li>
+<li><label><input type="checkbox" />Le CTA affiche
+<strong>“Connexion”</strong> quand non connecté</label></li>
+</ul>
+<h3 id="d.-tester-le-formulaire-de-prise-de-contact-depuis-lapi">2-D.
+Tester le formulaire de prise de contact (depuis l’API)</h3>
+<p>Dans le terminal PowerShell :</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">$intakeBody</span> <span class="op">=</span> @<span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    client_first_name        <span class="op">=</span> <span class="st">&quot;Test&quot;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    client_last_name         <span class="op">=</span> <span class="st">&quot;Visiteur&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    client_email             <span class="op">=</span> <span class="st">&quot;test.visiteur@example.com&quot;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    client_phone             <span class="op">=</span> <span class="st">&quot;514 555 0099&quot;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    request_channel_code     <span class="op">=</span> <span class="st">&quot;web_form&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    request_for_code         <span class="op">=</span> <span class="st">&quot;self&quot;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    primary_need_code        <span class="op">=</span> <span class="st">&quot;support&quot;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    perceived_urgency_code   <span class="op">=</span> <span class="st">&quot;non_urgent&quot;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    support_already_in_place <span class="op">=</span> <span class="va">$false</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    referential_version      <span class="op">=</span> <span class="st">&quot;v1&quot;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="va">$newIntake</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/intake-requests&#39;</span> `</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="va">$intakeBody</span> `</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Intake créé : </span><span class="op">$(</span><span class="va">$newIntake</span><span class="op">.</span><span class="fu">id</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Intake créé : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Un ID est retourné</label></li>
+</ul>
+<hr />
+<h2 id="étape-3-parcours-b-client-connecté-espace-client-suivi">ÉTAPE 3
+— PARCOURS B : Client connecté → Espace client → Suivi</h2>
+<h3 id="a.-se-connecter-comme-marie-tremblay-dans-firefox">3-A. Se
+connecter comme Marie Tremblay dans Firefox</h3>
+<ol type="1">
+<li>Dans Firefox, aller à :
+<code>http://localhost:3000/acces-client</code></li>
+<li>Saisir :
+<ul>
+<li><strong>Email</strong> :
+<code>marie.tremblay@example.com</code></li>
+<li><strong>Mot de passe</strong> : <code>TestIVIA2026!</code></li>
+</ul></li>
+<li>Cliquer sur <strong>Se connecter</strong></li>
+</ol>
+<p><strong>Ce que tu dois voir :</strong> Redirection automatique vers
+<code>/mon-espace</code> (tableau de bord client)</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Connectée, page
+<code>/mon-espace</code> visible</label></li>
+<li><label><input type="checkbox" />Le CTA dans la nav affiche
+maintenant <strong>“Mon espace”</strong> (changement après
+connexion)</label></li>
+</ul>
+<h3 id="b.-vérifier-le-profil-de-marie-via-lapi">3-B. Vérifier le profil
+de Marie via l’API</h3>
+<p>Dans le terminal PowerShell :</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">$marieHeaders</span> <span class="op">=</span> @<span class="op">{</span><span class="st">&#39;Authorization&#39;</span> <span class="op">=</span> <span class="st">&quot;Bearer </span><span class="va">$marieToken</span><span class="st">&quot;</span><span class="op">}</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="va">$marieProfil</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/clients/me&#39;</span> `</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$marieHeaders</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Nom     : </span><span class="op">$(</span><span class="va">$marieProfil</span><span class="op">.</span><span class="fu">first_name_or_alias</span><span class="op">)</span><span class="st"> </span><span class="op">$(</span><span class="va">$marieProfil</span><span class="op">.</span><span class="fu">last_name</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Code    : </span><span class="op">$(</span><span class="va">$marieProfil</span><span class="op">.</span><span class="fu">public_client_code</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Statut  : </span><span class="op">$(</span><span class="va">$marieProfil</span><span class="op">.</span><span class="fu">record_status</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Nom     : Marie Tremblay
+Code    : CLI-68E7023A24
+Statut  : active</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Profil retourné avec le bon code
+public</label></li>
+</ul>
+<h3
+id="c.-voir-le-document-de-suivi-dans-firefox-accessible-sans-connexion-nouveau-23-05">3-C.
+Voir le document de suivi dans Firefox <em>(accessible sans connexion —
+nouveau 23-05)</em></h3>
+<blockquote>
+<p><strong>Correction 23-05</strong> : <code>/suivi</code> est
+maintenant une page publique. Aucune connexion requise pour lire un
+document de suivi avec le bon code client et la bonne référence de
+dossier.</p>
+</blockquote>
+<ol type="1">
+<li>Dans Firefox, <strong>se déconnecter d’abord</strong> (ou ouvrir un
+onglet privé)</li>
+<li>Aller à :</li>
+</ol>
+<pre><code>http://localhost:3000/suivi?code=CLI-68E7023A24&amp;intake=0198a43e-1bc6-434f-bcb2-ffaa0da86c11</code></pre>
+<p><strong>Ce que tu dois voir :</strong> Le document “Compte rendu -
+Seance du 22-05-2026” affiché, <strong>sans avoir à se
+connecter</strong>.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Le document est visible sans
+connexion préalable</label></li>
+<li><label><input type="checkbox" />La page affiche la navigation
+(PublicLayout) en haut et en bas</label></li>
+</ul>
+<h3 id="d.-vérifier-que-lapi-retourne-bien-ce-document">3-D. Vérifier
+que l’API retourne bien ce document</h3>
+<p>Dans le terminal PowerShell :</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="va">$docs</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/derived-documents/public/client/CLI-68E7023A24?intake_request_id=0198a43e-1bc6-434f-bcb2-ffaa0da86c11&#39;</span> `</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Nombre de documents : </span><span class="op">$(</span><span class="va">$docs</span><span class="op">.</span><span class="fu">Count</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Titre               : </span><span class="op">$(</span><span class="va">$docs</span><span class="op">[</span><span class="dv">0</span><span class="op">].</span><span class="fu">title</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Visible client      : </span><span class="op">$(</span><span class="va">$docs</span><span class="op">[</span><span class="dv">0</span><span class="op">].</span><span class="fu">client_visible</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Nombre de documents : 1
+Titre               : Compte rendu - Seance du 22-05-2026
+Visible client      : True</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />1 document,
+<code>client_visible = True</code></label></li>
+</ul>
+<hr />
+<h2
+id="étape-4-parcours-c-praticien-connexion-unifiée-cycle-complet-dune-séance">ÉTAPE
+4 — PARCOURS C : Praticien → Connexion unifiée + Cycle complet d’une
+séance</h2>
+<blockquote>
+<p><strong>Nouveau flux 23-05</strong> : les praticiens et opérateurs se
+connectent désormais via <code>/acces-client</code> (comme les clients).
+La redirection vers <code>/espace-praticien</code> est automatique selon
+le rôle détecté.</p>
+</blockquote>
+<h3
+id="a.-se-connecter-comme-aelis-praticien-via-acces-client-changement-23-05">4-A.
+Se connecter comme Aelis (praticien) via <code>/acces-client</code>
+<em>(changement 23-05)</em></h3>
+<ol type="1">
+<li>Dans Firefox, aller à :
+<code>http://localhost:3000/acces-client</code></li>
+</ol>
+<blockquote>
+<p><strong>Note</strong> : Ne plus aller directement à
+<code>/espace-praticien</code> — le middleware redirigera vers
+<code>/acces-client</code> si aucun cookie de session n’est présent.</p>
+</blockquote>
+<ol start="2" type="1">
+<li>Saisir :
+<ul>
+<li><strong>Email</strong> : <code>pilote.aelis@ivia.quebec</code></li>
+<li><strong>Mot de passe</strong> : <code>IVIA2026!</code></li>
+</ul></li>
+<li>Cliquer sur <strong>Se connecter</strong></li>
+</ol>
+<p><strong>Ce que tu dois voir :</strong> - Redirection automatique vers
+<code>/espace-praticien</code> - Tableau de bord praticien affiché :
+“Espace praticien — Aelis · pilote.aelis@ivia.quebec”</p>
+<blockquote>
+<p><strong>Ce qui se passe en coulisses</strong> : 1. Login → détection
+du rôle <code>practitioner</code> 2. Cookie <code>session_token</code>
+posé (nécessaire au middleware) 3. Session sauvegardée dans
+<code>merlin_praticien_session</code> (lu par le tableau de bord) 4.
+Redirection vers <code>/espace-praticien</code> 5. Middleware valide le
+cookie → accès accordé</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" />Connecté en tant que praticien, page
+<code>/espace-praticien</code> visible</label></li>
+<li><label><input type="checkbox" />Nom “Aelis” visible dans le tableau
+de bord</label></li>
+</ul>
+<h3 id="b.-vérifier-lidentité-et-le-rôle-daelis">4-B. Vérifier
+l’identité et le rôle d’Aelis</h3>
+<p>Dans le terminal PowerShell :</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="va">$aelisHeaders</span> <span class="op">=</span> @<span class="op">{</span><span class="st">&#39;Authorization&#39;</span> <span class="op">=</span> <span class="st">&quot;Bearer </span><span class="va">$aelisToken</span><span class="st">&quot;</span><span class="op">}</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="va">$aelisProfil</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/auth/me&#39;</span> `</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Email  : </span><span class="op">$(</span><span class="va">$aelisProfil</span><span class="op">.</span><span class="fu">email</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Rôle   : </span><span class="op">$(</span><span class="va">$aelisProfil</span><span class="op">.</span><span class="fu">role</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Email  : pilote.aelis@ivia.quebec
+Rôle   : practitioner</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Rôle <code>practitioner</code>
+confirmé</label></li>
+</ul>
+<h3 id="c.-voir-la-liste-des-clients-daelis">4-C. Voir la liste des
+clients d’Aelis</h3>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="va">$clients</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/clients&#39;</span> `</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Clients visibles par Aelis : </span><span class="op">$(</span><span class="va">$clients</span><span class="op">.</span><span class="fu">Count</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="va">$clients</span> <span class="op">|</span> <span class="fu">ForEach-Object</span> <span class="op">{</span> <span class="fu">Write-Host</span> <span class="st">&quot;  - </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">first_name_or_alias</span><span class="op">)</span><span class="st"> </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">last_name</span><span class="op">)</span><span class="st"> [</span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">id</span><span class="op">)</span><span class="st">]&quot;</span> <span class="op">}</span></span></code></pre></div>
+<ul class="task-list">
+<li><label><input type="checkbox" />Au moins un client
+visible</label></li>
+</ul>
+<h3 id="d.-voir-les-séances-existantes">4-D. Voir les séances
+existantes</h3>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="va">$sessions</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/sessions&#39;</span> `</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="va">$sessions</span> <span class="op">|</span> <span class="fu">ForEach-Object</span> <span class="op">{</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;Séance </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">id</span><span class="op">.</span><span class="fu">Substring</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">8</span><span class="op">)</span><span class="st">)... statut=</span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">session_status_code</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul class="task-list">
+<li><label><input type="checkbox" />Au moins une séance
+apparaît</label></li>
+</ul>
+<h3 id="e.-créer-une-nouvelle-séance-cycle-complet">4-E. Créer une
+nouvelle séance (cycle complet)</h3>
+<blockquote>
+<p>Remplacer <code>&lt;CLIENT_ID&gt;</code> par l’ID d’un client visible
+à l’étape 4-C.</p>
+</blockquote>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="va">$clientId</span> <span class="op">=</span> <span class="st">&quot;c7603ae9-6a0c-4a69-8a9b-03fe9591faa3&quot;</span>   <span class="co"># Marie Tremblay</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="va">$newSess</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/sessions&#39;</span> `</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        client_id            <span class="op">=</span> <span class="va">$clientId</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        session_mode_code    <span class="op">=</span> <span class="st">&quot;individual&quot;</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        session_channel_code <span class="op">=</span> <span class="st">&quot;video&quot;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span> `</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="va">$newSessionId</span> <span class="op">=</span> <span class="va">$newSess</span><span class="op">.</span><span class="fu">id</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Séance créée  : </span><span class="va">$newSessionId</span><span class="st">&quot;</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Statut initial: </span><span class="op">$(</span><span class="va">$newSess</span><span class="op">.</span><span class="fu">session_status_code</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Séance créée  : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+Statut initial: scheduled</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Séance créée, statut
+<code>scheduled</code></label></li>
+</ul>
+<h3 id="f.-démarrer-la-séance">4-F. Démarrer la séance</h3>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">$started</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&quot;http://localhost:8000/api/v1/sessions/</span><span class="va">$newSessionId</span><span class="st">/start&quot;</span> `</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Statut : </span><span class="op">$(</span><span class="va">$started</span><span class="op">.</span><span class="fu">session_status_code</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Statut : in_progress</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Statut
+<code>in_progress</code></label></li>
+</ul>
+<h3 id="g.-saisir-une-note-de-séance">4-G. Saisir une note de
+séance</h3>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="va">$note</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/session-notes&#39;</span> `</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        client_id      <span class="op">=</span> <span class="va">$clientId</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        session_id     <span class="op">=</span> <span class="va">$newSessionId</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        note_text      <span class="op">=</span> <span class="st">&quot;Seance du 23-05. Aelis note une progression dans la régulation. Journal tenu 6 jours sur 7.&quot;</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        client_visible <span class="op">=</span> <span class="va">$true</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span> `</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="va">$newNoteId</span> <span class="op">=</span> <span class="va">$note</span><span class="op">.</span><span class="fu">id</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Note créée : </span><span class="va">$newNoteId</span><span class="st">&quot;</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Validée    : </span><span class="op">$(</span><span class="va">$note</span><span class="op">.</span><span class="fu">validated_by_practitioner</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Note créée : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+Validée    : False</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Note créée</label></li>
+</ul>
+<h3 id="h.-clôturer-la-séance">4-H. Clôturer la séance</h3>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="va">$closed</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&quot;http://localhost:8000/api/v1/sessions/</span><span class="va">$newSessionId</span><span class="st">/close&quot;</span> `</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Statut final : </span><span class="op">$(</span><span class="va">$closed</span><span class="op">.</span><span class="fu">session_status_code</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Statut final : completed</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Statut
+<code>completed</code></label></li>
+</ul>
+<h3 id="i.-générer-un-document-dérivé">4-I. Générer un document
+dérivé</h3>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="va">$doc</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/derived-documents&#39;</span> `</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method POST `</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>        client_id          <span class="op">=</span> <span class="va">$clientId</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>        session_id         <span class="op">=</span> <span class="va">$newSessionId</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        source_note_id     <span class="op">=</span> <span class="va">$newNoteId</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        document_kind_code <span class="op">=</span> <span class="st">&quot;session_summary&quot;</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        title              <span class="op">=</span> <span class="st">&quot;Compte rendu - Seance du 23-05-2026&quot;</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        body_text          <span class="op">=</span> <span class="st">&quot;Seance du 23-05. Progression dans la régulation. Journal tenu 6 jours sur 7. Identification des ressources en cours.&quot;</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>        client_visible     <span class="op">=</span> <span class="va">$true</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span> `</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="va">$newDocId</span> <span class="op">=</span> <span class="va">$doc</span><span class="op">.</span><span class="fu">id</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Document créé  : </span><span class="va">$newDocId</span><span class="st">&quot;</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Visible client : </span><span class="op">$(</span><span class="va">$doc</span><span class="op">.</span><span class="fu">client_visible</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Document créé  : xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+Visible client : False</code></pre>
+<blockquote>
+<p><strong>Pourquoi <code>False</code> ?</strong> Le document n’est
+visible qu’après validation. L’étape suivante fait le bypass pour les
+tests locaux.</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" />Document créé</label></li>
+</ul>
+<h3
+id="j.-valider-la-note-et-rendre-le-document-visible-bypass-test">4-J.
+Valider la note et rendre le document visible (bypass test)</h3>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>docker exec merlin-postgres-1 psql <span class="op">-</span>U merlin <span class="op">-</span>d merlin_v1 <span class="op">-</span>c <span class="st">&quot;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="st">    UPDATE session_notes</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SET validated_by_practitioner = true, validated_at = now()</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE id = &#39;</span><span class="va">$newNoteId</span><span class="st">&#39;;</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="st">    UPDATE derived_documents</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="st">    SET client_visible = true, audience_code = &#39;client&#39;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE id = &#39;</span><span class="va">$newDocId</span><span class="st">&#39;;</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>UPDATE 1
+UPDATE 1</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />2 ×
+<code>UPDATE 1</code></label></li>
+</ul>
+<h3 id="k.-vérifier-que-le-document-est-maintenant-visible">4-K.
+Vérifier que le document est maintenant visible</h3>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="va">$docsAll</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/derived-documents&#39;</span> `</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$aelisHeaders</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="va">$docsAll</span> <span class="op">|</span> <span class="fu">ForEach-Object</span> <span class="op">{</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">title</span><span class="op">)</span><span class="st"> — visible=</span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">client_visible</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul class="task-list">
+<li><label><input type="checkbox" />Le nouveau document apparaît avec
+<code>visible=True</code></label></li>
+</ul>
+<hr />
+<h2 id="étape-5-parcours-d-admin-vue-globale">ÉTAPE 5 — PARCOURS D :
+Admin → Vue globale</h2>
+<h3 id="a.-vérifier-lidentité-admin">5-A. Vérifier l’identité admin</h3>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="va">$adminHeaders</span> <span class="op">=</span> @<span class="op">{</span><span class="st">&#39;Authorization&#39;</span> <span class="op">=</span> <span class="st">&quot;Bearer </span><span class="va">$adminToken</span><span class="st">&quot;</span><span class="op">}</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="va">$adminProfil</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/auth/me&#39;</span> `</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$adminHeaders</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Email : </span><span class="op">$(</span><span class="va">$adminProfil</span><span class="op">.</span><span class="fu">email</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Rôle  : </span><span class="op">$(</span><span class="va">$adminProfil</span><span class="op">.</span><span class="fu">role</span><span class="op">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Email : admin@ivia.quebec
+Rôle  : admin</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Rôle <code>admin</code>
+confirmé</label></li>
+</ul>
+<h3 id="b.-vue-de-toutes-les-séances">5-B. Vue de toutes les
+séances</h3>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="va">$allSessions</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/sessions?limit=50&#39;</span> `</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$adminHeaders</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Total séances : </span><span class="op">$(</span><span class="va">$allSessions</span><span class="op">.</span><span class="fu">Count</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="va">$allSessions</span> <span class="op">|</span> <span class="fu">ForEach-Object</span> <span class="op">{</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;  </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">id</span><span class="op">.</span><span class="fu">Substring</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">8</span><span class="op">)</span><span class="st">)... </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">session_status_code</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul class="task-list">
+<li><label><input type="checkbox" />Au moins 2 séances visibles (dont au
+moins une <code>completed</code>)</label></li>
+</ul>
+<h3 id="c.-vue-de-tous-les-documents">5-C. Vue de tous les
+documents</h3>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="va">$allDocs</span> <span class="op">=</span> <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/derived-documents?limit=50&#39;</span> `</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method GET `</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers <span class="va">$adminHeaders</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;Total documents : </span><span class="op">$(</span><span class="va">$allDocs</span><span class="op">.</span><span class="fu">Count</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="va">$allDocs</span> <span class="op">|</span> <span class="fu">ForEach-Object</span> <span class="op">{</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;  [</span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">audience_code</span><span class="op">)</span><span class="st">] </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">title</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul class="task-list">
+<li><label><input type="checkbox" />Au moins 2 documents
+visibles</label></li>
+</ul>
+<hr />
+<h2 id="étape-6-parcours-e-tests-de-sécurité">ÉTAPE 6 — PARCOURS E :
+Tests de sécurité</h2>
+<blockquote>
+<p>Ces tests vérifient que les protections de rôle fonctionnent. On
+s’attend à des erreurs ici.</p>
+</blockquote>
+<h3 id="a.-accès-sans-token-doit-retourner-401">6-A. Accès sans token →
+doit retourner 401</h3>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Invoke-RestMethod</span> <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/clients/me&#39;</span> <span class="op">-</span>Method GET</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">$code</span> <span class="op">=</span> <span class="op">[</span><span class="dt">int</span><span class="op">](</span><span class="va">$_</span><span class="op">.</span><span class="fu">Exception</span><span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">StatusCode</span><span class="op">)</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;Statut : </span><span class="va">$code</span><span class="st"> </span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$code</span> <span class="op">-eq</span> <span class="dv">401</span><span class="op">)</span><span class="st"> { &#39;(OK)&#39; } else { &#39;(ECHEC attendu 401)&#39; })&quot;</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Statut : 401 (OK)</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />401 retourné</label></li>
+</ul>
+<h3 id="b.-client-essaie-daccéder-aux-séances-doit-retourner-403">6-B.
+Client essaie d’accéder aux séances → doit retourner 403</h3>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/sessions&#39;</span> `</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Method GET `</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Headers @<span class="op">{</span><span class="st">&#39;Authorization&#39;</span> <span class="op">=</span> <span class="st">&quot;Bearer </span><span class="va">$marieToken</span><span class="st">&quot;</span><span class="op">}</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">$code</span> <span class="op">=</span> <span class="op">[</span><span class="dt">int</span><span class="op">](</span><span class="va">$_</span><span class="op">.</span><span class="fu">Exception</span><span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">StatusCode</span><span class="op">)</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;Statut : </span><span class="va">$code</span><span class="st"> </span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$code</span> <span class="op">-eq</span> <span class="dv">403</span><span class="op">)</span><span class="st"> { &#39;(OK)&#39; } else { &#39;(ECHEC attendu 403)&#39; })&quot;</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Statut : 403 (OK)</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />403 retourné</label></li>
+</ul>
+<h3
+id="c.-accès-direct-à-espace-praticien-sans-connexion-redirige-vers-acces-client-nouveau-23-05">6-C.
+Accès direct à <code>/espace-praticien</code> sans connexion → redirige
+vers <code>/acces-client</code> <em>(nouveau 23-05)</em></h3>
+<ol type="1">
+<li>Dans Firefox, <strong>vider les cookies</strong> (Ctrl+Maj+Suppr →
+Cookies uniquement)</li>
+<li>Aller à : <code>http://localhost:3000/espace-praticien</code></li>
+</ol>
+<p><strong>Ce que tu dois voir :</strong> Redirection automatique vers
+<code>http://localhost:3000/acces-client?redirect=%2Fespace-praticien</code></p>
+<blockquote>
+<p><strong>Correction 23-05</strong> : Le middleware redirige désormais
+vers <code>/acces-client</code> (et non <code>/login</code>
+inexistant).</p>
+</blockquote>
+<ul class="task-list">
+<li><label><input type="checkbox" />Redirection vers
+<code>/acces-client</code> avec paramètre
+<code>redirect</code></label></li>
+</ul>
+<h3 id="d.-opérateur-essaie-de-valider-une-note-doit-être-refusé">6-D.
+Opérateur essaie de valider une note → doit être refusé</h3>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Invoke-RestMethod</span> `</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Uri <span class="st">&#39;http://localhost:8000/api/v1/session-notes/4ed33f9b-7cde-4411-a6e4-97056dd470bb/validate&#39;</span> `</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Method PATCH `</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Body <span class="op">(</span>@<span class="op">{</span>validated <span class="op">=</span> <span class="va">$true</span><span class="op">}</span> <span class="op">|</span> <span class="fu">ConvertTo-Json</span><span class="op">)</span> `</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>ContentType <span class="st">&#39;application/json&#39;</span> `</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">-</span>Headers @<span class="op">{</span><span class="st">&#39;Authorization&#39;</span> <span class="op">=</span> <span class="st">&quot;Bearer </span><span class="va">$jeanToken</span><span class="st">&quot;</span><span class="op">}</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;Erreur : </span><span class="op">$(</span><span class="va">$_</span><span class="op">.</span><span class="fu">ErrorDetails</span><span class="op">.</span><span class="fu">Message</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir :</strong></p>
+<pre><code>Erreur : {&quot;detail&quot;:&quot;Role insuffisant pour cette operation.&quot;}</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />Accès refusé avec message
+métier</label></li>
+</ul>
+<hr />
+<h2 id="étape-7-smoke-test-final-toutes-les-routes-en-une-passe">ÉTAPE 7
+— Smoke test final (toutes les routes en une passe)</h2>
+<blockquote>
+<p>Copier-coller ce bloc entier. Il vérifie toutes les routes critiques
+en 30 secondes.</p>
+</blockquote>
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="va">$base</span>   <span class="op">=</span> <span class="st">&#39;http://localhost:8000&#39;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="va">$errors</span> <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="dt">function</span> Test-Route <span class="op">{</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">param</span><span class="op">(</span><span class="va">$label</span><span class="op">,</span> <span class="va">$uri</span><span class="op">,</span> <span class="va">$method</span><span class="op">=</span><span class="st">&#39;GET&#39;</span><span class="op">,</span> <span class="va">$body</span><span class="op">=</span><span class="va">$null</span><span class="op">,</span> <span class="va">$token</span><span class="op">=</span><span class="va">$null</span><span class="op">,</span> <span class="va">$expected</span><span class="op">=</span><span class="dv">200</span><span class="op">)</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">$h</span> <span class="op">=</span> @<span class="op">{}</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span><span class="va">$token</span><span class="op">)</span> <span class="op">{</span> <span class="va">$h</span><span class="op">[</span><span class="st">&#39;Authorization&#39;</span><span class="op">]</span> <span class="op">=</span> <span class="st">&quot;Bearer </span><span class="va">$token</span><span class="st">&quot;</span> <span class="op">}</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">$p</span> <span class="op">=</span> @<span class="op">{</span> Uri<span class="op">=</span><span class="va">$uri</span><span class="op">;</span> Method<span class="op">=</span><span class="va">$method</span><span class="op">;</span> Headers<span class="op">=</span><span class="va">$h</span><span class="op">;</span> UseBasicParsing<span class="op">=</span><span class="va">$true</span> <span class="op">}</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="va">$body</span><span class="op">)</span> <span class="op">{</span> <span class="va">$p</span><span class="op">[</span><span class="st">&#39;Body&#39;</span><span class="op">]=</span><span class="va">$body</span><span class="op">;</span> <span class="va">$p</span><span class="op">[</span><span class="st">&#39;ContentType&#39;</span><span class="op">]=</span><span class="st">&#39;application/json&#39;</span> <span class="op">}</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">$r</span> <span class="op">=</span> <span class="fu">Invoke-WebRequest</span> @p</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">$ok</span> <span class="op">=</span> <span class="va">$r</span><span class="op">.</span><span class="fu">StatusCode</span> <span class="op">-eq</span> <span class="va">$expected</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$ok</span><span class="op">)</span><span class="st"> {&#39;[OK  ]&#39;} else {&#39;[FAIL]&#39;}) </span><span class="va">$label</span><span class="st"> =&gt; </span><span class="op">$(</span><span class="va">$r</span><span class="op">.</span><span class="fu">StatusCode</span><span class="op">)</span><span class="st">&quot;</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(-not</span> <span class="va">$ok</span><span class="op">)</span> <span class="op">{</span> <span class="va">$script</span><span class="op">:</span><span class="va">errors</span><span class="op">++</span> <span class="op">}</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">$got</span> <span class="op">=</span> <span class="op">[</span><span class="dt">int</span><span class="op">](</span><span class="va">$_</span><span class="op">.</span><span class="fu">Exception</span><span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">StatusCode</span><span class="op">)</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">$ok</span>  <span class="op">=</span> <span class="va">$got</span> <span class="op">-eq</span> <span class="va">$expected</span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="op">$(</span><span class="cf">if</span> <span class="op">(</span><span class="va">$ok</span><span class="op">)</span><span class="st"> {&#39;[OK  ]&#39;} else {&#39;[FAIL]&#39;}) </span><span class="va">$label</span><span class="st"> =&gt; </span><span class="va">$got</span><span class="st"> (attendu </span><span class="va">$expected</span><span class="st">)&quot;</span></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(-not</span> <span class="va">$ok</span><span class="op">)</span> <span class="op">{</span> <span class="va">$script</span><span class="op">:</span><span class="va">errors</span><span class="op">++</span> <span class="op">}</span></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="ch">`n</span><span class="st">=== INFRASTRUCTURE ===&quot;</span></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;Health&quot;</span>                           <span class="st">&quot;</span><span class="va">$base</span><span class="st">/health&quot;</span></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="ch">`n</span><span class="st">=== PAGES PUBLIQUES ===&quot;</span></span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /praticiens&quot;</span>                  <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/praticiens&quot;</span></span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /suivi public (doc)&quot;</span>          <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/derived-documents/public/client/CLI-68E7023A24?intake_request_id=0198a43e-1bc6-434f-bcb2-ffaa0da86c11&quot;</span></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="ch">`n</span><span class="st">=== ESPACE CLIENT ===&quot;</span></span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /clients/me (Marie)&quot;</span>          <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/clients/me&quot;</span>           <span class="op">-</span>token <span class="va">$marieToken</span></span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="ch">`n</span><span class="st">=== ESPACE PRATICIEN ===&quot;</span></span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /sessions (Aelis)&quot;</span>            <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/sessions&quot;</span>             <span class="op">-</span>token <span class="va">$aelisToken</span></span>
+<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /session-notes (Aelis)&quot;</span>       <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/session-notes&quot;</span>        <span class="op">-</span>token <span class="va">$aelisToken</span></span>
+<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /derived-documents (Aelis)&quot;</span>   <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/derived-documents&quot;</span>    <span class="op">-</span>token <span class="va">$aelisToken</span></span>
+<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="ch">`n</span><span class="st">=== ADMIN ===&quot;</span></span>
+<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;GET /auth/me (admin)&quot;</span>             <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/auth/me&quot;</span>              <span class="op">-</span>token <span class="va">$adminToken</span></span>
+<span id="cb48-40"><a href="#cb48-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-41"><a href="#cb48-41" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">&quot;</span><span class="ch">`n</span><span class="st">=== SECURITE ===&quot;</span></span>
+<span id="cb48-42"><a href="#cb48-42" aria-hidden="true" tabindex="-1"></a>Test-Route <span class="st">&quot;Sans token =&gt; 401&quot;</span>                <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/clients/me&quot;</span>           <span class="op">-</span>expected <span class="dv">401</span></span>
+<span id="cb48-43"><a href="#cb48-43" aria-hidden="true" tabindex="-1"></a><span class="dt">Test</span><span class="op">-</span>Route <span class="st">&quot;Client =&gt; sessions 403&quot;</span>           <span class="st">&quot;</span><span class="va">$base</span><span class="st">/api/v1/sessions&quot;</span>             <span class="op">-</span>token <span class="va">$marieToken</span> <span class="op">-</span>expected <span class="dv">403</span></span>
+<span id="cb48-44"><a href="#cb48-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-45"><a href="#cb48-45" aria-hidden="true" tabindex="-1"></a><span class="dt">Write</span><span class="op">-</span>Host <span class="st">&quot;&quot;</span></span>
+<span id="cb48-46"><a href="#cb48-46" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="va">$errors</span> <span class="op">-eq</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb48-47"><a href="#cb48-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;========================================&quot;</span></span>
+<span id="cb48-48"><a href="#cb48-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;  TOUS LES TESTS SONT PASSES (0 erreur)&quot;</span></span>
+<span id="cb48-49"><a href="#cb48-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;========================================&quot;</span></span>
+<span id="cb48-50"><a href="#cb48-50" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb48-51"><a href="#cb48-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;========================================&quot;</span></span>
+<span id="cb48-52"><a href="#cb48-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;  </span><span class="va">$errors</span><span class="st"> TEST(S) EN ECHEC&quot;</span></span>
+<span id="cb48-53"><a href="#cb48-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">&quot;========================================&quot;</span></span>
+<span id="cb48-54"><a href="#cb48-54" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Ce que tu dois voir à la fin :</strong></p>
+<pre><code>========================================
+  TOUS LES TESTS SONT PASSES (0 erreur)
+========================================</code></pre>
+<ul class="task-list">
+<li><label><input type="checkbox" />0 erreur</label></li>
+</ul>
+<hr />
+<h2 id="checklist-finale">CHECKLIST FINALE</h2>
+<h3 id="infrastructure">Infrastructure</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Docker :
+<code>merlin-postgres-1</code>, <code>merlin-backend-1</code>
+UP</label></li>
+<li><label><input type="checkbox" /><code>GET /health</code> →
+<code>status: ok</code>, <code>database: ok</code></label></li>
+<li><label><input type="checkbox" />Next.js <code>npm run dev</code>
+actif sur port 3000, <code>.env</code> contient
+<code>JWT_SECRET</code></label></li>
+</ul>
+<h3 id="comptes">Comptes</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Admin <code>admin@ivia.quebec</code>
+→ token OK, rôle <code>admin</code></label></li>
+<li><label><input type="checkbox" />Praticien
+<code>pilote.aelis@ivia.quebec</code> → token OK, rôle
+<code>practitioner</code></label></li>
+<li><label><input type="checkbox" />Opérateur
+<code>jean.beaumont@example.com</code> → token OK, rôle
+<code>operator</code></label></li>
+<li><label><input type="checkbox" />Client
+<code>marie.tremblay@example.com</code> → token OK, rôle
+<code>public_client</code></label></li>
+</ul>
+<h3 id="flux-client">Flux client</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Login via <code>/acces-client</code>
+→ redirigé vers <code>/mon-espace</code></label></li>
+<li><label><input type="checkbox" />CTA nav passe de “Connexion” à “Mon
+espace” après login</label></li>
+<li><label><input type="checkbox" /><code>GET /clients/me</code> (Marie)
+→ profil avec
+<code>public_client_code=CLI-68E7023A24</code></label></li>
+<li><label><input type="checkbox" />Page
+<code>/suivi?code=CLI-68E7023A24&amp;intake=0198a43e...</code> →
+document visible <strong>sans connexion</strong></label></li>
+</ul>
+<h3 id="flux-praticien-mis-à-jour-23-05">Flux praticien <em>(mis à jour
+23-05)</em></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Login via <code>/acces-client</code>
+→ redirigé vers <code>/espace-praticien</code>
+automatiquement</label></li>
+<li><label><input type="checkbox" />Accès direct
+<code>/espace-praticien</code> sans cookie → redirigé vers
+<code>/acces-client</code></label></li>
+<li><label><input type="checkbox" />Séance créée →
+<code>scheduled</code></label></li>
+<li><label><input type="checkbox" />Séance démarrée →
+<code>in_progress</code></label></li>
+<li><label><input type="checkbox" />Note créée</label></li>
+<li><label><input type="checkbox" />Séance clôturée →
+<code>completed</code></label></li>
+<li><label><input type="checkbox" />Document créé et validé (bypass SQL)
+→ <code>client_visible=True</code></label></li>
+</ul>
+<h3 id="navigation-nouveau-23-05">Navigation <em>(nouveau
+23-05)</em></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Titre hero homepage : “Quelqu’un à
+votre écoute.”</label></li>
+<li><label><input type="checkbox" />Nav sticky sur toutes les
+pages</label></li>
+<li><label><input type="checkbox" />PublicLayout présent sur
+<code>/suivi</code> et
+<code>/rendez-vous/confirmation</code></label></li>
+</ul>
+<h3 id="sécurité">Sécurité</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Sans token → 401</label></li>
+<li><label><input type="checkbox" />Client sur route opérateur →
+403</label></li>
+<li><label><input type="checkbox" />Opérateur sur validation → “Rôle
+insuffisant”</label></li>
+<li><label><input type="checkbox" />Accès non autorisé
+<code>/espace-praticien</code> → redirect <code>/acces-client</code>
+(pas 404)</label></li>
+</ul>
+<hr />
+<h2 id="comptes-de-test-référence-rapide">Comptes de test — Référence
+rapide</h2>
+<table>
+<thead>
+<tr>
+<th>Rôle</th>
+<th>Email</th>
+<th>Mot de passe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin</td>
+<td><code>admin@ivia.quebec</code></td>
+<td><code>AdminIVIA2026!</code></td>
+</tr>
+<tr>
+<td>Praticien</td>
+<td><code>pilote.aelis@ivia.quebec</code></td>
+<td><code>IVIA2026!</code></td>
+</tr>
+<tr>
+<td>Praticien</td>
+<td><code>pilote.nael@ivia.quebec</code></td>
+<td><code>IVIA2026!</code></td>
+</tr>
+<tr>
+<td>Opérateur</td>
+<td><code>jean.beaumont@example.com</code></td>
+<td><code>IVIA2026!</code></td>
+</tr>
+<tr>
+<td>Client</td>
+<td><code>marie.tremblay@example.com</code></td>
+<td><code>TestIVIA2026!</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ids-de-référence">IDs de référence</h2>
+<table>
+<thead>
+<tr>
+<th>Objet</th>
+<th>ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Client Marie (profil)</td>
+<td><code>c7603ae9-6a0c-4a69-8a9b-03fe9591faa3</code></td>
+</tr>
+<tr>
+<td>Code public client</td>
+<td><code>CLI-68E7023A24</code></td>
+</tr>
+<tr>
+<td>Intake request</td>
+<td><code>0198a43e-1bc6-434f-bcb2-ffaa0da86c11</code></td>
+</tr>
+<tr>
+<td>Séance de test (séance 1)</td>
+<td><code>1c98fb88-748f-4c7a-97b5-3806d870ce0c</code></td>
+</tr>
+<tr>
+<td>Note de test (séance 1)</td>
+<td><code>4ed33f9b-7cde-4411-a6e4-97056dd470bb</code></td>
+</tr>
+<tr>
+<td>Document de test (séance 1)</td>
+<td><code>9deb4166-a110-472b-acae-293560649208</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Procédure v3.0 — 23 mai 2026 — Environnement de développement
+local uniquement</em></p>
+</body>
+</html>

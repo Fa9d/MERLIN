@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 
 import { PublicLayout } from "@/components/layout/PublicLayout";
-import { ORIENTATION_STORAGE_KEY } from "@/app/orientation/OrientationSurvey";
 import {
+  getMyClient,
   readStoredPublicClientSession,
   startPublicIntake,
   type PublicIntakeStartResult,
@@ -29,114 +29,6 @@ const NEED_OPTIONS: { code: Need; label: string }[] = [
   { code: "other", label: "Autre chose" },
 ];
 
-// ─── Reprise depuis le parcours /orientation ─────────────────────────────
-// On lit le `localStorage` du survey MÉSANGES pour pré-remplir les champs
-// du formulaire avec ce que la personne a déjà saisi. Le bandeau d'accueil
-// l'invite à vérifier et compléter, plutôt que de tout retaper.
-
-type OrientationContact = {
-  first_name?: string;
-  email?: string;
-  phone?: string;
-  preference?: string;
-  consent?: boolean;
-};
-
-type OrientationAnswers = {
-  emotion?: string;
-  intention?: string;
-  intensite?: string;
-  precision?: string;
-  poids?: string[];
-  corps?: string[];
-  accompagnement?: string;
-  age?: string;
-  region?: string;
-  contact?: OrientationContact;
-};
-
-function mapIntentionToNeed(intention: string | undefined): Need {
-  switch (intention) {
-    case "ecoute":
-      return "support";
-    case "clarifier":
-    case "repetitions":
-      return "clarification";
-    case "preparer":
-      return "orientation";
-    case "stress":
-      return "support";
-    case "relations":
-    case "corps":
-    case "numerique":
-    case "autre":
-    default:
-      return "other";
-  }
-}
-
-const POIDS_LABELS: Record<string, string> = {
-  fatigue: "fatigue persistante",
-  anxiete: "inquiétude ou anxiété",
-  tristesse: "tristesse, vide",
-  isolement: "sentiment d'isolement",
-  deuil: "deuil ou perte",
-  famille: "tensions familiales",
-  travail: "charge professionnelle",
-  sante: "préoccupations de santé",
-  transition: "transition de vie",
-};
-
-const CORPS_LABELS: Record<string, string> = {
-  sommeil: "sommeil",
-  energie: "énergie",
-  alimentation: "alimentation, digestion",
-  tensions: "douleurs ou tensions",
-  cycles: "cycles",
-};
-
-const INTENSITE_LABELS: Record<string, string> = {
-  calme: "plutôt calme",
-  inconfort: "un inconfort présent",
-  difficile: "difficile",
-  tres: "très difficile",
-  danger: "danger immédiat ressenti",
-};
-
-const ACCOMPAGNEMENT_LABELS: Record<string, string> = {
-  ponctuel: "suivi ponctuel",
-  regulier: "suivi régulier",
-  preparation: "préparer une rencontre",
-  journal: "journal guidé",
-  orientation: "orientation vers un praticien",
-  idk: "à clarifier",
-};
-
-function buildEntrySummaryFromOrientation(a: OrientationAnswers): string | null {
-  const lines: string[] = [];
-  if (a.intention) lines.push(`Intention: ${a.intention}`);
-  if (a.poids && a.poids.length) {
-    const labels = a.poids
-      .map((v) => POIDS_LABELS[v])
-      .filter(Boolean);
-    if (labels.length) lines.push(`Ce qui pèse: ${labels.join(", ")}`);
-  }
-  if (a.corps && a.corps.length) {
-    const labels = a.corps
-      .map((v) => CORPS_LABELS[v])
-      .filter(Boolean);
-    if (labels.length) lines.push(`Rythmes corporels: ${labels.join(", ")}`);
-  }
-  if (a.intensite && INTENSITE_LABELS[a.intensite]) {
-    lines.push(`Intensité actuelle: ${INTENSITE_LABELS[a.intensite]}`);
-  }
-  if (a.accompagnement && ACCOMPAGNEMENT_LABELS[a.accompagnement]) {
-    lines.push(`Accompagnement souhaité: ${ACCOMPAGNEMENT_LABELS[a.accompagnement]}`);
-  }
-  if (a.region) lines.push(`Région: ${a.region}`);
-  return lines.length ? `[Orientation MÉSANGES] ${lines.join(" | ")}` : null;
-}
-
 function RendezVousContent() {
   const searchParams = useSearchParams();
   const praticienName = searchParams.get("praticienName") ?? "";
@@ -149,64 +41,26 @@ function RendezVousContent() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [isAdultConfirmed, setIsAdultConfirmed] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [prefilled, setPrefilled] = useState(false);
 
-  const [consentTermsAccepted, setConsentTermsAccepted] = useState(false);
+  useEffect(() => {
+    const session = readStoredPublicClientSession();
+    if (!session?.access_token) return;
+    getMyClient(session.access_token).then((profile) => {
+      if (!profile) return;
+      setFirstNameOrAlias(profile.first_name_or_alias ?? "");
+      setEmail(profile.email ?? "");
+      setPhone(profile.phone ?? "");
+      setIsAdultConfirmed(profile.is_adult_confirmed ?? false);
+      setPrefilled(true);
+    }).catch(() => { /* session expirée ou invalide — on laisse les champs vides */ });
+  }, []);
+
+  const [consentTerms, setConsentTerms] = useState(false);
 
   const [need, setNeed] = useState<Need>("support");
   const [requestText, setRequestText] = useState("");
   const [supportInPlace, setSupportInPlace] = useState(false);
-  const [orientationSummary, setOrientationSummary] = useState<string | null>(null);
-  const [cameFromOrientation, setCameFromOrientation] = useState(false);
-
-  useEffect(() => {
-    // 1) Reprise depuis le parcours /orientation : on lit les réponses
-    //    persistées dans le localStorage et on pré-remplit le formulaire.
-    try {
-      const raw = window.localStorage.getItem(ORIENTATION_STORAGE_KEY);
-      if (raw) {
-        const o = JSON.parse(raw) as OrientationAnswers;
-        const fromQuery = searchParams.get("from") === "orientation";
-        const hasMeaningful =
-          Boolean(o.intention) ||
-          Boolean(o.precision) ||
-          (o.poids && o.poids.length > 0) ||
-          Boolean(o.contact?.first_name) ||
-          Boolean(o.contact?.email);
-
-        if (fromQuery || hasMeaningful) {
-          setCameFromOrientation(true);
-        }
-
-        if (o.contact?.first_name) setFirstNameOrAlias(o.contact.first_name);
-        if (o.contact?.email) setEmail(o.contact.email);
-        if (o.contact?.phone) setPhone(o.contact.phone);
-
-        if (o.age && o.age !== "lt18") {
-          setIsAdultConfirmed(true);
-        }
-
-        if (o.intention) setNeed(mapIntentionToNeed(o.intention));
-        if (o.precision) setRequestText(o.precision);
-
-        const summary = buildEntrySummaryFromOrientation(o);
-        if (summary) setOrientationSummary(summary);
-      }
-    } catch {
-      // ignore — fallback aux champs vides
-    }
-
-    // 2) Pré-remplir si l'utilisateur est déjà connecté (la session gagne
-    //    sur les valeurs orientation pour l'identité, qui est la source de
-    //    vérité côté serveur).
-    const session = readStoredPublicClientSession();
-    if (session) {
-      setIsAuthenticated(true);
-      if (session.user.display_name) setFirstNameOrAlias(session.user.display_name);
-      if (session.user.email) setEmail(session.user.email);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -223,7 +77,6 @@ function RendezVousContent() {
 
   const entrySummary = useMemo(() => {
     const lines: string[] = [];
-    if (orientationSummary) lines.push(orientationSummary);
     if (praticienName) lines.push(`Praticien souhaité : ${praticienName}`);
     if (slotDate || slotTime) {
       lines.push(`Créneau souhaité : ${[slotDate, slotTime].filter(Boolean).join(" ")}`.trim());
@@ -231,7 +84,7 @@ function RendezVousContent() {
     if (sessionType) lines.push(`Type de séance souhaitée : ${sessionType}`);
     if (urgency) lines.push("Demande urgence : format court prioritaire 30 min à 50 $");
     return lines.length ? lines.join(" | ") : null;
-  }, [orientationSummary, praticienName, sessionType, slotDate, slotTime, urgency]);
+  }, [praticienName, sessionType, slotDate, slotTime, urgency]);
 
   const requestTextLength = requestText.length;
 
@@ -247,10 +100,8 @@ function RendezVousContent() {
       return;
     }
 
-    if (!consentTermsAccepted) {
-      setErrorMessage(
-        "Vous devez accepter les CGU et la politique de confidentialité pour continuer.",
-      );
+    if (!consentTerms) {
+      setErrorMessage("Vous devez accepter les CGU et la politique de confidentialité pour continuer.");
       setIsSubmitting(false);
       return;
     }
@@ -266,17 +117,10 @@ function RendezVousContent() {
         support_already_in_place: supportInPlace,
         requested_outcome_text: requestText.trim() || null,
         entry_summary_text: entrySummary,
-        consent_terms_accepted: consentTermsAccepted,
+        consent_terms_accepted: consentTerms,
         consent_terms_version: "v1.2",
       });
       setResult(response);
-      // À la soumission réussie, on purge les réponses d'orientation pour ne
-      // pas garder de PII en localStorage plus longtemps que nécessaire.
-      try {
-        window.localStorage.removeItem(ORIENTATION_STORAGE_KEY);
-      } catch {
-        // tolérant
-      }
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Erreur inconnue.");
     } finally {
@@ -296,31 +140,6 @@ function RendezVousContent() {
               Pas de case à cocher parfaitement. Juste ce qui vous ressemble.
             </p>
           </div>
-
-          {isAuthenticated && !result ? (
-            <section className="card message message-success">
-              <p>
-                Vous êtes connecté. Vos coordonnées sont déjà pré-remplies.
-                Vous pouvez aussi <Link href="/rendez-vous/reserver">choisir directement un créneau</Link>
-                {" "}sans repasser par ce formulaire.
-              </p>
-            </section>
-          ) : null}
-
-          {cameFromOrientation && !result ? (
-            <section className="card message message-success">
-              <p>
-                <strong>Vos réponses du parcours MÉSANGES ont été reportées ici.</strong>
-                {" "}Vérifiez, ajustez et complétez les champs ci-dessous — vous pouvez
-                {" "}<Link href="/orientation">revenir au parcours</Link> pour modifier vos réponses.
-              </p>
-              <p className="inline-note">
-                Ce qui a été reporté : votre prénom, vos coordonnées, votre intention principale
-                et votre précision libre. Le reste (ce qui pèse, rythmes corporels, intensité)
-                est intégré dans le résumé d&apos;entrée transmis à l&apos;équipe IVIA.
-              </p>
-            </section>
-          ) : null}
 
           {contextSummary ? (
             <section className="card rendezvous-context-card">
@@ -353,7 +172,7 @@ function RendezVousContent() {
                 </ul>
                 <div className="info-strip">
                   <span>{urgency ? "50 $" : "65 $"}</span>
-                  <span>{urgency ? "30 min" : "60 à 75 min"}</span>
+                  <span>{urgency ? "30 min" : "60 min"}</span>
                   <span>En ligne</span>
                 </div>
                 <div className="stack-sm">
@@ -371,6 +190,10 @@ function RendezVousContent() {
               </article>
 
               <form className="card form-stack" onSubmit={handleSubmit}>
+                {prefilled ? (
+                  <p className="inline-note intake-prefilled-note">Vos coordonnées ont été reprises depuis votre profil.</p>
+                ) : null}
+
                 <label className="field">
                   <span>Comment souhaitez-vous être appelé ?</span>
                   <input
@@ -380,7 +203,6 @@ function RendezVousContent() {
                     placeholder="Prénom ou alias"
                   />
                 </label>
-                <p className="inline-note">Vous pouvez utiliser un prénom fictif si vous préférez.</p>
 
                 <div className="form-grid-2">
                   <label className="field">
@@ -402,10 +224,6 @@ function RendezVousContent() {
                     />
                   </label>
                 </div>
-                <p className="inline-note">
-                  Le courriel n&apos;est pas obligatoire, mais il vous permet d&apos;ouvrir un espace personnel
-                  et de revenir à votre démarche par un simple clic.
-                </p>
 
                 <label className="checkbox-row">
                   <input
@@ -454,32 +272,30 @@ function RendezVousContent() {
                 </label>
 
                 <div className="stack-sm consent-block">
+                  <h4>Consentements pour commencer votre démarche</h4>
+                  <p className="inline-note">
+                    En soumettant cette demande, vous acceptez que vos informations soient
+                    traitées conformément aux{" "}
+                    <a href="/cgu" target="_blank" rel="noopener noreferrer">CGU</a>{" "}et à la{" "}
+                    <a href="/confidentialite" target="_blank" rel="noopener noreferrer">politique de confidentialité</a>{" "}d&apos;IVIA
+                    (Loi 25, hébergement Québec).
+                  </p>
                   <label className="checkbox-row">
                     <input
                       type="checkbox"
-                      checked={consentTermsAccepted}
-                      onChange={(event) => setConsentTermsAccepted(event.target.checked)}
+                      checked={consentTerms}
+                      onChange={(event) => setConsentTerms(event.target.checked)}
                     />
                     <span>
-                      J&apos;accepte les{" "}
-                      <Link href="/cgu" target="_blank" rel="noopener">
-                        Conditions générales d&apos;utilisation
-                      </Link>{" "}
-                      et la{" "}
-                      <Link href="/confidentialite" target="_blank" rel="noopener">
-                        politique de confidentialité
-                      </Link>{" "}
-                      d&apos;IVIA. Mes données restent au Québec (Loi 25). L&apos;enregistrement
-                      audio d&apos;une séance, s&apos;il a lieu, fera l&apos;objet d&apos;un
-                      consentement distinct au moment de la première séance.
+                      J&apos;accepte les <strong>CGU</strong> et la <strong>politique de confidentialité</strong> d&apos;IVIA.
                     </span>
                   </label>
                 </div>
 
-                <div className="message message-error">
+                <div className="message-safety">
                   IVIA n&apos;est pas un service d&apos;urgence. Si vous êtes en danger immédiat,
-                  composez le 911. En cas de crise suicidaire ou de détresse intense au Canada,
-                  appelez ou textez le 988.
+                  composez le <strong>911</strong>. En cas de crise suicidaire ou de détresse intense au Canada,
+                  appelez ou textez le <strong>988</strong>.
                 </div>
 
                 <button className="button button-primary" disabled={isSubmitting} type="submit">

@@ -1,0 +1,32 @@
+<style>
+  :root { --blue: #1a4fa0; --light: #f4f7fb; --border: #dce3ee; --code-bg: #1e1e2e; --code-fg: #cdd6f4; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.65; color: #1a1a2e; background: #fff; max-width: 970px; margin: 0 auto; padding: 40px 48px; }
+  h1 { font-size: 2em; color: var(--blue); border-bottom: 3px solid var(--blue); padding-bottom: 12px; margin: 32px 0 20px; }
+  h2 { font-size: 1.35em; color: var(--blue); border-left: 4px solid var(--blue); padding-left: 12px; margin: 28px 0 14px; page-break-after: avoid; }
+  h3 { font-size: 1.05em; color: #2d4a7a; margin: 20px 0 10px; page-break-after: avoid; }
+  h4 { font-size: 1em; color: #444; margin: 16px 0 8px; }
+  p { margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; page-break-inside: avoid; }
+  th { background: var(--blue); color: #fff; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--light); }
+  code { background: #eef2f8; color: #c0392b; padding: 2px 6px; border-radius: 3px; font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; }
+  pre { background: var(--code-bg); color: var(--code-fg); padding: 16px 20px; border-radius: 6px; overflow-x: auto; margin: 14px 0; font-size: 12px; line-height: 1.55; page-break-inside: avoid; }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  blockquote { border-left: 4px solid #f0a500; background: #fffbee; padding: 12px 16px; margin: 14px 0; color: #5a4000; border-radius: 0 4px 4px 0; }
+  ul, ol { padding-left: 22px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  li input[type=checkbox] { margin-right: 6px; accent-color: var(--blue); width:15px; height:15px; cursor:pointer; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  #TOC { background: var(--light); border: 1px solid var(--border); border-radius: 6px; padding: 18px 24px; margin-bottom: 32px; }
+  #TOC ul { list-style: none; padding-left: 14px; }
+  #TOC > ul { padding-left: 0; }
+  #TOC a { color: var(--blue); text-decoration: none; }
+  #TOC a:hover { text-decoration: underline; }
+  #TOC::before { content: "Table des matieres"; font-weight: bold; font-size: 1em; color: var(--blue); display: block; margin-bottom: 10px; }
+  .print-btn { position: fixed; top: 18px; right: 24px; background: var(--blue); color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 14px; cursor: pointer; font-family: inherit; box-shadow: 0 2px 8px rgba(0,0,0,.25); z-index: 999; }
+  .print-btn:hover { background: #143d80; }
+  @media print { .print-btn { display: none; } body { max-width: none; padding: 20px; } pre { white-space: pre-wrap; word-break: break-all; } }
+</style>
+<button class="print-btn" onclick="window.print()">Imprimer / Sauver PDF</button>

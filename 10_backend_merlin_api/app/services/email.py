@@ -219,6 +219,50 @@ def make_magic_link_email(
     return html, text
 
 
+def make_appointment_reminder_email(
+    display_name: str,
+    praticien_name: str,
+    slot_date: str,
+    slot_time: str,
+    session_type_label: str,
+    join_url: str,
+) -> tuple[str, str]:
+    """Rappel 24h avant le rendez-vous."""
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Votre rendez-vous est <strong>demain</strong> — voici un rappel.</p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      <tr><td style="padding:8px 0;color:#888;width:140px;">Praticien·ne</td>
+          <td style="padding:8px 0;font-weight:600;">{praticien_name}</td></tr>
+      <tr><td style="padding:8px 0;color:#888;">Date</td>
+          <td style="padding:8px 0;font-weight:600;">{slot_date}</td></tr>
+      <tr><td style="padding:8px 0;color:#888;">Heure</td>
+          <td style="padding:8px 0;font-weight:600;">{slot_time}</td></tr>
+      <tr><td style="padding:8px 0;color:#888;">Type</td>
+          <td style="padding:8px 0;">{session_type_label}</td></tr>
+    </table>
+    <a class="btn" href="{join_url}">Accéder à ma séance</a>
+    <p style="color:#888;font-size:13px;">Si vous ne pouvez pas vous présenter, contactez votre praticien·ne ou annulez depuis votre espace IVIA.</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Votre rendez-vous est demain !\n\n"
+        f"Praticien·ne : {praticien_name}\n"
+        f"Date         : {slot_date}\n"
+        f"Heure        : {slot_time}\n"
+        f"Type         : {session_type_label}\n\n"
+        f"Accéder à votre séance : {join_url}\n\n— IVIA"
+    )
+    return html, text
+
+
 def make_interac_etransfer_email(
     display_name: str,
     recipient_name: str,

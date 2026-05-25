@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { appRoutes } from "@/lib/routes";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 
 /**
  * /rendez-vous/confirmation
@@ -14,7 +15,8 @@ import { appRoutes } from "@/lib/routes";
  */
 export default function ConfirmationPage() {
   return (
-    <main style={{ maxWidth: 560, margin: "80px auto", padding: "0 1.5rem", textAlign: "center" }}>
+    <PublicLayout>
+      <main style={{ maxWidth: 560, margin: "80px auto", padding: "0 1.5rem", textAlign: "center" }}>
       <div
         style={{
           fontSize: "2.5rem",
@@ -31,6 +33,7 @@ export default function ConfirmationPage() {
       <Link href={appRoutes.home} className="btn btn-outline">
         Retour à l&apos;accueil
       </Link>
-    </main>
+      </main>
+    </PublicLayout>
   );
 }

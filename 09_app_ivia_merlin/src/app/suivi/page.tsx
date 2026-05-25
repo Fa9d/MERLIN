@@ -1,8 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { PublicLayout } from "@/components/layout/PublicLayout";
 import { FormEvent, useEffect, useState } from "react";
 
 import { type DerivedDocumentRecord, listPublicDerivedDocuments } from "@/lib/merlin-api";
@@ -59,16 +59,7 @@ function SuiviPageContent() {
   }
 
   return (
-    <div className="page-shell">
-      <header className="topbar">
-        <div className="wordmark">IVIA</div>
-        <nav className="nav">
-          <Link href="/">Accueil</Link>
-          <Link href="/rendez-vous">Rendez-vous</Link>
-        </nav>
-      </header>
-
-      <main className="section">
+    <main className="section">
         <div className="section-header">
           <div className="eyebrow">Suivi client</div>
           <h2>Consulter vos syntheses diffuses</h2>
@@ -128,15 +119,16 @@ function SuiviPageContent() {
             ))}
           </section>
         </div>
-      </main>
-    </div>
+    </main>
   );
 }
 
 export default function SuiviPage() {
   return (
-    <Suspense fallback={<div className="page-shell section">Chargement du suivi...</div>}>
-      <SuiviPageContent />
-    </Suspense>
+    <PublicLayout>
+      <Suspense fallback={<main className="section"><p>Chargement du suivi...</p></main>}>
+        <SuiviPageContent />
+      </Suspense>
+    </PublicLayout>
   );
 }

@@ -18,7 +18,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
-from sqlalchemy import select
+from sqlalchemy import select, text as sql_text
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -157,14 +157,13 @@ def _attach_or_create_app_user(
 
     existing = db.scalar(select(AppUser).where(AppUser.email == normalized_email))
     if existing is not None:
-        # Si l'AppUser existe déjà mais sans Client lié, on le rattache.
         if client.app_user_id is None:
-            client.app_user_id = existing.id
-        # Si l'AppUser est lié à un autre client, on ne rattache pas — on enverra
-        # quand même le magic link à cet utilisateur, mais sans toucher le lien.
-        # Heuristique du "password déjà défini" : si record_status est inactive,
-        # ou si l'email est vérifié, c'est probablement déjà un user qui a
-        # défini un mot de passe via /acces-client.
+            # Vérification défensive : ne pas lier si l'AppUser est déjà lié à un autre client
+            already_linked = db.scalar(
+                select(Client).where(Client.app_user_id == existing.id)
+            )
+            if already_linked is None:
+                client.app_user_id = existing.id
         password_needed = not existing.email_verified
         return existing, password_needed
 
@@ -200,17 +199,39 @@ async def start_public_intake(
     _ensure_adult(payload)
     _ensure_terms_accepted(payload)
 
-    # 1) Création du Client (email/téléphone optionnels)
-    client = Client(
-        first_name_or_alias=payload.first_name_or_alias.strip(),
-        email=(payload.email.lower() if payload.email else None),
-        phone=payload.phone,
-        is_adult_confirmed=True,
-        record_status=RecordStatus.active,
-        data_sensitivity_class=DataSensitivityClass.high,
-    )
-    db.add(client)
-    db.flush()  # obtenir client.id
+    # 1) Trouver ou créer le Client
+    # Double-check avec SQL brut pour éviter tout problème de cache ORM.
+    client: Client | None = None
+    if payload.email:
+        normalized_email = payload.email.lower()
+        # ORM lookup
+        client = db.scalar(
+            select(Client).where(Client.email == normalized_email)
+        )
+        # Si l'ORM ne trouve pas, fallback sur SQL direct (contourne les bugs de cache)
+        if client is None:
+            row = db.execute(
+                sql_text("SELECT id FROM clients WHERE email = :e"),
+                {"e": normalized_email},
+            ).first()
+            if row:
+                client = db.get(Client, row[0])
+                logger.warning(
+                    "find_client ORM miss but SQL found id=%s for email=%s",
+                    row[0], normalized_email,
+                )
+        logger.warning("find_client email=%s found=%s", normalized_email, client.id if client else None)
+    if client is None:
+        client = Client(
+            first_name_or_alias=payload.first_name_or_alias.strip(),
+            email=(payload.email.lower() if payload.email else None),
+            phone=payload.phone,
+            is_adult_confirmed=True,
+            record_status=RecordStatus.active,
+            data_sensitivity_class=DataSensitivityClass.high,
+        )
+        db.add(client)
+        db.flush()  # obtenir client.id
 
     # 2) IntakeRequest
     intake = IntakeRequest(

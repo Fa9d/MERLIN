@@ -44,9 +44,15 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     let detail = `Erreur API (${response.status})`;
 
     try {
-      const payload = (await response.json()) as { detail?: string };
-      if (payload.detail) {
+      const payload = (await response.json()) as { detail?: unknown };
+      if (typeof payload.detail === "string") {
         detail = payload.detail;
+      } else if (Array.isArray(payload.detail)) {
+        detail = (payload.detail as Array<{ msg?: string }>)
+          .map((d) => d.msg ?? JSON.stringify(d))
+          .join(" — ");
+      } else if (payload.detail) {
+        detail = JSON.stringify(payload.detail);
       }
     } catch {}
 
@@ -432,6 +438,17 @@ export async function loginOperator(
   return request<LoginResponse>("/api/v1/auth/login", {
     method: "POST",
     body: { email, password },
+  });
+}
+
+export async function setMyPassword(
+  token: string,
+  payload: { new_password: string; current_password: string | null },
+): Promise<{ message: string }> {
+  return request<{ message: string }>("/api/v1/auth/set-password", {
+    method: "POST",
+    body: payload,
+    token,
   });
 }
 
@@ -977,6 +994,25 @@ export async function holdSlot(slotId: string, token: string): Promise<BookingSl
   });
 }
 
+export type VirtualSlotPayload = {
+  praticien_id: string;
+  slot_date: string;      // "YYYY-MM-DD"
+  start_time: string;     // "HH:MM:SS"
+  end_time: string;       // "HH:MM:SS"
+  session_type?: string;
+};
+
+export async function holdVirtualSlot(
+  payload: VirtualSlotPayload,
+  token: string,
+): Promise<BookingSlotRecord> {
+  return request<BookingSlotRecord>("/api/v1/bookings/hold", {
+    method: "POST",
+    body: payload,
+    token,
+  });
+}
+
 export async function confirmSlot(
   slotId: string,
   token: string,
@@ -1040,11 +1076,6 @@ export type PublicIntakeStartPayload = {
   support_already_in_place?: boolean;
   requested_outcome_text?: string | null;
   entry_summary_text?: string | null;
-  /**
-   * Acceptation omnibus des CGU + politique de confidentialité.
-   * Le backend en dérive automatiquement les trois entrées de registre Loi 25
-   * (consent_session, consent_session_note, consent_history) pour le registre légal.
-   */
   consent_terms_accepted: boolean;
   consent_terms_version?: string;
 };
@@ -1127,7 +1158,6 @@ export type MyClientUpdatePayload = {
   last_name?: string | null;
   phone?: string | null;
   language_code?: string | null;
-  timezone?: string | null;
   territory_code?: string | null;
 };
 
@@ -1137,26 +1167,6 @@ export async function updateMyClient(
 ): Promise<MyClientRecord> {
   return request<MyClientRecord>("/api/v1/clients/me", {
     method: "PATCH",
-    body: payload,
-    token,
-  });
-}
-
-export type SetPasswordPayload = {
-  new_password: string;
-  current_password?: string | null;
-};
-
-export type SetPasswordResult = {
-  message: string;
-};
-
-export async function setMyPassword(
-  payload: SetPasswordPayload,
-  token: string,
-): Promise<SetPasswordResult> {
-  return request<SetPasswordResult>("/api/v1/auth/set-password", {
-    method: "POST",
     body: payload,
     token,
   });

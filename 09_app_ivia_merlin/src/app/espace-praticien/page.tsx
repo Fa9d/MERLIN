@@ -36,12 +36,14 @@ import {
   // Agenda
   type ScheduleSlotRecord,
   type ScheduleExceptionRecord,
+  type AvailableSlotRecord,
   listMySchedule,
   createScheduleSlot,
   deleteScheduleSlot,
   listMyExceptions,
   createScheduleException,
   deleteScheduleException,
+  listAvailableSlots,
 } from "@/lib/merlin-api";
 
 const STORAGE_KEY = "merlin_praticien_session";
@@ -134,6 +136,13 @@ export default function PraticienPage() {
   const [isLoadingSchedule, setIsLoadingSchedule] = useState(false);
   const [scheduleError, setScheduleError] = useState<string | null>(null);
   const [scheduleSuccess, setScheduleSuccess] = useState<string | null>(null);
+
+  // Agenda — vue calendrier mensuelle
+  const [agendaCalMonth, setAgendaCalMonth] = useState<Date>(() => {
+    const d = new Date(); d.setDate(1); d.setHours(0, 0, 0, 0); return d;
+  });
+  const [agendaMonthSlots, setAgendaMonthSlots] = useState<AvailableSlotRecord[]>([]);
+  const [loadingAgendaCal, setLoadingAgendaCal] = useState(false);
 
   // Formulaire nouveau bloc
   const [newSlotDay, setNewSlotDay] = useState<number>(0);
@@ -236,6 +245,23 @@ export default function PraticienPage() {
     void loadSchedule();
     return () => { active = false; };
   }, [session]);
+
+  // Chargement des créneaux disponibles du mois (agenda praticien)
+  useEffect(() => {
+    if (!session || activeView !== "agenda") return;
+    let active = true;
+    const y = agendaCalMonth.getFullYear();
+    const m = agendaCalMonth.getMonth();
+    const mFrom = `${y}-${String(m + 1).padStart(2, "0")}-01`;
+    const mTo = new Date(y, m + 1, 0).toISOString().slice(0, 10);
+    setLoadingAgendaCal(true);
+    setAgendaMonthSlots([]);
+    listAvailableSlots(session.user.id, mFrom, mTo)
+      .then((slots) => { if (active) setAgendaMonthSlots(slots); })
+      .catch(() => {})
+      .finally(() => { if (active) setLoadingAgendaCal(false); });
+    return () => { active = false; };
+  }, [session, activeView, agendaCalMonth]);
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -1349,6 +1375,74 @@ export default function PraticienPage() {
         {/* === AGENDA — Gabarit hebdomadaire === */}
         {activeView === "agenda" && (
           <div className="stack-md">
+
+            {/* Vue calendrier mensuelle */}
+            <div className="card">
+              <div className="reserver-month-nav">
+                <button
+                  type="button"
+                  className="button button-text"
+                  onClick={() => setAgendaCalMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
+                >
+                  ← Précédent
+                </button>
+                <span className="reserver-week-label">
+                  {agendaCalMonth.toLocaleDateString("fr-CA", { month: "long", year: "numeric" })}
+                </span>
+                <button
+                  type="button"
+                  className="button button-text"
+                  onClick={() => setAgendaCalMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
+                >
+                  Suivant →
+                </button>
+              </div>
+              {loadingAgendaCal ? (
+                <p className="muted-text">Chargement…</p>
+              ) : (
+                <div className="reserver-month-grid">
+                  {["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"].map((d) => (
+                    <div key={d} className="reserver-month-head">{d}</div>
+                  ))}
+                  {(() => {
+                    const today = new Date().toISOString().slice(0, 10);
+                    const y = agendaCalMonth.getFullYear();
+                    const m = agendaCalMonth.getMonth();
+                    const firstWd = new Date(y, m, 1).getDay();
+                    const prefix = firstWd === 0 ? 6 : firstWd - 1;
+                    const daysInMonth = new Date(y, m + 1, 0).getDate();
+                    const slotDates = new Set(agendaMonthSlots.map((s) => s.slot_date));
+                    const cells: Array<{ iso: string | null; day: number | null }> = [];
+                    for (let i = 0; i < prefix; i++) cells.push({ iso: null, day: null });
+                    for (let dd = 1; dd <= daysInMonth; dd++) {
+                      cells.push({
+                        iso: `${y}-${String(m + 1).padStart(2, "0")}-${String(dd).padStart(2, "0")}`,
+                        day: dd,
+                      });
+                    }
+                    return cells.map((cell, idx) => {
+                      if (!cell.iso) return <div key={`e-${idx}`} className="reserver-month-cell is-empty" />;
+                      const hasSlots = slotDates.has(cell.iso) && cell.iso >= today;
+                      const isToday = cell.iso === today;
+                      const isPast = cell.iso < today;
+                      return (
+                        <div
+                          key={cell.iso}
+                          className={`reserver-month-cell${hasSlots ? " has-slots" : ""}${isToday ? " is-today" : ""}${isPast ? " is-past" : ""}`}
+                          title={hasSlots ? `${agendaMonthSlots.filter((s) => s.slot_date === cell.iso).length} créneau(x)` : undefined}
+                        >
+                          <span className="reserver-month-cell__num">{cell.day}</span>
+                          {hasSlots && <span className="reserver-month-cell__dot" aria-hidden="true" />}
+                        </div>
+                      );
+                    });
+                  })()}
+                </div>
+              )}
+              <p className="muted-text" style={{ fontSize: "0.75rem", marginTop: "0.5rem" }}>
+                Les points indiquent vos créneaux disponibles à la réservation ce mois-ci.
+              </p>
+            </div>
             <div className="card form-stack">
               <h3>Gabarit hebdomadaire</h3>
               <p className="muted-text">
