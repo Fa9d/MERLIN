@@ -5,79 +5,65 @@ import { useState } from "react";
 import "./styles.css";
 import "./styles.v3.css";
 import "./styles.orientation.css";
-import "./styles.sondage.css";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
-import { NumeriqueSondagePopup } from "@/components/sondage/NumeriqueSondagePopup";
 
 const TABS = [
-  { id: "individuel", label: "\u00c9coute individuelle" },
-  { id: "parcours",   label: "Parcours de soutien" },
-  { id: "praticiens", label: "Pour les praticiens" },
+  { id: "dependances", label: "D\u00e9pendances" },
+  { id: "relations",   label: "Relations\u00a0& couple" },
+  { id: "equilibre",   label: "\u00c9quilibre de vie" },
 ];
 
 const CARDS: Record<
   string,
   { badge?: string; title: string; body: string; cta: string; href: string; ctaSecondaire?: string; hrefSecondaire?: string }[]
 > = {
-  individuel: [
+  dependances: [
     {
-      badge: "Le plus demand\u00e9",
-      title: "Rencontre d\u2019\u00e9coute",
-      body: "Une s\u00e9ance, un praticien, une heure pour d\u00e9poser ce qui p\u00e8se. Vous repartez avec une direction.",
-      cta: "R\u00e9server",
+      badge: "Affective \u00b7 \u00c9motionnelle",
+      title: "Quand un lien devient une prison",
+      body: "Besoin constant d\u2019approbation, peur de l\u2019abandon, attachement douloureux. Que la d\u00e9pendance soit \u00e0 une personne, \u00e0 un r\u00f4le ou \u00e0 une dynamique relationnelle \u2014 elle a une histoire. On peut la comprendre, sans en avoir honte.",
+      cta: "En parler",
       href: "/rendez-vous",
-      ctaSecondaire: "En savoir plus",
-      hrefSecondaire: "/mesange",
     },
     {
-      badge: "Avec suivi \u00e9crit",
-      title: "\u00c9coute avec compte rendu",
-      body: "La m\u00eame rencontre, plus un r\u00e9sum\u00e9 \u00e9crit de ce que vous avez explor\u00e9 ensemble et des pistes concr\u00e8tes pour la suite.",
-      cta: "R\u00e9server",
+      badge: "Num\u00e9rique \u00b7 Alimentaire \u00b7 Substances",
+      title: "Ce qu\u2019on consomme pour ne pas ressentir",
+      body: "Alcool, cannabis, jeu compulsif, achats, travail, pornographie, nourriture \u2014 les formes sont nombreuses. Ce qu\u2019elles ont en commun\u00a0: une douleur sous-jacente qui cherche \u00e0 s\u2019apaiser. Nos praticiens vous accompagnent sans jugement.",
+      cta: "En parler",
       href: "/rendez-vous",
-      ctaSecondaire: "En savoir plus",
-      hrefSecondaire: "/mesange",
     },
   ],
-  parcours: [
+  relations: [
     {
-      badge: "Recommand\u00e9",
-      title: "Parcours court",
-      body: "Deux ou trois rencontres rapproch\u00e9es pour traverser une p\u00e9riode difficile avec un fil conducteur. Un m\u00eame praticien tout au long.",
-      cta: "Commencer",
+      badge: "Relations toxiques",
+      title: "Se sortir des sch\u00e9mas qui font mal",
+      body: "Manipulation, emprise, cycles de rupture et retour, deuil impossible, patterns qui se r\u00e9p\u00e8tent. On ne choisit pas consciemment de r\u00e9p\u00e9ter ce qui blesse. Comprendre d\u2019o\u00f9 \u00e7a vient, c\u2019est le premier pas pour choisir autrement.",
+      cta: "En parler",
       href: "/rendez-vous",
-      ctaSecondaire: "En savoir plus",
-      hrefSecondaire: "/mesange",
     },
     {
-      badge: "Sur la dur\u00e9e",
-      title: "Accompagnement continu",
-      body: "Plusieurs rencontres dans le temps, avec un suivi document\u00e9 \u00e0 chaque \u00e9tape. Pour ceux qui traversent quelque chose de plus long.",
-      cta: "Commencer",
+      badge: "Vie de couple",
+      title: "Ce qui se passe entre deux personnes",
+      body: "Communication bris\u00e9e, conflits cycliques, d\u00e9sir qui s\u2019\u00e9teint, jalousie, mensonge, \u00e9loignement silencieux. Nos praticiens accompagnent les individus et les couples \u2014 pour renouer avec ce qui compte vraiment.",
+      cta: "En parler",
       href: "/rendez-vous",
-      ctaSecondaire: "En savoir plus",
-      hrefSecondaire: "/mesange",
     },
   ],
-  praticiens: [
+  equilibre: [
     {
-      badge: "Rejoignez l\u2019\u00e9quipe",
-      title: "Devenir praticien M\u00c9SANGES",
-      body: "IVIA vous offre une plateforme structur\u00e9e, des clients d\u00e9j\u00e0 orient\u00e9s et les outils pour exercer \u2014 sans la gestion administrative.",
-      cta: "Rejoindre l\u2019\u00e9quipe",
-      href: "/praticiens",
-      ctaSecondaire: "D\u00e9couvrir les outils",
-      hrefSecondaire: "/praticiens",
+      badge: "Alimentation\u00a0& corps",
+      title: "Votre rapport \u00e0 la nourriture et \u00e0 votre corps",
+      body: "Restriction, compulsion, honte, relation perturb\u00e9e aux aliments. Ce que vous mangez \u2014 ou refusez de manger \u2014 parle souvent d\u2019autre chose. Retrouver un rapport apais\u00e9 \u00e0 la nourriture et \u00e0 son corps, c\u2019est possible.",
+      cta: "En parler",
+      href: "/rendez-vous",
     },
     {
-      badge: "D\u00e9j\u00e0 praticien",
-      title: "Acc\u00e9der \u00e0 votre espace",
-      body: "Consultez vos prochains rendez-vous, vos notes de s\u00e9ance et les demandes de nouveaux clients depuis votre espace d\u00e9di\u00e9.",
-      cta: "Se connecter",
-      href: "/acces-client",
-      ctaSecondaire: "D\u00e9couvrir les outils",
-      hrefSecondaire: "/praticiens",
+      badge: "Rythme\u00a0& sens",
+      title: "Se retrouver quand tout s\u2019acc\u00e9l\u00e8re",
+      body: "\u00c9puisement profond, surcharge cognitive, difficult\u00e9 \u00e0 dormir, perte de sens, sentiment de flotter sans ancrage. L\u2019\u00e9quilibre ne revient pas seul. Nos praticiens vous aident \u00e0 nommer ce qui cloche \u2014 et \u00e0 retrouver le fil.",
+      cta: "En parler",
+      href: "/rendez-vous",
     },
   ],
 };
@@ -85,29 +71,28 @@ const CARDS: Record<
 const VALEURS = [
   {
     glyph: "⊘",
-    label: "Aucun dossier m\u00e9dical",
-    body: "Vous n\u2019avez pas \u00e0 vous qualifier pour \u00eatre entendu. Aucun formulaire clinique, aucune \u00e9tiquette diagnostique.",
+    label: "Sans \u00e9tiquette ni diagnostic",
+    body: "Vous n\u2019avez pas besoin d\u2019un dossier m\u00e9dical ou d\u2019un diagnostic pour \u00eatre entendu. Ce qui vous p\u00e8se suffit pour commencer.",
   },
   {
     glyph: "◎",
-    label: "Praticiens qu\u00e9b\u00e9cois form\u00e9s",
-    body: "Nos praticiens sont form\u00e9s \u00e0 l\u2019\u00e9coute active non-directive. Vous repartez avec de vraies pistes, pas des platitudes.",
+    label: "Avec ou sans le r\u00e9seau de la sant\u00e9",
+    body: "Nos praticiens travaillent en compl\u00e9ment \u2014 ou enti\u00e8rement en dehors \u2014 du syst\u00e8me de sant\u00e9 traditionnel. Vous choisissez votre parcours.",
   },
   {
     glyph: "◇",
-    label: "Disponible 7\u202fjours sur\u202f7",
-    body: "Trouvez un cr\u00e9neau quand vous en avez besoin, sans attendre des semaines.",
+    label: "Depuis les racines, si vous le souhaitez",
+    body: "Enfance, parents, h\u00e9ritage transg\u00e9n\u00e9rationnel. Si vous voulez aller au fond des choses, vos praticiens vous y accompagnent.",
   },
   {
     glyph: "◻",
-    label: "Confidentialit\u00e9 stricte",
-    body: "Vos conversations restent strictement confidentielles. Aucun partage sans votre consentement explicite.",
+    label: "Des praticiens qu\u00e9b\u00e9cois form\u00e9s",
+    body: "Form\u00e9s \u00e0 l\u2019\u00e9coute profonde et non-directive. Au Qu\u00e9bec. Disponibles sans d\u00e9lai. Confidentialit\u00e9 stricte.",
   },
 ];
 
 export default function HomePage() {
-  const [activeTab, setActiveTab]   = useState("individuel");
-  const [showSondage, setShowSondage] = useState(false);
+  const [activeTab, setActiveTab] = useState("dependances");
 
   return (
     <PublicLayout>
@@ -130,23 +115,24 @@ export default function HomePage() {
 
             <div className="v3-hero__inner v3-hero__inner--eq">
               <h1 id="hero-title" className="v3-hero__h1 v3-hero__h1--eq">
-                Faites affaire avec&nbsp;<em>quelqu&apos;un qui vous &eacute;coute.</em>
+                Ce que vous traversez a des&nbsp;racines &mdash;&nbsp;<em>explorons-les ensemble.</em>
               </h1>
               <p className="v3-hero__lede v3-hero__lede--eq">
-                Parlez. D&eacute;posez. Repartez plus l&eacute;ger.
-                Au Qu&eacute;bec. Aujourd&apos;hui. Sans liste d&apos;attente.
+                D&eacute;pendances. Relations difficiles. &Eacute;quilibre &agrave; retrouver.
+                Des praticiens qu&eacute;b&eacute;cois disponibles aujourd&apos;hui &mdash;
+                sans liste d&apos;attente, sans jugement.
               </p>
               <div className="v3-hero__cta-row">
                 <Link href="/rendez-vous" className="v3-btn v3-btn--ink">
                   Prendre rendez-vous
                   <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
                 </Link>
-                <Link href="/mesange" className="v3-btn v3-btn--ghost">
-                  D&eacute;couvrir M&Eacute;SANGES
+                <Link href="/demarche" className="v3-btn v3-btn--ghost">
+                  Comment &ccedil;a fonctionne
                 </Link>
               </div>
               <p className="v3-hero__trinity">
-                <strong>M&Eacute;SANGES</strong> &mdash; un service IVIA &mdash; Pens&eacute; par et pour les Qu&eacute;b&eacute;cois
+                Un service IVIA &mdash; au Qu&eacute;bec &mdash; avec ou sans le r&eacute;seau de la sant&eacute;
               </p>
             </div>
 
@@ -155,40 +141,40 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── PROOF BAR — 3 colonnes chiffres clés ──────────────── */}
+          {/* ── PROOF BAR — 3 colonnes engagements ────────────────── */}
           <section className="v3-proof-bar" aria-label="Nos engagements">
             <div className="v3-proof-bar__inner">
               <div className="v3-proof-bar__stat">
-                <strong>+ de praticiens</strong>
-                <span>en exercice sur la plateforme</span>
+                <strong>Sans liste d&apos;attente</strong>
+                <span>D&egrave;s aujourd&apos;hui, partout au Qu&eacute;bec</span>
               </div>
               <div className="v3-proof-bar__sep" aria-hidden="true" />
               <div className="v3-proof-bar__stat">
-                <strong>Gagnez jusqu&apos;&agrave;&nbsp;7&times;</strong>
-                <span>plus de clart&eacute; qu&apos;en r&eacute;seau social</span>
+                <strong>Aucun diagnostic requis</strong>
+                <span>Vous n&apos;avez pas &agrave; vous qualifier pour &ecirc;tre entendu</span>
               </div>
               <div className="v3-proof-bar__sep" aria-hidden="true" />
               <div className="v3-proof-bar__stat">
-                <strong>0&nbsp;dossier m&eacute;dical</strong>
-                <span>aucune &eacute;tiquette, aucun diagnostic</span>
+                <strong>Avec ou sans le r&eacute;seau de sant&eacute;</strong>
+                <span>Vous choisissez votre parcours</span>
               </div>
             </div>
           </section>
 
-          {/* ── SERVICES — onglets + cartes ───────────────────────── */}
+          {/* ── CE QUI VOUS AMÈNE ICI — onglets + cartes ─────────── */}
           <section className="v3-section v3-services" id="services" aria-labelledby="services-title">
             <div className="v3-section__inner">
-              <p className="v3-kicker">Nos services</p>
+              <p className="v3-kicker">Ce qui vous am&egrave;ne ici</p>
               <h2 id="services-title" className="v3-h2 v3-h2--center">
-                Ce que vous pouvez faire <em>sur M&Eacute;SANGES.</em>
+                Des r&eacute;ponses pour ce qui vous touche <em>vraiment.</em>
               </h2>
 
-              <div className="v3-services__tabs" role="tablist" aria-label="Cat&eacute;gories de services">
+              <div className="v3-services__tabs" role="tablist" aria-label="Th&egrave;mes">
                 {TABS.map(tab => (
                   <button
                     key={tab.id}
                     role="tab"
-                    aria-selected={activeTab === tab.id ? "true" : "false"}
+                    aria-selected={activeTab === tab.id}
                     aria-controls={`panel-${tab.id}`}
                     id={`tab-${tab.id}`}
                     onClick={() => setActiveTab(tab.id)}
@@ -217,8 +203,8 @@ export default function HomePage() {
                         {card.cta}
                         <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
                       </Link>
-                      {card.ctaSecondaire && (
-                        <Link href={card.hrefSecondaire!} className="v3-btn v3-btn--ghost v3-btn--sm">
+                      {card.ctaSecondaire && card.hrefSecondaire && (
+                        <Link href={card.hrefSecondaire} className="v3-btn v3-btn--ghost v3-btn--sm">
                           {card.ctaSecondaire}
                         </Link>
                       )}
@@ -229,11 +215,11 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── VALEURS CLÉS — 4 blocs ───────────────────────────── */}
+          {/* ── NOTRE APPROCHE — 4 blocs ──────────────────────────── */}
           <section className="v3-section v3-valeurs-cles" aria-labelledby="valeurs-title">
             <div className="v3-section__inner">
               <h2 id="valeurs-title" className="v3-h2 v3-h2--center v3-valeurs-cles__heading">
-                Faites valoir votre mieux-&ecirc;tre avec <em>une des meilleures solutions au Qu&eacute;bec.</em>
+                Une approche qui vous respecte &mdash; <em>&agrave; votre mesure.</em>
               </h2>
               <div className="v3-valeurs-cles__grid">
                 {VALEURS.map(v => (
@@ -249,51 +235,43 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* ── NUMÉRIQUE ────────────────────────────────────────── */}
-          <section className="v3-section v3-pathways" id="voies" aria-labelledby="numerique-title">
+          {/* ── ALLER EN PROFONDEUR — si on le souhaite ──────────── */}
+          <section className="v3-section v3-pathways" id="en-profondeur" aria-labelledby="profondeur-title">
             <div className="v3-section__inner">
-              <p className="v3-kicker">Le num&eacute;rique et nous</p>
-              <h2 id="numerique-title" className="v3-h2 v3-h2--center">
-                Ce que le num&eacute;rique <em>fait &agrave; votre &eacute;quilibre.</em>
+              <p className="v3-kicker">Aller plus loin</p>
+              <h2 id="profondeur-title" className="v3-h2 v3-h2--center">
+                Red&eacute;finir son existence &mdash; <em>si on le souhaite.</em>
               </h2>
-              <p className="v3-section__intro sondage-section-intro">La connexion permanente cr&eacute;e des charges invisibles. M&Eacute;SANGES aide &agrave; les nommer, sans jugement &mdash; pour retrouver un rapport sain &agrave; la technologie et &agrave; soi-m&ecirc;me.</p>
-              <div className="sondage-cta-wrap">
-                <button
-                  onClick={() => setShowSondage(true)}
-                  className="v3-btn v3-btn--primary"
-                >
-                  Sonder mon rapport au num&eacute;rique
-                  <span aria-hidden="true">&rarr;</span>
-                </button>
-                <p className="sondage-cta-caption">3 minutes &middot; 7 questions &middot; r&eacute;sultat imm&eacute;diat</p>
-              </div>
-              <ul className="v3-pathways__grid" aria-label="Probl&egrave;mes li&eacute;s au num&eacute;rique">
+              <p className="v3-section__intro">
+                Il y a des choses que l&apos;on tra&icirc;ne depuis longtemps. Des sch&eacute;mas qui se r&eacute;p&egrave;tent sans qu&apos;on sache pourquoi. Des r&eacute;actions qui d&eacute;passent la situation. Nos praticiens peuvent vous accompagner aussi loin que vous le souhaitez &mdash; y compris dans les couches les plus profondes de votre histoire.
+              </p>
+              <ul className="v3-pathways__grid" aria-label="&Eacute;tapes d&apos;exploration">
                 <li className="v3-pathway v3-pathway--ink">
                   <div className="v3-pathway__inner">
-                    <span className="v3-pathway__kicker">Isolation</span>
-                    <h3 className="v3-pathway__title">Connect&eacute;&middot;e, mais seul&middot;e</h3>
-                    <p className="v3-pathway__body">Les r&eacute;seaux sociaux donnent l&apos;illusion de proximit&eacute; tout en creusant la distance r&eacute;elle. Comparaison, validation externe, peur de rater &mdash; une solitude paradoxale s&apos;installe.</p>
+                    <span className="v3-pathway__kicker">Les origines</span>
+                    <h3 className="v3-pathway__title">Depuis votre naissance</h3>
+                    <p className="v3-pathway__body">L&apos;histoire de votre arriv&eacute;e au monde, les conditions dans lesquelles vous avez grandi, les mod&egrave;les int&eacute;gr&eacute;s avant m&ecirc;me que vous puissiez les choisir. Tout commence l&agrave;.</p>
                   </div>
                 </li>
                 <li className="v3-pathway v3-pathway--sage">
                   <div className="v3-pathway__inner">
-                    <span className="v3-pathway__kicker">Surcharge</span>
-                    <h3 className="v3-pathway__title">Trop d&apos;informations, trop peu de clart&eacute;</h3>
-                    <p className="v3-pathway__body">Notifications, flux continus, d&eacute;cisions impossibles &agrave; prioriser. Le bruit num&eacute;rique &eacute;puise la capacit&eacute; de concentration et brouille ce qui compte vraiment.</p>
+                    <span className="v3-pathway__kicker">Les liens fondateurs</span>
+                    <h3 className="v3-pathway__title">Vos parents, votre h&eacute;ritage</h3>
+                    <p className="v3-pathway__body">La nature du lien &agrave; votre m&egrave;re, &agrave; votre p&egrave;re. Ce qu&apos;ils vous ont transmis &mdash; voulu ou non. Les deuils jamais faits, les amours jamais exprim&eacute;s. Ces dynamiques vivent encore en vous, aujourd&apos;hui.</p>
                   </div>
                 </li>
                 <li className="v3-pathway v3-pathway--cream">
                   <div className="v3-pathway__inner">
-                    <span className="v3-pathway__kicker">Disponibilit&eacute; constante</span>
-                    <h3 className="v3-pathway__title">Jamais vraiment au repos</h3>
-                    <p className="v3-pathway__body">Toujours joignable, toujours r&eacute;actif&middot;ve. La fronti&egrave;re entre vie personnelle et exigences ext&eacute;rieures s&apos;efface &mdash; le repos devient difficile, la r&eacute;cup&eacute;ration incompl&egrave;te.</p>
+                    <span className="v3-pathway__kicker">La m&eacute;moire des g&eacute;n&eacute;rations</span>
+                    <h3 className="v3-pathway__title">Vos anc&ecirc;tres, si n&eacute;cessaire</h3>
+                    <p className="v3-pathway__body">Certaines blessures traversent les g&eacute;n&eacute;rations. Deuils non r&eacute;solus, traumatismes tu&eacute;s, secrets de famille. Les reconna&icirc;tre &mdash; pas pour les porter, mais pour s&apos;en lib&eacute;rer.</p>
                   </div>
                 </li>
                 <li className="v3-pathway v3-pathway--ink">
                   <div className="v3-pathway__inner">
-                    <span className="v3-pathway__kicker">Identit&eacute; fragment&eacute;e</span>
-                    <h3 className="v3-pathway__title">Soi en ligne, soi r&eacute;el</h3>
-                    <p className="v3-pathway__body">Maintenir une image num&eacute;rique coh&eacute;rente &eacute;puise. La dissonance entre ce qu&apos;on projette et ce qu&apos;on vit cr&eacute;e une tension sourde, difficile &agrave; nommer.</p>
+                    <span className="v3-pathway__kicker">Votre r&eacute;alit&eacute; d&apos;aujourd&apos;hui</span>
+                    <h3 className="v3-pathway__title">Se positionner, s&apos;&eacute;panouir</h3>
+                    <p className="v3-pathway__body">Tout ce travail vise un seul objectif&nbsp;: vous positionner clairement dans votre vie actuelle, et d&eacute;gager les voies d&apos;un &eacute;panouissement r&eacute;el et durable &mdash; avec ou sans le r&eacute;seau de la sant&eacute;.</p>
                   </div>
                 </li>
               </ul>
@@ -302,9 +280,6 @@ export default function HomePage() {
 
         </main>
       </div>
-      {showSondage && (
-        <NumeriqueSondagePopup onClose={() => setShowSondage(false)} />
-      )}
     </PublicLayout>
   );
 }
