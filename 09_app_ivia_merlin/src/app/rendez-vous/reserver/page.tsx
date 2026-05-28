@@ -43,16 +43,8 @@ function formatLongDate(iso: string): string {
 }
 
 // ── Types locaux ──
-type Step = "calendar" | "confirming" | "paying" | "done";
+type Step = "calendar" | "confirming";
 type ViewMode = "month" | "week" | "day";
-
-type InteracResult = {
-  recipient_email: string;
-  recipient_name: string;
-  transfer_reference: string;
-  amount_cents: number;
-  instructions_emailed: boolean;
-};
 
 // ── Composant ──
 export default function ReserverPage() {
@@ -71,7 +63,6 @@ export default function ReserverPage() {
   const [selectedSlot, setSelectedSlot] = useState<AvailableSlotRecord | null>(null);
   const [heldSlot, setHeldSlot] = useState<BookingSlotRecord | null>(null);
 
-  const [interacResult, setInteracResult] = useState<InteracResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [working, setWorking] = useState(false);
 
@@ -218,23 +209,31 @@ export default function ReserverPage() {
           entitlement_type_code: "intake_session_credit",
           entitlement_quantity: 1,
         });
-        setInteracResult({
+        const ir = {
           recipient_email: result.recipient_email,
           recipient_name: result.recipient_name,
           transfer_reference: result.transfer_reference,
           amount_cents: result.amount_cents,
           instructions_emailed: result.instructions_emailed,
-        });
+        };
+        sessionStorage.setItem(
+          "ivia_booking_confirmation",
+          JSON.stringify({ interacResult: ir, selectedSlot: selectedSlot }),
+        );
       } else {
-        setInteracResult({
+        const ir = {
           recipient_email: "david@fa9.quebec",
           recipient_name: "IVIA",
           transfer_reference: `IVIA-${heldSlot.id.split("-")[0].toUpperCase()}`,
           amount_cents: 6500,
           instructions_emailed: false,
-        });
+        };
+        sessionStorage.setItem(
+          "ivia_booking_confirmation",
+          JSON.stringify({ interacResult: ir, selectedSlot: selectedSlot }),
+        );
       }
-      setStep("paying");
+      router.push("/rendez-vous/confirmation");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erreur lors de la création du paiement.");
     } finally {
@@ -551,57 +550,6 @@ export default function ReserverPage() {
               <button type="button" className="button button-text" onClick={handleBack}>
                 ← Choisir un autre créneau
               </button>
-            </div>
-          ) : null}
-
-          {/* ══ INTERAC ══ */}
-          {step === "paying" && interacResult && selectedSlot ? (
-            <div className="card stack-md reserver-interac">
-              <div className="reserver-interac__confirm">
-                <p className="reserver-interac__check">✓</p>
-                <div>
-                  <p><strong>Créneau réservé</strong></p>
-                  <p className="inline-note">{formatLongDate(selectedSlot.slot_date)} à {selectedSlot.start_time.slice(0, 5)}</p>
-                </div>
-              </div>
-
-              <h3>Paiement par Interac Virement</h3>
-              <p className="inline-note">Depuis votre application bancaire, envoyez le virement avec ces informations :</p>
-
-              <div className="interac-details">
-                <div className="interac-row">
-                  <span className="interac-row__label">Destinataire</span>
-                  <span className="interac-row__value">{interacResult.recipient_name}</span>
-                </div>
-                <div className="interac-row">
-                  <span className="interac-row__label">Adresse courriel</span>
-                  <span className="interac-row__value mono">{interacResult.recipient_email}</span>
-                </div>
-                <div className="interac-row">
-                  <span className="interac-row__label">Montant</span>
-                  <span className="interac-row__value"><strong>{(interacResult.amount_cents / 100).toFixed(2)} $</strong></span>
-                </div>
-                <div className="interac-row interac-row--highlight">
-                  <span className="interac-row__label">Référence (message obligatoire)</span>
-                  <span className="interac-row__value mono interac-reference">{interacResult.transfer_reference}</span>
-                </div>
-              </div>
-
-              <div className="card message message-info">
-                <p className="inline-note">
-                  <strong>Inscrivez obligatoirement</strong> la référence{" "}
-                  <span className="mono">{interacResult.transfer_reference}</span>{" "}
-                  dans le champ message ou note de votre virement. Votre rendez-vous sera confirmé dès réception, sous 24 h.
-                </p>
-              </div>
-
-              {interacResult.instructions_emailed ? (
-                <p className="inline-note">Un courriel avec ces instructions vous a été envoyé.</p>
-              ) : null}
-
-              <Link href="/mon-espace" className="button button-primary">
-                Voir mon espace
-              </Link>
             </div>
           ) : null}
 
