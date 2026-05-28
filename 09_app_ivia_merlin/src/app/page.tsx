@@ -144,7 +144,7 @@ export default function HomePage() {
           <section id="comment-ca-fonctionne" className="v3-proof-bar" aria-label="Nos engagements">
             <div className="v3-proof-bar__inner">
               <div className="v3-proof-bar__stat">
-                <strong>Sans liste d&apos;attente</strong>
+                <strong>Aucune attente</strong>
                 <span>D&egrave;s aujourd&apos;hui, partout au Qu&eacute;bec</span>
               </div>
               <div className="v3-proof-bar__sep" aria-hidden="true" />
@@ -154,7 +154,7 @@ export default function HomePage() {
               </div>
               <div className="v3-proof-bar__sep" aria-hidden="true" />
               <div className="v3-proof-bar__stat">
-                <strong>Vous connectez</strong>
+                <strong>Devenir membre</strong>
                 <span>Ouvrez un compte et prenez rendez-vous</span>
               </div>
             </div>
@@ -163,30 +163,30 @@ export default function HomePage() {
           {/* ── COMMENT ÇA FONCTIONNE — 3 étapes ──────────────── */}
           <section className="v3-section" aria-labelledby="how-title" style={{ background: "#fff", borderTop: "1px solid #e8e4df", borderBottom: "1px solid #e8e4df" }}>
             <div className="v3-section__inner" style={{ maxWidth: "760px" }}>
-              <p className="v3-kicker">Comment &ccedil;a fonctionne</p>
+              <p className="v3-kicker">D&eacute;couvrir IVIA-M&Eacute;SAGES</p>
               <h2 id="how-title" className="v3-h2 v3-h2--center" style={{ marginBottom: "3rem", color: "#0d0d08", fontWeight: 800, letterSpacing: "-0.02em" }}>
-                IVIA &mdash; &Eacute;coute &amp; &eacute;quilibre
+                L&apos;unique plate-forme d&apos;&eacute;coute
               </h2>
               <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "2.5rem" }}>
                 <li style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
                   <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.5rem", height: "2.5rem", minWidth: "2.5rem", borderRadius: "50%", background: "#3d6b4f", color: "#ffffff", fontWeight: 700, fontSize: "1rem" }}>1</span>
                   <div>
-                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>Ouvrir un compte et prendre rendez-vous</h3>
-                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>D&egrave;s aujourd&apos;hui. Partout au Qu&eacute;bec. &Agrave; votre rythme &mdash; une s&eacute;ance ou un suivi, c&apos;est vous qui d&eacute;cidez.</p>
+                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>Votre espace personnalis&eacute;</h3>
+                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>D&egrave;s aujourd&apos;hui. &Agrave; votre rythme &mdash; D&eacute;finissez votre parcours et la voie du bien-&ecirc;tre qui vous ressemble.</p>
                   </div>
                 </li>
                 <li style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
                   <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.5rem", height: "2.5rem", minWidth: "2.5rem", borderRadius: "50%", background: "#3d6b4f", color: "#ffffff", fontWeight: 700, fontSize: "1rem" }}>2</span>
                   <div>
-                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>D&eacute;crivez ce que vous traversez</h3>
-                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>En quelques minutes, sans dossier m&eacute;dical ni diagnostic. Votre pr&eacute;nom ou un alias suffit pour commencer.</p>
+                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>D&eacute;crivez-vous</h3>
+                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>En quelques minutes, sans dossier m&eacute;dical ni diagnostic. Juste votre histoire et vos besoins.</p>
                   </div>
                 </li>
                 <li style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
                   <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.5rem", height: "2.5rem", minWidth: "2.5rem", borderRadius: "50%", background: "#3d6b4f", color: "#ffffff", fontWeight: 700, fontSize: "1rem" }}>3</span>
                   <div>
-                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>On vous &eacute;coute &amp; vous accompagne</h3>
-                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>&Agrave; votre premier rendez-vous &mdash; sans jugement, sans &eacute;tiquette &mdash; nous prenons ensemble la mesure de votre situation et de vos besoins.</p>
+                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>Enfin votre parcours personnel</h3>
+                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>Dans votre espace vous pourrez tout dire et comprendre. Profitez de votre journal pour d&eacute;poser vos pens&eacute;es du moment. Elles favoriseront l&apos;analyse de votre situation et acc&eacute;l&eacute;reront la compr&eacute;hension de vos &eacute;tats &eacute;motionnels et physiologiques. Que la reg&eacute;n&eacute;ration commence.</p>
                   </div>
                 </li>
               </ol>
