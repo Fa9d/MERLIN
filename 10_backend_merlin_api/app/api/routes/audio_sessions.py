@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator
+from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator, require_production_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_session import AudioSession
@@ -111,7 +111,7 @@ def provision_audio_session(
     session_id: str,
     payload: AudioSessionProvision,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_production_roles()),
 ) -> AudioSession:
     session_record = _get_owned_session_or_404(session_id, db, current_user)
 
@@ -200,7 +200,7 @@ def get_audio_session(
 def create_operator_join_context(
     audio_session_id: str,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_production_roles()),
 ) -> AudioSessionJoinRead:
     audio_session = _get_owned_audio_session_or_404(audio_session_id, db, current_user)
 
@@ -220,7 +220,7 @@ def create_operator_join_context(
 def create_client_join_context(
     audio_session_id: str,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_production_roles()),
 ) -> AudioSessionJoinRead:
     """Génère un contexte LiveKit pour le participant client (USAGE OPÉRATEUR INTERNE).
 
