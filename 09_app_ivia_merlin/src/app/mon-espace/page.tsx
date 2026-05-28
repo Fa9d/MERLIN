@@ -10,12 +10,18 @@ import {
   getMyClient,
   listMyBookings,
   listMyEntitlements,
+  listMyJournal,
+  createMyJournalEntry,
+  updateMyJournalEntry,
+  archiveMyJournalEntry,
   PUBLIC_CLIENT_STORAGE_KEY,
   readStoredPublicClientSession,
   setMyPassword,
   updateMyClient,
   type BookingSlotRecord,
   type ClientEntitlementRecord,
+  type JournalEntryRecord,
+  type JournalEntryType,
   type LoginResponse,
   type MyClientRecord,
 } from "@/lib/merlin-api";
@@ -26,6 +32,214 @@ type Dashboard = {
   bookings: BookingSlotRecord[];
   entitlements: ClientEntitlementRecord[];
 };
+
+// ── Journal client ──────────────────────────────────────────────────────────
+
+const ENTRY_TYPE_LABELS: Record<JournalEntryType, string> = {
+  aujourd_hui: "Aujourd\u2019hui",
+  souvenir: "Souvenir",
+  reflexion: "R\u00e9flexion",
+};
+
+function JournalTab({ token }: { token: string }) {
+  const [entries, setEntries] = useState<JournalEntryRecord[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+
+  // form state
+  const [entryType, setEntryType] = useState<JournalEntryType>("aujourd_hui");
+  const [bodyText, setBodyText] = useState("");
+  const [emotionalTone, setEmotionalTone] = useState("");
+  const [eventYearRef, setEventYearRef] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // archive confirmation
+  const [archivingId, setArchivingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setIsLoading(true);
+      try {
+        const data = await listMyJournal(token);
+        if (!cancelled) setEntries(data);
+      } catch (err) {
+        if (!cancelled) setErrorMsg(err instanceof Error ? err.message : "Erreur de chargement.");
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    }
+    void load();
+    return () => { cancelled = true; };
+  }, [token]);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSaveError(null);
+    setIsSaving(true);
+    try {
+      const entry = await createMyJournalEntry(
+        {
+          entry_type: entryType,
+          body_text: bodyText.trim(),
+          emotional_tone: emotionalTone.trim() || null,
+          event_year_ref: eventYearRef ? parseInt(eventYearRef, 10) : null,
+        },
+        token,
+      );
+      setEntries((prev) => (prev ? [entry, ...prev] : [entry]));
+      setBodyText("");
+      setEmotionalTone("");
+      setEventYearRef("");
+      setEntryType("aujourd_hui");
+      setShowForm(false);
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Erreur lors de l\u2019enregistrement.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function handleArchive(entryId: string) {
+    setArchivingId(entryId);
+    try {
+      await archiveMyJournalEntry(entryId, token);
+      setEntries((prev) => prev ? prev.filter((e) => e.id !== entryId) : prev);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors de la suppression.");
+    } finally {
+      setArchivingId(null);
+    }
+  }
+
+  return (
+    <div className="mon-espace-tab-panel stack-md">
+      <div className="mon-espace-journal-header">
+        <div>
+          <h3>Mon journal</h3>
+          <p className="inline-note">
+            Un espace personnel pour noter ce qui traverse votre d\u00e9marche — moments du quotidien, souvenirs, r\u00e9flexions.
+          </p>
+        </div>
+        {!showForm ? (
+          <button type="button" className="button button-primary button-sm" onClick={() => setShowForm(true)}>
+            + Nouvelle entr\u00e9e
+          </button>
+        ) : null}
+      </div>
+
+      {showForm ? (
+        <article className="card stack-md">
+          <h4>Nouvelle entr\u00e9e</h4>
+          <form className="form-stack" onSubmit={(e) => { void handleSubmit(e); }}>
+            <label className="field">
+              <span>Type</span>
+              <select value={entryType} onChange={(e) => setEntryType(e.target.value as JournalEntryType)}>
+                {(Object.entries(ENTRY_TYPE_LABELS) as [JournalEntryType, string][]).map(([code, label]) => (
+                  <option key={code} value={code}>{label}</option>
+                ))}
+              </select>
+            </label>
+
+            <label className="field">
+              <span>Ce que vous souhaitez noter</span>
+              <textarea
+                required
+                rows={5}
+                value={bodyText}
+                onChange={(e) => setBodyText(e.target.value)}
+                placeholder="Librement, à votre rythme\u2026"
+              />
+            </label>
+
+            <div className="form-grid-2">
+              <label className="field">
+                <span>Ton \u00e9motionnel (optionnel)</span>
+                <input
+                  value={emotionalTone}
+                  onChange={(e) => setEmotionalTone(e.target.value)}
+                  placeholder="Ex. : s\u00e9r\u00e9nit\u00e9, tristesse, soulagement\u2026"
+                />
+              </label>
+              <label className="field">
+                <span>Ann\u00e9e de r\u00e9f\u00e9rence (optionnel)</span>
+                <input
+                  type="number"
+                  min={1900}
+                  max={new Date().getFullYear()}
+                  value={eventYearRef}
+                  onChange={(e) => setEventYearRef(e.target.value)}
+                  placeholder="Ex. : 2019"
+                />
+              </label>
+            </div>
+
+            {saveError ? <p className="message message-error">{saveError}</p> : null}
+
+            <div className="public-access-actions">
+              <button type="submit" className="button button-primary" disabled={isSaving || !bodyText.trim()}>
+                {isSaving ? "Enregistrement\u2026" : "Enregistrer"}
+              </button>
+              <button
+                type="button"
+                className="button button-secondary"
+                onClick={() => { setShowForm(false); setSaveError(null); }}
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
+        </article>
+      ) : null}
+
+      {isLoading ? (
+        <section className="card"><p className="inline-note">Chargement du journal\u2026</p></section>
+      ) : errorMsg ? (
+        <section className="card message message-error"><p>{errorMsg}</p></section>
+      ) : entries && entries.length === 0 ? (
+        <section className="card card--muted">
+          <p className="inline-note">Votre journal est vide pour l\u2019instant. Chaque entr\u00e9e reste priv\u00e9e — elle n\u2019est visible que par vous.</p>
+        </section>
+      ) : entries ? (
+        <ul className="journal-entries list-plain stack-md">
+          {entries.map((entry) => (
+            <li key={entry.id}>
+              <article className="card stack-sm">
+                <div className="journal-entry__meta">
+                  <span className="journal-entry__type-badge">{ENTRY_TYPE_LABELS[entry.entry_type as JournalEntryType] ?? entry.entry_type}</span>
+                  <time className="inline-note" dateTime={entry.written_at}>
+                    {new Date(entry.written_at).toLocaleDateString("fr-CA", { year: "numeric", month: "long", day: "numeric" })}
+                  </time>
+                  {entry.event_year_ref ? (
+                    <span className="inline-note">\u00b7 ann\u00e9e\u00a0{entry.event_year_ref}</span>
+                  ) : null}
+                </div>
+                <p className="journal-entry__body">{entry.body_text}</p>
+                {entry.emotional_tone ? (
+                  <p className="inline-note journal-entry__tone">{entry.emotional_tone}</p>
+                ) : null}
+                <div className="journal-entry__actions">
+                  <button
+                    type="button"
+                    className="button button-text button-sm"
+                    disabled={archivingId === entry.id}
+                    onClick={() => { void handleArchive(entry.id); }}
+                  >
+                    {archivingId === entry.id ? "Suppression\u2026" : "Supprimer"}
+                  </button>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+// ── Espace principal ────────────────────────────────────────────────────────
 
 function MonEspaceContent() {
   const router = useRouter();
@@ -39,7 +253,7 @@ function MonEspaceContent() {
   const [view, setView] = useState<"hub" | "dashboard">(isMagicWelcome ? "dashboard" : "hub");
   const [hasPraticienSession, setHasPraticienSession] = useState(false);
   const [praticienName, setPraticienName] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"apercu" | "rendez-vous" | "ressources" | "profil">("apercu");
+  const [activeTab, setActiveTab] = useState<"apercu" | "rendez-vous" | "journal" | "ressources" | "profil">("apercu");
   const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   async function handleCancelSlot(slotId: string) {
@@ -239,7 +453,7 @@ function MonEspaceContent() {
               </div>
             </div>
             <nav className="mon-espace-tabs" aria-label="Sections de votre espace">
-              {(["apercu", "rendez-vous", "ressources", "profil"] as const).map((tab) => (
+              {(["apercu", "rendez-vous", "journal", "ressources", "profil"] as const).map((tab) => (
                 <button
                   key={tab}
                   type="button"
@@ -248,6 +462,7 @@ function MonEspaceContent() {
                 >
                   {tab === "apercu" && "Vue d\u2019ensemble"}
                   {tab === "rendez-vous" && (upcomingBookings.length > 0 ? `Rendez-vous\u00a0(${upcomingBookings.length})` : "Rendez-vous")}
+                  {tab === "journal" && "Mon journal"}
                   {tab === "ressources" && "Ressources"}
                   {tab === "profil" && "Profil"}
                 </button>
@@ -489,12 +704,13 @@ function MonEspaceContent() {
                           </ul>
                         </article>
                       ) : null}
-                      <article className="card stack-md card--muted">
-                        <h3>Mon journal <span className="badge-soon">à venir</span></h3>
-                        <p className="inline-note">Un espace pour noter ce qui traverse votre démarche. Les consentements d&apos;enregistrement seront gérés ici.</p>
-                      </article>
                     </div>
                   </div>
+                )}
+
+                {/* ══ TAB : Journal ══ */}
+                {activeTab === "journal" && (
+                  <JournalTab token={data.session.access_token} />
                 )}
 
                 {/* ══ TAB : Profil ══ */}

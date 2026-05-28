@@ -15,7 +15,7 @@ function resolveMerlinApiBaseUrl(): string {
 export const MERLIN_API_BASE_URL = resolveMerlinApiBaseUrl();
 
 type RequestOptions = {
-  method?: "GET" | "POST" | "PATCH";
+  method?: "GET" | "POST" | "PATCH" | "DELETE";
   body?: unknown;
   token?: string;
 };
@@ -1171,4 +1171,72 @@ export async function updateMyClient(
     token,
   });
 }
+
+// ── Journal client (/me/journal) ───────────────────────────────────────────
+
+export type JournalEntryType = "aujourd_hui" | "souvenir" | "reflexion";
+
+export type JournalEntryRecord = {
+  id: string;
+  client_id: string;
+  linked_event_id: string | null;
+  entry_type: JournalEntryType;
+  body_text: string;
+  emotional_tone: string | null;
+  event_year_ref: number | null;
+  authored_by: string;
+  record_status: string;
+  written_at: string;
+  created_at: string;
+};
+
+export type JournalEntryCreatePayload = {
+  entry_type?: JournalEntryType;
+  body_text: string;
+  emotional_tone?: string | null;
+  event_year_ref?: number | null;
+  linked_event_id?: string | null;
+};
+
+export type JournalEntryUpdatePayload = {
+  entry_type?: JournalEntryType;
+  body_text?: string;
+  emotional_tone?: string | null;
+  event_year_ref?: number | null;
+};
+
+export async function listMyJournal(token: string): Promise<JournalEntryRecord[]> {
+  return request<JournalEntryRecord[]>("/api/v1/me/journal", { token });
+}
+
+export async function createMyJournalEntry(
+  payload: JournalEntryCreatePayload,
+  token: string,
+): Promise<JournalEntryRecord> {
+  return request<JournalEntryRecord>("/api/v1/me/journal", {
+    method: "POST",
+    body: payload,
+    token,
+  });
+}
+
+export async function updateMyJournalEntry(
+  entryId: string,
+  payload: JournalEntryUpdatePayload,
+  token: string,
+): Promise<JournalEntryRecord> {
+  return request<JournalEntryRecord>(`/api/v1/me/journal/${entryId}`, {
+    method: "PATCH",
+    body: payload,
+    token,
+  });
+}
+
+export async function archiveMyJournalEntry(entryId: string, token: string): Promise<void> {
+  await request<void>(`/api/v1/me/journal/${entryId}`, {
+    method: "DELETE",
+    token,
+  });
+}
+
 

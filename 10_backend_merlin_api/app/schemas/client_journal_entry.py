@@ -14,6 +14,17 @@ class ClientJournalEntryCreate(MerlinSchema):
     written_at: datetime | None = None  # si omis, now() en base
 
 
+class MyJournalEntryCreate(MerlinSchema):
+    """Utilisé par /me/journal — client_id est injecté depuis la session, pas envoyé par le client."""
+
+    linked_event_id: str | None = None
+    entry_type: JournalEntryTypeCode = JournalEntryTypeCode.aujourd_hui
+    body_text: str
+    emotional_tone: str | None = None
+    event_year_ref: int | None = None
+    written_at: datetime | None = None
+
+
 class ClientJournalEntryUpdate(MerlinSchema):
     linked_event_id: str | None = None
     entry_type: JournalEntryTypeCode | None = None
