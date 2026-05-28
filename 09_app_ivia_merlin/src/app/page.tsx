@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
 import "./styles.v3.css";
 import "./styles.orientation.css";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { MesangeMark } from "@/components/MesangeMark";
+import { readStoredPublicClientSession } from "@/lib/merlin-api";
+
+type AuthState = "anonymous" | "client" | "praticien";
 
 const TABS = [
   { id: "dependances", label: "D\u00e9pendances" },
@@ -93,6 +96,18 @@ const VALEURS = [
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("dependances");
+  const [authState, setAuthState] = useState<AuthState>("anonymous");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (window.localStorage.getItem("merlin_praticien_session")) {
+        setAuthState("praticien");
+        return;
+      }
+    } catch {}
+    setAuthState(readStoredPublicClientSession() !== null ? "client" : "anonymous");
+  }, []);
 
   return (
     <PublicLayout>
@@ -122,13 +137,32 @@ export default function HomePage() {
                 Retrouvez &eacute;quilibre et v&eacute;rit&eacute;
               </p>
               <div className="v3-hero__cta-row">
-                <Link href="/rendez-vous" className="v3-btn v3-btn--ink">
-                  Prendre rendez-vous
-                  <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
-                </Link>
-                <Link href="#comment-ca-fonctionne" className="v3-btn v3-btn--ghost">
-                  Comment &ccedil;a fonctionne
-                </Link>
+                {authState === "praticien" ? (
+                  <Link href="/espace-praticien" className="v3-btn v3-btn--ink">
+                    Tableau de bord
+                    <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
+                  </Link>
+                ) : authState === "client" ? (
+                  <>
+                    <Link href="/mon-espace" className="v3-btn v3-btn--ink">
+                      Mon espace
+                      <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
+                    </Link>
+                    <Link href="/rendez-vous" className="v3-btn v3-btn--ghost">
+                      Prendre rendez-vous
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/rendez-vous" className="v3-btn v3-btn--ink">
+                      Prendre rendez-vous
+                      <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
+                    </Link>
+                    <Link href="#comment-ca-fonctionne" className="v3-btn v3-btn--ghost">
+                      Comment &ccedil;a fonctionne
+                    </Link>
+                  </>
+                )}
               </div>
               <p className="v3-hero__trinity">
                 IVIA est une plateforme d&apos;&eacute;coute et de compr&eacute;hension ind&eacute;pendante et sans parti pris. Venez tel que vous &ecirc;tes.

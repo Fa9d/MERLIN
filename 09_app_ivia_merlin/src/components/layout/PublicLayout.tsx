@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import "@/app/styles.css";
-import { readStoredPublicClientSession } from "@/lib/merlin-api";
 
 const MESANGES_LOGO_SRC = "/assets/brand/ivia-mesanges-logo2000.png";
 
@@ -18,12 +17,26 @@ type PublicLayoutProps = {
   title?: string;
 };
 
+type AuthState = "anonymous" | "client" | "praticien";
+
+function readAuthState(): AuthState {
+  if (typeof window === "undefined") return "anonymous";
+  try {
+    if (window.localStorage.getItem("merlin_praticien_session")) return "praticien";
+    const raw =
+      window.localStorage.getItem("merlin_public_client_session") ??
+      window.sessionStorage.getItem("merlin_public_client_session");
+    if (raw) return "client";
+  } catch {}
+  return "anonymous";
+}
+
 export function PublicLayout({ children, title }: PublicLayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authState, setAuthState] = useState<AuthState>("anonymous");
 
   useEffect(() => {
-    setIsLoggedIn(readStoredPublicClientSession() !== null);
+    setAuthState(readAuthState());
   }, []);
 
   return (
@@ -82,11 +95,20 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
               onClick={() => setMenuOpen(false)}
             >
               Ressources
-            </Link>
-          </nav>
+            </Link>            <Link
+              href="/praticiens/rejoindre"
+              className="hp-nav__link"
+              onClick={() => setMenuOpen(false)}
+            >
+              Pratiquer avec IVIA
+            </Link>          </nav>
 
           <div className="hp-nav__actions" suppressHydrationWarning>
-            {isLoggedIn ? (
+            {authState === "praticien" ? (
+              <Link href="/espace-praticien" className="hp-nav__cta">
+                Tableau de bord
+              </Link>
+            ) : authState === "client" ? (
               <Link href="/mon-espace" className="hp-nav__cta">
                 Mon espace
               </Link>
