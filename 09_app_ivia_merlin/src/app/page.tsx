@@ -115,12 +115,11 @@ export default function HomePage() {
 
             <div className="v3-hero__inner v3-hero__inner--eq">
               <h1 id="hero-title" className="v3-hero__h1 v3-hero__h1--eq">
-                Prendre soin de soi &mdash; <em>&Agrave;&nbsp;son rythme.</em>
+                Prendre soin &mdash; <em>&Agrave;&nbsp;son rythme.</em>
               </h1>
               <p className="v3-hero__lede v3-hero__lede--eq">
-                Une &eacute;coute authentique et un accompagnement de tous sujets&nbsp;:
-                d&eacute;pendance, relations difficiles, anxi&eacute;t&eacute;&hellip;
-                Nous pouvons ensemble trouver des solutions.
+                Une &eacute;coute authentique et personnalis&eacute;e &mdash;<br />
+                Retrouvez &eacute;quilibre et v&eacute;rit&eacute;
               </p>
               <div className="v3-hero__cta-row">
                 <Link href="/rendez-vous" className="v3-btn v3-btn--ink">
