@@ -1,5 +1,6 @@
 /* ─── DESIGN TOKENS ─────────────────────────────────────────────────────── */
 :root {
+  color-scheme: light;
   /* Color — OKLCH warm naturals (light) */
   --background:   oklch(97% 0.016 78);
   --surface:      oklch(98.5% 0.01 76);
@@ -48,6 +49,7 @@
 /* Dark mode — media query (default) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --background:   oklch(18% 0.018 82);
     --surface:      oklch(22% 0.02 80);
     --surface-alt:  oklch(26% 0.024 76);
@@ -70,6 +72,7 @@
 
 /* Dark mode — explicit data-theme */
 [data-theme="dark"] {
+  color-scheme: dark;
   --background:   oklch(18% 0.018 82);
   --surface:      oklch(22% 0.02 80);
   --surface-alt:  oklch(26% 0.024 76);
@@ -91,6 +94,7 @@
 
 /* Light mode explicit override */
 [data-theme="light"] {
+  color-scheme: light;
   --background:   oklch(97% 0.016 78);
   --surface:      oklch(98.5% 0.01 76);
   --surface-alt:  oklch(94% 0.022 74);
@@ -346,6 +350,11 @@ a {
   line-height: 1.55;
   caret-color: var(--accent-deep);
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.field select option {
+  background: var(--surface);
+  color: var(--foreground);
 }
 
 .field textarea {
