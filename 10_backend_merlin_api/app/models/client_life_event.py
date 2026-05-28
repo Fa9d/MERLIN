@@ -121,7 +121,8 @@ class ClientLifeEvent(Base):
     children = relationship(
         "ClientLifeEvent",
         backref="parent_event",
-        foreign_keys=[parent_event_id],
+        foreign_keys="[ClientLifeEvent.parent_event_id]",
+        remote_side="[ClientLifeEvent.id]",
     )
     first_mentioned_session = relationship(
         "SessionRecord",
