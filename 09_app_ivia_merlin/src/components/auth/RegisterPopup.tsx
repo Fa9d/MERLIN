@@ -152,10 +152,11 @@ export function RegisterPopup({ isOpen, onClose, source }: RegisterPopupProps) {
                   onChange={(e) => setAgreed(e.target.checked)}
                 />
                 <span>
-                  Je confirme être majeur et j&apos;accepte que mes coordonnées soient
-                  enregistrées pour ouvrir un espace personnel IVIA. Mes données
-                  restent au Québec (Loi 25) et ne sont jamais partagées sans mon
-                  consentement explicite.
+                  Je confirme être majeur·e et j&apos;accepte les{" "}
+                  <a href="/cgu" target="_blank" rel="noopener noreferrer">conditions d&apos;utilisation</a>{" "}
+                  et la{" "}
+                  <a href="/confidentialite" target="_blank" rel="noopener noreferrer">politique de confidentialité</a>.
+                  Mes données restent au Québec (Loi 25) et ne sont jamais partagées sans mon consentement explicite.
                 </span>
               </label>
 
