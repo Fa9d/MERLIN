@@ -200,7 +200,7 @@ function JournalTab({ token }: { token: string }) {
         <section className="card message message-error"><p>{errorMsg}</p></section>
       ) : entries && entries.length === 0 ? (
         <section className="card card--muted">
-          <p className="inline-note">Votre journal est vide pour l\u2019instant. Chaque entr\u00e9e reste priv\u00e9e — elle n\u2019est visible que par vous.</p>
+          <p className="inline-note">Votre journal est vide pour l\u2019instant. Vos entr\u00e9es restent priv\u00e9es — jamais lues par votre praticien. Elles alimentent l\u2019analyse de votre parcours.</p>
         </section>
       ) : entries ? (
         <ul className="journal-entries list-plain stack-md">
@@ -352,6 +352,21 @@ function MonEspaceContent() {
     );
   }, [data]);
 
+  const completedSessionCount = useMemo(() => {
+    if (!data) return 0;
+    const today = new Date().toISOString().slice(0, 10);
+    return data.bookings.filter(
+      (b) => b.slot_date < today && b.status !== "cancelled",
+    ).length;
+  }, [data]);
+
+  const clientPhase: 1 | 2 | 3 =
+    completedSessionCount === 0 && upcomingBookings.length === 0
+      ? 1
+      : completedSessionCount >= 3
+      ? 3
+      : 2;
+
   function handleSignOut() {
     window.localStorage.removeItem(PUBLIC_CLIENT_STORAGE_KEY);
     window.sessionStorage.removeItem(PUBLIC_CLIENT_STORAGE_KEY);
@@ -497,99 +512,208 @@ function MonEspaceContent() {
                 {/* ══ TAB : Vue d'ensemble ══ */}
                 {activeTab === "apercu" && (
                   <div className="mon-espace-tab-panel stack-md">
-                    <div className="mon-espace-stats">
-                      <div className="stat-card">
-                        <span className="stat-card__value">{upcomingBookings.length}</span>
-                        <span className="stat-card__label">RDV à venir</span>
-                      </div>
-                      <div className="stat-card">
-                        <span className="stat-card__value">
-                          {activeEntitlements.reduce((s, e) => s + e.quantity_remaining, 0)}
-                        </span>
-                        <span className="stat-card__label">crédits</span>
-                      </div>
-                      <div className="stat-card">
-                        <span className="stat-card__value stat-card__value--text">
-                          {data.client ? "Actif" : "À ouvrir"}
-                        </span>
-                        <span className="stat-card__label">dossier</span>
-                      </div>
-                    </div>
 
-                    <div className="mon-espace-apercu-grid">
-                      <article className="card stack-sm">
-                        <h3>Mon dossier</h3>
-                        {data.client ? (
-                          <>
-                            <p>
-                              <strong>{data.client.first_name_or_alias}{data.client.last_name ? ` ${data.client.last_name}` : ""}</strong>
-                            </p>
-                            {data.client.email ? (
-                              <p className="inline-note">Courriel : <span className="mono">{data.client.email}</span></p>
-                            ) : null}
-                            <p className="inline-note">Réf. : <span className="mono">{data.client.public_client_code}</span></p>
-                            {data.client.activation_accepted_at ? (
-                              <p className="inline-note">
-                                Ouvert le {new Date(data.client.activation_accepted_at).toLocaleDateString("fr-CA")}
-                              </p>
-                            ) : null}
-                            <button
-                              type="button"
-                              className="link-inline"
-                              onClick={() => setActiveTab("profil")}
-                            >
-                              Modifier le profil →
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <p className="inline-note">Aucun dossier rattaché pour l&apos;instant.</p>
-                            <Link href="/rendez-vous/reserver" className="button button-primary">
-                              Réserver une séance
-                            </Link>
-                          </>
-                        )}
-                      </article>
-
-                      <article className="card stack-sm">
-                        <div className="card-row-header">
-                          <h3>Prochain rendez-vous</h3>
-                          {data.bookings.length > 0 ? (
-                            <button type="button" className="link-inline" onClick={() => setActiveTab("rendez-vous")}>
-                              Tous →
-                            </button>
-                          ) : null}
-                        </div>
-                        {upcomingBookings.length > 0 ? (
-                          <div className="rdv-preview">
-                            <p className="rdv-preview__date">
-                              {new Date(upcomingBookings[0].slot_date).toLocaleDateString("fr-CA", {
-                                weekday: "long", day: "numeric", month: "long",
-                              })}
-                            </p>
-                            <p className="rdv-preview__time">{upcomingBookings[0].start_time.slice(0, 5)}</p>
-                            <p className="inline-note">{upcomingBookings[0].session_type}</p>
+                    {/* ── Phase 1 : aucune séance – invitation à commencer ── */}
+                    {clientPhase === 1 ? (
+                      <>
+                        <section className="card stack-md">
+                          <div className="eyebrow">Première étape</div>
+                          <h3>Prenez votre première séance</h3>
+                          <p className="inline-note">
+                            Votre espace est prêt. La prochaine étape&nbsp;: choisir un créneau avec l&apos;un de nos praticiens — aujourd&apos;hui, sans attente.
+                          </p>
+                          <div className="public-access-actions">
+                            <Link href="/rendez-vous" className="button button-primary">Prendre rendez-vous →</Link>
+                            <button type="button" className="button button-secondary" onClick={() => setActiveTab("journal")}>Commencer mon journal</button>
                           </div>
-                        ) : (
-                          <>
-                            <p className="inline-note">Aucun rendez-vous à venir.</p>
-                            <Link href="/rendez-vous/reserver" className="button button-primary">
-                              Réserver un créneau
-                            </Link>
-                          </>
-                        )}
-                      </article>
-                    </div>
+                        </section>
 
-                    <article className="card stack-sm">
-                      <h3>Accès rapide</h3>
-                      <div className="mon-espace-quick-actions">
-                        <Link href="/rendez-vous/reserver" className="quick-action-btn">Réserver un créneau</Link>
-                        <Link href="/praticiens" className="quick-action-btn">Découvrir les praticiens</Link>
-                        <Link href="/ressources" className="quick-action-btn">Ressources membres</Link>
-                        <Link href="/suivi" className="quick-action-btn">Mon suivi</Link>
-                      </div>
-                    </article>
+                        <section className="card stack-sm">
+                          <h3>Préparez votre première rencontre</h3>
+                          <p className="inline-note">
+                            Avant votre séance, notez ce qui vous amène ici — un moment, un souvenir, une question.
+                            Ces notes enrichissent l&apos;analyse de votre parcours et restent <strong>strictement privées</strong>.
+                          </p>
+                          <button type="button" className="link-inline" onClick={() => setActiveTab("journal")}>
+                            Ouvrir mon journal →
+                          </button>
+                        </section>
+
+                        <div className="mon-espace-apercu-grid">
+                          <article className="card stack-sm">
+                            <h3>Mon dossier</h3>
+                            {data.client ? (
+                              <>
+                                <p><strong>{data.client.first_name_or_alias}{data.client.last_name ? ` ${data.client.last_name}` : ""}</strong></p>
+                                <p className="inline-note">Réf. : <span className="mono">{data.client.public_client_code}</span></p>
+                                <button type="button" className="link-inline" onClick={() => setActiveTab("profil")}>Compléter mon profil →</button>
+                              </>
+                            ) : (
+                              <p className="inline-note">Dossier non encore ouvert.</p>
+                            )}
+                          </article>
+
+                          <article className="card stack-sm">
+                            <h3>Pas encore prêt&nbsp;?</h3>
+                            <p className="inline-note">Faites d&apos;abord le parcours d&apos;orientation — cela prend 3 minutes et précise votre démarche.</p>
+                            <Link href="/orientation" className="link-inline">Faire le parcours d&apos;orientation →</Link>
+                          </article>
+                        </div>
+                      </>
+                    ) : clientPhase === 3 ? (
+                      <>
+                        {/* ── Phase 3 : parcours établi (3+ séances) ── */}
+                        <section className="card stack-sm">
+                          <div className="eyebrow">Votre trajectoire</div>
+                          <p>
+                            <strong>{completedSessionCount} séance{completedSessionCount > 1 ? "s" : ""} complétée{completedSessionCount > 1 ? "s" : ""}</strong>
+                            {upcomingBookings.length > 0 ? (
+                              <> &mdash; prochain RDV le{" "}
+                                {new Date(upcomingBookings[0].slot_date).toLocaleDateString("fr-CA", { weekday: "long", day: "numeric", month: "long" })}
+                                {" "}à {upcomingBookings[0].start_time.slice(0, 5)}.
+                              </>
+                            ) : (
+                              <> &mdash; <Link href="/rendez-vous" className="link-inline">approfondir — prochaine séance →</Link></>
+                            )}
+                          </p>
+                        </section>
+
+                        <div className="mon-espace-stats">
+                          <div className="stat-card">
+                            <span className="stat-card__value">{completedSessionCount}</span>
+                            <span className="stat-card__label">séances</span>
+                          </div>
+                          <div className="stat-card">
+                            <span className="stat-card__value">{upcomingBookings.length}</span>
+                            <span className="stat-card__label">RDV à venir</span>
+                          </div>
+                          <div className="stat-card">
+                            <span className="stat-card__value">{activeEntitlements.reduce((s, e) => s + e.quantity_remaining, 0)}</span>
+                            <span className="stat-card__label">crédits</span>
+                          </div>
+                        </div>
+
+                        <div className="mon-espace-apercu-grid">
+                          <article className="card stack-sm">
+                            <h3>Mon journal</h3>
+                            <p className="inline-note">
+                              Vos entrées approfondissent la compréhension de votre parcours. Elles restent <strong>strictement privées</strong> — votre praticien ne les lit pas directement.
+                            </p>
+                            <button type="button" className="link-inline" onClick={() => setActiveTab("journal")}>Ouvrir mon journal →</button>
+                          </article>
+
+                          <article className="card stack-sm">
+                            <div className="card-row-header">
+                              <h3>Dernière séance</h3>
+                              <button type="button" className="link-inline" onClick={() => setActiveTab("rendez-vous")}>Historique →</button>
+                            </div>
+                            {pastBookings.length > 0 ? (
+                              <div className="rdv-preview">
+                                <p className="rdv-preview__date">
+                                  {new Date(pastBookings[0].slot_date).toLocaleDateString("fr-CA", { weekday: "long", day: "numeric", month: "long" })}
+                                </p>
+                                <p className="rdv-preview__time">{pastBookings[0].start_time.slice(0, 5)}</p>
+                                <Link href="/suivi" className="link-inline">Consulter mon suivi →</Link>
+                              </div>
+                            ) : null}
+                          </article>
+                        </div>
+
+                        <article className="card stack-sm">
+                          <h3>Accès rapide</h3>
+                          <div className="mon-espace-quick-actions">
+                            <Link href="/rendez-vous" className="quick-action-btn">Réserver un créneau</Link>
+                            <button type="button" className="quick-action-btn" onClick={() => setActiveTab("journal")}>Mon journal</button>
+                            <Link href="/suivi" className="quick-action-btn">Mon suivi</Link>
+                            <Link href="/ressources" className="quick-action-btn">Ressources</Link>
+                          </div>
+                        </article>
+                      </>
+                    ) : (
+                      <>
+                        {/* ── Phase 2 : 1-2 séances ── */}
+                        <div className="mon-espace-stats">
+                          <div className="stat-card">
+                            <span className="stat-card__value">{upcomingBookings.length}</span>
+                            <span className="stat-card__label">RDV à venir</span>
+                          </div>
+                          <div className="stat-card">
+                            <span className="stat-card__value">{completedSessionCount}</span>
+                            <span className="stat-card__label">séances complétées</span>
+                          </div>
+                          <div className="stat-card">
+                            <span className="stat-card__value">{activeEntitlements.reduce((s, e) => s + e.quantity_remaining, 0)}</span>
+                            <span className="stat-card__label">crédits</span>
+                          </div>
+                        </div>
+
+                        <div className="mon-espace-apercu-grid">
+                          <article className="card stack-sm">
+                            <h3>Mon dossier</h3>
+                            {data.client ? (
+                              <>
+                                <p>
+                                  <strong>{data.client.first_name_or_alias}{data.client.last_name ? ` ${data.client.last_name}` : ""}</strong>
+                                </p>
+                                {data.client.email ? (
+                                  <p className="inline-note">Courriel : <span className="mono">{data.client.email}</span></p>
+                                ) : null}
+                                <p className="inline-note">Réf. : <span className="mono">{data.client.public_client_code}</span></p>
+                                <button type="button" className="link-inline" onClick={() => setActiveTab("profil")}>Modifier le profil →</button>
+                              </>
+                            ) : (
+                              <>
+                                <p className="inline-note">Aucun dossier rattaché pour l&apos;instant.</p>
+                                <Link href="/rendez-vous" className="button button-primary">Réserver une séance</Link>
+                              </>
+                            )}
+                          </article>
+
+                          <article className="card stack-sm">
+                            <div className="card-row-header">
+                              <h3>Prochain rendez-vous</h3>
+                              {data.bookings.length > 0 ? (
+                                <button type="button" className="link-inline" onClick={() => setActiveTab("rendez-vous")}>Tous →</button>
+                              ) : null}
+                            </div>
+                            {upcomingBookings.length > 0 ? (
+                              <div className="rdv-preview">
+                                <p className="rdv-preview__date">
+                                  {new Date(upcomingBookings[0].slot_date).toLocaleDateString("fr-CA", {
+                                    weekday: "long", day: "numeric", month: "long",
+                                  })}
+                                </p>
+                                <p className="rdv-preview__time">{upcomingBookings[0].start_time.slice(0, 5)}</p>
+                                <p className="inline-note">{upcomingBookings[0].session_type}</p>
+                              </div>
+                            ) : (
+                              <>
+                                <p className="inline-note">Aucun rendez-vous à venir.</p>
+                                <Link href="/rendez-vous" className="button button-primary">Réserver un créneau</Link>
+                              </>
+                            )}
+                          </article>
+                        </div>
+
+                        <article className="card stack-sm">
+                          <h3>Mon journal</h3>
+                          <p className="inline-note">
+                            Continuez d&apos;alimenter votre journal entre les séances. Vos entrées restent <strong>strictement privées</strong> et enrichissent l&apos;analyse de votre démarche.
+                          </p>
+                          <button type="button" className="link-inline" onClick={() => setActiveTab("journal")}>Ouvrir mon journal →</button>
+                        </article>
+
+                        <article className="card stack-sm">
+                          <h3>Accès rapide</h3>
+                          <div className="mon-espace-quick-actions">
+                            <Link href="/rendez-vous" className="quick-action-btn">Réserver un créneau</Link>
+                            <button type="button" className="quick-action-btn" onClick={() => setActiveTab("journal")}>Mon journal</button>
+                            <Link href="/praticiens" className="quick-action-btn">Découvrir les praticiens</Link>
+                            <Link href="/ressources" className="quick-action-btn">Ressources membres</Link>
+                          </div>
+                        </article>
+                      </>
+                    )}
                   </div>
                 )}
 

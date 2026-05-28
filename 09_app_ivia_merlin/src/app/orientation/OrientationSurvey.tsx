@@ -724,8 +724,11 @@ export function OrientationSurvey() {
                   </p>
 
                   <div className="os-result__actions">
-                    <Link href="/rendez-vous" className="os-btn os-btn--primary">
-                      Prendre rendez-vous
+                    <Link href="/rejoindre" className="os-btn os-btn--primary">
+                      Créer mon espace IVIA — sauvegarder ce portrait →
+                    </Link>
+                    <Link href="/rendez-vous" className="os-btn os-btn--outline">
+                      Prendre rendez-vous directement
                     </Link>
                     <button
                       type="button"

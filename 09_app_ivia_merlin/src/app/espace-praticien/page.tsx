@@ -943,21 +943,28 @@ export default function PraticienPage() {
                           <thead>
                             <tr>
                               <th>Client</th>
-                              <th>Séances</th>
+                              <th>Relation</th>
                               <th>Courriel</th>
                               <th></th>
                             </tr>
                           </thead>
                           <tbody>
                             {closed.map((c) => {
-                              const clientSessions = sessions.filter((s) => s.client_id === c.id);
+                              const completedCount = sessions.filter((s) => s.client_id === c.id && s.session_status_code === "completed").length;
+                              const relationLabel = completedCount >= 5 ? "Parcours profond" : completedCount >= 2 ? "Relation établie" : "Nouvelle relation";
+                              const relationColor = completedCount >= 5 ? "#2563eb" : completedCount >= 2 ? "#3d6b4f" : "#b45309";
                               return (
                                 <tr key={c.id}>
                                   <td>
                                     <span className="mono">{c.public_client_code}</span>{" "}
                                     {c.first_name_or_alias}
                                   </td>
-                                  <td>{clientSessions.length}</td>
+                                  <td>
+                                    <span style={{ fontSize: "0.75rem", fontWeight: 600, color: relationColor, background: `${relationColor}18`, padding: "2px 8px", borderRadius: 4 }}>
+                                      {relationLabel}
+                                    </span>
+                                    <span className="text-muted-sm" style={{ marginLeft: 6 }}>{completedCount} séance{completedCount !== 1 ? "s" : ""}</span>
+                                  </td>
                                   <td>{c.email ?? "—"}</td>
                                   <td>
                                     <button
