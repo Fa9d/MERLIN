@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -40,6 +40,10 @@ class Client(Base):
     timezone: Mapped[str] = mapped_column(String(64), nullable=False, default="America/Toronto")
     territory_code: Mapped[str] = mapped_column(String(16), nullable=False, default="QC")
     is_adult_confirmed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    # Année de naissance (approximative acceptable) — pour calcul d'âge aux événements
+    birth_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    # Genre tel que vécu et exprimé par le sujet (champ libre, non normatif)
+    gender_identity: Mapped[str | None] = mapped_column(String(64), nullable=True)
     activation_token_hash: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     activation_token_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
@@ -72,3 +76,6 @@ class Client(Base):
     consents = relationship("Consent", back_populates="client")
     sessions = relationship("SessionRecord", back_populates="client")
     derived_documents = relationship("DerivedDocument", back_populates="client")
+    life_events = relationship("ClientLifeEvent", back_populates="client")
+    journal_entries = relationship("ClientJournalEntry", back_populates="client")
+    temporal_anchors = relationship("SessionTemporalAnchor", back_populates="client")

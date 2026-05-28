@@ -101,7 +101,7 @@ export default function DemarchePage() {
       // 2. Soumettre la demande d'entrée
       await createIntakeRequest({
         client_id:                  client.id,
-        request_channel_code:       "web",
+        request_channel_code:       "web_form",
         request_for_code:           besoin.request_for_code,
         primary_need_code:          besoin.primary_need_code,
         perceived_urgency_code:     besoin.perceived_urgency_code,

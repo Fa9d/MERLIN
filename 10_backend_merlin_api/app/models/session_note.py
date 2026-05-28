@@ -93,3 +93,4 @@ class SessionNote(Base):
     session = relationship("SessionRecord", back_populates="notes")
     client = relationship("Client")
     derived_documents = relationship("DerivedDocument", back_populates="source_note")
+    temporal_anchors = relationship("SessionTemporalAnchor", back_populates="session_note")

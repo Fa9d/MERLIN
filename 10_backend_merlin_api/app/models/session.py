@@ -90,3 +90,4 @@ class SessionRecord(Base):
     notes = relationship("SessionNote", back_populates="session")
     audio_session = relationship("AudioSession", back_populates="session", uselist=False)
     derived_documents = relationship("DerivedDocument", back_populates="session")
+    temporal_anchors = relationship("SessionTemporalAnchor", back_populates="session")

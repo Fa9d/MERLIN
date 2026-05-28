@@ -86,7 +86,7 @@ const VALEURS = [
   },
   {
     glyph: "◻",
-    label: "Des praticiens qu\u00e9b\u00e9cois form\u00e9s",
+    label: "Des praticiens form\u00e9s",
     body: "Form\u00e9s \u00e0 l\u2019\u00e9coute profonde et non-directive. Au Qu\u00e9bec. Disponibles sans d\u00e9lai. Confidentialit\u00e9 stricte.",
   },
 ];
@@ -115,24 +115,24 @@ export default function HomePage() {
 
             <div className="v3-hero__inner v3-hero__inner--eq">
               <h1 id="hero-title" className="v3-hero__h1 v3-hero__h1--eq">
-                Ce que vous traversez a des&nbsp;racines &mdash;&nbsp;<em>explorons-les ensemble.</em>
+                Prendre soin de soi &mdash; <em>&Agrave;&nbsp;son rythme.</em>
               </h1>
               <p className="v3-hero__lede v3-hero__lede--eq">
-                D&eacute;pendances. Relations difficiles. &Eacute;quilibre &agrave; retrouver.
-                Des praticiens qu&eacute;b&eacute;cois disponibles aujourd&apos;hui &mdash;
-                sans liste d&apos;attente, sans jugement.
+                Une &eacute;coute authentique et un accompagnement de tous sujets&nbsp;:
+                d&eacute;pendance, relations difficiles, anxi&eacute;t&eacute;&hellip;
+                Nous pouvons ensemble trouver des solutions.
               </p>
               <div className="v3-hero__cta-row">
                 <Link href="/rendez-vous" className="v3-btn v3-btn--ink">
                   Prendre rendez-vous
                   <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
                 </Link>
-                <Link href="/demarche" className="v3-btn v3-btn--ghost">
+                <Link href="#comment-ca-fonctionne" className="v3-btn v3-btn--ghost">
                   Comment &ccedil;a fonctionne
                 </Link>
               </div>
               <p className="v3-hero__trinity">
-                Un service IVIA &mdash; au Qu&eacute;bec &mdash; avec ou sans le r&eacute;seau de la sant&eacute;
+                IVIA est une plateforme d&apos;&eacute;coute et de compr&eacute;hension ind&eacute;pendante et sans parti pris. Venez tel que vous &ecirc;tes.
               </p>
             </div>
 
@@ -142,7 +142,7 @@ export default function HomePage() {
           </section>
 
           {/* ── PROOF BAR — 3 colonnes engagements ────────────────── */}
-          <section className="v3-proof-bar" aria-label="Nos engagements">
+          <section id="comment-ca-fonctionne" className="v3-proof-bar" aria-label="Nos engagements">
             <div className="v3-proof-bar__inner">
               <div className="v3-proof-bar__stat">
                 <strong>Sans liste d&apos;attente</strong>
@@ -150,13 +150,52 @@ export default function HomePage() {
               </div>
               <div className="v3-proof-bar__sep" aria-hidden="true" />
               <div className="v3-proof-bar__stat">
-                <strong>Aucun diagnostic requis</strong>
-                <span>Vous n&apos;avez pas &agrave; vous qualifier pour &ecirc;tre entendu</span>
+                <strong>Aucun diagnostic</strong>
+                <span>On vous &eacute;coute &amp; vous accompagne</span>
               </div>
               <div className="v3-proof-bar__sep" aria-hidden="true" />
               <div className="v3-proof-bar__stat">
-                <strong>Avec ou sans le r&eacute;seau de sant&eacute;</strong>
-                <span>Vous choisissez votre parcours</span>
+                <strong>Vous connectez</strong>
+                <span>Ouvrez un compte et prenez rendez-vous</span>
+              </div>
+            </div>
+          </section>
+
+          {/* ── COMMENT ÇA FONCTIONNE — 3 étapes ──────────────── */}
+          <section className="v3-section" aria-labelledby="how-title" style={{ background: "#fff", borderTop: "1px solid #e8e4df", borderBottom: "1px solid #e8e4df" }}>
+            <div className="v3-section__inner" style={{ maxWidth: "760px" }}>
+              <p className="v3-kicker">Comment &ccedil;a fonctionne</p>
+              <h2 id="how-title" className="v3-h2 v3-h2--center" style={{ marginBottom: "3rem", color: "#0d0d08", fontWeight: 800, letterSpacing: "-0.02em" }}>
+                IVIA &mdash; &Eacute;coute &amp; &eacute;quilibre
+              </h2>
+              <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+                <li style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
+                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.5rem", height: "2.5rem", minWidth: "2.5rem", borderRadius: "50%", background: "#3d6b4f", color: "#ffffff", fontWeight: 700, fontSize: "1rem" }}>1</span>
+                  <div>
+                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>Ouvrir un compte et prendre rendez-vous</h3>
+                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>D&egrave;s aujourd&apos;hui. Partout au Qu&eacute;bec. &Agrave; votre rythme &mdash; une s&eacute;ance ou un suivi, c&apos;est vous qui d&eacute;cidez.</p>
+                  </div>
+                </li>
+                <li style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
+                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.5rem", height: "2.5rem", minWidth: "2.5rem", borderRadius: "50%", background: "#3d6b4f", color: "#ffffff", fontWeight: 700, fontSize: "1rem" }}>2</span>
+                  <div>
+                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>D&eacute;crivez ce que vous traversez</h3>
+                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>En quelques minutes, sans dossier m&eacute;dical ni diagnostic. Votre pr&eacute;nom ou un alias suffit pour commencer.</p>
+                  </div>
+                </li>
+                <li style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
+                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.5rem", height: "2.5rem", minWidth: "2.5rem", borderRadius: "50%", background: "#3d6b4f", color: "#ffffff", fontWeight: 700, fontSize: "1rem" }}>3</span>
+                  <div>
+                    <h3 style={{ fontSize: "1.0625rem", fontWeight: 600, marginBottom: "0.5rem", color: "#0d0d08" }}>On vous &eacute;coute &amp; vous accompagne</h3>
+                    <p style={{ color: "#2a2a1e", lineHeight: 1.7, margin: 0 }}>&Agrave; votre premier rendez-vous &mdash; sans jugement, sans &eacute;tiquette &mdash; nous prenons ensemble la mesure de votre situation et de vos besoins.</p>
+                  </div>
+                </li>
+              </ol>
+              <div style={{ textAlign: "center", marginTop: "3rem" }}>
+                <Link href="/rendez-vous" className="v3-btn v3-btn--ink" style={{ fontSize: "1.0625rem", padding: "0.875rem 2rem", fontWeight: 700, outline: "1px solid currentColor", outlineOffset: "3px" }}>
+                  Commencer ma d&eacute;marche
+                  <span className="v3-btn__arrow" aria-hidden="true">&rarr;</span>
+                </Link>
               </div>
             </div>
           </section>

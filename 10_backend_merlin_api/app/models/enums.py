@@ -208,3 +208,49 @@ class ClientEntitlementTypeCode(str, Enum):
     intake_session_credit = "intake_session_credit"
     follow_up_session_credit = "follow_up_session_credit"
     journal_day = "journal_day"
+
+
+# --------------- Temporal model (ligne de vie) --------------------------------
+
+class LifeStageCode(str, Enum):
+    enfant        = "enfant"          # 0–11
+    adolescent    = "adolescent"      # 12–17
+    jeune_adulte  = "jeune_adulte"    # 18–25
+    adulte        = "adulte"          # 26–59
+    parent        = "parent"          # rôle (peut chevaucher autre stade)
+    senior        = "senior"          # 60+
+
+
+class EventTypeCode(str, Enum):
+    naissance           = "naissance"
+    deces               = "deces"
+    rupture             = "rupture"
+    separation_parentale = "separation_parentale"
+    migration           = "migration"
+    perte_emploi        = "perte_emploi"
+    trauma              = "trauma"
+    maladie             = "maladie"
+    violence            = "violence"
+    relation_significative = "relation_significative"
+    reussite            = "reussite"
+    transition          = "transition"
+    autre               = "autre"
+
+
+class EmotionalChargeCode(str, Enum):
+    faible   = "faible"
+    moyen    = "moyen"
+    fort     = "fort"
+    tres_fort = "tres_fort"
+
+
+class JournalEntryTypeCode(str, Enum):
+    aujourd_hui = "aujourd_hui"   # vécu du moment présent
+    souvenir    = "souvenir"      # référence au passé
+    reflexion   = "reflexion"     # introspection sans ancrage précis
+
+
+class AuthoredByCode(str, Enum):
+    client       = "client"
+    practitioner = "practitioner"
+    system       = "system"
