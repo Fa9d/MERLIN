@@ -1239,4 +1239,72 @@ export async function archiveMyJournalEntry(entryId: string, token: string): Pro
   });
 }
 
+// ── Ancres temporelles de séance (/sessions/{session_id}/temporal-anchors) ──
+
+export type EmotionalChargeCode = "faible" | "moyen" | "fort" | "tres_fort";
+
+export type SessionTemporalAnchorRecord = {
+  id: string;
+  session_id: string;
+  session_note_id: string | null;
+  client_id: string;
+  life_event_id: string | null;
+  verbatim_fragment: string | null;
+  said_at_offset_sec: number | null;
+  event_year_approx: number | null;
+  client_age_ref: number | null;
+  gap_years: number | null;
+  interpretation_note: string | null;
+  emotional_charge: EmotionalChargeCode | null;
+  is_silence_marker: boolean;
+  record_status: string;
+  data_sensitivity_class: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SessionTemporalAnchorCreatePayload = {
+  client_id: string;
+  verbatim_fragment?: string | null;
+  said_at_offset_sec?: number | null;
+  event_year_approx?: number | null;
+  client_age_ref?: number | null;
+  interpretation_note?: string | null;
+  emotional_charge?: EmotionalChargeCode | null;
+  is_silence_marker?: boolean;
+};
+
+export async function listSessionTemporalAnchors(
+  sessionId: string,
+  token: string,
+): Promise<SessionTemporalAnchorRecord[]> {
+  return request<SessionTemporalAnchorRecord[]>(
+    `/api/v1/sessions/${sessionId}/temporal-anchors`,
+    { token },
+  );
+}
+
+export async function createSessionTemporalAnchor(
+  sessionId: string,
+  payload: SessionTemporalAnchorCreatePayload,
+  token: string,
+): Promise<SessionTemporalAnchorRecord> {
+  return request<SessionTemporalAnchorRecord>(
+    `/api/v1/sessions/${sessionId}/temporal-anchors`,
+    { method: "POST", body: payload, token },
+  );
+}
+
+export async function archiveSessionTemporalAnchor(
+  sessionId: string,
+  anchorId: string,
+  token: string,
+): Promise<void> {
+  await request<void>(`/api/v1/sessions/${sessionId}/temporal-anchors/${anchorId}`, {
+    method: "DELETE",
+    token,
+  });
+}
+
+
 

@@ -44,6 +44,13 @@ import {
   createScheduleException,
   deleteScheduleException,
   listAvailableSlots,
+  // Ancres temporelles
+  type EmotionalChargeCode,
+  type SessionTemporalAnchorRecord,
+  type SessionTemporalAnchorCreatePayload,
+  listSessionTemporalAnchors,
+  createSessionTemporalAnchor,
+  archiveSessionTemporalAnchor,
 } from "@/lib/merlin-api";
 
 const STORAGE_KEY = "merlin_praticien_session";
@@ -68,7 +75,7 @@ const SESSION_STATUS_LABELS: Record<string, string> = {
   escalated: "Escaladée",
 };
 
-type ActiveView = "clients" | "seance" | "cloture" | "historique" | "agenda";
+type ActiveView = "clients" | "seance" | "cloture" | "historique" | "agenda" | "ancres";
 
 export default function PraticienPage() {
   const [email, setEmail] = useState("");
@@ -158,6 +165,19 @@ export default function PraticienPage() {
   const [newExcType, setNewExcType] = useState<"blocked" | "extra">("blocked");
   const [newExcReason, setNewExcReason] = useState("");
   const [isAddingException, setIsAddingException] = useState(false);
+
+  // Ancres temporelles
+  const [temporalAnchors, setTemporalAnchors] = useState<SessionTemporalAnchorRecord[]>([]);
+  const [isLoadingAnchors, setIsLoadingAnchors] = useState(false);
+  const [anchorVerbatim, setAnchorVerbatim] = useState("");
+  const [anchorYear, setAnchorYear] = useState("");
+  const [anchorAge, setAnchorAge] = useState("");
+  const [anchorOffsetSec, setAnchorOffsetSec] = useState("");
+  const [anchorCharge, setAnchorCharge] = useState<EmotionalChargeCode | "">("");
+  const [anchorIsSilence, setAnchorIsSilence] = useState(false);
+  const [anchorInterpretation, setAnchorInterpretation] = useState("");
+  const [isSavingAnchor, setIsSavingAnchor] = useState(false);
+  const [archivingAnchorId, setArchivingAnchorId] = useState<string | null>(null);
 
   // Restaurer la session depuis le localStorage
   useEffect(() => {
@@ -262,6 +282,21 @@ export default function PraticienPage() {
       .finally(() => { if (active) setLoadingAgendaCal(false); });
     return () => { active = false; };
   }, [session, activeView, agendaCalMonth]);
+
+  // Chargement des ancres temporelles pour la séance sélectionnée
+  useEffect(() => {
+    if (!session || activeView !== "ancres" || !selectedSessionId) {
+      setTemporalAnchors([]);
+      return;
+    }
+    let active = true;
+    setIsLoadingAnchors(true);
+    listSessionTemporalAnchors(selectedSessionId, session.access_token)
+      .then((data) => { if (active) setTemporalAnchors(data); })
+      .catch(() => {})
+      .finally(() => { if (active) setIsLoadingAnchors(false); });
+    return () => { active = false; };
+  }, [session, activeView, selectedSessionId]);
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -499,6 +534,55 @@ export default function PraticienPage() {
     }
   }
 
+  async function handleCreateAnchor(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!session || !selectedSessionId) return;
+    const selectedSession_ = sessions.find((s) => s.id === selectedSessionId);
+    if (!selectedSession_) return;
+    clearMessages();
+    setIsSavingAnchor(true);
+    try {
+      const payload: SessionTemporalAnchorCreatePayload = {
+        client_id: selectedSession_.client_id,
+        verbatim_fragment: anchorVerbatim.trim() || null,
+        event_year_approx: anchorYear ? parseInt(anchorYear, 10) : null,
+        client_age_ref: anchorAge ? parseInt(anchorAge, 10) : null,
+        said_at_offset_sec: anchorOffsetSec ? parseInt(anchorOffsetSec, 10) : null,
+        emotional_charge: anchorCharge || null,
+        is_silence_marker: anchorIsSilence,
+        interpretation_note: anchorInterpretation.trim() || null,
+      };
+      const anchor = await createSessionTemporalAnchor(selectedSessionId, payload, session.access_token);
+      setTemporalAnchors((prev) => [...prev, anchor].sort(
+        (a, b) => (a.said_at_offset_sec ?? Infinity) - (b.said_at_offset_sec ?? Infinity),
+      ));
+      setAnchorVerbatim("");
+      setAnchorYear("");
+      setAnchorAge("");
+      setAnchorOffsetSec("");
+      setAnchorCharge("");
+      setAnchorIsSilence(false);
+      setAnchorInterpretation("");
+    } catch (error) {
+      setGlobalError(error instanceof Error ? error.message : "Impossible d\u2019enregistrer l\u2019ancre.");
+    } finally {
+      setIsSavingAnchor(false);
+    }
+  }
+
+  async function handleArchiveAnchor(anchorId: string) {
+    if (!session || !selectedSessionId) return;
+    setArchivingAnchorId(anchorId);
+    try {
+      await archiveSessionTemporalAnchor(selectedSessionId, anchorId, session.access_token);
+      setTemporalAnchors((prev) => prev.filter((a) => a.id !== anchorId));
+    } catch (error) {
+      setGlobalError(error instanceof Error ? error.message : "Impossible de supprimer l\u2019ancre.");
+    } finally {
+      setArchivingAnchorId(null);
+    }
+  }
+
   // Dérivés
   const selectedClient = clients.find((c) => c.id === selectedClientId) ?? null;
   const selectedClientIntakeRequest =
@@ -609,13 +693,14 @@ export default function PraticienPage() {
 
         {/* Navigation interne */}
         <nav className="praticien-nav">
-          {(["clients", "seance", "cloture", "historique", "agenda"] as ActiveView[]).map((view) => {
+          {(["clients", "seance", "cloture", "historique", "agenda", "ancres"] as ActiveView[]).map((view) => {
             const labels: Record<ActiveView, string> = {
               clients: "Clients",
               seance: `Séances (${activeSessions.length})`,
               cloture: "Clôturer",
               historique: "Historique",
               agenda: "Mon Agenda",
+              ancres: selectedSessionId ? `Ancres (${temporalAnchors.length})` : "Ancres",
             };
             return (
               <button
@@ -1028,6 +1113,13 @@ export default function PraticienPage() {
                       type="button"
                     >
                       Clôturer la séance →
+                    </button>
+                    <button
+                      className="button button-secondary"
+                      onClick={() => { clearMessages(); setActiveView("ancres"); }}
+                      type="button"
+                    >
+                      Ancres temporelles →
                     </button>
                   </div>
                 </div>
@@ -1677,6 +1769,181 @@ export default function PraticienPage() {
                 {isAddingException ? "Ajout…" : "Bloquer cette date"}
               </button>
             </div>
+          </div>
+        )}
+
+        {/* === ANCRES TEMPORELLES === */}
+        {activeView === "ancres" && (
+          <div className="stack-md">
+            <div className="card form-stack">
+              <h3>
+                Ancres temporelles
+                {selectedSession
+                  ? ` — Séance S-${selectedSession.session_sequence_number}`
+                  : ""}
+              </h3>
+              {!selectedSessionId ? (
+                <p className="inline-note">
+                  Sélectionnez une séance depuis l&apos;onglet Séances pour annoter des ancres temporelles.
+                </p>
+              ) : (
+                <>
+                  <p className="inline-note">
+                    Notez un moment où le client a évoqué un événement passé. L&apos;écart temporel
+                    (Z&nbsp;−&nbsp;Y) est calculé automatiquement par le serveur.
+                  </p>
+                  <form className="form-stack" onSubmit={(e) => { void handleCreateAnchor(e); }}>
+                    <label className="field">
+                      <span>Fragment verbatim</span>
+                      <textarea
+                        rows={3}
+                        value={anchorVerbatim}
+                        onChange={(e) => setAnchorVerbatim(e.target.value)}
+                        placeholder={`"Quand j\u2019avais 12 ans, mon père est parti\u2026"`}
+                      />
+                    </label>
+                    <div className="form-grid-2">
+                      <label className="field">
+                        <span>Année de l&apos;événement (Y)</span>
+                        <input
+                          type="number"
+                          min={1900}
+                          max={new Date().getFullYear()}
+                          value={anchorYear}
+                          onChange={(e) => setAnchorYear(e.target.value)}
+                          placeholder="Ex. : 1998"
+                        />
+                      </label>
+                      <label className="field">
+                        <span>Âge du client à ce moment</span>
+                        <input
+                          type="number"
+                          min={0}
+                          max={120}
+                          value={anchorAge}
+                          onChange={(e) => setAnchorAge(e.target.value)}
+                          placeholder="Ex. : 12"
+                        />
+                      </label>
+                    </div>
+                    <div className="form-grid-2">
+                      <label className="field">
+                        <span>Offset dans la séance (sec)</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={anchorOffsetSec}
+                          onChange={(e) => setAnchorOffsetSec(e.target.value)}
+                          placeholder="Ex. : 840 (= 14 min)"
+                        />
+                      </label>
+                      <label className="field">
+                        <span>Charge émotionnelle</span>
+                        <select
+                          value={anchorCharge}
+                          onChange={(e) => setAnchorCharge(e.target.value as EmotionalChargeCode | "")}
+                        >
+                          <option value="">— non évaluée —</option>
+                          <option value="faible">Faible</option>
+                          <option value="moyen">Moyenne</option>
+                          <option value="fort">Forte</option>
+                          <option value="tres_fort">Très forte</option>
+                        </select>
+                      </label>
+                    </div>
+                    <label className="field field-inline">
+                      <input
+                        type="checkbox"
+                        checked={anchorIsSilence}
+                        onChange={(e) => setAnchorIsSilence(e.target.checked)}
+                      />
+                      <span>Marqueur de silence (silence cliniquement significatif)</span>
+                    </label>
+                    <label className="field">
+                      <span>Note d&apos;interprétation (optionnel)</span>
+                      <textarea
+                        rows={2}
+                        value={anchorInterpretation}
+                        onChange={(e) => setAnchorInterpretation(e.target.value)}
+                        placeholder="Lien avec d&apos;autres événements, hypothèse clinique…"
+                      />
+                    </label>
+                    <div className="cta-row">
+                      <button
+                        className="button button-primary"
+                        disabled={isSavingAnchor || (!anchorVerbatim.trim() && !anchorIsSilence)}
+                        type="submit"
+                      >
+                        {isSavingAnchor ? "Enregistrement…" : "Ajouter l\u2019ancre"}
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
+            </div>
+
+            {selectedSessionId && (
+              <div className="card">
+                <h3>Ancres de la séance ({temporalAnchors.length})</h3>
+                {isLoadingAnchors ? (
+                  <p className="inline-note">Chargement…</p>
+                ) : temporalAnchors.length === 0 ? (
+                  <p className="inline-note">Aucune ancre enregistrée pour cette séance.</p>
+                ) : (
+                  <ul className="list-plain stack-sm">
+                    {temporalAnchors.map((anchor) => (
+                      <li key={anchor.id} className="card card--inset stack-sm">
+                        <div className="info-strip">
+                          {anchor.said_at_offset_sec != null ? (
+                            <span className="mono">
+                              {Math.floor(anchor.said_at_offset_sec / 60)}:
+                              {String(anchor.said_at_offset_sec % 60).padStart(2, "0")}
+                            </span>
+                          ) : null}
+                          {anchor.event_year_approx != null ? (
+                            <span>
+                              Événement : <strong>{anchor.event_year_approx}</strong>
+                            </span>
+                          ) : null}
+                          {anchor.gap_years != null ? (
+                            <span className="badge-gap">&Delta;&nbsp;{anchor.gap_years}&nbsp;ans</span>
+                          ) : null}
+                          {anchor.client_age_ref != null ? (
+                            <span>Âge : {anchor.client_age_ref}&nbsp;ans</span>
+                          ) : null}
+                          {anchor.emotional_charge ? (
+                            <span className={`badge-charge badge-charge--${anchor.emotional_charge}`}>
+                              {anchor.emotional_charge.replace("_", "\u00a0")}
+                            </span>
+                          ) : null}
+                          {anchor.is_silence_marker ? (
+                            <span className="badge-silence">&#9679;&nbsp;Silence</span>
+                          ) : null}
+                        </div>
+                        {anchor.verbatim_fragment ? (
+                          <blockquote className="anchor-verbatim">
+                            &ldquo;{anchor.verbatim_fragment}&rdquo;
+                          </blockquote>
+                        ) : null}
+                        {anchor.interpretation_note ? (
+                          <p className="inline-note anchor-interpretation">
+                            {anchor.interpretation_note}
+                          </p>
+                        ) : null}
+                        <button
+                          className="button button-text button-xs"
+                          disabled={archivingAnchorId === anchor.id}
+                          onClick={() => { void handleArchiveAnchor(anchor.id); }}
+                          type="button"
+                        >
+                          {archivingAnchorId === anchor.id ? "Suppression…" : "Retirer"}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
           </div>
         )}
       </main>
