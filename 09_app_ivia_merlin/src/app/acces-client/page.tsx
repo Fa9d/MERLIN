@@ -163,6 +163,12 @@ function AccesClientContent() {
             <button className="button button-primary" disabled={isLoggingIn} type="submit">
               {isLoggingIn ? "Connexion en cours…" : "Se connecter"}
             </button>
+            {mode === "client" && (
+              <p className="inline-note" style={{ textAlign: "center" }}>
+                Pas encore de compte ?{" "}
+                <Link href="/rejoindre">Créer mon espace →</Link>
+              </p>
+            )}
           </form>
           )}
         </main>
