@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Journal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
+    .tag-btn{display:inline-flex;align-items:center;border:1.5px solid #D4E8D0;border-radius:8px;padding:4px 12px;font-size:12px;color:#4B6350;font-weight:500;cursor:pointer;transition:all .15s;background:#fff;}
+    .tag-btn.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:700;}
+    .tag-btn:disabled{opacity:.4;cursor:not-allowed;}
+    .tab-bar-btn{padding:8px 18px;border-radius:99px;font-size:14px;font-weight:500;color:#4B6350;cursor:pointer;transition:all .15s;border:none;background:none;}
+    .tab-bar-btn.active{background:#1A2E1D;color:#fff;font-weight:700;}
+  </style>
+</head>
+<body class="antialiased pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR desktop -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/client/dashboard.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Accueil
+        </a>
+        <a href="/client/seances.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Séances
+        </a>
+        <a href="/client/journal.html" class="sidebar-link active">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          Journal
+        </a>
+        <a href="/client/premier-ancrage.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
+          Premier ancrage
+        </a>
+        <a href="/client/audio-resume.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
+          Résumés audio
+        </a>
+        <div class="flex-1"></div>
+        <a href="/client/compte.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+          Mon compte
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[900px]">
+
+      <!-- En-tête -->
+      <div class="flex items-center justify-between mb-5">
+        <h1 class="font-heading text-2xl font-bold text-ink">Journal</h1>
+        <a href="/client/journal-nouvelle-entree.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          + Nouvelle entrée
+        </a>
+      </div>
+
+      <!-- Barre d'onglets -->
+      <div class="flex gap-1 mb-7 bg-surface rounded-[14px] p-1.5 w-fit" role="tablist">
+        <button class="tab-bar-btn" id="btn-journal" onclick="switchTab('journal')" role="tab" aria-selected="false">Journal</button>
+        <button class="tab-bar-btn" id="btn-analyse" onclick="switchTab('analyse')" role="tab" aria-selected="false">Analyse</button>
+        <button class="tab-bar-btn" id="btn-parcours" onclick="switchTab('parcours')" role="tab" aria-selected="false">Parcours</button>
+      </div>
+
+      <!-- VUE Journal -->
+      <div id="view-journal">
+
+      <!-- Filtres tags -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button class="tag-btn selected" data-filter="all" onclick="filtrerJournal(this,'all')">Toutes</button>
+        <button class="tag-btn" data-filter="corporel" onclick="filtrerJournal(this,'corporel')">Corporel</button>
+        <button class="tag-btn" data-filter="emotionnel" onclick="filtrerJournal(this,'emotionnel')">Émotionnel</button>
+        <button class="tag-btn" data-filter="spirituel" onclick="filtrerJournal(this,'spirituel')">Spirituel</button>
+        <button class="tag-btn" data-filter="relationnel" onclick="filtrerJournal(this,'relationnel')">Relationnel</button>
+        <button class="tag-btn" data-filter="mental" onclick="filtrerJournal(this,'mental')">Mental</button>
+      </div>
+
+      <!-- Liste des entrées -->
+      <div id="journal-list" class="space-y-4">
+
+        <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="corporel emotionnel">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p class="text-xs text-muted mb-1.5">29 mai 2026</p>
+              <h3 class="font-heading text-base font-semibold text-ink mb-1">Sur la lenteur — ne pas confondre repos et fuite</h3>
+              <p class="text-sm text-muted leading-relaxed line-clamp-2">
+                Il y a quelque chose dans la façon dont je ralentis ces derniers jours qui ressemble plus à
+                une retraite qu'à un vrai repos…
+              </p>
+              <div class="flex gap-2 mt-3 flex-wrap">
+                <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Corporel</span>
+                <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Émotionnel</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="relationnel">
+          <div class="flex-1">
+            <p class="text-xs text-muted mb-1.5">22 mai 2026</p>
+            <h3 class="font-heading text-base font-semibold text-ink mb-1">Après la séance avec Mylène — quelques images</h3>
+            <p class="text-sm text-muted leading-relaxed line-clamp-2">
+              Je ressors de la séance avec une image : une bougie dans un espace fermé qui consomme tout
+              l'air disponible. Est-ce moi qui projette, ou…
+            </p>
+            <div class="flex gap-2 mt-3 flex-wrap">
+              <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Relationnel</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="mental spirituel">
+          <div class="flex-1">
+            <p class="text-xs text-muted mb-1.5">14 mai 2026</p>
+            <h3 class="font-heading text-base font-semibold text-ink mb-1">Ce que je ne formule pas</h3>
+            <p class="text-sm text-muted leading-relaxed line-clamp-2">
+              Certaines choses résistent au langage. Aujourd'hui j'ai essayé d'écrire sur ce qui se passe
+              quand je médite et que le silence devient dense…
+            </p>
+            <div class="flex gap-2 mt-3 flex-wrap">
+              <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Mental</span>
+              <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Spirituel</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Quota -->
+      <div class="mt-4 flex items-center justify-between text-xs text-muted">
+        <span>3 entrées cette semaine <span class="text-ink font-semibold">(5 max)</span></span>
+        <a href="/confidentialite.html#n3" class="text-trust underline underline-offset-2 cursor-pointer">Débloquer illimité (N3)</a>
+      </div>
+
+      </div><!-- /view-journal -->
+
+      <!-- VUE Analyse -->
+      <div id="view-analyse" style="display:none">
+
+        <!-- Bandeau insight -->
+        <div class="bg-surface border border-bdr rounded-[16px] px-5 py-4 mb-5">
+          <p class="text-[10px] font-semibold uppercase tracking-widest text-forest mb-1">CE QUI ÉMERGE &middot; MAI&ndash;JUIN 2026</p>
+          <p class="font-heading text-base font-semibold text-ink">Lourdeur dominante &mdash; mais présence en hausse depuis 3 semaines.</p>
+        </div>
+
+        <!-- Ligne 1 : Cercle | Répartition | Ce mois -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+
+          <!-- CERCLE (radar) -->
+          <div class="card">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-[10px] font-semibold uppercase tracking-widest text-muted">Cercle</p>
+              <p class="text-[10px] text-muted">&middot;&middot;&middot; mai &mdash; juin</p>
+            </div>
+            <div style="position:relative;height:190px;">
+              <canvas id="chart-cercle"></canvas>
+            </div>
+            <p class="text-[10px] text-muted text-center mt-1">Présence &middot; Compréh. &middot; Choix &middot; Sol &middot; Vivant &middot; Réflexion</p>
+          </div>
+
+          <!-- RÉPARTITION DU MOIS -->
+          <div class="card">
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-muted mb-4">Répartition du mois</p>
+            <div class="flex rounded-full overflow-hidden h-5 mb-5">
+              <div style="width:40%;background:#4A7C59"></div>
+              <div style="width:28%;background:#F59E0B"></div>
+              <div style="width:20%;background:#8FB99A"></div>
+              <div style="width:12%;background:#9CA3AF"></div>
+            </div>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-2.5 text-xs">
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block shrink-0" style="background:#4A7C59"></span><span class="text-muted">clarté 4+</span></div>
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block shrink-0" style="background:#F59E0B"></span><span class="text-muted">lourd 3+</span></div>
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block shrink-0" style="background:#8FB99A"></span><span class="text-muted">rôle 3+</span></div>
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full inline-block shrink-0" style="background:#9CA3AF"></span><span class="text-muted">léger 2+</span></div>
+            </div>
+          </div>
+
+          <!-- CE MOIS (doughnut) -->
+          <div class="card flex flex-col items-center justify-center text-center">
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-muted mb-3">Ce mois</p>
+            <div style="position:relative;width:96px;height:96px;">
+              <canvas id="chart-mois"></canvas>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                <p class="font-heading text-2xl font-bold text-ink">12</p>
+              </div>
+            </div>
+            <p class="text-xs text-muted mt-3">entrées ce mois</p>
+          </div>
+
+        </div>
+
+        <!-- Ligne 2 : Paysage du mois -->
+        <div class="card mb-4">
+          <p class="text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">Paysage du mois &middot; <span style="color:#4A7C59">MAI&ndash;JUIN 2026</span></p>
+          <div style="position:relative;height:160px;">
+            <canvas id="chart-paysage"></canvas>
+          </div>
+          <p class="text-[10px] text-muted mt-2 italic">Chaque point représente une entrée &middot; La courbe révèle la tendance de fond &middot; Les cercles pointillés signalent les moments de grande clarté</p>
+        </div>
+
+        <!-- Ligne 3 : Profil 6 dim. + Présence 5 sem. -->
+        <div class="grid lg:grid-cols-2 gap-4">
+
+          <!-- PROFIL 6 DIM. -->
+          <div class="card">
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-muted mb-4">Profil <span style="color:#4A7C59">6 dim.</span></p>
+            <div class="space-y-3">
+              <div><div class="flex justify-between text-xs mb-1"><span class="text-muted">Présence</span><span class="font-semibold text-ink">72 <span class="text-muted font-normal">&middot; 1.7</span></span></div><div class="bar-track"><div class="bar-fill" style="width:72%;background:#4A7C59"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span class="text-muted">Compréh.</span><span class="font-semibold text-ink">85 <span class="text-muted font-normal">&middot; 1.18</span></span></div><div class="bar-track"><div class="bar-fill" style="width:85%;background:#4A7C59"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span class="text-muted">Choix</span><span class="font-semibold text-ink">60 <span class="text-muted font-normal">&middot; 1.15</span></span></div><div class="bar-track"><div class="bar-fill" style="width:60%;background:#8FB99A"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span class="text-muted">Sol</span><span class="font-semibold text-ink">44 <span class="text-muted font-normal">&middot; 0.91</span></span></div><div class="bar-track"><div class="bar-fill" style="width:44%;background:#8FB99A"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span class="text-muted">Vivant</span><span class="font-semibold text-ink">58 <span class="text-muted font-normal">&middot; 1.05</span></span></div><div class="bar-track"><div class="bar-fill" style="width:58%;background:#8FB99A"></div></div></div>
+              <div><div class="flex justify-between text-xs mb-1"><span class="text-muted">Réflexion</span><span class="font-semibold text-ink">38 <span class="text-muted font-normal">&middot; 0.78</span></span></div><div class="bar-track"><div class="bar-fill" style="width:38%;background:#4B6350"></div></div></div>
+            </div>
+          </div>
+
+          <!-- PRÉSENCE 5 SEM. -->
+          <div class="card">
+            <p class="text-[10px] font-semibold uppercase tracking-widest text-muted mb-4">Présence <span style="color:#4A7C59">5 sem.</span></p>
+            <div class="grid gap-1.5" style="grid-template-columns:repeat(7,1fr)">
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#F59E0B;opacity:.75"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.7"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#8FB99A;opacity:.65"></div>
+              <div class="rounded-[5px] h-8" style="background:#F59E0B;opacity:.8"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.7"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.9"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.8"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#F59E0B;opacity:.7"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.9"></div>
+              <div class="rounded-[5px] h-8" style="background:#8FB99A;opacity:.6"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.75"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#8FB99A;opacity:.55"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.9"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#F59E0B;opacity:.8"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.85"></div>
+              <div class="rounded-[5px] h-8" style="background:#4A7C59;opacity:.95"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#8FB99A;opacity:.7"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+              <div class="rounded-[5px] h-8" style="background:#D4E8D0"></div>
+            </div>
+            <div class="flex flex-wrap gap-3 mt-4 text-[10px] text-muted">
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm inline-block" style="background:#4A7C59"></span>clarté</div>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm inline-block" style="background:#F59E0B"></span>lourd</div>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm inline-block" style="background:#8FB99A"></span>léger</div>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm inline-block" style="background:#D4E8D0"></span>absent</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- /view-analyse -->
+
+      <!-- VUE Parcours -->
+      <div id="view-parcours" style="display:none">
+        <div class="grid sm:grid-cols-3 gap-4 mb-6">
+          <div class="card text-center">
+            <p class="font-heading text-3xl font-bold text-ink">3</p>
+            <p class="text-xs text-muted mt-1">séances IVIA</p>
+          </div>
+          <div class="card text-center">
+            <p class="font-heading text-3xl font-bold text-ink">7</p>
+            <p class="text-xs text-muted mt-1">entrées journal</p>
+          </div>
+          <div class="card text-center">
+            <p class="font-heading text-3xl font-bold text-ink">7</p>
+            <p class="text-xs text-muted mt-1">semaines actif·ve</p>
+          </div>
+        </div>
+        <section class="card">
+          <h2 class="font-heading text-base font-semibold text-ink mb-5">Chronologie</h2>
+          <ol class="relative border-l-2 border-bdr ml-3 space-y-6">
+            <li class="pl-6">
+              <div class="absolute w-3 h-3 rounded-full bg-forest border-2 border-white -left-1.5 mt-1"></div>
+              <p class="text-xs text-muted">29 mai 2026</p>
+              <p class="text-sm font-semibold text-ink mt-0.5">Entrée journal — Corporel, Émotionnel</p>
+              <p class="text-xs text-muted">Sur la lenteur — ne pas confondre repos et fuite</p>
+            </li>
+            <li class="pl-6">
+              <div class="absolute w-3 h-3 rounded-full bg-sage border-2 border-white -left-1.5 mt-1"></div>
+              <p class="text-xs text-muted">22 mai 2026</p>
+              <p class="text-sm font-semibold text-ink mt-0.5">Séance avec Mylène P.</p>
+              <p class="text-xs text-muted">Enregistrement + résumé audio disponible</p>
+            </li>
+            <li class="pl-6">
+              <div class="absolute w-3 h-3 rounded-full bg-sage border-2 border-white -left-1.5 mt-1"></div>
+              <p class="text-xs text-muted">14 mai 2026</p>
+              <p class="text-sm font-semibold text-ink mt-0.5">Entrée journal — Mental, Spirituel</p>
+              <p class="text-xs text-muted">Ce que je ne formule pas</p>
+            </li>
+            <li class="pl-6">
+              <div class="absolute w-3 h-3 rounded-full bg-forest-deep border-2 border-white -left-1.5 mt-1"></div>
+              <p class="text-xs text-muted">15 mai 2026</p>
+              <p class="text-sm font-semibold text-ink mt-0.5">Séance avec Mylène P.</p>
+              <p class="text-xs text-muted">⭐ Résumé audio livré</p>
+            </li>
+            <li class="pl-6">
+              <div class="absolute w-3 h-3 rounded-full bg-forest border-2 border-white -left-1.5 mt-1"></div>
+              <p class="text-xs text-muted">10 avril 2026</p>
+              <p class="text-sm font-semibold text-ink mt-0.5">🌱 Premier ancrage complété</p>
+              <p class="text-xs text-muted">Votre espace IVIA a été activé</p>
+            </li>
+          </ol>
+        </section>
+      </div><!-- /view-parcours -->
+
+    </main>
+  </div>
+
+  <!-- Barre nav mobile -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
+    <a href="/client/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Accueil
+    </a>
+    <a href="/rendez-vous.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Séances
+    </a>
+    <a href="/client/journal.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+      Journal
+    </a>
+    <a href="/client/compte.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+      Compte
+    </a>
+  </nav>
+
+  <script>
+    // ─── Filtrage des entrées ────────────────────────────────────────────────
+    function filtrerJournal(btn, filter) {
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.querySelectorAll('#journal-list article').forEach(art => {
+        const tags = art.dataset.tags || '';
+        art.style.display = (filter === 'all' || tags.includes(filter)) ? '' : 'none';
+      });
+    }
+
+    // ─── Onglets Journal / Analyse / Parcours ────────────────────────────────
+    const TABS = ['journal', 'analyse', 'parcours'];
+    let chartInitialized = false;
+
+    function switchTab(name) {
+      TABS.forEach(t => {
+        document.getElementById('view-' + t).style.display = (t === name) ? '' : 'none';
+        const btn = document.getElementById('btn-' + t);
+        btn.classList.toggle('active', t === name);
+        btn.setAttribute('aria-selected', t === name ? 'true' : 'false');
+      });
+      if (name === 'analyse' && !chartInitialized) initChart();
+      // Met à jour l'URL sans recharger
+      const url = new URL(location.href);
+      url.searchParams.set('tab', name);
+      history.replaceState(null, '', url);
+    }
+
+    // ─── Graphiques Analyse (Chart.js) ──────────────────────────────────────
+    function initChart() {
+      chartInitialized = true;
+      const RW = {family:'Raleway, sans-serif'};
+
+      // 1. Radar — CERCLE
+      new Chart(document.getElementById('chart-cercle'), {
+        type: 'radar',
+        data: {
+          labels: ['Présence','Compréh.','Choix','Sol','Vivant','Réflexion'],
+          datasets: [
+            { label:'mai',  data:[4,3,4,3,5,2], borderColor:'#4A7C59', backgroundColor:'rgba(74,124,89,.15)', pointBackgroundColor:'#4A7C59', borderWidth:1.5, pointRadius:3 },
+            { label:'juin', data:[5,4,3,4,4,3], borderColor:'#F59E0B', backgroundColor:'rgba(245,158,11,.1)',  pointBackgroundColor:'#F59E0B', borderWidth:1.5, pointRadius:3 }
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{ position:'bottom', labels:{ font:{...RW,size:10}, color:'#4B6350', boxWidth:10, padding:6 } } },
+          scales:{ r:{ min:0, max:5, ticks:{display:false}, grid:{color:'#D4E8D0'}, pointLabels:{font:{...RW,size:10}, color:'#4B6350'} } }
+        }
+      });
+
+      // 2. Doughnut — CE MOIS
+      new Chart(document.getElementById('chart-mois'), {
+        type: 'doughnut',
+        data: { datasets:[{ data:[12,8], backgroundColor:['#4A7C59','#F0F7F2'], borderWidth:0 }] },
+        options: { responsive:true, maintainAspectRatio:false, cutout:'74%', plugins:{ legend:{display:false}, tooltip:{enabled:false} } }
+      });
+
+      // 3. Scatter + tendance — PAYSAGE DU MOIS
+      const pl = ['5m','8m','12m','15m','18m','22m','26m','29m','2j','5j'];
+      new Chart(document.getElementById('chart-paysage'), {
+        type: 'line',
+        data: {
+          labels: pl,
+          datasets: [
+            { label:'lourd',         data:[3,null,4,3,null,3,null,4,3,null],        borderColor:'#F59E0B', backgroundColor:'#F59E0B', showLine:false, spanGaps:false, pointRadius:function(c){return c.raw!==null?5.5:0;}, pointHoverRadius:7 },
+            { label:'léger · clarté',data:[null,4,null,null,5,null,4,null,null,5],  borderColor:'#4A7C59', backgroundColor:'#4A7C59', showLine:false, spanGaps:false, pointRadius:function(c){return c.raw!==null?5.5:0;}, pointHoverRadius:7 },
+            { label:'réflexion',     data:[null,null,null,4,null,null,4,null,5,null],borderColor:'#4B6350', backgroundColor:'#4B6350', showLine:false, spanGaps:false, pointRadius:function(c){return c.raw!==null?5.5:0;}, pointHoverRadius:7 },
+            { label:'tendance', data:[3,3.4,3.8,3.6,4.1,3.8,4,4.2,3.9,4.5], borderColor:'rgba(74,124,89,.35)', backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.45, fill:false }
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{
+            legend:{ position:'bottom', labels:{ font:{...RW,size:10}, color:'#4B6350', boxWidth:10, padding:10, filter:item=>item.text!=='tendance' } },
+            tooltip:{ callbacks:{ label:ctx=>ctx.raw!==null ? ctx.dataset.label+': '+ctx.raw : null } }
+          },
+          scales:{
+            x:{ grid:{display:false}, ticks:{font:{...RW,size:10}, color:'#4B6350'} },
+            y:{ min:1, max:5, grid:{color:'#F0F7F2'}, ticks:{display:false} }
+          }
+        }
+      });
+    }
+
+    // ─── Initialisation selon l'URL param ───────────────────────────────────
+    (function() {
+      const param = new URLSearchParams(location.search).get('tab') || 'journal';
+      const tab = TABS.includes(param) ? param : 'journal';
+      switchTab(tab);
+    })();
+  </script>
+
+</body>
+</html>

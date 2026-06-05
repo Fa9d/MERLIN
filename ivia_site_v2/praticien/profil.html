@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Mon profil praticien·ne</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .tag-chip{display:inline-flex;align-items:center;gap:6px;background:#F0F7F2;border:1.5px solid #D4E8D0;border-radius:9999px;padding:4px 12px;font-size:12px;font-weight:600;color:#4B6350;cursor:pointer;transition:all .12s;}
+    .tag-chip.active{background:#2D6A4F;border-color:#2D6A4F;color:#fff;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
+      <nav class="flex flex-col gap-1">
+        <a href="/praticien/dashboard.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Tableau de bord
+        </a>
+        <a href="/praticien/agenda.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Agenda
+        </a>
+        <a href="/praticien/clients-journal.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Journal clients
+        </a>
+        <a href="/praticien/livraisons.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
+          Livraisons audio
+        </a>
+        <a href="/praticien/profil.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold bg-bdr text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+          Mon profil
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[720px] space-y-6">
+
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <h1 class="font-heading text-2xl font-bold text-ink">Mon profil</h1>
+        <!-- Disponibilité globale -->
+        <label class="flex items-center gap-2.5 cursor-pointer">
+          <span class="text-sm font-medium text-muted">Disponible</span>
+          <button id="dispo-toggle" role="switch" aria-checked="true"
+                  onclick="toggleDispo(this)"
+                  class="w-11 h-6 bg-forest-deep rounded-full relative transition-colors">
+            <span id="dispo-knob" class="absolute top-1 left-6 w-4 h-4 bg-white rounded-full transition-all"></span>
+          </button>
+        </label>
+      </div>
+
+      <!-- Photo + infos de base -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-5">Informations publiques</h2>
+        <div class="flex items-start gap-5 mb-5 flex-wrap">
+          <div class="w-20 h-20 rounded-full bg-surface border-2 border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-2xl shrink-0">M</div>
+          <div class="flex-1 min-w-[180px]">
+            <button onclick="saveToast('Photo mise à jour')"
+                    class="border border-bdr text-xs font-semibold text-ink px-4 py-2 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
+              Changer la photo
+            </button>
+            <p class="text-xs text-muted mt-2">Format JPG ou PNG · Max 2 Mo</p>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Prénom affiché</label>
+            <input type="text" value="Mylène" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Initiale du nom</label>
+            <input type="text" value="P." class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-ink mb-1.5">Titre / approche</label>
+            <input type="text" value="Écoute somatique · Transitions de vie" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-ink mb-1.5">Bio publique <span class="text-muted font-normal">(max 300 caractères)</span></label>
+            <textarea maxlength="300" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest bg-white resize-none" rows="4">Je travaille avec le corps et l'écoute pour accompagner les personnes en période de transformation. Mon approche est douce, non-directive, et profondément respectueuse du rythme de chacun·e.</textarea>
+          </div>
+        </div>
+        <button onclick="saveToast('Profil mis à jour')"
+                class="mt-5 bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Enregistrer
+        </button>
+      </section>
+
+      <!-- Thèmes -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-4">Thèmes d'accompagnement</h2>
+        <p class="text-xs text-muted mb-4">Sélectionnez jusqu'à 6 thèmes — ou ajoutez les vôtres. Ils apparaissent sur votre fiche publique.</p>
+
+        <!-- Chips existants -->
+        <div id="profil-themes-container" class="flex flex-wrap gap-2 mb-4">
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip active" data-custom="false">Transitions de vie</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip active" data-custom="false">Deuil</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Burnout</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip active" data-custom="false">Identité</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Anxiété</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Parentalité</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Relations</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Corps</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip active" data-custom="false">Somatique</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Trauma</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Spiritualité</button>
+          <button type="button" onclick="profilToggleTheme(this)" class="tag-chip" data-custom="false">Autochtone</button>
+        </div>
+
+        <!-- Ajout personnalisé -->
+        <div class="flex gap-2 items-center mt-1">
+          <input id="profil-theme-input" type="text" maxlength="40"
+                 placeholder="Ajouter un thème personnalisé…"
+                 class="flex-1 border border-bdr rounded-full px-4 py-1.5 text-xs font-medium outline-none focus:ring-2 focus:ring-forest bg-white"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();profilAddCustomTheme();}">
+          <button type="button" onclick="profilAddCustomTheme()"
+                  class="flex items-center gap-1 border border-bdr text-xs font-semibold text-ink px-4 py-1.5 rounded-full hover:bg-surface transition-colors cursor-pointer shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Ajouter
+          </button>
+        </div>
+        <p id="profil-theme-limit" class="text-xs text-amber-600 mt-1.5 hidden">Maximum 6 thèmes sélectionnés.</p>
+        <p id="profil-theme-exists" class="text-xs text-muted mt-1.5 hidden">Ce thème existe déjà.</p>
+
+        <button onclick="saveToast('Thèmes mis à jour')"
+                class="mt-5 border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+          Enregistrer
+        </button>
+      </section>
+
+      <!-- Formats -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-4">Formats proposés</h2>
+        <div class="space-y-3">
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="text-sm text-ink">Séance vidéo (en direct)</span>
+            <input type="checkbox" checked class="w-4 h-4 accent-forest-deep cursor-pointer">
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="text-sm text-ink">Séance audio seulement</span>
+            <input type="checkbox" class="w-4 h-4 accent-forest-deep cursor-pointer">
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="text-sm text-ink">Enregistrement libre (formule 35 $)</span>
+            <input type="checkbox" checked class="w-4 h-4 accent-forest-deep cursor-pointer">
+          </label>
+        </div>
+        <button onclick="saveToast('Formats mis à jour')"
+                class="mt-5 border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+          Enregistrer
+        </button>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Nav mobile -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
+    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Bord
+    </a>
+    <a href="/praticien/profil.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+      Profil
+    </a>
+    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Agenda
+    </a>
+  </nav>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
+
+  <script>
+    function toggleDispo(btn) {
+      const on = btn.getAttribute('aria-checked') !== 'true';
+      btn.setAttribute('aria-checked', String(on));
+      btn.classList.toggle('bg-forest-deep', on);
+      btn.classList.toggle('bg-bdr', !on);
+      document.getElementById('dispo-knob').classList.toggle('left-6', on);
+      document.getElementById('dispo-knob').classList.toggle('left-1', !on);
+      saveToast(on ? 'Profil activé — visible aux clients' : 'Profil désactivé — non visible');
+    }
+    // ===== GESTION THÈMES PROFIL =====
+    const profilSelectedThemes = new Set(['Transitions de vie','Deuil','Identité','Somatique']);
+
+    function profilToggleTheme(btn) {
+      const label = btn.textContent.trim().replace('\u00d7','').trim();
+      if (profilSelectedThemes.has(label)) {
+        profilSelectedThemes.delete(label);
+        btn.classList.remove('active');
+      } else {
+        if (profilSelectedThemes.size >= 6) {
+          showProfilMsg('profil-theme-limit');
+          return;
+        }
+        profilSelectedThemes.add(label);
+        btn.classList.add('active');
+      }
+      hideProfilMsgs();
+    }
+
+    function profilAddCustomTheme() {
+      const input = document.getElementById('profil-theme-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const container = document.getElementById('profil-themes-container');
+      // Vérifier doublon (insensible à la casse)
+      const existing = [...container.querySelectorAll('button')].map(b => b.textContent.trim().replace('\u00d7','').trim().toLowerCase());
+      if (existing.includes(val.toLowerCase())) {
+        showProfilMsg('profil-theme-exists');
+        return;
+      }
+      if (profilSelectedThemes.size >= 6) {
+        showProfilMsg('profil-theme-limit');
+        return;
+      }
+      hideProfilMsgs();
+
+      // Créer chip personnalisé (avec bouton × pour suppression)
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.dataset.custom = 'true';
+      chip.className = 'tag-chip active flex items-center gap-1.5';
+      chip.innerHTML = `<span>${val}</span><span class="text-xs opacity-60 font-normal" aria-hidden="true">×</span>`;
+      chip.addEventListener('click', () => {
+        const lbl = chip.querySelector('span').textContent.trim();
+        profilSelectedThemes.delete(lbl);
+        chip.remove();
+        hideProfilMsgs();
+      });
+      container.appendChild(chip);
+      profilSelectedThemes.add(val);
+      input.value = '';
+      input.focus();
+    }
+
+    function showProfilMsg(id) {
+      hideProfilMsgs();
+      document.getElementById(id).classList.remove('hidden');
+      setTimeout(() => document.getElementById(id).classList.add('hidden'), 3000);
+    }
+    function hideProfilMsgs() {
+      ['profil-theme-limit','profil-theme-exists'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    }
+
+    function saveToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.opacity = '1';
+      setTimeout(() => { t.style.opacity = '0'; }, 2500);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Fiche du praticien·ne d'écoute.">
+  <title>IVIA — Profil praticien·ne</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { forest:'#4A7C59', sage:'#8FB99A','forest-deep':'#2D6A4F', cream:'#FAFDF8', surface:'#F0F7F2', ink:'#1A2E1D', muted:'#4B6350', bdr:'#D4E8D0', trust:'#2563EB' },
+          fontFamily: { heading:['"Lora"','Georgia','serif'], body:['"Raleway"','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family:'Raleway',system-ui,sans-serif; background-color:#FAFDF8; color:#1A2E1D; }
+    h1,h2,h3 { font-family:'Lora',Georgia,serif; }
+    .chip { display:inline-block; background:#F0F7F2; border:1px solid #D4E8D0; border-radius:99px; padding:4px 14px; font-size:12px; font-weight:600; color:#4B6350; }
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-bdr">
+    <div class="max-w-5xl mx-auto px-5 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep tracking-tight">IVIA</a>
+      <div class="flex items-center gap-3">
+        <a href="/rendez-vous.html" class="text-sm text-muted hover:text-ink transition-colors">Voir tous les praticiens</a>
+        <a id="nav-resa-btn" href="/rendez-vous.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">
+          Réserver une séance →
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-5 py-12">
+
+    <!-- Carte profil hero -->
+    <div class="bg-white border border-bdr rounded-[28px] p-8 shadow-sm mb-6">
+      <div class="flex flex-col sm:flex-row gap-6 items-start">
+
+        <!-- Avatar -->
+        <div class="w-24 h-24 rounded-full bg-surface flex items-center justify-center shrink-0 border-2 border-bdr">
+          <span id="fiche-initiales" class="font-heading text-3xl font-bold text-forest-deep">–</span>
+        </div>
+
+        <!-- Infos principales -->
+        <div class="flex-1">
+          <div class="flex flex-wrap items-start justify-between gap-3 mb-1">
+            <h1 id="fiche-nom" class="font-heading text-2xl font-bold text-ink">—</h1>
+            <!-- Badge disponibilité -->
+            <span id="fiche-dispo-badge" class="hidden inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border">
+              <span class="w-2 h-2 rounded-full" id="fiche-dispo-dot"></span>
+              <span id="fiche-dispo-label"></span>
+            </span>
+          </div>
+          <p id="fiche-titre" class="text-muted text-sm font-medium mb-1">—</p>
+          <p id="fiche-approche" class="text-sm text-ink/70 italic mb-4">—</p>
+
+          <!-- Métadonnées -->
+          <div class="flex flex-wrap gap-4 text-xs text-muted">
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span id="fiche-experience">—</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10"/></svg>
+              <span id="fiche-langues">—</span>
+            </span>
+            <span class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
+              Audio seulement
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+      <!-- Colonne principale -->
+      <div class="sm:col-span-2 space-y-5">
+
+        <!-- Bio -->
+        <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+          <h2 class="font-heading text-base font-semibold text-ink mb-3">À propos</h2>
+          <p id="fiche-bio" class="text-sm text-muted leading-relaxed">—</p>
+        </section>
+
+        <!-- Thèmes -->
+        <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+          <h2 class="font-heading text-base font-semibold text-ink mb-4">Thèmes d'accompagnement</h2>
+          <div id="fiche-themes" class="flex flex-wrap gap-2">
+            <!-- Rempli par JS -->
+          </div>
+        </section>
+
+        <!-- Formats -->
+        <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+          <h2 class="font-heading text-base font-semibold text-ink mb-4">Formats proposés</h2>
+          <div id="fiche-formats" class="space-y-3">
+            <!-- Rempli par JS -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Colonne latérale -->
+      <div class="space-y-5">
+
+        <!-- CTA réservation -->
+        <div class="bg-forest-deep rounded-[24px] p-6 text-white shadow-sm">
+          <h2 class="font-heading text-base font-semibold mb-2">Prêt·e à commencer ?</h2>
+          <p class="text-xs text-white/70 mb-4 leading-relaxed">Choisissez un créneau et réservez directement depuis la page de rendez-vous.</p>
+          <a id="cta-resa" href="/rendez-vous.html"
+             class="block text-center bg-white text-forest-deep text-sm font-bold px-5 py-3 rounded-[12px] hover:bg-cream transition-colors">
+            Voir ses disponibilités →
+          </a>
+        </div>
+
+        <!-- Note non-clinique -->
+        <div class="bg-surface border border-bdr rounded-[20px] p-5 text-xs text-muted leading-relaxed">
+          <p class="font-semibold text-ink mb-1">Service non clinique</p>
+          <p>IVIA n'est pas de la psychothérapie. En cas de détresse, composez le <strong>1 866 APPELLE (277-3553)</strong>.</p>
+        </div>
+
+        <!-- Séances proposées -->
+        <div class="bg-white border border-bdr rounded-[20px] p-5 shadow-sm">
+          <h3 class="font-heading text-sm font-semibold text-ink mb-3">Tarifs</h3>
+          <ul class="space-y-2 text-xs">
+            <li class="flex justify-between text-muted"><span>1 heure</span><span class="font-semibold text-ink">65 $</span></li>
+            <li class="flex justify-between text-muted"><span>30 minutes</span><span class="font-semibold text-ink">45 $</span></li>
+            <li class="flex justify-between text-muted"><span>Enregistrement seul</span><span class="font-semibold text-ink">35 $</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back -->
+    <div class="mt-8 text-center">
+      <a href="/rendez-vous.html" class="text-sm text-muted hover:text-ink transition-colors">
+        ← Voir tous les praticiens disponibles
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-bdr bg-white mt-12">
+    <div class="max-w-6xl mx-auto px-5 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted">
+      <p>IVIA n'est pas un service clinique. En cas de crise : <strong class="text-ink">1 866 APPELLE</strong>.</p>
+      <div class="flex gap-4">
+        <a href="/confidentialite.html" class="hover:text-ink transition-colors">Confidentialité</a>
+        <a href="/cgu.html" class="hover:text-ink transition-colors">CGU</a>
+        <a href="/mentions.html" class="hover:text-ink transition-colors">Mentions légales</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Données fictives
+    const PRATICIENS = {
+      'mylene': {
+        nom: 'Mylène P.',
+        initiales: 'M',
+        titre: 'Praticienne d’écoute · Pilote IVIA',
+        approche: 'Accompagnement somatique, transitions de vie et identité',
+        bio: 'Mylène pratique l’écoute non-directive depuis 7 ans. Formée en approche somatique, elle travaille avec des personnes en transition — changements de vie, ruptures, questionnements identitaires. Elle croit que chaque personne porte en elle les ressources dont elle a besoin. Son rôle est de créer l’espace pour qu’elles émergent.',
+        themes: ['Transitions de vie', 'Relations', 'Charge mentale', 'Identité'],
+        formats: ['1h', '30min', 'enregistrement'],
+        langues: 'Français',
+        experience: '7 ans de pratique · 38 séances IVIA',
+        disponible: true,
+      },
+      'emilie': {
+        nom: 'Émilie R.',
+        initiales: 'É',
+        titre: 'Praticienne d’écoute · Pilote IVIA',
+        approche: 'Écoute narrative, deuil et corps',
+        bio: 'Émilie accompagne des personnes traversant des deuils, des pertes et des questionnements profonds. Son approche narrative permet à chacun de réinterpréter son histoire avec davantage de douceur. Elle pratique principalement en format audio différé et offre également des séances en direct.',
+        themes: ['Deuil et perte', 'Travail et sens', 'Parentalité', 'Corps et présence'],
+        formats: ['1h', '30min'],
+        langues: 'Français',
+        experience: '5 ans de pratique · 24 séances IVIA',
+        disponible: false,
+      },
+      '1': {
+        nom: 'Marie Fontaine',
+        initiales: 'MF',
+        titre: 'Praticienne d'écoute certifiée',
+        approche: 'Approche somatique, transitions de vie et deuil',
+        bio: 'Formée en accompagnement somatique et en écoute profonde, Marie travaille avec des personnes traversant des moments de transition — qu'il s'agisse d'un deuil, d'une rupture professionnelle ou d'une réorientation identitaire. Son travail s'enracine dans la présence corporelle et la non-directivité. Elle croit fermement que la parole portée avec attention a la capacité de transformer le rapport à soi.',
+        themes: ['Transitions de vie', 'Deuil', 'Somatique', 'Identité', 'Burnout'],
+        formats: ['1h', '30min', 'enregistrement'],
+        langues: 'Français, English',
+        experience: '7 ans de pratique',
+        disponible: true,
+      },
+      '2': {
+        nom: 'Jean-Pierre Bouchard',
+        initiales: 'JB',
+        titre: 'Praticien d'écoute certifié',
+        approche: 'Écoute narrative, deuil et relations',
+        bio: 'Jean-Pierre accompagne des personnes en deuil et en questionnement identitaire depuis plus de dix ans. Formé à l'approche narrative, il aide ses clients à revisiter leur histoire personnelle et à trouver de nouvelles perspectives. Il accorde une importance particulière à l'écoute sans jugement et au rythme propre à chaque personne.',
+        themes: ['Deuil', 'Relations', 'Identité', 'Anx iété'],
+        formats: ['1h', '30min'],
+        langues: 'Français',
+        experience: '10 ans de pratique',
+        disponible: false,
+      },
+      '3': {
+        nom: 'Sophie Tremblay',
+        initiales: 'ST',
+        titre: 'Praticienne d'écoute certifiée',
+        approche: 'Pleine présence, corps et spiritualité',
+        bio: 'Sophie intègre dans sa pratique des éléments de pleine présence, d'écoute du corps et de spiritualité contemporaine. Elle travaille avec des personnes cherchant à mieux comprendre leur vécu intérieur, qu'il soit lié au corps, aux relations ou aux grandes questions de sens. Son approche est douce, non-prescriptive et profondément ancrée dans le respect de l'unicité de chaque personne.',
+        themes: ['Corps', 'Spiritualité', 'Parentalité', 'Somatique', 'Transitions de vie'],
+        formats: ['1h', '30min', 'enregistrement'],
+        langues: 'Français, English',
+        experience: '5 ans de pratique',
+        disponible: true,
+      },
+    };
+
+    const FORMATS_LABELS = {
+      '1h': '1 heure — 65 $',
+      '30min': '30 minutes — 45 $',
+      'enregistrement': 'Enregistrement seul — 35 $',
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id') || '1';
+      const p = PRATICIENS[id] || PRATICIENS['1'];
+
+      // Remplir les champs
+      document.getElementById('fiche-initiales').textContent  = p.initiales;
+      document.getElementById('fiche-nom').textContent        = p.nom;
+      document.getElementById('fiche-titre').textContent      = p.titre;
+      document.getElementById('fiche-approche').textContent   = '« ' + p.approche + ' »';
+      document.getElementById('fiche-bio').textContent        = p.bio;
+      document.getElementById('fiche-experience').textContent = p.experience;
+      document.getElementById('fiche-langues').textContent    = p.langues;
+
+      // Mise à jour du titre de page
+      document.title = 'IVIA — ' + p.nom;
+
+      // Badge disponibilité
+      const badge = document.getElementById('fiche-dispo-badge');
+      const dot   = document.getElementById('fiche-dispo-dot');
+      const lbl   = document.getElementById('fiche-dispo-label');
+      badge.classList.remove('hidden');
+      if (p.disponible) {
+        badge.classList.add('border-green-200', 'bg-green-50', 'text-green-800');
+        dot.classList.add('bg-green-500');
+        lbl.textContent = 'Disponible';
+      } else {
+        badge.classList.add('border-amber-200', 'bg-amber-50', 'text-amber-700');
+        dot.classList.add('bg-amber-400');
+        lbl.textContent = 'Indisponible';
+      }
+
+      // Thèmes
+      const themesEl = document.getElementById('fiche-themes');
+      p.themes.forEach(t => {
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.textContent = t;
+        themesEl.appendChild(chip);
+      });
+
+      // Formats
+      const formatsEl = document.getElementById('fiche-formats');
+      p.formats.forEach(f => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-2 text-sm text-muted';
+        row.innerHTML = `<svg class="w-4 h-4 text-forest-deep shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>${FORMATS_LABELS[f]}</span>`;
+        formatsEl.appendChild(row);
+      });
+
+      // Liens de réservation avec praticien présélectionné
+      const resaUrl = '/rendez-vous.html?praticien=' + id;
+      document.getElementById('cta-resa').href        = resaUrl;
+      document.getElementById('nav-resa-btn').href    = resaUrl;
+    });
+  </script>
+</body>
+</html>

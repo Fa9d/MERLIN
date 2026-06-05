@@ -366,6 +366,46 @@ app/
 
 ---
 
+## 15. Architecture mémoire Claude Code (champion kit)
+
+MERLIN utilise le système de mémoire à trois niveaux de Claude Code :
+
+| Fichier | Chargement | Contenu |
+|---------|-----------|---------|
+| `CLAUDE.md` (ce fichier) | Toujours, en entier | Architecture globale, conventions, constitution |
+| `.claude/rules/*.md` | Au lancement (sans paths) ou à la demande (avec paths) | Règles topic-spécifiques, réduisent le bruit de contexte |
+| `CLAUDE.local.md` | Session locale uniquement (gitignore) | URLs sandbox, préférences personnelles de session |
+
+### 15.1 Règles path-scoped (`.claude/rules/`)
+
+Les fichiers de règles sont dans `.claude/rules/` :
+
+- `safety.md` — Toujours chargé. Vocabulaire Loi 21, triade obligatoire, anti-sycophantie.
+- `backend.md` — Paths: `10_backend_merlin_api/**`. Conventions FastAPI/Alembic.
+- `frontend.md` — Paths: `09_app_ivia_merlin/**`. Conventions Next.js/Tailwind.
+- `prompts.md` — Paths: `11_PROMPTS/**`. Conventions prompts, bump version, vocab filtre.
+
+→ Ne pas dupliquer ces règles dans `CLAUDE.md`. Les modifier directement dans `.claude/rules/`.
+
+### 15.2 Skills Claude Code (`.claude/skills/`)
+
+Les skills sont des workflows réutilisables chargés **à la demande** (ne polluent pas le contexte par défaut).
+
+Skills disponibles :
+- `generer-resume-session` — Génère le résumé de séance selon le protocole MERLIN/Loi 21.
+- `rapport-praticien` — Génère la note structurée pour le praticien post-séance.
+
+Pour invoquer : mentionner le nom du skill dans le prompt, ou Claude le charge automatiquement si le contexte est pertinent.
+
+### 15.3 Bonne hygiène CLAUDE.md
+
+- Cible : < 200 lignes par fichier (les fichiers longs réduisent l'adhérence).
+- Si une règle ne s'applique qu'à un sous-dossier → déplacer dans `.claude/rules/` avec `paths:`.
+- Les instructions de workflow ponctuelles → créer un skill plutôt que surcharger ce fichier.
+- Toute modification des `.claude/rules/` ou `.claude/skills/` doit être journalisée dans `05_JOURNAUX/`.
+
+---
+
 ## 14. Commandes officielles prod
 
 ```bash

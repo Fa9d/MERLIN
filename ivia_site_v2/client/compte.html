@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Mon compte</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1,h2{font-family:'Lora',Georgia,serif;}</style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR desktop -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/client/dashboard.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Accueil
+        </a>
+        <a href="/client/seances.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Séances
+        </a>
+        <a href="/client/journal.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          Journal
+        </a>
+        <a href="/client/audio-resume.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
+          Résumés audio
+        </a>
+        <div class="flex-1"></div>
+        <a href="/client/compte.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold bg-bdr text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+          Mon compte
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[720px] space-y-6">
+
+      <h1 class="font-heading text-2xl font-bold text-ink">Mon compte</h1>
+
+      <!-- Informations personnelles -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-5">Informations personnelles</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Prénom</label>
+            <input type="text" value="Marie" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Nom</label>
+            <input type="text" value="Dupont" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-ink mb-1.5">Adresse courriel</label>
+            <div class="flex gap-2">
+              <input type="email" value="marie.dupont@exemple.com" class="flex-1 border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+              <span class="self-center text-xs text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-[8px] font-semibold shrink-0">Non vérifiée</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Téléphone <span class="text-muted font-normal">(optionnel)</span></label>
+            <input type="tel" placeholder="514 000-0000" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+        </div>
+        <button onclick="saveToast('Informations mises à jour')"
+                class="mt-5 bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Enregistrer
+        </button>
+      </section>
+
+      <!-- Mot de passe -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-5">Mot de passe</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Mot de passe actuel</label>
+            <input type="password" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5">Nouveau mot de passe <span class="text-muted font-normal">(min. 12 caractères)</span></label>
+            <input type="password" id="new-pwd" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+          </div>
+        </div>
+        <button onclick="saveToast('Mot de passe mis à jour')"
+                class="mt-5 border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+          Changer le mot de passe
+        </button>
+      </section>
+
+      <!-- Consentements Loi 25 -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <div class="flex items-start gap-2 mb-1">
+          <h2 class="font-heading text-base font-semibold text-ink">Consentements</h2>
+          <span class="text-[10px] bg-forest/10 text-forest-deep font-bold px-2 py-0.5 rounded-full mt-0.5">Loi 25</span>
+        </div>
+        <p class="text-xs text-muted mb-5">Vos préférences de partage de données, conformément à la Loi 25 sur la protection des renseignements personnels.</p>
+        <div class="space-y-4">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-medium text-ink">N1 — Données minimales de service</p>
+              <p class="text-xs text-muted mt-0.5">Nécessaire au fonctionnement. Ne peut pas être retiré.</p>
+            </div>
+            <button disabled class="shrink-0 w-11 h-6 bg-forest-deep rounded-full relative opacity-60 cursor-not-allowed" role="switch" aria-checked="true">
+              <span class="absolute top-1 left-6 w-4 h-4 bg-white rounded-full transition-all"></span>
+            </button>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-medium text-ink">N2 — Données anonymisées pour amélioration</p>
+              <p class="text-xs text-muted mt-0.5">Usage statistique interne, anonymisé.</p>
+            </div>
+            <button id="toggle-n2" onclick="toggleConsent(this,'n2')"
+                    class="shrink-0 w-11 h-6 bg-forest-deep rounded-full relative cursor-pointer transition-colors" role="switch" aria-checked="true">
+              <span id="knob-n2" class="absolute top-1 left-6 w-4 h-4 bg-white rounded-full transition-all"></span>
+            </button>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-medium text-ink">N3 — Recherche et partenaires <a href="/confidentialite.html#n3" class="text-trust underline text-xs ml-1">Détails</a></p>
+              <p class="text-xs text-muted mt-0.5">Partage strictement encadré à des fins de recherche en bien-être.</p>
+            </div>
+            <button id="toggle-n3" onclick="toggleConsent(this,'n3')"
+                    class="shrink-0 w-11 h-6 bg-bdr rounded-full relative cursor-pointer transition-colors" role="switch" aria-checked="false">
+              <span id="knob-n3" class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-all"></span>
+            </button>
+          </div>
+        </div>
+        <button onclick="saveToast('Consentements mis à jour')"
+                class="mt-5 bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Enregistrer les préférences
+        </button>
+      </section>
+
+      <!-- Zone danger -->
+      <section class="bg-white border-2 border-red-200 rounded-[24px] p-7">
+        <h2 class="font-heading text-base font-semibold text-red-700 mb-2">Zone critique</h2>
+        <p class="text-sm text-muted mb-4">La fermeture de compte est définitive. Toutes vos données seront supprimées conformément à la Loi 25, art. 65.</p>
+        <button onclick="fermerCompte()"
+                class="border border-red-300 text-red-600 text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-red-50 transition-colors cursor-pointer">
+          Fermer mon compte
+        </button>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Nav mobile -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
+    <a href="/client/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Accueil
+    </a>
+    <a href="/client/journal.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+      Journal
+    </a>
+    <a href="/client/compte.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+      Compte
+    </a>
+  </nav>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+    Modifications enregistrées
+  </div>
+
+  <script>
+    function saveToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg || 'Modifications enregistrées';
+      t.style.opacity = '1';
+      setTimeout(() => { t.style.opacity = '0'; }, 2500);
+    }
+
+    const consents = { n2: true, n3: false };
+
+    function toggleConsent(btn, key) {
+      consents[key] = !consents[key];
+      const on = consents[key];
+      btn.classList.toggle('bg-forest-deep', on);
+      btn.classList.toggle('bg-bdr', !on);
+      btn.setAttribute('aria-checked', String(on));
+      document.getElementById(`knob-${key}`).classList.toggle('left-6', on);
+      document.getElementById(`knob-${key}`).classList.toggle('left-1', !on);
+    }
+
+    function fermerCompte() {
+      if (confirm('Êtes-vous certain·e de vouloir fermer votre compte ? Cette action est irréversible.')) {
+        window.location.href = '/';
+      }
+    }
+  </script>
+
+</body>
+</html>

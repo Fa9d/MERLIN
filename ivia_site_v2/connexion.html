@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Connexion à votre espace.">
+  <title>IVIA — Se connecter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background-color:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;font-size:15px;background:#fff;color:#1A2E1D;transition:border-color .15s,box-shadow .15s;outline:none;}
+    .field-input:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+    .field-label{display:block;font-size:13px;font-weight:600;color:#4B6350;margin-bottom:6px;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <a href="/inscription.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
+        Pas encore de compte ? Créer le mien
+      </a>
+    </div>
+  </nav>
+
+  <!-- Blocage doux si courriel non confirmé (paramètre ?verif=1) -->
+  <div id="verif-banner" class="hidden border-b border-amber-200 bg-amber-50 px-5 py-4">
+    <div class="max-w-lg mx-auto flex items-start gap-3">
+      <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+      </svg>
+      <div>
+        <p class="text-sm font-semibold text-amber-800">Avant de continuer, confirmez votre courriel.</p>
+        <p class="text-xs text-amber-700 mt-0.5">
+          Nous avons envoyé un lien à <strong id="verif-email"></strong> — vérifiez aussi vos indésirables.
+        </p>
+        <button onclick="renvoyerLien()" id="renvoyer-btn"
+                class="mt-2 text-xs font-semibold text-amber-800 underline underline-offset-2 cursor-pointer hover:text-amber-900">
+          Pas encore reçu ? Renvoyer le lien
+        </button>
+        <span id="renvoyer-confirm" class="hidden ml-3 text-xs text-green-700 font-medium">Lien renvoyé ✓</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-16 px-4">
+    <div class="w-full max-w-md">
+
+      <div class="mb-8">
+        <h1 class="font-heading text-3xl font-bold text-ink mb-2">Se connecter</h1>
+        <p class="text-muted text-sm">Bienvenue. Votre espace vous attend.</p>
+      </div>
+
+      <form id="connexion-form" novalidate
+            class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm space-y-5">
+
+        <div>
+          <label for="courriel" class="field-label">Courriel</label>
+          <input id="courriel" name="courriel" type="email" autocomplete="email"
+                 class="field-input" placeholder="camille@exemple.ca" required>
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1.5">
+            <label for="motdepasse" class="field-label">Mot de passe</label>
+            <a href="/client/mot-de-passe-oublie.html" class="text-xs text-forest underline underline-offset-2 cursor-pointer hover:text-forest-deep">
+              Mot de passe oublié ?
+            </a>
+          </div>
+          <div class="relative">
+            <input id="motdepasse" name="motdepasse" type="password" autocomplete="current-password"
+                   class="field-input pr-12" placeholder="••••••••••••" required>
+            <button type="button" id="toggle-mdp"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-ink cursor-pointer"
+                    aria-label="Afficher/masquer le mot de passe">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="form-error" class="hidden bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"
+             role="alert" aria-live="assertive"></div>
+
+        <button type="submit"
+                class="w-full bg-forest-deep text-white font-semibold py-3.5 rounded-[14px]
+                       hover:bg-forest transition-colors duration-200 cursor-pointer text-base">
+          Se connecter
+        </button>
+
+        <p class="text-xs text-center text-muted">
+          Pas encore de compte ?
+          <a href="/inscription.html" class="text-forest underline underline-offset-2 cursor-pointer">Créer un espace client</a>
+          &nbsp;·&nbsp;
+          <a href="/inscription.html?role=praticien" class="text-forest underline underline-offset-2 cursor-pointer">Rejoindre comme praticien·ne</a>
+        </p>
+      </form>
+
+      <!-- Loi 25 note bas -->
+      <div class="mt-5 flex items-center justify-center gap-1.5 text-xs text-muted">
+        <svg class="w-3.5 h-3.5 text-trust shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/>
+        </svg>
+        Connexion sécurisée · Loi 25 Québec
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-6 px-4 text-center">
+    <p class="text-xs text-muted">
+      IVIA n'est pas un service d'urgence · En crise :
+      <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+    </p>
+  </footer>
+
+  <script>
+    const p = new URLSearchParams(window.location.search);
+    if (p.get('verif') === '1') {
+      document.getElementById('verif-banner').classList.remove('hidden');
+      const emailStored = localStorage.getItem('ivia_email') || '';
+      if (emailStored) document.getElementById('verif-email').textContent = emailStored;
+    }
+
+    document.getElementById('toggle-mdp').addEventListener('click', () => {
+      const inp = document.getElementById('motdepasse');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    });
+
+    document.getElementById('connexion-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const courriel = document.getElementById('courriel').value.trim();
+      const mdp = document.getElementById('motdepasse').value;
+      const errDiv = document.getElementById('form-error');
+      errDiv.classList.add('hidden');
+      if (!courriel || !courriel.includes('@')) { affErr('Cette adresse ne semble pas valide.'); return; }
+      if (mdp.length < 4) { affErr('Veuillez entrer votre mot de passe.'); return; }
+      localStorage.setItem('ivia_email', courriel);
+      localStorage.setItem('ivia_session', '1');
+      var retour = new URLSearchParams(location.search).get('retour');
+      window.location.href = retour ? decodeURIComponent(retour) : '/client/dashboard.html';
+    });
+
+    function affErr(msg) {
+      const d = document.getElementById('form-error');
+      d.textContent = msg; d.classList.remove('hidden');
+    }
+
+    function renvoyerLien() {
+      const btn = document.getElementById('renvoyer-btn');
+      const conf = document.getElementById('renvoyer-confirm');
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
+      setTimeout(() => { conf.classList.remove('hidden'); }, 800);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Créez votre espace d'écoute. 5 champs. Accès immédiat. Conforme Loi 25 du Québec.">
+  <title>IVIA — Créer mon espace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { forest:'#4A7C59', sage:'#8FB99A','forest-deep':'#2D6A4F', cream:'#FAFDF8', surface:'#F0F7F2', ink:'#1A2E1D', muted:'#4B6350', bdr:'#D4E8D0', trust:'#2563EB' },
+          fontFamily: { heading:['"Lora"','Georgia','serif'], body:['"Raleway"','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family:'Raleway',system-ui,sans-serif; background-color:#FAFDF8; color:#1A2E1D; }
+    h1,h2,h3,h4 { font-family:'Lora',Georgia,serif; }
+    .field-input {
+      width:100%; border:1.5px solid #D4E8D0; border-radius:12px;
+      padding:12px 16px; font-size:15px; background:#fff; color:#1A2E1D;
+      transition:border-color .15s, box-shadow .15s; outline:none;
+    }
+    .field-input:focus { border-color:#4A7C59; box-shadow:0 0 0 3px rgba(74,124,89,.12); }
+    .field-input.invalid { border-color:#dc2626; box-shadow:0 0 0 3px rgba(220,38,38,.08); }
+    .field-label { display:block; font-size:13px; font-weight:600; color:#4B6350; margin-bottom:6px; }
+    .consent-row { display:flex; gap:12px; align-items:flex-start; }
+    .consent-check { width:18px; height:18px; accent-color:#2D6A4F; margin-top:2px; flex-shrink:0; cursor:pointer; }
+    .theme-chip.selected { background:#2D6A4F; border-color:#2D6A4F; color:#fff; }
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <!-- NAVBAR minimaliste -->
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <a href="/connexion.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
+        Déjà un compte ? Se connecter
+      </a>
+    </div>
+  </nav>
+
+  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-12 px-4">
+    <div class="w-full max-w-lg">
+
+      <!-- Bandeau créneau sélectionné (si redirection depuis rendez-vous.html) -->
+      <div id="creneau-banner" class="hidden mb-6 bg-surface border border-bdr rounded-[14px] px-5 py-4">
+        <p class="text-xs text-muted font-medium mb-0.5">Vous créez votre espace pour :</p>
+        <p class="text-sm font-semibold text-ink" id="creneau-banner-text"></p>
+      </div>
+
+      <!-- Sélecteur de rôle -->
+      <div class="flex bg-surface border border-bdr rounded-[16px] p-1 mb-8 gap-1" role="group" aria-label="Type de compte">
+        <button type="button" id="role-client"
+                onclick="setRole('client')"
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[12px] text-sm font-semibold bg-white text-ink shadow-sm transition-all cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+          Je suis client·e
+        </button>
+        <button type="button" id="role-praticien"
+                onclick="setRole('praticien')"
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[12px] text-sm font-semibold text-muted transition-all cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-5.477-3.723M9 20H4v-2a4 4 0 015.477-3.723M15 8a4 4 0 11-8 0 4 4 0 018 0zm6 4a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Je suis praticien·ne
+        </button>
+      </div>
+
+      <!-- Titre -->
+      <div class="mb-8">
+        <h1 id="page-title" class="font-heading text-3xl font-bold text-ink mb-2">Créer mon espace</h1>
+        <p id="page-subtitle" class="text-muted text-sm leading-relaxed">
+          5 champs seulement. Accès immédiat — pas d'attente de confirmation courriel.
+        </p>
+      </div>
+
+      <!-- Bandeau Loi 25 -->
+      <div class="flex items-center gap-2.5 bg-blue-50 border border-blue-100 rounded-[12px] px-4 py-3 mb-7 text-xs text-trust"
+           role="note">
+        <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225
+            3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110
+            1.944z" clip-rule="evenodd"/>
+        </svg>
+        <span>
+          Conforme à la <a href="/confidentialite.html" class="underline underline-offset-2 font-semibold">Loi 25 du Québec</a>
+          · Données hébergées au Canada · Aucun cookie de traçage
+        </span>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <form id="inscription-form" novalidate
+            class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm space-y-5">
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="prenom" class="field-label">Prénom <span class="text-red-500" aria-hidden="true">*</span></label>
+            <input id="prenom" name="prenom" type="text" autocomplete="given-name"
+                   class="field-input" placeholder="Camille" required minlength="1">
+          </div>
+          <div>
+            <label for="nom" class="field-label">Nom de famille <span class="text-red-500" aria-hidden="true">*</span></label>
+            <input id="nom" name="nom" type="text" autocomplete="family-name"
+                   class="field-input" placeholder="Beauchamp" required minlength="1">
+          </div>
+        </div>
+
+        <div>
+          <label for="courriel" class="field-label">Courriel <span class="text-red-500" aria-hidden="true">*</span></label>
+          <input id="courriel" name="courriel" type="email" autocomplete="email"
+                 class="field-input" placeholder="camille@exemple.ca" required>
+          <p class="text-xs text-muted mt-1.5">Sera votre identifiant de connexion.</p>
+        </div>
+
+        <div>
+          <label for="telephone" class="field-label">
+            Numéro de téléphone <span class="text-red-500" aria-hidden="true">*</span>
+          </label>
+          <input id="telephone" name="telephone" type="tel" autocomplete="tel"
+                 class="field-input" placeholder="514 555-0100" required>
+          <p class="text-xs text-muted mt-1.5">
+            Pour vos rappels de rendez-vous uniquement
+            <span class="text-trust font-medium">(art. 8, Loi 25)</span>.
+          </p>
+        </div>
+
+        <div>
+          <label for="motdepasse" class="field-label">Mot de passe <span class="text-red-500" aria-hidden="true">*</span></label>
+          <div class="relative">
+            <input id="motdepasse" name="motdepasse" type="password" autocomplete="new-password"
+                   class="field-input pr-12" placeholder="••••••••••••" required minlength="12">
+            <button type="button" id="toggle-mdp"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-ink cursor-pointer"
+                    aria-label="Afficher/masquer le mot de passe">
+              <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+          <p class="text-xs text-muted mt-1.5">Choisissez une phrase dont vous vous souviendrez — au moins 12 caractères.</p>
+          <!-- Indicateur force -->
+          <div class="mt-2 flex gap-1" aria-hidden="true">
+            <div id="str-1" class="h-1 flex-1 bg-bdr rounded-full transition-colors duration-300"></div>
+            <div id="str-2" class="h-1 flex-1 bg-bdr rounded-full transition-colors duration-300"></div>
+            <div id="str-3" class="h-1 flex-1 bg-bdr rounded-full transition-colors duration-300"></div>
+            <div id="str-4" class="h-1 flex-1 bg-bdr rounded-full transition-colors duration-300"></div>
+          </div>
+        </div>
+
+        <!-- Champs spécifiques praticien (masqués par défaut) -->
+        <div id="praticien-fields" class="hidden border-t border-bdr pt-5 space-y-4">
+          <p class="text-xs text-muted font-semibold uppercase tracking-wider">Votre profil praticien·ne</p>
+
+          <div>
+            <label for="titre-approche" class="field-label">Titre / approche <span class="text-red-500" aria-hidden="true">*</span></label>
+            <input id="titre-approche" name="titre-approche" type="text"
+                   class="field-input" placeholder="Ex : Écoute somatique · Transitions de vie">
+          </div>
+
+          <div>
+            <label for="bio" class="field-label">Bio courte <span class="text-muted font-normal">(publique, max 300 car.)</span></label>
+            <textarea id="bio" name="bio" maxlength="300" rows="3"
+                      placeholder="Décrivez votre approche en quelques mots…"
+                      class="field-input resize-none leading-relaxed"></textarea>
+          </div>
+
+          <div>
+            <label class="field-label">Thèmes d'accompagnement <span class="text-muted font-normal">(jusqu'à 6)</span></label>
+            <div class="flex flex-wrap gap-2 mt-1.5" id="themes-container">
+              <button type="button" data-theme="Transitions de vie" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Transitions de vie</button>
+              <button type="button" data-theme="Deuil" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Deuil</button>
+              <button type="button" data-theme="Burnout" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Burnout</button>
+              <button type="button" data-theme="Identité" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Identité</button>
+              <button type="button" data-theme="Anxiété" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Anxiété</button>
+              <button type="button" data-theme="Parentalité" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Parentalité</button>
+              <button type="button" data-theme="Relations" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Relations</button>
+              <button type="button" data-theme="Corps" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Corps</button>
+              <button type="button" data-theme="Somatique" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Somatique</button>
+              <button type="button" data-theme="Trauma" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Trauma</button>
+              <button type="button" data-theme="Spiritualité" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Spiritualité</button>
+              <button type="button" data-theme="Autochtone" onclick="toggleTheme(this)" class="theme-chip border border-bdr rounded-full text-xs font-semibold text-muted px-4 py-1.5 bg-white cursor-pointer hover:border-forest transition-colors">Autochtone</button>
+            </div>
+            <!-- Ajout personnalisé -->
+            <div class="flex gap-2 items-center mt-2.5">
+              <input id="theme-custom-input" type="text" maxlength="40"
+                     placeholder="Ajouter un thème personnalisé…"
+                     class="flex-1 border border-bdr rounded-full px-4 py-1.5 text-xs font-medium outline-none focus:ring-2 focus:ring-forest bg-white"
+                     onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomTheme();}">
+              <button type="button" onclick="addCustomTheme()"
+                      class="flex items-center gap-1 border border-bdr text-xs font-semibold text-ink px-4 py-1.5 rounded-full hover:bg-surface transition-colors cursor-pointer shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Ajouter
+              </button>
+            </div>
+            <p id="theme-limit-msg" class="text-xs text-amber-600 mt-1.5 hidden">Maximum 6 thèmes sélectionnés.</p>
+            <p id="theme-exists-msg" class="text-xs text-muted mt-1.5 hidden">Ce thème existe déjà.</p>
+          </div>
+
+          <div>
+            <label class="field-label">Format(s) proposé(s)</label>
+            <div class="space-y-2 mt-1.5">
+              <label class="flex items-center gap-2.5 cursor-pointer text-sm text-muted">
+                <input type="checkbox" name="fmt-audio" class="w-4 h-4 accent-forest-deep cursor-pointer"> Séance audio seulement
+              </label>
+              <label class="flex items-center gap-2.5 cursor-pointer text-sm text-muted">
+                <input type="checkbox" name="fmt-enreg" checked class="w-4 h-4 accent-forest-deep cursor-pointer"> Enregistrement libre (formule 35 $)
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Séparateur consentements -->
+        <div class="border-t border-bdr pt-5 space-y-4">
+          <p class="text-xs text-muted font-semibold uppercase tracking-wider">Consentements</p>
+
+          <!-- N1 — Obligatoire (pré-coché, décochable) -->
+          <div class="consent-row">
+            <input type="checkbox" id="consent-n1" name="consent-n1" checked required
+                   class="consent-check" aria-required="true">
+            <label for="consent-n1" class="text-sm text-muted leading-relaxed cursor-pointer">
+              <span class="font-semibold text-ink">Obligatoire —</span>
+              J'accepte qu'IVIA conserve les renseignements nécessaires à mon compte (courriel,
+              historique de séances) et les partage avec la personne praticienne qui m'accompagne,
+              uniquement pour la durée de mes séances.
+              <a href="/cgu.html" class="text-trust underline underline-offset-2 ml-1">CGU</a>
+              <a href="/confidentialite.html" class="text-trust underline underline-offset-2 ml-1">Confidentialité</a>
+            </label>
+          </div>
+
+          <!-- N2 — Opt-in -->
+          <div class="consent-row">
+            <input type="checkbox" id="consent-n2" name="consent-n2" class="consent-check">
+            <label for="consent-n2" class="text-sm text-muted leading-relaxed cursor-pointer">
+              <span class="font-semibold text-ink">Optionnel —</span>
+              J'accepte que les données agrégées et anonymisées issues de mes séances (jamais le contenu
+              de mes échanges) contribuent à la recherche collective IVIA, avec consentement révocable
+              en tout temps.
+            </label>
+          </div>
+
+        </div>
+
+        <!-- Erreur globale -->
+        <div id="form-error" class="hidden bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"
+             role="alert" aria-live="assertive"></div>
+
+        <!-- Bouton -->
+        <button type="submit" id="submit-btn"
+                class="w-full bg-forest-deep text-white font-semibold py-3.5 rounded-[14px]
+                       hover:bg-forest transition-colors duration-200 cursor-pointer text-base mt-2">
+          <span id="submit-label">Créer mon espace</span>
+        </button>
+
+        <p class="text-xs text-center text-muted">
+          Déjà un compte ?
+          <a href="/connexion.html" class="text-forest underline underline-offset-2 cursor-pointer">Se connecter</a>
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Footer urgence -->
+  <footer class="py-6 px-4 text-center">
+    <p class="text-xs text-muted">
+      IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.
+      En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+    </p>
+  </footer>
+
+  <script>
+    // Rôle courant
+    let currentRole = 'client';
+    const selectedThemes = new Set();
+
+    function setRole(role) {
+      currentRole = role;
+      const btnClient    = document.getElementById('role-client');
+      const btnPraticien = document.getElementById('role-praticien');
+      const praticienFields = document.getElementById('praticien-fields');
+      const title    = document.getElementById('page-title');
+      const subtitle = document.getElementById('page-subtitle');
+      const submitLbl = document.getElementById('submit-label');
+
+      if (role === 'praticien') {
+        btnPraticien.classList.add('bg-white','text-ink','shadow-sm');
+        btnPraticien.classList.remove('text-muted');
+        btnClient.classList.remove('bg-white','text-ink','shadow-sm');
+        btnClient.classList.add('text-muted');
+        praticienFields.classList.remove('hidden');
+        title.textContent = 'Rejoindre IVIA comme praticien·ne';
+        subtitle.textContent = 'Créez votre espace professionnel. Votre profil sera visible aux client·es après validation.';
+        submitLbl.textContent = 'Créer mon espace praticien·ne';
+        // Masquer le bandeau créneau (non pertinent pour les praticiens)
+        document.getElementById('creneau-banner').classList.add('hidden');
+      } else {
+        btnClient.classList.add('bg-white','text-ink','shadow-sm');
+        btnClient.classList.remove('text-muted');
+        btnPraticien.classList.remove('bg-white','text-ink','shadow-sm');
+        btnPraticien.classList.add('text-muted');
+        praticienFields.classList.add('hidden');
+        title.textContent = 'Créer mon espace';
+        subtitle.textContent = '5 champs seulement. Accès immédiat — pas d’attente de confirmation courriel.';
+        submitLbl.textContent = 'Créer mon espace';
+      }
+    }
+
+    function toggleTheme(btn) {
+      const t = btn.dataset.theme || btn.querySelector('span')?.textContent.trim() || btn.textContent.trim();
+      if (selectedThemes.has(t)) {
+        selectedThemes.delete(t);
+        btn.classList.remove('selected');
+      } else {
+        if (selectedThemes.size >= 6) {
+          showThemeMsg('theme-limit-msg'); return;
+        }
+        selectedThemes.add(t);
+        btn.classList.add('selected');
+      }
+      hideThemeMsgs();
+    }
+
+    function addCustomTheme() {
+      const input = document.getElementById('theme-custom-input');
+      const val = input.value.trim();
+      if (!val) return;
+      const container = document.getElementById('themes-container');
+      const existing = [...container.querySelectorAll('button')].map(b => (b.dataset.theme || b.querySelector('span')?.textContent || b.textContent).trim().toLowerCase());
+      if (existing.includes(val.toLowerCase())) { showThemeMsg('theme-exists-msg'); return; }
+      if (selectedThemes.size >= 6) { showThemeMsg('theme-limit-msg'); return; }
+      hideThemeMsgs();
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'theme-chip selected flex items-center gap-1.5 border border-bdr rounded-full text-xs font-semibold px-4 py-1.5 cursor-pointer transition-colors';
+      chip.innerHTML = `<span>${val}</span><span class="opacity-50 font-normal" aria-hidden="true">×</span>`;
+      chip.addEventListener('click', () => {
+        selectedThemes.delete(val);
+        chip.remove();
+        hideThemeMsgs();
+      });
+      container.appendChild(chip);
+      selectedThemes.add(val);
+      input.value = '';
+      input.focus();
+    }
+
+    function showThemeMsg(id) {
+      hideThemeMsgs();
+      document.getElementById(id).classList.remove('hidden');
+      setTimeout(() => document.getElementById(id).classList.add('hidden'), 3000);
+    }
+    function hideThemeMsgs() {
+      ['theme-limit-msg','theme-exists-msg'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    }
+
+    // Lire paramètres URL (praticien, créneau)
+    const params = new URLSearchParams(window.location.search);
+    const praticienParam = params.get('praticien');
+    const creneauParam  = params.get('creneau');
+    if (praticienParam && creneauParam) {
+      const banner = document.getElementById('creneau-banner');
+      const txt    = document.getElementById('creneau-banner-text');
+      const nomPraticien = { mylene:'Mylène P.', emilie:'Émilie R.' }[praticienParam] || praticienParam;
+      const dt = new Date(creneauParam);
+      const fmt = dt.toLocaleString('fr-CA', { weekday:'long', day:'numeric', month:'long', hour:'2-digit', minute:'2-digit', timeZone:'America/Toronto' });
+      txt.textContent = `${fmt} avec ${nomPraticien}`;
+      banner.classList.remove('hidden');
+    }
+
+    // Vérifier si paramètre role=praticien dans l'URL
+    if (params.get('role') === 'praticien') setRole('praticien');
+
+    // Afficher/masquer mot de passe
+    document.getElementById('toggle-mdp').addEventListener('click', () => {
+      const inp = document.getElementById('motdepasse');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    });
+
+    // Indicateur force mot de passe
+    document.getElementById('motdepasse').addEventListener('input', (e) => {
+      const v = e.target.value;
+      const len = v.length;
+      const colors = ['bg-red-400','bg-amber-400','bg-yellow-400','bg-forest'];
+      for (let i = 1; i <= 4; i++) {
+        const bar = document.getElementById(`str-${i}`);
+        bar.className = `h-1 flex-1 rounded-full transition-colors duration-300 ${len >= i * 3 ? colors[i-1] : 'bg-bdr'}`;
+      }
+    });
+
+    // Validation + soumission
+    document.getElementById('inscription-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const prenom  = document.getElementById('prenom').value.trim();
+      const nom     = document.getElementById('nom').value.trim();
+      const courriel= document.getElementById('courriel').value.trim();
+      const tel     = document.getElementById('telephone').value.trim();
+      const mdp     = document.getElementById('motdepasse').value;
+      const n1      = document.getElementById('consent-n1').checked;
+      const errDiv  = document.getElementById('form-error');
+
+      errDiv.classList.add('hidden');
+      errDiv.textContent = '';
+
+      // Validations front
+      if (!prenom || !nom)     { showErr('Veuillez entrer votre prénom et nom de famille.'); return; }
+      if (!courriel || !courriel.includes('@')) { showErr('Cette adresse ne semble pas valide. Essayez une autre.'); return; }
+      if (!tel)                { showErr('Le numéro de téléphone est requis pour vos rappels.'); return; }
+      if (mdp.length < 12)     { showErr('Choisissez une phrase d\'au moins 12 caractères.'); return; }
+      if (!n1)                 { showErr('Le consentement obligatoire (N1) est nécessaire pour créer votre espace.'); return; }
+
+      // Validations supplémentaires praticien
+      if (currentRole === 'praticien') {
+        const titre = document.getElementById('titre-approche').value.trim();
+        if (!titre) { showErr('Veuillez indiquer votre titre ou approche.'); return; }
+      }
+
+      // Simuler soumission — redirection
+      const btn = document.getElementById('submit-btn');
+      btn.querySelector('#submit-label').textContent = 'Création en cours…';
+      btn.disabled = true;
+      btn.classList.add('opacity-75');
+
+      let dest;
+      if (currentRole === 'praticien') {
+        dest = '/praticien/dashboard.html?nouveau=1';
+      } else {
+        // Si un créneau est présent, aller sur la page de confirmation
+        const hasCreneau = params.get('creneau') || params.get('praticien');
+        if (hasCreneau) {
+          const p = params.get('praticien') || '';
+          const c = params.get('creneau')   || '';
+          const f = params.get('formule')   || '1h';
+          dest = `/confirmation.html?praticien=${encodeURIComponent(p)}&creneau=${encodeURIComponent(c)}&formule=${encodeURIComponent(f)}`;
+        } else {
+          dest = '/client/dashboard.html?nouveau=1';
+        }
+      }
+      setTimeout(() => { window.location.href = dest; }, 1200);
+
+      function showErr(msg) {
+        errDiv.textContent = msg;
+        errDiv.classList.remove('hidden');
+        errDiv.scrollIntoView({ behavior:'smooth', block:'center' });
+      }
+    });
+  </script>
+
+</body>
+</html>

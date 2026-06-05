@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Mon compte praticien·ne</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:11px 15px;font-size:14px;background:#fff;color:#1A2E1D;outline:none;transition:border-color .15s,box-shadow .15s;}
+    .field-input:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+    .field-label{display:block;font-size:13px;font-weight:600;color:#4B6350;margin-bottom:6px;}
+    /* Toast */
+    #toast{position:fixed;bottom:24px;right:24px;background:#1A2E1D;color:#fff;font-size:14px;font-weight:500;padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:100;}
+    #toast.show{opacity:1;}
+    /* Toggle Loi 25 */
+    .loi-toggle{position:relative;width:44px;height:24px;border-radius:99px;border:1.5px solid #D4E8D0;background:#F0F7F2;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0;}
+    .loi-toggle.on{background:#4A7C59;border-color:#4A7C59;}
+    .loi-toggle-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;}
+    .loi-toggle.on .loi-toggle-knob{transform:translateX(20px);}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR desktop praticien -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Tableau de bord
+        </a>
+        <a href="/praticien/agenda.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Agenda
+        </a>
+        <a href="/praticien/clients-journal.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Clients
+        </a>
+        <a href="/praticien/livraisons.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Livraisons
+        </a>
+        <div class="flex-1"></div>
+        <a href="/praticien/profil.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Mon profil public
+        </a>
+        <a href="/praticien/compte.html" class="sidebar-link active">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          Mon compte
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[720px] space-y-6">
+
+      <h1 class="font-heading text-2xl font-bold text-ink">Mon compte</h1>
+
+      <!-- Informations personnelles -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-5">Informations personnelles</h2>
+        <div class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label" for="cp-prenom">Prénom</label>
+              <input id="cp-prenom" type="text" class="field-input" value="Marie">
+            </div>
+            <div>
+              <label class="field-label" for="cp-nom">Nom</label>
+              <input id="cp-nom" type="text" class="field-input" value="Fontaine">
+            </div>
+          </div>
+          <div>
+            <label class="field-label" for="cp-courriel">Courriel</label>
+            <input id="cp-courriel" type="email" class="field-input" value="marie.fontaine@ivia.ca">
+          </div>
+          <div>
+            <label class="field-label" for="cp-tel">Téléphone <span class="font-normal text-muted">(optionnel)</span></label>
+            <input id="cp-tel" type="tel" class="field-input" placeholder="514 000-0000">
+          </div>
+          <button onclick="saveToast('Informations enregistrées')"
+                  class="border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Enregistrer
+          </button>
+        </div>
+      </section>
+
+      <!-- Mot de passe -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-5">Mot de passe</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="field-label" for="cp-mdp-actuel">Mot de passe actuel</label>
+            <input id="cp-mdp-actuel" type="password" class="field-input" placeholder="••••••••">
+          </div>
+          <div>
+            <label class="field-label" for="cp-mdp-new">Nouveau mot de passe</label>
+            <input id="cp-mdp-new" type="password" class="field-input" placeholder="••••••••">
+          </div>
+          <div>
+            <label class="field-label" for="cp-mdp-confirm">Confirmer le nouveau mot de passe</label>
+            <input id="cp-mdp-confirm" type="password" class="field-input" placeholder="••••••••">
+          </div>
+          <button onclick="saveToast('Mot de passe mis à jour')"
+                  class="border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Modifier le mot de passe
+          </button>
+        </div>
+      </section>
+
+      <!-- Coordonnées bancaires (facturation) -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-1">Coordonnées de virement</h2>
+        <p class="text-xs text-muted mb-5">Vos revenus sont versés automatiquement tous les 15 jours via virement bancaire sécurisé.</p>
+        <div class="space-y-4">
+          <div>
+            <label class="field-label" for="cp-institution">Institution financière</label>
+            <input id="cp-institution" type="text" class="field-input" placeholder="ex. Desjardins, RBC, BMO…">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="field-label" for="cp-transit">Numéro de transit</label>
+              <input id="cp-transit" type="text" class="field-input" placeholder="5 chiffres">
+            </div>
+            <div>
+              <label class="field-label" for="cp-compte-bq">Numéro de compte</label>
+              <input id="cp-compte-bq" type="text" class="field-input" placeholder="7–12 chiffres">
+            </div>
+          </div>
+          <div class="flex items-start gap-2 text-xs text-muted bg-surface rounded-[12px] px-4 py-3">
+            <svg class="w-4 h-4 text-forest-deep shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span>Ces informations sont chiffrées et ne sont jamais accessibles à d'autres utilisateurs.</span>
+          </div>
+          <button onclick="saveToast('Coordonnées bancaires enregistrées')"
+                  class="border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Enregistrer
+          </button>
+        </div>
+      </section>
+
+      <!-- Consentements Loi 25 -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-1">Consentements — Loi 25</h2>
+        <p class="text-xs text-muted mb-5">Gérez la manière dont IVIA utilise vos données. Les données strictement nécessaires au service ne peuvent être désactivées.</p>
+
+        <!-- N1 — nécessaire -->
+        <div class="border border-bdr rounded-[16px] p-4 mb-3">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-semibold text-ink mb-0.5">Données de séance</p>
+              <p class="text-xs text-muted">Audio, transcriptions et résumés IVIA. Requis pour le fonctionnement du service.</p>
+            </div>
+            <div class="loi-toggle on shrink-0" style="cursor:not-allowed;" aria-label="Requis, non modifiable">
+              <div class="loi-toggle-knob"></div>
+            </div>
+          </div>
+          <p class="mt-2 text-xs text-muted italic">Non modifiable — essentiel au service.</p>
+        </div>
+
+        <!-- N2 — analytiques -->
+        <div class="border border-bdr rounded-[16px] p-4 mb-3">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-semibold text-ink mb-0.5">Analytiques de performance</p>
+              <p class="text-xs text-muted">Statistiques anonymisées pour améliorer la qualité du service (taux de satisfaction, durée des séances).</p>
+            </div>
+            <button class="loi-toggle on" id="toggle-n2" onclick="toggleConsent(this,'n2')" aria-label="Analytiques de performance">
+              <div class="loi-toggle-knob"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- N3 — communications -->
+        <div class="border border-bdr rounded-[16px] p-4">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-sm font-semibold text-ink mb-0.5">Communications de la plateforme</p>
+              <p class="text-xs text-muted">Bulletins, mises à jour de fonctionnalités et invitations à des formations pour praticiens.</p>
+            </div>
+            <button class="loi-toggle" id="toggle-n3" onclick="toggleConsent(this,'n3')" aria-label="Communications">
+              <div class="loi-toggle-knob"></div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Zone de danger -->
+      <section class="border border-red-200 rounded-[24px] p-7 bg-red-50">
+        <h2 class="font-heading text-base font-semibold text-red-800 mb-1">Zone critique</h2>
+        <p class="text-xs text-red-700 mb-5">Ces actions sont irréversibles. Vos données et vos livraisons en attente seront définitivement supprimées.</p>
+        <button onclick="confirmFermer()"
+                class="border border-red-300 bg-white text-sm font-medium text-red-700 px-6 py-2.5 rounded-[12px] hover:bg-red-100 transition-colors cursor-pointer">
+          Fermer mon compte praticien·ne
+        </button>
+      </section>
+
+    </main>
+
+    <!-- Barre bottom nav mobile -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex z-20">
+      <a href="/praticien/dashboard.html" class="flex-1 flex flex-col items-center py-3 gap-0.5 text-muted hover:text-ink transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="text-[10px]">Accueil</span>
+      </a>
+      <a href="/praticien/agenda.html" class="flex-1 flex flex-col items-center py-3 gap-0.5 text-muted hover:text-ink transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="text-[10px]">Agenda</span>
+      </a>
+      <a href="/praticien/livraisons.html" class="flex-1 flex flex-col items-center py-3 gap-0.5 text-muted hover:text-ink transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="text-[10px]">Livraisons</span>
+      </a>
+      <a href="/praticien/compte.html" class="flex-1 flex flex-col items-center py-3 gap-0.5 text-forest-deep font-semibold">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+        <span class="text-[10px]">Compte</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    function saveToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg + ' ✓';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    function toggleConsent(btn, key) {
+      btn.classList.toggle('on');
+      const on = btn.classList.contains('on');
+      saveToast(on ? 'Consentement activé' : 'Consentement retiré');
+    }
+
+    function confirmFermer() {
+      const ok = window.confirm('Êtes-vous certain·e de vouloir fermer votre compte praticien·ne ?\n\nCette action est irréversible.');
+      if (ok) {
+        window.location.href = '/';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Pourquoi ce service existe, ce qu'il est, ce qu'il n'est pas.">
+  <title>IVIA — Pourquoi IVIA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif'],body:['"Raleway"','system-ui','sans-serif']}}}}</script>
+  <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1,h2,h3{font-family:'Lora',Georgia,serif;}.prose-ivia p{font-size:1rem;color:#4B6350;line-height:1.85;margin-bottom:1.1rem;}.prose-ivia em{font-style:italic;color:#2D6A4F;font-family:'Lora',Georgia,serif;}</style>
+</head>
+<body class="antialiased">
+
+  <!-- NAVBAR -->
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <div class="flex items-center gap-5">
+        <a href="/rendez-vous.html" class="text-sm font-medium text-muted hover:text-ink transition-colors hidden sm:block cursor-pointer">Trouver une séance</a>
+        <a href="/inscription.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-forest transition-colors cursor-pointer">
+          Créer mon espace
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO texte -->
+  <section class="max-w-2xl mx-auto px-5 py-20">
+    <p class="text-xs font-semibold uppercase tracking-widest text-sage mb-4">Manifeste</p>
+    <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-tight mb-8">
+      Pourquoi IVIA ?
+    </h1>
+    <div class="prose-ivia">
+      <p>
+        Il y a des moments où quelque chose pèse. Pas assez pour aller aux urgences. Pas assez pour
+        décrocher le téléphone et appeler un·e psy. Mais assez pour que la journée soit difficile,
+        que le sommeil tarde, que les mots ne viennent pas.
+      </p>
+      <p>
+        IVIA est né de ce constat : <em>l'entre-deux n'est pas un vide. C'est un espace qui mérite
+        d'être habité.</em>
+      </p>
+      <p>
+        Nous avons conçu un service d'accompagnement auditif — pas de la thérapie, pas du coaching,
+        pas de l'IA qui simule l'empathie. Des personnes formées à l'écoute active, disponibles pour
+        une voix, un espace, une présence.
+      </p>
+    </div>
+  </section>
+
+  <!-- CE QU'IVIA EST / N'EST PAS -->
+  <section class="bg-surface border-y border-bdr py-16 px-5">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-heading text-2xl font-bold text-ink text-center mb-10">Ce que nous sommes. Ce que nous ne sommes pas.</h2>
+      <div class="grid sm:grid-cols-2 gap-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-forest mb-4">IVIA est</p>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-forest mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span class="text-sm text-muted">Un espace d'écoute active par des humains formés</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-forest mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span class="text-sm text-muted">Disponible le soir, le matin, et entre les rendez-vous</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-forest mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span class="text-sm text-muted">Confidentiel, hébergé au Québec, conforme Loi 25</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-forest mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span class="text-sm text-muted">Un complément, pas un substitut aux soins professionnels</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-4">IVIA n'est pas</p>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-muted mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="text-sm text-muted">Un service d'urgence (composez le 1 866 APPELLE)</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-muted mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="text-sm text-muted">Un service de psychothérapie ou de médecine</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-muted mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="text-sm text-muted">Un chatbot ou une IA — vous parlez à une vraie personne</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-muted mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="text-sm text-muted">Un abonnement mensuel imposé — payez ce que vous utilisez</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUR QUI -->
+  <section class="max-w-2xl mx-auto px-5 py-16">
+    <h2 class="font-heading text-2xl font-bold text-ink mb-6">Pour qui ?</h2>
+    <div class="prose-ivia">
+      <p>
+        Pour ceux et celles qui ont quelque chose à déposer — mais pas envie d'une démarche lourde.
+        Pour qui revient d'une période difficile et ne sait pas trop où en est sa capacité. Pour qui
+        accompagne les autres et cherche un espace pour soi.
+      </p>
+      <p>
+        IVIA n'est pas réservé aux grandes crises. Souvent, ce sont les petites accumulations qui
+        méritent le plus d'attention.
+      </p>
+    </div>
+    <div class="mt-8">
+      <a href="/inscription.html"
+         class="inline-block bg-forest-deep text-white font-semibold px-7 py-3.5 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+        Créer mon espace — gratuit
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-bdr py-10 px-5">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-5">
+      <p class="font-heading text-lg font-semibold text-forest-deep">IVIA</p>
+      <nav class="flex flex-wrap gap-5 text-sm text-muted">
+        <a href="/cgu.html" class="hover:text-ink transition-colors cursor-pointer">CGU</a>
+        <a href="/confidentialite.html" class="hover:text-ink transition-colors cursor-pointer">Confidentialité</a>
+        <a href="/mentions.html" class="hover:text-ink transition-colors cursor-pointer">Mentions légales</a>
+      </nav>
+      <p class="text-xs text-muted w-full sm:w-auto text-center">
+        En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

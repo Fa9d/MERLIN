@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Page introuvable.">
+  <title>IVIA — 404 · Page introuvable</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { forest:'#4A7C59', sage:'#8FB99A','forest-deep':'#2D6A4F', cream:'#FAFDF8', surface:'#F0F7F2', ink:'#1A2E1D', muted:'#4B6350', bdr:'#D4E8D0', trust:'#2563EB' },
+          fontFamily: { heading:['"Lora"','Georgia','serif'], body:['"Raleway"','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family:'Raleway',system-ui,sans-serif; background-color:#FAFDF8; color:#1A2E1D; }
+    h1,h2 { font-family:'Lora',Georgia,serif; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    .float { animation: float 4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream flex flex-col">
+
+  <!-- NAVBAR -->
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep tracking-tight">IVIA</a>
+      <a href="/connexion.html" class="text-sm text-muted hover:text-ink transition-colors">Se connecter</a>
+    </div>
+  </nav>
+
+  <main class="flex-1 flex items-center justify-center px-5 py-20">
+    <div class="text-center max-w-md">
+
+      <!-- Illustration 404 -->
+      <div class="float mx-auto mb-8 w-32 h-32 rounded-full bg-surface flex items-center justify-center border border-bdr">
+        <span class="font-heading text-5xl font-bold text-forest-deep select-none">404</span>
+      </div>
+
+      <h1 class="font-heading text-3xl font-bold text-ink mb-3">Page introuvable</h1>
+      <p class="text-muted text-sm leading-relaxed mb-8">
+        Cette page n'existe pas ou a été déplacée.<br>
+        Voici où vous pouvez aller.
+      </p>
+
+      <!-- Liens utiles -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 text-left">
+        <a href="/"
+           class="flex items-center gap-3 bg-white border border-bdr rounded-[16px] p-4 hover:border-forest hover:bg-surface transition-colors group">
+          <div class="w-8 h-8 rounded-[8px] bg-surface flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+            <svg class="w-4 h-4 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-ink">Accueil</p>
+            <p class="text-xs text-muted">Découvrir IVIA</p>
+          </div>
+        </a>
+
+        <a href="/rendez-vous.html"
+           class="flex items-center gap-3 bg-white border border-bdr rounded-[16px] p-4 hover:border-forest hover:bg-surface transition-colors group">
+          <div class="w-8 h-8 rounded-[8px] bg-surface flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+            <svg class="w-4 h-4 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-ink">Réserver une séance</p>
+            <p class="text-xs text-muted">Choisir un praticien</p>
+          </div>
+        </a>
+
+        <a href="/connexion.html"
+           class="flex items-center gap-3 bg-white border border-bdr rounded-[16px] p-4 hover:border-forest hover:bg-surface transition-colors group">
+          <div class="w-8 h-8 rounded-[8px] bg-surface flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+            <svg class="w-4 h-4 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-ink">Se connecter</p>
+            <p class="text-xs text-muted">Accéder à mon espace</p>
+          </div>
+        </a>
+
+        <a href="/pourquoi.html"
+           class="flex items-center gap-3 bg-white border border-bdr rounded-[16px] p-4 hover:border-forest hover:bg-surface transition-colors group">
+          <div class="w-8 h-8 rounded-[8px] bg-surface flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+            <svg class="w-4 h-4 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-ink">À propos d'IVIA</p>
+            <p class="text-xs text-muted">Comprendre notre approche</p>
+          </div>
+        </a>
+      </div>
+
+      <button onclick="history.back()"
+              class="text-sm text-muted hover:text-ink transition-colors underline underline-offset-2 cursor-pointer">
+        ← Revenir à la page précédente
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-bdr bg-white">
+    <div class="max-w-6xl mx-auto px-5 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted">
+      <p>IVIA n'est pas un service clinique. En cas de crise : <strong class="text-ink">1 866 APPELLE (277-3553)</strong>.</p>
+      <div class="flex gap-4">
+        <a href="/confidentialite.html" class="hover:text-ink transition-colors">Confidentialité</a>
+        <a href="/cgu.html" class="hover:text-ink transition-colors">CGU</a>
+        <a href="/mentions.html" class="hover:text-ink transition-colors">Mentions légales</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

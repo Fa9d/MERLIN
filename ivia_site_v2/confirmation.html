@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Votre réservation est confirmée.">
+  <title>IVIA — Réservation confirmée</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { forest:'#4A7C59', sage:'#8FB99A','forest-deep':'#2D6A4F', cream:'#FAFDF8', surface:'#F0F7F2', ink:'#1A2E1D', muted:'#4B6350', bdr:'#D4E8D0', trust:'#2563EB' },
+          fontFamily: { heading:['"Lora"','Georgia','serif'], body:['"Raleway"','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family:'Raleway',system-ui,sans-serif; background-color:#FAFDF8; color:#1A2E1D; }
+    h1,h2,h3 { font-family:'Lora',Georgia,serif; }
+    @keyframes pop-in {
+      0%   { opacity:0; transform:scale(.88) translateY(12px); }
+      70%  { transform:scale(1.04) translateY(-2px); }
+      100% { opacity:1; transform:scale(1) translateY(0); }
+    }
+    .pop-in { animation: pop-in .55s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes check-draw {
+      to { stroke-dashoffset: 0; }
+    }
+    .check-path { stroke-dasharray: 36; stroke-dashoffset: 36; animation: check-draw .4s .35s ease forwards; }
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <!-- NAVBAR -->
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep tracking-tight">IVIA</a>
+      <a href="/client/dashboard.html" class="text-sm text-muted hover:text-ink transition-colors">Mon espace →</a>
+    </div>
+  </nav>
+
+  <main class="max-w-xl mx-auto px-5 py-16">
+
+    <!-- Bloc confirmation standard (formule 1h / 30min) -->
+    <div id="view-resa" class="hidden pop-in text-center">
+
+      <!-- Icône succès -->
+      <div class="mx-auto mb-6 w-20 h-20 rounded-full bg-surface flex items-center justify-center">
+        <svg class="w-10 h-10" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <circle cx="20" cy="20" r="18" stroke="#8FB99A" stroke-width="2.5"/>
+          <path class="check-path" d="M12 21l6 6 10-12" stroke="#2D6A4F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h1 class="font-heading text-3xl font-bold text-ink mb-2">Réservation confirmée</h1>
+      <p class="text-muted text-sm mb-8">Un courriel de confirmation vous a été envoyé.</p>
+
+      <!-- Carte récap -->
+      <div class="bg-white border border-bdr rounded-[20px] p-6 text-left shadow-sm mb-6 space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-surface flex items-center justify-center shrink-0 text-forest-deep font-heading font-bold text-lg" id="conf-initiales">–</div>
+          <div>
+            <p class="font-semibold text-ink text-sm" id="conf-praticien">—</p>
+            <p class="text-xs text-muted" id="conf-approche">Praticien·ne d'écoute certifié·e</p>
+          </div>
+        </div>
+
+        <div class="border-t border-bdr pt-4 grid grid-cols-2 gap-3 text-xs">
+          <div>
+            <p class="text-muted font-medium mb-0.5">Date &amp; heure</p>
+            <p class="font-semibold text-ink" id="conf-creneau">—</p>
+          </div>
+          <div>
+            <p class="text-muted font-medium mb-0.5">Formule</p>
+            <p class="font-semibold text-ink" id="conf-formule">—</p>
+          </div>
+          <div>
+            <p class="text-muted font-medium mb-0.5">Format</p>
+            <p class="font-semibold text-ink">Audio seulement</p>
+          </div>
+          <div>
+            <p class="text-muted font-medium mb-0.5">Montant</p>
+            <p class="font-semibold text-forest-deep" id="conf-montant">—</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étapes suivantes -->
+      <div class="bg-white border border-bdr rounded-[20px] p-6 text-left shadow-sm mb-8">
+        <h2 class="font-heading text-sm font-semibold text-ink mb-4">Comment ça se passe</h2>
+        <ol class="space-y-3">
+          <li class="flex items-start gap-3 text-sm">
+            <span class="mt-0.5 w-5 h-5 rounded-full bg-surface text-forest-deep font-bold text-xs flex items-center justify-center shrink-0">1</span>
+            <span class="text-muted">Vous recevrez un lien audio sécurisé 10 minutes avant la séance.</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <span class="mt-0.5 w-5 h-5 rounded-full bg-surface text-forest-deep font-bold text-xs flex items-center justify-center shrink-0">2</span>
+            <span class="text-muted">Après la séance, IVIA génère un résumé en langage naturel, visible dans votre espace.</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <span class="mt-0.5 w-5 h-5 rounded-full bg-surface text-forest-deep font-bold text-xs flex items-center justify-center shrink-0">3</span>
+            <span class="text-muted">Votre journal s'enrichit automatiquement. Vous restez propriétaire de vos données.</span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/client/dashboard.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-6 py-3 rounded-[12px] hover:bg-forest transition-colors">
+          Aller à mon espace →
+        </a>
+        <a href="/rendez-vous.html"
+           class="border border-bdr text-sm font-medium text-ink px-6 py-3 rounded-[12px] hover:bg-surface transition-colors">
+          Réserver une autre séance
+        </a>
+      </div>
+    </div>
+
+    <!-- Bloc confirmation enregistrement (formule 35$) -->
+    <div id="view-enreg" class="hidden pop-in text-center">
+
+      <div class="mx-auto mb-6 w-20 h-20 rounded-full bg-surface flex items-center justify-center">
+        <svg class="w-10 h-10 text-forest-deep" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/>
+        </svg>
+      </div>
+
+      <h1 class="font-heading text-3xl font-bold text-ink mb-2">Accès activé</h1>
+      <p class="text-muted text-sm mb-8">Votre forfait Enregistrement (35&nbsp;$) est prêt à l'emploi.</p>
+
+      <div class="bg-white border border-bdr rounded-[20px] p-6 text-left shadow-sm mb-6">
+        <h2 class="font-heading text-sm font-semibold text-ink mb-3">Ce que vous pouvez faire</h2>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-3 text-sm">
+            <svg class="w-4 h-4 text-forest-deep shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-muted">Enregistrer une séance audio de votre propre accompagnement (40 min max).</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <svg class="w-4 h-4 text-forest-deep shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-muted">Soumettre l'enregistrement à IVIA pour analyse et résumé.</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm">
+            <svg class="w-4 h-4 text-forest-deep shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <span class="text-muted">Accéder au résumé et aux pistes de réflexion dans votre espace client.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/client/enregistrement.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-6 py-3 rounded-[12px] hover:bg-forest transition-colors">
+          Commencer l'enregistrement →
+        </a>
+        <a href="/client/dashboard.html"
+           class="border border-bdr text-sm font-medium text-ink px-6 py-3 rounded-[12px] hover:bg-surface transition-colors">
+          Aller à mon espace
+        </a>
+      </div>
+    </div>
+
+    <!-- État de chargement initial -->
+    <div id="view-loading" class="text-center py-20">
+      <div class="w-8 h-8 border-2 border-bdr border-t-forest rounded-full animate-spin mx-auto"></div>
+    </div>
+
+  </main>
+
+  <!-- Footer urgence Loi 25 -->
+  <footer class="border-t border-bdr bg-white mt-auto">
+    <div class="max-w-6xl mx-auto px-5 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted">
+      <p>IVIA n'est pas un service clinique. En cas de crise, composez le <strong class="text-ink">1 866 APPELLE (277-3553)</strong>.</p>
+      <div class="flex gap-4">
+        <a href="/confidentialite.html" class="hover:text-ink transition-colors">Confidentialité</a>
+        <a href="/cgu.html" class="hover:text-ink transition-colors">CGU</a>
+        <a href="/mentions.html" class="hover:text-ink transition-colors">Mentions légales</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Données fictives des praticiens (prototype statique)
+    const PRATICIENS = {
+      '1':      { nom: 'Marie Fontaine',      approche: 'Approche somatique & transitions', initiales: 'MF' },
+      '2':      { nom: 'Jean-Pierre Bouchard', approche: 'Écoute narrative & deuil',          initiales: 'JB' },
+      '3':      { nom: 'Sophie Tremblay',      approche: 'Pleine présence & identité',        initiales: 'ST' },
+      'mylene': { nom: 'Mylène P.',            approche: 'Accompagnement somatique & identité', initiales: 'M' },
+      'emilie': { nom: 'Émilie R.',            approche: 'Écoute narrative & deuil',           initiales: 'É' },
+    };
+    const FORMULES = {
+      '1h':            { label: '1 heure', montant: '65 $' },
+      '30min':         { label: '30 minutes', montant: '45 $' },
+      'enregistrement':{ label: 'Enregistrement seul', montant: '35 $' },
+    };
+
+    function formatCreneau(raw) {
+      // Attend format ISO ou "vendredi 6 juin · 14h00"
+      if (!raw) return '—';
+      try {
+        const d = new Date(raw);
+        if (isNaN(d)) return decodeURIComponent(raw);
+        return d.toLocaleDateString('fr-CA', { weekday:'long', day:'numeric', month:'long' })
+             + ' · ' + d.toLocaleTimeString('fr-CA', { hour:'2-digit', minute:'2-digit' });
+      } catch { return decodeURIComponent(raw); }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const praticienId = params.get('praticien') || '1';
+      const creneau     = params.get('creneau') || '';
+      const formule     = params.get('formule') || '1h';
+
+      const loading = document.getElementById('view-loading');
+      loading.classList.remove('hidden');
+
+      setTimeout(() => {
+        loading.classList.add('hidden');
+
+        if (formule === 'enregistrement') {
+          document.getElementById('view-enreg').classList.remove('hidden');
+          return;
+        }
+
+        // Vue réservation standard
+        const p = PRATICIENS[praticienId] || PRATICIENS['1'];
+        const f = FORMULES[formule] || FORMULES['1h'];
+
+        document.getElementById('conf-initiales').textContent  = p.initiales;
+        document.getElementById('conf-praticien').textContent  = p.nom;
+        document.getElementById('conf-approche').textContent   = p.approche;
+        document.getElementById('conf-creneau').textContent    = formatCreneau(creneau);
+        document.getElementById('conf-formule').textContent    = f.label;
+        document.getElementById('conf-montant').textContent    = f.montant;
+
+        document.getElementById('view-resa').classList.remove('hidden');
+      }, 600);
+    });
+  </script>
+</body>
+</html>

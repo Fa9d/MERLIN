@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IVIA — Choisissez un praticien enraciné. Présence, Compréhension, Choix. Non-clinique. Conforme Loi 25.">
+  <title>IVIA — Choisir un praticien</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { forest:'#4A7C59', sage:'#8FB99A','forest-deep':'#2D6A4F', cream:'#FAFDF8', surface:'#F0F7F2', ink:'#1A2E1D', muted:'#4B6350', bdr:'#D4E8D0', trust:'#2563EB' },
+          fontFamily: { heading:['"Lora"','Georgia','serif'], body:['"Raleway"','system-ui','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family:'Raleway',system-ui,sans-serif; background-color:#FAFDF8; color:#1A2E1D; }
+    h1,h2,h3,h4 { font-family:'Lora',Georgia,serif; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-bdr">
+    <div class="max-w-6xl mx-auto px-5 py-3.5 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep tracking-tight">IVIA</a>
+      <a href="/inscription.html"
+         class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px]
+                hover:bg-forest transition-colors duration-200 cursor-pointer">
+        Commencer →
+      </a>
+    </div>
+  </nav>
+
+  <!-- EN-TÊTE -->
+  <section class="py-16 px-4 bg-surface">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-forest text-xs font-semibold uppercase tracking-[0.18em] mb-3">Les praticiens</p>
+      <h1 class="font-heading text-4xl md:text-5xl font-bold text-ink leading-tight mb-4">
+        Choisissez votre praticien
+      </h1>
+      <p class="text-muted max-w-xl mx-auto leading-relaxed">
+        Sélectionnez selon les disponibilités et votre intuition.
+        Chaque praticien est formé à l'approche IVIA — Présence, Compréhension, Choix.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORMULES / TARIFS -->
+  <section class="bg-cream px-4 pt-10 pb-6 border-b border-bdr">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-5 text-center">Choisissez votre formule</p>
+      <div class="grid sm:grid-cols-3 gap-4" id="formules-grid">
+
+        <!-- 65$/1h -->
+        <div class="formule-card bg-white border-2 border-bdr rounded-[20px] p-6 cursor-pointer transition-all hover:border-forest"
+             data-formule="1h" onclick="choisirFormule(this)">
+          <p class="font-heading text-2xl font-bold text-ink">65 $</p>
+          <p class="text-xs text-muted mt-0.5 mb-3">par séance · 1 heure</p>
+          <p class="text-sm font-semibold text-ink mb-2">Séance complète</p>
+          <p class="text-xs text-muted leading-relaxed">Audio en direct ou différé avec un·e praticien·ne IVIA. Journal + nos appréciations inclus.</p>
+        </div>
+
+        <!-- 45$/30min — recommandé -->
+        <div class="formule-card bg-white border-2 border-forest-deep rounded-[20px] p-6 cursor-pointer transition-all relative selected"
+             data-formule="30min" onclick="choisirFormule(this)">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-forest-deep text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">Le plus choisi</span>
+          <p class="font-heading text-2xl font-bold text-ink">45 $</p>
+          <p class="text-xs text-muted mt-0.5 mb-3">par séance · 30 minutes</p>
+          <p class="text-sm font-semibold text-ink mb-2">Demi-séance</p>
+          <p class="text-xs text-muted leading-relaxed">Idéal pour commencer. Même qualité d'écoute, durée condensée. Journal + nos appréciations inclus.</p>
+        </div>
+
+        <!-- 35$/enregistrement seul -->
+        <div class="formule-card bg-white border-2 border-bdr rounded-[20px] p-6 cursor-pointer transition-all hover:border-forest"
+             data-formule="enregistrement" onclick="choisirFormule(this)">
+          <p class="font-heading text-2xl font-bold text-ink">35 $</p>
+          <p class="text-xs text-muted mt-0.5 mb-3">par enregistrement</p>
+          <p class="text-sm font-semibold text-ink mb-2">Enregistrement seul</p>
+          <p class="text-xs text-muted leading-relaxed">Vous enregistrez votre voix seul·e. Accès à votre espace client inclus. Sans praticien·ne en direct.</p>
+        </div>
+
+      </div>
+
+      <!-- Bandeau "Enregistrement seul" -->
+      <div id="enreg-banner" class="hidden mt-6 bg-surface border border-bdr rounded-[16px] px-6 py-5 flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <p class="font-semibold text-ink text-sm">Enregistrement seul — 35 $</p>
+          <p class="text-xs text-muted mt-1">Vous parlez, IVIA écoute. Accès complet à votre espace client (journal, historique).</p>
+        </div>
+        <a href="/client/enregistrement.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer shrink-0">
+          Commencer l'enregistrement →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTRE / DISPONIBILITÉ -->
+  <div id="filtre-section" class="sticky top-[57px] z-40 bg-cream border-b border-bdr">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center gap-3 overflow-x-auto">
+      <span class="text-xs text-muted font-medium shrink-0">Disponibilité :</span>
+      <button onclick="filterPraticiens('all')" data-filter="all"
+              class="filter-btn shrink-0 text-xs font-semibold px-4 py-1.5 rounded-full border border-bdr bg-white text-ink cursor-pointer transition-all duration-200">
+        Tous
+      </button>
+      <button onclick="filterPraticiens('aujourd'hui')" data-filter="aujourd'hui"
+              class="filter-btn shrink-0 text-xs font-semibold px-4 py-1.5 rounded-full border border-bdr text-muted cursor-pointer transition-all duration-200 hover:bg-surface">
+        Aujourd'hui
+      </button>
+      <button onclick="filterPraticiens('semaine')" data-filter="semaine"
+              class="filter-btn shrink-0 text-xs font-semibold px-4 py-1.5 rounded-full border border-bdr text-muted cursor-pointer transition-all duration-200 hover:bg-surface">
+        Cette semaine
+      </button>
+      <button onclick="filterPraticiens('audio-async')" data-filter="audio-async"
+              class="filter-btn shrink-0 text-xs font-semibold px-4 py-1.5 rounded-full border border-bdr text-muted cursor-pointer transition-all duration-200 hover:bg-surface">
+        Audio différé
+      </button>
+    </div>
+  </div>
+
+  <!-- LISTE PRATICIENS -->
+  <section class="py-16 px-4 bg-cream" aria-label="Liste des praticiens">
+    <div class="max-w-4xl mx-auto space-y-6" id="praticiens-list">
+
+      <!-- Praticien 1 — Mylène P. -->
+      <article class="bg-white border border-bdr rounded-[24px] p-8 hover:shadow-lg transition-shadow duration-200"
+               data-disponibilite="aujourd'hui semaine" data-format="audio-direct audio-async">
+        <div class="grid md:grid-cols-[auto_1fr_auto] gap-6 items-start">
+
+          <!-- Avatar -->
+          <div class="w-16 h-16 rounded-full overflow-hidden ring-2 ring-bdr shrink-0">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=128&h=128&fit=crop&crop=face"
+                 alt="Mylène P." width="64" height="64" loading="lazy" class="w-full h-full object-cover">
+          </div>
+
+          <!-- Info -->
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <h2 class="font-heading text-xl font-semibold text-ink">Mylène P.</h2>
+              <span class="text-xs font-semibold bg-green-50 text-forest-deep px-2.5 py-1 rounded-full">Disponible aujourd'hui</span>
+            </div>
+            <p class="text-sm text-muted mb-1">Praticienne d'écoute · Pilote IVIA · Québec</p>
+            <p class="text-sm text-muted leading-relaxed mb-4">
+              "J'écoute depuis ce que vous portez, pas depuis ce que je pense que vous devriez être."
+            </p>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Transition de vie</span>
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Relations</span>
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Charge mentale</span>
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Identité</span>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex flex-wrap gap-6 text-sm">
+              <div>
+                <span class="font-semibold text-ink">4.9</span>
+                <span class="text-muted text-xs"> / 5 · 38 séances</span>
+              </div>
+              <div>
+                <span class="font-semibold text-ink">Audio direct</span>
+                <span class="text-muted text-xs"> + différé</span>
+              </div>
+              <div>
+                <span class="font-semibold text-ink">Français</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="flex flex-col gap-2 min-w-[160px]">
+            <a href="/confirmation.html?praticien=mylene"
+               class="inline-flex items-center justify-center bg-forest-deep text-white text-sm
+                      font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors
+                      duration-200 cursor-pointer text-center">
+              Choisir Mylène →
+            </a>
+            <a href="/praticien/fiche.html?id=mylene"
+               class="inline-flex items-center justify-center border border-bdr text-sm font-medium text-muted
+                      px-6 py-2 rounded-[14px] hover:bg-surface transition-colors text-center">
+              Voir la fiche
+            </a>
+            <p class="text-xs text-muted text-center">Prochain créneau : aujourd'hui 16h30</p>
+          </div>
+        </div>
+
+        <!-- Créneaux disponibles (aujourd'hui) -->
+        <div class="mt-6 pt-5 border-t border-bdr">
+          <p class="text-xs text-muted font-semibold uppercase tracking-wider mb-3">Créneaux — Semaine du 2 juin</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="mylene" data-creneau="2026-06-02T14:30">
+              Lun 2 juin · 14h30 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="mylene" data-creneau="2026-06-02T16:30">
+              Lun 2 juin · 16h30 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="mylene" data-creneau="2026-06-04T10:00">
+              Mer 4 juin · 10h00 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="mylene" data-creneau="2026-06-05T15:00">
+              Jeu 5 juin · 15h00 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <a href="/praticien/fiche.html?id=mylene"
+               class="text-xs font-medium text-forest underline underline-offset-2 px-2 py-2 cursor-pointer">
+              Voir la fiche →
+            </a>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- Praticien 2 — Émilie R. -->
+      <article class="bg-white border border-bdr rounded-[24px] p-8 hover:shadow-lg transition-shadow duration-200"
+               data-disponibilite="semaine" data-format="audio-async">
+        <div class="grid md:grid-cols-[auto_1fr_auto] gap-6 items-start">
+
+          <div class="w-16 h-16 rounded-full overflow-hidden ring-2 ring-bdr shrink-0">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=128&h=128&fit=crop&crop=face"
+                 alt="Émilie R." width="64" height="64" loading="lazy" class="w-full h-full object-cover">
+          </div>
+
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <h2 class="font-heading text-xl font-semibold text-ink">Émilie R.</h2>
+              <span class="text-xs font-semibold bg-surface text-muted px-2.5 py-1 rounded-full">Disponible cette semaine</span>
+            </div>
+            <p class="text-sm text-muted mb-1">Praticienne d'écoute · Pilote IVIA · Québec</p>
+            <p class="text-sm text-muted leading-relaxed mb-4">
+              "Chaque personne arrive avec son histoire entière. Mon rôle est de l'entendre depuis ses racines, pas depuis mes certitudes."
+            </p>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Deuil et perte</span>
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Travail et sens</span>
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Parentalité</span>
+              <span class="text-xs bg-surface text-muted px-3 py-1 rounded-full">Corps et présence</span>
+            </div>
+
+            <div class="flex flex-wrap gap-6 text-sm">
+              <div>
+                <span class="font-semibold text-ink">4.8</span>
+                <span class="text-muted text-xs"> / 5 · 24 séances</span>
+              </div>
+              <div>
+                <span class="font-semibold text-ink">Audio différé</span>
+                <span class="text-muted text-xs"> principalement</span>
+              </div>
+              <div>
+                <span class="font-semibold text-ink">Français</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 min-w-[160px]">
+            <a href="/confirmation.html?praticien=emilie"
+               class="inline-flex items-center justify-center bg-forest-deep text-white text-sm
+                      font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors
+                      duration-200 cursor-pointer text-center">
+              Choisir Émilie →
+            </a>
+            <a href="/praticien/fiche.html?id=emilie"
+               class="inline-flex items-center justify-center border border-bdr text-sm font-medium text-muted
+                      px-6 py-2 rounded-[14px] hover:bg-surface transition-colors text-center">
+              Voir la fiche
+            </a>
+            <p class="text-xs text-muted text-center">Prochain créneau : 3 juin 11h00</p>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-5 border-t border-bdr">
+          <p class="text-xs text-muted font-semibold uppercase tracking-wider mb-3">Créneaux — Semaine du 2 juin</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="emilie" data-creneau="2026-06-03T11:00">
+              Mar 3 juin · 11h00 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="emilie" data-creneau="2026-06-03T14:00">
+              Mar 3 juin · 14h00 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <button class="creneau-btn text-xs font-semibold bg-surface text-forest-deep px-4 py-2 rounded-[10px]
+                           border border-bdr hover:bg-bdr hover:border-forest transition-all duration-150 cursor-pointer"
+                    data-praticien="emilie" data-creneau="2026-06-06T10:00">
+              Ven 6 juin · 10h00 <span class="creneau-duree text-muted font-normal">· 30 min</span>
+            </button>
+            <a href="/praticien/fiche.html?id=emilie"
+               class="text-xs font-medium text-forest underline underline-offset-2 px-2 py-2 cursor-pointer">
+              Voir la fiche →
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /praticiens-list -->
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-ink text-sage py-10 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="font-heading text-white font-semibold">IVIA</p>
+      <p class="text-xs text-center text-muted">
+        IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.
+        En crise : <strong><a href="tel:18662773553" class="underline text-sage">1 866 APPELLE (277-3553)</a></strong>
+      </p>
+      <nav class="flex gap-4 text-xs" aria-label="Pied de page">
+        <a href="/confidentialite.html" class="hover:text-white transition-colors cursor-pointer">Confidentialité</a>
+        <a href="/cgu.html"             class="hover:text-white transition-colors cursor-pointer">CGU</a>
+        <a href="mailto:contact@ivia.quebec" class="hover:text-white transition-colors cursor-pointer">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <style>
+    .formule-card.selected { border-color: #2D6A4F; background: #F0F7F2; }
+    .formule-card.selected p:first-child { color: #2D6A4F; }
+  </style>
+  <script>
+    let selectedFormule = '30min';
+
+    function choisirFormule(card) {
+      document.querySelectorAll('.formule-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedFormule = card.dataset.formule;
+
+      const isSolo = selectedFormule === 'enregistrement';
+      document.getElementById('enreg-banner').classList.toggle('hidden', !isSolo);
+      document.getElementById('filtre-section').style.opacity = isSolo ? '0.35' : '';
+      document.getElementById('filtre-section').style.pointerEvents = isSolo ? 'none' : '';
+      document.getElementById('praticiens-list').style.opacity = isSolo ? '0.35' : '';
+      document.getElementById('praticiens-list').style.pointerEvents = isSolo ? 'none' : '';
+
+      // Label durée dynamique sur les boutons créneau
+      document.querySelectorAll('.creneau-duree').forEach(el => {
+        el.textContent = selectedFormule === '1h' ? '· 1h' : selectedFormule === '30min' ? '· 30 min' : '';
+      });
+    }
+
+    // Filtre praticiens
+    function filterPraticiens(val) {
+      document.querySelectorAll('[data-filter]').forEach(btn => {
+        btn.classList.toggle('bg-white', btn.dataset.filter === val);
+        btn.classList.toggle('text-ink', btn.dataset.filter === val);
+        btn.classList.toggle('text-muted', btn.dataset.filter !== val);
+      });
+      document.querySelectorAll('#praticiens-list article').forEach(el => {
+        if (val === 'all') { el.style.display = ''; return; }
+        const dispo = el.dataset.disponibilite || '';
+        const fmt   = el.dataset.format || '';
+        el.style.display = (dispo.includes(val) || fmt.includes(val)) ? '' : 'none';
+      });
+    }
+
+    // Sélection créneau — passe la formule dans l'URL
+    document.querySelectorAll('.creneau-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const p = btn.dataset.praticien;
+        const c = btn.dataset.creneau;
+        window.location.href = `/inscription.html?praticien=${p}&creneau=${encodeURIComponent(c)}&formule=${selectedFormule}`;
+      });
+    });
+
+    // Mise à jour des CTAs "Choisir Mylène/Émilie"
+    document.querySelectorAll('a[href*="choisir-creneau"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const base = a.href.split('?')[0];
+        const pParam = new URL(a.href).searchParams.get('praticien');
+        e.preventDefault();
+        window.location.href = `${base}?praticien=${pParam}&formule=${selectedFormule}`;
+      });
+    });
+  </script>
+</body>
+</html>

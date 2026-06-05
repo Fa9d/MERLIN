@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Enregistrement seul · 35 $</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    /* Visualiseur ondes temps-réel */
+    #waveform-canvas{width:100%;height:80px;border-radius:12px;background:#F0F7F2;display:block;}
+    /* Bouton micro */
+    .mic-btn{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:none;}
+    .mic-btn.idle{background:#2D6A4F;color:#fff;}
+    .mic-btn.recording{background:#dc2626;color:#fff;animation:pulse-rec 1.4s ease-in-out infinite;}
+    .mic-btn:disabled{opacity:.4;cursor:not-allowed;}
+    @keyframes pulse-rec{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}50%{box-shadow:0 0 0 14px rgba(220,38,38,0)}}
+    /* Timer */
+    #timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:2rem;color:#1A2E1D;letter-spacing:.04em;}
+    /* Progress playback */
+    #playback-bar{cursor:pointer;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <a href="/rendez-vous.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
+        ← Retour aux formules
+      </a>
+    </div>
+  </nav>
+
+  <div class="max-w-xl mx-auto px-4 py-12">
+
+    <!-- Badge formule -->
+    <div class="flex items-center gap-2 mb-6">
+      <span class="bg-surface border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full">Enregistrement seul · 35 $</span>
+      <span class="bg-blue-50 border border-blue-100 text-xs font-semibold text-trust px-3 py-1 rounded-full">Loi 25 · Chiffré</span>
+    </div>
+
+    <h1 class="font-heading text-3xl font-bold text-ink mb-2">Votre espace d'écoute</h1>
+    <p class="text-muted text-sm leading-relaxed mb-8">
+      Parlez librement. L'enregistrement reste privé, chiffré, accessible seulement à vous —
+      à moins que vous choisissiez de le partager avec un·e praticien·ne plus tard.
+    </p>
+
+    <!-- Étapes -->
+    <div class="flex items-center gap-2 mb-8 text-xs font-semibold">
+      <span id="step-1-lbl" class="text-forest-deep">① Enregistrer</span>
+      <span class="text-bdr">—</span>
+      <span id="step-2-lbl" class="text-muted">② Écouter</span>
+      <span class="text-bdr">—</span>
+      <span id="step-3-lbl" class="text-muted">③ Soumettre</span>
+    </div>
+
+    <!-- ÉTAPE 1 — Enregistrement -->
+    <div id="step-record" class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm">
+
+      <!-- Chrono + niveau -->
+      <div class="text-center mb-6">
+        <div id="timer" class="text-4xl font-bold text-ink mb-1">00:00</div>
+        <p id="rec-status" class="text-xs text-muted">Appuyez sur le micro pour commencer</p>
+      </div>
+
+      <!-- Visualiseur ondes -->
+      <canvas id="waveform-canvas" class="mb-6" aria-hidden="true"></canvas>
+
+      <!-- Contrôles principaux -->
+      <div class="flex items-center justify-center gap-6">
+        <button id="btn-mic" class="mic-btn idle" title="Démarrer / arrêter l'enregistrement" aria-label="Démarrer l'enregistrement">
+          <svg id="mic-icon" class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Durée recommandée -->
+      <p class="text-xs text-muted text-center mt-5">Durée recommandée : 5 à 20 minutes · Maximum : 40 minutes</p>
+      <div class="mt-2 h-1.5 bg-bdr rounded-full overflow-hidden">
+        <div id="rec-progress" class="h-full bg-forest rounded-full transition-all duration-1000" style="width:0%"></div>
+      </div>
+
+      <!-- Alerte navigateur -->
+      <div id="mic-error" class="hidden mt-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700">
+        L'accès au microphone a été refusé. Autorisez-le dans les paramètres du navigateur et rechargez la page.
+      </div>
+
+    </div>
+
+    <!-- ÉTAPE 2 — Lecture + validation -->
+    <div id="step-playback" class="hidden bg-white border border-bdr rounded-[24px] p-8 shadow-sm mt-5">
+      <h2 class="font-heading text-lg font-semibold text-ink mb-4">Réécouter avant de soumettre</h2>
+
+      <div class="flex items-center gap-4 mb-5">
+        <button id="btn-play" class="w-11 h-11 bg-forest-deep text-white rounded-full flex items-center justify-center hover:bg-forest transition-colors cursor-pointer"
+                aria-label="Lire / mettre en pause">
+          <svg id="play-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 3l14 9-14 9V3z"/>
+          </svg>
+        </button>
+        <div class="flex-1">
+          <div id="playback-bar" class="h-2 bg-bdr rounded-full overflow-hidden">
+            <div id="playback-progress" class="h-full bg-forest rounded-full transition-none" style="width:0%"></div>
+          </div>
+        </div>
+        <span id="playback-time" class="text-xs font-semibold text-muted tabular-nums">00:00</span>
+      </div>
+
+      <div class="flex gap-3 flex-wrap">
+        <button id="btn-retry" class="border border-bdr text-sm font-medium text-ink px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+          Recommencer
+        </button>
+        <button id="btn-submit" class="flex-1 bg-forest-deep text-white font-semibold text-sm px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Soumettre à IVIA →
+        </button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 — Confirmation -->
+    <div id="step-confirm" class="hidden bg-surface border border-bdr rounded-[24px] p-8 text-center">
+      <div class="w-14 h-14 bg-forest/15 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-7 h-7 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h2 class="font-heading text-xl font-semibold text-ink mb-2">Enregistrement reçu.</h2>
+      <p class="text-sm text-muted leading-relaxed mb-6">
+        Votre enregistrement est sécurisé dans votre espace. Vous pouvez y accéder à tout moment,
+        ou le partager avec un·e praticien·ne depuis votre tableau de bord.
+      </p>
+      <a href="/client/dashboard.html"
+         class="inline-block bg-forest-deep text-white font-semibold px-7 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+        Aller à mon espace
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="py-6 px-4 text-center">
+    <p class="text-xs text-muted">IVIA n'est pas un service d'urgence · En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong></p>
+  </footer>
+
+  <script>
+    // ===== ENREGISTREMENT AUDIO (MediaRecorder API) =====
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let audioBlob = null;
+    let audioUrl = null;
+    let audioEl = null;
+    let timerInterval = null;
+    let secondsElapsed = 0;
+    const MAX_SECONDS = 40 * 60; // 40 min
+
+    // Canvas visualiseur
+    const canvas = document.getElementById('waveform-canvas');
+    const ctx2d = canvas.getContext('2d');
+    let analyser = null;
+    let animFrame = null;
+    let audioCtx = null;
+
+    function drawWave() {
+      if (!analyser) return;
+      const W = canvas.width, H = canvas.height;
+      const bufLen = analyser.fftSize;
+      const data = new Uint8Array(bufLen);
+      analyser.getByteTimeDomainData(data);
+      ctx2d.clearRect(0, 0, W, H);
+      ctx2d.lineWidth = 2;
+      ctx2d.strokeStyle = '#4A7C59';
+      ctx2d.beginPath();
+      const sliceW = W / bufLen;
+      let x = 0;
+      for (let i = 0; i < bufLen; i++) {
+        const v = data[i] / 128.0;
+        const y = (v * H) / 2;
+        i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y);
+        x += sliceW;
+      }
+      ctx2d.lineTo(W, H / 2);
+      ctx2d.stroke();
+      animFrame = requestAnimationFrame(drawWave);
+    }
+
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = 80;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function formatTime(s) {
+      const m = Math.floor(s / 60).toString().padStart(2,'0');
+      const sec = (s % 60).toString().padStart(2,'0');
+      return `${m}:${sec}`;
+    }
+
+    // Démarrer / arrêter
+    document.getElementById('btn-mic').addEventListener('click', async () => {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        stopRecording();
+      } else {
+        await startRecording();
+      }
+    });
+
+    async function startRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioCtx = new AudioContext();
+        const source = audioCtx.createMediaStreamSource(stream);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        source.connect(analyser);
+
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = onRecordStop;
+        mediaRecorder.start(100);
+
+        secondsElapsed = 0;
+        timerInterval = setInterval(() => {
+          secondsElapsed++;
+          document.getElementById('timer').textContent = formatTime(secondsElapsed);
+          document.getElementById('rec-progress').style.width = `${Math.min((secondsElapsed / MAX_SECONDS) * 100, 100)}%`;
+          if (secondsElapsed >= MAX_SECONDS) stopRecording();
+        }, 1000);
+
+        drawWave();
+
+        const btn = document.getElementById('btn-mic');
+        btn.classList.replace('idle','recording');
+        btn.setAttribute('aria-label', 'Arrêter l\'enregistrement');
+        document.getElementById('rec-status').textContent = 'Enregistrement en cours…';
+      } catch (err) {
+        document.getElementById('mic-error').classList.remove('hidden');
+      }
+    }
+
+    function stopRecording() {
+      if (mediaRecorder) mediaRecorder.stop();
+      clearInterval(timerInterval);
+      cancelAnimationFrame(animFrame);
+      ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+
+      const btn = document.getElementById('btn-mic');
+      btn.classList.replace('recording','idle');
+      btn.disabled = true;
+      document.getElementById('rec-status').textContent = 'Enregistrement terminé.';
+    }
+
+    function onRecordStop() {
+      audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioUrl = URL.createObjectURL(audioBlob);
+      audioEl = new Audio(audioUrl);
+
+      // Passer à l'étape 2
+      document.getElementById('step-record').classList.add('opacity-50');
+      document.getElementById('step-playback').classList.remove('hidden');
+      document.getElementById('step-2-lbl').classList.replace('text-muted','text-forest-deep');
+
+      // Barre de progression lecture
+      audioEl.addEventListener('timeupdate', () => {
+        if (!audioEl.duration) return;
+        const pct = (audioEl.currentTime / audioEl.duration) * 100;
+        document.getElementById('playback-progress').style.width = `${pct}%`;
+        document.getElementById('playback-time').textContent = formatTime(Math.floor(audioEl.currentTime));
+      });
+      audioEl.addEventListener('ended', () => {
+        document.getElementById('play-icon').innerHTML = '<path d="M5 3l14 9-14 9V3z"/>';
+      });
+    }
+
+    // Lecture
+    document.getElementById('btn-play').addEventListener('click', () => {
+      if (!audioEl) return;
+      if (audioEl.paused) {
+        audioEl.play();
+        document.getElementById('play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      } else {
+        audioEl.pause();
+        document.getElementById('play-icon').innerHTML = '<path d="M5 3l14 9-14 9V3z"/>';
+      }
+    });
+
+    // Recommencer
+    document.getElementById('btn-retry').addEventListener('click', () => {
+      if (audioEl) { audioEl.pause(); audioEl = null; }
+      audioBlob = null; audioUrl = null; audioChunks = [];
+      mediaRecorder = null; secondsElapsed = 0;
+      document.getElementById('timer').textContent = '00:00';
+      document.getElementById('rec-progress').style.width = '0%';
+      document.getElementById('rec-status').textContent = 'Appuyez sur le micro pour recommencer';
+      document.getElementById('playback-progress').style.width = '0%';
+      document.getElementById('step-record').classList.remove('opacity-50');
+      document.getElementById('step-playback').classList.add('hidden');
+      document.getElementById('btn-mic').disabled = false;
+      document.getElementById('step-2-lbl').classList.replace('text-forest-deep','text-muted');
+    });
+
+    // Soumettre
+    document.getElementById('btn-submit').addEventListener('click', () => {
+      const btn = document.getElementById('btn-submit');
+      btn.textContent = 'Envoi en cours…';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('step-playback').classList.add('hidden');
+        document.getElementById('step-confirm').classList.remove('hidden');
+        document.getElementById('step-3-lbl').classList.replace('text-muted','text-forest-deep');
+      }, 1400);
+    });
+  </script>
+
+</body>
+</html>

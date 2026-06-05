@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Ce que vous portez en arrivant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background-color:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;font-size:15px;background:#fff;color:#1A2E1D;transition:border-color .15s,box-shadow .15s;outline:none;resize:vertical;}
+    .field-input:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+    .field-label{display:block;font-size:14px;font-weight:600;color:#1A2E1D;margin-bottom:8px;}
+    .field-hint{font-size:12px;color:#4B6350;margin-top:6px;}
+    .question-step{display:none;}
+    .question-step.active{display:block;}
+    .scale-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
+    .scale-circle{width:48px;height:48px;border:2px solid #D4E8D0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#4B6350;background:#fff;transition:all .15s;}
+    .scale-circle:hover,.scale-circle.selected{border-color:#2D6A4F;background:#2D6A4F;color:#fff;}
+    .registre-btn{border:1.5px solid #D4E8D0;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:500;color:#4B6350;background:#fff;cursor:pointer;transition:all .15s;}
+    .registre-btn.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:700;}
+    .format-card{border:1.5px solid #D4E8D0;border-radius:14px;padding:16px;cursor:pointer;transition:all .15s;background:#fff;}
+    .format-card.selected{border-color:#4A7C59;background:#F0F7F2;}
+    .progress-bar-fill{transition:width .4s ease;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <a href="/client/dashboard.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
+        Retour à mon espace
+      </a>
+    </div>
+  </nav>
+
+  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-12 px-4">
+    <div class="w-full max-w-xl">
+
+      <!-- En-tête questionnaire -->
+      <div class="mb-10">
+        <h1 class="font-heading text-3xl font-bold text-ink mb-2">Ce que vous portez en arrivant.</h1>
+        <p class="text-muted text-sm">6 questions courtes — pas de bonnes ou mauvaises réponses.</p>
+      </div>
+
+      <!-- Barre de progression -->
+      <div class="mb-8">
+        <div class="flex justify-between text-xs text-muted mb-2">
+          <span id="progress-label">Question 1 sur 6</span>
+          <span id="progress-pct">0 %</span>
+        </div>
+        <div class="w-full bg-bdr rounded-full h-1.5">
+          <div id="progress-bar" class="bg-forest-deep h-1.5 rounded-full progress-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Bouton de contournement -->
+      <div class="text-right mb-4">
+        <a href="/client/dashboard.html" class="text-xs text-muted underline underline-offset-2 cursor-pointer hover:text-ink">
+          Explorer d'abord, je le ferai plus tard
+        </a>
+      </div>
+
+      <form id="ancrage-form" novalidate>
+        <div class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm">
+
+          <!-- Q1 — Texte libre -->
+          <div class="question-step active" id="q1">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 1 — Présence</p>
+            <label for="q1-input" class="field-label">
+              Qu'est-ce qui vous a amené ici, en quelques mots ?
+            </label>
+            <textarea id="q1-input" name="q1" class="field-input" rows="5"
+                      placeholder="Pas besoin de tout expliquer. Ce qui vient, dans vos propres mots."></textarea>
+            <p class="field-hint">Aucune limite. Aucun jugement.</p>
+          </div>
+
+          <!-- Q2 — Échelle 5 niveaux -->
+          <div class="question-step" id="q2">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 2 — Intensité</p>
+            <p class="field-label">Comment vous sentez-vous en ce moment, sur une échelle de 1 à 5 ?</p>
+            <p class="field-hint mb-6">1 = très difficile · 5 = bien ancré·e</p>
+            <div class="flex justify-center gap-4 sm:gap-6 mt-2" id="scale-buttons" role="group" aria-label="Échelle de 1 à 5">
+              <label class="scale-btn" aria-label="1 — Très difficile">
+                <div class="scale-circle" data-val="1">1</div>
+                <span class="text-xs text-muted mt-1">Difficile</span>
+              </label>
+              <label class="scale-btn">
+                <div class="scale-circle" data-val="2">2</div>
+                <span class="text-xs text-muted mt-1">&nbsp;</span>
+              </label>
+              <label class="scale-btn">
+                <div class="scale-circle" data-val="3">3</div>
+                <span class="text-xs text-muted mt-1">Neutre</span>
+              </label>
+              <label class="scale-btn">
+                <div class="scale-circle" data-val="4">4</div>
+                <span class="text-xs text-muted mt-1">&nbsp;</span>
+              </label>
+              <label class="scale-btn" aria-label="5 — Bien ancré·e">
+                <div class="scale-circle" data-val="5">5</div>
+                <span class="text-xs text-muted mt-1">Ancré·e</span>
+              </label>
+            </div>
+            <input type="hidden" id="q2-val" name="q2" value="">
+          </div>
+
+          <!-- Q3 — Cases registres (max 3) -->
+          <div class="question-step" id="q3">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 3 — Registres</p>
+            <p class="field-label">Dans quels espaces cela se passe-t-il surtout ? <span class="font-normal text-muted">(3 max)</span></p>
+            <div class="flex flex-wrap gap-2 mt-3" id="registres-group">
+              <button type="button" class="registre-btn" data-reg="corporel">Corporel</button>
+              <button type="button" class="registre-btn" data-reg="emotionnel">Émotionnel</button>
+              <button type="button" class="registre-btn" data-reg="mental">Mental</button>
+              <button type="button" class="registre-btn" data-reg="spirituel">Spirituel</button>
+              <button type="button" class="registre-btn" data-reg="relationnel">Relationnel</button>
+              <button type="button" class="registre-btn" data-reg="autre">Autre / Je ne sais pas</button>
+            </div>
+            <input type="hidden" id="q3-val" name="q3" value="">
+          </div>
+
+          <!-- Q4 — Format préféré -->
+          <div class="question-step" id="q4">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 4 — Format</p>
+            <p class="field-label">Comment préférez-vous travailler ?</p>
+            <div class="grid sm:grid-cols-2 gap-3 mt-3" id="format-group">
+              <label class="format-card" data-fmt="audio-direct">
+                <p class="font-semibold text-ink text-sm">Audio en direct</p>
+                <p class="text-xs text-muted mt-1">Échanges vocaux, présence immédiate.</p>
+              </label>
+              <label class="format-card" data-fmt="audio-differe">
+                <p class="font-semibold text-ink text-sm">Audio différé</p>
+                <p class="text-xs text-muted mt-1">À votre rythme, résumé écouté quand vous êtes prêt·e.</p>
+              </label>
+              <label class="format-card" data-fmt="ecrit">
+                <p class="font-semibold text-ink text-sm">Écrit accompagné</p>
+                <p class="text-xs text-muted mt-1">Journal guidé avec retour praticien·ne.</p>
+              </label>
+              <label class="format-card" data-fmt="pas-de-preference">
+                <p class="font-semibold text-ink text-sm">Sans préférence</p>
+                <p class="text-xs text-muted mt-1">Je laisse la praticienne proposer.</p>
+              </label>
+            </div>
+            <input type="hidden" id="q4-val" name="q4" value="">
+          </div>
+
+          <!-- Q5 — Texte libre optionnel -->
+          <div class="question-step" id="q5">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 5 — Contexte (optionnel)</p>
+            <label for="q5-input" class="field-label">
+              Y a-t-il quelque chose d'important que vous voudriez que la praticienne sache avant votre première séance ?
+            </label>
+            <textarea id="q5-input" name="q5" class="field-input" rows="4"
+                      placeholder="Optionnel — aussi vague ou précis que vous le souhaitez."></textarea>
+          </div>
+
+          <!-- Q6 — Canal d'acquisition -->
+          <div class="question-step" id="q6">
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 6 — Comment vous avez découvert IVIA</p>
+            <p class="field-label">Comment avez-vous entendu parler d'IVIA ?</p>
+            <div class="mt-3 space-y-2" id="canal-group">
+              <label class="flex items-center gap-3 cursor-pointer" data-canal="bouche-a-oreille">
+                <input type="radio" name="canal" value="bouche-a-oreille" class="accent-forest-deep w-4 h-4">
+                <span class="text-sm text-muted">Bouche à oreille / recommandation</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer" data-canal="reseaux-sociaux">
+                <input type="radio" name="canal" value="reseaux-sociaux" class="accent-forest-deep w-4 h-4">
+                <span class="text-sm text-muted">Réseaux sociaux</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer" data-canal="moteur-recherche">
+                <input type="radio" name="canal" value="moteur-recherche" class="accent-forest-deep w-4 h-4">
+                <span class="text-sm text-muted">Moteur de recherche</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer" data-canal="praticien">
+                <input type="radio" name="canal" value="praticien" class="accent-forest-deep w-4 h-4">
+                <span class="text-sm text-muted">Recommandé·e par un·e praticien·ne</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer" data-canal="autre">
+                <input type="radio" name="canal" value="autre" class="accent-forest-deep w-4 h-4">
+                <span class="text-sm text-muted">Autre</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-6 flex justify-between items-center">
+          <button type="button" id="btn-precedent"
+                  class="hidden border border-bdr text-ink text-sm font-medium px-6 py-3 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Précédent
+          </button>
+          <div class="flex-1"></div>
+          <button type="button" id="btn-suivant"
+                  class="bg-forest-deep text-white text-sm font-semibold px-8 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+            Suivant
+          </button>
+          <button type="submit" id="btn-terminer"
+                  class="hidden bg-forest-deep text-white text-sm font-semibold px-8 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+            Terminer mon ancrage
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 6;
+
+    function updateUI() {
+      document.querySelectorAll('.question-step').forEach(el => el.classList.remove('active'));
+      document.getElementById(`q${currentStep}`).classList.add('active');
+      document.getElementById('progress-label').textContent = `Question ${currentStep} sur ${totalSteps}`;
+      const pct = Math.round(((currentStep - 1) / totalSteps) * 100);
+      document.getElementById('progress-pct').textContent = `${pct} %`;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+      document.getElementById('btn-precedent').classList.toggle('hidden', currentStep === 1);
+      document.getElementById('btn-suivant').classList.toggle('hidden', currentStep === totalSteps);
+      document.getElementById('btn-terminer').classList.toggle('hidden', currentStep !== totalSteps);
+    }
+
+    document.getElementById('btn-suivant').addEventListener('click', () => {
+      if (currentStep < totalSteps) { currentStep++; updateUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+    });
+    document.getElementById('btn-precedent').addEventListener('click', () => {
+      if (currentStep > 1) { currentStep--; updateUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+    });
+
+    // Échelle Q2
+    document.querySelectorAll('.scale-circle').forEach(c => {
+      c.parentElement.addEventListener('click', () => {
+        document.querySelectorAll('.scale-circle').forEach(x => x.classList.remove('selected'));
+        c.classList.add('selected');
+        document.getElementById('q2-val').value = c.dataset.val;
+      });
+    });
+
+    // Registres Q3 — max 3
+    document.querySelectorAll('.registre-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selected = document.querySelectorAll('.registre-btn.selected');
+        if (btn.classList.contains('selected')) {
+          btn.classList.remove('selected');
+        } else if (selected.length < 3) {
+          btn.classList.add('selected');
+        }
+        const vals = [...document.querySelectorAll('.registre-btn.selected')].map(b => b.dataset.reg);
+        document.getElementById('q3-val').value = vals.join(',');
+      });
+    });
+
+    // Format Q4
+    document.querySelectorAll('.format-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('q4-val').value = card.dataset.fmt;
+      });
+    });
+
+    // Soumission
+    document.getElementById('ancrage-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-terminer');
+      btn.textContent = 'Enregistrement…';
+      btn.disabled = true;
+      setTimeout(() => { window.location.href = '/client/dashboard.html'; }, 1000);
+    });
+
+    updateUI();
+  </script>
+
+</body>
+</html>
