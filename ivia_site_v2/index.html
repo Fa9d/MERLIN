@@ -95,13 +95,44 @@
         <a href="#cadre"      class="hover:text-forest transition-colors duration-200 cursor-pointer">Notre cadre</a>
       </div>
 
+      <!-- Desktop CTA -->
       <a href="/inscription.html"
-         class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px]
+         class="hidden md:inline-flex bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px]
                 hover:bg-forest transition-colors duration-200 cursor-pointer">
         Commencer →
       </a>
+
+      <!-- Mobile: CTA + hamburger -->
+      <div class="flex items-center gap-2 md:hidden">
+        <a href="/inscription.html"
+           class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[12px]
+                  hover:bg-forest transition-colors duration-200 cursor-pointer">
+          Commencer
+        </a>
+        <button id="nav-burger" onclick="toggleMobileMenu()" aria-label="Ouvrir le menu" aria-expanded="false"
+                class="p-2 rounded-[10px] hover:bg-surface transition-colors duration-200 cursor-pointer text-ink">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6" stroke-linecap="round"/>
+            <line x1="3" y1="12" x2="21" y2="12" stroke-linecap="round"/>
+            <line x1="3" y1="18" x2="21" y2="18" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </nav>
+
+  <!-- Mobile menu panel -->
+  <div id="nav-mobile-menu" class="hidden fixed top-[72px] left-4 right-4 z-40 bg-white border border-bdr rounded-[16px] shadow-lg p-3">
+    <nav class="flex flex-col gap-0.5">
+      <a href="/" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Accueil</a>
+      <a href="#interfaces" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Journal</a>
+      <a href="#praticiens" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Praticiens</a>
+      <a href="#cadre" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Notre cadre</a>
+      <div class="border-t border-bdr mt-1 pt-2">
+        <a href="/connexion.html" class="px-4 py-3 rounded-[10px] text-forest-deep font-semibold hover:bg-surface transition-colors cursor-pointer block">Se connecter</a>
+      </div>
+    </nav>
+  </div>
 
 
   <!-- ═══════════════════════════════════ HERO ═════════════════════════════════════ -->
@@ -279,16 +310,16 @@
 
       <!-- CLIENT MOCKUP -->
       <div data-tab="client" class="mx-auto max-w-4xl">
-        <div class="bg-[#e2e2e2] rounded-t-[18px] px-5 py-3 flex items-center gap-2 select-none">
+        <div class="hidden md:flex bg-[#e2e2e2] rounded-t-[18px] px-5 py-3 items-center gap-2 select-none">
           <span class="w-3 h-3 bg-[#FF5F57] rounded-full" aria-hidden="true"></span>
           <span class="w-3 h-3 bg-[#FEBC2E] rounded-full" aria-hidden="true"></span>
           <span class="w-3 h-3 bg-[#28C840] rounded-full" aria-hidden="true"></span>
           <div class="ml-3 bg-white rounded-[6px] text-xs text-[#999] px-3 py-1 w-52">ivia.quebec/client/accueil</div>
         </div>
-        <div class="bg-surface border border-t-0 border-bdr rounded-b-[18px] overflow-hidden shadow-2xl">
+        <div class="bg-surface border border-bdr md:border-t-0 rounded-[18px] md:rounded-t-none md:rounded-b-[18px] overflow-hidden shadow-2xl">
           <div class="flex" style="min-height:430px">
             <!-- Sidebar client -->
-            <div class="w-52 bg-white border-r border-bdr p-4 flex-shrink-0">
+            <div class="hidden md:block w-52 bg-white border-r border-bdr p-4 flex-shrink-0">
               <p class="font-heading font-bold text-forest-deep text-base mb-6 pt-1">IVIA</p>
               <nav class="space-y-0.5" aria-label="Navigation client">
                 <a data-cnav="accueil" onclick="switchClientView('accueil')" class="flex items-center gap-2.5 px-3 py-2 rounded-[10px] text-muted text-sm cursor-pointer hover:bg-surface transition-colors">
@@ -999,16 +1030,16 @@
 
       <!-- PRATICIEN MOCKUP -->
       <div data-tab="praticien" class="mx-auto max-w-4xl hidden">
-        <div class="bg-[#e2e2e2] rounded-t-[18px] px-5 py-3 flex items-center gap-2 select-none">
+        <div class="hidden md:flex bg-[#e2e2e2] rounded-t-[18px] px-5 py-3 items-center gap-2 select-none">
           <span class="w-3 h-3 bg-[#FF5F57] rounded-full" aria-hidden="true"></span>
           <span class="w-3 h-3 bg-[#FEBC2E] rounded-full" aria-hidden="true"></span>
           <span class="w-3 h-3 bg-[#28C840] rounded-full" aria-hidden="true"></span>
           <div class="ml-3 bg-white rounded-[6px] text-xs text-[#999] px-3 py-1 w-56">ivia.quebec/praticien/accueil</div>
         </div>
-        <div class="bg-surface border border-t-0 border-bdr rounded-b-[18px] overflow-hidden shadow-2xl">
+        <div class="bg-surface border border-bdr md:border-t-0 rounded-[18px] md:rounded-t-none md:rounded-b-[18px] overflow-hidden shadow-2xl">
           <div class="flex" style="min-height:430px">
             <!-- Sidebar praticien -->
-            <div class="w-52 bg-white border-r border-bdr p-4 flex-shrink-0">
+            <div class="hidden md:block w-52 bg-white border-r border-bdr p-4 flex-shrink-0">
               <p class="font-heading font-bold text-forest-deep text-base mb-0.5 pt-1">IVIA</p>
               <p class="text-[10px] text-muted mb-5">Espace praticien</p>
               <nav class="space-y-0.5" aria-label="Navigation praticien">
@@ -1746,6 +1777,26 @@
       countEl.textContent = (parseInt(countEl.textContent) + 1) + ' entr\u00e9es';
       cancelJournalEntry();
     }
+
+    // ── Menu mobile ──────────────────────────────────────────────────────────
+    function toggleMobileMenu() {
+      var menu = document.getElementById('nav-mobile-menu');
+      var btn  = document.getElementById('nav-burger');
+      var open = !menu.classList.contains('hidden');
+      menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(!open));
+    }
+    function closeMobileMenu() {
+      document.getElementById('nav-mobile-menu').classList.add('hidden');
+      document.getElementById('nav-burger').setAttribute('aria-expanded', 'false');
+    }
+    // Fermer le menu si on clique ailleurs
+    document.addEventListener('click', function(e) {
+      var menu = document.getElementById('nav-mobile-menu');
+      var btn  = document.getElementById('nav-burger');
+      if (!menu || menu.classList.contains('hidden')) return;
+      if (!menu.contains(e.target) && !btn.contains(e.target)) closeMobileMenu();
+    });
 
     // ── Vue switcher (espace client) ─────────────────────────────────────────
     function switchClientView(view) {
