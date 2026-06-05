@@ -1,0 +1,37 @@
+{
+  "servers": {
+    "filesystem-merlin": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\MERLIN"],
+      "description": "Accès lecture/écriture à tous les fichiers C:\\MERLIN"
+    },
+    "github-merlin": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${input:github-token}"
+      },
+      "description": "GitHub API — issues, PRs, code search (repo Fa9d/MERLIN)"
+    },
+    "postgres-ivia-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://postgres:postgres@127.0.0.1:55432/merlin_v1"
+      ],
+      "description": "Base de données locale de développement ivia.quebec"
+    }
+  },
+  "inputs": [
+    {
+      "id": "github-token",
+      "type": "promptString",
+      "description": "GitHub Personal Access Token (https://github.com/settings/tokens) — scope: repo, read:org",
+      "password": true
+    }
+  ]
+}
