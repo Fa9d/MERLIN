@@ -190,8 +190,6 @@ services:
     depends_on:
       api:
         condition: service_healthy
-      frontend:
-        condition: service_started
       livekit:
         condition: service_started
       livekit-egress:
@@ -208,6 +206,7 @@ services:
       - ./nginx/certbot/www:/var/www/certbot:ro
       - ./nginx/certs:/etc/letsencrypt:ro
       - ./nginx/.htpasswd_dozzle:/etc/nginx/.htpasswd_dozzle:ro
+      - ./ivia_site_v2:/opt/merlin/ivia_site_v2:ro
     networks:
       - merlin_network
 
