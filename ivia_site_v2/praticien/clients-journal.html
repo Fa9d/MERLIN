@@ -7,6 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script src="/shared/mock_praticien.js"></script>
   <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1,h2{font-family:'Lora',Georgia,serif;}.tag{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:2px 8px;font-size:11px;color:#4B6350;font-weight:500;}</style>
 </head>
 <body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
@@ -37,6 +38,7 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon profil
         </a>
+        <div id="sidebar-logout" class="mt-2"></div>
       </nav>
     </aside>
 
@@ -272,6 +274,9 @@
       t.style.opacity = '1';
       setTimeout(() => { t.style.opacity = '0'; }, 2500);
     }
+
+    // ── Logout ──
+    renderLogoutButton(document.getElementById('sidebar-logout'));
   </script>
 
   <!-- Nav mobile -->

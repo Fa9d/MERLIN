@@ -6,7 +6,8 @@
   <script>requireAuth();</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script src="/shared/mock_praticien.js"></script>
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}}
   <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1{font-family:'Lora',Georgia,serif;}.dropdown-menu{display:none;}.dropdown-menu.open{display:block;}
     .audio-panel{display:none;}
     .audio-panel.open{display:block;}
@@ -42,6 +43,7 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon profil
         </a>
+        <div id="sidebar-logout" class="mt-2"></div>
       </nav>
     </aside>
 
@@ -49,7 +51,7 @@
 
       <div class="flex items-center justify-between mb-7 flex-wrap gap-3">
         <h1 class="font-heading text-2xl font-bold text-ink">Livraisons audio</h1>
-        <span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-3 py-1.5 rounded-full">2 en attente</span>
+        <span id="badge-livr" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-3 py-1.5 rounded-full">2 en attente</span>
       </div>
 
       <!-- File en attente -->
@@ -220,8 +222,22 @@
   <script>
     const LIVRAISONS = {
       cb: { name: 'Camille B.', meta: '27 mai 2026 · 52 min · Émotionnel, Relationnel' },
-      tm: { name: 'Théo M.', meta: '25 mai 2026 · 48 min · Spirituel' }
+      tm: { name: 'Théo M.',    meta: '25 mai 2026 · 48 min · Spirituel' }
     };
+
+    // ── Sync badge + LIVRAISONS depuis mock ──
+    getMockLivraisons().then(livs => {
+      const badge = document.getElementById('badge-livr');
+      if (badge) badge.textContent = livs.length + ' en attente';
+      livs.forEach(c => {
+        const key = (c.prenom[0] + c.nom[0]).toLowerCase();
+        LIVRAISONS[key] = {
+          name: c.prenom + ' ' + c.nom[0] + '.',
+          meta: formatDateCourte(c.livraison_date) + ' · ' + c.livraison_duree + ' · ' + c.livraison_registres.join(', ')
+        };
+      });
+    });
+    renderLogoutButton(document.getElementById('sidebar-logout'));
 
     function toggleDropdown(id) {
       document.querySelectorAll('.dropdown-menu').forEach(m => { if (m.id !== id) m.classList.remove('open'); });

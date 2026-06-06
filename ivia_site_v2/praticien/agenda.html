@@ -5,8 +5,7 @@
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="/shared/mock_praticien.js"></script>  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
     h1,h2{font-family:'Lora',Georgia,serif;}
@@ -59,6 +58,7 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon profil public
         </a>
+        <div id="sidebar-logout" class="mt-2"></div>
       </nav>
     </aside>
 
@@ -140,7 +140,10 @@
     const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
     // Données initiales (clé = "AAAA-MM-JJ_HH:MM", valeur = état)
+    // Chargé depuis mock (swap → GET /api/v1/praticien/agenda/slots)
     let slotStates = {};
+    getMockAgendaSlots().then(slots => { slotStates = slots; buildCalendar(); });
+    renderLogoutButton(document.getElementById('sidebar-logout'));
     let currentWeekOffset = 0;
     let activeCell = null;
 
