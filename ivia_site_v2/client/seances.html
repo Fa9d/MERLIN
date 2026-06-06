@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Mes séances</title>
+  <script src="/shared/mock.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}}</script>
@@ -50,6 +52,7 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon compte
         </a>
+        <div id="sidebar-logout"></div>
       </nav>
     </aside>
 
@@ -70,105 +73,21 @@
       </div>
 
       <!-- Prochaine séance -->
-      <section class="card mb-6" aria-labelledby="prochaine-title">
+      <section class="card mb-6" aria-labelledby="prochaine-title" id="prochaine-section">
         <div class="flex items-center justify-between mb-4">
           <h2 id="prochaine-title" class="font-heading text-base font-semibold text-ink">Prochaine séance</h2>
           <span class="badge badge-upcoming">À venir</span>
         </div>
-        <div class="flex items-start gap-4">
-          <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-            <span class="text-[10px] font-semibold text-forest uppercase">Juin</span>
-            <span class="text-xl font-bold text-ink leading-none">16</span>
-          </div>
-          <div class="flex-1">
-            <p class="font-semibold text-ink">Lundi 16 juin 2026 · 14h00</p>
-            <p class="text-sm text-muted mt-0.5">Avec <strong class="text-forest-deep">Mylène P.</strong> · Audio · 60 min</p>
-            <div class="flex gap-2 mt-3">
-              <a href="/client/premier-ancrage.html"
-                 class="text-xs font-semibold text-forest-deep border border-bdr rounded-[8px] px-3 py-1.5 hover:bg-surface transition-colors cursor-pointer">
-                Préparer →
-              </a>
-              <button onclick="annulerSeance()" class="text-xs font-medium text-muted hover:text-ink cursor-pointer px-3 py-1.5">
-                Annuler
-              </button>
-            </div>
-          </div>
+        <div id="prochaine-content" class="flex items-start gap-4">
+          <!-- rempli par JS -->
         </div>
       </section>
 
       <!-- Séances passées -->
       <section aria-labelledby="passees-title">
         <h2 id="passees-title" class="font-heading text-base font-semibold text-ink mb-4">Séances passées</h2>
-        <div class="space-y-3">
-
-          <!-- Séance 1 -->
-          <div class="card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-              <span class="text-[10px] font-semibold text-muted uppercase">Mai</span>
-              <span class="text-xl font-bold text-ink leading-none">28</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-0.5">
-                <p class="font-semibold text-ink text-sm">Mercredi 28 mai · 14h00</p>
-                <span class="badge badge-past">Passée</span>
-              </div>
-              <p class="text-xs text-muted">Avec Mylène P. · Audio · 60 min</p>
-              <div class="flex gap-2 mt-2">
-                <a href="/client/audio-resume.html" class="text-xs font-semibold text-forest-deep hover:underline cursor-pointer">
-                  Écouter le résumé →
-                </a>
-                <span class="text-muted text-xs">·</span>
-                <a href="/client/journal.html" class="text-xs text-muted hover:text-ink cursor-pointer">
-                  Voir entrée journal
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Séance 2 -->
-          <div class="card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-              <span class="text-[10px] font-semibold text-muted uppercase">Mai</span>
-              <span class="text-xl font-bold text-ink leading-none">14</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-0.5">
-                <p class="font-semibold text-ink text-sm">Mercredi 14 mai · 10h30</p>
-                <span class="badge badge-past">Passée</span>
-              </div>
-              <p class="text-xs text-muted">Avec Mylène P. · Audio · 60 min</p>
-              <div class="flex gap-2 mt-2">
-                <a href="/client/audio-resume.html" class="text-xs font-semibold text-forest-deep hover:underline cursor-pointer">
-                  Écouter le résumé →
-                </a>
-                <span class="text-muted text-xs">·</span>
-                <a href="/client/journal.html" class="text-xs text-muted hover:text-ink cursor-pointer">
-                  Voir entrée journal
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Séance 3 -->
-          <div class="card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-              <span class="text-[10px] font-semibold text-muted uppercase">Avr</span>
-              <span class="text-xl font-bold text-ink leading-none">30</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-0.5">
-                <p class="font-semibold text-ink text-sm">Mercredi 30 avril · 14h00</p>
-                <span class="badge badge-past">Passée</span>
-              </div>
-              <p class="text-xs text-muted">Avec Mylène P. · Audio · 60 min</p>
-              <div class="flex gap-2 mt-2">
-                <a href="/client/audio-resume.html" class="text-xs font-semibold text-forest-deep hover:underline cursor-pointer">
-                  Écouter le résumé →
-                </a>
-              </div>
-            </div>
-          </div>
-
+        <div class="space-y-3" id="passees-list">
+          <!-- rempli par JS -->
         </div>
       </section>
 
@@ -196,8 +115,76 @@
   </nav>
 
   <script>
-    function annulerSeance() {
-      if (confirm('Annuler cette séance ? Cette action est irréversible.')) {
+    // ── Logout ────────────────────────────────────────────────────────────────
+    renderLogoutButton(document.getElementById('sidebar-logout'));
+
+    // ── Helpers render ─────────────────────────────────────────────────
+    function moisAbrege(isoDate) {
+      return new Date(isoDate).toLocaleDateString('fr-CA', { month: 'short' }).replace('.','');
+    }
+    function jourNum(isoDate) {
+      return new Date(isoDate).getDate();
+    }
+
+    // ── Prochaine séance ───────────────────────────────────────────────
+    getMockSeances().then(seances => {
+      const a_venir = seances
+        .filter(s => s.statut === 'confirmee' || s.statut === 'en_attente')
+        .sort((a, b) => new Date(a.date_iso) - new Date(b.date_iso));
+      const passees = seances
+        .filter(s => s.statut === 'complete')
+        .sort((a, b) => new Date(b.date_iso) - new Date(a.date_iso));
+
+      // Prochaine
+      const prochaine = a_venir[0];
+      const pc = document.getElementById('prochaine-content');
+      if (prochaine && pc) {
+        pc.innerHTML = `
+          <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
+            <span class="text-[10px] font-semibold text-forest uppercase">${moisAbrege(prochaine.date_iso)}</span>
+            <span class="text-xl font-bold text-ink leading-none">${jourNum(prochaine.date_iso)}</span>
+          </div>
+          <div class="flex-1">
+            <p class="font-semibold text-ink">${formatDateSeance(prochaine.date_iso)}</p>
+            <p class="text-sm text-muted mt-0.5">Avec <strong class="text-forest-deep">${prochaine.praticien.prenom} ${prochaine.praticien.nom.charAt(0)}.</strong> · ${prochaine.format} · ${prochaine.duree_min} min</p>
+            <div class="flex gap-2 mt-3">
+              <a href="/client/premier-ancrage.html" class="text-xs font-semibold text-forest-deep border border-bdr rounded-[8px] px-3 py-1.5 hover:bg-surface transition-colors">
+                Préparer →
+              </a>
+              <button onclick="annulerSeance('${prochaine.id}')" class="text-xs font-medium text-muted hover:text-ink px-3 py-1.5">
+                Annuler
+              </button>
+            </div>
+          </div>`;
+      } else if (pc) {
+        document.getElementById('prochaine-section').classList.add('hidden');
+      }
+
+      // Passées
+      const list = document.getElementById('passees-list');
+      if (list) {
+        list.innerHTML = passees.map(s => `
+          <div class="card flex items-start gap-4">
+            <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
+              <span class="text-[10px] font-semibold text-muted uppercase">${moisAbrege(s.date_iso)}</span>
+              <span class="text-xl font-bold text-ink leading-none">${jourNum(s.date_iso)}</span>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-0.5">
+                <p class="font-semibold text-ink text-sm">${formatDateSeance(s.date_iso)}</p>
+                <span class="badge badge-past">Passée</span>
+              </div>
+              <p class="text-xs text-muted">Avec ${s.praticien.prenom} ${s.praticien.nom.charAt(0)}. · ${s.format} · ${s.duree_min} min</p>
+              <div class="flex gap-2 mt-2">
+                ${s.audio_resume ? `<a href="${s.audio_resume.url}" class="text-xs font-semibold text-forest-deep hover:underline">Écouter le résumé →</a>` : '<span class="text-xs text-muted">Résumé non disponible</span>'}
+              </div>
+            </div>
+          </div>`).join('');
+      }
+    });
+
+    function annulerSeance(id) {
+      if (confirm('Annuler cette séance ? Cette action est irréversible.')) {
         alert('Annulation enregistrée. Vous recevrez une confirmation par courriel.');
       }
     }

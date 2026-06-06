@@ -2,55 +2,79 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IVIA — Ce que vous portez en arrivant</title>
+  <title>IVIA — Premier ancrage</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background-color:#FAFDF8;color:#1A2E1D;}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;font-size:15px;background:#fff;color:#1A2E1D;transition:border-color .15s,box-shadow .15s;outline:none;resize:vertical;}
+    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;font-size:15px;background:#fff;color:#1A2E1D;transition:border-color .15s,box-shadow .15s;outline:none;resize:vertical;font-family:inherit;}
     .field-input:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
     .field-label{display:block;font-size:14px;font-weight:600;color:#1A2E1D;margin-bottom:8px;}
-    .field-hint{font-size:12px;color:#4B6350;margin-top:6px;}
+    .field-hint{font-size:12px;color:#4B6350;margin-top:6px;line-height:1.5;}
     .question-step{display:none;}
     .question-step.active{display:block;}
-    .scale-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
-    .scale-circle{width:48px;height:48px;border:2px solid #D4E8D0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#4B6350;background:#fff;transition:all .15s;}
-    .scale-circle:hover,.scale-circle.selected{border-color:#2D6A4F;background:#2D6A4F;color:#fff;}
-    .registre-btn{border:1.5px solid #D4E8D0;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:500;color:#4B6350;background:#fff;cursor:pointer;transition:all .15s;}
-    .registre-btn.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:700;}
+    /* Chips registres / intentions / canal */
+    .chip-btn{border:1.5px solid #D4E8D0;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:500;color:#4B6350;background:#fff;cursor:pointer;transition:all .15s;text-align:left;}
+    .chip-btn.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:700;}
+    /* Cartes format */
     .format-card{border:1.5px solid #D4E8D0;border-radius:14px;padding:16px;cursor:pointer;transition:all .15s;background:#fff;}
     .format-card.selected{border-color:#4A7C59;background:#F0F7F2;}
+    .format-card input[type="radio"]{display:none;}
+    /* Cartes rythme */
+    .rythme-card{border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;background:#fff;display:flex;align-items:center;gap:12px;}
+    .rythme-card.selected{border-color:#4A7C59;background:#F0F7F2;}
+    .rythme-card input[type="radio"]{display:none;}
+    /* Options durée */
+    .duree-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border:1.5px solid #D4E8D0;border-radius:12px;cursor:pointer;transition:all .15s;background:#fff;font-size:14px;color:#4B6350;}
+    .duree-opt:hover{border-color:#8FB99A;background:#F0F7F2;}
+    .duree-opt.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:600;}
+    .duree-opt input[type="radio"]{display:none;}
+    .duree-dot{width:16px;height:16px;border:2px solid #D4E8D0;border-radius:50%;flex-shrink:0;transition:all .15s;}
+    .duree-opt.selected .duree-dot{border-color:#2D6A4F;background:#2D6A4F;}
+    /* Grille profil dimensionnel */
+    .dim-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #F0F7F2;}
+    .dim-row:last-child{border-bottom:none;}
+    .dim-label{font-size:13px;font-weight:600;color:#1A2E1D;}
+    .dim-desc{font-size:11px;color:#4B6350;margin-top:1px;}
+    .dim-options{display:flex;gap:6px;}
+    .dim-opt{width:72px;padding:6px 4px;border:1.5px solid #D4E8D0;border-radius:8px;font-size:11px;font-weight:500;color:#4B6350;background:#fff;cursor:pointer;text-align:center;transition:all .15s;}
+    .dim-opt:hover{border-color:#8FB99A;background:#F0F7F2;}
+    .dim-opt.selected{border-color:#2D6A4F;background:#2D6A4F;color:#fff;font-weight:700;}
+    /* Étiquettes section */
+    .section-tag{display:inline-flex;align-items:center;gap:6px;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4B6350;margin-bottom:20px;}
     .progress-bar-fill{transition:width .4s ease;}
   </style>
 </head>
 <body class="antialiased min-h-screen bg-cream">
 
-  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
       <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
-      <a href="/client/dashboard.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
+      <a href="/client/dashboard.html" class="text-sm text-muted hover:text-ink transition-colors">
         Retour à mon espace
       </a>
     </div>
   </nav>
 
-  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-12 px-4">
+  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-10 px-4">
     <div class="w-full max-w-xl">
 
-      <!-- En-tête questionnaire -->
-      <div class="mb-10">
+      <div class="mb-8">
         <h1 class="font-heading text-3xl font-bold text-ink mb-2">Ce que vous portez en arrivant.</h1>
-        <p class="text-muted text-sm">6 questions courtes — pas de bonnes ou mauvaises réponses.</p>
+        <p class="text-muted text-sm leading-relaxed">
+          8 questions courtes — votre point de départ, gardé confidentiel.<br>
+          Il n'y a ni bonne ni mauvaise réponse. Seule votre vérité compte.
+        </p>
       </div>
 
-      <!-- Barre de progression -->
-      <div class="mb-8">
+      <div class="mb-6">
         <div class="flex justify-between text-xs text-muted mb-2">
-          <span id="progress-label">Question 1 sur 6</span>
+          <span id="progress-label">Étape 1 sur 8</span>
           <span id="progress-pct">0 %</span>
         </div>
         <div class="w-full bg-bdr rounded-full h-1.5">
@@ -58,222 +82,465 @@
         </div>
       </div>
 
-      <!-- Bouton de contournement -->
       <div class="text-right mb-4">
-        <a href="/client/dashboard.html" class="text-xs text-muted underline underline-offset-2 cursor-pointer hover:text-ink">
-          Explorer d'abord, je le ferai plus tard
+        <a href="/client/dashboard.html" class="text-xs text-muted underline underline-offset-2 hover:text-ink">
+          Je reviendrai plus tard
         </a>
       </div>
 
       <form id="ancrage-form" novalidate>
-        <div class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm">
 
-          <!-- Q1 — Texte libre -->
-          <div class="question-step active" id="q1">
-            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 1 — Présence</p>
-            <label for="q1-input" class="field-label">
-              Qu'est-ce qui vous a amené ici, en quelques mots ?
-            </label>
-            <textarea id="q1-input" name="q1" class="field-input" rows="5"
-                      placeholder="Pas besoin de tout expliquer. Ce qui vient, dans vos propres mots."></textarea>
-            <p class="field-hint">Aucune limite. Aucun jugement.</p>
-          </div>
-
-          <!-- Q2 — Échelle 5 niveaux -->
-          <div class="question-step" id="q2">
-            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 2 — Intensité</p>
-            <p class="field-label">Comment vous sentez-vous en ce moment, sur une échelle de 1 à 5 ?</p>
-            <p class="field-hint mb-6">1 = très difficile · 5 = bien ancré·e</p>
-            <div class="flex justify-center gap-4 sm:gap-6 mt-2" id="scale-buttons" role="group" aria-label="Échelle de 1 à 5">
-              <label class="scale-btn" aria-label="1 — Très difficile">
-                <div class="scale-circle" data-val="1">1</div>
-                <span class="text-xs text-muted mt-1">Difficile</span>
-              </label>
-              <label class="scale-btn">
-                <div class="scale-circle" data-val="2">2</div>
-                <span class="text-xs text-muted mt-1">&nbsp;</span>
-              </label>
-              <label class="scale-btn">
-                <div class="scale-circle" data-val="3">3</div>
-                <span class="text-xs text-muted mt-1">Neutre</span>
-              </label>
-              <label class="scale-btn">
-                <div class="scale-circle" data-val="4">4</div>
-                <span class="text-xs text-muted mt-1">&nbsp;</span>
-              </label>
-              <label class="scale-btn" aria-label="5 — Bien ancré·e">
-                <div class="scale-circle" data-val="5">5</div>
-                <span class="text-xs text-muted mt-1">Ancré·e</span>
-              </label>
-            </div>
-            <input type="hidden" id="q2-val" name="q2" value="">
-          </div>
-
-          <!-- Q3 — Cases registres (max 3) -->
-          <div class="question-step" id="q3">
-            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 3 — Registres</p>
-            <p class="field-label">Dans quels espaces cela se passe-t-il surtout ? <span class="font-normal text-muted">(3 max)</span></p>
-            <div class="flex flex-wrap gap-2 mt-3" id="registres-group">
-              <button type="button" class="registre-btn" data-reg="corporel">Corporel</button>
-              <button type="button" class="registre-btn" data-reg="emotionnel">Émotionnel</button>
-              <button type="button" class="registre-btn" data-reg="mental">Mental</button>
-              <button type="button" class="registre-btn" data-reg="spirituel">Spirituel</button>
-              <button type="button" class="registre-btn" data-reg="relationnel">Relationnel</button>
-              <button type="button" class="registre-btn" data-reg="autre">Autre / Je ne sais pas</button>
-            </div>
-            <input type="hidden" id="q3-val" name="q3" value="">
-          </div>
-
-          <!-- Q4 — Format préféré -->
-          <div class="question-step" id="q4">
-            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 4 — Format</p>
-            <p class="field-label">Comment préférez-vous travailler ?</p>
-            <div class="grid sm:grid-cols-2 gap-3 mt-3" id="format-group">
-              <label class="format-card" data-fmt="audio-direct">
-                <p class="font-semibold text-ink text-sm">Audio en direct</p>
-                <p class="text-xs text-muted mt-1">Échanges vocaux, présence immédiate.</p>
-              </label>
-              <label class="format-card" data-fmt="audio-differe">
-                <p class="font-semibold text-ink text-sm">Audio différé</p>
-                <p class="text-xs text-muted mt-1">À votre rythme, résumé écouté quand vous êtes prêt·e.</p>
-              </label>
-              <label class="format-card" data-fmt="ecrit">
-                <p class="font-semibold text-ink text-sm">Écrit accompagné</p>
-                <p class="text-xs text-muted mt-1">Journal guidé avec retour praticien·ne.</p>
-              </label>
-              <label class="format-card" data-fmt="pas-de-preference">
-                <p class="font-semibold text-ink text-sm">Sans préférence</p>
-                <p class="text-xs text-muted mt-1">Je laisse la praticienne proposer.</p>
-              </label>
-            </div>
-            <input type="hidden" id="q4-val" name="q4" value="">
-          </div>
-
-          <!-- Q5 — Texte libre optionnel -->
-          <div class="question-step" id="q5">
-            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 5 — Contexte (optionnel)</p>
-            <label for="q5-input" class="field-label">
-              Y a-t-il quelque chose d'important que vous voudriez que la praticienne sache avant votre première séance ?
-            </label>
-            <textarea id="q5-input" name="q5" class="field-input" rows="4"
-                      placeholder="Optionnel — aussi vague ou précis que vous le souhaitez."></textarea>
-          </div>
-
-          <!-- Q6 — Canal d'acquisition -->
-          <div class="question-step" id="q6">
-            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-5">Question 6 — Comment vous avez découvert IVIA</p>
-            <p class="field-label">Comment avez-vous entendu parler d'IVIA ?</p>
-            <div class="mt-3 space-y-2" id="canal-group">
-              <label class="flex items-center gap-3 cursor-pointer" data-canal="bouche-a-oreille">
-                <input type="radio" name="canal" value="bouche-a-oreille" class="accent-forest-deep w-4 h-4">
-                <span class="text-sm text-muted">Bouche à oreille / recommandation</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer" data-canal="reseaux-sociaux">
-                <input type="radio" name="canal" value="reseaux-sociaux" class="accent-forest-deep w-4 h-4">
-                <span class="text-sm text-muted">Réseaux sociaux</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer" data-canal="moteur-recherche">
-                <input type="radio" name="canal" value="moteur-recherche" class="accent-forest-deep w-4 h-4">
-                <span class="text-sm text-muted">Moteur de recherche</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer" data-canal="praticien">
-                <input type="radio" name="canal" value="praticien" class="accent-forest-deep w-4 h-4">
-                <span class="text-sm text-muted">Recommandé·e par un·e praticien·ne</span>
-              </label>
-              <label class="flex items-center gap-3 cursor-pointer" data-canal="autre">
-                <input type="radio" name="canal" value="autre" class="accent-forest-deep w-4 h-4">
-                <span class="text-sm text-muted">Autre</span>
-              </label>
-            </div>
-          </div>
-
+        <!-- Q1 — Intention narrative -->
+        <div class="question-step active bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q1">
+          <div class="section-tag">Ce que vous portez</div>
+          <label for="q1-input" class="field-label text-base">
+            Qu'est-ce qui vous a amené ici, en quelques mots ?
+          </label>
+          <p class="text-sm text-muted mb-5 leading-relaxed">
+            Pas besoin de tout expliquer. Ce qui vient, dans vos propres mots — ce que vous sentez, ce que vous vivez, ce que vous cherchez.
+          </p>
+          <textarea id="q1-input" name="q1" class="field-input" rows="6"
+                    placeholder="Ce qui vient, comme ça vient…"></textarea>
+          <p class="field-hint">Aucune limite. Aucun jugement. Cette réponse est confidentielle.</p>
         </div>
 
-        <!-- Navigation -->
-        <div class="mt-6 flex justify-between items-center">
-          <button type="button" id="btn-precedent"
-                  class="hidden border border-bdr text-ink text-sm font-medium px-6 py-3 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
-            Précédent
-          </button>
-          <div class="flex-1"></div>
-          <button type="button" id="btn-suivant"
-                  class="bg-forest-deep text-white text-sm font-semibold px-8 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
-            Suivant
-          </button>
-          <button type="submit" id="btn-terminer"
-                  class="hidden bg-forest-deep text-white text-sm font-semibold px-8 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
-            Terminer mon ancrage
-          </button>
+        <!-- Q2 — Durée -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q2">
+          <div class="section-tag">Ce que vous portez</div>
+          <p class="field-label text-base">Depuis combien de temps portez-vous cela ?</p>
+          <p class="text-sm text-muted mb-5">La temporalité nous aide à mieux comprendre où vous en êtes.</p>
+          <div class="space-y-2" id="duree-group">
+            <label class="duree-opt" data-duree="quelques-jours">
+              <input type="radio" name="q2" value="quelques-jours">
+              <span class="duree-dot"></span>Quelques jours
+            </label>
+            <label class="duree-opt" data-duree="quelques-semaines">
+              <input type="radio" name="q2" value="quelques-semaines">
+              <span class="duree-dot"></span>Quelques semaines
+            </label>
+            <label class="duree-opt" data-duree="2-3-mois">
+              <input type="radio" name="q2" value="2-3-mois">
+              <span class="duree-dot"></span>2 à 3 mois
+            </label>
+            <label class="duree-opt" data-duree="plusieurs-mois">
+              <input type="radio" name="q2" value="plusieurs-mois">
+              <span class="duree-dot"></span>Plusieurs mois (6 mois et plus)
+            </label>
+            <label class="duree-opt" data-duree="depuis-longtemps">
+              <input type="radio" name="q2" value="depuis-longtemps">
+              <span class="duree-dot"></span>Depuis longtemps — je ne saurais pas dater
+            </label>
+            <label class="duree-opt" data-duree="pas-certain">
+              <input type="radio" name="q2" value="pas-certain">
+              <span class="duree-dot"></span>Pas certain·e / c'est flou pour moi aussi
+            </label>
+          </div>
+          <input type="hidden" id="q2-val" name="q2-val" value="">
         </div>
+
+        <!-- Q3 — Profil dimensionnel (les 6 cercles) -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q3">
+          <div class="section-tag">Votre paysage intérieur</div>
+          <p class="field-label text-base">Comment vous situez-vous en ce moment dans chacun de ces espaces ?</p>
+          <p class="text-sm text-muted mb-6 leading-relaxed">
+            Répondez selon ce que vous ressentez maintenant — pas ce que vous voudriez ressentir.
+            Ce profil devient votre point de départ, votre cercle de référence.
+          </p>
+          <div id="dim-group">
+            <div class="dim-row" data-dim="presence">
+              <div><p class="dim-label">Présence</p><p class="dim-desc">Je me sens présent·e dans mon corps, dans le moment.</p></div>
+              <div class="dim-options">
+                <button type="button" class="dim-opt" data-level="1">Rarement</button>
+                <button type="button" class="dim-opt" data-level="2">Parfois</button>
+                <button type="button" class="dim-opt" data-level="3">Souvent</button>
+              </div>
+            </div>
+            <div class="dim-row" data-dim="comprehension">
+              <div><p class="dim-label">Compréhension</p><p class="dim-desc">Je comprends ce qui se passe en moi.</p></div>
+              <div class="dim-options">
+                <button type="button" class="dim-opt" data-level="1">Rarement</button>
+                <button type="button" class="dim-opt" data-level="2">Parfois</button>
+                <button type="button" class="dim-opt" data-level="3">Souvent</button>
+              </div>
+            </div>
+            <div class="dim-row" data-dim="choix">
+              <div><p class="dim-label">Choix</p><p class="dim-desc">J'ai l'impression de pouvoir choisir ma direction.</p></div>
+              <div class="dim-options">
+                <button type="button" class="dim-opt" data-level="1">Rarement</button>
+                <button type="button" class="dim-opt" data-level="2">Parfois</button>
+                <button type="button" class="dim-opt" data-level="3">Souvent</button>
+              </div>
+            </div>
+            <div class="dim-row" data-dim="sol">
+              <div><p class="dim-label">Sol</p><p class="dim-desc">Je me sens ancré·e, stable, avec un appui sous les pieds.</p></div>
+              <div class="dim-options">
+                <button type="button" class="dim-opt" data-level="1">Rarement</button>
+                <button type="button" class="dim-opt" data-level="2">Parfois</button>
+                <button type="button" class="dim-opt" data-level="3">Souvent</button>
+              </div>
+            </div>
+            <div class="dim-row" data-dim="vivant">
+              <div><p class="dim-label">Vivant·e</p><p class="dim-desc">Je me sens vivant·e, en lien avec ce qui me porte.</p></div>
+              <div class="dim-options">
+                <button type="button" class="dim-opt" data-level="1">Rarement</button>
+                <button type="button" class="dim-opt" data-level="2">Parfois</button>
+                <button type="button" class="dim-opt" data-level="3">Souvent</button>
+              </div>
+            </div>
+            <div class="dim-row" data-dim="reflexion">
+              <div><p class="dim-label">Réflexion</p><p class="dim-desc">Je peux prendre du recul sur ce que je vis.</p></div>
+              <div class="dim-options">
+                <button type="button" class="dim-opt" data-level="1">Rarement</button>
+                <button type="button" class="dim-opt" data-level="2">Parfois</button>
+                <button type="button" class="dim-opt" data-level="3">Souvent</button>
+              </div>
+            </div>
+          </div>
+          <p class="field-hint mt-4">Ces 6 dimensions forment votre cercle de départ — comparées à chaque entrée de journal pour mesurer votre chemin.</p>
+        </div>
+
+        <!-- Q4 — Registres dominants -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q4">
+          <div class="section-tag">Votre paysage intérieur</div>
+          <p class="field-label text-base">Dans quels espaces cela se passe-t-il surtout ? <span class="font-normal text-muted">(3 max)</span></p>
+          <p class="text-sm text-muted mb-5">Où ressentez-vous le plus le poids de ce que vous portez ?</p>
+          <div class="flex flex-wrap gap-2" id="registres-group">
+            <button type="button" class="chip-btn" data-reg="corporel">Corps / Sensations</button>
+            <button type="button" class="chip-btn" data-reg="emotionnel">Émotions</button>
+            <button type="button" class="chip-btn" data-reg="mental">Pensées / Mental</button>
+            <button type="button" class="chip-btn" data-reg="spirituel">Sens / Spirituel</button>
+            <button type="button" class="chip-btn" data-reg="relationnel">Relations</button>
+            <button type="button" class="chip-btn" data-reg="identitaire">Qui je suis / Identité</button>
+            <button type="button" class="chip-btn" data-reg="autre">Autre / Je ne sais pas encore</button>
+          </div>
+          <input type="hidden" id="q4-val" name="q4" value="">
+          <p class="field-hint mt-4">Choisissez jusqu'à 3 espaces — ceux qui résonnent le plus maintenant.</p>
+        </div>
+
+        <!-- Q5 — Intentions / espoirs -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q5">
+          <div class="section-tag">Ce que vous cherchez</div>
+          <p class="field-label text-base">Qu'est-ce que vous espérez de cet espace ? <span class="font-normal text-muted">(3 max)</span></p>
+          <p class="text-sm text-muted mb-5">Pas d'obligation d'être précis·e — une direction suffit.</p>
+          <div class="flex flex-wrap gap-2" id="intentions-group">
+            <button type="button" class="chip-btn" data-int="me-comprendre">Mieux me comprendre</button>
+            <button type="button" class="chip-btn" data-int="etre-entendu">Être entendu·e, sans jugement</button>
+            <button type="button" class="chip-btn" data-int="travailler-quelque-chose">Travailler quelque chose de précis</button>
+            <button type="button" class="chip-btn" data-int="trouver-direction">Trouver une direction</button>
+            <button type="button" class="chip-btn" data-int="retrouver-energie">Retrouver de l'énergie / de la vitalité</button>
+            <button type="button" class="chip-btn" data-int="ancrage-corporel">Reconnecter avec mon corps</button>
+            <button type="button" class="chip-btn" data-int="explorer-sans-savoir">Explorer — sans savoir encore où ça mène</button>
+            <button type="button" class="chip-btn" data-int="sortir-isolement">Sortir de l'isolement</button>
+            <button type="button" class="chip-btn" data-int="autre">Autre</button>
+          </div>
+          <input type="hidden" id="q5-val" name="q5" value="">
+        </div>
+
+        <!-- Q6 — Format préféré -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q6">
+          <div class="section-tag">Comment travailler ensemble</div>
+          <p class="field-label text-base">Comment préférez-vous travailler ?</p>
+          <p class="text-sm text-muted mb-5">Votre praticien·ne adapte son approche selon votre format.</p>
+          <div class="grid sm:grid-cols-2 gap-3" id="format-group">
+            <label class="format-card" data-fmt="audio-direct">
+              <input type="radio" name="q6" value="audio-direct">
+              <p class="font-semibold text-ink text-sm mb-1">Audio en direct</p>
+              <p class="text-xs text-muted">Échanges vocaux, présence immédiate. Comme une conversation.</p>
+            </label>
+            <label class="format-card" data-fmt="audio-differe">
+              <input type="radio" name="q6" value="audio-differe">
+              <p class="font-semibold text-ink text-sm mb-1">Audio différé</p>
+              <p class="text-xs text-muted">Vous enregistrez à votre rythme, vous recevez un résumé guidé.</p>
+            </label>
+            <label class="format-card" data-fmt="ecrit">
+              <input type="radio" name="q6" value="ecrit">
+              <p class="font-semibold text-ink text-sm mb-1">Écrit accompagné</p>
+              <p class="text-xs text-muted">Journal guidé avec retour praticien·ne. Votre rythme, à l'écrit.</p>
+            </label>
+            <label class="format-card" data-fmt="sans-preference">
+              <input type="radio" name="q6" value="sans-preference">
+              <p class="font-semibold text-ink text-sm mb-1">Pas de préférence</p>
+              <p class="text-xs text-muted">Je laisse la praticienne me proposer ce qui semble le mieux.</p>
+            </label>
+          </div>
+          <input type="hidden" id="q6-val" name="q6-val" value="">
+        </div>
+
+        <!-- Q7 — Rythme -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q7">
+          <div class="section-tag">Comment travailler ensemble</div>
+          <p class="field-label text-base">À quel rythme vous voyez-vous travailler ?</p>
+          <p class="text-sm text-muted mb-5">Une indication — pas un engagement ferme.</p>
+          <div class="space-y-2" id="rythme-group">
+            <label class="rythme-card" data-rythme="1x-semaine">
+              <input type="radio" name="q7" value="1x-semaine">
+              <div class="w-4 h-4 border-2 border-bdr rounded-full flex-shrink-0 rythme-dot"></div>
+              <div><p class="text-sm font-semibold text-ink">1 fois par semaine</p><p class="text-xs text-muted">Accompagnement soutenu</p></div>
+            </label>
+            <label class="rythme-card" data-rythme="2x-mois">
+              <input type="radio" name="q7" value="2x-mois">
+              <div class="w-4 h-4 border-2 border-bdr rounded-full flex-shrink-0 rythme-dot"></div>
+              <div><p class="text-sm font-semibold text-ink">2 fois par mois</p><p class="text-xs text-muted">Rythme régulier sans surcharge</p></div>
+            </label>
+            <label class="rythme-card" data-rythme="1x-mois">
+              <input type="radio" name="q7" value="1x-mois">
+              <div class="w-4 h-4 border-2 border-bdr rounded-full flex-shrink-0 rythme-dot"></div>
+              <div><p class="text-sm font-semibold text-ink">1 fois par mois</p><p class="text-xs text-muted">Espacement pour laisser mûrir</p></div>
+            </label>
+            <label class="rythme-card" data-rythme="au-besoin">
+              <input type="radio" name="q7" value="au-besoin">
+              <div class="w-4 h-4 border-2 border-bdr rounded-full flex-shrink-0 rythme-dot"></div>
+              <div><p class="text-sm font-semibold text-ink">Au besoin</p><p class="text-xs text-muted">Je réserve quand quelque chose se présente</p></div>
+            </label>
+          </div>
+          <input type="hidden" id="q7-val" name="q7-val" value="">
+        </div>
+
+        <!-- Q8 — Limites + contexte praticien + canal -->
+        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q8">
+          <div class="section-tag">Ce que vous souhaitez que la praticienne sache</div>
+          <div class="space-y-6">
+            <div>
+              <label for="q8a-input" class="field-label">
+                Y a-t-il quelque chose que vous ne souhaitez <em>pas</em> aborder ?
+                <span class="font-normal text-muted">(optionnel)</span>
+              </label>
+              <textarea id="q8a-input" name="q8a" class="field-input" rows="3"
+                        placeholder="Un sujet, une période, un mot… Vos limites sont respectées."></textarea>
+              <p class="field-hint">Votre praticienne ne franchira pas ces limites.</p>
+            </div>
+            <div>
+              <label for="q8b-input" class="field-label">
+                Y a-t-il quelque chose d'important que vous voudriez que la praticienne sache ?
+                <span class="font-normal text-muted">(optionnel)</span>
+              </label>
+              <textarea id="q8b-input" name="q8b" class="field-input" rows="4"
+                        placeholder="Un contexte, une histoire, un soin en cours, une contrainte…"></textarea>
+              <p class="field-hint">Visible uniquement par votre praticienne — jamais partagé à des tiers.</p>
+            </div>
+            <div>
+              <p class="field-label">Comment avez-vous entendu parler d'IVIA ? <span class="font-normal text-muted">(optionnel)</span></p>
+              <div class="flex flex-wrap gap-2 mt-2" id="canal-group">
+                <button type="button" class="chip-btn" data-canal="bouche-a-oreille">Bouche à oreille</button>
+                <button type="button" class="chip-btn" data-canal="reseaux-sociaux">Réseaux sociaux</button>
+                <button type="button" class="chip-btn" data-canal="moteur-recherche">Moteur de recherche</button>
+                <button type="button" class="chip-btn" data-canal="praticien">Recommandé·e par un praticien</button>
+                <button type="button" class="chip-btn" data-canal="autre">Autre</button>
+              </div>
+              <input type="hidden" id="q8c-val" name="q8c" value="">
+            </div>
+          </div>
+        </div>
+
       </form>
+
+      <!-- Navigation -->
+      <div class="mt-6 flex justify-between items-center">
+        <button type="button" id="btn-precedent"
+                class="hidden border border-bdr text-ink text-sm font-medium px-6 py-3 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+          ← Précédent
+        </button>
+        <div class="flex-1"></div>
+        <button type="button" id="btn-suivant"
+                class="bg-forest-deep text-white text-sm font-semibold px-8 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Suivant →
+        </button>
+        <button type="button" id="btn-terminer"
+                class="hidden bg-forest-deep text-white text-sm font-semibold px-8 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Terminer mon ancrage ✓
+        </button>
+      </div>
 
     </div>
   </div>
 
-  <script>
-    let currentStep = 1;
-    const totalSteps = 6;
+  <!-- CONFIRMATION FINALE -->
+  <div id="step-confirm"
+       class="fixed inset-0 bg-cream flex items-center justify-center px-4 z-50"
+       style="display:none !important">
+    <div class="max-w-md text-center">
+      <div class="w-16 h-16 bg-forest/15 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-8 h-8 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h2 class="font-heading text-2xl font-bold text-ink mb-3">Votre ancrage est posé.</h2>
+      <p class="text-sm text-muted leading-relaxed mb-2">
+        Ce que vous avez partagé devient votre point de départ —
+        votre cercle de référence, visible uniquement par vous et votre praticienne.
+      </p>
+      <p class="text-sm text-muted leading-relaxed mb-8">
+        Chaque séance, chaque entrée de journal sera mesurée depuis cet ancrage.
+        Vous verrez votre chemin se dessiner.
+      </p>
+      <a href="/client/dashboard.html"
+         class="inline-block bg-forest-deep text-white font-semibold px-8 py-3.5 rounded-[14px] hover:bg-forest transition-colors">
+        Accéder à mon espace
+      </a>
+    </div>
+  </div>
 
+  <footer class="py-6 px-4 text-center">
+    <p class="text-xs text-muted">
+      IVIA n'est pas un service d'urgence · En crise :
+      <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+    </p>
+  </footer>
+
+  <script>
+    // ═══ ÉTAT ════════════════════════════════════════════════════════════════
+    let currentStep = 1;
+    const totalSteps = 8;
+    const answers = { q1:'', q2:'', q3:{}, q4:[], q5:[], q6:'', q7:'', q8a:'', q8b:'', q8c:'' };
+
+    // ═══ PROGRESSION ═════════════════════════════════════════════════════════
     function updateUI() {
       document.querySelectorAll('.question-step').forEach(el => el.classList.remove('active'));
-      document.getElementById(`q${currentStep}`).classList.add('active');
-      document.getElementById('progress-label').textContent = `Question ${currentStep} sur ${totalSteps}`;
+      const stepEl = document.getElementById(`q${currentStep}`);
+      if (stepEl) stepEl.classList.add('active');
+      document.getElementById('progress-label').textContent = `Étape ${currentStep} sur ${totalSteps}`;
       const pct = Math.round(((currentStep - 1) / totalSteps) * 100);
       document.getElementById('progress-pct').textContent = `${pct} %`;
       document.getElementById('progress-bar').style.width = `${pct}%`;
       document.getElementById('btn-precedent').classList.toggle('hidden', currentStep === 1);
       document.getElementById('btn-suivant').classList.toggle('hidden', currentStep === totalSteps);
       document.getElementById('btn-terminer').classList.toggle('hidden', currentStep !== totalSteps);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ═══ NAVIGATION ══════════════════════════════════════════════════════════
     document.getElementById('btn-suivant').addEventListener('click', () => {
-      if (currentStep < totalSteps) { currentStep++; updateUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+      if (currentStep < totalSteps) { currentStep++; updateUI(); }
     });
     document.getElementById('btn-precedent').addEventListener('click', () => {
-      if (currentStep > 1) { currentStep--; updateUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+      if (currentStep > 1) { currentStep--; updateUI(); }
     });
 
-    // Échelle Q2
-    document.querySelectorAll('.scale-circle').forEach(c => {
-      c.parentElement.addEventListener('click', () => {
-        document.querySelectorAll('.scale-circle').forEach(x => x.classList.remove('selected'));
-        c.classList.add('selected');
-        document.getElementById('q2-val').value = c.dataset.val;
+    // ═══ Q2 — DURÉE ══════════════════════════════════════════════════════════
+    document.querySelectorAll('#duree-group .duree-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('#duree-group .duree-opt').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        answers.q2 = opt.dataset.duree;
+        document.getElementById('q2-val').value = answers.q2;
       });
     });
 
-    // Registres Q3 — max 3
-    document.querySelectorAll('.registre-btn').forEach(btn => {
+    // ═══ Q3 — PROFIL DIMENSIONNEL ════════════════════════════════════════════
+    document.querySelectorAll('#dim-group .dim-row').forEach(row => {
+      const dim = row.dataset.dim;
+      row.querySelectorAll('.dim-opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          row.querySelectorAll('.dim-opt').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers.q3[dim] = parseInt(btn.dataset.level);
+        });
+      });
+    });
+
+    // ═══ Q4 — REGISTRES (max 3) ══════════════════════════════════════════════
+    document.querySelectorAll('#registres-group .chip-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const selected = document.querySelectorAll('.registre-btn.selected');
+        const sel = document.querySelectorAll('#registres-group .chip-btn.selected');
         if (btn.classList.contains('selected')) {
           btn.classList.remove('selected');
-        } else if (selected.length < 3) {
+        } else if (sel.length < 3) {
           btn.classList.add('selected');
         }
-        const vals = [...document.querySelectorAll('.registre-btn.selected')].map(b => b.dataset.reg);
-        document.getElementById('q3-val').value = vals.join(',');
+        answers.q4 = [...document.querySelectorAll('#registres-group .chip-btn.selected')].map(b => b.dataset.reg);
+        document.getElementById('q4-val').value = answers.q4.join(',');
       });
     });
 
-    // Format Q4
-    document.querySelectorAll('.format-card').forEach(card => {
+    // ═══ Q5 — INTENTIONS (max 3) ═════════════════════════════════════════════
+    document.querySelectorAll('#intentions-group .chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sel = document.querySelectorAll('#intentions-group .chip-btn.selected');
+        if (btn.classList.contains('selected')) {
+          btn.classList.remove('selected');
+        } else if (sel.length < 3) {
+          btn.classList.add('selected');
+        }
+        answers.q5 = [...document.querySelectorAll('#intentions-group .chip-btn.selected')].map(b => b.dataset.int);
+        document.getElementById('q5-val').value = answers.q5.join(',');
+      });
+    });
+
+    // ═══ Q6 — FORMAT ═════════════════════════════════════════════════════════
+    document.querySelectorAll('#format-group .format-card').forEach(card => {
       card.addEventListener('click', () => {
-        document.querySelectorAll('.format-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('#format-group .format-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
-        document.getElementById('q4-val').value = card.dataset.fmt;
+        answers.q6 = card.dataset.fmt;
+        document.getElementById('q6-val').value = answers.q6;
       });
     });
 
-    // Soumission
-    document.getElementById('ancrage-form').addEventListener('submit', (e) => {
-      e.preventDefault();
+    // ═══ Q7 — RYTHME ═════════════════════════════════════════════════════════
+    document.querySelectorAll('#rythme-group .rythme-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('#rythme-group .rythme-card').forEach(c => {
+          c.classList.remove('selected');
+          const dot = c.querySelector('.rythme-dot');
+          dot.style.background = ''; dot.style.borderColor = '';
+        });
+        card.classList.add('selected');
+        const dot = card.querySelector('.rythme-dot');
+        dot.style.background = '#2D6A4F'; dot.style.borderColor = '#2D6A4F';
+        answers.q7 = card.dataset.rythme;
+        document.getElementById('q7-val').value = answers.q7;
+      });
+    });
+
+    // ═══ Q8c — CANAL (single) ════════════════════════════════════════════════
+    document.querySelectorAll('#canal-group .chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#canal-group .chip-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        answers.q8c = btn.dataset.canal;
+        document.getElementById('q8c-val').value = answers.q8c;
+      });
+    });
+
+    // ═══ SOUMISSION ══════════════════════════════════════════════════════════
+    document.getElementById('btn-terminer').addEventListener('click', () => {
+      answers.q1  = document.getElementById('q1-input').value.trim();
+      answers.q8a = document.getElementById('q8a-input').value.trim();
+      answers.q8b = document.getElementById('q8b-input').value.trim();
+
+      const ancrage = {
+        date_ancrage: new Date().toISOString().split('T')[0],
+        intention:    answers.q1,
+        duree:        answers.q2,
+        profil_dim:   answers.q3,
+        registres:    answers.q4,
+        intentions:   answers.q5,
+        format:       answers.q6,
+        rythme:       answers.q7,
+        limites:      answers.q8a,
+        contexte_pra: answers.q8b,
+        canal:        answers.q8c,
+      };
+
+      // ── Mock save (remplacé par POST /api/v1/client/ancrage) ──
+      localStorage.setItem('ivia_ancrage', JSON.stringify(ancrage));
+      try {
+        const u = JSON.parse(localStorage.getItem('ivia_user') || '{}');
+        u.ancrage_complete = true;
+        localStorage.setItem('ivia_user', JSON.stringify(u));
+      } catch (_) {}
+
       const btn = document.getElementById('btn-terminer');
       btn.textContent = 'Enregistrement…';
       btn.disabled = true;
-      setTimeout(() => { window.location.href = '/client/dashboard.html'; }, 1000);
+
+      setTimeout(() => {
+        document.getElementById('step-confirm').style.removeProperty('display');
+        document.getElementById('step-confirm').style.display = 'flex';
+      }, 600);
     });
 
+    // ═══ INIT ═════════════════════════════════════════════════════════════════
     updateUI();
   </script>
 

@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Mon espace</title>
+  <script src="/shared/mock.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -51,6 +53,7 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon compte
         </a>
+        <div id="sidebar-logout"></div>
       </nav>
     </aside>
 
@@ -112,15 +115,15 @@
                   </svg>
                 </div>
                 <div class="flex-1">
-                  <p class="font-semibold text-ink text-sm">Mylène P.</p>
-                  <p class="text-xs text-muted mt-0.5">Mardi 3 juin 2026 · 14h00 · Audio en direct</p>
+                  <p class="font-semibold text-ink text-sm" id="seance-praticien">Mylène P.</p>
+                  <p class="text-xs text-muted mt-0.5" id="seance-datetime">Mardi 10 juin 2026 · 14h00 · Audio en direct</p>
                   <div class="mt-2 flex flex-wrap gap-2">
                     <span class="tag">Présence</span>
                     <span class="tag">Ancrage corporel</span>
                   </div>
                 </div>
                 <div class="flex flex-col items-end gap-2">
-                  <span class="text-xs font-bold text-forest-deep bg-forest/10 px-2.5 py-1 rounded-full">Dans 2 jours</span>
+                  <span class="text-xs font-bold text-forest-deep bg-forest/10 px-2.5 py-1 rounded-full" id="seance-countdown">Dans 2 jours</span>
                 </div>
               </div>
             </div>
@@ -183,11 +186,11 @@
             <ul class="space-y-2">
               <li class="flex justify-between items-center text-sm">
                 <span class="text-muted">Séances</span>
-                <span class="font-bold text-ink">3</span>
+                <span class="font-bold text-ink" data-stat="seances">3</span>
               </li>
               <li class="flex justify-between items-center text-sm">
                 <span class="text-muted">Entrées journal</span>
-                <span class="font-bold text-ink">7</span>
+                <span class="font-bold text-ink" data-stat="journal">7</span>
               </li>
               <li class="flex justify-between items-center text-sm">
                 <span class="text-muted">Premier ancrage</span>
@@ -230,18 +233,45 @@
   </nav>
 
   <script>
+    // ── Auth ──────────────────────────────────────────────────────────────────
+    const user = getCurrentUser() || MOCK_USER;
+
+    // ── Bandeaux ──────────────────────────────────────────────────────────────
     const p = new URLSearchParams(window.location.search);
-    // Nouveau compte
-    if (p.get('nouveau') === '1') {
+    if (p.get('nouveau') === '1' || user.nouveau_compte) {
       document.getElementById('nouveau-bar').classList.remove('hidden');
+    }
+    if (!user.courriel_verifie) {
       document.getElementById('verif-bar').classList.remove('hidden');
     }
-    // Salutation
-    const h = new Date().getHours();
-    const prenom = localStorage.getItem('ivia_prenom') || '';
-    const salut = h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir';
-    document.getElementById('greeting').textContent = prenom ? `${salut}, ${prenom}` : salut;
-    document.getElementById('greeting-date').textContent = new Date().toLocaleDateString('fr-CA', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+    // ── Salutation ────────────────────────────────────────────────────────────
+    const heure = new Date().getHours();
+    const salut = heure < 12 ? 'Bonjour' : heure < 18 ? 'Bon après-midi' : 'Bonsoir';
+    document.getElementById('greeting').textContent = user.prenom ? `${salut}, ${user.prenom}` : salut;
+    document.getElementById('greeting-date').textContent =
+      new Date().toLocaleDateString('fr-CA', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+
+    // ── Données mock → rendu ──────────────────────────────────────────────────
+    getMockStats().then(stats => {
+      // Statistiques
+      document.querySelector('[data-stat="seances"]')  && (document.querySelector('[data-stat="seances"]').textContent  = stats.nb_seances);
+      document.querySelector('[data-stat="journal"]')  && (document.querySelector('[data-stat="journal"]').textContent  = stats.nb_journal);
+
+      // Prochaine séance — countdown
+      const s = stats.prochaine_seance;
+      if (s) {
+        const ctd = document.getElementById('seance-countdown');
+        if (ctd) ctd.textContent = countdownLabel(s.date_iso);
+        const dtEl = document.getElementById('seance-datetime');
+        if (dtEl) dtEl.textContent = formatDateSeance(s.date_iso) + ' · ' + s.format;
+        const praEl = document.getElementById('seance-praticien');
+        if (praEl) praEl.textContent = s.praticien.prenom + ' ' + s.praticien.nom.charAt(0) + '.';
+      }
+    });
+
+    // ── Logout ────────────────────────────────────────────────────────────────
+    renderLogoutButton(document.getElementById('sidebar-logout'));
   </script>
 </body>
 </html>

@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Journal</title>
+  <script src="/shared/mock.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -56,6 +58,7 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon compte
         </a>
+        <div id="sidebar-logout"></div>
       </nav>
     </aside>
 
@@ -92,58 +95,12 @@
 
       <!-- Liste des entrées -->
       <div id="journal-list" class="space-y-4">
-
-        <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="corporel emotionnel">
-          <div class="flex items-start justify-between gap-4">
-            <div class="flex-1">
-              <p class="text-xs text-muted mb-1.5">29 mai 2026</p>
-              <h3 class="font-heading text-base font-semibold text-ink mb-1">Sur la lenteur — ne pas confondre repos et fuite</h3>
-              <p class="text-sm text-muted leading-relaxed line-clamp-2">
-                Il y a quelque chose dans la façon dont je ralentis ces derniers jours qui ressemble plus à
-                une retraite qu'à un vrai repos…
-              </p>
-              <div class="flex gap-2 mt-3 flex-wrap">
-                <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Corporel</span>
-                <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Émotionnel</span>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="relationnel">
-          <div class="flex-1">
-            <p class="text-xs text-muted mb-1.5">22 mai 2026</p>
-            <h3 class="font-heading text-base font-semibold text-ink mb-1">Après la séance avec Mylène — quelques images</h3>
-            <p class="text-sm text-muted leading-relaxed line-clamp-2">
-              Je ressors de la séance avec une image : une bougie dans un espace fermé qui consomme tout
-              l'air disponible. Est-ce moi qui projette, ou…
-            </p>
-            <div class="flex gap-2 mt-3 flex-wrap">
-              <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Relationnel</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="mental spirituel">
-          <div class="flex-1">
-            <p class="text-xs text-muted mb-1.5">14 mai 2026</p>
-            <h3 class="font-heading text-base font-semibold text-ink mb-1">Ce que je ne formule pas</h3>
-            <p class="text-sm text-muted leading-relaxed line-clamp-2">
-              Certaines choses résistent au langage. Aujourd'hui j'ai essayé d'écrire sur ce qui se passe
-              quand je médite et que le silence devient dense…
-            </p>
-            <div class="flex gap-2 mt-3 flex-wrap">
-              <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Mental</span>
-              <span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">Spirituel</span>
-            </div>
-          </div>
-        </article>
-
+        <!-- rempli par JS depuis MOCK_JOURNAL -->
       </div>
 
       <!-- Quota -->
       <div class="mt-4 flex items-center justify-between text-xs text-muted">
-        <span>3 entrées cette semaine <span class="text-ink font-semibold">(5 max)</span></span>
+        <span id="journal-quota">Chargement…</span>
         <a href="/confidentialite.html#n3" class="text-trust underline underline-offset-2 cursor-pointer">Débloquer illimité (N3)</a>
       </div>
 
@@ -358,7 +315,36 @@
   </nav>
 
   <script>
-    // ─── Filtrage des entrées ────────────────────────────────────────────────
+    // ── Logout
+    renderLogoutButton(document.getElementById('sidebar-logout'));
+
+    // ── Rendu liste journal depuis mock
+    getMockJournal().then(entries => {
+      const list = document.getElementById('journal-list');
+      if (!list) return;
+      list.innerHTML = entries.map(e => {
+        const tags = e.registres.join(' ');
+        const tagsHTML = e.registres.map(r =>
+          `<span class="inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium">${r.charAt(0).toUpperCase()+r.slice(1)}</span>`
+        ).join('');
+        const privLabel = e.prive ? '<span class="text-[10px] text-muted ml-1">🔒 Privée</span>' : '';
+        return `
+          <article class="card cursor-pointer hover:shadow-md transition-shadow" data-tags="${tags}" data-id="${e.id}">
+            <div class="flex-1">
+              <p class="text-xs text-muted mb-1.5">${formatDateCourte(e.date_iso)}${privLabel}</p>
+              <h3 class="font-heading text-base font-semibold text-ink mb-1">${e.titre}</h3>
+              <p class="text-sm text-muted leading-relaxed line-clamp-2">${e.extrait}</p>
+              <div class="flex gap-2 mt-3 flex-wrap">${tagsHTML}</div>
+            </div>
+          </article>`;
+      }).join('');
+
+      // Quota
+      const quota = document.getElementById('journal-quota');
+      if (quota) quota.textContent = `${entries.length} entrées au total`;
+    });
+
+    // ── Filtrage ────────────────────────────────────────────────
     function filtrerJournal(btn, filter) {
       document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
