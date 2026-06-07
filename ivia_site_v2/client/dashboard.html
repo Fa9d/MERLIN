@@ -69,7 +69,7 @@
         <p class="text-sm text-amber-800 flex-1">
           <span class="font-semibold">Votre espace est ouvert.</span>
           Pour prendre rendez-vous, confirmez votre courriel.
-          <a href="#" class="underline underline-offset-2 ml-1 cursor-pointer">Renvoyer le lien</a>
+          <button onclick="renvoyerLienVerif(this)" class="underline underline-offset-2 ml-1 cursor-pointer bg-transparent border-0 p-0 text-amber-800 font-inherit text-sm">Renvoyer le lien</button>
         </p>
         <button onclick="this.closest('#verif-bar').style.display='none'"
                 class="text-amber-600 hover:text-amber-900 cursor-pointer" aria-label="Fermer">
@@ -276,6 +276,14 @@
 
     // ── Logout ────────────────────────────────────────────────────────────────
     renderLogoutButton(document.getElementById('sidebar-logout'));
+
+    // ── Renvoi lien de vérification courriel ──────────────────────────────────
+    function renvoyerLienVerif(btn) {
+      btn.disabled = true;
+      btn.textContent = 'Envoyé ✓';
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Renvoyer le lien'; }, 5000);
+      // TODO : fetch('/api/v1/auth/resend-verification', { method: 'POST', headers: { Authorization: 'Bearer ' + localStorage.getItem('ivia_session') } });
+    }
   </script>
 </body>
 </html>

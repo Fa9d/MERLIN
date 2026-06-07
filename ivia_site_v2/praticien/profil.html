@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
+  <script src="/shared/mock_praticien.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -42,6 +43,11 @@
           <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
           Mon profil
         </a>
+        <a href="/praticien/compte.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          Mon compte
+        </a>
+        <div id="sidebar-logout" class="mt-2"></div>
       </nav>
     </aside>
 
@@ -185,6 +191,19 @@
   <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
 
   <script>
+    // ── Pre-remplissage depuis session / mock ─────────────────────────────────
+    (function () {
+      const u = (typeof getCurrentUser === 'function' && getCurrentUser()) ||
+                (typeof getMockPratUser === 'function' && getMockPratUser()) || {};
+      const inputs = document.querySelectorAll('input[type=text]:not([id=profil-theme-input])');
+      if (u.prenom && inputs[0]) inputs[0].value = u.prenom;
+      if (u.nom   && inputs[1]) inputs[1].value  = u.nom.charAt(0) + '.';
+      if (u.approche && inputs[2]) inputs[2].value = u.approche;
+      const avatarEl = document.querySelector('aside .font-heading');
+      if (avatarEl && u.prenom) avatarEl.textContent = u.prenom.charAt(0).toUpperCase();
+      renderLogoutButton(document.getElementById('sidebar-logout'));
+    })();
+
     function toggleDispo(btn) {
       const on = btn.getAttribute('aria-checked') !== 'true';
       btn.setAttribute('aria-checked', String(on));

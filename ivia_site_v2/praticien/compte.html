@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
+  <script src="/shared/mock_praticien.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -232,6 +233,16 @@
   <div id="toast" role="status" aria-live="polite"></div>
 
   <script>
+    // ── Pre-remplissage ───────────────────────────────────────────────────────
+    (function () {
+      const u = (typeof getCurrentUser === 'function' && getCurrentUser()) ||
+                (typeof getMockPratUser === 'function' && getMockPratUser()) || {};
+      if (u.prenom && document.getElementById('cp-prenom')) document.getElementById('cp-prenom').value = u.prenom;
+      if (u.nom    && document.getElementById('cp-nom'))    document.getElementById('cp-nom').value    = u.nom;
+      if ((u.email || u.courriel) && document.getElementById('cp-courriel'))
+        document.getElementById('cp-courriel').value = u.email || u.courriel;
+    })();
+
     function saveToast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg + ' ✓';

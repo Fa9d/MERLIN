@@ -33,7 +33,7 @@
       <a href="/" class="font-heading text-xl font-semibold text-forest-deep tracking-tight">IVIA</a>
       <div class="flex items-center gap-3">
         <a href="/rendez-vous.html" class="text-sm text-muted hover:text-ink transition-colors">Voir tous les praticiens</a>
-        <a id="nav-resa-btn" href="/rendez-vous.html"
+        <a id="nav-resa-btn" href="/reserver.html"
            class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">
           Réserver une séance →
         </a>
@@ -119,7 +119,7 @@
         <div class="bg-forest-deep rounded-[24px] p-6 text-white shadow-sm">
           <h2 class="font-heading text-base font-semibold mb-2">Prêt·e à commencer ?</h2>
           <p class="text-xs text-white/70 mb-4 leading-relaxed">Choisissez un créneau et réservez directement depuis la page de rendez-vous.</p>
-          <a id="cta-resa" href="/rendez-vous.html"
+          <a id="cta-resa" href="/reserver.html"
              class="block text-center bg-white text-forest-deep text-sm font-bold px-5 py-3 rounded-[12px] hover:bg-cream transition-colors">
             Voir ses disponibilités →
           </a>
@@ -284,10 +284,9 @@
         formatsEl.appendChild(row);
       });
 
-      // Liens de réservation avec praticien présélectionné
-      const resaUrl = '/rendez-vous.html?praticien=' + id;
-      document.getElementById('cta-resa').href        = resaUrl;
-      document.getElementById('nav-resa-btn').href    = resaUrl;
+      // Liens de réservation — calendrier de réservation unifié
+      document.getElementById('cta-resa').href     = '/reserver.html';
+      document.getElementById('nav-resa-btn').href = '/reserver.html';
     });
   </script>
 </body>
