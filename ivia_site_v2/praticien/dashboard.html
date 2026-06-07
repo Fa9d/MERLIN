@@ -73,10 +73,20 @@
           <h1 class="font-heading text-2xl font-bold text-ink">Tableau de bord</h1>
           <p class="text-muted text-sm mt-0.5" id="tdb-date"></p>
         </div>
-        <a href="/praticien/agenda.html"
-           class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer hidden sm:block">
-          Gérer mon agenda
-        </a>
+        <div class="hidden sm:flex items-center gap-3">
+          <a href="/praticien/seance-en-cours.html"
+             class="flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/>
+            </svg>
+            Démarrer une séance
+          </a>
+          <a href="/praticien/agenda.html"
+             class="border border-bdr text-ink text-sm font-medium px-4 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Agenda
+          </a>
+        </div>
       </div>
 
       <!-- Barre d'onglets praticien -->
