@@ -5,7 +5,9 @@
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="/shared/mock_praticien.js"></script>  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="/shared/mock_praticien.js"></script>
+  <script src="/shared/api.js"></script>
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
     h1,h2{font-family:'Lora',Georgia,serif;}
@@ -139,10 +141,41 @@
     const SLOTS_PER_HOUR = 2; // 30 min
     const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
-    // Données initiales (clé = "AAAA-MM-JJ_HH:MM", valeur = état)
-    // Chargé depuis mock (swap → GET /api/v1/praticien/agenda/slots)
+    // Données créneaux (clé = "AAAA-MM-JJ_HH:MM", valeur = état)
+    // Source : GET /api/v1/schedules/available (API réelle) avec fallback mock
     let slotStates = {};
-    getMockAgendaSlots().then(slots => { slotStates = slots; buildCalendar(); });
+
+    async function chargerCreneaux() {
+      const { from, to } = getWeekBounds(currentWeekOffset);
+      const user = getCurrentUser();
+      const praticienId = user?.id;
+
+      if (praticienId && typeof getAvailableSlots === 'function') {
+        try {
+          const slots = await getAvailableSlots(praticienId, from, to);
+          slotStates = {};
+          slots.forEach(s => {
+            // start_time peut être "HH:MM:SS" → normaliser en "HH:MM"
+            const t = (s.start_time || '').slice(0, 5);
+            const key = `${s.slot_date}_${t}`;
+            if (s.status === 'confirmed' || s.status === 'hold') {
+              slotStates[key] = 'reserve';
+              slotStates[key + '_client'] = s.praticien_name || 'Réservé';
+            } else if (s.status === 'available') {
+              slotStates[key] = 'disponible';
+            }
+          });
+          return;
+        } catch (err) {
+          console.warn('[IVIA] API agenda indisponible, bascule sur mock :', err.message);
+        }
+      }
+      // Fallback mock
+      const mockSlots = await getMockAgendaSlots();
+      slotStates = mockSlots;
+    }
+
+    chargerCreneaux().then(() => buildCalendar());
     renderLogoutButton(document.getElementById('sidebar-logout'));
     let currentWeekOffset = 0;
     let activeCell = null;
@@ -244,8 +277,11 @@
       });
     }
 
-    function changerSemaine(delta) { currentWeekOffset += delta; buildCalendar(); }
-    function allerAujourdhui() { currentWeekOffset = 0; buildCalendar(); }
+    function changerSemaine(delta) {
+      currentWeekOffset += delta;
+      chargerCreneaux().then(() => buildCalendar());
+    }
+    function allerAujourdhui() { currentWeekOffset = 0; chargerCreneaux().then(() => buildCalendar()); }
 
     function ouvrirModal(cell, currentState) {
       activeCell = cell;

@@ -369,22 +369,18 @@
       });
     }
 
-    // Sélection créneau — passe la formule dans l'URL
+    // Sélection créneau — redirige vers le calendrier de réservation réel
     document.querySelectorAll('.creneau-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const p = btn.dataset.praticien;
-        const c = btn.dataset.creneau;
-        window.location.href = `/inscription.html?praticien=${p}&creneau=${encodeURIComponent(c)}&formule=${selectedFormule}`;
+        window.location.href = `/reserver.html`;
       });
     });
 
-    // Mise à jour des CTAs "Choisir Mylène/Émilie"
-    document.querySelectorAll('a[href*="choisir-creneau"]').forEach(a => {
+    // Mise à jour des CTAs "Choisir Mylène/Émilie" → reserver.html
+    document.querySelectorAll('a[href*="choisir-creneau"], a[href*="confirmation.html"]').forEach(a => {
       a.addEventListener('click', (e) => {
-        const base = a.href.split('?')[0];
-        const pParam = new URL(a.href).searchParams.get('praticien');
         e.preventDefault();
-        window.location.href = `${base}?praticien=${pParam}&formule=${selectedFormule}`;
+        window.location.href = `/reserver.html`;
       });
     });
   </script>
