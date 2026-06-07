@@ -146,6 +146,46 @@ const MOCK_AUDIO_DISPONIBLE = {
   url:         '/client/audio-resume.html',
 };
 
+// ── Progression profil dimensionnel (arc métacognitif) ───────────────────────
+// Chaque entrée = snapshot du profil_dim à un moment donné.
+// réflexion ∈ {1,2,3} est l'indicateur-clé d'internalisation métacognitive.
+const MOCK_PROFIL_PROGRESSION = [
+  {
+    label:    'Ancrage initial',
+    date_iso: '2026-04-10',
+    seq:      0,
+    profil_dim: { presence:1, comprehension:3, choix:1, sol:2, vivant:1, reflexion:1 },
+  },
+  {
+    label:    'Séance 1',
+    date_iso: '2026-04-28',
+    seq:      1,
+    profil_dim: { presence:1, comprehension:3, choix:1, sol:2, vivant:2, reflexion:1 },
+  },
+  {
+    label:    'Séance 2',
+    date_iso: '2026-05-15',
+    seq:      2,
+    profil_dim: { presence:2, comprehension:3, choix:1, sol:2, vivant:2, reflexion:1 },
+  },
+  {
+    label:    'Séance 3',
+    date_iso: '2026-05-27',
+    seq:      3,
+    profil_dim: { presence:2, comprehension:3, choix:2, sol:2, vivant:2, reflexion:2 },
+  },
+];
+
+// Jalons narratifs auto-générés depuis les seuils dimensionnels
+const JALONS = [
+  { id:'j1', dim:'vivant',        seuil:2, texte:'Tu accueilles ta nature changeante' },
+  { id:'j2', dim:'presence',      seuil:2, texte:'Tu habites davantage le moment présent' },
+  { id:'j3', dim:'sol',           seuil:2, texte:'Tu trouves appui dans tes racines' },
+  { id:'j4', dim:'choix',         seuil:2, texte:'Tu exprimes tes préférences avec plus de clarté' },
+  { id:'j5', dim:'comprehension', seuil:3, texte:'Tu décodes les systèmes qui t\'entourent' },
+  { id:'j6', dim:'reflexion',     seuil:2, texte:'Tu commences à nommer tes propres schémas' },
+];
+
 // ── Accesseurs (interface pour remplacement API) ─────────────────────────────
 
 function getMockUser()            { return Promise.resolve(MOCK_USER); }
@@ -153,6 +193,8 @@ function getMockStats()           { return Promise.resolve(MOCK_STATS); }
 function getMockSeances()         { return Promise.resolve(MOCK_SEANCES); }
 function getMockJournal()         { return Promise.resolve(MOCK_JOURNAL); }
 function getMockAudioDisponible() { return Promise.resolve(MOCK_AUDIO_DISPONIBLE); }
+function getMockProgression()     { return Promise.resolve([...MOCK_PROFIL_PROGRESSION]); }
+function getMockJalons()          { return Promise.resolve([...JALONS]); }
 
 // ── Helpers utilitaires ──────────────────────────────────────────────────────
 

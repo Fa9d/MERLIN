@@ -148,12 +148,66 @@ function buildMockAgendaSlots() {
   return slots;
 }
 
+// ── Compte-rendus de séance (avec double radar client/praticien) ──────────────
+// profil_client_dim = snapshot du profil_dim client AU MOMENT de la séance
+// profil_prat_dim   = évaluation de l'intervention par le praticien
+//   { ancrage, ecoute, regulation, cadrage, agentivite, ethique } ∈ {1,2,3}
+const MOCK_COMPTE_RENDUS = [
+  {
+    id:           'cr_003',
+    seance_id:    'sea_003',
+    client_id:    'usr_001',
+    client_prenom:'Marie',
+    date_seance:  '2026-05-27',
+    duree_min:    60,
+    profil_client_dim: { presence:2, comprehension:3, choix:2, sol:2, vivant:2, reflexion:2 },
+    profil_prat_dim:   { ancrage:3, ecoute:3, regulation:2, cadrage:1, agentivite:2, ethique:3 },
+    texte_cr: 'Séance marquante : Marie a spontanément nommé un schéma récurrent sans que je le désigne en premier. La réflexivité s\'installe. J\'ai volontairement réduit le guidage narratif pour laisser de l\'espace à l\'agentivité.',
+    registres_travailles: ['Corporel', 'Émotionnel', 'Réflexif'],
+    intentions_prochaine: 'Continuer à réduire le cadrage narratif. Observer si le Choix se consolide. Tenter une entrée par le registre Sol pour ancrer les nouvelles capacités.',
+    statut: 'redige',
+  },
+  {
+    id:           'cr_002',
+    seance_id:    'sea_002',
+    client_id:    'usr_001',
+    client_prenom:'Marie',
+    date_seance:  '2026-05-15',
+    duree_min:    60,
+    profil_client_dim: { presence:2, comprehension:3, choix:1, sol:2, vivant:2, reflexion:1 },
+    profil_prat_dim:   { ancrage:3, ecoute:3, regulation:3, cadrage:2, agentivite:1, ethique:2 },
+    texte_cr: 'Fort travail d\'ancrage et d\'écoute pré-verbale. La Présence de Marie grandit. Le Choix reste faible — l\'accompagnement porte encore beaucoup de ce côté.',
+    registres_travailles: ['Corporel', 'Émotionnel'],
+    intentions_prochaine: 'Introduire des questions ouvertes sur les préférences et les limites pour stimuler la dimension Choix.',
+    statut: 'redige',
+  },
+  {
+    id:           'cr_001',
+    seance_id:    'sea_001',
+    client_id:    'usr_001',
+    client_prenom:'Marie',
+    date_seance:  '2026-04-28',
+    duree_min:    60,
+    profil_client_dim: { presence:1, comprehension:3, choix:1, sol:2, vivant:2, reflexion:1 },
+    profil_prat_dim:   { ancrage:3, ecoute:3, regulation:3, cadrage:2, agentivite:1, ethique:2 },
+    texte_cr: 'Première séance après ancrage. Marie est dans la Compréhension — elle décrit bien, mais le rapport au corps et à la présence est encore mince. L\'accompagnement est très soutenant.',
+    registres_travailles: ['Corporel', 'Cognitif'],
+    intentions_prochaine: 'Ralentir. Moins de cadrage, plus de présence à la texture de l\'expérience.',
+    statut: 'redige',
+  },
+];
+
 // ── Accesseurs (interface pour remplacement API) ──────────────────────────────
 
 function getMockPratUser()   { return Promise.resolve({ ...MOCK_PRAT_USER }); }
 function getMockClients()    { return Promise.resolve([...MOCK_CLIENTS]); }
 function getMockPratStats()  { return Promise.resolve({ ...MOCK_PRAT_STATS }); }
 function getMockAgendaSlots(){ return Promise.resolve(buildMockAgendaSlots()); }
+function getMockCompteRendus() { return Promise.resolve([...MOCK_COMPTE_RENDUS]); }
+function getMockCompteRendu(seanceId) {
+  const cr = MOCK_COMPTE_RENDUS.find(c => c.seance_id === seanceId);
+  return Promise.resolve(cr || MOCK_COMPTE_RENDUS[0]);
+}
 
 function getMockLivraisons() {
   return Promise.resolve(

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Ma progression</title>
+  <script src="/shared/mock.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB',amber:'#D97706'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body { font-family: 'Raleway', system-ui, sans-serif; background-color: #F0F7F2; color: #1A2E1D; }
+    h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
+    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #4B6350; transition: all .15s; cursor: pointer; }
+    .sidebar-link:hover, .sidebar-link.active { background: #D4E8D0; color: #1A2E1D; }
+    .sidebar-link.active { font-weight: 700; }
+    .card { background: #fff; border: 1.5px solid #D4E8D0; border-radius: 20px; padding: 24px; }
+    .dim-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #4B6350; }
+    .progress-track { height: 10px; border-radius: 999px; background: #D4E8D0; overflow: hidden; }
+    .progress-fill  { height: 100%; border-radius: 999px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
+    .jalon-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; border: 1.5px solid; }
+    .jalon-atteint { background: #F0F7F2; border-color: #4A7C59; color: #2D6A4F; }
+    .jalon-futur   { background: #F8FAF9; border-color: #D4E8D0; color: #8FB99A; }
+    .stade-step { display: flex; align-items: center; gap: 8px; }
+    .stade-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .stade-line { flex: 1; height: 2px; background: #D4E8D0; }
+    @media (max-width: 1024px) { .chart-container { max-width: 100%; } }
+  </style>
+</head>
+<body class="antialiased">
+
+<div class="flex min-h-screen">
+
+  <!-- SIDEBAR desktop -->
+  <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+    <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
+    <nav class="flex flex-col gap-1 flex-1">
+      <a href="/client/dashboard.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Accueil
+      </a>
+      <a href="/client/seances.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Séances
+      </a>
+      <a href="/client/journal.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+        Journal
+      </a>
+      <a href="/client/ma-progression.html" class="sidebar-link active">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 17 9 11 13 15 21 7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 7 21 7 21 14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Ma progression
+      </a>
+      <a href="/client/premier-ancrage.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
+        Premier ancrage
+      </a>
+      <a href="/client/audio-resume.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
+        Résumés audio
+      </a>
+      <div class="flex-1"></div>
+      <a href="/client/compte.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+        Mon compte
+      </a>
+      <div id="sidebar-logout"></div>
+    </nav>
+  </aside>
+
+  <!-- CONTENU principal -->
+  <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1100px]">
+
+    <!-- En-tête -->
+    <div class="mb-7">
+      <h1 class="font-heading text-2xl font-bold text-ink">Ma progression</h1>
+      <p class="text-muted text-sm mt-1">Comment vous évoluez séance après séance — depuis votre premier ancrage.</p>
+    </div>
+
+    <!-- Stade métacognitif actuel ─────────────────────────────────────────── -->
+    <section id="stade-section" class="card mb-5" aria-labelledby="stade-titre">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <p class="dim-label mb-1">Stade actuel</p>
+          <h2 id="stade-titre" class="font-heading text-xl font-semibold text-ink" id="stade-nom">—</h2>
+          <p class="text-sm text-muted mt-1 max-w-md" id="stade-desc">—</p>
+        </div>
+        <!-- Indicateur 3 étapes -->
+        <div class="flex items-center gap-1 shrink-0" id="stade-indicateur" role="img" aria-label="Progression en 3 stades">
+          <!-- Injecté par JS -->
+        </div>
+      </div>
+    </section>
+
+    <div class="grid lg:grid-cols-2 gap-5 mb-5">
+
+      <!-- Arc de transfert métacognitif ──────────────────────────────────── -->
+      <section class="card" aria-labelledby="arc-titre">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h2 id="arc-titre" class="font-heading text-base font-semibold text-ink">Arc de transfert</h2>
+            <p class="text-xs text-muted mt-0.5">Qui porte le regard sur votre parcours</p>
+          </div>
+          <div class="flex items-center gap-4 text-xs text-muted shrink-0">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#4A7C59] inline-block"></span>Ton regard</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#C2DDCA] inline-block"></span>Soutien Mylène</span>
+          </div>
+        </div>
+        <div class="relative" style="height:170px;">
+          <canvas id="arcChart" aria-label="Arc de transfert métacognitif" role="img"></canvas>
+        </div>
+        <p class="text-xs text-muted mt-3 text-center" id="arc-caption">—</p>
+      </section>
+
+      <!-- Toile évolutive ─────────────────────────────────────────────────── -->
+      <section class="card" aria-labelledby="toile-titre">
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <h2 id="toile-titre" class="font-heading text-base font-semibold text-ink">Toile dimensionnelle</h2>
+            <p class="text-xs text-muted mt-0.5">Évolution de votre équilibre</p>
+          </div>
+          <div class="flex flex-col items-end gap-1 text-xs text-muted">
+            <span class="flex items-center gap-1.5"><span class="w-8 h-0.5 border-t-2 border-dashed border-[#C2DDCA] inline-block"></span>Ancrage</span>
+            <span class="flex items-center gap-1.5"><span class="w-8 h-0.5 bg-[#4A7C59] inline-block rounded"></span>Aujourd'hui</span>
+          </div>
+        </div>
+        <div class="relative" style="height:240px;">
+          <canvas id="toileChart" aria-label="Toile dimensionnelle comparative" role="img"></canvas>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Vivant / Société ─────────────────────────────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="balance-titre">
+      <h2 id="balance-titre" class="font-heading text-base font-semibold text-ink mb-4">Équilibre Vivant · Société</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+
+        <!-- Vivant -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <span class="dim-label">Registre Vivant</span>
+              <p class="text-xs text-muted mt-0.5">Présence · Sol · Vivant·e</p>
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-semibold text-ink" id="vivant-score">—</span>
+              <span class="text-xs text-muted">/9</span>
+              <p class="text-xs text-[#4A7C59] font-medium" id="vivant-delta">—</p>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill bg-[#4A7C59]" id="vivant-bar" style="width:0%"></div>
+          </div>
+          <div class="flex justify-between mt-1 text-xs text-muted">
+            <span id="vivant-debut-label">Ancrage</span>
+            <span id="vivant-debut-val">—</span>
+          </div>
+        </div>
+
+        <!-- Société -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <span class="dim-label">Registre Société</span>
+              <p class="text-xs text-muted mt-0.5">Compréhension · Choix · Réflexion</p>
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-semibold text-ink" id="societe-score">—</span>
+              <span class="text-xs text-muted">/9</span>
+              <p class="text-xs text-[#4A7C59] font-medium" id="societe-delta">—</p>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill bg-[#2D6A4F]" id="societe-bar" style="width:0%"></div>
+          </div>
+          <div class="flex justify-between mt-1 text-xs text-muted">
+            <span id="societe-debut-label">Ancrage</span>
+            <span id="societe-debut-val">—</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Interprétation de l'équilibre -->
+      <div id="balance-interpretation" class="mt-5 bg-surface border border-bdr rounded-[12px] px-4 py-3 text-sm text-muted hidden">
+        <!-- Injecté par JS -->
+      </div>
+    </section>
+
+    <!-- Jalons narratifs ────────────────────────────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="jalons-titre">
+      <div class="flex items-center justify-between mb-4">
+        <h2 id="jalons-titre" class="font-heading text-base font-semibold text-ink">Jalons atteints</h2>
+        <span class="text-xs text-muted" id="jalons-compte">—</span>
+      </div>
+      <div id="jalons-list" class="flex flex-wrap gap-2">
+        <!-- Injecté par JS -->
+      </div>
+      <p class="text-xs text-muted mt-4" id="jalons-prochains"></p>
+    </section>
+
+    <!-- Note de Mylène ─────────────────────────────────────────────────── -->
+    <section class="card bg-[#f8fdf8] border-[#b8d8c0]" aria-labelledby="note-titre">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-full bg-forest-deep/10 flex items-center justify-center shrink-0 mt-0.5">
+          <span class="text-sm font-semibold text-forest-deep">MP</span>
+        </div>
+        <div>
+          <p class="dim-label mb-1" id="note-praticien-nom">Mylène Pelletier</p>
+          <h2 id="note-titre" class="font-heading text-sm font-semibold text-ink sr-only">Note du praticien</h2>
+          <p class="text-sm text-ink leading-relaxed" id="note-texte">
+            «&nbsp;Ce moment marque une étape réelle. Tu commences à nommer ce que tu observes en toi,
+            sans avoir besoin que je le nomme en premier. C'est la capacité qui compte le plus — et elle s'installe.&nbsp;»
+          </p>
+          <p class="text-xs text-muted mt-2" id="note-date">Après la séance du 27 mai</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── Script principal ─────────────────────────────────────────────────── -->
+<script>
+(async function () {
+
+  // Auth + logout
+  renderLogoutButton(document.getElementById('sidebar-logout'));
+
+  // ── Données ──────────────────────────────────────────────────────────────
+  const progression = await getMockProgression();
+  const jalons      = await getMockJalons();
+  const now         = progression[progression.length - 1];
+  const debut       = progression[0];
+  const d           = now.profil_dim;
+  const d0          = debut.profil_dim;
+
+  // ── Stade métacognitif ───────────────────────────────────────────────────
+  const STADES = [
+    {
+      min: 1, max: 1,
+      nom:  'L\'accompagnement vous éclaire',
+      desc: 'Mylène porte le regard sur votre parcours. Chaque séance crée de l\'espace pour que quelque chose émerge.',
+      couleur: '#8FB99A',
+    },
+    {
+      min: 2, max: 2,
+      nom:  'La conscience s\'éveille',
+      desc: 'Vous commencez à nommer ce que vous observez en vous. La capacité d\'observation de soi s\'installe.',
+      couleur: '#4A7C59',
+    },
+    {
+      min: 3, max: 3,
+      nom:  'Vous portez votre propre regard',
+      desc: 'La métacognition est internalisée. Vous continuez le travail au-delà des séances, avec vos propres mots.',
+      couleur: '#2D6A4F',
+    },
+  ];
+  const stade = STADES.find(s => d.reflexion >= s.min && d.reflexion <= s.max) || STADES[0];
+
+  document.getElementById('stade-nom').textContent  = stade.nom;
+  document.getElementById('stade-desc').textContent = stade.desc;
+
+  // Indicateur 3 étapes
+  const indicateur = document.getElementById('stade-indicateur');
+  STADES.forEach((s, i) => {
+    const actif = d.reflexion >= s.min;
+    const courant = stade === s;
+    const dot = document.createElement('span');
+    dot.className = 'stade-dot';
+    dot.style.background = actif ? s.couleur : '#D4E8D0';
+    if (courant) { dot.style.width = '14px'; dot.style.height = '14px'; dot.style.boxShadow = `0 0 0 3px ${s.couleur}33`; }
+    indicateur.appendChild(dot);
+    if (i < STADES.length - 1) {
+      const line = document.createElement('span');
+      line.className = 'stade-line';
+      line.style.width = '48px';
+      line.style.background = actif && d.reflexion > s.max ? s.couleur : '#D4E8D0';
+      indicateur.appendChild(line);
+    }
+    const label = document.createElement('span');
+    label.className = `text-xs font-medium ml-1 mr-2 hidden lg:inline ${courant ? 'text-ink' : 'text-muted'}`;
+    label.textContent = i === 0 ? 'Soutenu·e' : i === 1 ? 'En éveil' : 'Autonome';
+    indicateur.insertBefore(label, dot);
+  });
+
+  // ── Arc de transfert (Chart.js horizontal stacked bar) ───────────────────
+  const arcLabels  = progression.map(p => p.label);
+  const clientData = progression.map(p => Math.round(p.profil_dim.reflexion / 3 * 100));
+  const pratData   = progression.map(p => Math.round((3 - p.profil_dim.reflexion) / 3 * 100));
+
+  new Chart(document.getElementById('arcChart'), {
+    type: 'bar',
+    data: {
+      labels: arcLabels,
+      datasets: [
+        {
+          label: 'Ton regard',
+          data:  clientData,
+          backgroundColor: '#4A7C59',
+          borderRadius: 4,
+        },
+        {
+          label: 'Soutien Mylène',
+          data:  pratData,
+          backgroundColor: '#C2DDCA',
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+          display: false,
+          min: 0,
+          max: 100,
+        },
+        y: {
+          stacked: true,
+          grid: { display: false },
+          ticks: {
+            font: { family: 'Raleway', size: 12 },
+            color: '#4B6350',
+          },
+          border: { display: false },
+        },
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.dataset.label} : ${ctx.raw} %`,
+          },
+        },
+      },
+      barThickness: 28,
+    },
+  });
+
+  // Caption arc
+  const dernierClient = clientData[clientData.length - 1];
+  document.getElementById('arc-caption').textContent =
+    dernierClient >= 67
+      ? 'Vous portez maintenant plus de la moitié de votre propre observation.'
+      : dernierClient >= 34
+        ? 'Votre capacité d\'observation propre représente ' + dernierClient + ' % — elle progresse.'
+        : 'L\'accompagnement soutient encore fortement ce processus. C\'est normal à ce stade.';
+
+  // ── Toile comparative (Chart.js radar) ───────────────────────────────────
+  const DIMS_LABELS = ['Présence', 'Sol', 'Vivant·e', 'Réflexion', 'Choix', 'Compréhension'];
+  const getDimValues = (pd) => [pd.presence, pd.sol, pd.vivant, pd.reflexion, pd.choix, pd.comprehension];
+
+  new Chart(document.getElementById('toileChart'), {
+    type: 'radar',
+    data: {
+      labels: DIMS_LABELS,
+      datasets: [
+        {
+          label:           'Ancrage initial',
+          data:            getDimValues(d0),
+          borderColor:     '#C2DDCA',
+          borderWidth:     1.5,
+          borderDash:      [5, 3],
+          pointBackgroundColor: '#C2DDCA',
+          pointRadius:     3,
+          backgroundColor: 'rgba(194,221,202,0.12)',
+        },
+        {
+          label:           'Aujourd\'hui',
+          data:            getDimValues(d),
+          borderColor:     '#4A7C59',
+          borderWidth:     2.5,
+          pointBackgroundColor: '#2D6A4F',
+          pointRadius:     4,
+          backgroundColor: 'rgba(74,124,89,0.15)',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          min: 0,
+          max: 3,
+          ticks: {
+            stepSize: 1,
+            display: false,
+          },
+          pointLabels: {
+            font: { family: 'Raleway', size: 11, weight: '600' },
+            color: '#4B6350',
+          },
+          grid:      { color: 'rgba(212,232,208,0.8)' },
+          angleLines: { color: 'rgba(212,232,208,0.6)' },
+        },
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const vals = ['Rare', 'Parfois', 'Souvent'];
+              return `${ctx.dataset.label} : ${vals[ctx.raw - 1] || ctx.raw}`;
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // ── Vivant / Société ──────────────────────────────────────────────────────
+  const vivantNow    = d.presence + d.sol + d.vivant;
+  const societeNow   = d.comprehension + d.choix + d.reflexion;
+  const vivantDebut  = d0.presence + d0.sol + d0.vivant;
+  const societeDebut = d0.comprehension + d0.choix + d0.reflexion;
+
+  document.getElementById('vivant-score').textContent   = vivantNow;
+  document.getElementById('societe-score').textContent  = societeNow;
+  document.getElementById('vivant-debut-val').textContent  = vivantDebut + '/9 à l\'ancrage';
+  document.getElementById('societe-debut-val').textContent = societeDebut + '/9 à l\'ancrage';
+
+  const vivantDelta  = vivantNow  - vivantDebut;
+  const societeDelta = societeNow - societeDebut;
+  document.getElementById('vivant-delta').textContent  = vivantDelta  > 0 ? `+${vivantDelta} depuis l'ancrage`  : vivantDelta  < 0 ? `${vivantDelta} depuis l'ancrage`  : 'Stable';
+  document.getElementById('societe-delta').textContent = societeDelta > 0 ? `+${societeDelta} depuis l'ancrage` : societeDelta < 0 ? `${societeDelta} depuis l'ancrage` : 'Stable';
+
+  // Animer les barres
+  setTimeout(() => {
+    document.getElementById('vivant-bar').style.width   = (vivantNow / 9 * 100) + '%';
+    document.getElementById('societe-bar').style.width  = (societeNow / 9 * 100) + '%';
+  }, 100);
+
+  // Interprétation
+  const diff = vivantNow - societeNow;
+  let interpretation = '';
+  if (Math.abs(diff) <= 1) {
+    interpretation = 'Votre équilibre Vivant · Société est harmonieux. Les deux registres progressent de pair.';
+  } else if (diff > 1) {
+    interpretation = 'Votre registre Vivant est plus fort. L\'accompagnement peut travailler à renforcer l\'agentivité et la réflexivité (registre Société).';
+  } else {
+    interpretation = 'Votre registre Société est plus développé. L\'ancrage corporel, la présence et le vivant offrent encore de l\'espace à explorer.';
+  }
+  const interp = document.getElementById('balance-interpretation');
+  interp.textContent = interpretation;
+  interp.classList.remove('hidden');
+
+  // ── Jalons narratifs ──────────────────────────────────────────────────────
+  const list = document.getElementById('jalons-list');
+  let atteints = 0;
+  const prochains = [];
+
+  jalons.forEach(j => {
+    const atteint = d[j.dim] >= j.seuil;
+    if (atteint) atteints++;
+    else prochains.push(j.texte);
+
+    const chip = document.createElement('span');
+    chip.className = `jalon-chip ${atteint ? 'jalon-atteint' : 'jalon-futur'}`;
+    chip.innerHTML = atteint
+      ? `<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>${j.texte}`
+      : `<svg class="w-3.5 h-3.5 shrink-0 opacity-40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span class="opacity-50">${j.texte}</span>`;
+    list.appendChild(chip);
+  });
+
+  document.getElementById('jalons-compte').textContent = `${atteints} / ${jalons.length} jalons`;
+  if (prochains.length) {
+    document.getElementById('jalons-prochains').textContent =
+      `Prochain : « ${prochains[0]} »`;
+  }
+
+})();
+</script>
+
+</body>
+</html>
