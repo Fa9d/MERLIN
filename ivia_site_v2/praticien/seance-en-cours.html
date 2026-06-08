@@ -77,6 +77,11 @@
     <span class="text-sm text-[#8FB99A]" id="header-client-nom">—</span>
   </div>
   <div class="flex items-center gap-3">
+    <button id="btn-lien-client" title="Partager le lien de séance au client"
+      class="text-xs text-[#4B6350] hover:text-[#8FB99A] border border-[#2a4031] hover:border-[#4A7C59] rounded-[8px] px-3 py-1.5 transition-colors cursor-pointer flex items-center gap-1.5">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+      <span id="session-code-label">Lien client</span>
+    </button>
     <span id="status-dot" class="w-2 h-2 rounded-full bg-[#2a4031]"></span>
     <span id="status-label" class="text-xs text-[#4B6350]">En attente</span>
     <span class="text-[#2a4031]">·</span>
@@ -245,6 +250,11 @@
         </svg>
         Télécharger l'audio
       </button>
+      <a id="btn-analyser" href="/praticien/analyse-seance.html"
+        class="flex items-center justify-center gap-2 border border-[#8FB99A] text-[#e8f5eb] font-semibold px-6 py-3 rounded-[14px] hover:bg-[#2D6A4F]/40 transition-colors cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Analyser la séance
+      </a>
       <button id="btn-go-cr"
         class="flex items-center justify-center gap-2 bg-[#2D6A4F] text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-[#4A7C59] transition-colors cursor-pointer">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -352,6 +362,20 @@
 
   // Titre de page
   document.title = `IVIA — Séance avec ${client.prenom}`;
+
+  // ── Code de session + lien client ────────────────────────────────────────
+  const sessionCode = params.get('session') || ('SES-' + Date.now().toString(36).toUpperCase());
+  const clientLienUrl = `${location.origin}/client/seance-active.html?session=${encodeURIComponent(sessionCode)}&praticien=${encodeURIComponent(prat.prenom)}&client=${clientId}`;
+  document.getElementById('btn-lien-client').addEventListener('click', () => {
+    navigator.clipboard.writeText(clientLienUrl)
+      .then(() => {
+        document.getElementById('session-code-label').textContent = 'Copié ✓';
+        setTimeout(() => { document.getElementById('session-code-label').textContent = 'Lien client'; }, 2500);
+      })
+      .catch(() => { prompt('Copiez ce lien pour votre client :', clientLienUrl); });
+  });
+  document.getElementById('btn-analyser').href =
+    `/praticien/analyse-seance.html?session=${sessionCode}&client=${clientId}`;
 
   // ── Enregistrement audio ──────────────────────────────────────────────────
   let mediaRecorder = null;
