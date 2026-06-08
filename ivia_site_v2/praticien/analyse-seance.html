@@ -44,6 +44,10 @@
     /* Toast */
     #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A2E1D; color:#8FB99A; font-size:13px; font-weight:600; padding:10px 20px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity .25s; z-index:100; border:1px solid #2a4031; }
     #toast.show { opacity:1; }
+
+    /* Onglets */
+    .tab-btn { border-bottom: 2.5px solid transparent; }
+    .tab-btn.active-tab { color: #8FB99A; border-bottom-color: #4A7C59; background: #162119; }
   </style>
 </head>
 <body class="antialiased pb-20">
@@ -122,6 +126,22 @@
 
   <!-- ═══ RÉSULTATS ═══ -->
   <div id="section-results" class="hidden space-y-8">
+
+    <!-- ── Navigation onglets ── -->
+    <div class="flex border-b border-[#2a4031] gap-1" id="tab-nav" role="tablist">
+      <button role="tab" data-tab="prat"
+        class="tab-btn active-tab px-5 py-2.5 text-sm font-semibold rounded-t-[8px] transition-colors cursor-pointer"
+        id="tab-btn-prat">Vue praticien·ne</button>
+      <button role="tab" data-tab="client"
+        class="tab-btn px-5 py-2.5 text-sm font-medium rounded-t-[8px] transition-colors cursor-pointer text-[#4B6350] hover:text-[#8FB99A]"
+        id="tab-btn-client">Vue client·e</button>
+      <button role="tab" data-tab="ivia"
+        class="tab-btn px-5 py-2.5 text-sm font-medium rounded-t-[8px] transition-colors cursor-pointer text-[#4B6350] hover:text-[#8FB99A]"
+        id="tab-btn-ivia">Données IVIA</button>
+    </div>
+
+    <!-- ════ ONGLET 1 : PRATICIEN ════ -->
+    <div id="tab-prat" class="tab-panel space-y-8">
 
     <!-- ── Timeline double piste ── -->
     <section class="card-dark p-6">
@@ -211,8 +231,116 @@
       </button>
     </div>
 
+    </div><!-- /tab-prat -->
+
+    <!-- ════ ONGLET 2 : CLIENT ════ -->
+    <div id="tab-client" class="tab-panel hidden space-y-6">
+
+      <!-- Résumé narratif -->
+      <div class="card-dark p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-heading text-base font-semibold text-[#e8f5eb]">Ce que votre client·e a vécu</h3>
+          <button onclick="copierResume()" class="text-xs border border-[#2a4031] text-[#8FB99A] px-4 py-1.5 rounded-[8px] hover:bg-[#2a4031] transition-colors cursor-pointer">Copier</button>
+        </div>
+        <div id="resume-client-tab" class="bg-[#0f1a12] border border-[#2a4031] rounded-[12px] p-5 text-sm text-[#c8e6cc] leading-relaxed font-heading italic">
+          —
+        </div>
+      </div>
+
+      <!-- Notes client (récupérées depuis la salle de séance) -->
+      <div class="card-dark p-6">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-3">Notes prises pendant la séance</p>
+        <div id="client-notes-display" class="bg-[#0f1a12] border border-[#2a4031] rounded-[12px] p-4 text-sm text-[#c8e6cc] leading-relaxed whitespace-pre-wrap min-h-[60px]">
+          Aucune note disponible pour cette salle de séance.
+        </div>
+      </div>
+
+      <!-- Moments-clés côté client -->
+      <div class="card-dark p-6">
+        <h3 class="font-heading text-base font-semibold text-[#e8f5eb] mb-4">Dynamique perçue — côté client</h3>
+        <div class="grid sm:grid-cols-2 gap-4" id="client-moments">
+          <!-- Injecté par JS -->
+        </div>
+      </div>
+
+      <!-- Suggestions pour la prochaine séance -->
+      <div class="card-dark p-6">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-3">Pistes pour la prochaine séance</p>
+        <div id="prochaine-seance-suggestions" class="space-y-3 text-sm text-[#c8e6cc] leading-relaxed">
+          <!-- Injecté par JS -->
+        </div>
+      </div>
+
+    </div><!-- /tab-client -->
+
+    <!-- ════ ONGLET 3 : IVIA ════ -->
+    <div id="tab-ivia" class="tab-panel hidden space-y-6">
+
+      <!-- Note IVIA -->
+      <div class="card-dark p-6 border-l-4 border-[#4A7C59]">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-1">Note de confidentialité</p>
+        <p class="text-sm text-[#8FB99A] leading-relaxed">
+          Les données ci-dessous sont entièrement anonymisées et agrégées. Elles ne contiennent
+          aucune information personnelle identifiable. Elles contribuent à la recherche IVIA
+          sur les dynamiques relationnelles et les besoins sociaux non-dits.
+        </p>
+      </div>
+
+      <!-- Indicateurs de contribution -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card-dark p-5 text-center">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-2">Ratio écoute</p>
+          <p class="text-3xl font-bold text-[#8FB99A]" id="ivia-ratio-ecoute">—</p>
+          <p class="text-xs text-[#4B6350] mt-1">praticien / séance</p>
+        </div>
+        <div class="card-dark p-5 text-center">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-2">Profondeur</p>
+          <p class="text-3xl font-bold text-[#8FB99A]" id="ivia-profondeur">—</p>
+          <p class="text-xs text-[#4B6350] mt-1">durée moy. tour</p>
+        </div>
+        <div class="card-dark p-5 text-center">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-2">Résonance</p>
+          <p class="text-3xl font-bold text-[#8FB99A]" id="ivia-resonance">—</p>
+          <p class="text-xs text-[#4B6350] mt-1">score composite</p>
+        </div>
+        <div class="card-dark p-5 text-center">
+          <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-2">Espace intérieur</p>
+          <p class="text-3xl font-bold text-[#8FB99A]" id="ivia-silence-score">—</p>
+          <p class="text-xs text-[#4B6350] mt-1">% silence thérap.</p>
+        </div>
+      </div>
+
+      <!-- Tendances sociales détectées -->
+      <div class="card-dark p-6">
+        <h3 class="font-heading text-base font-semibold text-[#e8f5eb] mb-4">Signaux sociaux détectés</h3>
+        <div id="ivia-signals" class="space-y-3">
+          <!-- Injecté par JS -->
+        </div>
+        <p class="text-xs text-[#2a4031] mt-4">Basé sur les patterns de communication de cette séance anonymisée.</p>
+      </div>
+
+      <!-- Contribution agrégée -->
+      <div class="card-dark p-6">
+        <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-2">Contribution au corpus IVIA</p>
+        <p class="text-sm text-[#8FB99A] leading-relaxed mb-4">
+          Cette séance contribue aux <strong class="text-[#e0f0e3]" id="ivia-total-sessions">—</strong> séances anonymisées du corpus.
+          Votre pratique aide à cartographier les besoins humains non-dits dans la société québécoise.
+        </p>
+        <div class="bg-[#0f1a12] border border-[#2a4031] rounded-[12px] p-4">
+          <div class="flex items-center justify-between text-xs text-[#4B6350] mb-2">
+            <span>Corpus actuel</span>
+            <span id="ivia-corpus-pct">—</span>
+          </div>
+          <div class="h-2 bg-[#1e3328] rounded-full overflow-hidden">
+            <div id="ivia-corpus-bar" class="h-full bg-[#4A7C59] rounded-full" style="width:0%"></div>
+          </div>
+          <p class="text-xs text-[#2a4031] mt-2">Objectif : 500 séances pour le premier rapport de recherche.</p>
+        </div>
+      </div>
+
+    </div><!-- /tab-ivia -->
+
   </div>
-</div>
 
 <div id="toast"></div>
 
@@ -221,7 +349,7 @@
 (async function () {
 
   const params      = new URLSearchParams(location.search);
-  const sessionCode = params.get('session') || '';
+  const sessionCode = params.get('session') || params.get('room') || '';
   const clientId    = params.get('client')  || 'usr_001';
 
   document.getElementById('session-label').textContent = sessionCode || 'Session';
@@ -229,6 +357,27 @@
 
   // Lien compte-rendu
   document.getElementById('btn-go-cr').href = `/praticien/compte-rendu-seance.html?client=${clientId}&new=1`;
+
+  // ── Onglets ────────────────────────────────────────────────────────────────
+  function activateTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.toggle('active-tab', b.dataset.tab === name);
+      if (b.dataset.tab !== name) {
+        b.classList.remove('active-tab');
+        b.classList.add('text-[#4B6350]');
+        b.classList.remove('text-[#8FB99A]');
+      } else {
+        b.classList.add('active-tab', 'text-[#8FB99A]');
+        b.classList.remove('text-[#4B6350]');
+      }
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => {
+      p.classList.toggle('hidden', p.id !== 'tab-' + name);
+    });
+  }
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.addEventListener('click', () => activateTab(b.dataset.tab));
+  });
 
   // ── Audio buffers ──────────────────────────────────────────────────────────
   let bufPrat   = null; // AudioBuffer praticien
@@ -436,6 +585,12 @@
 
     // Résumé client
     renderResumeClient(dims, pctPrat, pctClient, pctSilence, duration);
+
+    // Onglet client
+    renderTabClient(dims, pctPrat, pctClient, pctSilence, duration, sessionCode);
+
+    // Onglet IVIA
+    renderTabIVIA(dims, pctPrat, pctClient, pctSilence, turnsPrat, turnsClient, duration);
 
     // Lecture sync
     if (urlPrat && urlClient) {
@@ -754,6 +909,99 @@
   const prat = (typeof getMockPratUser === 'function') ? await getMockPratUser() : {};
   if (prat.prenom) {
     document.getElementById('label-prat').textContent = `Audio de ${prat.prenom}`;
+  }
+
+  // ── renderTabClient ──────────────────────────────────────────────────────
+  function renderTabClient(dims, pPrat, pClient, pSilence, duration, roomCode) {
+    // Synchroniser le résumé du même contenu que l'onglet praticien
+    const resumeSrc = document.getElementById('resume-client');
+    const resumeDst = document.getElementById('resume-client-tab');
+    if (resumeSrc && resumeDst) resumeDst.innerHTML = resumeSrc.innerHTML;
+
+    // Notes client récupérées depuis la salle de séance
+    const notesKey = roomCode ? `ivia_client_notes_${roomCode}` : null;
+    const clientNotes = notesKey ? localStorage.getItem(notesKey) : null;
+    const notesEl = document.getElementById('client-notes-display');
+    if (notesEl) notesEl.textContent = clientNotes || 'Aucune note disponible pour cette salle de séance.';
+
+    // Moments-clés côté client
+    const presenceDim = dims.find(d => d.key === 'presence');
+    const presenceVal = presenceDim ? presenceDim.val : 2;
+    const momentItems = [
+      { label: 'Prise de parole', icon: '🗣', desc: pClient >= 45 ? 'Client très actif dans l\'échange — bonne appropriation.' : pClient >= 30 ? 'Participation équilibrée.' : 'Engagement vocal plus discret — espace à ouvrir.' },
+      { label: 'Silences', icon: '🌿', desc: pSilence >= 20 ? 'Silences significatifs — moments d\'intégration présents.' : 'Peu de silences — rythme soutenu.' },
+      { label: 'Présence', icon: '⚡', desc: presenceVal >= 2.5 ? 'Présence forte, client ancré dans la séance.' : presenceVal >= 1.8 ? 'Présence modérée, ouverture à approfondir.' : 'Présence émergente — accompagner vers plus de sol.' },
+      { label: 'Durée', icon: '⏱', desc: duration >= 45*60 ? `Séance complète de ${Math.round(duration/60)} min.` : `Séance de ${Math.round(duration/60)} min.` },
+    ];
+    const momContainer = document.getElementById('client-moments');
+    if (momContainer) {
+      momContainer.innerHTML = momentItems.map(m => `
+        <div class="card-dark p-4">
+          <p class="text-base mb-1">${m.icon} <span class="font-semibold text-[#e8f5eb] text-sm">${m.label}</span></p>
+          <p class="text-xs text-[#8FB99A] leading-relaxed">${m.desc}</p>
+        </div>`).join('');
+    }
+
+    // Pistes pour la prochaine séance
+    const suggestions = [];
+    const reciprocite = dims.find(d => d.key === 'reciprocite');
+    const espace = dims.find(d => d.key === 'espace');
+    if (reciprocite && reciprocite.val < 2) suggestions.push('Explorer les moments d\'hésitation — il y a peut-être quelque chose qui cherche à émerger.');
+    if (espace && espace.val < 1.8) suggestions.push('Introduire plus de pauses habitées — le silence peut être une invitation, pas un vide.');
+    if (pClient < 35) suggestions.push('Ouvrir des questions plus incarnées — "Qu\'est-ce que vous sentez dans votre corps à ce moment ?"');
+    if (!suggestions.length) suggestions.push('La dynamique de cette séance est bien équilibrée. Continuez dans cette direction.');
+    suggestions.push('Inviter le client à écrire une entrée de journal dans les 24 heures suivant la séance.');
+    const suggContainer = document.getElementById('prochaine-seance-suggestions');
+    if (suggContainer) {
+      suggContainer.innerHTML = suggestions.map(s => `
+        <div class="flex gap-2">
+          <span class="text-[#4A7C59] mt-0.5 shrink-0">→</span>
+          <p>${s}</p>
+        </div>`).join('');
+    }
+  }
+
+  // ── renderTabIVIA ──────────────────────────────────────────────────────────
+  function renderTabIVIA(dims, pPrat, pClient, pSilence, turnsPrat, turnsClient, duration) {
+    const totalTurns = turnsPrat + turnsClient || 1;
+    const avgTurnDur = (duration / totalTurns).toFixed(0);
+    const resonance = dims.reduce((acc, d) => acc + d.val, 0) / dims.length;
+    const ratioEcoute = (100 - pPrat) + '%';
+    const silenceScore = pSilence + '%';
+
+    const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    el('ivia-ratio-ecoute',  ratioEcoute);
+    el('ivia-profondeur',    avgTurnDur + 's');
+    el('ivia-resonance',     resonance.toFixed(2));
+    el('ivia-silence-score', silenceScore);
+
+    // Signaux sociaux
+    const signals = [];
+    if (pClient < 30)  signals.push({ label: 'Difficulté à prendre la parole',    color: 'amber',   note: 'Signal de retrait social ou d\'inhibition émotionnelle fréquent.' });
+    if (pSilence > 25) signals.push({ label: 'Présence de silences intégrateurs', color: 'emerald', note: 'Indicateur positif d\'un espace de sécurité relationnelle.' });
+    if (resonance > 2.3) signals.push({ label: 'Résonance relationnelle élevée', color: 'emerald', note: 'Qualité d\'échange supérieure à la médiane du corpus.' });
+    if (pPrat > 55)    signals.push({ label: 'Prise de parole praticien élevée',   color: 'amber',   note: 'Peut indiquer un besoin de recadrage narratif ou d\'information.' });
+    if (!signals.length) signals.push({ label: 'Dynamique équilibrée', color: 'emerald', note: 'Aucun signal atypique détecté pour cette séance.' });
+
+    const signalsContainer = document.getElementById('ivia-signals');
+    if (signalsContainer) {
+      signalsContainer.innerHTML = signals.map(s => `
+        <div class="flex items-start gap-3 p-3 rounded-[10px] bg-${s.color}-950 border border-${s.color}-800">
+          <span class="text-${s.color}-400 mt-0.5 shrink-0 text-base">${s.color === 'emerald' ? '✓' : '⚠'}</span>
+          <div>
+            <p class="text-sm font-semibold text-${s.color}-300">${s.label}</p>
+            <p class="text-xs text-${s.color}-500 mt-0.5">${s.note}</p>
+          </div>
+        </div>`).join('');
+    }
+
+    // Corpus simulé
+    const totalSessions = 127 + Math.floor(Math.random() * 5);
+    el('ivia-total-sessions', totalSessions);
+    const pct = Math.round(totalSessions / 500 * 100);
+    el('ivia-corpus-pct', `${pct}%`);
+    const bar = document.getElementById('ivia-corpus-bar');
+    if (bar) setTimeout(() => { bar.style.width = pct + '%'; }, 300);
   }
 
 })();
