@@ -82,11 +82,19 @@ services:
       LIVEKIT_S3_REGION: ${LIVEKIT_S3_REGION}
       LIVEKIT_S3_FORCE_PATH_STYLE: ${LIVEKIT_S3_FORCE_PATH_STYLE}
       ASSEMBLYAI_API_KEY: ${ASSEMBLYAI_API_KEY}
+      MERLIN_TRANSCRIPTION_PROVIDER: ${MERLIN_TRANSCRIPTION_PROVIDER:-auto}
+      MERLIN_WHISPER_MODEL: ${MERLIN_WHISPER_MODEL:-medium}
+      MERLIN_WHISPER_DEVICE: ${MERLIN_WHISPER_DEVICE:-cpu}
+      MERLIN_WHISPER_COMPUTE_TYPE: ${MERLIN_WHISPER_COMPUTE_TYPE:-int8}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       MERLIN_CORS_ORIGINS: ${MERLIN_CORS_ORIGINS}
       MERLIN_AUTO_CREATE_TABLES: ${MERLIN_AUTO_CREATE_TABLES}
     volumes:
       - /opt/merlin/11_PROMPTS:/11_PROMPTS:ro
+      # Référentiels vivants — requis par app/referentiels/registry.py (comme 11_PROMPTS)
+      - /opt/merlin/00_DOCTRINE:/00_DOCTRINE:ro
+      # Cache des modèles faster-whisper (téléchargés au premier usage)
+      - merlin_whisper_models:/root/.cache/huggingface
       - merlin_recordings:/app/storage/recordings
       - ./10_backend_merlin_api/alembic/versions:/app/alembic/versions
     healthcheck:
@@ -232,6 +240,7 @@ volumes:
   merlin_postgres_data:
   merlin_recordings:
   merlin_uptime_data:
+  merlin_whisper_models:
 
 networks:
   merlin_network:

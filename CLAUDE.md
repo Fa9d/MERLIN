@@ -338,8 +338,12 @@ ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
 
 **Transcription des séances** : provider piloté par `MERLIN_TRANSCRIPTION_PROVIDER`
 (`auto` par défaut = **faster-whisper** local si installé — open source, données Québec /
-Loi 25 — sinon repli AssemblyAI). Pour activer le local en prod : installer
-`requirements-transcription.txt` dans l'image. Voir `app/services/transcription.py`.
+Loi 25 — sinon repli AssemblyAI). L'image prod installe `requirements-transcription.txt`
+(Dockerfile) → faster-whisper actif par défaut ; modèles en cache dans le volume
+`merlin_whisper_models`. Voir `app/services/transcription.py`.
+
+**Montages conteneur API** : `11_PROMPTS` **et** `00_DOCTRINE` (référentiels vivants) sont
+montés en lecture seule dans le conteneur — requis à l'import par `app/referentiels/registry.py`.
 
 > Ne jamais commiter `.env.prod` ou tout fichier contenant des secrets réels.
 
