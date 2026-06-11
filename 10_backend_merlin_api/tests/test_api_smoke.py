@@ -780,6 +780,9 @@ def test_canonical_audio_recording_generates_note_and_document_without_close_dup
     from app.services import livekit_audio
 
     object.__setattr__(settings, "assemblyai_api_key", "assembly-test-key")
+    # Force le provider legacy : le test mocke _transcribe_audio_with_assemblyai et ne
+    # doit pas router vers faster-whisper si le package est installé sur la machine.
+    object.__setattr__(settings, "transcription_provider", "assemblyai")
 
     with TestClient(app) as client:
         original_start_provider_recording = audio_recordings_routes._start_provider_recording

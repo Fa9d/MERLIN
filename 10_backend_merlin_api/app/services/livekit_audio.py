@@ -30,6 +30,10 @@ from app.models.enums import (
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
 from app.services.session_documents import ensure_session_derived_document
+from app.services.transcription import (
+    resolve_provider as resolve_transcription_provider,
+    transcribe_with_faster_whisper,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -423,20 +427,27 @@ def _coerce_next_step_type(value: str | None) -> AnalysisNextStepCode | None:
 
 
 async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> None:
-    if not settings.assemblyai_api_key:
+    provider = resolve_transcription_provider()
+    if provider == "assemblyai" and not settings.assemblyai_api_key:
         logger.info(
-            "Pipeline post-enregistrement ignore pour %s: ASSEMBLYAI_API_KEY absente.",
+            "Pipeline post-enregistrement ignore pour %s: aucun provider de transcription "
+            "(faster-whisper non installe, ASSEMBLYAI_API_KEY absente).",
             session_id,
         )
         return
 
     try:
-        transcript_text = await _transcribe_audio_with_assemblyai(audio_file_path)
+        if provider == "faster_whisper":
+            transcript_text = await transcribe_with_faster_whisper(audio_file_path)
+        else:
+            transcript_text = await _transcribe_audio_with_assemblyai(audio_file_path)
         if not transcript_text.strip():
             logger.warning("Transcription vide pour la seance %s.", session_id)
             return
     except Exception as exc:
-        logger.exception("Echec transcription AssemblyAI pour %s: %s", session_id, exc)
+        logger.exception(
+            "Echec transcription (%s) pour %s: %s", provider, session_id, exc
+        )
         return
 
     with SessionLocal() as db:

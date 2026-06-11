@@ -333,8 +333,13 @@ POSTGRES_PASSWORD=
 MERLIN_AUTH_SECRET_KEY=
 LIVEKIT_API_SECRET=
 ANTHROPIC_API_KEY=
-ASSEMBLYAI_API_KEY=
+ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
 ```
+
+**Transcription des séances** : provider piloté par `MERLIN_TRANSCRIPTION_PROVIDER`
+(`auto` par défaut = **faster-whisper** local si installé — open source, données Québec /
+Loi 25 — sinon repli AssemblyAI). Pour activer le local en prod : installer
+`requirements-transcription.txt` dans l'image. Voir `app/services/transcription.py`.
 
 > Ne jamais commiter `.env.prod` ou tout fichier contenant des secrets réels.
 

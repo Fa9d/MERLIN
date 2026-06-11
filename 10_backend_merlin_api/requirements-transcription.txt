@@ -1,0 +1,7 @@
+# Transcription locale auto-hébergée — faster-whisper (open source, données Québec / Loi 25).
+# Dépendance volontairement hors de requirements.txt : lourde (ctranslate2) et optionnelle.
+# Installer dans l'image de prod pour activer le provider local :
+#   pip install -r requirements-transcription.txt
+# Le modèle (MERLIN_WHISPER_MODEL, défaut « medium ») est téléchargé au premier chargement —
+# prévoir un volume/cache persistant pour ~/.cache/huggingface en conteneur.
+faster-whisper==1.1.1

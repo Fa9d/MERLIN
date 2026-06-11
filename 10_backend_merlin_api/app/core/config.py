@@ -77,6 +77,12 @@ class Settings:
         default=True,
     )
     assemblyai_api_key: str | None = os.getenv("ASSEMBLYAI_API_KEY")
+    # Transcription des séances — provider local faster-whisper (données Québec, Loi 25)
+    # ou AssemblyAI (tiers, legacy). `auto` = faster-whisper si installé, sinon AssemblyAI.
+    transcription_provider: str = os.getenv("MERLIN_TRANSCRIPTION_PROVIDER", "auto")
+    whisper_model_size: str = os.getenv("MERLIN_WHISPER_MODEL", "medium")
+    whisper_device: str = os.getenv("MERLIN_WHISPER_DEVICE", "cpu")
+    whisper_compute_type: str = os.getenv("MERLIN_WHISPER_COMPUTE_TYPE", "int8")
     anthropic_api_key: str | None = os.getenv("ANTHROPIC_API_KEY")
     stripe_secret_key: str | None = os.getenv("MERLIN_STRIPE_SECRET_KEY")
     stripe_webhook_secret: str | None = os.getenv("MERLIN_STRIPE_WEBHOOK_SECRET")

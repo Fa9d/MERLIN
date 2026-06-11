@@ -35,11 +35,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - name: pytest (référentiels, sans DB)
+      - name: pytest (référentiels + transcription, sans DB)
         run: >-
           python -m pytest
           tests/test_referentiels_registry.py
           tests/test_referentiels_route.py
+          tests/test_transcription_provider.py
           -o addopts="" -p no:cacheprovider -q
 
   # ── Suite complète avec Postgres (informatif : à durcir avant de rendre bloquant) ──
