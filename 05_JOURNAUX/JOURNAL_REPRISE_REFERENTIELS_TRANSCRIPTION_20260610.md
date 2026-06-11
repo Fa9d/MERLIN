@@ -76,7 +76,36 @@ Bascule **AssemblyAI → faster-whisper** (open source, auto-hébergé, données
 ## 6. Reste ouvert
 
 1. Endpoint `GET /clients/{id}/carte-de-vie` (composition 5 strates — spec §4).
-2. Arbitrage codes `prochaines_etapes` (français YAML vs anglais runtime).
-3. Activation faster-whisper en prod (image Docker + cache modèle).
+2. ~~Arbitrage codes `prochaines_etapes`~~ → **tranché** (voir §7).
+3. ~~Activation faster-whisper en prod~~ → **préparée** (voir §7), exécution VPS par le fondateur.
 4. Safety suite en gate CI dur (secret `ANTHROPIC_API_KEY` à fournir).
 5. Modèle Claude codé en dur (`claude-sonnet-4-20250514`) → config (constat de la session 1).
+6. Job CI `full-suite` (informatif) échoue sur un problème pré-existant : tests qui
+   compilent les colonnes JSONB du modèle temporel sur SQLite (`era_contexts.data`).
+   À corriger en forçant Postgres dans ces tests ou en marquant `integration`.
+
+---
+
+## 7. Addendum (même session) — arbitrages fondateur
+
+**Codes `prochaines_etapes` → anglais** (décision fondateur) : `prochaines_etapes.v1.yaml`
+passe en v1.1 avec les codes de l'enum runtime `AnalysisNextStepCode`
+(`continue_to_structure`, …) ; le sens français vit dans les libellés.
+`next_step_type_code` du schéma de sortie est désormais construit depuis le registre,
+avec test d'alignement référentiel ↔ enum. Commit `25df755`.
+
+**Activation prod faster-whisper** (commit `1e9ffa7`) :
+- Dockerfile API installe `requirements-transcription.txt` → provider `auto` bascule sur
+  faster-whisper dans le conteneur ;
+- compose : volume `merlin_whisper_models` (cache modèles HuggingFace), variables
+  `MERLIN_TRANSCRIPTION_PROVIDER/WHISPER_*` avec défauts (`auto`/`medium`/`cpu`/`int8`) ;
+- **montage `/opt/merlin/00_DOCTRINE:/00_DOCTRINE:ro` ajouté** — indispensable : le code
+  consommateur du registre (prompts METH, route `/referentiels`) lit les YAML à l'import,
+  comme `11_PROMPTS`. Sans ce montage, l'API ne démarre pas.
+- Branche poussée (`27ed73d..1e9ffa7`), CI bloquante verte (lint + unit).
+- **Exécution sur le VPS** (fondateur — clés SSH du poste non autorisées sur le serveur) :
+  `cd /opt/merlin && git pull origin refonte-ivia-site-unifie && bash deploy/prod-up.sh`,
+  puis vérifier `https://api.ivia.quebec/api/v1/referentiels` et, si le VPS a < 4 Go de RAM,
+  poser `MERLIN_WHISPER_MODEL=small` dans `.env.prod`.
+- Une fois la transcription locale validée sur une séance réelle : retirer
+  `ASSEMBLYAI_API_KEY` de `.env.prod` (sortie définitive du connecteur tiers).
