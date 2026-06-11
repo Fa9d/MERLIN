@@ -361,7 +361,7 @@ app/
 │   ├── public_intake.py # POST /public/intake/start (orchestrateur) + POST /public/activate/{token}
 │   ├── clients.py       # GET /clients/me (fiche durable liée au compte connecté)
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260513_0022 (activation bridge) ; revisions ultérieures (0025, 0026 payment/entitlement) en cours d'intégration
+└── alembic/versions/    # Migrations — head courant = 20260528_0027 (modèle temporel : eras + events + anchors)
 ```
 
 ---
