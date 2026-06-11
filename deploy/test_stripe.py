@@ -22,7 +22,8 @@ else:
     stripe.api_key = key
     try:
         acct = stripe.Account.retrieve()
-        print("Compte Stripe  :", acct.get("id"), "| charges_enabled :", acct.get("charges_enabled"))
+        charges_enabled = bool(getattr(acct, "charges_enabled", False))
+        print("Compte Stripe  :", acct.id, "| charges_enabled :", charges_enabled)
         endpoints = stripe.WebhookEndpoint.list(limit=10)
         if not endpoints.data:
             print("Webhooks       : AUCUN endpoint declare cote Stripe")
@@ -30,7 +31,16 @@ else:
             print("Webhook        :", ep.url, "| statut :", ep.status, "| events :", len(ep.enabled_events))
         attendu = "https://api.ivia.quebec/api/v1/payments/stripe/webhook"
         ok_webhook = any(ep.url == attendu and ep.status == "enabled" for ep in endpoints.data)
-        ok = bool(acct.get("charges_enabled")) and bool(settings.stripe_webhook_secret) and ok_webhook
+        ok = charges_enabled and bool(settings.stripe_webhook_secret) and ok_webhook
         print("VERDICT :", "PRET POUR PAIEMENTS" if ok else "INCOMPLET — voir lignes ci-dessus (webhook attendu : " + attendu + ")")
     except Exception as exc:
-        print("VERDICT : ECHEC — appel Stripe refuse :", exc)
+        import traceback
+
+        print("VERDICT : ECHEC — appel Stripe refuse :", type(exc).__name__, "|", repr(exc))
+        traceback.print_exc()
+        try:
+            import stripe as _s
+
+            print("stripe-python version :", _s.VERSION)
+        except Exception:
+            pass

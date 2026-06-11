@@ -117,3 +117,22 @@ CORS `ivia.quebec` OK, `carte-de-vie-demo.html` en ligne. Incident mineur : CRLF
 par `git archive` sous Windows (autocrlf) cassaient `prod-up.sh` → corrigé sur le VPS
 (`sed -i 's/\r$//'`) et à la racine par `.gitattributes` (`*.sh eol=lf`, commit `e195fa6`).
 Le modèle whisper (~1,5 Go) se téléchargera à la première transcription réelle.
+
+---
+
+## 8. Addendum 2026-06-11 — validation courriel & paiements en prod
+
+- **SMTP confirmé** : envoi réel réussi depuis le conteneur API (`deploy/test_smtp.py`,
+  OVH ssl0.ovh.net:465, from `david@fa9.quebec`, mode pilote → Gmail fondateur).
+- **Stripe configuré et confirmé (mode TEST)** : `MERLIN_STRIPE_SECRET_KEY` +
+  `MERLIN_STRIPE_WEBHOOK_SECRET` posés dans `.env.prod` ; compte `charges_enabled` ;
+  webhook `https://api.ivia.quebec/api/v1/payments/stripe/webhook` actif sur
+  `checkout.session.completed` (`deploy/test_stripe.py`, read-only). Passage en clés
+  live à faire avant la première vraie facturation.
+- **stripe-python épinglé `>=15,<16`** : la v15 a retiré `.get()` dict-style sur les
+  objets — `payments.py` audité, déjà 100 % en accès par attribut, aucun correctif requis.
+- Constat structurant : le site statique `ivia_site_v2` (servi en prod) n'appelle quasi
+  pas l'API — le parcours inscription → validation courriel → connexion → réservation →
+  paiement existe côté backend (routes vérifiées live) mais n'est **pas câblé** côté
+  frontend statique. Prochain chantier : câblage `reserver.html` + accès client.
+- Reboot VPS en attente (`*** System restart required ***`) — à planifier à un moment calme.
