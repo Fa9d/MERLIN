@@ -1,0 +1,7 @@
+# Fins de ligne — les fichiers exécutés côté Linux (VPS, conteneurs) doivent rester en LF,
+# même quand le poste de travail est Windows (core.autocrlf) et lors d'un `git archive`.
+*.sh        text eol=lf
+Makefile    text eol=lf
+Dockerfile  text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
