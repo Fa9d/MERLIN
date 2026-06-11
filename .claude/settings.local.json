@@ -1,7 +1,30 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(awk -F/ '{print $1}')",
+      "Bash(.venv/Scripts/python.exe -m pytest tests/test_referentiels_registry.py -q)",
+      "Bash(.venv/Scripts/python.exe -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(node --check /tmp/cdv_check.js)",
+      "Bash(node --check cdv_check.tmp.js)",
+      "Bash(.venv/Scripts/python.exe -c \"import app.main; print\\('app.main importe OK — routes:', len\\(app.main.app.routes\\)\\); print\\('referentiels routes:', [r.path for r in app.main.app.routes if 'referentiels' in getattr\\(r,'path',''\\)]\\)\")",
+      "Bash(.venv/Scripts/python.exe -m pytest tests/test_referentiels_registry.py tests/test_referentiels_route.py -o addopts=\"\" -p no:cacheprovider)",
+      "Bash(pkill -f pytest)",
+      "Bash(.venv/Scripts/python.exe -m ruff --version)",
+      "Bash(ruff --version)",
+      "Bash(uv --version)",
+      "Bash(.venv/Scripts/python.exe -m pip install ruff==0.9.6 -q)",
+      "Bash(.venv/Scripts/python.exe -m ruff check app/ --select F401)",
+      "Bash(sed -n '80,90p' seed_slots.py)",
+      "Bash(sed -n '88,95p' tests/test_session_note_generation_real_claude.py)",
+      "Bash(.venv/Scripts/python.exe -m pip show anthropic stripe jsonschema)",
+      "Bash(.\\\\10_backend_merlin_api\\\\.venv\\\\Scripts\\\\python.exe -c \"import yaml,sys; d=yaml.safe_load\\(open\\('.github/workflows/ci.yml',encoding='utf-8'\\)\\); print\\('jobs:', list\\(d['jobs'].keys\\(\\)\\)\\)\")",
+      "Bash(.venv/Scripts/python.exe -m ruff check .)",
+      "Bash(.venv/Scripts/python.exe -m pytest tests/test_referentiels_registry.py tests/test_referentiels_route.py -o addopts=\"\" -p no:cacheprovider -q)",
+      "Bash(10_backend_merlin_api/.venv/Scripts/python.exe *)",
+      "Bash(Get-ChildItem -Recurse -Name)",
+      "Bash(ruff check *)"
     ]
   }
 }

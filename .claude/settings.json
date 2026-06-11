@@ -24,6 +24,6 @@
       "Bash(sudo:*)"
     ]
   },
-  "model": "claude-sonnet-4-5",
+  "model": "claude-fable-5",
   "cleanupPeriodDays": 30
 }
