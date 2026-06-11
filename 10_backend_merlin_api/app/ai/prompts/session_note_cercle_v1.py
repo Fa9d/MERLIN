@@ -4,26 +4,39 @@ import json
 from typing import Any
 
 from app.ai.prompt_loader import load_prompt
+from app.referentiels import get_codes, get_entries
 
 
 SESSION_NOTE_CERCLE_PROMPT_VERSION = "session_note_cercle_v1"
 
-def _parse_prompt_bullets(prompt_text: str) -> list[str]:
-    """Extrait les lignes a puce Markdown (`- ...`) et retourne des chaines nettoyees."""
 
-    bullet_lines: list[str] = []
-    for raw_line in prompt_text.splitlines():
-        line = raw_line.strip()
-        if line.startswith("- "):
-            bullet_lines.append(line[2:].strip())
-    return bullet_lines
+def _enum(referentiel_name: str) -> str:
+    """Rend l'enum descriptif d'un référentiel (`code1|code2|...`) pour le schéma de sortie."""
+
+    return "|".join(get_codes(referentiel_name))
 
 
-# Source: 11_PROMPTS/02_METH/METH-001-quebec-context-hypotheses-v1.md
-QUEBEC_CONTEXT_HYPOTHESES = _parse_prompt_bullets(load_prompt("METH-001"))
+def _render_pression(entry: dict) -> str:
+    """Rend une hypothèse de pression au format injecté dans METH-003 (cf. METH-001 §5)."""
 
-# Source: 11_PROMPTS/02_METH/METH-002-quebec-context-signals-v1.md
-QUEBEC_CONTEXT_SIGNALS = _parse_prompt_bullets(load_prompt("METH-002"))
+    dimensions = "/".join(entry["dimensions"])
+    signaux = entry["signaux"].rstrip(".")
+    hypothese = entry["hypothese"].rstrip(".")
+    return (
+        f"{entry['code']}: {signaux} -> hypothèse prudente : "
+        f"{hypothese}; dimension {dimensions}."
+    )
+
+
+# Source d'autorité : 00_DOCTRINE/referentiels/pressions_societales.v1.yaml
+# (règles d'usage : 11_PROMPTS/02_METH/METH-001-quebec-context-hypotheses-v1.md)
+QUEBEC_CONTEXT_HYPOTHESES = [_render_pression(e) for e in get_entries("pressions_societales")]
+
+# Source d'autorité : 00_DOCTRINE/referentiels/signaux_contextuels.v1.yaml
+# (règles d'usage : 11_PROMPTS/02_METH/METH-002-quebec-context-signals-v1.md)
+QUEBEC_CONTEXT_SIGNALS = [
+    f"{e['code']}: {e['expressions_types']}" for e in get_entries("signaux_contextuels")
+]
 
 
 SESSION_NOTE_CERCLE_OUTPUT_SCHEMA: dict[str, Any] = {
@@ -37,14 +50,14 @@ SESSION_NOTE_CERCLE_OUTPUT_SCHEMA: dict[str, Any] = {
         "immediate_context_text": "string|null",
         "context_factors_json": [
             {
-                "factor_family_code": "materiel|travail_ou_charge|logement_et_stabilite|reseau_relationnel|rapport_aux_institutions|territoire_langue_culture",
+                "factor_family_code": _enum("familles_contexte"),
                 "impact_direction_code": "support|fragilite|contrainte",
                 "summary_text": "string",
             }
         ],
         "context_hypotheses_json": [
             {
-                "hypothesis_code": "pression_silence_et_minimisation|pression_performance_travail|pression_isolement_relationnel|pression_honte_ambition_ou_reussite|pression_identite_collective_fragile|pression_medicalisation_du_sens|pression_deconnexion_somatique|pression_vide_de_sens_ou_de_cadre|pression_rapport_aux_institutions",
+                "hypothesis_code": _enum("pressions_societales"),
                 "summary_text": "string",
                 "matched_signals": ["string"],
                 "primary_dimension": "coeur|corps|esprit|etre",
@@ -53,15 +66,17 @@ SESSION_NOTE_CERCLE_OUTPUT_SCHEMA: dict[str, Any] = {
         ],
         "identified_tensions_json": [
             {
-                "tension_code": "tension_rythme|tension_reciprocite|tension_appartenance|tension_sens|tension_dignite|tension_charge_exigences|tension_isolement|tension_insecurite|tension_confusion|tension_desorientation",
+                "tension_code": _enum("tensions"),
                 "description": "string",
                 "dimensions_impactees": ["coeur|corps|esprit|etre"],
                 "intensite_presumee": "faible|moderee|marquee",
                 "niveau_de_confiance": "faible|moyen|eleve",
             }
         ],
-        "vigilance_level_code": "non_urgent|watch|priority|urgent",
+        "vigilance_level_code": _enum("vigilance"),
         "vigilance_summary_text": "string",
+        # NOTE : codes runtime anglais ≠ codes du référentiel prochaines_etapes (français).
+        # Divergence à arbitrer (fondateur) avant de brancher cet enum sur le registre.
         "next_step_type_code": "continue_to_structure|clarify_major_point|stabilize_rhythm_and_load|mobilize_relational_resource|orient_to_appropriate_service|propose_follow_up|escalate_immediate_relay",
         "follow_up_actions_text": "string|null",
         "next_session_focus_text": "string|null",
