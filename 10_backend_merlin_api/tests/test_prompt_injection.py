@@ -12,7 +12,6 @@ Type : Unitaire - zero dependance externe.
 Lancer : pytest tests/test_prompt_injection.py -v
 """
 
-import pytest
 from app.ai.prompt_loader import load_prompt
 
 

@@ -18,7 +18,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
-from app.models.enums import DayOfWeek, ExceptionType, SessionTypeCode, SlotStatus
+from app.models.enums import ExceptionType, SessionTypeCode, SlotStatus
 
 
 class PractitionerSchedule(Base):

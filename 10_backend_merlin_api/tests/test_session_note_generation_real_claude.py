@@ -6,8 +6,6 @@
 import os
 import json
 import pytest
-import jsonschema
-from jsonschema import validate
 
 from app.ai.prompt_loader import load_prompt
 
@@ -91,7 +89,7 @@ def session_context():
 # ---------------------------------------------------------------------------
 
 try:
-    from app.ai.prompts.session_note_cercle_v1 import SESSION_NOTE_CERCLE_OUTPUT_SCHEMA
+    from app.ai.prompts.session_note_cercle_v1 import SESSION_NOTE_CERCLE_OUTPUT_SCHEMA  # noqa: F401  (sonde de disponibilité)
     _schema_available = True
 except ImportError:
     _schema_available = False
@@ -115,7 +113,6 @@ def test_generate_session_note_returns_valid_json(real_transcript, session_conte
     conforme au SESSION_NOTE_CERCLE_OUTPUT_SCHEMA.
     """
     import anthropic
-    from app.ai.prompts.session_note_cercle_v1 import SESSION_NOTE_CERCLE_OUTPUT_SCHEMA
 
     system_prompt = load_prompt("METH-003")
     assert system_prompt is not None, "METH-003 non chargé"

@@ -3,20 +3,18 @@ from __future__ import annotations
 
 import logging
 from datetime import date, datetime, time, timedelta, timezone
-from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import and_, select
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user, require_practitioner
+from app.core.deps import require_practitioner
 from app.db.session import get_db
 from app.models.app_user import AppUser
-from app.models.enums import AppRole, DayOfWeek, ExceptionType, SlotStatus
+from app.models.enums import AppRole, ExceptionType, SlotStatus
 from app.models.schedule import BookingSlot, PractitionerSchedule, ScheduleException
 from app.schemas.schedule import (
     AvailableSlotOut,
-    BookingSlotOut,
     ScheduleExceptionCreate,
     ScheduleExceptionOut,
     ScheduleSlotCreate,

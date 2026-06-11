@@ -1,11 +1,9 @@
 ﻿import json
 from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 from app.models.practitioner_profile import PractitionerProfile
 from app.models.app_user import AppUser
 from app.models.enums import AppRole, RecordStatus
-from app.schemas.matching import ClientNeedProfile
 
 WEIGHTS = {"domaine": 3, "approche": 2, "langue": 3, "dispo": 1}
 

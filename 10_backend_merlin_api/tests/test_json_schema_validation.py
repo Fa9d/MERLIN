@@ -4,7 +4,6 @@
 # il utilise des cles de domaine (production_note, client_delivery, etc.) avec des valeurs string.
 # Les tests valident la structure reelle du dict, pas jsonschema.validate().
 
-import pytest
 from app.ai.prompts.session_note_cercle_v1 import SESSION_NOTE_CERCLE_OUTPUT_SCHEMA
 
 

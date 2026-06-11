@@ -6,7 +6,7 @@ from typing import Any
 
 from pydantic import BaseModel, field_validator, model_validator
 
-from app.models.enums import DayOfWeek, ExceptionType, SessionTypeCode, SlotStatus
+from app.models.enums import ExceptionType, SessionTypeCode, SlotStatus
 
 SESSION_DURATIONS: dict[str, int] = {
     SessionTypeCode.intake: 90,

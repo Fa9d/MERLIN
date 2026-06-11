@@ -107,15 +107,25 @@ def valid_session_note_json() -> dict:
 
 @pytest.fixture(autouse=True)
 def reset_app_users():
-    """Vide la table AppUser avant chaque test pour garantir DB vide."""
+    """Vide la table AppUser avant chaque test pour garantir DB vide.
+
+    Si la base est injoignable (ex. tests unitaires purs lancés sans Postgres local),
+    la fixture saute silencieusement le reset au lieu de bloquer toute la suite. Les
+    tests qui ont réellement besoin de la DB échoueront d'eux-mêmes à leur propre étape.
+    """
     from app.db.base import load_models
     from app.db.session import engine
     from app.models.app_user import AppUser
+    from sqlalchemy.exc import SQLAlchemyError
     from sqlalchemy.orm import Session
 
-    load_models()
-    with Session(engine) as db:
-        db.query(AppUser).delete()
-        db.commit()
+    try:
+        load_models()
+        with Session(engine) as db:
+            db.query(AppUser).delete()
+            db.commit()
+    except SQLAlchemyError:
+        # Pas de DB disponible : on n'empêche pas les tests sans DB de s'exécuter.
+        pass
     yield
 

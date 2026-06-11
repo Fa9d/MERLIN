@@ -10,6 +10,7 @@ from app.db.session import SessionLocal
 from app.models.schedule import BookingSlot
 from app.models.enums import SessionTypeCode, SlotStatus
 from sqlalchemy import text
+from sqlalchemy.orm import Session
 from datetime import date, time, timedelta
 
 db = SessionLocal()

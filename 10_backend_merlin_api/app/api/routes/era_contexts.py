@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user, require_internal_clinical_roles
+from app.core.deps import require_internal_clinical_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.era_context import EraContext

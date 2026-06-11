@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator, require_production_roles
+from app.core.deps import is_operator_user, require_internal_clinical_roles, require_production_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_session import AudioSession

@@ -1,0 +1,92 @@
+name: CI
+
+# Filet CI MERLIN — lint + tests. Gate vérifié : ruff + tests référentiels (sans DB).
+# La suite complète (smoke + DB) et les safety evals sont scaffolés mais non bloquants
+# tant que l'environnement n'est pas durci (voir jobs full-suite / safety-suite).
+
+on:
+  push:
+    branches: [main, master, refonte-ivia-site-unifie]
+  pull_request:
+
+defaults:
+  run:
+    working-directory: 10_backend_merlin_api
+
+jobs:
+  # ── Lint (bloquant) : pyflakes + erreurs de syntaxe (haut signal, faible bruit) ──
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff==0.9.6
+      - name: ruff check
+        run: ruff check .
+
+  # ── Tests unitaires sans DB (bloquant) : registre + route des référentiels ──
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: pytest (référentiels, sans DB)
+        run: >-
+          python -m pytest
+          tests/test_referentiels_registry.py
+          tests/test_referentiels_route.py
+          -o addopts="" -p no:cacheprovider -q
+
+  # ── Suite complète avec Postgres (informatif : à durcir avant de rendre bloquant) ──
+  full-suite:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: merlin_v1
+        ports: ["55432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      MERLIN_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:55432/merlin_v1
+      MERLIN_AUTH_SECRET_KEY: ci-test-secret-not-for-prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Migrations Alembic
+        run: alembic upgrade head
+      - name: pytest (tout sauf real_api)
+        run: python -m pytest -m "not real_api" -o addopts="" -q
+
+  # ── Safety evals (informatif) : nécessite le secret ANTHROPIC_API_KEY ──
+  # Décommenter et fournir le secret pour faire de la safety suite un gate dur
+  # (cf. CLAUDE.md §8.3 — aucune fusion d'un prompt client sans run de safety suite).
+  #
+  # safety-suite:
+  #   runs-on: ubuntu-latest
+  #   if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.12"
+  #     - run: pip install -r requirements.txt
+  #     - name: Safety suite
+  #       env:
+  #         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  #       run: python ../tools/run_telescope_minimal.py

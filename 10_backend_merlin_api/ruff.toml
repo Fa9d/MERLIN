@@ -1,0 +1,20 @@
+# Configuration ruff — lint backend MERLIN (FastAPI).
+# Ruleset volontairement à HAUT SIGNAL au démarrage : pyflakes (F) + erreurs de
+# syntaxe/runtime (E9). Catégorie qui attrape les vrais bugs (noms non définis,
+# imports morts, f-strings cassées) sans noyer sous les nits de style.
+# À élargir progressivement (I, B, UP…) une fois le code stabilisé.
+
+target-version = "py312"
+line-length = 100
+
+[lint]
+select = ["E9", "F"]
+
+[lint.per-file-ignores]
+# Forward-refs SQLAlchemy en chaîne (Mapped["AppUser"]) et clés de dict utilisées
+# en position d'annotation : ruff les voit comme noms non définis (F821) alors
+# qu'ils sont valides à l'exécution. Faux positifs assumés.
+"app/models/app_user.py" = ["F821"]
+"app/models/practitioner_profile.py" = ["F821"]
+"app/models/schedule.py" = ["F821"]
+"app/schemas/client_entitlement.py" = ["F821"]
