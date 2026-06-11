@@ -75,9 +75,7 @@ SESSION_NOTE_CERCLE_OUTPUT_SCHEMA: dict[str, Any] = {
         ],
         "vigilance_level_code": _enum("vigilance"),
         "vigilance_summary_text": "string",
-        # NOTE : codes runtime anglais ≠ codes du référentiel prochaines_etapes (français).
-        # Divergence à arbitrer (fondateur) avant de brancher cet enum sur le registre.
-        "next_step_type_code": "continue_to_structure|clarify_major_point|stabilize_rhythm_and_load|mobilize_relational_resource|orient_to_appropriate_service|propose_follow_up|escalate_immediate_relay",
+        "next_step_type_code": _enum("prochaines_etapes"),
         "follow_up_actions_text": "string|null",
         "next_session_focus_text": "string|null",
     },

@@ -112,6 +112,13 @@ def test_prochaines_etapes_sept():
     assert len(get_codes("prochaines_etapes")) == 7
 
 
+def test_prochaines_etapes_alignees_sur_enum_runtime():
+    """v1.1 : codes alignés sur AnalysisNextStepCode (décision fondateur 2026-06-10)."""
+    from app.models.enums import AnalysisNextStepCode
+
+    assert get_codes("prochaines_etapes") == [code.value for code in AnalysisNextStepCode]
+
+
 def test_referentiel_absent_leve_erreur():
     with pytest.raises(RegistryError):
         load_referentiel("referentiel_inexistant")
