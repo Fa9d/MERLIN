@@ -1,0 +1,28 @@
+referentiel: prochaines_etapes
+version: "1.0"
+statut: actif
+source_doctrine: 00_GOUVERNANCE/MERLIN_GOUV_SPEC_AXES_ANALYSE_CERCLE_V1.md §7
+description: >-
+  Types de prochaines étapes (orientation). Toute lecture utile produit une prochaine
+  étape, formulée en orientation — jamais en prescription.
+champs_par_entree:
+  - type
+  - formulation_interne
+  - formulation_client_eventuelle
+  - raison_principale
+  - niveau_de_priorite
+entrees:
+  - code: continuer_a_parler_et_structurer
+    libelle: Continuer à parler et structurer
+  - code: clarifier_un_point_majeur
+    libelle: Clarifier un point majeur
+  - code: stabiliser_rythme_et_charge
+    libelle: Stabiliser le rythme et la charge
+  - code: mobiliser_une_ressource_relationnelle
+    libelle: Mobiliser une ressource relationnelle
+  - code: orienter_vers_un_service_approprie
+    libelle: Orienter vers un service approprié
+  - code: proposer_un_suivi
+    libelle: Proposer un suivi
+  - code: escalader_vers_urgence_ou_relais_immediat
+    libelle: Escalader vers urgence ou relais immédiat

@@ -1,0 +1,36 @@
+referentiel: familles_contexte
+version: "1.0"
+statut: actif
+source_doctrine: 00_GOUVERNANCE/MERLIN_GOUV_SPEC_AXES_ANALYSE_CERCLE_V1.md §4
+description: >-
+  Les six familles de contexte. Le contexte est obligatoire dans toute lecture : il
+  permet de distinguer ce qui vient principalement du contexte, ce qui vient du
+  fonctionnement relationnel, et ce qui relève d'un frottement mixte.
+champs_par_entree:
+  - facteurs_de_soutien
+  - facteurs_de_fragilite
+  - contraintes_actives
+  - ressources_mobilisables
+directions_impact:   # impact_direction_code possibles
+  - support
+  - fragilite
+  - contrainte
+entrees:
+  - code: materiel
+    libelle: Matériel
+    description: Ressources économiques, nécessités physiques, sécurité matérielle.
+  - code: travail_ou_charge
+    libelle: Travail ou charge
+    description: Conditions de travail, obligations, charge assumée.
+  - code: logement_et_stabilite
+    libelle: Logement et stabilité
+    description: Logement, ancrage, stabilité du cadre de vie.
+  - code: reseau_relationnel
+    libelle: Réseau relationnel
+    description: Liens, réseau social réellement mobilisable.
+  - code: rapport_aux_institutions
+    libelle: Rapport aux institutions
+    description: Interactions avec les systèmes (santé, juridique, social, administratif).
+  - code: territoire_langue_culture
+    libelle: Territoire, langue, culture
+    description: Lieu, langue, appartenance culturelle, rapport au sol vivant.

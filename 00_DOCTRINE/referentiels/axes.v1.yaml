@@ -1,0 +1,66 @@
+referentiel: axes
+version: "1.0"
+statut: actif
+source_doctrine: 00_DOCTRINE/correspondances-vivantes.md §3
+description: >-
+  Les onze axes MERLIN — référentiel autoritatif de la lecture multidimensionnelle.
+  L'ordre est doctrinal : le territoire est l'axe fondateur, le sol vivant qui précède
+  et conditionne tout le reste. Une expression active typiquement plusieurs axes.
+entrees:
+  - code: territoire
+    ordre: 1
+    libelle: Territoire
+    fondateur: true
+    description: >-
+      Lieu vivant, sol qui nous constitue. Rapport à la terre, appartenance incarnée,
+      déracinement, migration, environnement, climat, saisons, langue du lieu.
+  - code: corps
+    ordre: 2
+    libelle: Corps
+    fondateur: false
+    description: Sensations physiques, douleurs, tension, sommeil, énergie corporelle.
+  - code: metabolisme
+    ordre: 3
+    libelle: Métabolisme
+    fondateur: false
+    description: Faim, soif, digestion, poids, sucre, alcool, énergie chimique.
+  - code: emotions
+    ordre: 4
+    libelle: Émotions
+    fondateur: false
+    description: Tristesse, peur, colère, joie, honte, vide, surcharge émotionnelle.
+  - code: mental
+    ordre: 5
+    libelle: Mental
+    fondateur: false
+    description: Pensées, ruminations, concentration, mémoire, sens, repères.
+  - code: relations
+    ordre: 6
+    libelle: Relations
+    fondateur: false
+    description: "Liens proches actuels : couple, amitiés, collègues, voisinage."
+  - code: famille
+    ordre: 7
+    libelle: Famille
+    fondateur: false
+    description: Famille d'origine, fratrie, parentalité, conflits familiaux actuels.
+  - code: transgenerationnel
+    ordre: 8
+    libelle: Transgénérationnel
+    fondateur: false
+    description: Loyautés, répétitions sur plusieurs générations, secrets, héritage.
+  - code: societe
+    ordre: 9
+    libelle: Société
+    fondateur: false
+    description: Travail, statut, économie, exclusion, racisme, classe, marginalisation.
+  - code: spirituel_existentiel
+    ordre: 10
+    libelle: Spirituel / existentiel
+    fondateur: false
+    description: Sens, mort, transcendance, vide existentiel, foi, quête.
+  - code: urgence_reference
+    ordre: 11
+    libelle: Urgence / référence
+    fondateur: false
+    description: Détresse aiguë, risque suicidaire, violence, mineur en danger, crise médicale.

@@ -1,0 +1,47 @@
+referentiel: tensions
+version: "1.0"
+statut: actif
+source_doctrine: 00_GOUVERNANCE/MERLIN_GOUV_SPEC_AXES_ANALYSE_CERCLE_V1.md §5
+description: >-
+  Catalogue des dix tensions canoniques. Une tension n'est pas un diagnostic : c'est
+  un frottement récurrent, une contradiction vécue, un déséquilibre de charge, ou un
+  conflit entre besoin, contexte et possibilités. Les tensions sont le cœur de la lecture.
+champs_par_entree:
+  - code
+  - description
+  - dimensions_impactees   # parmi coeur/corps/esprit/etre
+  - indices
+  - intensite_presumee     # faible | moderee | marquee
+  - niveau_de_confiance    # faible | moyen | eleve
+  - client_visible_par_defaut  # toujours false
+entrees:
+  - code: tension_rythme
+    libelle: Tension de rythme
+    description: Conflit entre le rythme vécu et les exigences imposées.
+  - code: tension_reciprocite
+    libelle: Tension de réciprocité
+    description: Déséquilibre entre ce qui est donné et ce qui est reçu.
+  - code: tension_appartenance
+    libelle: Tension d'appartenance
+    description: Conflit autour du sentiment d'appartenir, d'avoir sa place.
+  - code: tension_sens
+    libelle: Tension de sens
+    description: Frottement entre le besoin de sens et l'organisation concrète.
+  - code: tension_dignite
+    libelle: Tension de dignité
+    description: Mise à l'épreuve de la dignité par les structures relationnelles ou institutionnelles.
+  - code: tension_charge_exigences
+    libelle: Tension de charge et d'exigences
+    description: Écart entre la capacité disponible et la charge accumulée.
+  - code: tension_isolement
+    libelle: Tension d'isolement
+    description: Isolement relationnel malgré une présence physique.
+  - code: tension_insecurite
+    libelle: Tension d'insécurité
+    description: Fondation instable, absence de socle sûr.
+  - code: tension_confusion
+    libelle: Tension de confusion
+    description: Incohérence du récit, difficulté à relier les éléments.
+  - code: tension_desorientation
+    libelle: Tension de désorientation
+    description: Perte de place dans le monde, perte de repères.

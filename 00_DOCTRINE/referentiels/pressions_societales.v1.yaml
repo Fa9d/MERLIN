@@ -1,0 +1,49 @@
+referentiel: pressions_societales
+version: "1.0"
+statut: actif
+source_doctrine: 11_PROMPTS/02_METH/METH-001-quebec-context-hypotheses-v1.md §7
+description: >-
+  Neuf hypothèses de pression contextuelle québécoise observables en séance. Couche
+  contextuelle DISTINCTE de l'analyse individuelle du Cercle — elle ne la remplace jamais.
+regles_absolues:
+  - Jamais présentée comme une vérité imposée — toujours hypothèse prudente.
+  - Jamais utilisée dans client_delivery (couche interne / supervision uniquement).
+  - Limiter à 0-3 hypothèses utiles par séance.
+  - Mobilisée seulement si des indices observables apparaissent dans la transcription.
+entrees:
+  - code: pression_silence_et_minimisation
+    signaux: Minimisation répétée, consultation tardive, décalage ton/gravité.
+    hypothese: Retenue ou souffrance sous-déclarée.
+    dimensions: [coeur, corps]
+  - code: pression_performance_travail
+    signaux: Surmenage valorisé, honte du repos, productivité comme valeur.
+    hypothese: Charge normalisée.
+    dimensions: [esprit, corps, etre]
+  - code: pression_isolement_relationnel
+    signaux: Peu de réseau mobilisable, un seul filet relationnel, peur de déranger.
+    hypothese: Isolement peu nommé.
+    dimensions: [coeur, etre]
+  - code: pression_honte_ambition_ou_reussite
+    signaux: Gêne à réussir, négocier, parler d'argent.
+    hypothese: Tension entre élan et permission.
+    dimensions: [etre, esprit]
+  - code: pression_identite_collective_fragile
+    signaux: Hypersensibilité à la critique, fragilité de légitimité.
+    hypothese: Tension d'appartenance.
+    dimensions: [etre]
+  - code: pression_medicalisation_du_sens
+    signaux: Récit collé au diagnostic, attente d'une solution externe.
+    hypothese: Langage de souffrance centré sur l'étiquette.
+    dimensions: [esprit, corps]
+  - code: pression_deconnexion_somatique
+    signaux: Fatigue, douleurs, insomnie, régulation par évitement ou substances.
+    hypothese: Charge surtout portée par le corps.
+    dimensions: [corps]
+  - code: pression_vide_de_sens_ou_de_cadre
+    signaux: Vide, perte de repères, gêne à parler de sens.
+    hypothese: Manque de cadre existentiel.
+    dimensions: [etre, esprit]
+  - code: pression_rapport_aux_institutions
+    signaux: Méfiance, fatigue administrative, sentiment d'être mal reçu.
+    hypothese: Charge contextuelle institutionnelle.
+    dimensions: [esprit, etre]

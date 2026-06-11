@@ -1,0 +1,24 @@
+referentiel: vigilance
+version: "1.0"
+statut: actif
+source_doctrine: 00_GOUVERNANCE/MERLIN_GOUV_SPEC_AXES_ANALYSE_CERCLE_V1.md §6
+description: >-
+  Niveaux de vigilance. La vigilance n'est jamais un score opaque ni un diagnostic.
+  Côté client : seulement une version simple, utile et non alarmiste — jamais la logique brute.
+regle_absolue: La vigilance ne vaut jamais diagnostic.
+ordre_croissant: [non_urgent, watch, priority, urgent]
+entrees:
+  - code: non_urgent
+    libelle: Non urgent
+    description: Aucun signal nécessitant une attention rapprochée.
+  - code: watch
+    libelle: À surveiller
+    description: Indices à observer dans la continuité, sans urgence.
+  - code: priority
+    libelle: Prioritaire
+    description: Charge ou indices appelant une attention soutenue.
+  - code: urgent
+    libelle: Urgent
+    description: >-
+      Signal d'urgence — escalade humaine immédiate (811 / 911 / Info-Social).
+      L'IA ne poursuit pas la séance.

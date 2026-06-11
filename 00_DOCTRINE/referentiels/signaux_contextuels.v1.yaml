@@ -1,0 +1,38 @@
+referentiel: signaux_contextuels
+version: "1.0"
+statut: actif
+source_doctrine: 11_PROMPTS/02_METH/METH-002-quebec-context-signals-v1.md §7
+description: >-
+  Signaux d'entretien québécois à détecter dans les transcriptions. Alimentent uniquement
+  supervision.detected_context_signals — jamais client_delivery. Un signal est un indice
+  d'entretien, jamais une vérité clinique, et ne déclenche pas d'hypothèse automatique.
+  Reproduit fidèlement les 12 signaux définis dans METH-002 §7.
+regles_absolues:
+  - Jamais inclus dans client_delivery — surface supervision uniquement.
+  - Jamais interprété comme une vérité clinique.
+  - Ne pas forcer la détection si le signal est absent de la transcription.
+entrees:
+  - code: minimisation_verbale
+    expressions_types: "« c'est pas si pire », « j'ai pas à me plaindre », « ça va passer »."
+  - code: humour_defensif
+    expressions_types: Blague ou rire juste après un contenu lourd ou honteux.
+  - code: honte_de_demander
+    expressions_types: "« je veux pas déranger », « j'aurais dû être capable tout seul »."
+  - code: burnout_normalise
+    expressions_types: "« tout le monde est fatigué », « faut passer au travers »."
+  - code: solitude_non_nommee
+    expressions_types: Autonomie affichée avec réseau réel pauvre ou absent.
+  - code: somatisation_non_verbalisee
+    expressions_types: Douleurs, fatigue, insomnie, boule sans lien vécu explicite.
+  - code: honte_du_repos
+    expressions_types: "« je me sens mal quand j'arrête », « j'ai pas mérité de me reposer »."
+  - code: honte_ambition_reussite
+    expressions_types: "« je veux pas me prendre pour un autre », « je mérite pas vraiment »."
+  - code: identite_diagnostic
+    expressions_types: "« je suis anxieux », « je suis dépressif », « je suis TDAH » comme récit principal."
+  - code: hypersensibilite_a_la_critique
+    expressions_types: Remarque ordinaire vécue comme attaque globale.
+  - code: consultation_tardive
+    expressions_types: "« ça fait longtemps que ça dure », « j'ai attendu que ça passe »."
+  - code: surinvestissement_lien_unique
+    expressions_types: Tout le soutien concentré sur une seule personne.
