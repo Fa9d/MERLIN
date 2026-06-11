@@ -79,6 +79,14 @@ class PilotBookIn(BaseModel):
     notes: str | None = None
 
 
+class BookingCheckoutIn(BaseModel):
+    """Payload pour régler un créneau en hold — le prix vient TOUJOURS du serveur."""
+    slot_id: str
+    notes: str | None = None
+    success_url: str | None = None
+    cancel_url: str | None = None
+
+
 # ---------------------------------------------------------------------------
 # POST /bookings/hold  — placer un hold sur un créneau disponible
 # ---------------------------------------------------------------------------
@@ -409,4 +417,88 @@ async def pilot_book_slot(
     out = PilotBookOut.model_validate(slot)
     out.session_id = session_record.id
     return out
+
+
+# ---------------------------------------------------------------------------
+# POST /bookings/checkout  — régler un créneau en hold via Stripe (prix serveur)
+# ---------------------------------------------------------------------------
+
+@router.post(
+    "/checkout",
+    status_code=status.HTTP_201_CREATED,
+    summary="Créer la session de paiement Stripe pour un créneau en hold",
+)
+def checkout_held_slot(
+    body: BookingCheckoutIn,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_verified_email_user),
+):
+    """Le client paie son créneau en hold ; le webhook Stripe confirme au paiement.
+
+    Sécurité : le montant vient de la configuration serveur
+    (`MERLIN_STRIPE_SEANCE_AMOUNT_CENTS`), jamais du payload. Le `slot_id` est posé
+    en métadonnées de la commande → `_auto_confirm_paid_slot_if_any` confirme le
+    créneau quand `checkout.session.completed` arrive.
+    """
+    from app.api.routes.payments import _create_checkout_order
+    from app.core.config import settings
+    from app.models.enums import PaymentFulfillmentModeCode, PaymentProductKindCode
+    from app.schemas.payment import PaymentCheckoutCreate
+    from app.services.booking_flow import entitlement_type_for_slot
+
+    slot: BookingSlot | None = db.query(BookingSlot).filter(BookingSlot.id == body.slot_id).first()
+    if not slot:
+        raise HTTPException(status_code=404, detail="Créneau introuvable.")
+
+    expire_hold(slot)
+    if slot.status != SlotStatus.hold or slot.client_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Ce créneau ne peut pas être réglé (hold expiré ou appartient à un autre client).",
+        )
+
+    # Dossier client — créé au vol au premier passage (même logique que pilot-book)
+    client_record: Client | None = (
+        db.query(Client).filter(Client.app_user_id == current_user.id).first()
+    )
+    if client_record is None:
+        display = current_user.display_name or current_user.email or "Client"
+        parts = display.split(" ", 1)
+        client_record = Client(
+            app_user_id=current_user.id,
+            first_name_or_alias=parts[0],
+            last_name=parts[1] if len(parts) > 1 else None,
+            email=current_user.email,
+        )
+        db.add(client_record)
+        db.flush()
+
+    if body.notes:
+        slot.notes = body.notes
+        db.add(slot)
+    db.flush()
+
+    kind = (
+        PaymentProductKindCode.session_intake
+        if slot.session_type == SessionTypeCode.intake
+        else PaymentProductKindCode.session_follow_up
+    )
+    payload = PaymentCheckoutCreate(
+        client_id=client_record.id,
+        slot_id=slot.id,
+        product_code="seance_live_booking",
+        product_label=(
+            f"Séance IVIA — {slot.slot_date.isoformat()} "
+            f"{slot.start_time.strftime('%H:%M')}"
+        ),
+        product_kind_code=kind,
+        fulfillment_mode_code=PaymentFulfillmentModeCode.grant_entitlement_only,
+        amount_cents=settings.stripe_seance_amount_cents,
+        currency=settings.stripe_seance_currency,
+        entitlement_type_code=entitlement_type_for_slot(slot),
+        entitlement_quantity=1,
+        success_url=body.success_url,
+        cancel_url=body.cancel_url,
+    )
+    return _create_checkout_order(payload, db)
 

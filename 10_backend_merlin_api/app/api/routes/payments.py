@@ -476,6 +476,29 @@ def create_checkout_session(
     return _create_checkout_order(payload, db)
 
 
+def _public_catalog_amount(kind: PaymentProductKindCode) -> tuple[int, str] | None:
+    """Catalogue serveur des produits achetables sans authentification.
+
+    Sécurité (anti-manipulation de prix) : la route publique n'honore JAMAIS le
+    montant fourni par le client — il est remplacé par le prix serveur du produit.
+    """
+    catalog: dict[PaymentProductKindCode, tuple[int, str]] = {
+        PaymentProductKindCode.audio_async_follow_up: (
+            settings.stripe_audio_async_amount_cents,
+            settings.stripe_audio_async_currency,
+        ),
+        PaymentProductKindCode.session_intake: (
+            settings.stripe_seance_amount_cents,
+            settings.stripe_seance_currency,
+        ),
+        PaymentProductKindCode.session_follow_up: (
+            settings.stripe_seance_amount_cents,
+            settings.stripe_seance_currency,
+        ),
+    }
+    return catalog.get(kind)
+
+
 @router.post(
     "/stripe/public-checkout",
     response_model=StripeCheckoutSessionRead,
@@ -485,6 +508,21 @@ def create_public_checkout_session(
     payload: PaymentCheckoutCreate,
     db: Session = Depends(get_db),
 ) -> StripeCheckoutSessionRead:
+    """Checkout sans authentification — restreint au catalogue serveur.
+
+    Le montant et la devise du payload sont écrasés par le prix serveur ; les
+    produits hors catalogue (`custom`, `journal_days_pack`) exigent la route
+    opérateur authentifiée `/stripe/checkout`.
+    """
+    server_price = _public_catalog_amount(payload.product_kind_code)
+    if server_price is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Produit non disponible en checkout public.",
+        )
+    payload = payload.model_copy(
+        update={"amount_cents": server_price[0], "currency": server_price[1]}
+    )
     return _create_checkout_order(payload, db)
 
 

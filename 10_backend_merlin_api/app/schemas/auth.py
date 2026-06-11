@@ -31,6 +31,8 @@ class UserRead(TimestampedReadSchema):
     display_name: str
     role: AppRole
     record_status: RecordStatus
+    # Exposé pour que le frontend sache guider vers la vérification courriel
+    email_verified: bool = False
 
 
 class TokenResponse(MerlinSchema):
