@@ -18,16 +18,9 @@
 </head>
 <body class="antialiased">
 
-<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-bdr">
-  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
-    <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
-    <div class="flex items-center gap-4 text-sm">
-      <a href="/client/journal.html" class="text-muted hover:text-ink">Journal</a>
-      <a href="/reserver.html" class="text-muted hover:text-ink">Réserver</a>
-      <button id="btn-logout" class="text-muted hover:text-red-600 cursor-pointer">Déconnexion</button>
-    </div>
-  </div>
-</nav>
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611c"></script>
+<script>renderLayout('aujourdhui');</script>
 
 <div class="max-w-5xl mx-auto px-4 py-10 space-y-6">
 
@@ -78,26 +71,18 @@
 
 </div>
 
-<footer class="py-8 px-4 text-center">
-  <p class="text-xs text-muted">
-    IVIA n'est pas un service d'urgence · En crise :
-    <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
-  </p>
-</footer>
+<div id="ivia-footer"></div>
+<script>renderLayout('aujourdhui');</script>
 
 <script>
 (async function () {
-  document.getElementById('btn-logout').addEventListener('click', () => {
-    localStorage.removeItem('ivia_session'); localStorage.removeItem('ivia_user');
-    location.href = '/connexion.html';
-  });
-
-  // Identité réelle — profil du compte connecté
+  // Identité réelle — profil du compte connecté (la déconnexion vit dans le header partagé)
   try {
     const me = await apiMe();
     localStorage.setItem('ivia_user', JSON.stringify(me));
     const prenom = (me.display_name || '').split(' ')[0];
     document.getElementById('bonjour').textContent = prenom ? `Bonjour, ${prenom}.` : 'Bonjour.';
+    renderLayout('aujourdhui'); // re-rend le header avec le prénom frais
   } catch (e) { /* le 401 est géré globalement par api.js */ }
 
   // Séances réelles (confirmées, à venir)

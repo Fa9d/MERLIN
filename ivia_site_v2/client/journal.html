@@ -19,15 +19,9 @@
 </head>
 <body class="antialiased">
 
-<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-bdr">
-  <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between">
-    <a href="/client/dashboard.html" class="flex items-center gap-1.5 text-sm text-muted hover:text-ink">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-      Mon espace
-    </a>
-    <span class="font-heading font-semibold text-forest-deep">Journal</span>
-  </div>
-</nav>
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611c"></script>
+<script>renderLayout('ecrire');</script>
 
 <div class="max-w-3xl mx-auto px-4 py-10 space-y-8">
 
@@ -67,12 +61,11 @@
 
 </div>
 
-<footer class="py-8 px-4 text-center">
-  <p class="text-xs text-muted">
-    Votre journal vous appartient. Il n'est partagé avec votre praticien·ne que si vous le décidez, en séance.<br>
-    IVIA n'est pas un service d'urgence · En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
-  </p>
-</footer>
+<p class="max-w-3xl mx-auto px-4 text-center text-xs text-muted">
+  Votre journal vous appartient. Il n'est partagé avec votre praticien·ne que si vous le décidez, en séance.
+</p>
+<div id="ivia-footer"></div>
+<script>renderLayout('ecrire');</script>
 
 <script>
 (function () {

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Votre carte de vie</title>
+  <script src="/shared/api.js?v=20260611b"></script>
+  <script src="/shared/layout.js?v=20260611c"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+  </style>
+</head>
+<body class="antialiased">
+<div id="ivia-header"></div>
+<script>renderLayout('voir');</script>
+
+<div class="max-w-3xl mx-auto px-4 py-12">
+  <h1 class="font-heading text-3xl font-bold text-[#1A2E1D] mb-2">Votre carte de vie</h1>
+  <p class="text-[#4B6350] text-sm leading-relaxed max-w-xl mb-8">
+    Votre sol, vos appuis, votre ligne de vie, votre horizon — une lecture vivante qui se
+    compose au fil de vos séances et de ce que vous choisissez d'écrire.
+  </p>
+
+  <div class="bg-white border border-[#D4E8D0] rounded-[20px] p-8 text-center">
+    <div class="w-14 h-14 rounded-full bg-[#F0F7F2] border border-[#D4E8D0] flex items-center justify-center mx-auto mb-4">
+      <svg class="w-7 h-7 text-[#4A7C59]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9" stroke-dasharray="3 4"/>
+      </svg>
+    </div>
+    <h2 class="font-heading text-xl font-bold text-[#1A2E1D] mb-2">Elle se compose.</h2>
+    <p class="text-sm text-[#4B6350] leading-relaxed max-w-md mx-auto mb-6">
+      Votre carte s'ouvre après votre première séance : chaque rencontre et chaque saison
+      l'enrichissent. Rien n'est noté, rien n'est jugé — c'est votre chemin, rendu visible.
+    </p>
+    <a href="/reserver.html" class="inline-block bg-[#2D6A4F] text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-[#4A7C59] transition-colors">
+      Vivre une première séance
+    </a>
+  </div>
+</div>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('voir');</script>
+</body>
+</html>
