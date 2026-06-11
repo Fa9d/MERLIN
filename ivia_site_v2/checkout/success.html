@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Paiement reçu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+    </div>
+  </nav>
+
+  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-20 px-4">
+    <div class="w-full max-w-md text-center">
+      <div class="w-16 h-16 rounded-full bg-[#E8F5EE] flex items-center justify-center mx-auto mb-5">
+        <svg class="w-8 h-8 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h1 class="font-heading text-2xl font-bold text-ink mb-2">Paiement reçu. Votre séance est réservée.</h1>
+      <p class="text-sm text-muted leading-relaxed mb-2">
+        La confirmation arrive par courriel d'ici quelques instants —
+        elle contient la date, l'heure et le lien de votre séance.
+      </p>
+      <p class="text-xs text-muted mb-8" id="ref-line"></p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/client/seances.html" class="bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors">
+          Voir mes séances
+        </a>
+        <a href="/client/dashboard.html" class="border border-bdr text-ink font-medium px-6 py-3 rounded-[14px] hover:bg-surface transition-colors">
+          Mon espace
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-6 px-4 text-center">
+    <p class="text-xs text-muted">
+      IVIA n'est pas un service d'urgence · En crise :
+      <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+    </p>
+  </footer>
+
+  <script>
+    // La confirmation réelle est faite côté serveur par le webhook Stripe
+    // (checkout.session.completed → confirmation du créneau + courriel).
+    const p = new URLSearchParams(location.search);
+    const order = p.get('order_id');
+    if (order) {
+      document.getElementById('ref-line').textContent =
+        'Référence de commande : ' + order.split('-')[0].toUpperCase();
+    }
+  </script>
+
+</body>
+</html>

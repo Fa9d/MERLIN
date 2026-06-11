@@ -168,9 +168,16 @@
       <!-- Message d'erreur API -->
       <div id="conf-error" class="hidden mb-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
 
+      <p id="paiement-note" class="text-xs text-muted mb-4 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-forest shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/>
+        </svg>
+        Paiement sécurisé par Stripe — le montant s'affiche à l'étape suivante.
+      </p>
+
       <button id="btn-confirmer"
         class="w-full bg-forest-deep text-white font-semibold py-3.5 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
-        Confirmer la réservation →
+        Confirmer et payer →
       </button>
 
       <button id="btn-annuler-hold"
@@ -415,10 +422,26 @@
     }
   }
 
-  // ── ÉTAPE 3 : Hold + confirmation ────────────────────────────────────────
+  // ── ÉTAPE 3 : Hold + paiement ────────────────────────────────────────────
+  // Mode pilote (?pilote=1) : réservation gratuite sans Stripe (route pilot-book)
+  const PILOT_MODE = new URLSearchParams(location.search).get('pilote') === '1';
+  if (PILOT_MODE) {
+    document.getElementById('btn-confirmer').textContent = 'Confirmer la réservation →';
+    document.getElementById('paiement-note').textContent = 'Phase pilote — cette séance est offerte, aucun paiement ne sera demandé.';
+  }
+
+  // Courriel non vérifié → l'API répond 403 : on guide vers la vérification.
+  function redirigerSiNonVerifie(err) {
+    if (/vérifi/i.test(err.message || '')) {
+      location.href = '/connexion.html?verif=1&retour=' + encodeURIComponent(location.pathname + location.search);
+      return true;
+    }
+    return false;
+  }
+
   async function choisirCreneau(slot) {
     selectedSlot = slot;
-    // Placer un hold
+    // Placer un hold — pas de repli simulé : une erreur réelle est montrée.
     try {
       heldSlot = await holdSlot({
         slot_id:      slot.slot_id || undefined,
@@ -429,9 +452,10 @@
         session_type: slot.session_type,
       });
     } catch (err) {
-      // Si l'API échoue (dev / pas de token vérifié), on continue en mode mock
-      console.warn('[IVIA] Hold API :', err.message, '— mode mock');
-      heldSlot = { id: 'mock-hold', slot_date: slot.slot_date, start_time: slot.start_time, end_time: slot.end_time };
+      if (redirigerSiNonVerifie(err)) return;
+      alert('Ce créneau ne peut pas être réservé : ' + err.message);
+      await chargerMois();
+      return;
     }
 
     // Remplir le récapitulatif
@@ -472,22 +496,47 @@
 
   document.getElementById('btn-confirmer').addEventListener('click', async () => {
     const btn = document.getElementById('btn-confirmer');
+    const errDiv = document.getElementById('conf-error');
     btn.disabled = true;
-    btn.textContent = 'Confirmation en cours…';
-    document.getElementById('conf-error').classList.add('hidden');
+    btn.textContent = PILOT_MODE ? 'Confirmation en cours…' : 'Préparation du paiement…';
+    errDiv.classList.add('hidden');
+    const notes = document.getElementById('conf-note').value || null;
 
     try {
-      await confirmSlot(heldSlot.id, document.getElementById('conf-note').value || null);
-    } catch (err) {
-      console.warn('[IVIA] Confirm API :', err.message, '— mode mock');
-      // En dev : on accepte quand même
-    }
+      if (PILOT_MODE) {
+        // Phase pilote : confirmation directe, séance offerte.
+        await pilotBook({
+          praticien_id: selectedSlot.praticien_id,
+          slot_date:    selectedSlot.slot_date,
+          start_time:   selectedSlot.start_time,
+          end_time:     selectedSlot.end_time,
+          session_type: selectedSlot.session_type,
+          notes,
+        });
+        clearInterval(holdTimer);
+        const dateLabel = formatDateCourteLocale(selectedSlot.slot_date);
+        document.getElementById('success-desc').textContent =
+          `${selectedPraticien.display_name} · ${dateLabel} à ${formatHeure(selectedSlot.start_time)}. Un courriel de confirmation vous a été envoyé.`;
+        setStep('success');
+        return;
+      }
 
-    clearInterval(holdTimer);
-    const dateLabel = formatDateCourteLocale(selectedSlot.slot_date);
-    document.getElementById('success-desc').textContent =
-      `${selectedPraticien.display_name} · ${dateLabel} à ${formatHeure(selectedSlot.start_time)}. Un courriel de confirmation vous a été envoyé.`;
-    setStep('success');
+      // Flux payant : le serveur fixe le prix, Stripe encaisse, le webhook confirme.
+      const checkout = await bookingCheckout({
+        slot_id: heldSlot.id,
+        notes,
+        success_url: location.origin + '/checkout/success.html',
+        cancel_url:  location.origin + '/checkout/cancel.html',
+      });
+      clearInterval(holdTimer);
+      window.location.href = checkout.checkout_url;
+    } catch (err) {
+      if (redirigerSiNonVerifie(err)) return;
+      errDiv.textContent = err.message || 'Impossible de finaliser. Réessayez.';
+      errDiv.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = PILOT_MODE ? 'Confirmer la réservation →' : 'Confirmer et payer →';
+    }
   });
 
   // Init

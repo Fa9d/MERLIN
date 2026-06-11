@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Confirmation du courriel</title>
+  <script src="/shared/api.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto px-5 py-3">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+    </div>
+  </nav>
+
+  <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-20 px-4">
+    <div class="w-full max-w-md text-center">
+
+      <!-- En cours -->
+      <div id="state-loading">
+        <div class="w-14 h-14 rounded-full bg-surface border border-bdr flex items-center justify-center mx-auto mb-5 animate-pulse">
+          <svg class="w-7 h-7 text-forest" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h1 class="font-heading text-2xl font-bold text-ink mb-2">Confirmation en cours…</h1>
+        <p class="text-sm text-muted">Un instant, nous validons votre lien.</p>
+      </div>
+
+      <!-- Succès -->
+      <div id="state-success" class="hidden">
+        <div class="w-14 h-14 rounded-full bg-[#E8F5EE] flex items-center justify-center mx-auto mb-5">
+          <svg class="w-7 h-7 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <h1 class="font-heading text-2xl font-bold text-ink mb-2">Courriel confirmé.</h1>
+        <p class="text-sm text-muted mb-7" id="success-msg">Votre espace est ouvert. Vous pouvez maintenant vous connecter.</p>
+        <a id="btn-connexion" href="/connexion.html"
+           class="inline-block bg-forest-deep text-white font-semibold px-7 py-3.5 rounded-[14px] hover:bg-forest transition-colors">
+          Me connecter
+        </a>
+      </div>
+
+      <!-- Erreur -->
+      <div id="state-error" class="hidden">
+        <div class="w-14 h-14 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mx-auto mb-5">
+          <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </div>
+        <h1 class="font-heading text-2xl font-bold text-ink mb-2">Ce lien ne fonctionne pas.</h1>
+        <p class="text-sm text-muted mb-7" id="error-msg">Le lien est peut-être expiré (48 h) ou déjà utilisé.</p>
+        <a href="/inscription.html" class="inline-block bg-forest-deep text-white font-semibold px-7 py-3.5 rounded-[14px] hover:bg-forest transition-colors">
+          Recommencer l'inscription
+        </a>
+        <p class="text-xs text-muted mt-4">
+          Déjà confirmé ? <a href="/connexion.html" class="text-forest underline underline-offset-2">Se connecter</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  (async function () {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    const redirect = params.get('redirect');
+
+    function show(id) {
+      ['state-loading','state-success','state-error'].forEach(s => document.getElementById(s).classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    if (!token) {
+      document.getElementById('error-msg').textContent = 'Aucun jeton de confirmation dans ce lien.';
+      show('state-error');
+      return;
+    }
+
+    try {
+      const res = await apiVerifyEmail(token);
+      if (res?.message) document.getElementById('success-msg').textContent = res.message;
+      if (redirect) {
+        document.getElementById('btn-connexion').href = '/connexion.html?retour=' + encodeURIComponent(redirect);
+      }
+      show('state-success');
+    } catch (err) {
+      document.getElementById('error-msg').textContent = err.message || 'Le lien est peut-être expiré ou déjà utilisé.';
+      show('state-error');
+    }
+  })();
+  </script>
+
+</body>
+</html>

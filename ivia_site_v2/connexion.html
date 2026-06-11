@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="IVIA — Connexion à votre espace.">
   <title>IVIA — Se connecter</title>
+  <script src="/shared/api.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -132,18 +133,37 @@
       inp.type = inp.type === 'password' ? 'text' : 'password';
     });
 
-    document.getElementById('connexion-form').addEventListener('submit', (e) => {
+    document.getElementById('connexion-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const courriel = document.getElementById('courriel').value.trim();
+      const courriel = document.getElementById('courriel').value.trim().toLowerCase();
       const mdp = document.getElementById('motdepasse').value;
       const errDiv = document.getElementById('form-error');
+      const btn = e.target.querySelector('button[type="submit"]');
       errDiv.classList.add('hidden');
       if (!courriel || !courriel.includes('@')) { affErr('Cette adresse ne semble pas valide.'); return; }
       if (mdp.length < 4) { affErr('Veuillez entrer votre mot de passe.'); return; }
-      localStorage.setItem('ivia_email', courriel);
-      localStorage.setItem('ivia_session', '1');
-      var retour = new URLSearchParams(location.search).get('retour');
-      window.location.href = retour ? decodeURIComponent(retour) : '/client/dashboard.html';
+
+      btn.disabled = true;
+      btn.textContent = 'Connexion…';
+      try {
+        const res = await apiLogin(courriel, mdp);
+        localStorage.setItem('ivia_email', courriel);
+
+        // Courriel non confirmé → bandeau de vérification, pas d'accès réservé.
+        if (res.user && res.user.email_verified === false) {
+          location.href = '/connexion.html?verif=1' + (location.search.includes('retour=')
+            ? '&retour=' + new URLSearchParams(location.search).get('retour') : '');
+          return;
+        }
+
+        const retour = new URLSearchParams(location.search).get('retour');
+        const dest = res.user?.role === 'practitioner' ? '/praticien/dashboard.html' : '/client/dashboard.html';
+        window.location.href = retour ? decodeURIComponent(retour) : dest;
+      } catch (err) {
+        affErr(err.message || 'Connexion impossible. Réessayez.');
+        btn.disabled = false;
+        btn.textContent = 'Se connecter';
+      }
     });
 
     function affErr(msg) {
@@ -152,11 +172,11 @@
     }
 
     function renvoyerLien() {
-      const btn = document.getElementById('renvoyer-btn');
+      // Pas encore de route de renvoi côté API — on guide vers une réinscription propre.
       const conf = document.getElementById('renvoyer-confirm');
-      btn.disabled = true;
-      btn.classList.add('opacity-50');
-      setTimeout(() => { conf.classList.remove('hidden'); }, 800);
+      conf.textContent = 'Écrivez-nous si le lien n’arrive pas : le lien initial est valide 48 h.';
+      conf.classList.remove('hidden');
+      document.getElementById('renvoyer-btn').disabled = true;
     }
   </script>
 

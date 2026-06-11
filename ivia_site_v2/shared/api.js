@@ -18,6 +18,8 @@
 function _apiBase() {
   if (typeof window !== 'undefined' && window.IVIA_API_BASE) return window.IVIA_API_BASE.replace(/\/$/, '');
   if (typeof window !== 'undefined') {
+    // Prod : le site statique est servi sur ivia.quebec, l'API sur api.ivia.quebec (443).
+    if (/(^|\.)ivia\.quebec$/.test(location.hostname)) return 'https://api.ivia.quebec';
     const proto = location.protocol;
     return `${proto}//${location.hostname}:8000`;
   }
@@ -58,6 +60,67 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
     throw new Error(detail);
   }
   return json;
+}
+
+// ── Authentification & compte ────────────────────────────────────────────────
+/**
+ * Connexion par courriel + mot de passe.
+ * Stocke le JWT (ivia_session) et le profil (ivia_user) en localStorage.
+ * @returns {Promise<{access_token, token_type, user}>}
+ */
+async function apiLogin(email, password) {
+  const res = await _req('/api/v1/auth/login', {
+    method: 'POST',
+    body: { email, password },
+    publicEndpoint: true,
+  });
+  localStorage.setItem('ivia_session', res.access_token);
+  localStorage.setItem('ivia_user', JSON.stringify(res.user));
+  if (res.user?.display_name) localStorage.setItem('ivia_prenom', res.user.display_name.split(' ')[0]);
+  return res;
+}
+
+/**
+ * Inscription publique d'un client. Déclenche le courriel de vérification.
+ * @param {{email, password, display_name, redirect_path?}} payload
+ * @returns {Promise<{id, email, display_name, email_sent, message}>}
+ */
+async function apiRegisterClient(payload) {
+  return _req('/api/v1/register/client', { method: 'POST', body: payload, publicEndpoint: true });
+}
+
+/**
+ * Consomme un token de vérification courriel.
+ * @returns {Promise<{message}>}
+ */
+async function apiVerifyEmail(token) {
+  return _req(`/api/v1/verify-email/${encodeURIComponent(token)}`, { publicEndpoint: true });
+}
+
+/**
+ * Profil du compte connecté (source de vérité, dont email_verified).
+ */
+async function apiMe() {
+  return _req('/api/v1/auth/me');
+}
+
+// ── Paiement d'un créneau (prix serveur) ─────────────────────────────────────
+/**
+ * Crée la session Stripe Checkout pour un créneau en hold.
+ * Le prix est fixé côté serveur — on ne transmet jamais de montant.
+ * @param {{slot_id, notes?, success_url?, cancel_url?}} payload
+ * @returns {Promise<{order_id, checkout_url, amount_cents, currency}>}
+ */
+async function bookingCheckout(payload) {
+  return _req('/api/v1/bookings/checkout', { method: 'POST', body: payload });
+}
+
+/**
+ * Réservation pilote tout-en-un (sans paiement) — phase pilote uniquement.
+ * @param {{praticien_id, slot_date, start_time, end_time, session_type?, notes?}} payload
+ */
+async function pilotBook(payload) {
+  return _req('/api/v1/bookings/pilot-book', { method: 'POST', body: payload });
 }
 
 // ── Praticiens (public) ───────────────────────────────────────────────────────

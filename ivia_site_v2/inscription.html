@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="IVIA — Créez votre espace d'écoute. 5 champs. Accès immédiat. Conforme Loi 25 du Québec.">
   <title>IVIA — Créer mon espace</title>
+  <script src="/shared/api.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,7 +77,7 @@
       <div class="mb-8">
         <h1 id="page-title" class="font-heading text-3xl font-bold text-ink mb-2">Créer mon espace</h1>
         <p id="page-subtitle" class="text-muted text-sm leading-relaxed">
-          5 champs seulement. Accès immédiat — pas d'attente de confirmation courriel.
+          5 champs seulement. Un courriel de confirmation vous sera envoyé — une étape, puis votre espace est ouvert.
         </p>
       </div>
 
@@ -421,28 +422,61 @@
         if (!titre) { showErr('Veuillez indiquer votre titre ou approche.'); return; }
       }
 
-      // Simuler soumission — redirection
+      // Phase pilote : l'inscription praticien·ne se fait sur invitation.
+      if (currentRole === 'praticien') {
+        showErr('Pendant la phase pilote, les praticien·nes rejoignent IVIA sur invitation. ' +
+                'Écrivez-nous à bonjour@ivia.quebec — nous créons votre espace avec vous.');
+        return;
+      }
+
+      // Soumission réelle — POST /register/client (le courriel de vérification part automatiquement)
       const btn = document.getElementById('submit-btn');
       btn.querySelector('#submit-label').textContent = 'Création en cours…';
       btn.disabled = true;
       btn.classList.add('opacity-75');
 
-      let dest;
-      if (currentRole === 'praticien') {
-        dest = '/praticien/dashboard.html?nouveau=1';
-      } else {
-        // Si un créneau est présent, aller sur la page de confirmation
-        const hasCreneau = params.get('creneau') || params.get('praticien');
-        if (hasCreneau) {
-          const p = params.get('praticien') || '';
-          const c = params.get('creneau')   || '';
-          const f = params.get('formule')   || '1h';
-          dest = `/confirmation.html?praticien=${encodeURIComponent(p)}&creneau=${encodeURIComponent(c)}&formule=${encodeURIComponent(f)}`;
-        } else {
-          dest = '/client/dashboard.html?nouveau=1';
+      (async () => {
+        try {
+          const retour = params.get('retour');
+          const res = await apiRegisterClient({
+            email: courriel.toLowerCase(),
+            password: mdp,
+            display_name: `${prenom} ${nom}`.trim(),
+            redirect_path: retour ? decodeURIComponent(retour) : '/reserver.html',
+          });
+
+          // Téléphone : pas encore dans le compte — gardé pour la fiche client à la 1re réservation.
+          localStorage.setItem('ivia_email', courriel.toLowerCase());
+          localStorage.setItem('ivia_tel_pending', tel);
+
+          // Écran « vérifiez votre boîte »
+          document.getElementById('inscription-form').classList.add('hidden');
+          const ok = document.createElement('div');
+          ok.className = 'bg-white border border-bdr rounded-[24px] p-8 shadow-sm text-center';
+          ok.innerHTML = `
+            <div class="w-14 h-14 rounded-full bg-[#E8F5EE] flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h2 class="font-heading text-xl font-bold text-ink mb-2">Vérifiez votre boîte courriel</h2>
+            <p class="text-sm text-muted leading-relaxed mb-1">
+              Un lien de confirmation a été envoyé à <strong class="text-ink">${courriel}</strong>.
+            </p>
+            <p class="text-xs text-muted mb-5">Le lien est valide 48 h — regardez aussi vos indésirables.</p>
+            ${res.email_sent === false ? '<p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-[10px] px-3 py-2 mb-4">' + res.message + '</p>' : ''}
+            <a href="/connexion.html" class="inline-block bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors">
+              J'ai confirmé — me connecter
+            </a>`;
+          document.getElementById('inscription-form').parentNode.appendChild(ok);
+          ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          showErr(err.message || 'Création impossible pour le moment. Réessayez.');
+          btn.disabled = false;
+          btn.classList.remove('opacity-75');
+          btn.querySelector('#submit-label').textContent = 'Créer mon espace';
         }
-      }
-      setTimeout(() => { window.location.href = dest; }, 1200);
+      })();
 
       function showErr(msg) {
         errDiv.textContent = msg;
