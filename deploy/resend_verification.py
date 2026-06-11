@@ -13,7 +13,11 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy import select
 
 from app.core.config import settings
+from app.db.base import load_models
 from app.db.session import SessionLocal
+
+# Enregistre tous les modèles (relations AppUser <-> PractitionerProfile, etc.)
+load_models()
 from app.models.app_user import AppUser
 from app.services.email import make_verification_email, send_email
 
