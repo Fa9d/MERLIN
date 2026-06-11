@@ -109,3 +109,11 @@ avec test d'alignement référentiel ↔ enum. Commit `25df755`.
   poser `MERLIN_WHISPER_MODEL=small` dans `.env.prod`.
 - Une fois la transcription locale validée sur une séance réelle : retirer
   `ASSEMBLYAI_API_KEY` de `.env.prod` (sortie définitive du connecteur tiers).
+
+**Déployé en prod le 2026-06-11** (archive `git archive` + `prod-up.sh` sur le VPS, par le
+fondateur). Vérifié de l'extérieur : health OK, `/api/v1/referentiels` sert les 7
+référentiels (montage `00_DOCTRINE` fonctionnel), `prochaines_etapes` v1.1 (codes anglais),
+CORS `ivia.quebec` OK, `carte-de-vie-demo.html` en ligne. Incident mineur : CRLF injectés
+par `git archive` sous Windows (autocrlf) cassaient `prod-up.sh` → corrigé sur le VPS
+(`sed -i 's/\r$//'`) et à la racine par `.gitattributes` (`*.sh eol=lf`, commit `e195fa6`).
+Le modèle whisper (~1,5 Go) se téléchargera à la première transcription réelle.
