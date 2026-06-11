@@ -10,13 +10,28 @@ from sqlalchemy.orm import Session
 from app.core.deps import get_current_user, require_verified_email_user
 from app.db.session import get_db
 from app.models.app_user import AppUser
+from app.models.client import Client
+from app.models.client_entitlement import ClientEntitlement
 from app.models.enums import (
     AppRole,
+    ClientEntitlementTypeCode,
+    DataSensitivityClass,
+    RecordStatus,
+    RetentionClass,
+    SessionChannelCode,
+    SessionModeCode,
+    SessionStatusCode,
     SessionTypeCode,
     SlotStatus,
 )
 from app.models.schedule import BookingSlot
+from app.models.session import SessionRecord
 from app.schemas.schedule import BookingSlotOut
+
+
+class PilotBookOut(BookingSlotOut):
+    """BookingSlotOut étendu avec l'identifiant de la séance pré-créée."""
+    session_id: str | None = None
 from app.services.booking_flow import (
     confirm_slot_for_client_record,
     expire_hold,
@@ -52,6 +67,16 @@ class BookingConfirmIn(BaseModel):
 
 class BookingCancelIn(BaseModel):
     slot_id: str
+
+
+class PilotBookIn(BaseModel):
+    """Payload pour réservation pilote tout-en-un (sans paiement Stripe)."""
+    praticien_id: str
+    slot_date: date
+    start_time: time
+    end_time: time
+    session_type: SessionTypeCode | None = None
+    notes: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -245,5 +270,143 @@ def my_bookings(
     return [BookingSlotOut.model_validate(s) for s in slots]
 
 
+# ---------------------------------------------------------------------------
+# POST /bookings/pilot-book  — réservation pilote (hold + crédit auto + confirm)
+# ---------------------------------------------------------------------------
 
+@router.post(
+    "/pilot-book",
+    response_model=PilotBookOut,
+    status_code=status.HTTP_200_OK,
+    summary="Réservation pilote tout-en-un — hold + crédit gratuit + confirmation sans Stripe",
+)
+async def pilot_book_slot(
+    body: PilotBookIn,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_verified_email_user),
+) -> PilotBookOut:
+    """Phase pilote uniquement.
+
+    Atomique : crée le dossier client si absent, accorde un crédit de séance
+    gratuit, et confirme le créneau en une seule requête.
+    """
+    now_utc = datetime.now(timezone.utc)
+
+    # 1. Vérifier le praticien
+    praticien = db.get(AppUser, body.praticien_id)
+    if praticien is None or praticien.role != AppRole.practitioner:
+        raise HTTPException(status_code=404, detail="Praticien introuvable.")
+
+    # 2. Récupérer ou créer le slot
+    existing: BookingSlot | None = (
+        db.query(BookingSlot)
+        .filter(
+            BookingSlot.praticien_id == body.praticien_id,
+            BookingSlot.slot_date == body.slot_date,
+            BookingSlot.start_time == body.start_time,
+        )
+        .first()
+    )
+    if existing:
+        expire_hold(existing)
+        db.flush()
+        if existing.status in (SlotStatus.hold, SlotStatus.confirmed):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Ce créneau n'est plus disponible.",
+            )
+        slot = existing
+    else:
+        slot = BookingSlot(
+            praticien_id=body.praticien_id,
+            slot_date=body.slot_date,
+            start_time=body.start_time,
+            end_time=body.end_time,
+            session_type=body.session_type or SessionTypeCode.standard,
+            status=SlotStatus.available,
+        )
+        db.add(slot)
+        db.flush()
+
+    # 3. Mettre en hold transitoire
+    slot.status = SlotStatus.hold
+    slot.client_id = current_user.id
+    slot.hold_expires_at = now_utc + timedelta(minutes=_HOLD_MINUTES)
+    db.flush()
+
+    # 4. Dossier client (créer si absent)
+    client_record: Client | None = (
+        db.query(Client).filter(Client.app_user_id == current_user.id).first()
+    )
+    if client_record is None:
+        display = current_user.display_name or current_user.email or "Client"
+        parts = display.split(" ", 1)
+        client_record = Client(
+            app_user_id=current_user.id,
+            first_name_or_alias=parts[0],
+            last_name=parts[1] if len(parts) > 1 else None,
+            email=current_user.email,
+        )
+        db.add(client_record)
+        db.flush()
+
+    # 5. Accorder un crédit pilote gratuit (1 séance de suivi)
+    pilot_entitlement = ClientEntitlement(
+        client_id=client_record.id,
+        entitlement_type_code=ClientEntitlementTypeCode.follow_up_session_credit,
+        quantity_total=1,
+        quantity_remaining=0,  # consommé immédiatement
+        starts_at=now_utc,
+        record_status=RecordStatus.active,
+    )
+    db.add(pilot_entitlement)
+    db.flush()
+
+    # 6. Confirmer le créneau (consomme le crédit pilote)
+    if body.notes:
+        slot.notes = body.notes
+    slot.status = SlotStatus.confirmed
+    slot.hold_expires_at = None
+    slot.consumed_entitlement_id = pilot_entitlement.id
+    slot.consumed_entitlement_units = 1
+    db.add(slot)
+    db.commit()
+    db.refresh(slot)
+
+    await send_booking_confirmation_email_for_slot(db, slot, current_user)
+
+    # 7. Créer la SessionRecord liée (praticien = opérateur de sa propre séance)
+    from sqlalchemy import func, select as sa_select
+
+    latest_seq = db.scalar(
+        sa_select(func.max(SessionRecord.session_sequence_number)).where(
+            SessionRecord.client_id == client_record.id
+        )
+    )
+    scheduled_start = datetime.combine(
+        slot.slot_date,
+        slot.start_time,
+        tzinfo=timezone.utc,
+    )
+    session_record = SessionRecord(
+        client_id=client_record.id,
+        operator_user_id=slot.praticien_id,
+        praticien_id=slot.praticien_id,
+        session_mode_code=SessionModeCode.standard,
+        session_channel_code=SessionChannelCode.audio_live,
+        session_status_code=SessionStatusCode.scheduled,
+        session_sequence_number=(latest_seq or 0) + 1,
+        scheduled_start_at=scheduled_start,
+        data_sensitivity_class=DataSensitivityClass.high,
+        retention_class=RetentionClass.standard,
+        record_status=RecordStatus.active,
+    )
+    db.add(session_record)
+    db.commit()
+    db.refresh(slot)
+    db.refresh(session_record)
+
+    out = PilotBookOut.model_validate(slot)
+    out.session_id = session_record.id
+    return out
 

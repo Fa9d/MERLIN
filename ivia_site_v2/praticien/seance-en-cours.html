@@ -385,7 +385,7 @@
 
   // ── Code de session + lien client ────────────────────────────────────────
   const roomCode    = params.get('room') || params.get('session') || ('SES-' + Date.now().toString(36).toUpperCase());
-  const clientLienUrl = `${location.origin}/client/seance-active.html?room=${encodeURIComponent(roomCode)}&praticien=${encodeURIComponent(prat.prenom)}`;
+  const clientLienUrl = `${location.origin}/client/seance.html?room=${encodeURIComponent(roomCode)}&praticien=${encodeURIComponent(prat.prenom)}`;
 
   // ── BroadcastChannel (même navigateur, onglets différents) ───────────────
   let bc = null;

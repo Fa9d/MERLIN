@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timezone
 
+import base64
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 
 logger = logging.getLogger(__name__)
@@ -11,7 +12,7 @@ from app.ai.anthropic_session_note_pipeline import (
     AnthropicSessionNoteError,
     generate_session_note_from_transcript,
 )
-from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator
+from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator, require_production_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
@@ -29,7 +30,6 @@ from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
 from app.services.livekit_audio import (
     LiveKitAudioError,
-    create_livekit_room_for_session,
     run_post_recording_pipeline,
     start_livekit_recording_for_session,
     stop_livekit_recording_for_session,
@@ -42,7 +42,6 @@ from app.schemas.session import (
     SessionCreate,
     SessionDeliver,
     SessionRecordingRead,
-    SessionRoomRead,
     SessionRead,
     SessionStart,
 )
@@ -176,7 +175,7 @@ async def _build_ai_note_payload(
 def create_session(
     payload: SessionCreate,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_production_roles()),
 ) -> SessionRecord:
     client = db.get(Client, payload.client_id)
     if client is None:
@@ -242,7 +241,7 @@ async def close_session(
     session_id: str,
     payload: SessionClose,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_production_roles()),
 ) -> SessionCloseResult:
     session_record = _get_owned_session_or_404(session_id, db, current_user)
 
@@ -519,7 +518,7 @@ def start_session(
     session_id: str,
     payload: SessionStart,
     db: Session = Depends(get_db),
-    current_user: AppUser = Depends(require_operator()),
+    current_user: AppUser = Depends(require_production_roles()),
 ) -> SessionRecord:
     session_record = _get_owned_session_or_404(session_id, db, current_user)
 
@@ -697,4 +696,82 @@ async def stop_session_recording(
         audio_file_path=session_record.audio_file_path,
         audio_recording_id=recording.id,
         status=recording.audio_recording_status_code.value,
+    )
+
+
+# ---------------------------------------------------------------------------
+# POST /sessions/{session_id}/upload-audio
+# Flux pilote : upload d'un fichier audio WebM depuis le navigateur.
+# Pipeline transcription + analyse AI déclenché en tâche de fond.
+# ---------------------------------------------------------------------------
+
+from pydantic import BaseModel as _UploadBaseModel
+
+
+class AudioUploadIn(_UploadBaseModel):
+    """Payload JSON pour upload audio pilote (base64)."""
+    audio_data: str  # base64-encoded audio bytes
+    filename: str = "recording.webm"
+
+
+class UploadAudioResult(_UploadBaseModel):
+    session_id: str
+    audio_file_path: str
+    pipeline_queued: bool
+
+
+@router.post(
+    "/{session_id}/upload-audio",
+    response_model=UploadAudioResult,
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="Upload audio pilote (base64 JSON) — transcription + analyse AI en tâche de fond",
+)
+async def upload_session_audio(
+    session_id: str,
+    payload: AudioUploadIn,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> UploadAudioResult:
+    import os
+
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
+
+    if session_record.session_status_code not in {
+        SessionStatusCode.scheduled,
+        SessionStatusCode.in_progress,
+    }:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Impossible de soumettre un audio pour une seance deja cloturee.",
+        )
+
+    try:
+        audio_bytes = base64.b64decode(payload.audio_data)
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="audio_data invalide : base64 attendu.",
+        )
+
+    storage_dir = "/app/storage/recordings"
+    os.makedirs(storage_dir, exist_ok=True)
+    safe_ext = os.path.splitext(payload.filename)[1].lstrip(".") or "webm"
+    file_path = os.path.join(storage_dir, f"session_{session_id}_pilot.{safe_ext}")
+
+    with open(file_path, "wb") as out:
+        out.write(audio_bytes)
+
+    session_record.audio_file_path = file_path
+    if session_record.session_status_code == SessionStatusCode.scheduled:
+        session_record.session_status_code = SessionStatusCode.in_progress
+    db.add(session_record)
+    db.commit()
+
+    background_tasks.add_task(run_post_recording_pipeline, session_id, file_path)
+
+    return UploadAudioResult(
+        session_id=session_id,
+        audio_file_path=file_path,
+        pipeline_queued=True,
     )
