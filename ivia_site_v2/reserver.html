@@ -411,7 +411,9 @@
     const list  = document.getElementById('slots-list');
     label.textContent = formatDateCourteLocale(iso);
     list.innerHTML = '';
-    document.getElementById('slots-empty').classList.add('hidden');
+    // #slots-empty vit dans la liste : il disparaît au premier rendu — garde nulle obligatoire.
+    const emptyMsg = document.getElementById('slots-empty');
+    if (emptyMsg) emptyMsg.classList.add('hidden');
 
     slots.filter(s => s.status === 'available').forEach(s => {
       const t = (s.start_time || '').slice(0, 5);
