@@ -131,6 +131,30 @@ async function pilotBook(payload) {
   return _req('/api/v1/bookings/pilot-book', { method: 'POST', body: payload });
 }
 
+// ── Espace client (authentifié) ──────────────────────────────────────────────
+/** Fiche Client durable du compte connecté (404 si pas encore de dossier). */
+async function getMyClient() {
+  return _req('/api/v1/clients/me');
+}
+
+/** Réservations (hold + confirmées) du compte connecté, triées par date. */
+async function getMyBookings() {
+  return _req('/api/v1/bookings/my');
+}
+
+/** Entrées de journal du compte connecté (plus récentes d'abord côté rendu). */
+async function getMyJournal(includeArchived = false) {
+  return _req('/api/v1/me/journal' + (includeArchived ? '?include_archived=true' : ''));
+}
+
+/**
+ * Crée une entrée de journal.
+ * @param {{body_text, entry_type?, emotional_tone?, event_year_ref?}} payload
+ */
+async function createMyJournalEntry(payload) {
+  return _req('/api/v1/me/journal', { method: 'POST', body: payload });
+}
+
 // ── Praticiens (public) ───────────────────────────────────────────────────────
 /**
  * Liste les praticiens publics.

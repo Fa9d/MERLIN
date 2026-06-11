@@ -2,288 +2,157 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script src="/shared/session.js"></script>
-  <script>requireAuth();</script>
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
   <title>IVIA — Mon espace</title>
-  <script src="/shared/mock.js"></script>
+  <script src="/shared/api.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;}
-    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
-    .sidebar-link.active{font-weight:700;}
-    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
-    .tag{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:2px 10px;font-size:12px;color:#4B6350;font-weight:500;}
+    .card{background:#fff;border:1px solid #D4E8D0;border-radius:20px;}
   </style>
 </head>
 <body class="antialiased">
 
-  <div class="flex min-h-screen">
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-bdr">
+  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+    <div class="flex items-center gap-4 text-sm">
+      <a href="/client/journal.html" class="text-muted hover:text-ink">Journal</a>
+      <a href="/reserver.html" class="text-muted hover:text-ink">Réserver</a>
+      <button id="btn-logout" class="text-muted hover:text-red-600 cursor-pointer">Déconnexion</button>
+    </div>
+  </div>
+</nav>
 
-    <!-- SIDEBAR desktop -->
-    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
-      <nav class="flex flex-col gap-1 flex-1">
-        <a href="/client/dashboard.html" class="sidebar-link active">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Accueil
-        </a>
-        <a href="/client/seances.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Séances
-        </a>
-        <a href="/client/journal.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          Journal
-        </a>
-        <a href="/client/ma-progression.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 17 9 11 13 15 21 7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 7 21 7 21 14" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Ma progression
-        </a>
-        <a href="/client/premier-ancrage.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
-          Premier ancrage
-        </a>
-        <a href="/client/audio-resume.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
-          Résumés audio
-        </a>
-        <div class="flex-1"></div>
-        <a href="/client/compte.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-          Mon compte
-        </a>
-        <div id="sidebar-logout"></div>
-      </nav>
-    </aside>
+<div class="max-w-5xl mx-auto px-4 py-10 space-y-6">
 
-    <!-- CONTENU principal -->
-    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1100px]">
-
-      <!-- Bannière validation courriel (soft block) -->
-      <div id="verif-bar" class="hidden mb-6 bg-amber-50 border border-amber-200 rounded-[14px] px-5 py-3.5 flex items-center gap-4">
-        <p class="text-sm text-amber-800 flex-1">
-          <span class="font-semibold">Votre espace est ouvert.</span>
-          Pour prendre rendez-vous, confirmez votre courriel.
-          <button onclick="renvoyerLienVerif(this)" class="underline underline-offset-2 ml-1 cursor-pointer bg-transparent border-0 p-0 text-amber-800 font-inherit text-sm">Renvoyer le lien</button>
-        </p>
-        <button onclick="this.closest('#verif-bar').style.display='none'"
-                class="text-amber-600 hover:text-amber-900 cursor-pointer" aria-label="Fermer">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <!-- Bandeau nouveau compte -->
-      <div id="nouveau-bar" class="hidden mb-6 bg-surface border border-bdr rounded-[14px] px-5 py-4">
-        <h2 class="font-heading text-lg font-semibold text-ink mb-1">Bienvenue dans votre espace.</h2>
-        <p class="text-sm text-muted">Commencez par compléter votre premier ancrage, ou explorez les séances disponibles.</p>
-        <div class="mt-3 flex flex-wrap gap-3">
-          <a href="/client/premier-ancrage.html" class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-forest transition-colors cursor-pointer">
-            Compléter mon ancrage
-          </a>
-          <a href="/rendez-vous.html" class="border border-bdr text-ink text-sm font-medium px-4 py-2 rounded-[10px] hover:bg-surface transition-colors cursor-pointer">
-            Voir les séances
-          </a>
-        </div>
-      </div>
-
-      <!-- En-tête -->
-      <div class="flex items-center justify-between mb-7">
-        <div>
-          <h1 class="font-heading text-2xl font-bold text-ink" id="greeting">Bonjour</h1>
-          <p class="text-muted text-sm mt-0.5" id="greeting-date"></p>
-        </div>
-        <a href="/rendez-vous.html"
-           class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer hidden sm:block">
-          + Nouvelle séance
-        </a>
-      </div>
-
-      <div class="grid lg:grid-cols-3 gap-5">
-
-        <!-- Colonne gauche (2/3) -->
-        <div class="lg:col-span-2 space-y-5">
-
-          <!-- Prochaine séance -->
-          <section class="card" aria-labelledby="seance-title">
-            <h2 id="seance-title" class="font-heading text-base font-semibold text-ink mb-3">Prochaine séance</h2>
-            <div class="bg-surface border border-bdr rounded-[14px] p-4">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 bg-forest-deep/10 rounded-full flex items-center justify-center shrink-0">
-                  <svg class="w-5 h-5 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/>
-                  </svg>
-                </div>
-                <div class="flex-1">
-                  <p class="font-semibold text-ink text-sm" id="seance-praticien">Mylène P.</p>
-                  <p class="text-xs text-muted mt-0.5" id="seance-datetime">Mardi 10 juin 2026 · 14h00 · Audio en direct</p>
-                  <div class="mt-2 flex flex-wrap gap-2">
-                    <span class="tag">Présence</span>
-                    <span class="tag">Ancrage corporel</span>
-                  </div>
-                </div>
-                <div class="flex flex-col items-end gap-2">
-                  <span class="text-xs font-bold text-forest-deep bg-forest/10 px-2.5 py-1 rounded-full" id="seance-countdown">Dans 2 jours</span>
-                </div>
-              </div>
-            </div>
-            <p class="text-xs text-muted mt-3">
-              Aucune autre séance à venir ·
-              <a href="/rendez-vous.html" class="underline underline-offset-2 text-forest cursor-pointer">Voir les disponibilités</a>
-            </p>
-          </section>
-
-          <!-- Journal récent -->
-          <section class="card" aria-labelledby="journal-title">
-            <div class="flex items-center justify-between mb-3">
-              <h2 id="journal-title" class="font-heading text-base font-semibold text-ink">Journal</h2>
-              <a href="/client/journal.html?tab=analyse" class="text-xs text-forest underline underline-offset-2 cursor-pointer">Toutes les entrées</a>
-            </div>
-            <ul class="space-y-3">
-              <li class="flex items-start gap-3 pb-3 border-b border-bdr last:border-0 last:pb-0">
-                <div class="w-2 h-2 rounded-full bg-forest mt-2 shrink-0" aria-hidden="true"></div>
-                <div>
-                  <p class="text-sm font-medium text-ink">Sur la lenteur — ne pas confondre repos et fuite</p>
-                  <p class="text-xs text-muted mt-0.5">29 mai 2026 · Registres : corporel, émotionnel</p>
-                </div>
-              </li>
-              <li class="flex items-start gap-3 pb-3 border-b border-bdr last:border-0 last:pb-0">
-                <div class="w-2 h-2 rounded-full bg-sage mt-2 shrink-0" aria-hidden="true"></div>
-                <div>
-                  <p class="text-sm font-medium text-ink">Après la séance avec Mylène — quelques images</p>
-                  <p class="text-xs text-muted mt-0.5">22 mai 2026 · Registres : relationnel</p>
-                </div>
-              </li>
-            </ul>
-            <a href="/client/journal.html"
-               class="mt-4 block text-center border border-bdr text-sm text-ink font-medium py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
-              + Nouvelle entrée
-            </a>
-          </section>
-
-        </div>
-
-        <!-- Colonne droite (1/3) -->
-        <div class="space-y-5">
-
-          <!-- Résumé audio disponible -->
-          <section class="card bg-forest-deep/5 border-forest/20" aria-labelledby="audio-title">
-            <h2 id="audio-title" class="font-heading text-sm font-semibold text-ink mb-2">Résumé audio disponible</h2>
-            <p class="text-xs text-muted mb-3">Séance du 15 mai — Mylène P.</p>
-            <a href="/client/audio-resume.html"
-               class="flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[10px] hover:bg-forest transition-colors cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              Écouter (4 min 12)
-            </a>
-          </section>
-
-          <!-- Statistiques rapides -->
-          <section class="card" aria-labelledby="stats-title">
-            <h2 id="stats-title" class="font-heading text-sm font-semibold text-ink mb-3">Votre chemin</h2>
-            <ul class="space-y-2">
-              <li class="flex justify-between items-center text-sm">
-                <span class="text-muted">Séances</span>
-                <span class="font-bold text-ink" data-stat="seances">3</span>
-              </li>
-              <li class="flex justify-between items-center text-sm">
-                <span class="text-muted">Entrées journal</span>
-                <span class="font-bold text-ink" data-stat="journal">7</span>
-              </li>
-              <li class="flex justify-between items-center text-sm">
-                <span class="text-muted">Premier ancrage</span>
-                <span class="text-amber-600 font-semibold text-xs">En attente</span>
-              </li>
-            </ul>
-          </section>
-
-          <!-- Cadre éthique rappel -->
-          <div class="text-xs text-muted leading-relaxed bg-surface rounded-[14px] px-4 py-3">
-            <p class="font-semibold text-ink mb-1">Rappel</p>
-            IVIA n'est pas un service d'urgence et ne remplace pas un suivi thérapeutique ou médical.
-            <a href="/pourquoi.html" class="text-trust underline underline-offset-2 ml-1">En savoir plus</a>
-          </div>
-
-        </div>
-      </div>
-
-    </main>
+  <div>
+    <h1 class="font-heading text-3xl font-bold text-ink" id="bonjour">Bonjour.</h1>
+    <p class="text-muted text-sm mt-1">Votre espace, à votre rythme. Rien n'est exigé ici.</p>
   </div>
 
-  <!-- Barre nav mobile -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
-    <a href="/client/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Accueil
-    </a>
-    <a href="/rendez-vous.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Séances
-    </a>
-    <a href="/client/journal.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-      Journal
-    </a>
-    <a href="/client/compte.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-      Compte
-    </a>
-  </nav>
+  <div class="grid md:grid-cols-2 gap-5">
 
-  <script>
-    // ── Auth ──────────────────────────────────────────────────────────────────
-    const user = getCurrentUser() || MOCK_USER;
+    <!-- Séances réelles -->
+    <section class="card p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-heading text-lg font-bold text-ink">Vos séances</h2>
+        <a href="/reserver.html" class="text-xs font-semibold text-forest-deep hover:underline">Réserver →</a>
+      </div>
+      <div id="seances-zone" class="space-y-3">
+        <p class="text-sm text-muted">Chargement…</p>
+      </div>
+    </section>
 
-    // ── Bandeaux ──────────────────────────────────────────────────────────────
-    const p = new URLSearchParams(window.location.search);
-    if (p.get('nouveau') === '1' || user.nouveau_compte) {
-      document.getElementById('nouveau-bar').classList.remove('hidden');
+    <!-- Journal réel -->
+    <section class="card p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-heading text-lg font-bold text-ink">Votre journal</h2>
+        <a href="/client/journal.html" class="text-xs font-semibold text-forest-deep hover:underline">Écrire →</a>
+      </div>
+      <div id="journal-zone" class="space-y-3">
+        <p class="text-sm text-muted">Chargement…</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Carte de vie — honnête : en construction -->
+  <section class="card p-6 bg-surface/60">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h2 class="font-heading text-lg font-bold text-ink mb-1">Votre carte de vie</h2>
+        <p class="text-sm text-muted leading-relaxed max-w-xl">
+          Au fil de vos séances et de votre journal, IVIA compose une lecture vivante de votre
+          chemin — votre sol, vos appuis, votre horizon. Elle s'ouvrira ici après votre première séance.
+        </p>
+      </div>
+      <span class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-white border border-bdr rounded-full px-3 py-1 shrink-0">Bientôt</span>
+    </div>
+  </section>
+
+</div>
+
+<footer class="py-8 px-4 text-center">
+  <p class="text-xs text-muted">
+    IVIA n'est pas un service d'urgence · En crise :
+    <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+  </p>
+</footer>
+
+<script>
+(async function () {
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    localStorage.removeItem('ivia_session'); localStorage.removeItem('ivia_user');
+    location.href = '/connexion.html';
+  });
+
+  // Identité réelle — profil du compte connecté
+  try {
+    const me = await apiMe();
+    localStorage.setItem('ivia_user', JSON.stringify(me));
+    const prenom = (me.display_name || '').split(' ')[0];
+    document.getElementById('bonjour').textContent = prenom ? `Bonjour, ${prenom}.` : 'Bonjour.';
+  } catch (e) { /* le 401 est géré globalement par api.js */ }
+
+  // Séances réelles (confirmées, à venir)
+  const sz = document.getElementById('seances-zone');
+  try {
+    const slots = (await getMyBookings()).filter(s => s.status === 'confirmed');
+    sz.innerHTML = '';
+    if (!slots.length) {
+      sz.innerHTML = `<p class="text-sm text-muted">Aucune séance à venir.</p>
+        <a href="/reserver.html" class="inline-block bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Réserver une première séance</a>`;
     }
-    if (!user.courriel_verifie) {
-      document.getElementById('verif-bar').classList.remove('hidden');
-    }
-
-    // ── Salutation ────────────────────────────────────────────────────────────
-    const heure = new Date().getHours();
-    const salut = heure < 12 ? 'Bonjour' : heure < 18 ? 'Bon après-midi' : 'Bonsoir';
-    document.getElementById('greeting').textContent = user.prenom ? `${salut}, ${user.prenom}` : salut;
-    document.getElementById('greeting-date').textContent =
-      new Date().toLocaleDateString('fr-CA', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-
-    // ── Données mock → rendu ──────────────────────────────────────────────────
-    getMockStats().then(stats => {
-      // Statistiques
-      document.querySelector('[data-stat="seances"]')  && (document.querySelector('[data-stat="seances"]').textContent  = stats.nb_seances);
-      document.querySelector('[data-stat="journal"]')  && (document.querySelector('[data-stat="journal"]').textContent  = stats.nb_journal);
-
-      // Prochaine séance — countdown
-      const s = stats.prochaine_seance;
-      if (s) {
-        const ctd = document.getElementById('seance-countdown');
-        if (ctd) ctd.textContent = countdownLabel(s.date_iso);
-        const dtEl = document.getElementById('seance-datetime');
-        if (dtEl) dtEl.textContent = formatDateSeance(s.date_iso) + ' · ' + s.format;
-        const praEl = document.getElementById('seance-praticien');
-        if (praEl) praEl.textContent = s.praticien.prenom + ' ' + s.praticien.nom.charAt(0) + '.';
-      }
+    slots.slice(0, 3).forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'border border-bdr rounded-[14px] px-4 py-3 flex items-center justify-between gap-3';
+      el.innerHTML = `<div>
+          <p class="text-sm font-semibold text-ink">${formatDateCourteLocale(s.slot_date)} · ${formatHeure(s.start_time)}</p>
+          <p class="text-xs text-muted">Séance confirmée — le lien arrive par courriel avant l'heure.</p>
+        </div>
+        <span class="w-2.5 h-2.5 rounded-full bg-forest shrink-0" title="Confirmée"></span>`;
+      sz.appendChild(el);
     });
+  } catch (e) {
+    sz.innerHTML = '<p class="text-sm text-muted">Vos séances apparaîtront ici.</p>';
+  }
 
-    // ── Logout ────────────────────────────────────────────────────────────────
-    renderLogoutButton(document.getElementById('sidebar-logout'));
-
-    // ── Renvoi lien de vérification courriel ──────────────────────────────────
-    function renvoyerLienVerif(btn) {
-      btn.disabled = true;
-      btn.textContent = 'Envoyé ✓';
-      setTimeout(() => { btn.disabled = false; btn.textContent = 'Renvoyer le lien'; }, 5000);
-      // TODO : fetch('/api/v1/auth/resend-verification', { method: 'POST', headers: { Authorization: 'Bearer ' + localStorage.getItem('ivia_session') } });
+  // Journal réel — 3 dernières entrées
+  const jz = document.getElementById('journal-zone');
+  try {
+    const entries = await getMyJournal();
+    jz.innerHTML = '';
+    if (!entries.length) {
+      jz.innerHTML = `<p class="text-sm text-muted leading-relaxed">Rien encore — et c'est très bien.
+        Quand quelque chose demande à être déposé, écrivez-le.</p>
+        <a href="/client/journal.html" class="inline-block border border-bdr text-ink text-sm font-medium px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors">Première entrée</a>`;
     }
-  </script>
+    entries
+      .sort((a, b) => new Date(b.written_at) - new Date(a.written_at))
+      .slice(0, 3)
+      .forEach(en => {
+        const d = new Date(en.written_at);
+        const el = document.createElement('a');
+        el.href = '/client/journal.html';
+        el.className = 'block border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors';
+        el.innerHTML = `<p class="text-xs text-muted mb-1">${d.toLocaleDateString('fr-CA', { weekday:'long', day:'numeric', month:'long' })}${en.emotional_tone ? ' · ' + en.emotional_tone : ''}</p>
+          <p class="text-sm text-ink line-clamp-2 entry-body"></p>`;
+        el.querySelector('.entry-body').textContent = en.body_text;
+        jz.appendChild(el);
+      });
+  } catch (e) {
+    // Pas encore de dossier client : message neutre, le journal se crée à la 1re entrée.
+    jz.innerHTML = `<p class="text-sm text-muted">Votre journal est prêt — la première entrée crée votre carnet.</p>
+      <a href="/client/journal.html" class="inline-block border border-bdr text-ink text-sm font-medium px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors">Écrire</a>`;
+  }
+})();
+</script>
+
 </body>
 </html>

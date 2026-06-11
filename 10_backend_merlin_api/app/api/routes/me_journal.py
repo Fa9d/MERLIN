@@ -61,7 +61,20 @@ def create_my_journal_entry(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(get_current_user),
 ) -> ClientJournalEntry:
-    client = _get_my_client(current_user, db)
+    # Première écriture = création du dossier client au vol (cohérent avec bookings/checkout) :
+    # le journal ne doit jamais être bloqué par l'absence de fiche.
+    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+    if client is None:
+        display = current_user.display_name or current_user.email or "Client"
+        parts = display.split(" ", 1)
+        client = Client(
+            app_user_id=current_user.id,
+            first_name_or_alias=parts[0],
+            last_name=parts[1] if len(parts) > 1 else None,
+            email=current_user.email,
+        )
+        db.add(client)
+        db.flush()
     data = payload.model_dump()
     data["client_id"] = client.id
     data["id"] = str(uuid4())
