@@ -9,10 +9,12 @@
     Données FICTIVES. Aucun appel API, aucune authentification — page autonome de validation visuelle.
     Posture : Observation / Hypothèse / Orientation. Aucun vocabulaire de diagnostic (Loi 21).
 
-    Swap API (cible) : remplacer CARTE (ci-dessous) par
-      GET /api/v1/clients/{id}/carte-de-vie  → composition des lentilles d'analyse
-    Les axes et tensions doivent à terme être chargés depuis les référentiels vivants
-    (00_DOCTRINE/referentiels/axes.v1.yaml, tensions.v1.yaml) via le RegistryLoader backend.
+    Taxonomies VIVANTES : axes et tensions sont chargés depuis l'API référentiels
+    (GET /api/v1/referentiels/{axes,tensions} ← 00_DOCTRINE/referentiels/*.v1.yaml) quand
+    elle est joignable — badge « référentiels : vivants » dans la barre. Repli embarqué sinon.
+    Surcharge locale : ?api=http://127.0.0.1:8000
+    Swap API restant (cible) : remplacer les LECTURES fictives (résonances, notes, tensions
+    actives, ligne de vie) par GET /api/v1/clients/{id}/carte-de-vie — composition des lentilles.
   -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
@@ -44,7 +46,10 @@
     <span class="text-[#2a4031]">·</span>
     <span class="text-sm text-[#8FB99A]">Carte de Vie — lecture praticien</span>
   </div>
-  <span class="pill demo-banner text-[#8FB99A] border border-[#2a4031]">DÉMO · données fictives</span>
+  <div class="flex items-center gap-2">
+    <span id="ref-source" class="pill" style="background:#1f3325;color:#6f8c78" title="Source des taxonomies axes / tensions">référentiels : chargement…</span>
+    <span class="pill demo-banner text-[#8FB99A] border border-[#2a4031]">DÉMO · données fictives</span>
+  </div>
 </div>
 
 <div class="max-w-[1180px] mx-auto px-4 sm:px-8 py-8 space-y-8">
@@ -202,9 +207,47 @@ function moveTip(ev){ tip.style.left = (ev.clientX + 14) + 'px'; tip.style.top =
 function hideTip(){ tip.style.opacity = 0; }
 
 /* ════════════════════════════════════════════════════════════════════════
+   Référentiels vivants — « la carte suit les référentiels » (CARTE_DE_VIE §6).
+   Les taxonomies (codes, libellés, ordre des axes, libellés des tensions) sont
+   chargées depuis l'API référentiels quand elle est joignable ; les LECTURES
+   (résonance, notes, intensités — fictives ici) restent locales, miroir de ce
+   que servira GET /api/v1/clients/{id}/carte-de-vie. Repli : données embarquées,
+   la page reste autonome (file://, hors-ligne).
+   ════════════════════════════════════════════════════════════════════════ */
+const API_BASE = new URLSearchParams(location.search).get('api') || 'https://api.ivia.quebec';
+const LECTURES_AXES = Object.fromEntries(AXES.map(a => [a.code, { resonance: a.resonance, note: a.note }]));
+
+function wrapLabel(libelle){ return libelle.replace(' / ', ' /\n'); }
+
+async function fetchReferentiel(name){
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 2500);
+  try {
+    const r = await fetch(`${API_BASE}/api/v1/referentiels/${name}`, { signal: ctl.signal });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+async function chargerTaxonomies(){
+  try {
+    const [axesRef, tensionsRef] = await Promise.all([fetchReferentiel('axes'), fetchReferentiel('tensions')]);
+    const axes = [...axesRef.entrees].sort((a,b) => a.ordre - b.ordre).map(e => ({
+      code: e.code, label: wrapLabel(e.libelle), fondateur: !!e.fondateur,
+      ...(LECTURES_AXES[e.code] || { resonance:'sourdine', note:'Axe du référentiel non encore lu pour cette personne.' }),
+    }));
+    const libelles = Object.fromEntries(tensionsRef.entrees.map(e => [e.code, e.libelle]));
+    const tensions = TENSIONS.map(t => ({ ...t, label: libelles[t.code] || t.label }));
+    return { axes, tensions, source: `vivants (API · v${axesRef.version})`, vivant: true };
+  } catch (_) {
+    return { axes: AXES, tensions: TENSIONS, source: 'embarqués (repli)', vivant: false };
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
    1. Constellation : territoire au centre (le sol), 10 axes en anneau
    ════════════════════════════════════════════════════════════════════════ */
-(function drawConstellation(){
+function drawConstellation(AXES, TENSIONS){
   const svg = d3.select('#constellation');
   const W = 560, H = 520, cx = W/2, cy = H/2 + 6, R = 175;
   const ring = AXES.filter(a => !a.fondateur);
@@ -263,7 +306,7 @@ function hideTip(){ tip.style.opacity = 0; }
     const lines = d.label.split('\n');
     if(d.fondateur){
       g.append('text').attr('text-anchor','middle').attr('dy','-1').attr('fill','#0f1a12')
-        .attr('font-weight','700').attr('font-size','12').attr('font-family','Lora, serif').text('Territoire');
+        .attr('font-weight','700').attr('font-size','12').attr('font-family','Lora, serif').text(lines[0]);
       g.append('text').attr('text-anchor','middle').attr('dy','13').attr('fill','#1f3325')
         .attr('font-size','9').text('le sol');
       return;
@@ -279,12 +322,12 @@ function hideTip(){ tip.style.opacity = 0; }
         .attr('font-size','11').attr('font-weight','600').text(ln);
     });
   });
-})();
+}
 
 /* ════════════════════════════════════════════════════════════════════════
    2. Liste des champs de tension
    ════════════════════════════════════════════════════════════════════════ */
-(function renderTensions(){
+function renderTensions(AXES, TENSIONS){
   const wrap = d3.select('#tensions-list');
   const labelAxe = c => (AXES.find(a=>a.code===c)||{}).label?.replace('\n',' ') || c;
   TENSIONS.forEach(t => {
@@ -298,12 +341,12 @@ function hideTip(){ tip.style.opacity = 0; }
       <p class="text-[11px] text-[#4B6350] mt-1.5">entre <span class="text-[#8FB99A]">${labelAxe(t.entre[0])}</span> &amp; <span class="text-[#8FB99A]">${labelAxe(t.entre[1])}</span> · confiance ${t.confiance}</p>
     `);
   });
-})();
+}
 
 /* ════════════════════════════════════════════════════════════════════════
    3. Ligne de vie
    ════════════════════════════════════════════════════════════════════════ */
-(function drawLifeline(){
+function drawLifeline(){
   const svg = d3.select('#lifeline');
   const W = 1100, H = 280, m = { l:24, r:24, t:34, b:42 };
   const x = d3.scaleLinear().domain([1955, 2030]).range([m.l, W-m.r]);
@@ -371,6 +414,19 @@ function hideTip(){ tip.style.opacity = 0; }
       const words = e.label.length > 26 ? [e.label.slice(0,26)+'…'] : [e.label];
       d3.select(this).text(words[0]);
     });
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Init — taxonomies vivantes d'abord, rendu ensuite
+   ════════════════════════════════════════════════════════════════════════ */
+(async function init(){
+  const { axes, tensions, source, vivant } = await chargerTaxonomies();
+  const badge = document.getElementById('ref-source');
+  badge.textContent = 'référentiels : ' + source;
+  if (vivant) badge.style.color = '#8FB99A';
+  drawConstellation(axes, tensions);
+  renderTensions(axes, tensions);
+  drawLifeline();
 })();
 </script>
 </body>
