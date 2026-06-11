@@ -53,6 +53,14 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
 
   const json = await res.json().catch(() => null);
 
+  // Jeton absent/expiré/ancien format (mock '1') → on repart proprement par la connexion.
+  if (res.status === 401 && !publicEndpoint) {
+    localStorage.removeItem('ivia_session');
+    localStorage.removeItem('ivia_user');
+    location.href = '/connexion.html?retour=' + encodeURIComponent(location.pathname + location.search);
+    throw new Error('Session expirée — reconnectez-vous.');
+  }
+
   if (!res.ok) {
     const detail = typeof json?.detail === 'string' ? json.detail
       : Array.isArray(json?.detail) ? json.detail.map(e => e.msg || JSON.stringify(e)).join(' · ')
