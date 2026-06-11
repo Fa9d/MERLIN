@@ -20,14 +20,12 @@
 </head>
 <body class="antialiased min-h-screen bg-cream flex flex-col">
 
-  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
-    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
-      <a href="/client/journal.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">← Retour au journal</a>
-    </div>
-  </nav>
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('ecrire');</script>
 
   <main class="flex-1 max-w-xl mx-auto w-full px-4 py-10">
+    <a href="/client/journal.html" class="inline-block text-sm text-muted hover:text-ink transition-colors cursor-pointer mb-6">← Retour au journal</a>
     <h1 class="font-heading text-3xl font-bold text-ink mb-1">Nouvelle entrée</h1>
     <p class="text-xs text-muted mb-8">
       <time id="today-date"></time>
@@ -89,10 +87,6 @@
     </form>
   </main>
 
-  <footer class="py-6 px-4 text-center">
-    <p class="text-xs text-muted">IVIA n'est pas un service d'urgence · En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong></p>
-  </footer>
-
   <script>
     // Date du jour
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('fr-CA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
@@ -151,6 +145,9 @@
       setTimeout(() => { window.location.href = '/client/journal.html'; }, 900);
     });
   </script>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('ecrire');</script>
 
 </body>
 </html>

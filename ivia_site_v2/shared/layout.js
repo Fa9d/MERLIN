@@ -31,7 +31,15 @@ function renderLayout(active) {
     header.innerHTML = `
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#D4E8D0]">
       <div class="max-w-5xl mx-auto px-5 py-2.5 flex items-center justify-between gap-3">
-        <a href="/" class="font-heading text-xl font-semibold text-[#2D6A4F] shrink-0">IVIA</a>
+        <a href="/" class="flex items-center gap-2 font-heading text-xl font-semibold text-[#2D6A4F] shrink-0" aria-label="IVIA — Accueil">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect width="28" height="28" rx="7" fill="#2D6A4F"/>
+            <rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/>
+            <rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/>
+            <rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/>
+          </svg>
+          IVIA
+        </a>
         <div class="flex items-center gap-1 overflow-x-auto">${links}</div>
         <div class="flex items-center gap-3 shrink-0">
           <a href="/client/compte.html" class="text-sm text-[#4B6350] hover:text-[#1A2E1D]" title="Compte">${prenom || 'Compte'}</a>

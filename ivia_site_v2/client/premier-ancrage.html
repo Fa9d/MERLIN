@@ -52,14 +52,9 @@
 </head>
 <body class="antialiased min-h-screen bg-cream">
 
-  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
-      <a href="/client/dashboard.html" class="text-sm text-muted hover:text-ink transition-colors">
-        Retour à mon espace
-      </a>
-    </div>
-  </nav>
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('parler');</script>
 
   <div class="min-h-[calc(100vh-57px)] flex items-start justify-center py-10 px-4">
     <div class="w-full max-w-xl">
@@ -543,6 +538,9 @@
     // ═══ INIT ═════════════════════════════════════════════════════════════════
     updateUI();
   </script>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('parler');</script>
 
 </body>
 </html>

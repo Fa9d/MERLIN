@@ -28,16 +28,15 @@
 </head>
 <body class="antialiased min-h-screen bg-cream">
 
-  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
-    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
-      <a href="/rendez-vous.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
-        ← Retour aux formules
-      </a>
-    </div>
-  </nav>
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('parler');</script>
 
   <div class="max-w-xl mx-auto px-4 py-12">
+
+    <a href="/rendez-vous.html" class="inline-block text-sm text-muted hover:text-ink transition-colors cursor-pointer mb-6">
+      ← Retour aux formules
+    </a>
 
     <!-- Badge formule -->
     <div class="flex items-center gap-2 mb-6">
@@ -320,6 +319,9 @@
       }, 1400);
     });
   </script>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('parler');</script>
 
 </body>
 </html>

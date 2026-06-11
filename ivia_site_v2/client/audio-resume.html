@@ -23,40 +23,13 @@
     .tag{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:2px 10px;font-size:12px;color:#4B6350;font-weight:500;}
   </style>
 </head>
-<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+<body class="antialiased min-h-screen bg-cream">
 
-  <div class="flex min-h-screen">
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('parler');</script>
 
-    <!-- SIDEBAR desktop -->
-    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
-      <nav class="flex flex-col gap-1 flex-1">
-        <a href="/client/dashboard.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Accueil
-        </a>
-        <a href="/client/seances.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Séances
-        </a>
-        <a href="/client/journal.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-          Journal
-        </a>
-        <a href="/client/audio-resume.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold bg-bdr text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
-          Résumés audio
-        </a>
-        <div class="flex-1"></div>
-        <a href="/client/compte.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-          Mon compte
-        </a>
-        <div id="sidebar-logout" class="mt-2"></div>
-      </nav>
-    </aside>
-
-    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[780px]">
+    <main class="mx-auto px-4 sm:px-8 py-8 max-w-[780px]">
 
       <!-- Breadcrumb -->
       <nav class="text-xs text-muted mb-6 flex items-center gap-1.5" aria-label="Fil d'Ariane">
@@ -127,23 +100,9 @@
       </section>
 
     </main>
-  </div>
 
-  <!-- Nav mobile -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
-    <a href="/client/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Accueil
-    </a>
-    <a href="/client/audio-resume.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
-      Audio
-    </a>
-    <a href="/client/journal.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-      Journal
-    </a>
-  </nav>
+<div id="ivia-footer"></div>
+<script>renderLayout('parler');</script>
 
   <script>
     // ── Render depuis mock (swap → GET /api/v1/client/seances/:id/audio) ──
@@ -187,8 +146,6 @@
           </li>`).join('');
       }
     });
-
-    renderLogoutButton(document.getElementById('sidebar-logout'));
 
     // ── WaveSurfer ──
     const demoAudioUrl = 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Kaval_sviri.ogg';
