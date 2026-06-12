@@ -112,6 +112,17 @@ async function apiMe() {
   return _req('/api/v1/auth/me');
 }
 
+/**
+ * Définit ou change le mot de passe du compte connecté.
+ * current_password requis seulement si un mot de passe existe déjà.
+ */
+async function apiSetPassword(newPassword, currentPassword = null) {
+  return _req('/api/v1/auth/set-password', {
+    method: 'POST',
+    body: { new_password: newPassword, current_password: currentPassword },
+  });
+}
+
 // ── Paiement d'un créneau (prix serveur) ─────────────────────────────────────
 /**
  * Crée la session Stripe Checkout pour un créneau en hold.
