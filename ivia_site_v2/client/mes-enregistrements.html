@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Mes enregistrements</title>
+  <script src="/shared/api.js?v=20260612a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .card{background:#fff;border:1px solid #D4E8D0;border-radius:20px;}
+    @keyframes pulse-soft{0%,100%{opacity:.5}50%{opacity:1}}
+    .en-cours{animation:pulse-soft 1.8s ease-in-out infinite;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('parler');</script>
+
+<main class="max-w-3xl mx-auto px-4 py-10">
+
+  <div class="flex items-start justify-between gap-4 mb-8">
+    <div>
+      <h1 class="font-heading text-2xl font-bold text-ink mb-1">Mes enregistrements</h1>
+      <p class="text-sm text-muted">Votre voix, vos mots — transcrits pour vous. La voix est effacée après 30 jours ; la transcription reste.</p>
+    </div>
+    <a href="/client/enregistrement.html"
+       class="inline-flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer shrink-0">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+      Enregistrer
+    </a>
+  </div>
+
+  <div id="liste" class="space-y-4">
+    <p class="text-sm text-muted">Chargement…</p>
+  </div>
+
+</main>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('parler');</script>
+
+<script>
+  const FORMULE_LABELS = {
+    libre: 'Enregistrement libre',
+    solo30: 'Séance solo · 30 min',
+    solo60: 'Séance solo · 1 h',
+  };
+
+  function dateLisible(iso) {
+    return new Date(iso).toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  let minuterieRafraichissement = null;
+
+  async function charger() {
+    const zone = document.getElementById('liste');
+    let recs = [];
+    try {
+      recs = await getMyRecordings();
+    } catch (e) {
+      zone.innerHTML = '<p class="text-sm text-muted">Vos enregistrements apparaîtront ici.</p>';
+      return;
+    }
+
+    if (!recs.length) {
+      zone.innerHTML = `
+        <div class="card p-8 text-center">
+          <p class="text-sm text-muted leading-relaxed mb-5">Rien encore. Quand quelque chose pèse et que la séance est loin —
+          enregistrez librement. Vos mots vous attendront ici, transcrits.</p>
+          <a href="/client/enregistrement.html" class="inline-block bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Premier enregistrement</a>
+        </div>`;
+      return;
+    }
+
+    zone.innerHTML = '';
+    let enTraitement = false;
+
+    recs.forEach(r => {
+      const pret = r.transcript_ready;
+      if (!pret) enTraitement = true;
+      const carte = document.createElement('article');
+      carte.className = 'card p-6';
+
+      const entete = document.createElement('div');
+      entete.className = 'flex items-center justify-between gap-3 mb-2';
+      entete.innerHTML = `
+        <div>
+          <p class="text-sm font-semibold text-ink">${dateLisible(r.created_at)}</p>
+          <p class="text-xs text-muted mt-0.5">${FORMULE_LABELS[r.formule] || 'Enregistrement'}${r.duration_minutes ? ' · ' + r.duration_minutes + ' min' : ''}</p>
+        </div>
+        ${pret
+          ? '<span class="text-[10px] font-semibold uppercase tracking-wider text-forest-deep bg-surface border border-bdr rounded-full px-3 py-1 shrink-0">transcrit</span>'
+          : '<span class="en-cours text-[10px] font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 shrink-0">transcription en cours…</span>'}`;
+      carte.appendChild(entete);
+
+      if (pret) {
+        const det = document.createElement('details');
+        det.className = 'mt-2';
+        const resume = document.createElement('summary');
+        resume.className = 'text-sm font-semibold text-forest-deep cursor-pointer hover:underline';
+        resume.textContent = 'Relire mes mots';
+        const texte = document.createElement('p');
+        texte.className = 'text-sm text-ink leading-relaxed mt-3 whitespace-pre-wrap bg-surface/60 border border-bdr rounded-[14px] px-4 py-3';
+        texte.textContent = r.transcript_text;
+        det.appendChild(resume);
+        det.appendChild(texte);
+        carte.appendChild(det);
+      } else {
+        const note = document.createElement('p');
+        note.className = 'text-xs text-muted mt-1';
+        note.textContent = 'Quelques minutes — la page se met à jour toute seule.';
+        carte.appendChild(note);
+      }
+      zone.appendChild(carte);
+    });
+
+    // Tant qu'une transcription tourne, on revient voir toutes les 20 secondes.
+    clearTimeout(minuterieRafraichissement);
+    if (enTraitement) minuterieRafraichissement = setTimeout(charger, 20000);
+  }
+  charger();
+</script>
+
+</body>
+</html>

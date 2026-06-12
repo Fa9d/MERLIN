@@ -5,7 +5,8 @@
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IVIA — Enregistrement seul · 35 $</title>
+  <title>IVIA — Enregistrer ma voix</title>
+  <script src="/shared/api.js?v=20260612a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -38,10 +39,10 @@
       ← Retour aux formules
     </a>
 
-    <!-- Badge formule -->
+    <!-- Badge formule (rempli selon ?formule=) -->
     <div class="flex items-center gap-2 mb-6">
-      <span class="bg-surface border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full">Enregistrement seul · 35 $</span>
-      <span class="bg-blue-50 border border-blue-100 text-xs font-semibold text-trust px-3 py-1 rounded-full">Loi 25 · Chiffré</span>
+      <span id="badge-formule" class="bg-surface border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full">Enregistrement libre</span>
+      <span class="bg-blue-50 border border-blue-100 text-xs font-semibold text-trust px-3 py-1 rounded-full">Loi 25 · Voix effacée à J+30</span>
     </div>
 
     <h1 class="font-heading text-3xl font-bold text-ink mb-2">Votre espace d'écoute</h1>
@@ -84,7 +85,7 @@
       </div>
 
       <!-- Durée recommandée -->
-      <p class="text-xs text-muted text-center mt-5">Durée recommandée : 5 à 20 minutes · Maximum : 40 minutes</p>
+      <p id="duree-info" class="text-xs text-muted text-center mt-5">Durée recommandée : 5 à 20 minutes · Maximum : 40 minutes</p>
       <div class="mt-2 h-1.5 bg-bdr rounded-full overflow-hidden">
         <div id="rec-progress" class="h-full bg-forest rounded-full transition-all duration-1000" style="width:0%"></div>
       </div>
@@ -123,6 +124,16 @@
           Soumettre à IVIA →
         </button>
       </div>
+
+      <label class="flex items-start gap-2.5 mt-4 cursor-pointer">
+        <input type="checkbox" id="consent-rec" class="mt-0.5 accent-[#2D6A4F] w-4 h-4 shrink-0">
+        <span class="text-xs text-muted leading-relaxed">
+          Je consens à l'enregistrement de ma voix et à sa transcription, pour mon
+          usage dans mon espace. La voix est effacée après 30 jours ; la transcription
+          m'appartient. <a href="/confidentialite.html" class="underline">Détails (Loi 25)</a>.
+        </span>
+      </label>
+      <p id="submit-error" class="hidden text-xs text-red-600 mt-2"></p>
     </div>
 
     <!-- ÉTAPE 3 — Confirmation -->
@@ -132,15 +143,22 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
         </svg>
       </div>
-      <h2 class="font-heading text-xl font-semibold text-ink mb-2">Enregistrement reçu.</h2>
+      <h2 class="font-heading text-xl font-semibold text-ink mb-2">Enregistrement reçu — transcription en cours.</h2>
       <p class="text-sm text-muted leading-relaxed mb-6">
-        Votre enregistrement est sécurisé dans votre espace. Vous pouvez y accéder à tout moment,
-        ou le partager avec un·e praticien·ne depuis votre tableau de bord.
+        Votre voix est sécurisée et la transcription se prépare (quelques minutes).
+        Vous pourrez relire vos mots dans votre espace — et les partager
+        avec un·e praticien·ne seulement si vous le décidez.
       </p>
-      <a href="/client/dashboard.html"
-         class="inline-block bg-forest-deep text-white font-semibold px-7 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
-        Aller à mon espace
-      </a>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/client/mes-enregistrements.html"
+           class="inline-block bg-forest-deep text-white font-semibold px-7 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+          Voir mes enregistrements
+        </a>
+        <a href="/client/dashboard.html"
+           class="inline-block border border-bdr text-ink text-sm font-medium px-7 py-3 rounded-[14px] hover:bg-surface transition-colors cursor-pointer">
+          Retour à mon espace
+        </a>
+      </div>
     </div>
 
   </div>
@@ -158,7 +176,20 @@
     let audioEl = null;
     let timerInterval = null;
     let secondsElapsed = 0;
-    const MAX_SECONDS = 40 * 60; // 40 min
+
+    // ── Formules — mêmes clés que le backend (/me/recordings FORMULES).
+    //    Ajouter une formule = une entrée ici + une entrée côté serveur.
+    const FORMULES = {
+      libre:  { label: 'Enregistrement libre',       max_min: 40, reco: '5 à 20 minutes' },
+      solo30: { label: 'Séance solo · 30 minutes',   max_min: 30, reco: '20 à 30 minutes' },
+      solo60: { label: 'Séance solo · 1 heure',      max_min: 60, reco: '40 à 60 minutes' },
+    };
+    const formuleId = new URLSearchParams(location.search).get('formule') || 'libre';
+    const FORMULE = FORMULES[formuleId] || FORMULES.libre;
+    const MAX_SECONDS = FORMULE.max_min * 60;
+    document.getElementById('badge-formule').textContent = FORMULE.label;
+    document.getElementById('duree-info').textContent =
+      `Durée recommandée : ${FORMULE.reco} · Maximum : ${FORMULE.max_min} minutes`;
 
     // Canvas visualiseur
     const canvas = document.getElementById('waveform-canvas');
@@ -307,16 +338,38 @@
       document.getElementById('step-2-lbl').classList.replace('text-forest-deep','text-muted');
     });
 
-    // Soumettre
-    document.getElementById('btn-submit').addEventListener('click', () => {
+    // Soumettre — envoi réel vers POST /api/v1/me/recordings (transcription en fond)
+    document.getElementById('btn-submit').addEventListener('click', async () => {
       const btn = document.getElementById('btn-submit');
+      const err = document.getElementById('submit-error');
+      err.classList.add('hidden');
+
+      if (!audioBlob) return;
+      if (!document.getElementById('consent-rec').checked) {
+        err.textContent = "Veuillez consentir à l'enregistrement et à la transcription avant d'envoyer.";
+        err.classList.remove('hidden');
+        return;
+      }
+
       btn.textContent = 'Envoi en cours…';
       btn.disabled = true;
-      setTimeout(() => {
+      try {
+        const audio_data = await blobToBase64(audioBlob);
+        await uploadMyRecording({
+          audio_data,
+          filename: 'enregistrement.webm',
+          formule: formuleId in FORMULES ? formuleId : 'libre',
+          duration_seconds: Math.max(1, secondsElapsed),
+        });
         document.getElementById('step-playback').classList.add('hidden');
         document.getElementById('step-confirm').classList.remove('hidden');
         document.getElementById('step-3-lbl').classList.replace('text-muted','text-forest-deep');
-      }, 1400);
+      } catch (e) {
+        err.textContent = "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez — votre enregistrement est encore là.";
+        err.classList.remove('hidden');
+        btn.textContent = 'Soumettre à IVIA →';
+        btn.disabled = false;
+      }
     });
   </script>
 

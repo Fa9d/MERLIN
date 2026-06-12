@@ -456,6 +456,14 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             logger.warning("Seance introuvable pour pipeline post-enregistrement: %s", session_id)
             return
 
+        # Persister la transcription immédiatement : le client peut relire ses
+        # propres mots même si la génération de note échoue plus loin.
+        session_record.transcript_text = transcript_text
+        if session_record.actual_end_at is None:
+            session_record.actual_end_at = datetime.now(timezone.utc)
+        db.add(session_record)
+        db.commit()
+
         existing_note = db.scalar(
             select(SessionNote).where(SessionNote.session_id == session_id).order_by(
                 SessionNote.created_at.desc()

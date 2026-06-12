@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -48,6 +48,8 @@ class SessionRecord(Base):
     room_sid: Mapped[str | None] = mapped_column(String(160), nullable=True)
     egress_id: Mapped[str | None] = mapped_column(String(160), nullable=True)
     audio_file_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    # Transcription persistée (faster-whisper / AssemblyAI) — relisible par le client.
+    transcript_text: Mapped[str | None] = mapped_column(Text, nullable=True)
     operator_user_id: Mapped[str] = mapped_column(String(64), nullable=False)
     praticien_id: Mapped[str | None] = mapped_column(
         ForeignKey("app_users.id"), nullable=True, index=True

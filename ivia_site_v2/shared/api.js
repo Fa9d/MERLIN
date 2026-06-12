@@ -166,6 +166,30 @@ async function createMyJournalEntry(payload) {
   return _req('/api/v1/me/journal', { method: 'POST', body: payload });
 }
 
+// ── Enregistrements solo (client connecté) ───────────────────────────────────
+/**
+ * Envoie un enregistrement solo (base64) — transcription lancée en tâche de fond.
+ * @param {{audio_data, filename?, formule?, duration_seconds?}} payload
+ */
+async function uploadMyRecording(payload) {
+  return _req('/api/v1/me/recordings', { method: 'POST', body: payload });
+}
+
+/** Enregistrements solo du compte connecté, avec transcription quand prête. */
+async function getMyRecordings() {
+  return _req('/api/v1/me/recordings');
+}
+
+/** Convertit un Blob audio en base64 (sans le préfixe data:). */
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(String(reader.result).split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
 // ── Praticiens (public) ───────────────────────────────────────────────────────
 /**
  * Liste les praticiens publics.
