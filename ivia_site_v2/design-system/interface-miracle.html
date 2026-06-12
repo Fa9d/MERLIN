@@ -8,9 +8,9 @@
   <!--
     DÉMONSTRATION « interface miracle » — preuve d'usage du produit IVIA.
     Données ENTIÈREMENT FICTIVES. Aucun appel API, aucune authentification.
-    Objectif : montrer en 15 secondes ce qu'IVIA fait que les autres ne font pas :
-      Client     → journal vivant, carte de vie qui évolue, lecture du chemin
-      Praticien  → synthèse de continuité, récurrences, fils à reprendre
+    Vue Client : les QUATRE verbes sont actifs — Aujourd'hui / Parler / Écrire / Voir,
+    chacun ouvre sa vue, avec navigation croisée (les cartes renvoient les unes aux autres).
+    Vue Praticien : synthèse de continuité, récurrences, fils à reprendre.
     Posture : Observation / Hypothèse / Orientation — aucun vocabulaire clinique (Loi 21).
   -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -31,10 +31,19 @@
     .axe-lien   { transition: opacity .7s, stroke-width .7s; }
     .axe-groupe { cursor: pointer; }
     .axe-groupe:hover .axe-cercle { opacity: .8; }
-    /* Slider sobre */
+    /* Waveform */
+    @keyframes wave-pulse { 0%,100% { transform: scaleY(.25); } 50% { transform: scaleY(1); } }
+    .wave-bar { display:block; width:3px; background:#4A7C59; border-radius:2px; opacity:.5;
+                animation: wave-pulse 1.6s ease-in-out infinite; transform-origin: bottom center; }
+    /* Apparition douce des vues */
+    @keyframes vue-in { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
+    .verbe-vue:not(.hidden) { animation: vue-in .3s ease-out; }
     input[type=range] { accent-color: #2D6A4F; }
-    .vue-prat input[type=range] { accent-color: #D97706; }
-    @media (prefers-reduced-motion: reduce) { .axe-cercle, .axe-lien { transition: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .axe-cercle, .axe-lien { transition: none; }
+      .wave-bar { animation: none; transform: scaleY(.6); }
+      .verbe-vue:not(.hidden) { animation: none; }
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -71,106 +80,283 @@
   <!-- ════════════════════════════ VUE CLIENT ═══════════════════════════════ -->
   <main id="vue-client" class="max-w-6xl mx-auto px-4 pb-20">
 
-    <!-- Barre quatre verbes — l'espace réel -->
-    <div class="flex justify-center mb-8">
-      <div class="inline-flex items-center gap-1 bg-white border border-bdr rounded-full px-2 py-1.5 text-xs">
-        <span class="px-3 py-1 rounded-full text-muted">Aujourd'hui</span>
-        <span class="px-3 py-1 rounded-full text-muted">Parler</span>
-        <span class="px-3 py-1 rounded-full text-muted">Écrire</span>
-        <span class="px-3 py-1 rounded-full bg-forest-deep text-white font-semibold">Voir</span>
+    <!-- Barre quatre verbes — TOUS actifs -->
+    <nav class="flex justify-center mb-9" aria-label="Navigation de l'espace client (démo)">
+      <div class="inline-flex items-center gap-1 bg-white border border-bdr rounded-full px-2 py-1.5 text-sm" role="tablist">
+        <button id="verbe-btn-aujourdhui" role="tab" aria-selected="true" onclick="basculerVerbe('aujourdhui')"
+                class="px-4 py-1.5 rounded-full bg-forest-deep text-white font-semibold cursor-pointer transition-colors">Aujourd'hui</button>
+        <button id="verbe-btn-parler" role="tab" aria-selected="false" onclick="basculerVerbe('parler')"
+                class="px-4 py-1.5 rounded-full text-muted hover:text-ink hover:bg-surface font-medium cursor-pointer transition-colors">Parler</button>
+        <button id="verbe-btn-ecrire" role="tab" aria-selected="false" onclick="basculerVerbe('ecrire')"
+                class="px-4 py-1.5 rounded-full text-muted hover:text-ink hover:bg-surface font-medium cursor-pointer transition-colors">Écrire</button>
+        <button id="verbe-btn-voir" role="tab" aria-selected="false" onclick="basculerVerbe('voir')"
+                class="px-4 py-1.5 rounded-full text-muted hover:text-ink hover:bg-surface font-medium cursor-pointer transition-colors">Voir</button>
       </div>
-    </div>
+    </nav>
 
-    <div class="grid lg:grid-cols-5 gap-6">
+    <!-- ── AUJOURD'HUI — le seuil de l'espace ────────────────────────────── -->
+    <section id="vc-aujourdhui" class="verbe-vue" aria-labelledby="auj-titre">
+      <div class="mb-7">
+        <h2 id="auj-titre" class="font-heading text-2xl font-bold text-ink">Bonjour, R.</h2>
+        <p class="text-sm text-muted mt-1">Votre espace, à votre rythme. Rien n'est exigé ici.</p>
+      </div>
 
-      <!-- ── Carte de vie (3 colonnes) ─────────────────────────────────── -->
-      <section class="lg:col-span-3 bg-white border border-bdr rounded-[24px] p-7" aria-labelledby="carte-titre">
-        <div class="flex items-start justify-between gap-4 mb-2">
+      <div class="grid md:grid-cols-3 gap-5">
+        <article class="bg-white border border-bdr rounded-[20px] p-6 flex flex-col">
+          <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-3">Votre prochaine rencontre</p>
+          <p class="font-heading text-lg font-bold text-ink mb-1">Jeudi · 10 h</p>
+          <p class="text-sm text-muted leading-relaxed flex-1">Avec Mylène — le lien arrive par courriel avant l'heure.</p>
+          <button onclick="basculerVerbe('parler')"
+                  class="mt-4 text-sm font-semibold text-forest-deep hover:underline text-left cursor-pointer">
+            Voir mes séances →
+          </button>
+        </article>
+
+        <article class="bg-white border border-bdr rounded-[20px] p-6 flex flex-col">
+          <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-3">Votre dernier mot déposé</p>
+          <p class="text-sm text-ink italic leading-relaxed flex-1">« Marché une heure sans téléphone. Dormi d'un trait. Ça existe encore. »</p>
+          <button onclick="basculerVerbe('ecrire')"
+                  class="mt-4 text-sm font-semibold text-forest-deep hover:underline text-left cursor-pointer">
+            Écrire maintenant →
+          </button>
+        </article>
+
+        <article class="bg-white border border-bdr rounded-[20px] p-6 flex flex-col">
+          <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-3">Votre carte bouge</p>
+          <div class="flex items-end gap-1.5 h-9 mb-2" aria-hidden="true">
+            <span class="block w-5 rounded-t bg-bdr" style="height:80%"></span>
+            <span class="block w-5 rounded-t bg-sage" style="height:65%"></span>
+            <span class="block w-5 rounded-t bg-forest" style="height:50%"></span>
+            <span class="block w-5 rounded-t bg-forest-deep" style="height:35%"></span>
+          </div>
+          <p class="text-sm text-muted leading-relaxed flex-1">Le sommeil s'apaise depuis trois semaines.</p>
+          <button onclick="basculerVerbe('voir')"
+                  class="mt-4 text-sm font-semibold text-forest-deep hover:underline text-left cursor-pointer">
+            Voir ma carte de vie →
+          </button>
+        </article>
+      </div>
+
+      <div class="mt-6 bg-surface/70 border border-bdr rounded-[16px] px-6 py-4">
+        <p class="text-sm text-ink leading-relaxed">
+          <span class="font-semibold text-forest-deep">Le fil du jour —</span>
+          dimanche, le calme est revenu en marchant. Si quelque chose veut être déposé
+          aujourd'hui, l'espace est là. Sinon, c'est très bien aussi.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── PARLER — séances et voix ──────────────────────────────────────── -->
+    <section id="vc-parler" class="verbe-vue hidden" aria-labelledby="parler-titre">
+      <div class="mb-7">
+        <h2 id="parler-titre" class="font-heading text-2xl font-bold text-ink">Parler</h2>
+        <p class="text-sm text-muted mt-1">En direct avec une présence humaine, ou seul·e, à votre rythme. Votre voix est effacée après 30 jours.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-5 mb-5">
+        <article class="bg-white border-2 border-forest-deep rounded-[20px] p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-forest-deep">Prochaine séance</p>
+            <span class="text-[10px] font-bold text-white bg-forest-deep rounded-full px-3 py-1">confirmée</span>
+          </div>
+          <p class="font-heading text-lg font-bold text-ink mb-2">Jeudi · 10 h — 11 h · avec Mylène</p>
+          <div class="flex items-end gap-[3px] h-6 mb-3" aria-hidden="true">
+            <span class="wave-bar" style="height:10px;animation-delay:0s"></span>
+            <span class="wave-bar" style="height:18px;animation-delay:.1s"></span>
+            <span class="wave-bar" style="height:13px;animation-delay:.2s"></span>
+            <span class="wave-bar" style="height:22px;animation-delay:.3s"></span>
+            <span class="wave-bar" style="height:15px;animation-delay:.4s"></span>
+            <span class="wave-bar" style="height:19px;animation-delay:.5s"></span>
+            <span class="wave-bar" style="height:11px;animation-delay:.6s"></span>
+            <span class="wave-bar" style="height:16px;animation-delay:.7s"></span>
+          </div>
+          <p class="text-sm text-muted leading-relaxed">Audio seulement — intentionnel. Pas de caméra, pas de mise en scène.</p>
+        </article>
+
+        <article class="bg-white border border-bdr rounded-[20px] p-6">
+          <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-3">Entre les séances</p>
+          <p class="font-heading text-lg font-bold text-ink mb-2">Déposer votre voix, à votre rythme</p>
+          <p class="text-sm text-muted leading-relaxed mb-4">
+            Quand quelque chose pèse et que la séance est loin : enregistrez librement.
+            Votre praticien·ne l'écoute si vous le partagez — sinon, ça reste à vous.
+          </p>
+          <span class="inline-flex items-center gap-2 text-sm font-semibold text-forest-deep border border-bdr rounded-[10px] px-4 py-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-forest-deep" aria-hidden="true"></span>
+            Enregistrer
+          </span>
+        </article>
+      </div>
+
+      <h3 class="font-heading text-base font-bold text-ink mb-3">Ce que vos séances ont laissé</h3>
+      <div class="space-y-3">
+        <article class="bg-white border border-bdr rounded-[16px] px-5 py-4 flex items-start gap-4">
+          <div class="w-11 h-11 rounded-[10px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
+            <span class="text-[9px] font-semibold text-muted uppercase">mai</span>
+            <span class="text-base font-bold text-ink leading-none">28</span>
+          </div>
           <div>
-            <h2 id="carte-titre" class="font-heading text-xl font-bold text-ink">Votre carte de vie</h2>
-            <p class="text-xs text-muted mt-1">Elle se compose au fil des séances et du journal — rien à remplir.</p>
+            <p class="text-sm font-semibold text-ink mb-0.5">Rencontre 5 · fil retenu</p>
+            <p class="text-sm text-muted italic leading-relaxed">« Si je ralentis, tout s'écroule. Enfin… je pense. »</p>
           </div>
-          <span class="text-[10px] font-semibold uppercase tracking-wider text-forest bg-surface border border-bdr rounded-full px-3 py-1 shrink-0">vivante</span>
-        </div>
-
-        <svg id="carte-svg" viewBox="0 0 420 360" class="w-full" role="img"
-             aria-label="Carte de vie : huit dimensions dont l'intensité évolue de semaine en semaine">
-          <!-- liens centre→axes (dessinés en JS) -->
-          <g id="carte-liens"></g>
-          <!-- centre -->
-          <circle cx="210" cy="180" r="26" fill="#2D6A4F"/>
-          <text x="210" y="184" text-anchor="middle" fill="white" font-size="11" font-weight="600">vous</text>
-          <!-- axes (dessinés en JS) -->
-          <g id="carte-axes"></g>
-        </svg>
-
-        <!-- Curseur temporel — le « miracle » : la carte bouge -->
-        <div class="mt-3 bg-surface/70 border border-bdr rounded-[14px] px-5 py-4">
-          <div class="flex items-center justify-between mb-2">
-            <label for="curseur-semaine" class="text-xs font-semibold text-ink">Revoir le chemin</label>
-            <span id="etiquette-semaine" class="text-xs font-semibold text-forest-deep">Semaine 6</span>
+        </article>
+        <article class="bg-white border border-bdr rounded-[16px] px-5 py-4 flex items-start gap-4">
+          <div class="w-11 h-11 rounded-[10px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
+            <span class="text-[9px] font-semibold text-muted uppercase">mai</span>
+            <span class="text-base font-bold text-ink leading-none">14</span>
           </div>
-          <input id="curseur-semaine" type="range" min="1" max="6" value="6" step="1" class="w-full cursor-pointer"
-                 oninput="majSemaine(+this.value)" aria-describedby="lecture-semaine">
-          <p id="lecture-semaine" class="text-xs text-muted mt-2 leading-relaxed">
-            Le sommeil s'apaise, le travail prend moins de place. La relation reste un point sensible — c'est le fil de la prochaine séance.
-          </p>
-        </div>
-      </section>
+          <div>
+            <p class="text-sm font-semibold text-ink mb-0.5">Rencontre 4 · fil retenu</p>
+            <p class="text-sm text-muted italic leading-relaxed">« Avec elle, j'aurais voulu dire autre chose. »</p>
+          </div>
+        </article>
+      </div>
+      <p class="text-xs text-muted mt-4">
+        Chaque rencontre laisse un fil — pas un rapport. Vous les retrouvez ici, et la carte
+        <button onclick="basculerVerbe('voir')" class="font-semibold text-forest-deep hover:underline cursor-pointer">les met en perspective →</button>
+      </p>
+    </section>
 
-      <!-- ── Journal vivant (2 colonnes) ───────────────────────────────── -->
-      <section class="lg:col-span-2 bg-white border border-bdr rounded-[24px] p-7 flex flex-col" aria-labelledby="journal-titre">
-        <h2 id="journal-titre" class="font-heading text-xl font-bold text-ink mb-1">Votre journal, qui travaille pour vous</h2>
-        <p class="text-xs text-muted mb-5">Ce qui revient souvent se met à compter — sans que vous ayez à l'analyser.</p>
+    <!-- ── ÉCRIRE — le journal vivant ────────────────────────────────────── -->
+    <section id="vc-ecrire" class="verbe-vue hidden" aria-labelledby="ecrire-titre">
+      <div class="mb-7">
+        <h2 id="ecrire-titre" class="font-heading text-2xl font-bold text-ink">Écrire</h2>
+        <p class="text-sm text-muted mt-1">Un journal privé qui travaille pour vous : ce qui revient souvent se met à compter, sans que vous ayez à l'analyser.</p>
+      </div>
 
-        <!-- Ce qui revient -->
-        <div class="mb-5">
-          <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Ce qui revient ces semaines-ci</p>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="filtrerJournal('sommeil', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">sommeil ×4</button>
-            <button onclick="filtrerJournal('travail', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">travail ×3</button>
-            <button onclick="filtrerJournal('couple', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">couple ×3</button>
-            <button onclick="filtrerJournal('calme', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">moments de calme ×2</button>
+      <div class="grid lg:grid-cols-5 gap-6">
+        <!-- Nouvelle entrée — interactive -->
+        <div class="lg:col-span-2">
+          <div class="bg-white border border-bdr rounded-[20px] p-6">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-3">Déposer quelque chose</p>
+            <textarea id="nouvelle-entree" rows="4" maxlength="280"
+                      placeholder="Écrivez librement. Cette entrée reste privée."
+                      class="w-full border border-bdr rounded-[14px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest bg-cream leading-relaxed resize-none"></textarea>
+            <div class="flex flex-wrap gap-2 mt-3 mb-4">
+              <button onclick="basculerRegistre(this)" data-reg="sommeil" class="reg-chip border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full cursor-pointer hover:border-forest transition-colors">sommeil</button>
+              <button onclick="basculerRegistre(this)" data-reg="travail" class="reg-chip border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full cursor-pointer hover:border-forest transition-colors">travail</button>
+              <button onclick="basculerRegistre(this)" data-reg="couple" class="reg-chip border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full cursor-pointer hover:border-forest transition-colors">couple</button>
+              <button onclick="basculerRegistre(this)" data-reg="calme" class="reg-chip border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full cursor-pointer hover:border-forest transition-colors">calme</button>
+            </div>
+            <button onclick="deposerEntree()"
+                    class="w-full bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+              Déposer
+            </button>
+            <p id="echo-depot" class="hidden text-xs text-forest-deep font-medium mt-3 text-center">Déposé. C'est à vous, et ça compte déjà.</p>
+          </div>
+
+          <div class="mt-5 bg-surface/70 border border-bdr rounded-[16px] px-5 py-4">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1.5">Lecture du chemin</p>
+            <p class="text-sm text-ink leading-relaxed">
+              <span class="font-semibold text-forest-deep">Observation —</span> le sommeil revient 4 fois,
+              toujours les semaines où le travail déborde.
+              <span class="font-semibold text-forest-deep">Hypothèse —</span> les deux fils sont peut-être liés.
+              <span class="font-semibold text-forest-deep">Orientation —</span> à déposer en séance, si vous le souhaitez.
+            </p>
           </div>
         </div>
 
-        <!-- Entrées -->
-        <div id="journal-liste" class="space-y-3 flex-1">
-          <article data-themes="sommeil travail" class="entree border border-bdr rounded-[14px] px-4 py-3 transition-opacity">
-            <p class="text-[10px] text-muted mb-1">mardi · intensité marquée</p>
-            <p class="text-sm text-ink leading-relaxed italic">« Réveillé à 4 h encore. La présentation me suit jusque dans la nuit. »</p>
-          </article>
-          <article data-themes="couple" class="entree border border-bdr rounded-[14px] px-4 py-3 transition-opacity">
-            <p class="text-[10px] text-muted mb-1">jeudi · intensité présente</p>
-            <p class="text-sm text-ink leading-relaxed italic">« On s'est parlé sans s'entendre. J'aurais voulu dire autre chose. »</p>
-          </article>
-          <article data-themes="calme sommeil" class="entree border border-bdr rounded-[14px] px-4 py-3 transition-opacity">
-            <p class="text-[10px] text-muted mb-1">dimanche · intensité légère</p>
-            <p class="text-sm text-ink leading-relaxed italic">« Marché une heure sans téléphone. Dormi d'un trait. Ça existe encore. »</p>
-          </article>
+        <!-- Entrées + récurrences -->
+        <div class="lg:col-span-3">
+          <div class="bg-white border border-bdr rounded-[20px] p-6">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Ce qui revient ces semaines-ci <span class="normal-case font-normal">(cliquez pour relire)</span></p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <button onclick="filtrerJournal('sommeil', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">sommeil <span data-compte="sommeil">×4</span></button>
+              <button onclick="filtrerJournal('travail', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">travail <span data-compte="travail">×3</span></button>
+              <button onclick="filtrerJournal('couple', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">couple <span data-compte="couple">×3</span></button>
+              <button onclick="filtrerJournal('calme', this)" class="chip-theme border border-bdr bg-surface text-forest-deep text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:border-forest transition-colors">calme <span data-compte="calme">×2</span></button>
+            </div>
+
+            <div id="journal-liste" class="space-y-3">
+              <article data-themes="sommeil travail" class="entree border border-bdr rounded-[14px] px-4 py-3 transition-opacity">
+                <p class="text-[10px] text-muted mb-1">mardi · intensité marquée</p>
+                <p class="text-sm text-ink leading-relaxed italic">« Réveillé à 4 h encore. La présentation me suit jusque dans la nuit. »</p>
+              </article>
+              <article data-themes="couple" class="entree border border-bdr rounded-[14px] px-4 py-3 transition-opacity">
+                <p class="text-[10px] text-muted mb-1">jeudi · intensité présente</p>
+                <p class="text-sm text-ink leading-relaxed italic">« On s'est parlé sans s'entendre. J'aurais voulu dire autre chose. »</p>
+              </article>
+              <article data-themes="calme sommeil" class="entree border border-bdr rounded-[14px] px-4 py-3 transition-opacity">
+                <p class="text-[10px] text-muted mb-1">dimanche · intensité légère</p>
+                <p class="text-sm text-ink leading-relaxed italic">« Marché une heure sans téléphone. Dormi d'un trait. Ça existe encore. »</p>
+              </article>
+            </div>
+
+            <p class="text-xs text-muted mt-4">
+              Ces fils nourrissent votre carte —
+              <button onclick="basculerVerbe('voir')" class="font-semibold text-forest-deep hover:underline cursor-pointer">voir ce qu'ils dessinent →</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VOIR — la carte de vie ────────────────────────────────────────── -->
+    <section id="vc-voir" class="verbe-vue hidden" aria-labelledby="voir-titre">
+      <div class="mb-7">
+        <h2 id="voir-titre" class="font-heading text-2xl font-bold text-ink">Voir</h2>
+        <p class="text-sm text-muted mt-1">Votre carte de vie se compose au fil des séances et du journal — rien à remplir, rien à mesurer vous-même.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-6">
+        <div class="lg:col-span-3 bg-white border border-bdr rounded-[24px] p-7">
+          <div class="flex items-start justify-between gap-4 mb-2">
+            <h3 class="font-heading text-lg font-bold text-ink">Huit dimensions, un seul chemin</h3>
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-forest bg-surface border border-bdr rounded-full px-3 py-1 shrink-0">vivante</span>
+          </div>
+
+          <svg id="carte-svg" viewBox="0 0 420 360" class="w-full" role="img"
+               aria-label="Carte de vie : huit dimensions dont l'intensité évolue de semaine en semaine">
+            <g id="carte-liens"></g>
+            <circle cx="210" cy="180" r="26" fill="#2D6A4F"/>
+            <text x="210" y="184" text-anchor="middle" fill="white" font-size="11" font-weight="600">vous</text>
+            <g id="carte-axes"></g>
+          </svg>
+
+          <div class="mt-3 bg-surface/70 border border-bdr rounded-[14px] px-5 py-4">
+            <div class="flex items-center justify-between mb-2">
+              <label for="curseur-semaine" class="text-xs font-semibold text-ink">Revoir le chemin</label>
+              <span id="etiquette-semaine" class="text-xs font-semibold text-forest-deep">Semaine 6</span>
+            </div>
+            <input id="curseur-semaine" type="range" min="1" max="6" value="6" step="1" class="w-full cursor-pointer"
+                   oninput="majSemaine(+this.value)" aria-describedby="lecture-semaine">
+            <p id="lecture-semaine" class="text-xs text-muted mt-2 leading-relaxed">
+              Le sommeil s'apaise, le travail prend moins de place. La relation reste un point sensible — c'est le fil de la prochaine séance.
+            </p>
+          </div>
         </div>
 
-        <!-- Lecture du chemin -->
-        <div class="mt-5 bg-surface/70 border border-bdr rounded-[14px] px-4 py-3.5">
-          <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1.5">Lecture du chemin</p>
-          <p class="text-sm text-ink leading-relaxed">
-            <span class="font-semibold text-forest-deep">Observation —</span> le sommeil revient 4 fois,
-            toujours les semaines où le travail déborde.
-            <span class="font-semibold text-forest-deep">Hypothèse —</span> les deux fils sont peut-être liés.
-            <span class="font-semibold text-forest-deep">Orientation —</span> à déposer en séance, si vous le souhaitez.
-          </p>
+        <div class="lg:col-span-2 space-y-5">
+          <div class="bg-white border border-bdr rounded-[20px] p-6">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-3">Comment la lire</p>
+            <ul class="space-y-3 text-sm text-muted leading-relaxed" role="list">
+              <li class="flex gap-3"><span class="w-3 h-3 rounded-full bg-forest mt-1 shrink-0" aria-hidden="true"></span>Un cercle plein : cette dimension occupe de la place ces temps-ci.</li>
+              <li class="flex gap-3"><span class="w-3 h-3 rounded-full bg-sage mt-1 shrink-0" aria-hidden="true"></span>Un cercle clair : ça respire.</li>
+              <li class="flex gap-3"><span class="w-3 h-3 rounded-full bg-braise mt-1 shrink-0" aria-hidden="true"></span>L'orange : deux fils se tendent ensemble — un bon point de départ pour parler.</li>
+            </ul>
+          </div>
+          <div class="bg-white border border-bdr rounded-[20px] p-6">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Ce que la carte a vu bouger</p>
+            <p class="text-sm text-ink leading-relaxed mb-4">
+              En six semaines : le sommeil s'apaise, le corps relâche, la relation
+              demande maintenant sa place. Rien n'est figé — c'est un chemin, pas un bilan.
+            </p>
+            <button onclick="basculerVerbe('parler')"
+                    class="text-sm font-semibold text-forest-deep hover:underline cursor-pointer">
+              En parler jeudi →
+            </button>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
 
-    <p class="text-center text-xs text-muted mt-8">
-      Rien de tout cela n'est une étiquette. C'est votre matière, lisible — et elle vous appartient.
-    </p>
+      <p class="text-center text-xs text-muted mt-8">
+        Rien de tout cela n'est une étiquette. C'est votre matière, lisible — et elle vous appartient.
+      </p>
+    </section>
   </main>
 
 
   <!-- ═══════════════════════════ VUE PRATICIEN ═════════════════════════════ -->
-  <main id="vue-prat" class="hidden vue-prat">
+  <main id="vue-prat" class="hidden">
     <div class="bg-nuit text-[#e8f5eb] py-12">
       <div class="max-w-6xl mx-auto px-4">
 
@@ -287,8 +473,42 @@
 
 
   <script>
+    // ══ Switcher Client / Praticien ══════════════════════════════════════════
+    function basculerVue(vue) {
+      document.getElementById('vue-client').classList.toggle('hidden', vue !== 'client');
+      document.getElementById('vue-prat').classList.toggle('hidden', vue !== 'prat');
+      [['btn-client','client'], ['btn-prat','prat']].forEach(([id, v]) => {
+        const b = document.getElementById(id);
+        const actif = v === vue;
+        b.setAttribute('aria-selected', String(actif));
+        b.classList.toggle('bg-white', actif);
+        b.classList.toggle('shadow-sm', actif);
+        b.classList.toggle('text-ink', actif);
+        b.classList.toggle('font-semibold', actif);
+        b.classList.toggle('text-muted', !actif);
+        b.classList.toggle('font-medium', !actif);
+      });
+    }
+
+    // ══ Quatre verbes — tous actifs ══════════════════════════════════════════
+    const VERBES = ['aujourdhui', 'parler', 'ecrire', 'voir'];
+    function basculerVerbe(verbe) {
+      VERBES.forEach(v => {
+        document.getElementById('vc-' + v).classList.toggle('hidden', v !== verbe);
+        const b = document.getElementById('verbe-btn-' + v);
+        const actif = v === verbe;
+        b.setAttribute('aria-selected', String(actif));
+        b.classList.toggle('bg-forest-deep', actif);
+        b.classList.toggle('text-white', actif);
+        b.classList.toggle('font-semibold', actif);
+        b.classList.toggle('text-muted', !actif);
+        b.classList.toggle('font-medium', !actif);
+        b.classList.toggle('hover:text-ink', !actif);
+        b.classList.toggle('hover:bg-surface', !actif);
+      });
+    }
+
     // ══ Carte de vie — données fictives sur 6 semaines ═══════════════════════
-    // intensite 0..1 par axe et par semaine (1 → 6)
     const AXES = [
       { id:'territoire', label:'territoire', x:210, y:48,  serie:[.35,.35,.4,.4,.45,.5] },
       { id:'corps',      label:'corps',      x:330, y:90,  serie:[.85,.9,.8,.7,.6,.5] },
@@ -299,7 +519,6 @@
       { id:'emotions',   label:'émotions',   x:55,  y:200, serie:[.7,.7,.65,.6,.55,.5] },
       { id:'mental',     label:'mental',     x:92,  y:90,  serie:[.75,.7,.7,.6,.55,.5] },
     ];
-    // tension visible (lien renforcé) entre deux axes, par semaine
     const TENSIONS = { 1:['sommeil','travail'], 2:['sommeil','travail'], 3:['sommeil','travail'],
                        4:['sommeil','travail'], 5:['relations','emotions'], 6:['relations','emotions'] };
     const LECTURES = {
@@ -368,26 +587,49 @@
         b.classList.toggle('text-forest-deep', !actif);
       });
       document.querySelectorAll('.entree').forEach(e => {
-        const visible = !themeActif || e.dataset.themes.split(' ').includes(themeActif);
+        const visible = !themeActif || (e.dataset.themes || '').split(' ').includes(themeActif);
         e.style.opacity = visible ? '1' : '.25';
       });
     }
 
-    // ══ Switcher Client / Praticien ══════════════════════════════════════════
-    function basculerVue(vue) {
-      document.getElementById('vue-client').classList.toggle('hidden', vue !== 'client');
-      document.getElementById('vue-prat').classList.toggle('hidden', vue !== 'prat');
-      [['btn-client','client'], ['btn-prat','prat']].forEach(([id, v]) => {
-        const b = document.getElementById(id);
-        const actif = v === vue;
-        b.setAttribute('aria-selected', String(actif));
-        b.classList.toggle('bg-white', actif);
-        b.classList.toggle('shadow-sm', actif);
-        b.classList.toggle('text-ink', actif);
-        b.classList.toggle('font-semibold', actif);
-        b.classList.toggle('text-muted', !actif);
-        b.classList.toggle('font-medium', !actif);
+    // ══ Journal — déposer une vraie entrée (démo) ════════════════════════════
+    function basculerRegistre(btn) {
+      const actif = btn.classList.toggle('reg-actif');
+      btn.classList.toggle('bg-forest-deep', actif);
+      btn.classList.toggle('text-white', actif);
+      btn.classList.toggle('border-forest-deep', actif);
+      btn.classList.toggle('text-muted', !actif);
+    }
+    function deposerEntree() {
+      const zone = document.getElementById('nouvelle-entree');
+      const texte = zone.value.trim();
+      if (!texte) { zone.focus(); return; }
+      const regs = Array.from(document.querySelectorAll('.reg-chip.reg-actif')).map(b => b.dataset.reg);
+
+      const art = document.createElement('article');
+      art.dataset.themes = regs.join(' ');
+      art.className = 'entree border-2 border-forest/40 rounded-[14px] px-4 py-3 transition-opacity';
+      const meta = document.createElement('p');
+      meta.className = 'text-[10px] text-muted mb-1';
+      meta.textContent = "aujourd'hui" + (regs.length ? ' · ' + regs.join(', ') : '');
+      const corps = document.createElement('p');
+      corps.className = 'text-sm text-ink leading-relaxed italic';
+      corps.textContent = '« ' + texte + ' »';
+      art.appendChild(meta); art.appendChild(corps);
+      const liste = document.getElementById('journal-liste');
+      liste.insertBefore(art, liste.firstChild);
+
+      // les compteurs « ce qui revient » suivent en direct
+      regs.forEach(r => {
+        const span = document.querySelector('[data-compte="' + r + '"]');
+        if (span) span.textContent = '×' + (parseInt(span.textContent.slice(1)) + 1);
       });
+
+      zone.value = '';
+      document.querySelectorAll('.reg-chip.reg-actif').forEach(b => basculerRegistre(b));
+      const echo = document.getElementById('echo-depot');
+      echo.classList.remove('hidden');
+      setTimeout(() => echo.classList.add('hidden'), 2600);
     }
   </script>
 </body>
