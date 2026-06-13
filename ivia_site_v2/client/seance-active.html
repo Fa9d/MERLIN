@@ -712,3 +712,64 @@
 </script>
 </body>
 </html>
+
+
+<!-- CÂBLAGE API RÉEL — séance avec praticien (audio_live) -->
+<script src="/shared/api.js"></script>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const slotId = params.get('slot_id');     // réservation confirmée
+  const sessionIdParam = params.get('session_id'); // reprise session existante
+  let activeSessionId = sessionIdParam || localStorage.getItem('ivia_active_session_id');
+
+  // Initialiser ou reprendre la session au chargement
+  async function initApiSession() {
+    try {
+      if (!activeSessionId) {
+        const payload = { channel_code: 'audio_live' };
+        if (slotId) payload.booking_slot_id = slotId;
+        const session = await createSession(payload);
+        activeSessionId = session.id;
+        localStorage.setItem('ivia_active_session_id', session.id);
+        await startSession(session.id);
+      }
+    } catch (err) {
+      console.error('[IVIA] Erreur init session API:', err);
+      // Ne pas bloquer l'UI — la séance continue localement
+    }
+  }
+
+  // Uploader et fermer la session à la fin d'enregistrement
+  // S'accroche sur l'événement custom dispatché par le code existant
+  document.addEventListener('ivia:recording-stopped', async (e) => {
+    const blob = e.detail && e.detail.audioBlob;
+    if (!blob || !activeSessionId) return;
+    try {
+      await uploadSessionAudio(activeSessionId, blob);
+      await closeSession(activeSessionId);
+      localStorage.removeItem('ivia_active_session_id');
+      // Mettre à jour l'URL du bouton "Voir l'analyse"
+      const btnAnalyse = document.getElementById('btn-voir-analyse');
+      if (btnAnalyse) btnAnalyse.href = `/client/audio-resume.html?session_id=${activeSessionId}&mode=praticien`;
+    } catch (err) {
+      console.error('[IVIA] Erreur upload/close session:', err);
+    }
+  });
+
+  // Attendre que la page soit chargée pour init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApiSession);
+  } else {
+    initApiSession();
+  }
+
+  // Patch : intercepter stopRecording pour dispatcher l'événement custom
+  // Le code existant définit audioBlob au onstop du MediaRecorder
+  // On observe audioBlob via Object.defineProperty
+  const origScript = document.currentScript;
+  window.__iviaSetAudioBlob = function(blob) {
+    document.dispatchEvent(new CustomEvent('ivia:recording-stopped', { detail: { audioBlob: blob } }));
+  };
+})();
+</script>
