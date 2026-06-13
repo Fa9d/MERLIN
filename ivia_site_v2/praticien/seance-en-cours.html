@@ -691,3 +691,85 @@
 
 </body>
 </html>
+
+
+<!-- CÂBLAGE API RÉEL — vue praticien : fiche client réelle + note IA post-séance -->
+<script src="/shared/api.js"></script>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session') || params.get('session_id');
+  const slotId    = params.get('slot_id');
+
+  // Charger la fiche client réelle depuis l'API
+  async function loadFicheClient() {
+    if (!sessionId) return;
+    try {
+      const session = await getSession(sessionId);
+      if (!session) return;
+
+      const c = session.client || {};
+      // Nom
+      const nomEl = document.getElementById('header-client-nom');
+      if (nomEl && (c.prenom || c.nom)) nomEl.textContent = [c.prenom, c.nom].filter(Boolean).join(' ');
+
+      const initialesEl = document.getElementById('client-initiales');
+      if (initialesEl && (c.prenom || c.nom)) {
+        initialesEl.textContent = ((c.prenom||'')[0]||(c.nom||'')[0]||'?').toUpperCase() +
+                                   ((c.nom||'')[0]||'').toUpperCase();
+      }
+
+      const nomCardEl = document.getElementById('client-nom-card');
+      if (nomCardEl && (c.prenom || c.nom)) nomCardEl.textContent = [c.prenom, c.nom].filter(Boolean).join(' ');
+
+      // Méta (motif / date)
+      const metaEl = document.getElementById('client-meta');
+      if (metaEl && session.created_at) {
+        const date = new Date(session.created_at).toLocaleDateString('fr-CA', {weekday:'short', month:'short', day:'numeric'});
+        metaEl.textContent = `Séance du ${date}`;
+      }
+
+      // Stocker l'ID de session pour le compte-rendu
+      localStorage.setItem('ivia_api_session_id', session.id);
+    } catch(err) {
+      console.warn('[IVIA-Praticien] Fiche client API indisponible:', err);
+      // Fallback : les données mock restent affichées
+    }
+  }
+
+  // Après fin de séance : afficher la note IA quand disponible
+  document.addEventListener('ivia:session-closed', async () => {
+    const sid = localStorage.getItem('ivia_api_session_id');
+    if (!sid) return;
+    try {
+      const session = await pollSessionUntilReady(sid);
+      // Stocker la note pour compte-rendu-seance.html
+      if (session.session_note) {
+        localStorage.setItem('ivia_session_note_' + sid, JSON.stringify(session.session_note));
+      }
+    } catch(err) {
+      console.warn('[IVIA-Praticien] Note IA non disponible:', err);
+    }
+  });
+
+  // Patcher le bouton "Aller au compte-rendu" pour inclure session_id API
+  const btnCr = document.getElementById('btn-go-cr');
+  if (btnCr) {
+    const origClick = btnCr.onclick;
+    btnCr.addEventListener('click', () => {
+      const sid = localStorage.getItem('ivia_api_session_id');
+      if (sid) {
+        // Enrichir l'URL de redirection avec le session_id API
+        const currentHref = btnCr.dataset.href || `/praticien/compte-rendu-seance.html`;
+        window.location.href = currentHref + (currentHref.includes('?') ? '&' : '?') + `api_session_id=${sid}`;
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadFicheClient);
+  } else {
+    loadFicheClient();
+  }
+})();
+</script>
