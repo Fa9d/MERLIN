@@ -308,16 +308,34 @@
     });
 
     // Soumettre
-    document.getElementById('btn-submit').addEventListener('click', () => {
-      const btn = document.getElementById('btn-submit');
-      btn.textContent = 'Envoi en cours…';
-      btn.disabled = true;
-      setTimeout(() => {
-        document.getElementById('step-playback').classList.add('hidden');
-        document.getElementById('step-confirm').classList.remove('hidden');
-        document.getElementById('step-3-lbl').classList.replace('text-muted','text-forest-deep');
-      }, 1400);
-    });
+    // Soumettre — câblage API réel (séance libre audio_async)
+        document.getElementById('btn-submit').addEventListener('click', async () => {
+          if (!audioBlob) return;
+          const btn = document.getElementById('btn-submit');
+          btn.textContent = 'Envoi en cours…';
+          btn.disabled = true;
+          try {
+            // 1. Créer une session séance libre (audio_async)
+            const session = await createSession({ channel_code: 'audio_async' });
+            // 2. Uploader l'audio → déclenche faster-whisper en arrière-plan
+            await uploadSessionAudio(session.id, audioBlob);
+            // 3. Passer à l'étape confirmation et rediriger vers l'analyse
+            document.getElementById('step-playback').classList.add('hidden');
+            document.getElementById('step-confirm').classList.remove('hidden');
+            document.getElementById('step-3-lbl').classList.replace('text-muted','text-forest-deep');
+            // Stocker l'ID de session pour audio-resume.html
+            sessionStorage.setItem('ivia_pending_session_id', session.id);
+            // Redirection automatique après 2s vers la page d'analyse
+            setTimeout(() => {
+              window.location.href = `/client/audio-resume.html?session_id=${session.id}&mode=libre`;
+            }, 2000);
+          } catch (err) {
+            console.error('Erreur upload séance libre:', err);
+            btn.textContent = 'Réessayer';
+            btn.disabled = false;
+            alert('Une erreur est survenue lors de l\'envoi. Votre enregistrement est conservé localement.');
+          }
+        });
   </script>
 
 <div id="ivia-footer"></div>
