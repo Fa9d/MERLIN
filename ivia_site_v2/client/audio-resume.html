@@ -206,3 +206,85 @@
 
 </body>
 </html>
+
+
+<!-- CÂBLAGE API RÉEL — charge et affiche la note IA depuis le backend -->
+<script src="/shared/api.js"></script>
+<script>
+(function() {
+  // Récupérer session_id depuis l'URL (?session_id=xxx&mode=libre|praticien)
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const mode = params.get('mode') || 'praticien';
+
+  if (!sessionId) return; // pas de session_id = mode demo/mock, ne rien faire
+
+  // Overlay de chargement
+  function showLoading(msg) {
+    const el = document.getElementById('loading-indicator');
+    if (el) { el.textContent = msg; el.classList.remove('hidden'); }
+  }
+  function hideLoading() {
+    const el = document.getElementById('loading-indicator');
+    if (el) el.classList.add('hidden');
+  }
+
+  // Afficher la note IA dans la page
+  function renderSessionNote(session) {
+    const note = session.session_note || {};
+
+    // Titre
+    const titreEl = document.getElementById('seance-titre');
+    if (titreEl) {
+      const date = session.created_at ? new Date(session.created_at).toLocaleDateString('fr-CA', {weekday:'long', year:'numeric', month:'long', day:'numeric'}) : '';
+      titreEl.textContent = mode === 'libre' ? `Résumé de votre enregistrement libre — ${date}` : `Résumé de séance — ${date}`;
+    }
+
+    // Méta
+    const metaEl = document.getElementById('seance-meta');
+    if (metaEl) {
+      const praticien = session.praticien ? `${session.praticien.prenom || ''} ${session.praticien.nom || ''}`.trim() : (mode === 'libre' ? 'Enregistrement personnel' : '—');
+      const duree = session.duration_seconds ? `${Math.round(session.duration_seconds / 60)} min` : '';
+      metaEl.textContent = [praticien, duree].filter(Boolean).join(' · ');
+    }
+
+    // Résumé / Summary
+    const summaryEl = document.getElementById('seance-tags');
+    if (summaryEl && note.summary) {
+      summaryEl.innerHTML = `<p class="text-sm text-forest-dark leading-relaxed">${note.summary}</p>`;
+    }
+
+    // Observations
+    if (note.observations && note.observations.length) {
+      const obsContainer = document.createElement('div');
+      obsContainer.className = 'mt-4';
+      obsContainer.innerHTML = `<h3 class="text-sm font-semibold text-forest-deep mb-2">Observations</h3><ul class="list-disc list-inside text-sm text-forest-dark space-y-1">${note.observations.map(o => `<li>${o}</li>`).join('')}</ul>`;
+      const parent = summaryEl ? summaryEl.parentElement : null;
+      if (parent) parent.appendChild(obsContainer);
+    }
+
+    // Actions de suivi
+    if (note.follow_up_actions && note.follow_up_actions.length) {
+      const actEl = document.createElement('div');
+      actEl.className = 'mt-4';
+      actEl.innerHTML = `<h3 class="text-sm font-semibold text-forest-deep mb-2">Pistes de suivi</h3><ul class="list-disc list-inside text-sm text-forest-dark space-y-1">${note.follow_up_actions.map(a => `<li>${a}</li>`).join('')}</ul>`;
+      const parent = summaryEl ? summaryEl.parentElement : null;
+      if (parent) parent.appendChild(actEl);
+    }
+
+    hideLoading();
+  }
+
+  // Démarrer le chargement dès que la page est prête
+  document.addEventListener('DOMContentLoaded', async () => {
+    showLoading('Analyse en cours — cela peut prendre quelques instants…');
+    try {
+      const session = await pollSessionUntilReady(sessionId);
+      renderSessionNote(session);
+    } catch (err) {
+      console.error('Erreur chargement analyse:', err);
+      showLoading('L\'analyse n\'est pas encore disponible. Rafraîchissez dans quelques instants.');
+    }
+  });
+})();
+</script>
