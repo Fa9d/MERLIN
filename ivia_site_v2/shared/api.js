@@ -347,3 +347,116 @@ function formatDateCourteLocale(iso) {
 
 // Export implicite — toutes les fonctions sont disponibles en global
 // dans les pages HTML qui incluent ce script.
+
+
+// ============================================================
+// SESSIONS — créer, démarrer, fermer, lister
+// ============================================================
+
+/**
+ * Crée une nouvelle session.
+ * @param {Object} payload - { channel_code, booking_slot_id?, praticien_id?, client_id? }
+ * channel_code : 'audio_live' (séance avec praticien) | 'audio_async' (séance libre)
+ */
+async function createSession(payload) {
+  return apiCall('/sessions/', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}
+
+/** Récupère une session par son ID. */
+async function getSession(sessionId) {
+  return apiCall(`/sessions/${sessionId}`);
+}
+
+/** Démarre une session (status → in_progress). */
+async function startSession(sessionId) {
+  return apiCall(`/sessions/${sessionId}/start`, { method: 'POST' });
+}
+
+/**
+ * Ferme une session et déclenche la génération de note IA.
+ * @param {string} sessionId
+ * @param {string} [transcriptText] - texte de transcription optionnel
+ */
+async function closeSession(sessionId, transcriptText = '') {
+  return apiCall(`/sessions/${sessionId}/close`, {
+    method: 'POST',
+    body: JSON.stringify({ transcript_text: transcriptText })
+  });
+}
+
+/**
+ * Livraison asynchrone (séance libre audio_async).
+ * Finalise la session et génère la note IA.
+ * @param {string} sessionId
+ * @param {string} responseText - texte libre ou transcription
+ */
+async function deliverAsyncSession(sessionId, responseText = '') {
+  return apiCall(`/sessions/${sessionId}/deliver`, {
+    method: 'POST',
+    body: JSON.stringify({ response_text: responseText })
+  });
+}
+
+/** Liste les sessions du client connecté. */
+async function getMySessions() {
+  return apiCall('/sessions/');
+}
+
+// ============================================================
+// UPLOAD AUDIO — base64 + transcription faster-whisper
+// ============================================================
+
+/**
+ * Convertit un Blob audio en base64.
+ * @param {Blob} blob
+ * @returns {Promise<string>} base64 sans le préfixe data:...
+ */
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/**
+ * Upload l'audio d'une session vers le backend.
+ * Déclenche faster-whisper en arrière-plan.
+ * @param {string} sessionId
+ * @param {Blob} audioBlob - enregistrement MediaRecorder (webm/opus ou mp3)
+ * @returns {Promise<{task_id, status, transcript?}>}
+ */
+async function uploadSessionAudio(sessionId, audioBlob) {
+  const base64 = await blobToBase64(audioBlob);
+  const ext = audioBlob.type.includes('webm') ? 'webm' : 'mp3';
+  const mime = audioBlob.type || 'audio/webm';
+  return apiCall(`/sessions/${sessionId}/upload-audio`, {
+    method: 'POST',
+    body: JSON.stringify({
+      audio_b64: base64,
+      filename: `seance_${sessionId}_${Date.now()}.${ext}`,
+      mime_type: mime
+    })
+  });
+}
+
+/**
+ * Polling — attend que la session soit fermée et la note IA disponible.
+ * @param {string} sessionId
+ * @param {number} [intervalMs=3000] - intervalle de polling en ms
+ * @param {number} [maxAttempts=40]  - max ~2 min par défaut
+ * @returns {Promise<Object>} session avec session_note
+ */
+async function pollSessionUntilReady(sessionId, intervalMs = 3000, maxAttempts = 40) {
+  for (let i = 0; i < maxAttempts; i++) {
+    const session = await getSession(sessionId);
+    if (session.status === 'closed' && session.session_note) return session;
+    if (session.status === 'error') throw new Error('Erreur de traitement IA');
+    await new Promise(r => setTimeout(r, intervalMs));
+  }
+  throw new Error('Délai dépassé — la transcription prend plus de temps que prévu.');
+}
