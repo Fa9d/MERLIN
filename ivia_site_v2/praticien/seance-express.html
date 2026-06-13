@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IVIA · Agenda praticien</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --cream: #f7f3ea;
+      --surface: #fffdf8;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --forest: #245c4f;
+      --forest-soft: #d8e8e2;
+      --border: #e5ddd0;
+      --card: #fffaf2;
+      --warm: #f1e7d8;
+      --danger: #a84b4b;
+      --success: #3f7a55;
+    }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+    }
+    .font-heading {
+      font-family: "Georgia", "Times New Roman", serif;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0.875rem;
+      border-radius: 0.875rem;
+      color: #355149;
+      font-weight: 500;
+      transition: 180ms ease;
+    }
+    .sidebar-link:hover {
+      background: rgba(36, 92, 79, 0.08);
+    }
+    .sidebar-link.active {
+      background: var(--forest);
+      color: white;
+      box-shadow: 0 10px 24px rgba(36, 92, 79, 0.16);
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      box-shadow: 0 12px 30px rgba(76, 55, 34, 0.06);
+    }
+    .pill {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 999px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .pill.active {
+      background: var(--forest);
+      color: white;
+      border-color: var(--forest);
+    }
+    .slot {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 1rem;
+      padding: 0.9rem;
+      transition: 160ms ease;
+    }
+    .slot:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+    .slot.dispo {
+      border-color: #cfe1d6;
+      background: #f6fbf8;
+    }
+    .slot.reserve {
+      border-color: #ead8c0;
+      background: #fff9f0;
+    }
+    .slot.bloque {
+      border-color: #ead0d0;
+      background: #fff6f6;
+    }
+    .calendar-cell {
+      min-height: 120px;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: #fff;
+      padding: 0.75rem;
+    }
+    .mini-event {
+      font-size: 0.75rem;
+      line-height: 1.2;
+      border-radius: 999px;
+      padding: 0.3rem 0.5rem;
+      display: inline-flex;
+      margin-top: 0.35rem;
+      margin-right: 0.25rem;
+      white-space: nowrap;
+    }
+    .mini-dispo { background: #e8f4ec; color: #245c4f; }
+    .mini-reserve { background: #f7ebd6; color: #8a5a14; }
+    .mini-bloque { background: #f6dddd; color: #9b4040; }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen lg:flex">
+    <aside class="hidden lg:flex flex-col w-64 bg-[var(--surface)] border-r border-[var(--border)] px-5 py-6 fixed top-0 left-0 h-screen">
+      <a href="/" class="font-heading text-2xl font-semibold text-[var(--forest)] px-2 mb-2 block">IVIA</a>
+      <p class="text-xs text-[var(--muted)] px-2 mb-6 font-semibold uppercase tracking-[0.2em]">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link">
+          <span>◻︎</span><span>Tableau de bord</span>
+        </a>
+        <a href="/praticien/agenda.html" class="sidebar-link active">
+          <span>◷</span><span>Agenda</span>
+        </a>
+        <a href="/praticien/clients-journal.html" class="sidebar-link">
+          <span>◎</span><span>Clients</span>
+        </a>
+        <a href="/praticien/livraisons.html" class="sidebar-link">
+          <span>✓</span><span>Livraisons</span>
+        </a>
+        <div class="flex-1"></div>
+        <a href="/praticien/profil.html" class="sidebar-link">
+          <span>◉</span><span>Mon profil public</span>
+        </a>
+        <a href="/praticien/compte.html" class="sidebar-link">
+          <span>⚙</span><span>Mon compte</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-64 px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div class="max-w-7xl mx-auto space-y-6">
+        <header class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+          <div>
+            <p class="text-sm text-[var(--muted)]">Pilotage des disponibilités praticien</p>
+            <h1 class="font-heading text-3xl sm:text-4xl font-semibold">Agenda</h1>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="pill" onclick="navigatePeriod(-1)">← Précédent</button>
+            <button class="pill" onclick="goToday()">Aujourd'hui</button>
+            <button class="pill" onclick="navigatePeriod(1)">Suivant →</button>
+            <button class="pill" onclick="toggleCalcMode()" id="calc-toggle">Source : simulation</button>
+          </div>
+        </header>
+
+        <section class="grid grid-cols-1 xl:grid-cols-[1.45fr_0.9fr] gap-6">
+          <div class="space-y-6">
+            <div class="panel p-4 sm:p-5">
+              <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+                <div>
+                  <p class="text-sm text-[var(--muted)]">Vue active</p>
+                  <h2 id="period-title" class="font-heading text-2xl font-semibold">Semaine du 13 juin 2026</h2>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <button class="pill" data-view="jour" onclick="setView('jour')">Jour</button>
+                  <button class="pill active" data-view="semaine" onclick="setView('semaine')">Semaine</button>
+                  <button class="pill" data-view="mois" onclick="setView('mois')">Mois</button>
+                </div>
+              </div>
+
+              <div id="view-jour" class="hidden space-y-3"></div>
+              <div id="view-semaine" class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3"></div>
+              <div id="view-mois" class="hidden">
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3" id="month-grid"></div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="space-y-6">
+            <section class="panel p-5">
+              <div class="flex items-center justify-between gap-3 mb-4">
+                <div>
+                  <p class="text-sm text-[var(--muted)]">Connexion données</p>
+                  <h2 class="font-heading text-2xl font-semibold">Source des créneaux</h2>
+                </div>
+                <span id="source-badge" class="text-xs font-semibold px-3 py-1 rounded-full bg-[var(--forest-soft)] text-[var(--forest)]">Simulation</span>
+              </div>
+              <p class="text-sm text-[var(--muted)] leading-6">Cette page est pensée pour remplacer l'ancien agenda et brancher plus tard une source type Calc, sans dépendre d'un composant rigide codé en dur.</p>
+              <div class="mt-4 space-y-3 text-sm">
+                <div class="flex items-start gap-3 p-3 rounded-2xl bg-[var(--card)] border border-[var(--border)]">
+                  <span class="text-lg">1</span>
+                  <div>
+                    <p class="font-semibold">Mode actuel</p>
+                    <p class="text-[var(--muted)]">Les créneaux viennent d'un dataset local pour te permettre de valider l'interface.</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-2xl bg-[var(--card)] border border-[var(--border)]">
+                  <span class="text-lg">2</span>
+                  <div>
+                    <p class="font-semibold">Étape suivante</p>
+                    <p class="text-[var(--muted)]">Remplacer le dataset par une lecture de source tabulaire ou API sync.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel p-5">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <p class="text-sm text-[var(--muted)]">Synthèse</p>
+                  <h2 class="font-heading text-2xl font-semibold">Statut semaine</h2>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-1 gap-3" id="stats-grid"></div>
+            </section>
+
+            <section class="panel p-5">
+              <div class="mb-4">
+                <p class="text-sm text-[var(--muted)]">Actions rapides</p>
+                <h2 class="font-heading text-2xl font-semibold">Organisation</h2>
+              </div>
+              <div class="space-y-3 text-sm">
+                <button class="w-full text-left p-4 rounded-2xl border border-[var(--border)] bg-white hover:bg-[var(--card)] transition">
+                  Ouvrir les disponibilités du jour
+                </button>
+                <button class="w-full text-left p-4 rounded-2xl border border-[var(--border)] bg-white hover:bg-[var(--card)] transition">
+                  Bloquer une plage manuellement
+                </button>
+                <button class="w-full text-left p-4 rounded-2xl border border-[var(--border)] bg-white hover:bg-[var(--card)] transition">
+                  Préparer la connexion à Calc
+                </button>
+              </div>
+            </section>
+          </aside>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const state = {
+      view: 'semaine',
+      currentDate: new Date('2026-06-13T09:00:00'),
+      calcMode: false,
+      events: [
+        { date: '2026-06-13', time: '09:00', title: 'Appel découverte', status: 'reserve' },
+        { date: '2026-06-13', time: '11:00', title: 'Disponible', status: 'dispo' },
+        { date: '2026-06-13', time: '15:00', title: 'Créneau bloqué', status: 'bloque' },
+        { date: '2026-06-14', time: '10:30', title: 'Suivi client', status: 'reserve' },
+        { date: '2026-06-14', time: '14:30', title: 'Disponible', status: 'dispo' },
+        { date: '2026-06-15', time: '09:30', title: 'Disponible', status: 'dispo' },
+        { date: '2026-06-15', time: '13:00', title: 'Livraison dossier', status: 'reserve' },
+        { date: '2026-06-16', time: '08:30', title: 'Bloc admin', status: 'bloque' },
+        { date: '2026-06-16', time: '16:00', title: 'Disponible', status: 'dispo' },
+        { date: '2026-06-17', time: '10:00', title: 'Disponible', status: 'dispo' },
+        { date: '2026-06-18', time: '12:00', title: 'Consultation', status: 'reserve' },
+        { date: '2026-06-19', time: '09:00', title: 'Disponible', status: 'dispo' },
+        { date: '2026-06-19', time: '11:30', title: 'Disponible', status: 'dispo' }
+      ]
+    };
+
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const weekDays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+    function formatDate(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    function cloneDate(date) {
+      return new Date(date.getTime());
+    }
+
+    function getWeekStart(date) {
+      const d = cloneDate(date);
+      const day = d.getDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      d.setDate(d.getDate() + diff);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function getWeekDates(date) {
+      const start = getWeekStart(date);
+      return Array.from({ length: 7 }, (_, i) => {
+        const d = cloneDate(start);
+        d.setDate(start.getDate() + i);
+        return d;
+      });
+    }
+
+    function setView(view) {
+      state.view = view;
+      document.querySelectorAll('[data-view]').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+      render();
+    }
+
+    function navigatePeriod(direction) {
+      if (state.view === 'jour') state.currentDate.setDate(state.currentDate.getDate() + direction);
+      if (state.view === 'semaine') state.currentDate.setDate(state.currentDate.getDate() + (7 * direction));
+      if (state.view === 'mois') state.currentDate.setMonth(state.currentDate.getMonth() + direction);
+      render();
+    }
+
+    function goToday() {
+      state.currentDate = new Date('2026-06-13T09:00:00');
+      render();
+    }
+
+    function toggleCalcMode() {
+      state.calcMode = !state.calcMode;
+      document.getElementById('calc-toggle').textContent = state.calcMode ? 'Source : Calc prêt à brancher' : 'Source : simulation';
+      document.getElementById('source-badge').textContent = state.calcMode ? 'Calc-ready' : 'Simulation';
+      document.getElementById('source-badge').className = state.calcMode
+        ? 'text-xs font-semibold px-3 py-1 rounded-full bg-[#efe7ff] text-[#6d42b2]'
+        : 'text-xs font-semibold px-3 py-1 rounded-full bg-[var(--forest-soft)] text-[var(--forest)]';
+    }
+
+    function eventsForDate(dateStr) {
+      return state.events.filter(event => event.date === dateStr);
+    }
+
+    function statCard(label, value, tone) {
+      const toneMap = {
+        dispo: 'background:#f6fbf8;color:#245c4f;border-color:#cfe1d6;',
+        reserve: 'background:#fff8ee;color:#8a5a14;border-color:#ecd9b6;',
+        bloque: 'background:#fff5f5;color:#983f3f;border-color:#ebcccc;'
+      };
+      return `<div class="rounded-3xl border p-4" style="${toneMap[tone]}">
+        <p class="text-sm font-medium opacity-80">${label}</p>
+        <p class="mt-2 text-3xl font-semibold">${value}</p>
+      </div>`;
+    }
+
+    function renderStats() {
+      const weekDates = getWeekDates(state.currentDate).map(formatDate);
+      const list = state.events.filter(event => weekDates.includes(event.date));
+      const dispo = list.filter(event => event.status === 'dispo').length;
+      const reserve = list.filter(event => event.status === 'reserve').length;
+      const bloque = list.filter(event => event.status === 'bloque').length;
+      document.getElementById('stats-grid').innerHTML = [
+        statCard('Disponibles', dispo, 'dispo'),
+        statCard('Réservés', reserve, 'reserve'),
+        statCard('Bloqués', bloque, 'bloque')
+      ].join('');
+    }
+
+    function renderDayView() {
+      const dateStr = formatDate(state.currentDate);
+      const entries = eventsForDate(dateStr);
+      const container = document.getElementById('view-jour');
+      container.innerHTML = `
+        <div class="flex items-center justify-between p-4 rounded-3xl bg-[var(--card)] border border-[var(--border)]">
+          <div>
+            <p class="text-sm text-[var(--muted)]">${weekDays[state.currentDate.getDay()]}</p>
+            <p class="font-heading text-2xl">${state.currentDate.getDate()} ${months[state.currentDate.getMonth()]} ${state.currentDate.getFullYear()}</p>
+          </div>
+          <p class="text-sm text-[var(--muted)]">${entries.length} créneau(x)</p>
+        </div>
+        <div class="grid gap-3">
+          ${entries.length ? entries.map(event => `
+            <article class="slot ${event.status}">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="text-sm text-[var(--muted)]">${event.time}</p>
+                  <h3 class="text-lg font-semibold mt-1">${event.title}</h3>
+                </div>
+                <span class="text-xs font-semibold px-3 py-1 rounded-full ${event.status === 'dispo' ? 'bg-[#e8f4ec] text-[#245c4f]' : event.status === 'reserve' ? 'bg-[#f7ebd6] text-[#8a5a14]' : 'bg-[#f6dddd] text-[#9b4040]'}">${event.status}</span>
+              </div>
+            </article>
+          `).join('') : `<div class="slot dispo"><p>Aucun créneau pour cette journée.</p></div>`}
+        </div>
+      `;
+    }
+
+    function renderWeekView() {
+      const container = document.getElementById('view-semaine');
+      const dates = getWeekDates(state.currentDate);
+      container.innerHTML = dates.map(date => {
+        const dateStr = formatDate(date);
+        const entries = eventsForDate(dateStr);
+        return `
+          <section class="calendar-cell">
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <div>
+                <p class="text-sm text-[var(--muted)]">${weekDays[date.getDay()]}</p>
+                <h3 class="text-lg font-semibold">${date.getDate()} ${months[date.getMonth()]}</h3>
+              </div>
+              <span class="text-xs text-[var(--muted)]">${entries.length} item(s)</span>
+            </div>
+            <div class="space-y-2">
+              ${entries.length ? entries.map(event => `
+                <article class="slot ${event.status}">
+                  <p class="text-sm text-[var(--muted)]">${event.time}</p>
+                  <p class="font-semibold mt-1">${event.title}</p>
+                </article>
+              `).join('') : `<div class="text-sm text-[var(--muted)] py-8">Aucun créneau.</div>`}
+            </div>
+          </section>
+        `;
+      }).join('');
+    }
+
+    function renderMonthView() {
+      const date = cloneDate(state.currentDate);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const grid = document.getElementById('month-grid');
+      const startPadding = (firstDay.getDay() + 6) % 7;
+      const cells = [];
+
+      for (let i = 0; i < startPadding; i++) {
+        cells.push('<div class="calendar-cell opacity-30"></div>');
+      }
+
+      for (let day = 1; day <= lastDay.getDate(); day++) {
+        const d = new Date(year, month, day);
+        const dateStr = formatDate(d);
+        const entries = eventsForDate(dateStr);
+        const tags = entries.slice(0, 3).map(event => {
+          const cls = event.status === 'dispo' ? 'mini-dispo' : event.status === 'reserve' ? 'mini-reserve' : 'mini-bloque';
+          return `<span class="mini-event ${cls}">${event.time}</span>`;
+        }).join('');
+
+        cells.push(`
+          <div class="calendar-cell">
+            <div class="flex items-center justify-between mb-2">
+              <p class="font-semibold">${day}</p>
+              <span class="text-xs text-[var(--muted)]">${entries.length}</span>
+            </div>
+            <div>${tags || '<span class="text-xs text-[var(--muted)]">Libre</span>'}</div>
+          </div>
+        `);
+      }
+
+      grid.innerHTML = cells.join('');
+    }
+
+    function updatePeriodTitle() {
+      const title = document.getElementById('period-title');
+      if (state.view === 'jour') {
+        title.textContent = `${weekDays[state.currentDate.getDay()]} ${state.currentDate.getDate()} ${months[state.currentDate.getMonth()]} ${state.currentDate.getFullYear()}`;
+      }
+      if (state.view === 'semaine') {
+        const start = getWeekStart(state.currentDate);
+        const end = cloneDate(start);
+        end.setDate(start.getDate() + 6);
+        title.textContent = `Semaine du ${start.getDate()} ${months[start.getMonth()]} ${start.getFullYear()}`;
+      }
+      if (state.view === 'mois') {
+        title.textContent = `${months[state.currentDate.getMonth()]} ${state.currentDate.getFullYear()}`;
+      }
+    }
+
+    function render() {
+      updatePeriodTitle();
+      document.getElementById('view-jour').classList.toggle('hidden', state.view !== 'jour');
+      document.getElementById('view-semaine').classList.toggle('hidden', state.view !== 'semaine');
+      document.getElementById('view-mois').classList.toggle('hidden', state.view !== 'mois');
+      renderDayView();
+      renderWeekView();
+      renderMonthView();
+      renderStats();
+    }
+
+    render();
+  </script>
+</body>
+</html>
+
