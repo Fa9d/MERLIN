@@ -407,6 +407,8 @@
       mediaRecorder.ondataavailable = e => { if (e.data.size>0) audioChunks.push(e.data); };
       mediaRecorder.onstop = () => {
         audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                  // Déclencher l'upload API si disponible
+          if (typeof window.__iviaSetAudioBlob === 'function') window.__iviaSetAudioBlob(audioBlob);
         showEndScreen();
       };
       mediaRecorder.start(500);
