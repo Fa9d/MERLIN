@@ -1,319 +1,48 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <script src="/shared/session.js"></script>
-  <script>requireAuth();</script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="/shared/mock_praticien.js"></script>
-  <script src="/shared/api.js?v=20260611d"></script>
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
-  <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
-    h1,h2{font-family:'Lora',Georgia,serif;}
-    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;}
-    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
-    .sidebar-link.active{font-weight:700;}
-    /* Grille calendrier */
-    #cal-grid{display:grid;grid-template-columns:48px repeat(7,1fr);min-width:620px;}
-    .cal-header{font-size:12px;font-weight:700;text-align:center;padding:6px 2px;color:#4B6350;border-bottom:1.5px solid #D4E8D0;}
-    .cal-time{font-size:11px;color:#8FB99A;text-align:right;padding-right:8px;height:40px;line-height:40px;border-bottom:1px solid #F0F7F2;}
-    .cal-cell{height:40px;border-bottom:1px solid #F0F7F2;border-left:1px solid #F0F7F2;cursor:pointer;position:relative;transition:background .1s;}
-    .cal-cell:hover{background:#F0F7F2;}
-    .cal-cell.disponible{background:#E8F5EE;cursor:pointer;}
-    .cal-cell.disponible:hover{background:#C8E6D4;}
-    .cal-cell.reserve{background:#2D6A4F;cursor:default;}
-    .cal-cell.bloque{background:#EEE;cursor:not-allowed;}
-    /* Étiquette sur créneau réservé */
-    .cal-label{position:absolute;inset:2px 3px;border-radius:5px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;pointer-events:none;}
-    /* Légende */
-    .legend-dot{width:12px;height:12px;border-radius:3px;display:inline-block;}
-  </style>
-</head>
-<body class="antialiased pb-20 lg:pb-0">
+  <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+    <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
+    <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+    <nav class="flex flex-col gap-1 flex-1">
+      <a href="/praticien/dashboard.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Tableau de bord
+      </a>
+      <a href="/praticien/agenda.html" class="sidebar-link active">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Agenda
+      </a>
+      <a href="/praticien/clients-journal.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Clients
+      </a>
+      <a href="/praticien/livraisons.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Livraisons
+      </a>
+      <div class="flex-1"></div>
+      <a href="/praticien/profil.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">ircle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
+        Mon profil public
+      </a>
+      <a href="/praticien/compte.html" class="sidebar-link">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>ircle cx="12" cy="12" r="3"/></svg>
+        Mon compte
+      </a>
+      <div id="sidebar-logout" class="mt-2"></div>
+    </nav>
+  </aside>
 
-  <div class="flex min-h-screen">
-
-    <!-- SIDEBAR -->
-    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
-      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
-      <nav class="flex flex-col gap-1 flex-1">
-        <a href="/praticien/dashboard.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Tableau de bord
-        </a>
-        <a href="/praticien/agenda.html" class="sidebar-link active">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Agenda
-        </a>
-        <a href="/praticien/clients-journal.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          Clients
-        </a>
-        <a href="/praticien/livraisons.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Livraisons
-        </a>
-        <div class="flex-1"></div>
-        <a href="/praticien/profil.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-          Mon profil public
-        </a>
-        <a href="/praticien/compte.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-          Mon compte
-        </a>
-        <div id="sidebar-logout" class="mt-2"></div>
-      </nav>
-    </aside>
-
-    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8">
-
-      <!-- En-tête + navigation semaine -->
-      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <h1 class="font-heading text-2xl font-bold text-ink">Agenda</h1>
-        <div class="flex items-center gap-3">
-          <button id="btn-prev" onclick="changerSemaine(-1)"
-                  class="w-8 h-8 flex items-center justify-center border border-bdr rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-          </button>
-          <span id="semaine-label" class="text-sm font-semibold text-ink min-w-[180px] text-center"></span>
-          <button id="btn-next" onclick="changerSemaine(1)"
-                  class="w-8 h-8 flex items-center justify-center border border-bdr rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-          </button>
-          <button onclick="allerAujourdhui()"
-                  class="border border-bdr text-sm font-medium text-ink px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
-            Aujourd'hui
-          </button>
+  <main class="flex-1 lg:ml-60 px-3 sm:px-6 py-6">
+    <!-- En-tête -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <h1 class="font-heading text-2xl font-bold text-ink">Agenda</h1>
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- Switcher vue -->
+        <div class="flex border border-bdr rounded-[8px] overflow-hidden text-xs font-semibold">
+          <button onclick="setView('jour')" id="btn-vue-jour" class="px-3 py-1.5 hover:bg-surface transition-colors cursor-pointer">Jour</button>
+          <button onclick="setView('semaine')" id="btn-vue-semaine" class="px-3 py-1.5 bg-forest-deep text-white cursor-pointer">Semaine</button>
+          <button onclick="setView('mois')" id="btn-vue-mois" class="px-3 py-1.5 hover:bg-surface transition-colors cursor-pointer">Mois</button>
         </div>
-      </div>
-
-      <!-- Légende -->
-      <div class="flex flex-wrap gap-5 mb-4 text-xs text-muted">
-        <span class="flex items-center gap-1.5"><span class="legend-dot bg-[#E8F5EE] border border-[#4A7C59]"></span>Disponible</span>
-        <span class="flex items-center gap-1.5"><span class="legend-dot bg-forest-deep"></span>Réservé</span>
-        <span class="flex items-center gap-1.5"><span class="legend-dot bg-[#EEE]"></span>Bloqué</span>
-      </div>
-
-      <!-- Calendrier (scroll horizontal mobile) -->
-      <div class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
-        <div id="cal-grid" class="select-none">
-          <!-- Généré par JS -->
-        </div>
-      </div>
-
-      <p class="text-xs text-muted mt-3">Cliquez sur un créneau disponible pour le bloquer · Cliquez sur un créneau libre pour l'ouvrir.</p>
-
-      <!-- Modal confirmation simple -->
-      <div id="modal-creneau" class="hidden fixed inset-0 bg-black/30 flex items-center justify-center z-50 px-4">
-        <div class="bg-white rounded-[20px] border border-bdr p-6 w-full max-w-sm shadow-lg">
-          <h3 class="font-heading text-lg font-semibold text-ink mb-2" id="modal-title">Créneau</h3>
-          <p class="text-sm text-muted mb-5" id="modal-desc"></p>
-          <div class="flex gap-3">
-            <button id="modal-action-btn" class="flex-1 bg-forest-deep text-white font-semibold py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer text-sm"></button>
-            <button onclick="fermerModal()" class="flex-1 border border-bdr text-ink font-medium py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer text-sm">Annuler</button>
-          </div>
-        </div>
-      </div>
-
-    </main>
-  </div>
-
-  <!-- Nav mobile -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
-    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Bord
-    </a>
-    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Agenda
-    </a>
-    <a href="/praticien/clients-journal.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-      Clients
-    </a>
-  </nav>
-
-  <script>
-    // ===== CALENDRIER PUR JS =====
-    // État
-    const HOURS_START = 8;
-    const HOURS_END   = 20; // exclusif
-    const SLOTS_PER_HOUR = 2; // 30 min
-    const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-
-    // Données créneaux (clé = "AAAA-MM-JJ_HH:MM", valeur = état)
-    // Source : GET /api/v1/schedules/available (API réelle) avec fallback mock
-    let slotStates = {};
-
-    async function chargerCreneaux() {
-      const { from, to } = getWeekBounds(currentWeekOffset);
-      const user = getCurrentUser();
-      const praticienId = user?.id;
-
-      if (praticienId && typeof getAvailableSlots === 'function') {
-        try {
-          const slots = await getAvailableSlots(praticienId, from, to);
-          slotStates = {};
-          slots.forEach(s => {
-            // start_time peut être "HH:MM:SS" → normaliser en "HH:MM"
-            const t = (s.start_time || '').slice(0, 5);
-            const key = `${s.slot_date}_${t}`;
-            if (s.status === 'confirmed' || s.status === 'hold') {
-              slotStates[key] = 'reserve';
-              slotStates[key + '_client'] = s.praticien_name || 'Réservé';
-            } else if (s.status === 'available') {
-              slotStates[key] = 'disponible';
-            }
-          });
-          return;
-        } catch (err) {
-          console.warn('[IVIA] API agenda indisponible, bascule sur mock :', err.message);
-        }
-      }
-      // Fallback mock
-      const mockSlots = await getMockAgendaSlots();
-      slotStates = mockSlots;
-    }
-
-    chargerCreneaux().then(() => buildCalendar());
-    renderLogoutButton(document.getElementById('sidebar-logout'));
-    let currentWeekOffset = 0;
-    let activeCell = null;
-
-    function getMondayOfWeek(offset = 0) {
-      const now = new Date();
-      const day = now.getDay(); // 0=dim
-      const diff = (day === 0 ? -6 : 1 - day);
-      const monday = new Date(now);
-      monday.setDate(now.getDate() + diff + offset * 7);
-      monday.setHours(0,0,0,0);
-      return monday;
-    }
-
-    function isoDate(d) {
-      return d.toISOString().slice(0,10);
-    }
-
-    function buildCalendar() {
-      const monday = getMondayOfWeek(currentWeekOffset);
-      const weekDays = Array.from({length:7}, (_,i) => {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
-        return d;
-      });
-
-      // Label semaine
-      const fmt = (d) => d.toLocaleDateString('fr-CA', {day:'numeric', month:'short'});
-      document.getElementById('semaine-label').textContent = `${fmt(weekDays[0])} — ${fmt(weekDays[6])} 2026`;
-
-      const grid = document.getElementById('cal-grid');
-      grid.innerHTML = '';
-
-      // Header row
-      const cornerCell = document.createElement('div');
-      cornerCell.className = 'cal-header';
-      grid.appendChild(cornerCell);
-      weekDays.forEach((d, i) => {
-        const h = document.createElement('div');
-        h.className = 'cal-header';
-        const today = new Date(); today.setHours(0,0,0,0);
-        const isToday = d.getTime() === today.getTime();
-        h.innerHTML = `<span class="${isToday ? 'text-forest-deep font-bold' : ''}">${DAYS[i]}<br><span class="font-normal">${d.getDate()}</span></span>`;
-        grid.appendChild(h);
-      });
-
-      // Time slots
-      for (let h = HOURS_START; h < HOURS_END; h++) {
-        for (let s = 0; s < SLOTS_PER_HOUR; s++) {
-          const minutes = s * 30;
-          const timeStr = `${String(h).padStart(2,'0')}:${String(minutes).padStart(2,'0')}`;
-
-          // Colonne heure
-          const timeCell = document.createElement('div');
-          timeCell.className = 'cal-time';
-          timeCell.textContent = s === 0 ? timeStr : '';
-          grid.appendChild(timeCell);
-
-          // Colonnes jours
-          weekDays.forEach(day => {
-            const key = `${isoDate(day)}_${timeStr}`;
-            const state = slotStates[key] || 'libre';
-            const cell = document.createElement('div');
-            cell.className = `cal-cell ${state === 'disponible' ? 'disponible' : state === 'reserve' ? 'reserve' : state === 'bloque' ? 'bloque' : ''}`;
-            cell.dataset.key = key;
-            cell.dataset.day = isoDate(day);
-            cell.dataset.time = timeStr;
-
-            if (state === 'reserve') {
-              const label = document.createElement('div');
-              label.className = 'cal-label';
-              label.textContent = slotStates[key + '_client'] || 'Réservé';
-              cell.appendChild(label);
-            }
-
-            if (state !== 'reserve') {
-              cell.addEventListener('click', () => ouvrirModal(cell, state));
-            }
-            grid.appendChild(cell);
-          });
-        }
-      }
-
-      // Quelques fixtures réservées
-      const d2 = isoDate(weekDays[1]); // mardi
-      const d4 = isoDate(weekDays[3]); // jeudi
-      if (!slotStates[`${d2}_14:00`]) {
-        slotStates[`${d2}_14:00`] = 'reserve';
-        slotStates[`${d2}_14:00_client`] = 'Camille B.';
-      }
-      if (!slotStates[`${d4}_10:00`]) {
-        slotStates[`${d4}_10:00`] = 'reserve';
-        slotStates[`${d4}_10:00_client`] = 'Théo M.';
-      }
-      // Quelques disponibles
-      ['09:00','09:30','10:00','10:30','14:00','14:30'].forEach(t => {
-        const k = `${isoDate(weekDays[0])}_${t}`;
-        if (!slotStates[k]) slotStates[k] = 'disponible';
-      });
-    }
-
-    function changerSemaine(delta) {
-      currentWeekOffset += delta;
-      chargerCreneaux().then(() => buildCalendar());
-    }
-    function allerAujourdhui() { currentWeekOffset = 0; chargerCreneaux().then(() => buildCalendar()); }
-
-    function ouvrirModal(cell, currentState) {
-      activeCell = cell;
-      const [date, time] = [cell.dataset.day, cell.dataset.time];
-      const d = new Date(date + 'T' + time);
-      const fmt = d.toLocaleDateString('fr-CA', {weekday:'long', day:'numeric', month:'long'}) + ' à ' + time;
-      const modal = document.getElementById('modal-creneau');
-      document.getElementById('modal-title').textContent = fmt;
-      const btn = document.getElementById('modal-action-btn');
-      if (currentState === 'disponible') {
-        document.getElementById('modal-desc').textContent = 'Ce créneau est ouvert aux réservations. Voulez-vous le bloquer ?';
-        btn.textContent = 'Bloquer ce créneau';
-        btn.onclick = () => { slotStates[activeCell.dataset.key] = 'bloque'; buildCalendar(); fermerModal(); };
-      } else {
-        document.getElementById('modal-desc').textContent = 'Ce créneau est libre. Voulez-vous l'ouvrir aux réservations ?';
-        btn.textContent = 'Ouvrir aux réservations';
-        btn.onclick = () => { slotStates[activeCell.dataset.key] = 'disponible'; buildCalendar(); fermerModal(); };
-      }
-      modal.classList.remove('hidden');
-    }
-
-    function fermerModal() { document.getElementById('modal-creneau').classList.add('hidden'); }
-    document.getElementById('modal-creneau').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) fermerModal();
-    });
-
-    buildCalendar();
-  </script>
-
-</body>
-</html>
+        <!-- Nav -->
+        <button onclick="naviguer(-1)" class="w-8 h-8 flex items-center justify-center border border-bdr rounded-[8px] hover:bg-surface cursor-pointer">
+          <svg class="w-4 h-4" fill
