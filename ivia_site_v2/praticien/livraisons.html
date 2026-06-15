@@ -4,15 +4,19 @@
   <meta charset="UTF-8">
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Analyses de séances</title>
+  <script src="/shared/api.js?v=20260615b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="/shared/mock_praticien.js"></script>
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}}
-  <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1{font-family:'Lora',Georgia,serif;}.dropdown-menu{display:none;}.dropdown-menu.open{display:block;}
-    .audio-panel{display:none;}
-    .audio-panel.open{display:block;}
-    .seek-bar{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:#D4E8D0;border-radius:99px;outline:none;cursor:pointer;}
-    .seek-bar::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#4A7C59;cursor:pointer;}
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    .axe{background:#F0F7F2;border:1px solid #D4E8D0;border-radius:12px;padding:12px 14px;}
   </style>
 </head>
 <body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
@@ -21,322 +25,129 @@
 
     <!-- SIDEBAR -->
     <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block">IVIA</a>
-      <nav class="flex flex-col gap-1">
-        <a href="/praticien/dashboard.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Tableau de bord
-        </a>
-        <a href="/praticien/agenda.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Agenda
-        </a>
-        <a href="/praticien/clients-journal.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          Journal clients
-        </a>
-        <a href="/praticien/livraisons.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold bg-bdr text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
-          Livraisons audio
-        </a>
-        <a href="/praticien/profil.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-          Mon profil
-        </a>
-        <a href="/praticien/compte.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-          Mon compte
-        </a>
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</a>
+        <a href="/praticien/agenda.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
+        <a href="/praticien/seance-express.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Séance express</a>
+        <a href="/praticien/livraisons.html" class="sidebar-link active"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+        <div class="flex-1"></div>
+        <a href="/praticien/profil.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>Mon profil</a>
+        <a href="/praticien/compte.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Mon compte</a>
         <div id="sidebar-logout" class="mt-2"></div>
       </nav>
     </aside>
 
-    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8">
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-3xl">
 
-      <div class="flex items-center justify-between mb-7 flex-wrap gap-3">
-        <h1 class="font-heading text-2xl font-bold text-ink">Livraisons audio</h1>
-        <span id="badge-livr" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-3 py-1.5 rounded-full">2 en attente</span>
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-3">
+        <h1 class="font-heading text-2xl font-bold text-ink">Analyses de séances</h1>
+        <span id="badge-count" class="text-xs bg-surface text-muted border border-bdr font-semibold px-3 py-1.5 rounded-full">…</span>
       </div>
+      <p class="text-sm text-muted mb-7 leading-relaxed">
+        Générées automatiquement après chaque enregistrement transcrit (observation, hypothèse,
+        orientation). <strong>Lecture d'appui à votre jugement — jamais un verdict</strong> ;
+        rien n'est transmis au client sans votre validation.
+      </p>
 
-      <!-- File en attente -->
-      <section class="mb-8">
-        <h2 class="text-xs font-semibold text-muted uppercase tracking-widest mb-3">En attente de résumé</h2>
-        <div class="space-y-3 max-w-3xl">
-
-          <div class="bg-white border border-amber-200 rounded-[20px] p-5 shadow-sm flex items-start justify-between gap-4 flex-wrap">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-xs shrink-0">CB</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Camille B.</p>
-                <p class="text-xs text-muted">Reçu le 27 mai 2026 · 52 min · Registres : Émotionnel, Relationnel</p>
-              </div>
-            </div>
-            <div class="relative shrink-0">
-              <button onclick="toggleDropdown('dd-cb')"
-                      class="flex items-center gap-1.5 border border-bdr text-sm font-medium text-ink px-4 py-2 rounded-[10px] hover:bg-surface transition-colors cursor-pointer">
-                Action
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-              </button>
-              <div id="dd-cb" class="dropdown-menu absolute right-0 top-full mt-1 w-44 bg-white border border-bdr rounded-[12px] shadow-lg z-10 overflow-hidden">
-                <button onclick="toggleAudio('cb')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-surface cursor-pointer">Écouter l'enregistrement</button>
-                <button onclick="openResumeModal('cb')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-surface cursor-pointer">Générer le résumé</button>
-                <button onclick="markDelivered('cb')" class="w-full text-left px-4 py-2.5 text-sm text-muted hover:bg-surface cursor-pointer">Marquer livré</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel audio Camille -->
-          <div id="audio-cb" class="audio-panel mt-4 bg-surface rounded-[14px] px-5 py-4">
-            <div class="flex items-center gap-3 mb-3">
-              <button id="play-cb" onclick="togglePlay('cb')" class="w-9 h-9 rounded-full bg-forest-deep text-white flex items-center justify-center hover:bg-forest transition-colors cursor-pointer shrink-0" aria-label="Lire">
-                <svg id="play-icon-cb" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-              <div class="flex-1">
-                <input type="range" id="seek-cb" class="seek-bar" min="0" max="100" value="0" oninput="seekAudio('cb',this.value)">
-                <div class="flex justify-between text-xs text-muted mt-1">
-                  <span id="cur-cb">0:00</span>
-                  <span>52:00</span>
-                </div>
-              </div>
-              <select onchange="setSpeed('cb',this.value)" class="text-xs border border-bdr rounded-[8px] px-2 py-1 bg-white cursor-pointer">
-                <option value="1">×1</option><option value="1.25">×1,25</option><option value="1.5">×1,5</option><option value="2">×2</option>
-              </select>
-            </div>
-            <audio id="aud-cb" src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Kaval_Sviri.ogg" preload="none"
-              ontimeupdate="updateSeek('cb')" onended="resetPlay('cb')"></audio>
-            <p class="text-xs text-muted">Camille B. · 27 mai 2026 · 52 min · Émotionnel, Relationnel</p>
-          </div>
-
-          <div class="bg-white border border-amber-200 rounded-[20px] p-5 shadow-sm flex items-start justify-between gap-4 flex-wrap">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-xs shrink-0">TM</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Théo M.</p>
-                <p class="text-xs text-muted">Reçu le 25 mai 2026 · 48 min · Registres : Spirituel</p>
-              </div>
-            </div>
-            <div class="relative shrink-0">
-              <button onclick="toggleDropdown('dd-tm')"
-                      class="flex items-center gap-1.5 border border-bdr text-sm font-medium text-ink px-4 py-2 rounded-[10px] hover:bg-surface transition-colors cursor-pointer">
-                Action
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-              </button>
-              <div id="dd-tm" class="dropdown-menu absolute right-0 top-full mt-1 w-44 bg-white border border-bdr rounded-[12px] shadow-lg z-10 overflow-hidden">
-                <button onclick="toggleAudio('tm')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-surface cursor-pointer">Écouter l'enregistrement</button>
-                <button onclick="openResumeModal('tm')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-surface cursor-pointer">Générer le résumé</button>
-                <button onclick="markDelivered('tm')" class="w-full text-left px-4 py-2.5 text-sm text-muted hover:bg-surface cursor-pointer">Marquer livré</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel audio Théo -->
-          <div id="audio-tm" class="audio-panel mt-4 bg-surface rounded-[14px] px-5 py-4">
-            <div class="flex items-center gap-3 mb-3">
-              <button id="play-tm" onclick="togglePlay('tm')" class="w-9 h-9 rounded-full bg-forest-deep text-white flex items-center justify-center hover:bg-forest transition-colors cursor-pointer shrink-0" aria-label="Lire">
-                <svg id="play-icon-tm" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-              <div class="flex-1">
-                <input type="range" id="seek-tm" class="seek-bar" min="0" max="100" value="0" oninput="seekAudio('tm',this.value)">
-                <div class="flex justify-between text-xs text-muted mt-1">
-                  <span id="cur-tm">0:00</span>
-                  <span>48:00</span>
-                </div>
-              </div>
-              <select onchange="setSpeed('tm',this.value)" class="text-xs border border-bdr rounded-[8px] px-2 py-1 bg-white cursor-pointer">
-                <option value="1">×1</option><option value="1.25">×1,25</option><option value="1.5">×1,5</option><option value="2">×2</option>
-              </select>
-            </div>
-            <audio id="aud-tm" src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Kaval_Sviri.ogg" preload="none"
-              ontimeupdate="updateSeek('tm')" onended="resetPlay('tm')"></audio>
-            <p class="text-xs text-muted">Théo M. · 25 mai 2026 · 48 min · Spirituel</p>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- Livrés récemment -->
-      <section>
-        <h2 class="text-xs font-semibold text-muted uppercase tracking-widest mb-3">Livrés récemment</h2>
-        <div class="space-y-3 max-w-3xl">
-          <div class="bg-white border border-bdr rounded-[20px] p-5 shadow-sm flex items-center justify-between gap-4 flex-wrap opacity-70">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-xs shrink-0">SR</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Sophie R.</p>
-                <p class="text-xs text-muted">15 mai 2026 · 30 min · Livré le 16 mai</p>
-              </div>
-            </div>
-            <span class="text-xs bg-green-50 text-green-700 border border-green-200 font-semibold px-3 py-1 rounded-full">Livré</span>
-          </div>
-        </div>
-      </section>
-
+      <div id="liste" class="space-y-4">
+        <p class="text-sm text-muted">Chargement…</p>
+      </div>
     </main>
   </div>
 
   <!-- Nav mobile -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
-    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Bord
-    </a>
-    <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
-      Audio
-    </a>
-    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Agenda
-    </a>
+    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Bord</a>
+    <a href="/praticien/seance-express.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Express</a>
+    <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
   </nav>
 
-  <!-- MODAL : Résumé audio -->
-  <div id="modal-resume" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" onclick="if(event.target===this)closeResume()" aria-modal="true" role="dialog">
-    <div class="bg-white rounded-t-[24px] sm:rounded-[24px] w-full sm:max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
-      <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-bdr sticky top-0 bg-white">
-        <h2 id="resume-title" class="font-heading text-lg font-bold text-ink">Résumé audio</h2>
-        <button onclick="closeResume()" class="text-muted hover:text-ink p-1 rounded-full cursor-pointer" aria-label="Fermer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="px-6 py-5 space-y-4">
-        <div class="bg-surface rounded-[14px] px-4 py-3">
-          <p id="resume-meta" class="text-sm text-muted"></p>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-muted uppercase tracking-wider mb-2" for="resume-text">Résumé de séance</label>
-          <textarea id="resume-text" rows="8" maxlength="1000"
-            placeholder="Ce que vous avez entendu, les fils émergents, les éléments à retenir pour la prochaine séance…"
-            class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest resize-none"
-            oninput="document.getElementById('resume-count').textContent=this.value.length+'/1000'"></textarea>
-          <p id="resume-count" class="text-xs text-muted text-right mt-1">0/1000</p>
-        </div>
-        <div class="flex gap-3">
-          <button onclick="sendResume()" class="flex-1 bg-forest-deep text-white text-sm font-semibold py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">Envoyer au client</button>
-          <button onclick="closeResume()" class="border border-bdr text-sm font-medium text-ink px-5 py-3 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">Annuler</button>
-        </div>
-        <p class="text-xs text-muted text-center">Le résumé sera envoyé dans l'espace client. L'audio source sera effacé à J+30.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
-
   <script>
-    const LIVRAISONS = {
-      cb: { name: 'Camille B.', meta: '27 mai 2026 · 52 min · Émotionnel, Relationnel' },
-      tm: { name: 'Théo M.',    meta: '25 mai 2026 · 48 min · Spirituel' }
-    };
-
-    // ── Sync badge + LIVRAISONS depuis mock ──
-    getMockLivraisons().then(livs => {
-      const badge = document.getElementById('badge-livr');
-      if (badge) badge.textContent = livs.length + ' en attente';
-      livs.forEach(c => {
-        const key = (c.prenom[0] + c.nom[0]).toLowerCase();
-        LIVRAISONS[key] = {
-          name: c.prenom + ' ' + c.nom[0] + '.',
-          meta: formatDateCourte(c.livraison_date) + ' · ' + c.livraison_duree + ' · ' + c.livraison_registres.join(', ')
-        };
-      });
-    });
     renderLogoutButton(document.getElementById('sidebar-logout'));
 
-    function toggleDropdown(id) {
-      document.querySelectorAll('.dropdown-menu').forEach(m => { if (m.id !== id) m.classList.remove('open'); });
-      document.getElementById(id).classList.toggle('open');
+    function dateLisible(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     }
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('.dropdown-menu')) {
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+    function esc(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+
+    // Vigilance : couleur selon le niveau (tolérant aux libellés)
+    function vigilanceBadge(code) {
+      const c = (code || '').toLowerCase();
+      const urgent = c.includes('urgent') || c.includes('eleve') || c.includes('élevé') || c.includes('high');
+      const cls = urgent ? 'bg-red-50 text-red-700 border-red-200' : 'bg-surface text-forest-deep border-bdr';
+      return `<span class="text-[10px] font-semibold uppercase tracking-wider border ${cls} rounded-full px-2.5 py-1">Vigilance : ${esc(code || 'non précisée')}</span>`;
+    }
+
+    function bloc(titre, texte) {
+      if (!texte) return '';
+      return `<div class="mt-3"><p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">${titre}</p>
+        <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap">${esc(texte)}</p></div>`;
+    }
+    function axe(nom, texte) {
+      if (!texte) return '';
+      return `<div class="axe"><p class="text-[11px] font-semibold text-forest-deep mb-1">${nom}</p>
+        <p class="text-xs text-ink leading-relaxed">${esc(texte)}</p></div>`;
+    }
+
+    (async function charger() {
+      const zone = document.getElementById('liste');
+      let notes = [];
+      try {
+        notes = await getSessionNotes();
+      } catch (e) {
+        zone.innerHTML = `<p class="text-sm text-muted">Impossible de charger les analyses (${esc(e.message)}).</p>`;
+        document.getElementById('badge-count').textContent = '—';
+        return;
       }
-    });
-    function toast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.style.opacity = '1';
-      setTimeout(() => { t.style.opacity = '0'; }, 2500);
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-    }
 
-    /* Audio player */
-    function toggleAudio(id) {
-      const panel = document.getElementById('audio-' + id);
-      const isOpen = panel.classList.contains('open');
-      document.querySelectorAll('.audio-panel').forEach(p => { p.classList.remove('open'); });
-      // pause all
-      ['cb','tm'].forEach(k => { const a = document.getElementById('aud-' + k); if (a) { a.pause(); resetPlay(k); }});
-      if (!isOpen) panel.classList.add('open');
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-    }
+      document.getElementById('badge-count').textContent =
+        notes.length + (notes.length > 1 ? ' analyses' : ' analyse');
 
-    const PLAY_ICONS = {
-      play: '<path d="M8 5v14l11-7z"/>',
-      pause: '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
-    };
-    function togglePlay(id) {
-      const aud = document.getElementById('aud-' + id);
-      const icon = document.getElementById('play-icon-' + id);
-      if (aud.paused) {
-        aud.play();
-        icon.innerHTML = PLAY_ICONS.pause;
-      } else {
-        aud.pause();
-        icon.innerHTML = PLAY_ICONS.play;
+      if (!notes.length) {
+        zone.innerHTML = `<div class="bg-white border border-bdr rounded-[20px] p-8 text-center">
+          <p class="text-sm text-muted leading-relaxed">Aucune analyse pour l'instant. Elles apparaîtront
+          ici automatiquement après le premier enregistrement transcrit (séance solo ou express).</p></div>`;
+        return;
       }
-    }
-    function resetPlay(id) {
-      const icon = document.getElementById('play-icon-' + id);
-      if (icon) icon.innerHTML = PLAY_ICONS.play;
-      const seek = document.getElementById('seek-' + id);
-      if (seek) seek.value = 0;
-    }
-    function updateSeek(id) {
-      const aud = document.getElementById('aud-' + id);
-      const seek = document.getElementById('seek-' + id);
-      const cur = document.getElementById('cur-' + id);
-      if (!aud.duration) return;
-      seek.value = (aud.currentTime / aud.duration) * 100;
-      const m = Math.floor(aud.currentTime / 60);
-      const s = Math.floor(aud.currentTime % 60).toString().padStart(2,'0');
-      cur.textContent = m + ':' + s;
-    }
-    function seekAudio(id, val) {
-      const aud = document.getElementById('aud-' + id);
-      if (aud.duration) aud.currentTime = (val / 100) * aud.duration;
-    }
-    function setSpeed(id, v) {
-      document.getElementById('aud-' + id).playbackRate = parseFloat(v);
-    }
 
-    /* Modal résumé */
-    function openResumeModal(id) {
-      const l = LIVRAISONS[id];
-      document.getElementById('resume-title').textContent = 'Résumé — ' + l.name;
-      document.getElementById('resume-meta').textContent = l.meta;
-      document.getElementById('resume-text').value = '';
-      document.getElementById('resume-count').textContent = '0/1000';
-      const m = document.getElementById('modal-resume');
-      m.classList.remove('opacity-0','pointer-events-none');
-      document.body.style.overflow = 'hidden';
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-    }
-    function closeResume() {
-      document.getElementById('modal-resume').classList.add('opacity-0','pointer-events-none');
-      document.body.style.overflow = '';
-    }
-    function sendResume() {
-      const txt = document.getElementById('resume-text').value.trim();
-      if (!txt) { toast('Veuillez écrire un résumé avant d\'envoyer.'); return; }
-      closeResume();
-      toast('Résumé envoyé au client ✔');
-    }
-    function markDelivered(id) {
-      toast('Marqué comme livré ✔');
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeResume(); });
+      zone.innerHTML = '';
+      notes.forEach(n => {
+        const card = document.createElement('article');
+        card.className = 'bg-white border border-bdr rounded-[20px] p-6 shadow-sm';
+
+        const axes = [axe('Cœur', n.coeur_summary_text), axe('Corps', n.corps_summary_text),
+                      axe('Esprit', n.esprit_summary_text), axe('Être', n.etre_summary_text)].filter(Boolean).join('');
+        const valide = n.validated_by_practitioner
+          ? '<span class="text-[10px] font-semibold uppercase tracking-wider text-forest-deep bg-surface border border-bdr rounded-full px-2.5 py-1">validée</span>'
+          : '<span class="text-[10px] font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">à valider</span>';
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-3 mb-2 flex-wrap">
+            <div>
+              <p class="text-sm font-semibold text-ink">Séance analysée${n.note_sequence_number ? ' · n°' + n.note_sequence_number : ''}</p>
+              <p class="text-xs text-muted mt-0.5">${dateLisible(n.created_at)}</p>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap justify-end">${vigilanceBadge(n.vigilance_level_code)} ${valide}</div>
+          </div>
+          <p class="text-sm text-ink leading-relaxed">${esc(n.summary_text)}</p>
+          <details class="mt-3 group">
+            <summary class="text-sm font-semibold text-forest-deep cursor-pointer hover:underline">Voir l'analyse complète</summary>
+            <div class="mt-3 border-t border-bdr pt-3">
+              ${bloc('Observations', n.observations_text)}
+              ${bloc('Pistes de suivi', n.follow_up_actions_text)}
+              ${bloc('Axe de la prochaine séance', n.next_session_focus_text)}
+              ${axes ? `<div class="mt-3"><p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Lecture multidimensionnelle</p><div class="grid sm:grid-cols-2 gap-2">${axes}</div></div>` : ''}
+              ${bloc('Reformulation pour le client (à valider)', n.client_facing_summary_text)}
+              <p class="text-[10px] text-muted mt-4">${esc(n.model_used || 'modèle IA')}${n.prompt_version ? ' · prompt ' + esc(n.prompt_version) : ''} · relecture humaine requise avant tout partage</p>
+            </div>
+          </details>`;
+        zone.appendChild(card);
+      });
+    })();
   </script>
 
 </body>

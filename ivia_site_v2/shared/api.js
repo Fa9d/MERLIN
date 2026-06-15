@@ -200,6 +200,21 @@ async function uploadExpressRecording(token, payload) {
     { method: 'POST', body: payload, publicEndpoint: true });
 }
 
+// ── Analyses de séance (praticien / clinique interne) ───────────────────────
+/** Liste les notes d'analyse générées par le pipeline IA (filtrables). */
+async function getSessionNotes({ sessionId, clientId } = {}) {
+  const qs = new URLSearchParams();
+  if (sessionId) qs.set('session_id', sessionId);
+  if (clientId) qs.set('client_id', clientId);
+  const s = qs.toString();
+  return _req('/api/v1/session-notes' + (s ? '?' + s : ''));
+}
+
+/** Détail d'une note d'analyse. */
+async function getSessionNote(id) {
+  return _req('/api/v1/session-notes/' + encodeURIComponent(id));
+}
+
 /** Convertit un Blob audio en base64 (sans le préfixe data:). */
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {
