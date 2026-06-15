@@ -6,7 +6,7 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Analyses de séances</title>
-  <script src="/shared/api.js?v=20260615c"></script>
+  <script src="/shared/api.js?v=20260615d"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -128,7 +128,7 @@
         card.innerHTML = `
           <div class="flex items-start justify-between gap-3 mb-2 flex-wrap">
             <div>
-              <p class="text-sm font-semibold text-ink">Séance analysée${n.note_sequence_number ? ' · n°' + n.note_sequence_number : ''}</p>
+              <a href="/praticien/compte-rendu-seance.html?note=${encodeURIComponent(n.id)}" class="text-sm font-semibold text-forest-deep hover:underline">Séance analysée${n.note_sequence_number ? ' · n°' + n.note_sequence_number : ''} ↗</a>
               <p class="text-xs text-muted mt-0.5">${dateLisible(n.created_at)}</p>
             </div>
             <div class="flex items-center gap-2 flex-wrap justify-end">${vigilanceBadge(n.vigilance_level_code)} ${valide}</div>

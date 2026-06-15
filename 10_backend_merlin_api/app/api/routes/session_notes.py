@@ -117,7 +117,9 @@ def validate_session_note(
     session_note_id: str,
     payload: SessionNoteValidationPayload,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_supervisor()),
+    # Validation humaine : le praticien valide sa propre note (constitution MERLIN).
+    # Le superviseur reste habilité ; l'opérateur aussi.
+    _: AppUser = Depends(require_internal_clinical_roles()),
 ) -> SessionNote:
     session_note = db.get(SessionNote, session_note_id)
     if session_note is None:

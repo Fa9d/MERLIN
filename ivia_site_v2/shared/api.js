@@ -220,6 +220,17 @@ async function listMySessions() {
   return _req('/api/v1/sessions');
 }
 
+/** Détail d'une séance (dont transcript_text). */
+async function getSession(id) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(id));
+}
+
+/** Valider une note d'analyse (praticien/opérateur/superviseur). */
+async function validateSessionNote(id, { validated = true, corrections = null } = {}) {
+  return _req('/api/v1/session-notes/' + encodeURIComponent(id) + '/validate',
+    { method: 'PATCH', body: { validated, corrections } });
+}
+
 /** Convertit un Blob audio en base64 (sans le préfixe data:). */
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {

@@ -6,414 +6,195 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Compte-rendu de séance</title>
-  <script src="/shared/mock_praticien.js"></script>
+  <script src="/shared/api.js?v=20260615d"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="/shared/radar-ecart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body { font-family: 'Raleway', system-ui, sans-serif; background-color: #F0F7F2; color: #1A2E1D; }
-    h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
-    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #4B6350; transition: all .15s; cursor: pointer; }
-    .sidebar-link:hover, .sidebar-link.active { background: #D4E8D0; color: #1A2E1D; }
-    .sidebar-link.active { font-weight: 700; }
-    .card { background: #fff; border: 1.5px solid #D4E8D0; border-radius: 20px; padding: 24px; }
-    .dim-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #4B6350; }
-    .nature-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
-    .nature-compensation { background: #F0F7F2; color: #2D6A4F; border: 1px solid #8FB99A; }
-    .nature-resonance    { background: #F8FAF9; color: #4B6350; border: 1px solid #D4E8D0; }
-    .nature-collusion    { background: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; }
-    .nature-angle_mort   { background: #FEF2F2; color: #991B1B; border: 1px solid #FCA5A5; }
-    .adequation-ring { position: relative; width: 80px; height: 80px; }
-    textarea { resize: vertical; min-height: 120px; }
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
+    .axe{background:#F0F7F2;border:1px solid #D4E8D0;border-radius:12px;padding:14px 16px;}
   </style>
 </head>
-<body class="antialiased pb-20 lg:pb-0">
+<body class="antialiased min-h-screen bg-cream">
 
-<div class="flex min-h-screen">
+  <div class="max-w-2xl mx-auto px-4 py-8">
 
-  <!-- SIDEBAR desktop praticien -->
-  <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-    <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
-    <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
-    <nav class="flex flex-col gap-1 flex-1">
-      <a href="/praticien/dashboard.html" class="sidebar-link">
-        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Tableau de bord
-      </a>
-      <a href="/praticien/agenda.html" class="sidebar-link">
-        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        Agenda
-      </a>
-      <a href="/praticien/clients-journal.html" class="sidebar-link">
-        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Clients
-      </a>
-      <a href="/praticien/livraisons.html" class="sidebar-link active">
-        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Livraisons
-      </a>
-      <div class="flex-1"></div>
-      <a href="/praticien/profil.html" class="sidebar-link">
-        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-        Mon profil
-      </a>
-      <div id="sidebar-logout"></div>
-    </nav>
-  </aside>
+    <a href="/praticien/livraisons.html" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink transition-colors cursor-pointer mb-6">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      Retour aux analyses
+    </a>
 
-  <!-- CONTENU principal -->
-  <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1100px]">
+    <div id="etat-chargement" class="text-center py-16 text-muted text-sm">Chargement de l'analyse…</div>
+    <div id="etat-erreur" class="hidden card text-center">
+      <h1 class="font-heading text-xl font-bold text-ink mb-2">Analyse introuvable</h1>
+      <p class="text-sm text-muted">Ce compte-rendu n'existe pas ou n'est pas accessible.</p>
+    </div>
 
-    <!-- En-tête -->
-    <div class="flex items-start justify-between mb-7">
+    <div id="contenu" class="hidden space-y-5">
+
+      <!-- En-tête + statut -->
       <div>
-        <a href="/praticien/livraisons.html" class="text-sm text-muted hover:text-ink flex items-center gap-1 mb-2 cursor-pointer">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-          Retour aux livraisons
-        </a>
-        <h1 class="font-heading text-2xl font-bold text-ink" id="page-titre">Compte-rendu de séance</h1>
-        <p class="text-muted text-sm mt-1" id="page-meta">—</p>
-      </div>
-      <button id="btn-save"
-        class="hidden sm:flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-        Enregistrer
-      </button>
-    </div>
-
-    <div class="grid lg:grid-cols-5 gap-5">
-
-      <!-- Colonne gauche : double radar ──────────────────────────────────── -->
-      <div class="lg:col-span-3 space-y-5">
-
-        <!-- Double radar toile client / intervention praticien -->
-        <section class="card" aria-labelledby="radar-titre">
-          <div class="flex items-start justify-between mb-3">
-            <div>
-              <h2 id="radar-titre" class="font-heading text-base font-semibold text-ink">Toile de l'accompagnement</h2>
-              <p class="text-xs text-muted mt-0.5">Équilibre du client · Intervention du praticien</p>
-            </div>
-            <div class="flex flex-col items-end gap-1 text-xs text-muted shrink-0">
-              <span class="flex items-center gap-1.5">
-                <span class="w-8 h-0.5 bg-[#4A7C59] inline-block rounded"></span>
-                Toile client
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-8 h-0.5 border-t-2 border-dashed border-[#2D6A4F] inline-block"></span>
-                Intervention
-              </span>
-            </div>
+        <div class="flex items-start justify-between gap-3 flex-wrap mb-1">
+          <h1 class="font-heading text-2xl font-bold text-ink">Compte-rendu de séance</h1>
+          <div class="flex items-center gap-2 flex-wrap justify-end">
+            <span id="badge-vigilance"></span>
+            <span id="badge-validation"></span>
           </div>
-          <div class="relative" style="height:300px;">
-            <canvas id="radar-ecart-canvas" aria-label="Double radar client et praticien" role="img"></canvas>
-          </div>
-          <!-- Légende clusters -->
-          <div class="mt-4 flex gap-4 justify-center text-xs text-muted">
-            <span class="flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#4A7C59] inline-block"></span>
-              Registre Vivant : Présence · Sol · Vivant·e
-            </span>
-            <span class="flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#2D6A4F] inline-block"></span>
-              Registre Société : Compréhension · Choix · Réflexion
-            </span>
-          </div>
-        </section>
-
-        <!-- Métriques d'écart ───────────────────────────────────────────── -->
-        <section class="card" aria-labelledby="ecart-titre">
-          <h2 id="ecart-titre" class="font-heading text-base font-semibold text-ink mb-4">Mesure de l'écart</h2>
-
-          <!-- Score global + clusters -->
-          <div class="flex items-center gap-6 mb-5">
-            <div class="text-center">
-              <p class="dim-label mb-1">Adéquation</p>
-              <p class="font-heading text-3xl font-bold text-ink" id="score-adequation">—</p>
-              <p class="text-xs text-muted">/ 100</p>
-            </div>
-            <div class="flex-1 grid grid-cols-2 gap-3">
-              <div class="bg-surface border border-bdr rounded-[12px] px-3 py-2.5" id="cluster-vivant-card">
-                <p class="dim-label">Vivant</p>
-                <p class="text-sm font-semibold text-ink mt-0.5" id="cluster-vivant-label">—</p>
-              </div>
-              <div class="bg-surface border border-bdr rounded-[12px] px-3 py-2.5" id="cluster-societe-card">
-                <p class="dim-label">Société</p>
-                <p class="text-sm font-semibold text-ink mt-0.5" id="cluster-societe-label">—</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Détail par dimension -->
-          <div id="dims-detail" class="space-y-2.5">
-            <!-- Injecté par JS -->
-          </div>
-        </section>
-
-        <!-- Interprétation automatique ──────────────────────────────────── -->
-        <section class="card bg-[#f5faf6] border-[#b8d8c0]" aria-labelledby="interp-titre">
-          <h2 id="interp-titre" class="font-heading text-sm font-semibold text-ink mb-2">Lecture de la toile</h2>
-          <div id="interpretation" class="text-sm text-ink leading-relaxed space-y-2">
-            <!-- Injecté par JS -->
-          </div>
-        </section>
-
-      </div>
-
-      <!-- Colonne droite : notes et intentions ───────────────────────────── -->
-      <div class="lg:col-span-2 space-y-5">
-
-        <!-- Notes de séance -->
-        <section class="card" aria-labelledby="notes-titre">
-          <h2 id="notes-titre" class="font-heading text-base font-semibold text-ink mb-3">Notes de séance</h2>
-          <div class="mb-2">
-            <p class="dim-label mb-1">Registres travaillés</p>
-            <div id="registres-chips" class="flex flex-wrap gap-1.5 mb-3">
-              <!-- Injecté par JS -->
-            </div>
-          </div>
-          <textarea id="texte-cr"
-            class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm text-ink bg-surface focus:outline-none focus:ring-2 focus:ring-forest focus:border-transparent"
-            placeholder="Notes sur le déroulement de la séance…"
-            aria-label="Notes de séance"></textarea>
-        </section>
-
-        <!-- Intentions pour la prochaine séance -->
-        <section class="card" aria-labelledby="intentions-titre">
-          <h2 id="intentions-titre" class="font-heading text-base font-semibold text-ink mb-3">Intentions — prochaine séance</h2>
-          <textarea id="texte-intentions"
-            class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm text-ink bg-surface focus:outline-none focus:ring-2 focus:ring-forest focus:border-transparent"
-            placeholder="Ce que vous souhaitez travailler la prochaine fois…"
-            aria-label="Intentions pour la prochaine séance"></textarea>
-          <p class="text-xs text-muted mt-2">Ces intentions seront transmises au client avant la prochaine séance.</p>
-        </section>
-
-        <!-- Ajuster le profil praticien ────────────────────────────────── -->
-        <section class="card" aria-labelledby="prat-dim-titre">
-          <h2 id="prat-dim-titre" class="font-heading text-base font-semibold text-ink mb-3">Mon intervention cette séance</h2>
-          <p class="text-xs text-muted mb-4">Évaluez la présence de chaque dimension dans votre accompagnement.</p>
-          <div id="prat-sliders" class="space-y-3">
-            <!-- Injecté par JS -->
-          </div>
-          <button id="btn-recalc"
-            class="mt-4 w-full border border-bdr text-muted text-sm font-medium py-2 rounded-[10px] hover:bg-surface transition-colors cursor-pointer">
-            Recalculer la toile
-          </button>
-        </section>
-
-        <!-- Bouton save mobile -->
-        <button id="btn-save-mobile"
-          class="sm:hidden w-full bg-forest-deep text-white text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
-          Enregistrer le compte-rendu
-        </button>
-
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<!-- ── Script principal ─────────────────────────────────────────────────── -->
-<script>
-(async function () {
-
-  renderLogoutButton(document.getElementById('sidebar-logout'));
-
-  // ── Charger le compte-rendu ───────────────────────────────────────────────
-  const params   = new URLSearchParams(location.search);
-  const seanceId = params.get('id') || 'sea_003';
-  const cr       = await getMockCompteRendu(seanceId);
-  const prat     = await getMockPratUser();
-
-  // En-tête
-  document.getElementById('page-titre').textContent = `Compte-rendu — ${cr.client_prenom}`;
-  document.getElementById('page-meta').textContent  =
-    `Séance du ${formatDateCourte(cr.date_seance)} · ${cr.duree_min} min`;
-
-  // Pré-remplir les champs
-  document.getElementById('texte-cr').value          = cr.texte_cr || '';
-  document.getElementById('texte-intentions').value  = cr.intentions_prochaine || '';
-
-  // Registres chips
-  const regChips = document.getElementById('registres-chips');
-  (cr.registres_travailles || []).forEach(r => {
-    const chip = document.createElement('span');
-    chip.className = 'inline-block bg-surface border border-bdr rounded-[6px] px-2.5 py-0.5 text-xs text-muted font-medium';
-    chip.textContent = r;
-    regChips.appendChild(chip);
-  });
-
-  // ── Profil praticien sliders ──────────────────────────────────────────────
-  const PRAT_DIMS = [
-    { key: 'ancrage',    label: 'Ancrage propre',          cluster: 'vivant',  clientKey: 'presence'     },
-    { key: 'ecoute',     label: 'Écoute pré-verbale',      cluster: 'vivant',  clientKey: 'sol'          },
-    { key: 'regulation', label: 'Régulation',              cluster: 'vivant',  clientKey: 'vivant'       },
-    { key: 'cadrage',    label: 'Cadrage narratif',        cluster: 'societe', clientKey: 'comprehension'},
-    { key: 'agentivite', label: 'Agentivité accompagnée',  cluster: 'societe', clientKey: 'choix'        },
-    { key: 'ethique',    label: 'Éthique relationnelle',   cluster: 'societe', clientKey: 'reflexion'    },
-  ];
-  const VALS_LABELS = ['—', 'Rare', 'Modéré', 'Présent'];
-
-  let currentPratDim = { ...cr.profil_prat_dim };
-
-  const slidersContainer = document.getElementById('prat-sliders');
-  PRAT_DIMS.forEach(dim => {
-    const val = currentPratDim[dim.key] || 1;
-    const row = document.createElement('div');
-    row.innerHTML = `
-      <div class="flex items-center justify-between mb-1">
-        <label for="sl-${dim.key}" class="text-xs font-semibold text-ink">${dim.label}</label>
-        <span class="text-xs text-muted" id="sl-${dim.key}-val">${VALS_LABELS[val]}</span>
-      </div>
-      <input type="range" id="sl-${dim.key}" min="1" max="3" step="1" value="${val}"
-        class="w-full accent-[#4A7C59] h-1.5 rounded cursor-pointer"
-        aria-label="${dim.label} : ${VALS_LABELS[val]}">`;
-    slidersContainer.appendChild(row);
-
-    const input = row.querySelector(`#sl-${dim.key}`);
-    const valLabel = row.querySelector(`#sl-${dim.key}-val`);
-    input.addEventListener('input', () => {
-      const v = parseInt(input.value);
-      currentPratDim[dim.key] = v;
-      valLabel.textContent = VALS_LABELS[v];
-      input.setAttribute('aria-label', `${dim.label} : ${VALS_LABELS[v]}`);
-    });
-  });
-
-  // ── Rendu du radar + métriques ────────────────────────────────────────────
-  let radarInstance = null;
-
-  function renderRadarAndMetrics() {
-    if (radarInstance) radarInstance.destroy();
-
-    const canvas = document.getElementById('radar-ecart-canvas');
-    radarInstance = new RadarEcart(
-      canvas,
-      cr.profil_client_dim,
-      currentPratDim,
-      { praticienPrenom: prat.prenom }
-    );
-    radarInstance.render();
-
-    const metrics = radarInstance.metrics;
-    const dims    = radarInstance.dims;
-
-    // Score global
-    document.getElementById('score-adequation').textContent = metrics.adequation;
-
-    // Clusters
-    const clusterColor = (score) => score === 'fort' ? '#2D6A4F' : score === 'bas' ? '#DC2626' : '#D97706';
-    const cv = metrics.vivant;
-    const cs = metrics.societe;
-    document.getElementById('cluster-vivant-label').textContent  = cv.label;
-    document.getElementById('cluster-vivant-label').style.color  = clusterColor(cv.score);
-    document.getElementById('cluster-societe-label').textContent = cs.label;
-    document.getElementById('cluster-societe-label').style.color = clusterColor(cs.score);
-
-    // Détail dimensions
-    const NATURES = {
-      compensation: { label: 'Compensation',  cls: 'nature-compensation' },
-      resonance:    { label: 'Résonance',     cls: 'nature-resonance'    },
-      collusion:    { label: 'Collusion',     cls: 'nature-collusion'    },
-      angle_mort:   { label: 'Angle mort',    cls: 'nature-angle_mort'   },
-    };
-    const detail = document.getElementById('dims-detail');
-    detail.innerHTML = '';
-    dims.forEach(dim => {
-      const n = NATURES[dim.nature];
-      const dots = (val, color) => [1,2,3].map(v =>
-        `<span class="w-3.5 h-3.5 rounded-sm border inline-block ${v <= val ? `bg-[${color}] border-[${color}]` : 'border-[#D4E8D0]'}"></span>`
-      ).join('');
-      const row = document.createElement('div');
-      row.className = 'flex items-center gap-3 py-1';
-      row.innerHTML = `
-        <span class="text-xs font-semibold w-28 shrink-0 text-ink">${dim.label}</span>
-        <div class="flex items-center gap-0.5 shrink-0">
-          ${[1,2,3].map(v => `<span class="w-3.5 h-3.5 rounded-sm border inline-block ${v <= dim.clientVal ? 'bg-[#4A7C59] border-[#4A7C59]' : 'border-[#D4E8D0]'}"></span>`).join('')}
-          <span class="text-[10px] text-muted mx-1.5">→</span>
-          ${[1,2,3].map(v => `<span class="w-3.5 h-3.5 rounded-sm border inline-block ${v <= dim.pratVal ? 'bg-[#2D6A4F] border-[#2D6A4F]' : 'border-[#D4E8D0]'}"></span>`).join('')}
         </div>
-        <span class="nature-chip ${n.cls}">${n.label}</span>`;
-      detail.appendChild(row);
-    });
+        <p class="text-sm text-muted" id="meta">—</p>
+      </div>
 
-    // ── Interprétation automatique ──────────────────────────────────────────
-    const anglesMorts = dims.filter(d => d.nature === 'angle_mort');
-    const compensations = dims.filter(d => d.nature === 'compensation');
-    const collusions = dims.filter(d => d.nature === 'collusion');
-    const reflexion = dims.find(d => d.clientKey === 'reflexion');
+      <!-- Résumé -->
+      <section class="card">
+        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Résumé</h2>
+        <p class="text-sm text-ink leading-relaxed" id="c-summary"></p>
+      </section>
 
-    const interp = document.getElementById('interpretation');
-    interp.innerHTML = '';
+      <!-- Lecture (triade) -->
+      <section class="card space-y-4">
+        <div id="c-observations" class="hidden">
+          <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Observation</h2>
+          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" data-field></p>
+        </div>
+        <div id="c-followup" class="hidden">
+          <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Pistes de suivi</h2>
+          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" data-field></p>
+        </div>
+        <div id="c-nextfocus" class="hidden">
+          <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Axe de la prochaine séance</h2>
+          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" data-field></p>
+        </div>
+      </section>
 
-    const addPara = (text, color = '#1A2E1D') => {
-      const p = document.createElement('p');
-      p.style.color = color;
-      p.textContent = text;
-      interp.appendChild(p);
-    };
+      <!-- Axes -->
+      <section id="c-axes-wrap" class="hidden">
+        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Lecture multidimensionnelle</h2>
+        <div id="c-axes" class="grid sm:grid-cols-2 gap-2.5"></div>
+      </section>
 
-    if (metrics.adequation >= 70) {
-      addPara(`L'accompagnement est bien ciblé. L'intervention couvre les zones de faiblesse du client.`, '#2D6A4F');
-    } else if (metrics.adequation >= 40) {
-      addPara(`L'accompagnement est partiellement ciblé. Des ajustements sont possibles.`, '#92400E');
-    } else {
-      addPara(`L'adéquation est faible. L'intervention mérite d'être réorientée vers les zones critiques du client.`, '#991B1B');
+      <!-- Reformulation client -->
+      <section id="c-client-wrap" class="hidden card bg-surface/60">
+        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Reformulation pour le client (à valider)</h2>
+        <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" id="c-client"></p>
+      </section>
+
+      <!-- Transcription -->
+      <section id="c-transcript-wrap" class="card">
+        <details>
+          <summary class="text-sm font-semibold text-forest-deep cursor-pointer hover:underline">Voir la transcription de la séance</summary>
+          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap mt-3 border-t border-bdr pt-3" id="c-transcript">—</p>
+        </details>
+      </section>
+
+      <!-- Validation -->
+      <section class="card">
+        <h2 class="font-heading text-base font-bold text-ink mb-2">Validation humaine</h2>
+        <p class="text-sm text-muted leading-relaxed mb-4">
+          Cette lecture est une aide, pas un verdict. En la validant, vous en assumez la relecture
+          avant tout partage avec la personne.
+        </p>
+        <button id="btn-valider"
+                class="bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Valider cette analyse
+        </button>
+        <p id="valider-msg" class="hidden text-sm mt-3"></p>
+        <p class="text-[11px] text-muted mt-4" id="c-modele"></p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const noteId = new URLSearchParams(location.search).get('note');
+    function esc(t){const d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML;}
+    function show(id){['etat-chargement','etat-erreur','contenu'].forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));}
+    function vigilanceElevee(c){c=(c||'').toLowerCase();return c.includes('urgent')||c.includes('eleve')||c.includes('élevé')||c.includes('high');}
+    function dateLisible(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';}
+
+    function remplirChamp(wrapId, texte) {
+      const wrap = document.getElementById(wrapId);
+      if (!texte) return;
+      wrap.querySelector('[data-field]').textContent = texte;
+      wrap.classList.remove('hidden');
     }
 
-    if (anglesMorts.length > 0) {
-      addPara(`⚠ Angles morts détectés : ${anglesMorts.map(d => d.label).join(', ')}. Ces dimensions sont faibles chez le client et peu couvertes par l'intervention.`, '#991B1B');
-    }
+    let note = null;
 
-    if (collusions.length > 0) {
-      addPara(`Attention à la collusion sur : ${collusions.map(d => d.label).join(', ')}. L'intervention renforce des zones déjà fortes — risque de dépendance.`, '#92400E');
-    }
+    (async function () {
+      if (!noteId) { show('etat-erreur'); return; }
+      try {
+        note = await getSessionNote(noteId);
+      } catch (e) { show('etat-erreur'); return; }
 
-    if (reflexion) {
-      const reflexionClientVal = reflexion.clientVal;
-      const reflexionPratVal   = reflexion.pratVal;
-      if (reflexionClientVal >= 2 && reflexionPratVal >= 3) {
-        addPara(`Signal d'autonomie : la Réflexion du client progresse (${reflexionClientVal}/3). Envisagez de réduire la présence de l'Éthique relationnelle pour laisser le client porter son propre regard.`);
-      } else if (reflexionClientVal === 1 && reflexionPratVal <= 1) {
-        addPara(`La dimension Réflexion est en angle mort. C'est la clé de l'autonomisation — elle mérite une attention directe.`, '#991B1B');
+      document.getElementById('meta').textContent =
+        dateLisible(note.created_at) + (note.note_sequence_number ? ' · analyse n°' + note.note_sequence_number : '');
+
+      // Badges
+      const vig = note.vigilance_level_code;
+      document.getElementById('badge-vigilance').innerHTML =
+        `<span class="text-[10px] font-semibold uppercase tracking-wider border rounded-full px-2.5 py-1 ${vigilanceElevee(vig)?'bg-red-50 text-red-700 border-red-200':'bg-surface text-forest-deep border-bdr'}">Vigilance : ${esc(vig||'non précisée')}</span>`;
+      majBadgeValidation();
+
+      document.getElementById('c-summary').textContent = note.summary_text || '—';
+      remplirChamp('c-observations', note.observations_text);
+      remplirChamp('c-followup', note.follow_up_actions_text);
+      remplirChamp('c-nextfocus', note.next_session_focus_text);
+
+      // Axes
+      const axes = [['Cœur', note.coeur_summary_text], ['Corps', note.corps_summary_text],
+                    ['Esprit', note.esprit_summary_text], ['Être', note.etre_summary_text]].filter(a => a[1]);
+      if (axes.length) {
+        document.getElementById('c-axes').innerHTML = axes.map(a =>
+          `<div class="axe"><p class="text-[11px] font-semibold text-forest-deep mb-1">${a[0]}</p><p class="text-xs text-ink leading-relaxed">${esc(a[1])}</p></div>`).join('');
+        document.getElementById('c-axes-wrap').classList.remove('hidden');
       }
+
+      if (note.client_facing_summary_text) {
+        document.getElementById('c-client').textContent = note.client_facing_summary_text;
+        document.getElementById('c-client-wrap').classList.remove('hidden');
+      }
+
+      document.getElementById('c-modele').textContent =
+        (note.model_used || 'modèle IA') + (note.prompt_version ? ' · prompt ' + note.prompt_version : '');
+
+      show('contenu');
+
+      // Transcription (depuis la séance liée)
+      try {
+        const s = await getSession(note.session_id);
+        document.getElementById('c-transcript').textContent = s.transcript_text || 'Transcription non disponible.';
+      } catch (e) {
+        document.getElementById('c-transcript').textContent = 'Transcription non accessible.';
+      }
+    })();
+
+    function majBadgeValidation() {
+      const v = note && note.validated_by_practitioner;
+      document.getElementById('badge-validation').innerHTML = v
+        ? '<span class="text-[10px] font-semibold uppercase tracking-wider text-forest-deep bg-surface border border-bdr rounded-full px-2.5 py-1">validée</span>'
+        : '<span class="text-[10px] font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">à valider</span>';
+      const btn = document.getElementById('btn-valider');
+      if (v) { btn.textContent = 'Analyse validée ✓'; btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; }
     }
 
-    if (compensations.length === dims.length) {
-      addPara(`Accompagnement idéalement ciblé : chaque dimension faible du client est activement couverte.`, '#2D6A4F');
-    }
-  }
-
-  // Premier rendu
-  renderRadarAndMetrics();
-
-  // Recalcul sur bouton
-  document.getElementById('btn-recalc').addEventListener('click', renderRadarAndMetrics);
-
-  // ── Sauvegarde (mock) ─────────────────────────────────────────────────────
-  function handleSave() {
-    // ── Mock save (remplacer par PUT /api/v1/seance/{id}/compte-rendu) ──
-    const payload = {
-      seance_id:        seanceId,
-      texte_cr:         document.getElementById('texte-cr').value,
-      intentions:       document.getElementById('texte-intentions').value,
-      profil_prat_dim:  { ...currentPratDim },
-    };
-    console.log('[IVIA] Compte-rendu sauvegardé (mock) :', payload);
-    const btn = document.getElementById('btn-save');
-    const orig = btn.innerHTML;
-    btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Enregistré';
-    btn.disabled = true;
-    btn.classList.replace('bg-forest-deep', 'bg-sage');
-    setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; btn.classList.replace('bg-sage','bg-forest-deep'); }, 2200);
-  }
-
-  document.getElementById('btn-save').addEventListener('click', handleSave);
-  document.getElementById('btn-save-mobile').addEventListener('click', handleSave);
-
-})();
-</script>
+    document.getElementById('btn-valider').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-valider'), msg = document.getElementById('valider-msg');
+      btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Validation…';
+      try {
+        note = await validateSessionNote(noteId, { validated: true });
+        majBadgeValidation();
+        msg.textContent = 'Analyse validée — elle peut maintenant être partagée selon votre décision.';
+        msg.className = 'text-sm mt-3 text-forest-deep';
+        msg.classList.remove('hidden');
+      } catch (e) {
+        msg.textContent = "La validation n'a pas abouti (" + (e.message || 'erreur') + ').';
+        msg.className = 'text-sm mt-3 text-red-600';
+        msg.classList.remove('hidden');
+        btn.style.pointerEvents = ''; btn.style.opacity = ''; btn.textContent = 'Valider cette analyse';
+      }
+    });
+  </script>
 
 </body>
 </html>

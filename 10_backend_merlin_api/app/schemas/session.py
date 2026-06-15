@@ -51,6 +51,7 @@ class SessionRead(TimestampedReadSchema):
     room_sid: str | None = None
     egress_id: str | None = None
     audio_file_path: str | None = None
+    transcript_text: str | None = None
     operator_user_id: str
     praticien_id: str | None = None
     session_status_code: SessionStatusCode
