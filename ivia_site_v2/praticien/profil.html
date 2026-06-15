@@ -172,7 +172,7 @@
       <!-- Disponibilités (réel — GET/POST/DELETE /api/v1/schedules/my) -->
       <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
         <h2 class="font-heading text-base font-semibold text-ink mb-1">Vos disponibilités</h2>
-        <p class="text-xs text-muted mb-5">Plages hebdomadaires récurrentes. Elles définissent les créneaux que vos clients peuvent réserver.</p>
+        <p class="text-xs text-muted mb-5">Vos fenêtres d'ouverture hebdomadaires (ex. lundi 9 h–11 h). À l'intérieur d'une fenêtre, c'est le client qui choisit le moment et la durée de sa séance lors de la réservation.</p>
 
         <div id="dispo-liste" class="space-y-2 mb-5">
           <p class="text-sm text-muted">Chargement…</p>
@@ -181,7 +181,7 @@
         <!-- Ajouter une plage -->
         <div class="border-t border-bdr pt-5">
           <p class="text-xs font-semibold text-ink mb-3">Ajouter une plage</p>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div class="col-span-2 sm:col-span-1">
               <label class="block text-[11px] font-semibold text-muted mb-1">Jour</label>
               <select id="dispo-jour" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white cursor-pointer">
@@ -196,12 +196,6 @@
             <div>
               <label class="block text-[11px] font-semibold text-muted mb-1">Fin</label>
               <input id="dispo-fin" type="time" value="12:00" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-muted mb-1">Durée séance</label>
-              <select id="dispo-duree" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white cursor-pointer">
-                <option value="30">30 min</option><option value="60" selected>60 min</option><option value="90">90 min</option>
-              </select>
             </div>
           </div>
           <button onclick="ajouterDispo(this)"
@@ -272,7 +266,7 @@
         row.className = 'flex items-center justify-between gap-3 border border-bdr rounded-[12px] px-4 py-2.5';
         row.innerHTML = `<div class="text-sm">
             <span class="font-semibold text-ink">${s.day_label || JOURS[s.day_of_week] || ''}</span>
-            <span class="text-muted">· ${hhmm(s.start_time)}–${hhmm(s.end_time)} · séances de ${s.session_duration_minutes} min</span>
+            <span class="text-muted">· ${hhmm(s.start_time)}–${hhmm(s.end_time)}</span>
           </div>`;
         const del = document.createElement('button');
         del.className = 'text-xs font-medium text-muted hover:text-red-600 px-2 py-1 cursor-pointer shrink-0';
@@ -299,7 +293,8 @@
           day_of_week: parseInt(document.getElementById('dispo-jour').value, 10),
           start_time: debut,
           end_time: fin,
-          session_duration_minutes: parseInt(document.getElementById('dispo-duree').value, 10),
+          // Pas de durée imposée : la plage est une fenêtre, le client choisit à la réservation.
+          // (le backend applique un défaut interne, non exposé au praticien)
         });
         await chargerDispos();
         saveToast('Plage ajoutée');
