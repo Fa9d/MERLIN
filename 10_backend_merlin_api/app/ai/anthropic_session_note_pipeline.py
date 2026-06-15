@@ -12,7 +12,8 @@ from app.ai.prompts.session_note_cercle_v1 import (
 from app.core.config import settings
 
 
-CLAUDE_SONNET_4_MODEL = "claude-sonnet-4-20250514"
+# claude-sonnet-4-20250514 retiré le 2026-06-15 → Sonnet 4.6 (même tarif 3$/15$ par M, même API).
+CLAUDE_SONNET_4_MODEL = "claude-sonnet-4-6"
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 
 
