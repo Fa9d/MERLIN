@@ -265,8 +265,9 @@ async function listPraticiens() {
  *   slot_id, status   // "available"|"hold"|"confirmed"|"cancelled"
  * }
  */
-async function getAvailableSlots(praticienId, dateFrom, dateTo) {
+async function getAvailableSlots(praticienId, dateFrom, dateTo, durationMinutes) {
   const qs = new URLSearchParams({ praticien_id: praticienId, date_from: dateFrom, date_to: dateTo });
+  if (durationMinutes) qs.set('duration_minutes', durationMinutes);
   return _req(`/api/v1/schedules/available?${qs}`, { publicEndpoint: true });
 }
 

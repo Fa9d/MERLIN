@@ -153,6 +153,7 @@ def get_available_slots(
     praticien_id: str = Query(...),
     date_from: date = Query(...),
     date_to: date = Query(...),
+    duration_minutes: int | None = Query(default=None, ge=15, le=240),
     db: Session = Depends(get_db),
 ):
     """
@@ -216,16 +217,24 @@ def get_available_slots(
         )
     ).scalars().all()
 
-    # Expirer les hold dépassés
+    # Expirer les hold dépassés ; sinon, mémoriser la PLAGE réservée (début→fin)
+    # pour exclure tout créneau qui la chevauche (réservations de durée libre).
     now_utc = datetime.now(timezone.utc)
-    booked_set: set[tuple[date, time]] = set()
+    booked_ranges_by_date: dict[date, list[tuple[time, time]]] = {}
     for bs in booked_slots:
         if bs.status == SlotStatus.hold and bs.hold_expires_at and bs.hold_expires_at < now_utc:
             bs.status = SlotStatus.available
             db.add(bs)
         else:
-            booked_set.add((bs.slot_date, bs.start_time))
+            booked_ranges_by_date.setdefault(bs.slot_date, []).append((bs.start_time, bs.end_time))
     db.commit()
+
+    # Granularité des départs proposés dans une fenêtre (le client place sa séance
+    # où il veut). 30 min = compromis lisibilité / souplesse.
+    START_GRANULARITY_MIN = 30
+
+    def _overlaps(a_start: time, a_end: time, b_start: time, b_end: time) -> bool:
+        return a_start < b_end and b_start < a_end
 
     slots: list[AvailableSlotOut] = []
 
@@ -233,6 +242,7 @@ def get_available_slots(
     while current <= date_to:
         dow = current.weekday()  # 0=lundi
         day_schedules = [s for s in schedules if s.day_of_week == dow]
+        booked_today = booked_ranges_by_date.get(current, [])
 
         for sched in day_schedules:
             # Filtrer si hors validité
@@ -244,24 +254,24 @@ def get_available_slots(
             if current in blocked_dates:
                 continue
 
-            step = timedelta(minutes=sched.session_duration_minutes + sched.buffer_minutes)
+            # La durée vient de l'offre choisie (paramètre) ; sinon, défaut de la fenêtre.
+            slot_len = duration_minutes or sched.session_duration_minutes
+            step = timedelta(minutes=START_GRANULARITY_MIN)
             cursor = datetime.combine(current, sched.start_time)
             end_dt = datetime.combine(current, sched.end_time)
 
-            while cursor + timedelta(minutes=sched.session_duration_minutes) <= end_dt:
+            while cursor + timedelta(minutes=slot_len) <= end_dt:
                 slot_start: time = cursor.time()
-                slot_end: time = (cursor + timedelta(minutes=sched.session_duration_minutes)).time()
+                slot_end: time = (cursor + timedelta(minutes=slot_len)).time()
 
-                # Vérifie si le slot est dans une plage bloquée
-                is_blocked = any(
-                    d == current and s <= slot_start < e
+                # Exclure si le créneau chevauche une plage bloquée (exception) ou réservée.
+                blocked = any(
+                    d == current and _overlaps(slot_start, slot_end, s, e)
                     for d, s, e in blocked_ranges
                 )
-                if is_blocked:
-                    cursor += step
-                    continue
+                booked = any(_overlaps(slot_start, slot_end, bs, be) for bs, be in booked_today)
 
-                if (current, slot_start) not in booked_set:
+                if not blocked and not booked:
                     slots.append(AvailableSlotOut(
                         praticien_id=praticien_id,
                         praticien_name=praticien.display_name,
@@ -270,7 +280,7 @@ def get_available_slots(
                         end_time=slot_end,
                         session_type=sched.session_type,
                         session_type_label=SESSION_TYPE_LABELS.get(sched.session_type, sched.session_type),
-                        duration_minutes=sched.session_duration_minutes,
+                        duration_minutes=slot_len,
                     ))
                 cursor += step
 
