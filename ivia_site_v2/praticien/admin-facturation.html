@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facturation — Admin IVIA</title>
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260615e"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    #toast{position:fixed;bottom:24px;right:24px;background:#1A2E1D;color:#fff;font-size:14px;font-weight:500;padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:100;}
+    #toast.show{opacity:1;}
+    #toast.err{background:#991B1B;}
+    .pay-toggle{position:relative;width:48px;height:26px;border-radius:99px;border:1.5px solid #D4E8D0;background:#F0F7F2;cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0;}
+    .pay-toggle.on{background:#4A7C59;border-color:#4A7C59;}
+    .pay-toggle.on:disabled,.pay-toggle:disabled{opacity:.55;cursor:wait;}
+    .pay-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;}
+    .pay-toggle.on .pay-knob{transform:translateX(22px);}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR desktop praticien -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link">Tableau de bord</a>
+        <a href="/praticien/agenda.html" class="sidebar-link">Agenda</a>
+        <a href="/praticien/clients-journal.html" class="sidebar-link">Clients</a>
+        <a href="/praticien/livraisons.html" class="sidebar-link">Livraisons</a>
+        <div class="flex-1"></div>
+        <a href="/praticien/admin-facturation.html" class="sidebar-link active">Facturation (admin)</a>
+        <a href="/praticien/profil.html" class="sidebar-link">Mon profil public</a>
+        <a href="/praticien/compte.html" class="sidebar-link">Mon compte</a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[760px] space-y-6">
+
+      <div>
+        <h1 class="font-heading text-2xl font-bold text-ink">Facturation — interrupteurs par offre</h1>
+        <p class="text-sm text-muted mt-1">Coché = l'offre est <strong>payante</strong>. Décoché = <strong>gratuite</strong>, pour tester le parcours sans paiement Stripe.</p>
+      </div>
+
+      <!-- Avertissement périmètre -->
+      <div class="flex items-start gap-2 text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-[14px] px-4 py-3">
+        <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 00-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
+        <span>Réglage global de la plateforme. En phase solo, accessible aux rôles internes ; à restreindre à l'administrateur technique avant l'arrivée de praticiens externes.</span>
+      </div>
+
+      <section id="offers" class="space-y-3">
+        <!-- injecté par JS -->
+        <div id="loading" class="text-sm text-muted">Chargement des réglages…</div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Catalogue d'affichage (libellé + prix TTC). La source de vérité reste le backend.
+    const OFFERS = [
+      { code: 'enr_seul',    label: 'Enregistrement seul',        price: '35 $', desc: '30 min d’enregistrement solo, sans praticien.' },
+      { code: 'enr_rappel',  label: 'Enregistrement + rappel',    price: '49 $', desc: 'Enregistrement asynchrone + rappel de suivi.' },
+      { code: 'seance_live', label: 'Séance live · 1 h', price: '75 $', desc: 'Séance en direct avec un praticien.' },
+    ];
+
+    function toast(msg, isErr) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.toggle('err', !!isErr);
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function render(flags) {
+      const wrap = document.getElementById('offers');
+      wrap.innerHTML = '';
+      OFFERS.forEach(o => {
+        const payant = flags[o.code] !== false; // défaut payant
+        const card = document.createElement('div');
+        card.className = 'bg-white border border-bdr rounded-[20px] p-5 flex items-center justify-between gap-4 shadow-sm';
+        card.innerHTML = `
+          <div>
+            <p class="text-sm font-semibold text-ink">${o.label} <span class="text-muted font-normal">· ${o.price}</span></p>
+            <p class="text-xs text-muted mt-0.5">${o.desc}</p>
+            <p class="text-xs mt-1.5 font-medium ${payant ? 'text-forest-deep' : 'text-amber-700'}" data-status>
+              ${payant ? 'Payant' : 'Gratuit (mode test)'}
+            </p>
+          </div>
+          <button class="pay-toggle ${payant ? 'on' : ''}" data-code="${o.code}" aria-label="${o.label}">
+            <span class="pay-knob"></span>
+          </button>`;
+        card.querySelector('button').addEventListener('click', onToggle);
+        wrap.appendChild(card);
+      });
+    }
+
+    async function onToggle(ev) {
+      const btn = ev.currentTarget;
+      const code = btn.dataset.code;
+      const next = !btn.classList.contains('on');
+      btn.disabled = true;
+      try {
+        const res = await apiSetBillingFlags({ [code]: next });
+        const flags = res.flags || {};
+        const payant = flags[code] !== false;
+        btn.classList.toggle('on', payant);
+        const status = btn.closest('div.bg-white').querySelector('[data-status]');
+        status.textContent = payant ? 'Payant' : 'Gratuit (mode test)';
+        status.className = `text-xs mt-1.5 font-medium ${payant ? 'text-forest-deep' : 'text-amber-700'}`;
+        toast(payant ? 'Offre passée en payant' : 'Offre passée en gratuit (test)');
+      } catch (err) {
+        toast(err.message || 'Échec de la mise à jour', true);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    (async function init() {
+      try {
+        const res = await apiGetBillingFlags();
+        document.getElementById('loading').remove();
+        render(res.flags || {});
+      } catch (err) {
+        document.getElementById('loading').textContent =
+          'Accès refusé ou indisponible : ' + (err.message || 'erreur');
+      }
+    })();
+  </script>
+</body>
+</html>

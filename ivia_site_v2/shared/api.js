@@ -421,5 +421,23 @@ function formatDateCourteLocale(iso) {
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
 }
 
+// ── Admin · interrupteurs de facturation par offre ───────────────────────────
+/**
+ * Lit l'état payant/gratuit de chaque offre.
+ * @returns {Promise<{flags: Object<string, boolean>}>}  coché=payant
+ */
+async function apiGetBillingFlags() {
+  return _req('/api/v1/admin/billing-flags');
+}
+
+/**
+ * Met à jour les interrupteurs. Décoché = gratuit (mode test).
+ * @param {Object<string, boolean>} flags  { offre_code: payant }
+ * @returns {Promise<{flags: Object<string, boolean>}>}  état après mise à jour
+ */
+async function apiSetBillingFlags(flags) {
+  return _req('/api/v1/admin/billing-flags', { method: 'PATCH', body: { flags } });
+}
+
 // Export implicite — toutes les fonctions sont disponibles en global
 // dans les pages HTML qui incluent ce script.

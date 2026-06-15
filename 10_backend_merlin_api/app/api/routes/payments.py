@@ -19,6 +19,7 @@ from app.models.intake_request import IntakeRequest
 from app.models.payment_order import PaymentOrder
 from app.models.schedule import BookingSlot
 from app.models.session import SessionRecord
+from app.services import billing
 from app.services.booking_flow import confirm_slot_for_client_record, send_booking_confirmation_email_for_slot
 from app.services.email import send_email
 from app.schemas.payment import (
@@ -317,11 +318,68 @@ def _fulfill_paid_order(
     return entitlement, session_record
 
 
-def _create_checkout_order(
+def _offer_code_for_kind(kind: PaymentProductKindCode) -> str | None:
+    """Relie un produit de paiement à une offre du catalogue (billing.OFFERS).
+
+    Sert à consulter l'interrupteur admin « payant / gratuit » par offre.
+    """
+    mapping = {
+        PaymentProductKindCode.audio_async_follow_up: "enr_rappel",
+        PaymentProductKindCode.session_intake: "seance_live",
+        PaymentProductKindCode.session_follow_up: "seance_live",
+    }
+    return mapping.get(kind)
+
+
+async def _fulfill_free_order(
     payload: PaymentCheckoutCreate,
     db: Session,
 ) -> StripeCheckoutSessionRead:
-    _ensure_stripe_config()
+    """Parcours gratuit (offre décochée côté admin, mode test).
+
+    Crée la commande à 0 ¢, marquée payée, l'honore immédiatement (entitlement +
+    éventuelle session audio_async + confirmation de plage pour une séance live) et
+    renvoie l'URL de succès comme `checkout_url` pour que le frontend redirige sans
+    passer par Stripe.
+    """
+    free_payload = payload.model_copy(update={"amount_cents": 0})
+    order = _create_payment_order(db, free_payload, PaymentProviderCode.stripe)
+    order.status_code = PaymentOrderStatusCode.paid
+    order.paid_at = datetime.now(timezone.utc)
+    metadata = _load_order_metadata(order)
+    metadata["free_test_grant"] = "true"
+    order.metadata_json = json.dumps(metadata, ensure_ascii=False)
+    _fulfill_paid_order(db, order)
+    await _auto_confirm_paid_slot_if_any(db, order)
+    db.commit()
+    db.refresh(order)
+
+    success_url, _cancel = _resolve_checkout_urls_generic(payload)
+    success_url = _append_checkout_params(
+        success_url,
+        {
+            "order_id": order.id,
+            "client_id": order.client_id,
+            "intake_request_id": order.intake_request_id or "",
+            "product_code": order.product_code,
+            "slot_id": payload.slot_id or "",
+            "gratuit": "1",
+        },
+    )
+    return StripeCheckoutSessionRead(
+        order_id=order.id,
+        product_code=order.product_code,
+        checkout_session_id="",
+        checkout_url=success_url,
+        amount_cents=0,
+        currency=order.currency,
+    )
+
+
+async def _create_checkout_order(
+    payload: PaymentCheckoutCreate,
+    db: Session,
+) -> StripeCheckoutSessionRead:
     _validate_checkout_references(
         db,
         client_id=payload.client_id,
@@ -329,6 +387,12 @@ def _create_checkout_order(
         intake_request_id=payload.intake_request_id,
     )
 
+    # Interrupteur admin : offre décochée → parcours gratuit (test), sans Stripe.
+    offer_code = _offer_code_for_kind(payload.product_kind_code)
+    if offer_code is not None and not billing.is_offer_payant(db, offer_code):
+        return await _fulfill_free_order(payload, db)
+
+    _ensure_stripe_config()
     order = _create_payment_order(db, payload, PaymentProviderCode.stripe)
     checkout_session = _create_stripe_checkout_for_order(order, payload)
     order.provider_checkout_session_id = checkout_session.id
@@ -467,13 +531,13 @@ async def _create_interac_order(
     response_model=StripeCheckoutSessionRead,
     status_code=status.HTTP_201_CREATED,
 )
-def create_checkout_session(
+async def create_checkout_session(
     payload: PaymentCheckoutCreate,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
 ) -> StripeCheckoutSessionRead:
     _ = current_user
-    return _create_checkout_order(payload, db)
+    return await _create_checkout_order(payload, db)
 
 
 def _public_catalog_amount(kind: PaymentProductKindCode) -> tuple[int, str] | None:
@@ -504,7 +568,7 @@ def _public_catalog_amount(kind: PaymentProductKindCode) -> tuple[int, str] | No
     response_model=StripeCheckoutSessionRead,
     status_code=status.HTTP_201_CREATED,
 )
-def create_public_checkout_session(
+async def create_public_checkout_session(
     payload: PaymentCheckoutCreate,
     db: Session = Depends(get_db),
 ) -> StripeCheckoutSessionRead:
@@ -523,7 +587,7 @@ def create_public_checkout_session(
     payload = payload.model_copy(
         update={"amount_cents": server_price[0], "currency": server_price[1]}
     )
-    return _create_checkout_order(payload, db)
+    return await _create_checkout_order(payload, db)
 
 
 @router.post(
@@ -531,7 +595,7 @@ def create_public_checkout_session(
     response_model=StripeCheckoutSessionRead,
     status_code=status.HTTP_201_CREATED,
 )
-def create_audio_async_checkout_session(
+async def create_audio_async_checkout_session(
     payload: StripeAudioAsyncCheckoutCreate,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_operator()),
@@ -543,7 +607,7 @@ def create_audio_async_checkout_session(
     sécurisé par vérification de signature serveur (stripe-signature header).
     """
     _ = current_user  # garde appliqué par Depends ; variable conservée pour audit futur
-    return _create_checkout_order(_build_audio_async_checkout_payload(payload), db)
+    return await _create_checkout_order(_build_audio_async_checkout_payload(payload), db)
 
 
 @router.post("/stripe/webhook", response_model=StripeWebhookAck)
