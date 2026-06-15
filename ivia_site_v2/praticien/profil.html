@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260615a"></script>
   <script src="/shared/mock_praticien.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -168,6 +169,49 @@
         </button>
       </section>
 
+      <!-- Disponibilités (réel — GET/POST/DELETE /api/v1/schedules/my) -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-1">Vos disponibilités</h2>
+        <p class="text-xs text-muted mb-5">Plages hebdomadaires récurrentes. Elles définissent les créneaux que vos clients peuvent réserver.</p>
+
+        <div id="dispo-liste" class="space-y-2 mb-5">
+          <p class="text-sm text-muted">Chargement…</p>
+        </div>
+
+        <!-- Ajouter une plage -->
+        <div class="border-t border-bdr pt-5">
+          <p class="text-xs font-semibold text-ink mb-3">Ajouter une plage</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="col-span-2 sm:col-span-1">
+              <label class="block text-[11px] font-semibold text-muted mb-1">Jour</label>
+              <select id="dispo-jour" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white cursor-pointer">
+                <option value="0">Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option>
+                <option value="3">Jeudi</option><option value="4">Vendredi</option><option value="5">Samedi</option><option value="6">Dimanche</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-muted mb-1">Début</label>
+              <input id="dispo-debut" type="time" value="09:00" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-muted mb-1">Fin</label>
+              <input id="dispo-fin" type="time" value="12:00" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-muted mb-1">Durée séance</label>
+              <select id="dispo-duree" class="w-full border border-bdr rounded-[10px] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white cursor-pointer">
+                <option value="30">30 min</option><option value="60" selected>60 min</option><option value="90">90 min</option>
+              </select>
+            </div>
+          </div>
+          <button onclick="ajouterDispo(this)"
+                  class="mt-4 bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+            Ajouter la plage
+          </button>
+          <p id="dispo-error" class="hidden text-xs text-red-600 mt-2"></p>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -203,6 +247,81 @@
       if (avatarEl && u.prenom) avatarEl.textContent = u.prenom.charAt(0).toUpperCase();
       renderLogoutButton(document.getElementById('sidebar-logout'));
     })();
+
+    // ── Disponibilités réelles — GET/POST/DELETE /api/v1/schedules/my ─────────
+    const JOURS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+    function hhmm(t) { return (t || '').slice(0, 5); }
+
+    async function chargerDispos() {
+      const zone = document.getElementById('dispo-liste');
+      let slots = [];
+      try {
+        slots = await getMySchedule();
+      } catch (e) {
+        zone.innerHTML = '<p class="text-sm text-muted">Vos disponibilités apparaîtront ici.</p>';
+        return;
+      }
+      if (!slots.length) {
+        zone.innerHTML = '<p class="text-sm text-muted">Aucune plage définie pour l\'instant — ajoutez-en une ci-dessous.</p>';
+        return;
+      }
+      slots.sort((a, b) => a.day_of_week - b.day_of_week || String(a.start_time).localeCompare(String(b.start_time)));
+      zone.innerHTML = '';
+      slots.forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between gap-3 border border-bdr rounded-[12px] px-4 py-2.5';
+        row.innerHTML = `<div class="text-sm">
+            <span class="font-semibold text-ink">${s.day_label || JOURS[s.day_of_week] || ''}</span>
+            <span class="text-muted">· ${hhmm(s.start_time)}–${hhmm(s.end_time)} · séances de ${s.session_duration_minutes} min</span>
+          </div>`;
+        const del = document.createElement('button');
+        del.className = 'text-xs font-medium text-muted hover:text-red-600 px-2 py-1 cursor-pointer shrink-0';
+        del.textContent = 'Retirer';
+        del.onclick = () => supprimerDispo(s.id, row);
+        row.appendChild(del);
+        zone.appendChild(row);
+      });
+    }
+
+    async function ajouterDispo(btn) {
+      const err = document.getElementById('dispo-error');
+      err.classList.add('hidden');
+      const debut = document.getElementById('dispo-debut').value;
+      const fin = document.getElementById('dispo-fin').value;
+      if (!debut || !fin || fin <= debut) {
+        err.textContent = "L'heure de fin doit être après l'heure de début.";
+        err.classList.remove('hidden');
+        return;
+      }
+      btn.style.pointerEvents = 'none'; btn.style.opacity = '.6';
+      try {
+        await createScheduleBlock({
+          day_of_week: parseInt(document.getElementById('dispo-jour').value, 10),
+          start_time: debut,
+          end_time: fin,
+          session_duration_minutes: parseInt(document.getElementById('dispo-duree').value, 10),
+        });
+        await chargerDispos();
+        saveToast('Plage ajoutée');
+      } catch (e) {
+        err.textContent = e.message || "L'ajout a échoué.";
+        err.classList.remove('hidden');
+      } finally {
+        btn.style.pointerEvents = ''; btn.style.opacity = '';
+      }
+    }
+
+    async function supprimerDispo(id, row) {
+      try {
+        await deleteScheduleBlock(id);
+        row.remove();
+        if (!document.getElementById('dispo-liste').children.length) chargerDispos();
+        saveToast('Plage retirée');
+      } catch (e) {
+        saveToast('Suppression impossible — réessayez.');
+      }
+    }
+    chargerDispos();
 
     function toggleDispo(btn) {
       const on = btn.getAttribute('aria-checked') !== 'true';
