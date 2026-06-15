@@ -369,8 +369,11 @@ app/
 │   ├── bookings.py      # hold_slot, confirm_slot (require_verified_email)
 │   ├── public_intake.py # POST /public/intake/start (orchestrateur) + POST /public/activate/{token}
 │   ├── clients.py       # GET /clients/me (fiche durable liée au compte connecté)
+│   ├── me_recordings.py # POST/GET /me/recordings — enregistrement solo client + transcription
+│   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260528_0027 (modèle temporel : eras + events + anchors)
+└── alembic/versions/    # Migrations — head courant = 20260615_0029 (séance express : token + paiement + notes)
+                         #   0028 = sessions.transcript_text · 0029 = express_token_hash/payment_status/private_notes
 ```
 
 ---

@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 from app.models.enums import (
     DataSensitivityClass,
+    PaymentStatusCode,
     RecordStatus,
     RetentionClass,
     SessionChannelCode,
@@ -50,6 +51,13 @@ class SessionRecord(Base):
     audio_file_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
     # Transcription persistée (faster-whisper / AssemblyAI) — relisible par le client.
     transcript_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Séance express : lien partageable (token hashé), statut de paiement, notes privées praticien.
+    express_token_hash: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    payment_status: Mapped[PaymentStatusCode | None] = mapped_column(
+        Enum(PaymentStatusCode, native_enum=False),
+        nullable=True,
+    )
+    private_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     operator_user_id: Mapped[str] = mapped_column(String(64), nullable=False)
     praticien_id: Mapped[str | None] = mapped_column(
         ForeignKey("app_users.id"), nullable=True, index=True

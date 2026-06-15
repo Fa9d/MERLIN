@@ -83,6 +83,13 @@ class ConsentTypeCode(str, Enum):
     consent_third_party_transmission = "consent_third_party_transmission"
 
 
+class PaymentStatusCode(str, Enum):
+    """Statut de paiement d'une séance — métadonnée praticien, pas un flux Stripe."""
+    gratuit = "gratuit"            # consultation découverte, urgence, geste offert
+    prepaye = "prepaye"           # déjà réglé hors ligne (virement, espèces…)
+    a_payer_apres = "a_payer_apres"  # à régler après la séance
+
+
 # --------------- Schedule / Booking ----------------------------------------
 
 class DayOfWeek(int, Enum):

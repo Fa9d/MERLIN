@@ -180,6 +180,26 @@ async function getMyRecordings() {
   return _req('/api/v1/me/recordings');
 }
 
+// ── Séance express ────────────────────────────────────────────────────────────
+/**
+ * Praticien : crée une séance express, renvoie { session_id, token, ... }.
+ * @param {{client_name?, duration_minutes, payment_status, private_notes?}} payload
+ */
+async function createExpressSession(payload) {
+  return _req('/api/v1/sessions/express', { method: 'POST', body: payload });
+}
+
+/** Public (token) : infos d'accueil d'une séance express. */
+async function getExpressSession(token) {
+  return _req('/api/v1/public/express/' + encodeURIComponent(token), { publicEndpoint: true });
+}
+
+/** Public (token) : dépôt de l'enregistrement du client sur une séance express. */
+async function uploadExpressRecording(token, payload) {
+  return _req('/api/v1/public/express/' + encodeURIComponent(token) + '/recording',
+    { method: 'POST', body: payload, publicEndpoint: true });
+}
+
 /** Convertit un Blob audio en base64 (sans le préfixe data:). */
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {

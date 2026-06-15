@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Votre séance</title>
+  <script src="/shared/api.js?v=20260612a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    #waveform-canvas{width:100%;height:96px;border-radius:14px;background:#F0F7F2;display:block;}
+    .mic-btn{width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border:none;background:#2D6A4F;color:#fff;box-shadow:0 6px 20px rgba(45,106,79,.25);}
+    .mic-btn:hover{background:#4A7C59;}
+    .ctrl{display:inline-flex;align-items:center;gap:8px;font-size:.875rem;font-weight:600;padding:.65rem 1.25rem;border-radius:12px;cursor:pointer;transition:all .15s;border:1px solid #D4E8D0;}
+    .ctrl-primary{background:#2D6A4F;color:#fff;border-color:#2D6A4F;}
+    .ctrl-primary:hover{background:#4A7C59;}
+    .ctrl-ghost{background:#fff;color:#1A2E1D;}
+    .ctrl-ghost:hover{background:#F0F7F2;}
+    .ctrl-stop{background:#fff;color:#dc2626;border-color:#f3c4c4;}
+    .ctrl-stop:hover{background:#fef2f2;}
+    #timer{font-variant-numeric:tabular-nums;letter-spacing:.04em;}
+    .dot-live{width:9px;height:9px;border-radius:50%;background:#dc2626;animation:blink 1.2s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+  <!-- En-tête sobre -->
+  <header class="border-b border-bdr bg-white/80 backdrop-blur-sm">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center gap-2.5">
+      <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <rect width="28" height="28" rx="7" fill="#2D6A4F"/>
+        <rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/>
+        <rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/>
+        <rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/>
+      </svg>
+      <span class="font-heading text-lg font-semibold text-forest-deep">IVIA</span>
+      <span class="text-bdr">·</span>
+      <span class="text-sm text-muted">Votre séance</span>
+    </div>
+  </header>
+
+  <div class="max-w-xl mx-auto px-4 py-10">
+
+    <!-- État : chargement -->
+    <div id="state-loading" class="text-center py-16 text-muted text-sm">Chargement de votre séance…</div>
+
+    <!-- État : lien invalide -->
+    <div id="state-invalid" class="hidden card bg-white border border-bdr rounded-[24px] p-8 text-center">
+      <h1 class="font-heading text-xl font-bold text-ink mb-2">Lien introuvable</h1>
+      <p class="text-sm text-muted">Ce lien de séance n'est plus valide. Demandez-en un nouveau à votre praticien·ne.</p>
+    </div>
+
+    <!-- État : déjà enregistré -->
+    <div id="state-done" class="hidden bg-surface border border-bdr rounded-[24px] p-8 text-center">
+      <div class="w-14 h-14 bg-forest/15 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-7 h-7 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h1 class="font-heading text-xl font-bold text-ink mb-2">Enregistrement déjà reçu</h1>
+      <p class="text-sm text-muted leading-relaxed">Merci — votre voix a bien été déposée pour cette séance. Votre praticien·ne en prend soin.</p>
+    </div>
+
+    <!-- État : séance prête (info + enregistrement) -->
+    <div id="state-ready" class="hidden">
+      <a href="#" id="back-formules" class="hidden"></a>
+
+      <div class="bg-white border border-bdr rounded-[20px] p-6 mb-6">
+        <p class="text-xs font-semibold uppercase tracking-wider text-forest mb-2">Votre séance express</p>
+        <h1 class="font-heading text-2xl font-bold text-ink mb-3" id="ready-title">Bienvenue</h1>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <span id="info-praticien" class="hidden bg-surface border border-bdr text-muted font-semibold px-3 py-1 rounded-full"></span>
+          <span id="info-duree" class="hidden bg-surface border border-bdr text-muted font-semibold px-3 py-1 rounded-full"></span>
+          <span id="info-paiement" class="hidden bg-surface border border-bdr text-muted font-semibold px-3 py-1 rounded-full"></span>
+          <span class="bg-blue-50 border border-blue-100 text-trust font-semibold px-3 py-1 rounded-full">Loi 25 · Voix effacée à J+30</span>
+        </div>
+        <p class="text-sm text-muted leading-relaxed mt-4">
+          Parlez librement, à votre rythme. Vous pouvez faire une pause, vous réécouter,
+          reprendre ou recommencer. Rien n'est envoyé tant que vous ne le décidez pas.
+        </p>
+      </div>
+
+      <!-- Enregistrement -->
+      <div id="step-record" class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm">
+        <div class="text-center mb-5">
+          <div class="flex items-center justify-center gap-2 mb-1">
+            <span id="live-dot" class="dot-live hidden" aria-hidden="true"></span>
+            <span id="timer" class="text-4xl font-bold text-ink">00:00</span>
+          </div>
+          <p id="rec-status" class="text-xs text-muted">Appuyez sur le micro pour commencer</p>
+        </div>
+
+        <canvas id="waveform-canvas" class="mb-6" aria-hidden="true"></canvas>
+
+        <div id="controls-idle" class="flex flex-col items-center gap-3">
+          <button id="btn-start" class="mic-btn" aria-label="Commencer l'enregistrement">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <p class="text-xs text-muted">Commencer l'enregistrement</p>
+        </div>
+
+        <div id="controls-live" class="hidden flex items-center justify-center gap-3">
+          <button id="btn-pause" class="ctrl ctrl-ghost"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>Pause</button>
+          <button id="btn-stop" class="ctrl ctrl-stop"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>Terminer</button>
+        </div>
+
+        <div id="controls-paused" class="hidden flex flex-col items-center gap-4">
+          <div class="flex items-center justify-center gap-3 flex-wrap">
+            <button id="btn-preview" class="ctrl ctrl-ghost"><svg id="preview-icon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg><span id="preview-label">M'écouter</span></button>
+            <button id="btn-resume" class="ctrl ctrl-primary"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg>Reprendre</button>
+            <button id="btn-stop2" class="ctrl ctrl-stop"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>Terminer</button>
+          </div>
+          <p class="text-xs text-muted text-center">En pause — réécoutez-vous, puis reprenez ou terminez.</p>
+        </div>
+
+        <div id="mic-error" class="hidden mt-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700">
+          L'accès au microphone a été refusé. Autorisez-le dans les paramètres du navigateur et rechargez la page.
+        </div>
+      </div>
+
+      <!-- Réécoute + envoi -->
+      <div id="step-playback" class="hidden bg-white border border-bdr rounded-[24px] p-8 shadow-sm mt-5">
+        <h2 class="font-heading text-lg font-semibold text-ink mb-1">Réécoutez avant d'envoyer</h2>
+        <p class="text-xs text-muted mb-5">Prenez le temps. Vous pouvez tout recommencer si ça ne vous convient pas.</p>
+        <div class="bg-surface/60 border border-bdr rounded-[16px] p-4 mb-5">
+          <div class="flex items-center gap-4">
+            <button id="btn-play" class="w-12 h-12 bg-forest-deep text-white rounded-full flex items-center justify-center hover:bg-forest transition-colors cursor-pointer shrink-0" aria-label="Lire / mettre en pause">
+              <svg id="play-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+            </button>
+            <div class="flex-1">
+              <div id="playback-bar" class="h-2.5 bg-bdr rounded-full overflow-hidden cursor-pointer">
+                <div id="playback-progress" class="h-full bg-forest rounded-full transition-none" style="width:0%"></div>
+              </div>
+              <div class="flex justify-between mt-1.5 text-[11px] text-muted tabular-nums">
+                <span id="playback-time">00:00</span>
+                <span id="playback-duration">00:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label class="flex items-start gap-2.5 mb-5 cursor-pointer">
+          <input type="checkbox" id="consent-rec" class="mt-0.5 accent-[#2D6A4F] w-4 h-4 shrink-0">
+          <span class="text-xs text-muted leading-relaxed">
+            Je consens à l'enregistrement de ma voix et à sa transcription, pour cette séance.
+            La voix est effacée après 30 jours. <a href="/confidentialite.html" class="underline" target="_blank" rel="noopener">Détails (Loi 25)</a>.
+          </span>
+        </label>
+        <div class="flex gap-3 flex-wrap">
+          <button id="btn-retry" class="ctrl ctrl-ghost">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.5 9a7 7 0 0112.9-2M18.5 15a7 7 0 01-12.9 2"/></svg>
+            Recommencer
+          </button>
+          <button id="btn-submit" class="ctrl ctrl-primary flex-1 justify-center">Envoyer à mon praticien·ne →</button>
+        </div>
+        <p id="submit-error" class="hidden text-xs text-red-600 mt-3"></p>
+      </div>
+
+      <!-- Confirmation -->
+      <div id="step-confirm" class="hidden bg-surface border border-bdr rounded-[24px] p-8 text-center">
+        <div class="w-14 h-14 bg-forest/15 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-7 h-7 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <h2 class="font-heading text-xl font-semibold text-ink mb-2">Merci — votre voix est bien arrivée.</h2>
+        <p class="text-sm text-muted leading-relaxed">
+          La transcription se prépare. Votre praticien·ne en prend soin, avec une lecture humaine
+          avant toute suite. Vous pouvez fermer cette page.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-6 px-4 text-center">
+    <p class="text-xs text-muted">IVIA n'est pas un service d'urgence · En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong></p>
+  </footer>
+
+  <script>
+    const token = new URLSearchParams(location.search).get('token') || '';
+    const MAX_SECONDS = 90 * 60; // borne large côté client ; la durée réelle vient du praticien
+
+    // ── Chargement de la séance ───────────────────────────────────────────
+    (async function init() {
+      if (!token) { show('invalid'); return; }
+      try {
+        const s = await getExpressSession(token);
+        if (s.already_recorded) { show('done'); return; }
+        if (s.praticien_display) {
+          const el = document.getElementById('info-praticien');
+          el.textContent = 'Avec ' + s.praticien_display; el.classList.remove('hidden');
+        }
+        if (s.client_display && s.client_display !== 'Invité·e') {
+          document.getElementById('ready-title').textContent = 'Bonjour ' + s.client_display;
+        }
+        if (s.duration_minutes) {
+          const el = document.getElementById('info-duree');
+          el.textContent = '≈ ' + s.duration_minutes + ' min'; el.classList.remove('hidden');
+        }
+        const PAY = { gratuit: 'Séance offerte', prepaye: 'Déjà réglée', a_payer_apres: 'À régler après la séance' };
+        if (s.payment_status && PAY[s.payment_status]) {
+          const el = document.getElementById('info-paiement');
+          el.textContent = PAY[s.payment_status]; el.classList.remove('hidden');
+        }
+        show('ready');
+        resizeCanvas();
+      } catch (e) {
+        show('invalid');
+      }
+    })();
+
+    function show(state) {
+      ['loading', 'invalid', 'done', 'ready'].forEach(s =>
+        document.getElementById('state-' + s).classList.toggle('hidden', s !== state));
+    }
+
+    // ═══════════ Moteur d'enregistrement (identique à /client/enregistrement.html) ═══════════
+    let mediaRecorder = null, mediaStream = null, audioChunks = [], audioBlob = null;
+    let audioEl = null, previewEl = null, timerInterval = null, secondsElapsed = 0;
+    const canvas = document.getElementById('waveform-canvas');
+    const ctx2d = canvas.getContext('2d');
+    let analyser = null, animFrame = null, audioCtx = null;
+
+    function drawWave() {
+      if (!analyser) return;
+      const W = canvas.width, H = canvas.height, data = new Uint8Array(analyser.fftSize);
+      analyser.getByteTimeDomainData(data);
+      ctx2d.clearRect(0, 0, W, H); ctx2d.lineWidth = 2; ctx2d.strokeStyle = '#4A7C59'; ctx2d.beginPath();
+      const sliceW = W / analyser.fftSize; let x = 0;
+      for (let i = 0; i < analyser.fftSize; i++) { const y = (data[i] / 128.0 * H) / 2; i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y); x += sliceW; }
+      ctx2d.lineTo(W, H / 2); ctx2d.stroke(); animFrame = requestAnimationFrame(drawWave);
+    }
+    function drawFlatLine() {
+      cancelAnimationFrame(animFrame); ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+      ctx2d.lineWidth = 2; ctx2d.strokeStyle = '#D4E8D0'; ctx2d.beginPath();
+      ctx2d.moveTo(0, canvas.height / 2); ctx2d.lineTo(canvas.width, canvas.height / 2); ctx2d.stroke();
+    }
+    function resizeCanvas() { canvas.width = canvas.offsetWidth || 480; canvas.height = 96; }
+    window.addEventListener('resize', resizeCanvas);
+
+    function formatTime(s) {
+      s = Math.max(0, Math.floor(s || 0));
+      return `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
+    }
+    function showControls(state) {
+      document.getElementById('controls-idle').classList.toggle('hidden', state !== 'idle');
+      document.getElementById('controls-live').classList.toggle('hidden', state !== 'recording');
+      document.getElementById('controls-paused').classList.toggle('hidden', state !== 'paused');
+      document.getElementById('live-dot').classList.toggle('hidden', state !== 'recording');
+      const st = document.getElementById('rec-status');
+      st.textContent = state === 'recording' ? 'Enregistrement en cours…'
+        : state === 'paused' ? 'En pause' : 'Appuyez sur le micro pour commencer';
+    }
+    function tickStart() {
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        document.getElementById('timer').textContent = formatTime(secondsElapsed);
+        if (secondsElapsed >= MAX_SECONDS) terminer();
+      }, 1000);
+    }
+    function tickStop() { clearInterval(timerInterval); }
+
+    document.getElementById('btn-start').addEventListener('click', commencer);
+    async function commencer() {
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioCtx = new AudioContext(); analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048;
+        audioCtx.createMediaStreamSource(mediaStream).connect(analyser);
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable = e => { if (e.data.size) audioChunks.push(e.data); };
+        mediaRecorder.onstop = onRecordStop;
+        mediaRecorder.start(1000);
+        secondsElapsed = 0; document.getElementById('timer').textContent = '00:00';
+        tickStart(); drawWave(); showControls('recording');
+      } catch (err) { document.getElementById('mic-error').classList.remove('hidden'); }
+    }
+    document.getElementById('btn-pause').addEventListener('click', () => {
+      if (!mediaRecorder || mediaRecorder.state !== 'recording') return;
+      mediaRecorder.pause(); tickStop(); drawFlatLine(); showControls('paused');
+    });
+    document.getElementById('btn-resume').addEventListener('click', () => {
+      stopPreview();
+      if (!mediaRecorder || mediaRecorder.state !== 'paused') return;
+      mediaRecorder.resume(); tickStart(); drawWave(); showControls('recording');
+    });
+    document.getElementById('btn-preview').addEventListener('click', () => {
+      if (previewEl && !previewEl.paused) { stopPreview(); return; }
+      try {
+        const blob = new Blob(audioChunks, { type: 'audio/webm' });
+        if (!blob.size) return;
+        previewEl = new Audio(URL.createObjectURL(blob));
+        previewEl.onended = stopPreview; previewEl.play(); setPreviewIcon(true);
+      } catch (e) {}
+    });
+    function stopPreview() { if (previewEl) { previewEl.pause(); previewEl = null; } setPreviewIcon(false); }
+    function setPreviewIcon(playing) {
+      document.getElementById('preview-icon').innerHTML = playing
+        ? '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
+        : '<path d="M5 3l14 9-14 9V3z"/>';
+      document.getElementById('preview-label').textContent = playing ? 'Pause' : "M'écouter";
+    }
+    document.getElementById('btn-stop').addEventListener('click', terminer);
+    document.getElementById('btn-stop2').addEventListener('click', terminer);
+    function terminer() {
+      stopPreview(); tickStop(); cancelAnimationFrame(animFrame);
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    }
+    function onRecordStop() {
+      if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
+      if (audioCtx) { audioCtx.close(); audioCtx = null; analyser = null; }
+      audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioEl = new Audio(URL.createObjectURL(audioBlob));
+      document.getElementById('step-record').classList.add('opacity-60', 'pointer-events-none');
+      document.getElementById('step-playback').classList.remove('hidden');
+      document.getElementById('playback-duration').textContent = formatTime(secondsElapsed);
+      document.getElementById('step-playback').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      audioEl.addEventListener('timeupdate', () => {
+        const dur = isFinite(audioEl.duration) && audioEl.duration > 0 ? audioEl.duration : secondsElapsed;
+        document.getElementById('playback-progress').style.width = `${(audioEl.currentTime / dur) * 100}%`;
+        document.getElementById('playback-time').textContent = formatTime(audioEl.currentTime);
+      });
+      audioEl.addEventListener('ended', () => setPlayIcon(false));
+    }
+    function setPlayIcon(playing) {
+      document.getElementById('play-icon').innerHTML = playing
+        ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+        : '<path d="M5 3l14 9-14 9V3z"/>';
+    }
+    document.getElementById('btn-play').addEventListener('click', () => {
+      if (!audioEl) return;
+      if (audioEl.paused) { audioEl.play(); setPlayIcon(true); } else { audioEl.pause(); setPlayIcon(false); }
+    });
+    document.getElementById('playback-bar').addEventListener('click', (e) => {
+      if (!audioEl) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const dur = isFinite(audioEl.duration) && audioEl.duration > 0 ? audioEl.duration : secondsElapsed;
+      audioEl.currentTime = Math.max(0, Math.min(dur, ((e.clientX - rect.left) / rect.width) * dur));
+    });
+    document.getElementById('btn-retry').addEventListener('click', () => {
+      if (audioEl) { audioEl.pause(); audioEl = null; }
+      audioBlob = null; audioChunks = []; mediaRecorder = null; secondsElapsed = 0;
+      document.getElementById('timer').textContent = '00:00';
+      document.getElementById('playback-progress').style.width = '0%';
+      document.getElementById('playback-time').textContent = '00:00';
+      document.getElementById('consent-rec').checked = false;
+      setPlayIcon(false); ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('step-playback').classList.add('hidden');
+      document.getElementById('step-record').classList.remove('opacity-60', 'pointer-events-none');
+      showControls('idle');
+      document.getElementById('step-record').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    document.getElementById('btn-submit').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-submit'), err = document.getElementById('submit-error');
+      err.classList.add('hidden');
+      if (!audioBlob) return;
+      if (!document.getElementById('consent-rec').checked) {
+        err.textContent = "Veuillez consentir à l'enregistrement et à la transcription avant d'envoyer.";
+        err.classList.remove('hidden'); return;
+      }
+      btn.textContent = 'Envoi en cours…'; btn.style.pointerEvents = 'none'; btn.style.opacity = '.6';
+      try {
+        const audio_data = await blobToBase64(audioBlob);
+        await uploadExpressRecording(token, { audio_data, filename: 'enregistrement.webm', duration_seconds: Math.max(1, secondsElapsed) });
+        document.getElementById('step-record').classList.add('hidden');
+        document.getElementById('step-playback').classList.add('hidden');
+        document.getElementById('step-confirm').classList.remove('hidden');
+        document.getElementById('step-confirm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (e) {
+        err.textContent = "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez — votre enregistrement est encore là.";
+        err.classList.remove('hidden'); btn.textContent = 'Envoyer à mon praticien·ne →';
+        btn.style.pointerEvents = ''; btn.style.opacity = '';
+      }
+    });
+    window.addEventListener('beforeunload', (e) => {
+      const confirme = !document.getElementById('step-confirm').classList.contains('hidden');
+      const enCours = mediaRecorder && mediaRecorder.state !== 'inactive';
+      if ((audioBlob || enCours) && !confirme) { e.preventDefault(); e.returnValue = ''; }
+    });
+  </script>
+
+</body>
+</html>
