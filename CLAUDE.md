@@ -371,9 +371,11 @@ app/
 │   ├── clients.py       # GET /clients/me (fiche durable liée au compte connecté)
 │   ├── me_recordings.py # POST/GET /me/recordings — enregistrement solo client + transcription
 │   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
+│   ├── admin_settings.py # GET/PATCH /admin/billing-flags — interrupteurs payant/gratuit par offre (mode test)
+│   ├── payments.py      # checkout Stripe ; offre décochée (is_offer_payant False) → parcours gratuit sans Stripe
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260615_0029 (séance express : token + paiement + notes)
-                         #   0028 = sessions.transcript_text · 0029 = express_token_hash/payment_status/private_notes
+└── alembic/versions/    # Migrations — head courant = 20260615_0030 (app_settings : réglages runtime clé→valeur)
+                         #   0028 = sessions.transcript_text · 0029 = express · 0030 = app_settings (flags facturation)
 ```
 
 ---
