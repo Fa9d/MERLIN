@@ -88,11 +88,18 @@ class Settings:
     stripe_webhook_secret: str | None = os.getenv("MERLIN_STRIPE_WEBHOOK_SECRET")
     stripe_checkout_success_url: str | None = os.getenv("MERLIN_STRIPE_CHECKOUT_SUCCESS_URL")
     stripe_checkout_cancel_url: str | None = os.getenv("MERLIN_STRIPE_CHECKOUT_CANCEL_URL")
-    stripe_audio_async_amount_cents: int = int(os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_AMOUNT_CENTS", "4500"))
+    # Grille IVIA (prix TTC en cents) — enregistrement + rappel = 49 $
+    stripe_audio_async_amount_cents: int = int(os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_AMOUNT_CENTS", "4900"))
     stripe_audio_async_currency: str = os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_CURRENCY", "cad")
-    # Prix serveur d'une séance live réservée (jamais fourni par le client — anti-manipulation)
-    stripe_seance_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SEANCE_AMOUNT_CENTS", "9000"))
+    # Prix serveur d'une séance live réservée (jamais fourni par le client — anti-manipulation) = 75 $
+    stripe_seance_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SEANCE_AMOUNT_CENTS", "7500"))
     stripe_seance_currency: str = os.getenv("MERLIN_STRIPE_SEANCE_CURRENCY", "cad")
+    # Comptabilité — assujettissement aux taxes (TPS/TVQ). False tant que sous le
+    # seuil de petit fournisseur (30 000 $). Les prix sont alors 100 % revenu ;
+    # une fois True, la décomposition TTC → HT + TPS + TVQ s'active (voir services/billing.py).
+    tax_registered: bool = os.getenv("MERLIN_TAX_REGISTERED", "false").lower() == "true"
+    tps_rate: float = float(os.getenv("MERLIN_TPS_RATE", "0.05"))       # TPS fédérale
+    tvq_rate: float = float(os.getenv("MERLIN_TVQ_RATE", "0.09975"))    # TVQ Québec
     # SMTP
     smtp_host: str = os.getenv("SMTP_HOST", "ssl0.ovh.net")
     smtp_port: int = int(os.getenv("SMTP_PORT", "465"))
