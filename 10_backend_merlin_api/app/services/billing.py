@@ -43,6 +43,19 @@ STRIPE_FIXED_CENTS = 30
 AI_COST_CENTS_ESTIMATE = 12
 
 
+def offer_payant_key(code: str) -> str:
+    return f"pay_{code}"
+
+
+def is_offer_payant(db, code: str) -> bool:
+    """Vrai si l'offre doit être facturée. Décochée côté admin → gratuite (mode test).
+
+    Défaut : payant (True). Lit le réglage runtime `pay_<offre>` (table app_settings).
+    """
+    from app.services.app_settings import get_bool
+    return get_bool(db, offer_payant_key(code), default=True)
+
+
 def decompose(amount_ttc_cents: int) -> dict[str, int]:
     """Décompose un encaissement TTC en HT + TPS + TVQ (cents).
 
