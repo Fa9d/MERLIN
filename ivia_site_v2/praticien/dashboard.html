@@ -4,499 +4,179 @@
   <meta charset="UTF-8">
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Tableau de bord praticien</title>
+  <script src="/shared/api.js?v=20260615c"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="/shared/mock_praticien.js"></script>  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
     .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
     .sidebar-link.active{font-weight:700;}
-    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
     .stat-card{background:#fff;border:1.5px solid #D4E8D0;border-radius:16px;padding:18px 20px;}
-    /* Barres CSS pures */
-    .bar-track{width:100%;background:#F0F7F2;border-radius:99px;height:8px;overflow:hidden;}
-    .bar-fill{height:8px;border-radius:99px;transition:width .6s ease;}
-    .tag{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:2px 10px;font-size:12px;color:#4B6350;font-weight:500;}
-    /* Dropdown action */
-    .dropdown{position:relative;display:inline-block;}
-    .dropdown-menu{display:none;position:absolute;right:0;top:100%;margin-top:4px;background:#fff;border:1.5px solid #D4E8D0;border-radius:12px;min-width:180px;z-index:20;box-shadow:0 4px 16px rgba(0,0,0,.08);}
-    .dropdown-menu.open{display:block;}
-    .dropdown-item{display:block;width:100%;text-align:left;padding:10px 16px;font-size:13px;color:#1A2E1D;cursor:pointer;background:none;border:none;}
-    .dropdown-item:hover{background:#F0F7F2;}
-    /* Onglets praticien */
-    .prat-tab{padding:8px 18px;border-radius:99px;font-size:14px;font-weight:500;color:#4B6350;cursor:pointer;transition:all .15s;border:none;background:none;}
-    .prat-tab.active{background:#1A2E1D;color:#fff;font-weight:700;}
-    .client-card-inline{background:#fff;border:1.5px solid #D4E8D0;border-radius:16px;padding:18px 20px;cursor:pointer;transition:box-shadow .15s;}
-    .client-card-inline:hover{box-shadow:0 4px 12px rgba(0,0,0,.07);}
+    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
   </style>
 </head>
-<body class="antialiased pb-20 lg:pb-0">
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
 
   <div class="flex min-h-screen">
 
-    <!-- SIDEBAR desktop praticien -->
+    <!-- SIDEBAR -->
     <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
       <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
       <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
       <nav class="flex flex-col gap-1 flex-1">
-        <a href="/praticien/dashboard.html" class="sidebar-link active">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Tableau de bord
-        </a>
-        <a href="/praticien/agenda.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Agenda
-        </a>
-        <a href="/praticien/clients-journal.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          Clients
-        </a>
-        <a href="/praticien/livraisons.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Livraisons
-        </a>
+        <a href="/praticien/dashboard.html" class="sidebar-link active"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</a>
+        <a href="/praticien/agenda.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
+        <a href="/praticien/seance-express.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Séance express</a>
+        <a href="/praticien/livraisons.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
         <div class="flex-1"></div>
-        <a href="/praticien/profil.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-          Mon profil public
-        </a>
-        <a href="/praticien/compte.html" class="sidebar-link">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-          Mon compte
-        </a>
+        <a href="/praticien/profil.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>Mon profil</a>
+        <a href="/praticien/compte.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Mon compte</a>
         <div id="sidebar-logout" class="mt-2"></div>
       </nav>
     </aside>
 
-    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1100px]">
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[980px]">
 
-      <!-- En-tête -->
-      <div class="flex items-center justify-between mb-5">
+      <div class="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
-          <h1 class="font-heading text-2xl font-bold text-ink">Tableau de bord</h1>
+          <h1 class="font-heading text-2xl font-bold text-ink" id="tdb-bonjour">Tableau de bord</h1>
           <p class="text-muted text-sm mt-0.5" id="tdb-date"></p>
         </div>
-        <div class="hidden sm:flex items-center gap-3">
-          <a href="/praticien/seance-en-cours.html"
-             class="flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/>
-            </svg>
-            Démarrer une séance
-          </a>
-          <a href="/praticien/agenda.html"
-             class="border border-bdr text-ink text-sm font-medium px-4 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
-            Agenda
-          </a>
+        <a href="/praticien/seance-express.html"
+           class="inline-flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Nouvelle séance express
+        </a>
+      </div>
+
+      <!-- Statistiques d'analyse (réelles) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Analyses</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-analyses">…</p>
+          <p class="text-xs text-muted mt-1">générées par l'IA</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">À valider</p>
+          <p class="font-heading text-3xl font-bold text-forest-deep" id="stat-valider">…</p>
+          <p class="text-xs text-muted mt-1">relecture humaine</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Vigilance élevée</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-vigilance">…</p>
+          <p class="text-xs text-muted mt-1">à regarder en priorité</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Séances</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-seances">…</p>
+          <p class="text-xs text-muted mt-1" id="stat-seances-sub">enregistrées</p>
         </div>
       </div>
 
-      <!-- Barre d'onglets praticien -->
-      <div class="flex gap-1 mb-7 bg-surface rounded-[14px] p-1.5 w-fit" role="tablist">
-        <button class="prat-tab" id="ptab-accueil" onclick="switchPratTab('accueil')" role="tab">Accueil</button>
-        <button class="prat-tab" id="ptab-clients" onclick="switchPratTab('clients')" role="tab">Clients</button>
-        <button class="prat-tab" id="ptab-livraisons" onclick="switchPratTab('livraisons')" role="tab">Livraisons</button>
-      </div>
-
-      <!-- ═══ VUE Accueil ═══ -->
-      <div id="prat-accueil">
-
-      <!-- Indicateurs financiers (6) -->
-      <section class="mb-8" aria-labelledby="fin-title">
-        <h2 id="fin-title" class="font-heading text-base font-semibold text-ink mb-4">Indicateurs financiers</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <div class="stat-card">
-            <p class="text-xs text-muted mb-1">Revenus ce mois</p>
-            <p class="font-heading text-2xl font-bold text-ink"><span id="stat-revenus">540</span> $</p>
-            <p class="text-xs text-muted mt-1" id="stat-revenus-delta">+12 % vs mois dernier</p>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <!-- À valider -->
+        <section class="card">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-heading text-base font-bold text-ink">À valider en priorité</h2>
+            <a href="/praticien/livraisons.html" class="text-xs font-semibold text-forest-deep hover:underline">Tout voir →</a>
           </div>
-          <div class="stat-card">
-            <p class="text-xs text-muted mb-1">Séances livrées</p>
-            <p class="font-heading text-2xl font-bold text-ink" id="stat-seances">9</p>
-            <p class="text-xs text-muted mt-1"><span id="stat-seances-plan">5</span> planifiées</p>
-          </div>
-          <div class="stat-card">
-            <p class="text-xs text-muted mb-1">Taux de présence</p>
-            <p class="font-heading text-2xl font-bold text-ink">88 %</p>
-            <div class="bar-track mt-2"><div class="bar-fill bg-forest" style="width:88%"></div></div>
-          </div>
-          <div class="stat-card">
-            <p class="text-xs text-muted mb-1">Clients actifs</p>
-            <p class="font-heading text-2xl font-bold text-ink" id="stat-clients">4</p>
-            <p class="text-xs text-muted mt-1"><span id="stat-clients-attente">1</span> en attente</p>
-          </div>
-          <div class="stat-card">
-            <p class="text-xs text-muted mb-1">Revenu moyen/séance</p>
-            <p class="font-heading text-2xl font-bold text-ink">60 $</p>
-          </div>
-          <div class="stat-card">
-            <p class="text-xs text-muted mb-1">Revenus cumulés</p>
-            <p class="font-heading text-2xl font-bold text-ink">2 340 $</p>
-            <p class="text-xs text-muted mt-1">Depuis le 1er mars</p>
-          </div>
-        </div>
-      </section>
-
-      <div class="grid lg:grid-cols-3 gap-5">
-
-        <!-- Indicateurs qualitatifs (4) -->
-        <section class="lg:col-span-2 card" aria-labelledby="qual-title">
-          <h2 id="qual-title" class="font-heading text-base font-semibold text-ink mb-5">Qualité perçue</h2>
-          <div class="space-y-4">
-            <div>
-              <div class="flex justify-between text-sm mb-1.5">
-                <span class="text-muted">Satisfaction globale</span>
-                <span class="font-semibold text-ink">4,8 / 5</span>
-              </div>
-              <div class="bar-track"><div class="bar-fill bg-forest" style="width:96%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm mb-1.5">
-                <span class="text-muted">Sentiment de présence (auto-évalué)</span>
-                <span class="font-semibold text-ink">4,2 / 5</span>
-              </div>
-              <div class="bar-track"><div class="bar-fill bg-forest" style="width:84%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm mb-1.5">
-                <span class="text-muted">Recommandation clients (NPS proxy)</span>
-                <span class="font-semibold text-ink">+67</span>
-              </div>
-              <div class="bar-track"><div class="bar-fill bg-sage" style="width:74%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-sm mb-1.5">
-                <span class="text-muted">Entrées journal post-séance</span>
-                <span class="font-semibold text-ink">6 / 9 séances</span>
-              </div>
-              <div class="bar-track"><div class="bar-fill bg-sage" style="width:66%"></div></div>
-            </div>
-          </div>
+          <div id="zone-valider" class="space-y-3"><p class="text-sm text-muted">Chargement…</p></div>
         </section>
 
-        <!-- File de livraison -->
-        <section class="card" aria-labelledby="livr-title">
-          <h2 id="livr-title" class="font-heading text-sm font-semibold text-ink mb-3">Livraisons en attente</h2>
-          <ul id="dash-livr-list" class="space-y-3">
-            <li class="flex items-center justify-between gap-3">
-              <div>
-                <p class="text-sm font-medium text-ink">Camille B.</p>
-                <p class="text-xs text-muted">Résumé audio · 15 mai</p>
-              </div>
-              <div class="dropdown">
-                <button onclick="toggleDropdown('dd1')"
-                        class="text-xs border border-bdr rounded-[8px] px-3 py-1.5 font-medium text-ink hover:bg-surface cursor-pointer flex items-center gap-1">
-                  Action
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div id="dd1" class="dropdown-menu">
-                  <button class="dropdown-item" onclick="window.location.href='/praticien/livraisons.html'">Envoyer le résumé</button>
-                  <button class="dropdown-item" onclick="dashToast('Marqué comme traité ✔')">Marquer traité</button>
-                  <button class="dropdown-item text-red-600" onclick="dashToast('Reporté à demain')">Reporter</button>
-                </div>
-              </div>
-            </li>
-            <li class="flex items-center justify-between gap-3">
-              <div>
-                <p class="text-sm font-medium text-ink">Théo M.</p>
-                <p class="text-xs text-muted">Résumé audio · 20 mai</p>
-              </div>
-              <div class="dropdown">
-                <button onclick="toggleDropdown('dd2')"
-                        class="text-xs border border-bdr rounded-[8px] px-3 py-1.5 font-medium text-ink hover:bg-surface cursor-pointer flex items-center gap-1">
-                  Action
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div id="dd2" class="dropdown-menu">
-                  <button class="dropdown-item" onclick="window.location.href='/praticien/livraisons.html'">Envoyer le résumé</button>
-                  <button class="dropdown-item" onclick="dashToast('Marqué comme traité ✔')">Marquer traité</button>
-                  <button class="dropdown-item text-red-600" onclick="dashToast('Reporté à demain')">Reporter</button>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <a href="/praticien/livraisons.html"
-             class="mt-4 block text-center text-xs text-forest underline underline-offset-2 cursor-pointer">
-            Voir toutes les livraisons
-          </a>
+        <!-- Dernières analyses -->
+        <section class="card">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-heading text-base font-bold text-ink">Dernières analyses</h2>
+            <a href="/praticien/livraisons.html" class="text-xs font-semibold text-forest-deep hover:underline">Analyses →</a>
+          </div>
+          <div id="zone-recentes" class="space-y-3"><p class="text-sm text-muted">Chargement…</p></div>
         </section>
-
       </div>
 
-      <!-- Fiche client rapide -->
-      <section class="mt-5 card" aria-labelledby="clients-title">
-        <div class="flex items-center justify-between mb-4">
-          <h2 id="clients-title" class="font-heading text-base font-semibold text-ink">Clients actifs</h2>
-          <a href="/praticien/clients-journal.html" class="text-xs text-forest underline underline-offset-2 cursor-pointer">Voir tout</a>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm border-collapse">
-            <thead>
-              <tr class="text-xs text-muted text-left">
-                <th class="pb-2 font-semibold pr-6">Client·e</th>
-                <th class="pb-2 font-semibold pr-6">Dernière séance</th>
-                <th class="pb-2 font-semibold pr-6">Registres</th>
-                <th class="pb-2 font-semibold">Action</th>
-              </tr>
-            </thead>
-            <tbody id="clients-tbody" class="divide-y divide-bdr">
-              <tr class="hover:bg-surface/50 transition-colors">
-                <td class="py-3 pr-6 font-medium text-ink">Camille B.</td>
-                <td class="py-3 pr-6 text-muted">15 mai 2026</td>
-                <td class="py-3 pr-6">
-                  <span class="tag">Corporel</span>
-                  <span class="tag ml-1">Émotionnel</span>
-                </td>
-                <td class="py-3">
-                  <div class="dropdown">
-                    <button onclick="toggleDropdown('ddc1')"
-                            class="text-xs border border-bdr rounded-[8px] px-3 py-1.5 font-medium text-ink hover:bg-surface cursor-pointer flex items-center gap-1">
-                      Action
-                      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div id="ddc1" class="dropdown-menu">
-                      <button class="dropdown-item" onclick="window.location.href='/praticien/clients-journal.html'">Voir la fiche</button>
-                      <button class="dropdown-item" onclick="window.location.href='/praticien/clients-journal.html'">Lire le journal</button>
-                      <button class="dropdown-item" onclick="dashToast('Message envoyé à Camille B.')">Envoyer un message</button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr class="hover:bg-surface/50 transition-colors">
-                <td class="py-3 pr-6 font-medium text-ink">Théo M.</td>
-                <td class="py-3 pr-6 text-muted">20 mai 2026</td>
-                <td class="py-3 pr-6">
-                  <span class="tag">Mental</span>
-                  <span class="tag ml-1">Spirituel</span>
-                </td>
-                <td class="py-3">
-                  <div class="dropdown">
-                    <button onclick="toggleDropdown('ddc2')"
-                            class="text-xs border border-bdr rounded-[8px] px-3 py-1.5 font-medium text-ink hover:bg-surface cursor-pointer flex items-center gap-1">
-                      Action
-                      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div id="ddc2" class="dropdown-menu">
-                      <button class="dropdown-item" onclick="window.location.href='/praticien/clients-journal.html'">Voir la fiche</button>
-                      <button class="dropdown-item" onclick="window.location.href='/praticien/clients-journal.html'">Lire le journal</button>
-                      <button class="dropdown-item" onclick="dashToast('Message envoyé à Théo M.')">Envoyer un message</button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      </div><!-- /prat-accueil -->
-
-      <!-- ═══ VUE Clients ═══ -->
-      <div id="prat-clients" style="display:none">
-        <div class="mb-5 flex items-center gap-3">
-          <input id="client-search" type="search" placeholder="Rechercher un client·e…" oninput="filtrerClientsInline(this.value)"
-                 class="border border-bdr rounded-[12px] px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-forest/30 w-full max-w-sm" />
-        </div>
-        <div id="inline-clients-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div class="client-card-inline" data-nom="camille" onclick="window.location.href='/praticien/clients-journal.html'">
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-ink">CB</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Camille B.</p>
-                <p class="text-xs text-muted">Active</p>
-              </div>
-            </div>
-            <p class="text-xs text-muted mb-2">Dernière séance : 15 mai 2026</p>
-            <div class="flex gap-1.5 flex-wrap">
-              <span class="tag">Corporel</span><span class="tag">Émotionnel</span>
-            </div>
-            <p class="mt-3 text-xs text-forest font-medium underline underline-offset-2">Voir la fiche →</p>
-          </div>
-          <div class="client-card-inline" data-nom="théo" onclick="window.location.href='/praticien/clients-journal.html'">
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-ink">TM</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Théo M.</p>
-                <p class="text-xs text-muted">Actif</p>
-              </div>
-            </div>
-            <p class="text-xs text-muted mb-2">Dernière séance : 20 mai 2026</p>
-            <div class="flex gap-1.5 flex-wrap">
-              <span class="tag">Mental</span><span class="tag">Spirituel</span>
-            </div>
-            <p class="mt-3 text-xs text-forest font-medium underline underline-offset-2">Voir la fiche →</p>
-          </div>
-          <div class="client-card-inline" data-nom="sophie" onclick="window.location.href='/praticien/clients-journal.html'">
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-muted">SR</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Sophie R.</p>
-                <p class="text-xs text-muted">Inactive</p>
-              </div>
-            </div>
-            <p class="text-xs text-muted mb-2">Dernière séance : 2 avr. 2026</p>
-            <div class="flex gap-1.5 flex-wrap">
-              <span class="tag">Relationnel</span>
-            </div>
-            <p class="mt-3 text-xs text-forest font-medium underline underline-offset-2">Voir la fiche →</p>
-          </div>
-        </div>
-        <a href="/praticien/clients-journal.html" class="mt-6 inline-block text-xs text-forest underline underline-offset-2">Ouvrir la vue complète &rarr;</a>
-      </div><!-- /prat-clients -->
-
-      <!-- ═══ VUE Livraisons ═══ -->
-      <div id="prat-livraisons" style="display:none">
-        <div class="space-y-4">
-          <div class="card">
-            <div class="flex items-start justify-between gap-4 mb-3">
-              <div>
-                <p class="font-semibold text-sm text-ink">Camille B.</p>
-                <p class="text-xs text-muted mt-0.5">Résumé audio · 15 mai 2026 · 52 min</p>
-              </div>
-              <span class="inline-block text-xs bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-3 py-0.5 font-semibold whitespace-nowrap">En attente</span>
-            </div>
-            <div class="flex gap-2 flex-wrap">
-              <button onclick="window.location.href='/praticien/livraisons.html'" class="text-xs bg-forest-deep text-white rounded-[10px] px-4 py-2 font-semibold hover:bg-forest transition-colors cursor-pointer">Envoyer le résumé</button>
-              <button onclick="dashToast('Camille B. — marquée comme livrée ✔')" class="text-xs border border-bdr rounded-[10px] px-4 py-2 font-medium text-ink hover:bg-surface transition-colors cursor-pointer">Marquer livré</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="flex items-start justify-between gap-4 mb-3">
-              <div>
-                <p class="font-semibold text-sm text-ink">Théo M.</p>
-                <p class="text-xs text-muted mt-0.5">Résumé audio · 20 mai 2026 · 48 min</p>
-              </div>
-              <span class="inline-block text-xs bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-3 py-0.5 font-semibold whitespace-nowrap">En attente</span>
-            </div>
-            <div class="flex gap-2 flex-wrap">
-              <button onclick="window.location.href='/praticien/livraisons.html'" class="text-xs bg-forest-deep text-white rounded-[10px] px-4 py-2 font-semibold hover:bg-forest transition-colors cursor-pointer">Envoyer le résumé</button>
-              <button onclick="dashToast('Théo M. — marqué comme livré ✔')" class="text-xs border border-bdr rounded-[10px] px-4 py-2 font-medium text-ink hover:bg-surface transition-colors cursor-pointer">Marquer livré</button>
-            </div>
-          </div>
-        </div>
-        <a href="/praticien/livraisons.html" class="mt-5 inline-block text-xs text-forest underline underline-offset-2">Ouvrir la gestion complète &rarr;</a>
-      </div><!-- /prat-livraisons -->
-
+      <p class="text-xs text-muted mt-8 leading-relaxed">
+        Les analyses sont générées automatiquement après transcription (observation · hypothèse ·
+        orientation) et restent une lecture d'appui — votre validation prime toujours.
+      </p>
     </main>
   </div>
 
-  <!-- Barre nav mobile -->
+  <!-- Nav mobile -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
-    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Bord
-    </a>
-    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Agenda
-    </a>
-    <a href="/praticien/clients-journal.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-      Clients
-    </a>
+    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Bord</a>
+    <a href="/praticien/seance-express.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Express</a>
+    <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
   </nav>
 
   <script>
-    document.getElementById('tdb-date').textContent = new Date().toLocaleDateString('fr-CA', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-    // ── Render depuis mock (swap → GET /api/v1/praticien/stats) ──
-    getMockPratStats().then(s => {
-      const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
-      set('stat-revenus',        s.revenus_mois);
-      set('stat-revenus-delta',  s.revenus_mois_delta + ' vs mois dernier');
-      set('stat-seances',        s.seances_livrees);
-      set('stat-seances-plan',   s.seances_planifiees);
-      set('stat-clients',        s.clients_actifs);
-      set('stat-clients-attente',s.clients_en_attente);
-    });
-
-    getMockLivraisons().then(livs => {
-      const ul = document.getElementById('dash-livr-list');
-      if (!ul) return;
-      ul.innerHTML = livs.map((c,i) => `
-        <li class="flex items-center justify-between gap-3">
-          <div>
-            <p class="text-sm font-medium text-ink">${c.prenom} ${c.nom[0]}.</p>
-            <p class="text-xs text-muted">Résumé audio · ${formatDateCourte(c.livraison_date)}</p>
-          </div>
-          <div class="dropdown">
-            <button onclick="toggleDropdown('dd-${i}')" class="text-xs border border-bdr rounded-[8px] px-3 py-1.5 font-medium text-ink hover:bg-surface cursor-pointer flex items-center gap-1">Action <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
-            <div id="dd-${i}" class="dropdown-menu">
-              <button class="dropdown-item" onclick="window.location.href='/praticien/livraisons.html'">Envoyer le résumé</button>
-              <button class="dropdown-item" onclick="dashToast('Marqué comme traité ✔')">Marquer traité</button>
-            </div>
-          </div>
-        </li>`).join('');
-    });
-
-    getMockClients().then(clients => {
-      const tbody = document.getElementById('clients-tbody');
-      if (!tbody) return;
-      tbody.innerHTML = clients.filter(c => c.statut !== 'inactive').map((c,i) => `
-        <tr class="hover:bg-surface/50 transition-colors">
-          <td class="py-3 pr-6 font-medium text-ink">${c.prenom} ${c.nom[0]}.</td>
-          <td class="py-3 pr-6 text-muted">${formatDateCourte(c.derniere_seance)}</td>
-          <td class="py-3 pr-6">${c.registres.map(r => `<span class="tag">${r}</span>`).join(' ')}</td>
-          <td class="py-3">
-            <div class="dropdown">
-              <button onclick="toggleDropdown('ddc-${i}')" class="text-xs border border-bdr rounded-[8px] px-3 py-1.5 font-medium text-ink hover:bg-surface cursor-pointer flex items-center gap-1">Action <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
-              <div id="ddc-${i}" class="dropdown-menu">
-                <button class="dropdown-item" onclick="window.location.href='/praticien/clients-journal.html'">Voir la fiche</button>
-                <button class="dropdown-item" onclick="dashToast('Message envoyé à ${c.prenom} ${c.nom[0]}.')">Envoyer un message</button>
-              </div>
-            </div>
-          </td>
-        </tr>`).join('');
-    });
-
     renderLogoutButton(document.getElementById('sidebar-logout'));
+    document.getElementById('tdb-date').textContent =
+      new Date().toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-    function dashToast(msg) {
-      const existing = document.getElementById('dash-toast');
-      const t = existing || document.createElement('div');
-      if (!existing) {
-        t.id = 'dash-toast';
-        t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1A2E1D;color:#fff;font-size:14px;font-weight:500;padding:12px 20px;border-radius:12px;opacity:0;transition:opacity .25s;z-index:100;pointer-events:none;white-space:nowrap;';
-        document.body.appendChild(t);
+    try {
+      const me = (typeof getCurrentUser === 'function' && getCurrentUser()) || null;
+      const prenom = me && me.display_name ? me.display_name.split(' ')[0] : '';
+      if (prenom) document.getElementById('tdb-bonjour').textContent = 'Bonjour, ' + prenom;
+    } catch (e) {}
+
+    function esc(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+    function vigilanceElevee(code) {
+      const c = (code || '').toLowerCase();
+      return c.includes('urgent') || c.includes('eleve') || c.includes('élevé') || c.includes('high');
+    }
+    function dateCourte(iso) {
+      return iso ? new Date(iso).toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' }) : '';
+    }
+    function ligneNote(n) {
+      const a = document.createElement('a');
+      a.href = '/praticien/livraisons.html';
+      a.className = 'block border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors';
+      a.innerHTML = `<div class="flex items-center justify-between gap-2 mb-1">
+          <span class="text-xs text-muted">${dateCourte(n.created_at)}${n.note_sequence_number ? ' · n°' + n.note_sequence_number : ''}</span>
+          ${vigilanceElevee(n.vigilance_level_code) ? '<span class="text-[10px] font-semibold text-red-700 bg-red-50 border border-red-200 rounded-full px-2 py-0.5">vigilance</span>' : ''}
+        </div>
+        <p class="text-sm text-ink leading-snug line-clamp-2">${esc(n.summary_text || 'Analyse disponible')}</p>`;
+      return a;
+    }
+
+    (async function () {
+      let notes = [], sessions = [];
+      try { notes = await getSessionNotes(); } catch (e) {}
+      try { sessions = await listMySessions(); } catch (e) {}
+
+      const aValider = notes.filter(n => !n.validated_by_practitioner);
+      const vig = notes.filter(n => vigilanceElevee(n.vigilance_level_code));
+      document.getElementById('stat-analyses').textContent = notes.length;
+      document.getElementById('stat-valider').textContent = aValider.length;
+      document.getElementById('stat-vigilance').textContent = vig.length;
+      document.getElementById('stat-seances').textContent = sessions.length;
+      const transcrites = sessions.filter(s => s.transcript_text).length;
+      document.getElementById('stat-seances-sub').textContent =
+        transcrites ? transcrites + ' transcrites' : 'enregistrées';
+
+      const zv = document.getElementById('zone-valider');
+      if (!aValider.length) {
+        zv.innerHTML = '<p class="text-sm text-muted">Rien à valider — tout est à jour.</p>';
+      } else {
+        zv.innerHTML = '';
+        aValider.slice(0, 5).forEach(n => zv.appendChild(ligneNote(n)));
       }
-      t.textContent = msg;
-      t.style.opacity = '1';
-      clearTimeout(t._timer);
-      t._timer = setTimeout(() => { t.style.opacity = '0'; }, 2500);
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-    }
 
-    function toggleDropdown(id) {
-      const dd = document.getElementById(id);
-      const isOpen = dd.classList.contains('open');
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
-      if (!isOpen) dd.classList.add('open');
-    }
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown')) {
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+      const zr = document.getElementById('zone-recentes');
+      if (!notes.length) {
+        zr.innerHTML = `<p class="text-sm text-muted leading-relaxed">Aucune analyse encore.
+          Elles apparaîtront après le premier enregistrement transcrit.</p>`;
+      } else {
+        zr.innerHTML = '';
+        notes.slice(0, 5).forEach(n => zr.appendChild(ligneNote(n)));
       }
-    });
-
-    // ─── Onglets praticien ───────────────────────────────────────────────────
-    const PRAT_TABS = ['accueil','clients','livraisons'];
-    function switchPratTab(name) {
-      PRAT_TABS.forEach(t => {
-        document.getElementById('prat-' + t).style.display = t === name ? '' : 'none';
-        const btn = document.getElementById('ptab-' + t);
-        btn.classList.toggle('active', t === name);
-      });
-    }
-    function filtrerClientsInline(q) {
-      const v = q.trim().toLowerCase();
-      document.querySelectorAll('#inline-clients-list .client-card-inline').forEach(c => {
-        c.style.display = (!v || (c.dataset.nom || '').includes(v)) ? '' : 'none';
-      });
-    }
-    // Activer l'onglet Accueil au chargement
-    switchPratTab('accueil');
+    })();
   </script>
+
 </body>
 </html>

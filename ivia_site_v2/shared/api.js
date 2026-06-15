@@ -215,6 +215,11 @@ async function getSessionNote(id) {
   return _req('/api/v1/session-notes/' + encodeURIComponent(id));
 }
 
+/** Séances du praticien connecté (filtré côté serveur par praticien_id). */
+async function listMySessions() {
+  return _req('/api/v1/sessions');
+}
+
 /** Convertit un Blob audio en base64 (sans le préfixe data:). */
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {
