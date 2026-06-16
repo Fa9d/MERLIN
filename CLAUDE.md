@@ -334,7 +334,13 @@ MERLIN_AUTH_SECRET_KEY=
 LIVEKIT_API_SECRET=
 ANTHROPIC_API_KEY=
 ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
+MERLIN_ADMIN_EMAILS=         # liste blanche admin (courriels, séparés par virgule) — droits admin sans changer de rôle
 ```
+
+**Admin** : un compte est admin s'il a le rôle `admin_tech` **ou** si son courriel est dans
+`MERLIN_ADMIN_EMAILS`. Permet à un praticien d'être aussi admin (ex. fondateur) sans perdre
+ses capacités praticien. Garde `require_admin` (voir `app/core/deps.py`) — utilisé par
+`/admin/billing-flags`.
 
 **Transcription des séances** : provider piloté par `MERLIN_TRANSCRIPTION_PROVIDER`
 (`auto` par défaut = **faster-whisper** local si installé — open source, données Québec /

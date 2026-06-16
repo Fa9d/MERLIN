@@ -103,6 +103,11 @@ class Settings:
     tax_registered: bool = os.getenv("MERLIN_TAX_REGISTERED", "false").lower() == "true"
     tps_rate: float = float(os.getenv("MERLIN_TPS_RATE", "0.05"))       # TPS fédérale
     tvq_rate: float = float(os.getenv("MERLIN_TVQ_RATE", "0.09975"))    # TVQ Québec
+    # Admin par liste blanche de courriels (en plus du rôle admin_tech). Permet à un
+    # praticien d'être aussi admin sans changer son rôle. Ex : MERLIN_ADMIN_EMAILS="a@x.com,b@y.com"
+    admin_emails: frozenset[str] = frozenset(
+        e.strip().lower() for e in os.getenv("MERLIN_ADMIN_EMAILS", "").split(",") if e.strip()
+    )
     # SMTP
     smtp_host: str = os.getenv("SMTP_HOST", "ssl0.ovh.net")
     smtp_port: int = int(os.getenv("SMTP_PORT", "465"))

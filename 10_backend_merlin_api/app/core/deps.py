@@ -117,5 +117,32 @@ def require_admin_tech():
     return require_roles(AppRole.admin_tech)
 
 
+def is_admin(user: AppUser) -> bool:
+    """Vrai si l'utilisateur a des droits admin : rôle admin_tech OU courriel en liste blanche.
+
+    Permet à un praticien d'être aussi admin sans changer son rôle
+    (voir settings.admin_emails / MERLIN_ADMIN_EMAILS).
+    """
+    from app.core.config import settings
+
+    if user.role == AppRole.admin_tech:
+        return True
+    return bool(user.email and user.email.strip().lower() in settings.admin_emails)
+
+
+def require_admin():
+    """Guard admin : rôle admin_tech ou courriel en liste blanche."""
+
+    def _dependency(current_user: AppUser = Depends(get_current_user)) -> AppUser:
+        if not is_admin(current_user):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Acces reserve a l'administration.",
+            )
+        return current_user
+
+    return _dependency
+
+
 def is_operator_user(user: AppUser) -> bool:
     return user.role in (AppRole.operator, AppRole.practitioner)

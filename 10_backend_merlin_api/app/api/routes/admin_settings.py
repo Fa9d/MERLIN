@@ -2,15 +2,14 @@
 
 Coché (payant=true) → l'offre est facturée. Décoché → gratuite (pour tester).
 
-⚠️ Gardé pour l'instant aux rôles cliniques internes (praticien/opérateur/superviseur)
-afin que le fondateur puisse tester en phase solo. À RESSERRER à `require_admin_tech`
-avant l'arrivée de praticiens externes — un praticien ne doit pas pouvoir rendre les
-offres gratuites globalement.
+Accès réservé à l'administration via `require_admin` (rôle admin_tech OU courriel en
+liste blanche `MERLIN_ADMIN_EMAILS`). Un praticien ordinaire ne peut donc pas rendre
+les offres gratuites globalement — seul un admin déclaré le peut.
 """
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.core.deps import require_internal_clinical_roles
+from app.core.deps import require_admin
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.schemas.common import MerlinSchema
@@ -30,7 +29,7 @@ def _read_flags(db: Session) -> dict[str, bool]:
 @router.get("", response_model=BillingFlags)
 def get_billing_flags(
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    _: AppUser = Depends(require_admin()),
 ) -> BillingFlags:
     return BillingFlags(flags=_read_flags(db))
 
@@ -39,7 +38,7 @@ def get_billing_flags(
 def update_billing_flags(
     payload: BillingFlags,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_internal_clinical_roles()),
+    _: AppUser = Depends(require_admin()),
 ) -> BillingFlags:
     for code, payant in payload.flags.items():
         if code in billing.OFFERS:
