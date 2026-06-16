@@ -63,6 +63,47 @@ function logout() {
 }
 
 /**
+ * Vrai si l'utilisateur connecté a des droits admin (champ `is_admin` du backend).
+ */
+function isAdminUser() {
+  const u = getCurrentUser();
+  return !!(u && u.is_admin);
+}
+
+/**
+ * Masque tous les éléments marqués `[data-admin-only]` sauf si l'utilisateur est admin.
+ */
+function applyAdminVisibility() {
+  const admin = isAdminUser();
+  document.querySelectorAll('[data-admin-only]').forEach(el => {
+    el.style.display = admin ? '' : 'none';
+  });
+}
+
+/**
+ * Injecte le lien « Facturation (admin) » dans la barre latérale praticien,
+ * uniquement pour les admins. Clone le style du lien « Mon profil » de la page
+ * pour s'harmoniser automatiquement (une seule source, pas 6 sidebars à éditer).
+ */
+function injectAdminLink() {
+  if (!isAdminUser()) return;
+  if (document.querySelector('aside a[href="/praticien/admin-facturation.html"]')) return; // déjà là
+  const ref = document.querySelector('aside a[href="/praticien/profil.html"]');
+  if (!ref || !ref.parentNode) return;
+  const link = document.createElement('a');
+  link.href = '/praticien/admin-facturation.html';
+  link.className = (ref.className || '').replace(/\bactive\b/, '').trim();
+  link.setAttribute('data-admin-only', '');
+  link.textContent = 'Facturation (admin)';
+  ref.parentNode.insertBefore(link, ref);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  injectAdminLink();
+  applyAdminVisibility();
+});
+
+/**
  * Injecte le bouton Déconnexion dans le noeud cible.
  * @param {HTMLElement} container — élément qui recevra le bouton
  * @param {object} [opts] — { className } pour surcharger les classes

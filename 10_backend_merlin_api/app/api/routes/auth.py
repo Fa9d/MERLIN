@@ -4,7 +4,7 @@ from sqlalchemy import func
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user, get_optional_current_user
+from app.core.deps import get_current_user, get_optional_current_user, is_admin
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db.session import get_db
 from app.models.app_user import AppUser
@@ -12,6 +12,13 @@ from app.models.enums import AppRole, RecordStatus
 from app.schemas.auth import LoginRequest, RegisterUserRequest, TokenResponse, UserRead
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+
+def _user_read(user: AppUser) -> UserRead:
+    """Construit le UserRead en calculant `is_admin` (rôle ou liste blanche)."""
+    ur = UserRead.model_validate(user)
+    ur.is_admin = is_admin(user)
+    return ur
 
 
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
@@ -73,13 +80,13 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse
     return TokenResponse(
         access_token=token,
         token_type="bearer",
-        user=UserRead.model_validate(user),
+        user=_user_read(user),
     )
 
 
 @router.get("/me", response_model=UserRead)
 def me(current_user: AppUser = Depends(get_current_user)) -> UserRead:
-    return UserRead.model_validate(current_user)
+    return _user_read(current_user)
 
 
 class SetPasswordRequest(BaseModel):

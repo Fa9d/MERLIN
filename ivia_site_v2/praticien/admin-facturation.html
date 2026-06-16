@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Facturation — Admin IVIA</title>
-  <script src="/shared/session.js"></script>
+  <script src="/shared/session.js?v=20260615a"></script>
   <script>requireAuth();</script>
   <script src="/shared/api.js?v=20260615e"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -40,7 +40,7 @@
         <a href="/praticien/clients-journal.html" class="sidebar-link">Clients</a>
         <a href="/praticien/livraisons.html" class="sidebar-link">Livraisons</a>
         <div class="flex-1"></div>
-        <a href="/praticien/admin-facturation.html" class="sidebar-link active">Facturation (admin)</a>
+        <a href="/praticien/admin-facturation.html" class="sidebar-link active" data-admin-only>Facturation (admin)</a>
         <a href="/praticien/profil.html" class="sidebar-link">Mon profil public</a>
         <a href="/praticien/compte.html" class="sidebar-link">Mon compte</a>
       </nav>
@@ -56,7 +56,7 @@
       <!-- Avertissement périmètre -->
       <div class="flex items-start gap-2 text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-[14px] px-4 py-3">
         <svg class="w-4 h-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 00-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/></svg>
-        <span>Réglage global de la plateforme. En phase solo, accessible aux rôles internes ; à restreindre à l'administrateur technique avant l'arrivée de praticiens externes.</span>
+        <span>Réglage global de la plateforme, réservé aux administrateurs (rôle admin_tech ou courriel en liste blanche). Un praticien ordinaire n'y a pas accès.</span>
       </div>
 
       <section id="offers" class="space-y-3">
