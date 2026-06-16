@@ -43,6 +43,32 @@ STRIPE_FIXED_CENTS = 30
 # Coût IA indicatif par analyse (Sonnet 4.6 ; ~0,10–0,13 $). Affiné si on logge l'usage réel.
 AI_COST_CENTS_ESTIMATE = 12
 
+# --- Modèle praticien (voir docs/MODELE_PRATICIEN_IVIA.md) ------------------------
+# Frais plateforme IVIA par séance live, selon la durée.
+SESSION_PLATFORM_FEE_CENTS = {30: 300, 60: 500}   # 3 $ (30 min) / 5 $ (1 h)
+INCLUDED_SESSIONS_PER_MONTH = 5                    # 5 premières séances/mois sans frais
+
+
+def platform_fee_cents(duration_min: int, prior_sessions_this_month: int) -> int:
+    """Frais plateforme IVIA pour une séance live (cents).
+
+    `prior_sessions_this_month` = nombre de séances déjà encaissées ce mois-ci pour
+    ce praticien AVANT celle-ci (index 0-based). Les 5 premières sont incluses (0 $).
+    Au-delà, frais 3/5 $ avec réduction au volume sur les séances « payantes » :
+    1–29 → plein · 30–79 → −20 % · 80+ → −40 %.
+    """
+    if prior_sessions_this_month < INCLUDED_SESSIONS_PER_MONTH:
+        return 0
+    base = SESSION_PLATFORM_FEE_CENTS[60] if duration_min > 30 else SESSION_PLATFORM_FEE_CENTS[30]
+    payante_index = prior_sessions_this_month - INCLUDED_SESSIONS_PER_MONTH + 1  # 1-based
+    if payante_index >= 80:
+        factor = 0.60
+    elif payante_index >= 30:
+        factor = 0.80
+    else:
+        factor = 1.0
+    return round(base * factor)
+
 
 def offer_payant_key(code: str) -> str:
     return f"pay_{code}"

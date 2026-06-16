@@ -40,6 +40,7 @@ class LedgerRow(MerlinSchema):
     cout_ia: int
     part_praticien: int
     marge_ivia: int
+    platform_fee_cents: int = 0
 
 
 class AccountingSummary(MerlinSchema):
@@ -72,6 +73,27 @@ def _is_test(order: PaymentOrder) -> bool:
     return bool(meta.get("free_test_grant") or meta.get("test_payment")) or order.amount_cents == 0
 
 
+def _breakdown_for(o: PaymentOrder, test: bool) -> dict:
+    """Ventilation d'un encaissement.
+
+    Séance live (platform_fee_cents posé) : revenu IVIA = frais plateforme, le reste
+    revient au praticien, Stripe en passthrough (payé par le client). Autres produits :
+    IVIA garde le montant (estimation Stripe sauf en test).
+    """
+    if o.platform_fee_cents is not None:
+        return billing.revenue_breakdown(
+            o.amount_cents,
+            stripe_fee_cents=0,
+            ai_cost_cents=None,
+            praticien_share_cents=o.practitioner_share_cents or 0,
+        )
+    return billing.revenue_breakdown(
+        o.amount_cents,
+        stripe_fee_cents=0 if test else None,
+        ai_cost_cents=None,
+    )
+
+
 def _paid_orders(db: Session, date_from: date, date_to: date) -> list[PaymentOrder]:
     start = datetime.combine(date_from, time.min, tzinfo=timezone.utc)
     end = datetime.combine(date_to, time.max, tzinfo=timezone.utc)
@@ -96,15 +118,11 @@ def ledger(
     rows: list[LedgerRow] = []
     for o in _paid_orders(db, date_from, date_to):
         test = _is_test(o)
-        # En test, aucun frais réel ; sinon estimation (le réel viendra du webhook Stripe).
-        b = billing.revenue_breakdown(
-            o.amount_cents,
-            stripe_fee_cents=0 if test else None,
-            ai_cost_cents=None,
-        )
+        b = _breakdown_for(o, test)
         rows.append(LedgerRow(
             order_id=o.id, date=o.paid_at, product_label=o.product_label,
-            product_code=o.product_code, currency=o.currency, is_test=test, **b,
+            product_code=o.product_code, currency=o.currency, is_test=test,
+            platform_fee_cents=o.platform_fee_cents or 0, **b,
         ))
     return rows
 
@@ -126,7 +144,7 @@ def summary(
             ttc_test += o.amount_cents
             continue
         nb_reel += 1
-        b = billing.revenue_breakdown(o.amount_cents)
+        b = _breakdown_for(o, test=False)
         for k in agg:
             agg[k] += b[k]
     return AccountingSummary(

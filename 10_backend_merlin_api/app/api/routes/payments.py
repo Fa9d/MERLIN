@@ -308,6 +308,38 @@ def _create_audio_async_session_from_order(db: Session, order: PaymentOrder) -> 
     return session_record
 
 
+def _apply_session_platform_fee(db: Session, order: PaymentOrder) -> None:
+    """Ventile une séance live : frais plateforme IVIA (3/5 $, 5 incluses/mois, paliers)
+    + part praticien (= montant − frais). Sans effet sur les autres produits."""
+    if order.product_kind_code not in (
+        PaymentProductKindCode.session_intake,
+        PaymentProductKindCode.session_follow_up,
+    ):
+        return
+    meta = _load_order_metadata(order)
+    slot = db.get(BookingSlot, meta.get("slot_id")) if meta.get("slot_id") else None
+    if slot is None or not slot.praticien_id:
+        return
+    from datetime import date as _date
+    duree_min = (
+        datetime.combine(_date.min, slot.end_time) - datetime.combine(_date.min, slot.start_time)
+    ).seconds // 60
+    now = order.paid_at or datetime.now(timezone.utc)
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    prior = db.scalar(
+        select(func.count()).select_from(PaymentOrder)
+        .where(PaymentOrder.practitioner_user_id == slot.praticien_id)
+        .where(PaymentOrder.status_code == PaymentOrderStatusCode.paid)
+        .where(PaymentOrder.paid_at.isnot(None))
+        .where(PaymentOrder.paid_at >= month_start)
+        .where(PaymentOrder.id != order.id)
+    ) or 0
+    fee = billing.platform_fee_cents(duree_min, prior)
+    order.practitioner_user_id = slot.praticien_id
+    order.platform_fee_cents = fee
+    order.practitioner_share_cents = max(0, order.amount_cents - fee)
+
+
 def _fulfill_paid_order(
     db: Session,
     order: PaymentOrder,
@@ -319,6 +351,7 @@ def _fulfill_paid_order(
         == PaymentFulfillmentModeCode.grant_entitlement_and_create_audio_async_session
     ):
         session_record = _create_audio_async_session_from_order(db, order)
+    _apply_session_platform_fee(db, order)
     order.fulfilled_at = datetime.now(timezone.utc)
     db.add(order)
     return entitlement, session_record

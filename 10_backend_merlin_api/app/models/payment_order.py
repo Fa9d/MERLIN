@@ -76,6 +76,10 @@ class PaymentOrder(Base):
         index=True,
     )
     metadata_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Ventilation séance live : frais plateforme IVIA + part reversée au praticien (cents).
+    platform_fee_cents: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    practitioner_share_cents: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    practitioner_user_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
     paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     fulfilled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
