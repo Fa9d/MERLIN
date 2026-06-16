@@ -507,10 +507,12 @@ async function adminOverview() {
 async function adminListIntake() {
   return _req('/api/v1/intake-requests');
 }
-/** Traite une demande : statut + note. */
-async function adminUpdateIntakeHandling(id, handling_status_code, handling_notes) {
+/** Traite une demande : statut + note + assignation à un praticien (id ou "" pour retirer). */
+async function adminUpdateIntakeHandling(id, handling_status_code, handling_notes, assigned_practitioner_id) {
+  const body = { handling_status_code, handling_notes };
+  if (assigned_practitioner_id !== undefined) body.assigned_practitioner_id = assigned_practitioner_id;
   return _req('/api/v1/intake-requests/' + encodeURIComponent(id) + '/handling',
-    { method: 'PATCH', body: { handling_status_code, handling_notes } });
+    { method: 'PATCH', body });
 }
 
 // ── Admin · comptabilité (grand livre) ───────────────────────────────────────

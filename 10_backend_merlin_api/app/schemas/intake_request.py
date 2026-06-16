@@ -40,8 +40,10 @@ class IntakeRequestRead(TimestampedReadSchema):
     handling_notes: str | None = None
     handled_by_user_id: str | None = None
     handled_at: datetime | None = None
+    assigned_practitioner_id: str | None = None
 
 
 class IntakeHandlingUpdate(MerlinSchema):
     handling_status_code: IntakeHandlingStatusCode
     handling_notes: str | None = None
+    assigned_practitioner_id: str | None = None

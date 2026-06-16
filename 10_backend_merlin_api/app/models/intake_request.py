@@ -58,6 +58,10 @@ class IntakeRequest(Base):
     handling_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     handled_by_user_id: Mapped[str | None] = mapped_column(ForeignKey("app_users.id"), nullable=True)
     handled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Praticien·ne nommé·e à qui la demande est confiée (assignation, distinct de handled_by)
+    assigned_practitioner_id: Mapped[str | None] = mapped_column(
+        ForeignKey("app_users.id"), nullable=True, index=True
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,

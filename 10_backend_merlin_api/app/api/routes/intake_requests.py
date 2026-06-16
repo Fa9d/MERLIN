@@ -7,7 +7,7 @@ from app.core.deps import get_optional_current_user, require_internal_clinical_r
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
-from app.models.enums import RecordStatus, RequestForCode, RiskLevelCode
+from app.models.enums import AppRole, RecordStatus, RequestForCode, RiskLevelCode
 from app.models.intake_request import IntakeRequest
 from app.schemas.intake_request import IntakeHandlingUpdate, IntakeRequestCreate, IntakeRequestRead
 from app.services.intake_analysis import IntakeSignal, analyse_intake_text
@@ -128,6 +128,18 @@ def update_intake_handling(
     intake_request.handling_status_code = payload.handling_status_code
     if payload.handling_notes is not None:
         intake_request.handling_notes = payload.handling_notes
+    # Assignation à un praticien nommé (validée : doit être un praticien).
+    if payload.assigned_practitioner_id is not None:
+        if payload.assigned_practitioner_id == "":
+            intake_request.assigned_practitioner_id = None
+        else:
+            prat = db.get(AppUser, payload.assigned_practitioner_id)
+            if prat is None or prat.role != AppRole.practitioner:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail="Praticien·ne introuvable pour l'assignation.",
+                )
+            intake_request.assigned_practitioner_id = prat.id
     intake_request.handled_by_user_id = current_user.id
     intake_request.handled_at = datetime.now(timezone.utc)
     db.add(intake_request)
