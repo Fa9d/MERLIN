@@ -5,11 +5,14 @@ leur époque (normes, économie, structure familiale, droits).
 """
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Integer, String
+from sqlalchemy import JSON, DateTime, Integer, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+
+# JSONB en PostgreSQL (prod) ; repli JSON pour SQLite (tests) qui ne compile pas JSONB.
+_JSONType = JSONB().with_variant(JSON(), "sqlite")
 
 
 class EraContext(Base):
@@ -24,7 +27,7 @@ class EraContext(Base):
 
     # Données structurées libres :
     # { economic, gender_norms, family_structure, rights, key_events[], notes }
-    data: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    data: Mapped[dict | None] = mapped_column(_JSONType, nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
