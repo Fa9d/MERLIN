@@ -9,7 +9,7 @@ from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.enums import RecordStatus, RequestForCode, RiskLevelCode
 from app.models.intake_request import IntakeRequest
-from app.schemas.intake_request import IntakeRequestCreate, IntakeRequestRead
+from app.schemas.intake_request import IntakeHandlingUpdate, IntakeRequestCreate, IntakeRequestRead
 from app.services.intake_analysis import IntakeSignal, analyse_intake_text
 
 
@@ -108,6 +108,31 @@ def get_intake_request(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Demande d'entree introuvable.",
         )
+    return intake_request
+
+
+@router.patch("/{intake_request_id}/handling", response_model=IntakeRequestRead)
+def update_intake_handling(
+    intake_request_id: str,
+    payload: IntakeHandlingUpdate,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
+) -> IntakeRequest:
+    """Traite une demande d'entrée : statut (new/à rappeler/contacté/planifié/
+    vigilance/hors-cadre) + note. Trace l'opérateur et la date de traitement."""
+    from datetime import datetime, timezone
+
+    intake_request = db.get(IntakeRequest, intake_request_id)
+    if intake_request is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Demande d'entree introuvable.")
+    intake_request.handling_status_code = payload.handling_status_code
+    if payload.handling_notes is not None:
+        intake_request.handling_notes = payload.handling_notes
+    intake_request.handled_by_user_id = current_user.id
+    intake_request.handled_at = datetime.now(timezone.utc)
+    db.add(intake_request)
+    db.commit()
+    db.refresh(intake_request)
     return intake_request
 
 

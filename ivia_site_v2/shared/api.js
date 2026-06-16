@@ -496,6 +496,17 @@ function formatDateCourteLocale(iso) {
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
 }
 
+// ── Admin · demandes d'entrée (intake) ───────────────────────────────────────
+/** Liste des demandes d'entrée (file d'arrivée via /rendez-vous). */
+async function adminListIntake() {
+  return _req('/api/v1/intake-requests');
+}
+/** Traite une demande : statut + note. */
+async function adminUpdateIntakeHandling(id, handling_status_code, handling_notes) {
+  return _req('/api/v1/intake-requests/' + encodeURIComponent(id) + '/handling',
+    { method: 'PATCH', body: { handling_status_code, handling_notes } });
+}
+
 // ── Admin · comptabilité (grand livre) ───────────────────────────────────────
 /** Résumé comptable agrégé sur une période (cents). */
 async function adminAccountingSummary(dateFrom, dateTo) {
