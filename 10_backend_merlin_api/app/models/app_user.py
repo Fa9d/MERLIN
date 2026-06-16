@@ -25,7 +25,8 @@ class AppUser(Base):
     intro_text: Mapped[str | None] = mapped_column(Text, nullable=True)
     presentation_audio_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     spoken_languages: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON array
-    available_channels: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON array
+    available_channels: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON array (formats)
+    themes: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON array (thèmes d'accompagnement)
     is_publicly_listed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     role: Mapped[AppRole] = mapped_column(
         Enum(AppRole, native_enum=False),

@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script src="/shared/session.js?v=20260616f"></script>
+  <script src="/shared/session.js?v=20260616g"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260616f"></script>
+  <script src="/shared/api.js?v=20260616g"></script>
   <script src="/shared/mock_praticien.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -95,10 +95,10 @@
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs font-semibold text-ink mb-1.5">Bio publique <span class="text-muted font-normal">(max 300 caractères)</span></label>
-            <textarea maxlength="300" placeholder="Décrivez votre approche en quelques phrases…" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest bg-white resize-none" rows="4"></textarea>
+            <textarea id="profil-bio" maxlength="300" placeholder="Décrivez votre approche en quelques phrases…" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest bg-white resize-none" rows="4"></textarea>
           </div>
         </div>
-        <button onclick="saveToast('Profil mis à jour')"
+        <button id="btn-infos" type="button"
                 class="mt-5 bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
           Enregistrer
         </button>
@@ -140,7 +140,7 @@
         <p id="profil-theme-limit" class="text-xs text-amber-600 mt-1.5 hidden">Maximum 6 thèmes sélectionnés.</p>
         <p id="profil-theme-exists" class="text-xs text-muted mt-1.5 hidden">Ce thème existe déjà.</p>
 
-        <button onclick="saveToast('Thèmes mis à jour')"
+        <button id="btn-themes" type="button"
                 class="mt-5 border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
           Enregistrer
         </button>
@@ -152,18 +152,18 @@
         <div class="space-y-3">
           <label class="flex items-center justify-between cursor-pointer">
             <span class="text-sm text-ink">Séance vidéo (en direct)</span>
-            <input type="checkbox" checked class="w-4 h-4 accent-forest-deep cursor-pointer">
+            <input type="checkbox" data-format="video" class="w-4 h-4 accent-forest-deep cursor-pointer">
           </label>
           <label class="flex items-center justify-between cursor-pointer">
             <span class="text-sm text-ink">Séance audio seulement</span>
-            <input type="checkbox" class="w-4 h-4 accent-forest-deep cursor-pointer">
+            <input type="checkbox" data-format="audio" class="w-4 h-4 accent-forest-deep cursor-pointer">
           </label>
           <label class="flex items-center justify-between cursor-pointer">
             <span class="text-sm text-ink">Enregistrement libre (formule 35 $)</span>
-            <input type="checkbox" checked class="w-4 h-4 accent-forest-deep cursor-pointer">
+            <input type="checkbox" data-format="enregistrement" class="w-4 h-4 accent-forest-deep cursor-pointer">
           </label>
         </div>
-        <button onclick="saveToast('Formats mis à jour')"
+        <button id="btn-formats" type="button"
                 class="mt-5 border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
           Enregistrer
         </button>
@@ -249,22 +249,69 @@
   <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
 
   <script>
-    // ── Pré-remplissage depuis la session réelle (jamais de mock) ─────────────
-    (function () {
-      const u = (typeof getCurrentUser === 'function' && getCurrentUser()) || {};
-      // L'utilisateur réel expose `display_name` ("Prénom Nom") — on en dérive prénom + initiale.
-      const nomComplet = (u.display_name || '').trim();
-      const parts = nomComplet ? nomComplet.split(/\s+/) : [];
-      const prenom = parts[0] || '';
-      const initiale = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() + '.' : '';
-      const elPrenom = document.getElementById('profil-prenom');
-      const elInit = document.getElementById('profil-initiale');
-      if (prenom && elPrenom) elPrenom.value = prenom;
-      if (initiale && elInit) elInit.value = initiale;
-      const avatarEl = document.querySelector('aside .font-heading');
-      if (avatarEl && prenom) avatarEl.textContent = prenom.charAt(0).toUpperCase();
-      renderLogoutButton(document.getElementById('sidebar-logout'));
+    renderLogoutButton(document.getElementById('sidebar-logout'));
+
+    // ── Profil praticien réel — GET/PATCH /api/v1/praticiens/me/profil ────────
+    function composeDisplayName() {
+      const prenom = (document.getElementById('profil-prenom').value || '').trim();
+      const init = (document.getElementById('profil-initiale').value || '').trim();
+      return [prenom, init].filter(Boolean).join(' ').trim();
+    }
+    function selectedThemes() {
+      return Array.from(document.querySelectorAll('#profil-themes-container .tag-chip.active'))
+        .map(b => b.textContent.trim());
+    }
+    function selectedFormats() {
+      return Array.from(document.querySelectorAll('[data-format]'))
+        .filter(c => c.checked).map(c => c.dataset.format);
+    }
+
+    (async function chargerProfil() {
+      let p = null;
+      try { p = await getMyProfil(); } catch (e) { return; } // non praticien → section identité inerte
+      const nom = (p.display_name || '').trim();
+      const parts = nom ? nom.split(/\s+/) : [];
+      document.getElementById('profil-prenom').value = parts[0] || '';
+      document.getElementById('profil-initiale').value = parts.length > 1 ? parts.slice(1).join(' ') : '';
+      if (p.title_line) document.getElementById('profil-approche').value = p.title_line;
+      if (p.intro_text) document.getElementById('profil-bio').value = p.intro_text;
+      // Toggle Disponible (is_publicly_listed)
+      const tg = document.getElementById('dispo-toggle');
+      if (tg) {
+        tg.setAttribute('aria-checked', String(!!p.is_publicly_listed));
+        tg.classList.toggle('bg-forest-deep', !!p.is_publicly_listed);
+        tg.classList.toggle('bg-bdr', !p.is_publicly_listed);
+        document.getElementById('dispo-knob').classList.toggle('left-6', !!p.is_publicly_listed);
+        document.getElementById('dispo-knob').classList.toggle('left-1', !p.is_publicly_listed);
+      }
+      // Thèmes : activer les chips correspondants
+      const themes = (p.themes || []).map(t => t.toLowerCase());
+      if (themes.length) {
+        document.querySelectorAll('#profil-themes-container .tag-chip').forEach(b => {
+          b.classList.toggle('active', themes.includes(b.textContent.trim().toLowerCase()));
+        });
+      }
+      // Formats : cocher
+      const formats = p.formats || [];
+      document.querySelectorAll('[data-format]').forEach(c => { c.checked = formats.includes(c.dataset.format); });
     })();
+
+    async function patchProfil(body, btn, okMsg) {
+      const prev = btn.textContent;
+      btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Enregistrement…';
+      try { await updateMyProfil(body); saveToast(okMsg); }
+      catch (e) { saveToast(e.message || "L'enregistrement a échoué."); }
+      finally { btn.style.pointerEvents = ''; btn.style.opacity = ''; btn.textContent = prev; }
+    }
+    document.getElementById('btn-infos').addEventListener('click', (e) =>
+      patchProfil({ display_name: composeDisplayName(),
+                    title_line: document.getElementById('profil-approche').value.trim(),
+                    intro_text: document.getElementById('profil-bio').value.trim() },
+                  e.currentTarget, 'Profil mis à jour'));
+    document.getElementById('btn-themes').addEventListener('click', (e) =>
+      patchProfil({ themes: selectedThemes() }, e.currentTarget, 'Thèmes mis à jour'));
+    document.getElementById('btn-formats').addEventListener('click', (e) =>
+      patchProfil({ formats: selectedFormats() }, e.currentTarget, 'Formats mis à jour'));
 
     // ── Disponibilités réelles — GET/POST/DELETE /api/v1/schedules/my ─────────
     const JOURS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
@@ -367,14 +414,23 @@
       } finally { btn.style.pointerEvents = ''; btn.style.opacity = ''; }
     });
 
-    function toggleDispo(btn) {
+    async function toggleDispo(btn) {
       const on = btn.getAttribute('aria-checked') !== 'true';
       btn.setAttribute('aria-checked', String(on));
       btn.classList.toggle('bg-forest-deep', on);
       btn.classList.toggle('bg-bdr', !on);
       document.getElementById('dispo-knob').classList.toggle('left-6', on);
       document.getElementById('dispo-knob').classList.toggle('left-1', !on);
-      saveToast(on ? 'Profil activé — visible aux clients' : 'Profil désactivé — non visible');
+      try {
+        await updateMyProfil({ is_publicly_listed: on });
+        saveToast(on ? 'Profil activé — visible aux clients' : 'Profil désactivé — non visible');
+      } catch (e) {
+        saveToast("Échec — réessayez."); // revert visuel
+        btn.setAttribute('aria-checked', String(!on));
+        btn.classList.toggle('bg-forest-deep', !on); btn.classList.toggle('bg-bdr', on);
+        document.getElementById('dispo-knob').classList.toggle('left-6', !on);
+        document.getElementById('dispo-knob').classList.toggle('left-1', on);
+      }
     }
     // ===== GESTION THÈMES PROFIL =====
     const profilSelectedThemes = new Set(['Transitions de vie','Deuil','Identité','Somatique']);

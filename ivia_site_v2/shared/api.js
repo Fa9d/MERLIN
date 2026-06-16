@@ -177,6 +177,15 @@ async function requireCompleteProfile() {
   return true;
 }
 
+/** Profil public du praticien connecté. */
+async function getMyProfil() {
+  return _req('/api/v1/praticiens/me/profil');
+}
+/** Met à jour le profil praticien (champs partiels). */
+async function updateMyProfil(payload) {
+  return _req('/api/v1/praticiens/me/profil', { method: 'PATCH', body: payload });
+}
+
 /** Tarifs de séance du praticien connecté (défaut serveur si non fixés). */
 async function getMyTarifs() {
   return _req('/api/v1/praticiens/me/tarifs');
