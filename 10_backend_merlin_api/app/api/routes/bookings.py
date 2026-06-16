@@ -489,11 +489,15 @@ async def checkout_held_slot(
     duree_min = (
         datetime.combine(_date.min, slot.end_time) - datetime.combine(_date.min, slot.start_time)
     ).seconds // 60
+    # Prix fixé par le praticien (sinon défaut serveur).
+    prat = db.get(AppUser, slot.praticien_id) if slot.praticien_id else None
     if duree_min <= 30:
-        amount_cents = settings.stripe_seance_30min_amount_cents
+        amount_cents = (prat.session_price_30min_cents if prat and prat.session_price_30min_cents
+                        else settings.stripe_seance_30min_amount_cents)
         duree_label = "30 min"
     else:
-        amount_cents = settings.stripe_seance_amount_cents
+        amount_cents = (prat.session_price_60min_cents if prat and prat.session_price_60min_cents
+                        else settings.stripe_seance_amount_cents)
         duree_label = "1 h"
 
     payload = PaymentCheckoutCreate(

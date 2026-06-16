@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <script src="/shared/session.js?v=20260616e"></script>
+  <script src="/shared/session.js?v=20260616f"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260616e"></script>
+  <script src="/shared/api.js?v=20260616f"></script>
   <script src="/shared/mock_praticien.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -169,6 +169,26 @@
         </button>
       </section>
 
+      <!-- Mes tarifs (réel — GET/PATCH /api/v1/praticiens/me/tarifs) -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-1">Vos tarifs de séance</h2>
+        <p class="text-xs text-muted mb-5">Vous fixez vos prix. IVIA prélève seulement ses frais de plateforme par séance (au-delà des 5 incluses dans votre abonnement).</p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5" for="tarif-30">Séance 30 min ($)</label>
+            <input id="tarif-30" type="number" min="0" step="1" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white" placeholder="49">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-ink mb-1.5" for="tarif-60">Séance 1 h ($)</label>
+            <input id="tarif-60" type="number" min="0" step="1" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white" placeholder="75">
+          </div>
+        </div>
+        <div id="tarif-msg" class="hidden text-xs mt-3"></div>
+        <button id="btn-tarifs" class="mt-4 bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+          Enregistrer mes tarifs
+        </button>
+      </section>
+
       <!-- Disponibilités (réel — GET/POST/DELETE /api/v1/schedules/my) -->
       <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
         <h2 class="font-heading text-base font-semibold text-ink mb-1">Vos disponibilités</h2>
@@ -321,6 +341,31 @@
       }
     }
     chargerDispos();
+
+    // ── Tarifs de séance (réel — /api/v1/praticiens/me/tarifs) ────────────────
+    (async function chargerTarifs() {
+      try {
+        const t = await getMyTarifs();
+        document.getElementById('tarif-30').value = Math.round(t.session_price_30min_cents / 100);
+        document.getElementById('tarif-60').value = Math.round(t.session_price_60min_cents / 100);
+      } catch (e) { /* non praticien ou indisponible — section inerte */ }
+    })();
+    document.getElementById('btn-tarifs').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-tarifs'), msg = document.getElementById('tarif-msg');
+      msg.classList.add('hidden');
+      const v30 = parseInt(document.getElementById('tarif-30').value, 10);
+      const v60 = parseInt(document.getElementById('tarif-60').value, 10);
+      if (!(v30 >= 0) || !(v60 >= 0)) {
+        msg.textContent = 'Indiquez des montants valides.'; msg.className = 'text-xs mt-3 text-red-600'; msg.classList.remove('hidden'); return;
+      }
+      btn.style.pointerEvents = 'none'; btn.style.opacity = '.6';
+      try {
+        await setMyTarifs(v30 * 100, v60 * 100);
+        msg.textContent = 'Tarifs enregistrés ✓'; msg.className = 'text-xs mt-3 text-forest-deep'; msg.classList.remove('hidden');
+      } catch (e) {
+        msg.textContent = e.message || "L'enregistrement a échoué."; msg.className = 'text-xs mt-3 text-red-600'; msg.classList.remove('hidden');
+      } finally { btn.style.pointerEvents = ''; btn.style.opacity = ''; }
+    });
 
     function toggleDispo(btn) {
       const on = btn.getAttribute('aria-checked') !== 'true';

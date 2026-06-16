@@ -177,6 +177,17 @@ async function requireCompleteProfile() {
   return true;
 }
 
+/** Tarifs de séance du praticien connecté (défaut serveur si non fixés). */
+async function getMyTarifs() {
+  return _req('/api/v1/praticiens/me/tarifs');
+}
+/** Le praticien fixe ses prix (cents) ; null pour revenir au défaut. */
+async function setMyTarifs(session_price_30min_cents, session_price_60min_cents) {
+  return _req('/api/v1/praticiens/me/tarifs', {
+    method: 'PATCH', body: { session_price_30min_cents, session_price_60min_cents },
+  });
+}
+
 /** Réservations (hold + confirmées) du compte connecté, triées par date. */
 async function getMyBookings() {
   return _req('/api/v1/bookings/my');

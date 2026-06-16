@@ -1,7 +1,7 @@
 ﻿from datetime import datetime, timezone
 from uuid import uuid4
 
-from sqlalchemy import Boolean, DateTime, Enum, String, Text
+from sqlalchemy import Boolean, DateTime, Enum, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 
@@ -54,6 +54,9 @@ class AppUser(Base):
     # Abonnement praticien (suivi interne) : "inactive" | "active" | "unpaid"
     subscription_status: Mapped[str] = mapped_column(String(16), nullable=False, default="inactive")
     subscription_since: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Tarifs de séance fixés par le praticien (cents). Null → défaut serveur (config).
+    session_price_30min_cents: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    session_price_60min_cents: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
 
 
     practitioner_profile: Mapped[Optional["PractitionerProfile"]] = relationship(
