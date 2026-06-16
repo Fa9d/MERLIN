@@ -192,7 +192,6 @@
       }
     }
 
-    chargerCreneaux().then(() => buildCalendar());
     renderLogoutButton(document.getElementById('sidebar-logout'));
     let currentWeekOffset = 0;
     let activeCell = null;
@@ -276,22 +275,6 @@
         }
       }
 
-      // Quelques fixtures réservées
-      const d2 = isoDate(weekDays[1]); // mardi
-      const d4 = isoDate(weekDays[3]); // jeudi
-      if (!slotStates[`${d2}_14:00`]) {
-        slotStates[`${d2}_14:00`] = 'reserve';
-        slotStates[`${d2}_14:00_client`] = 'Camille B.';
-      }
-      if (!slotStates[`${d4}_10:00`]) {
-        slotStates[`${d4}_10:00`] = 'reserve';
-        slotStates[`${d4}_10:00_client`] = 'Théo M.';
-      }
-      // Quelques disponibles
-      ['09:00','09:30','10:00','10:30','14:00','14:30'].forEach(t => {
-        const k = `${isoDate(weekDays[0])}_${t}`;
-        if (!slotStates[k]) slotStates[k] = 'disponible';
-      });
     }
 
     function changerSemaine(delta) {
@@ -325,7 +308,8 @@
       if (e.target === e.currentTarget) fermerModal();
     });
 
-    buildCalendar();
+    // Init : charger les créneaux réels PUIS dessiner (currentWeekOffset déjà déclaré ici).
+    chargerCreneaux().then(() => buildCalendar());
   </script>
 
 </body>
