@@ -201,6 +201,7 @@ class PaymentProductKindCode(str, Enum):
     session_follow_up = "session_follow_up"
     journal_days_pack = "journal_days_pack"
     audio_async_follow_up = "audio_async_follow_up"
+    solo_recording = "solo_recording"
     custom = "custom"
 
 
@@ -215,6 +216,7 @@ class ClientEntitlementTypeCode(str, Enum):
     intake_session_credit = "intake_session_credit"
     follow_up_session_credit = "follow_up_session_credit"
     journal_day = "journal_day"
+    solo_recording_credit = "solo_recording_credit"
 
 
 # --------------- Temporal model (ligne de vie) --------------------------------

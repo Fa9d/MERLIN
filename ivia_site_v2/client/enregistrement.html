@@ -6,7 +6,7 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Enregistrer ma voix</title>
-  <script src="/shared/api.js?v=20260615d"></script>
+  <script src="/shared/api.js?v=20260615e"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -57,6 +57,19 @@
       Parlez librement, à votre rythme. Vous pouvez faire une pause, vous réécouter,
       reprendre, ou tout recommencer. Rien n'est envoyé tant que vous ne le décidez pas.
     </p>
+
+    <!-- ════════════════ Paiement requis (formule payante) ════════════════ -->
+    <div id="pay-gate" class="hidden bg-white border border-bdr rounded-[24px] p-8 shadow-sm mb-5">
+      <h2 class="font-heading text-lg font-semibold text-ink mb-1">Cette formule est payante</h2>
+      <p class="text-sm text-muted leading-relaxed mb-5">
+        L'enregistrement solo de 30 minutes coûte <strong id="pay-amount">35 $</strong>
+        (taxe incluse). Le règlement débloque votre espace d'enregistrement.
+      </p>
+      <div id="pay-error" class="hidden mb-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
+      <button id="btn-pay" class="bg-forest-deep text-white text-sm font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+        Payer <span id="pay-btn-amount">35 $</span> et commencer →
+      </button>
+    </div>
 
     <!-- Fil des étapes -->
     <div class="flex items-center gap-2 mb-8 text-xs font-semibold">
@@ -244,6 +257,39 @@
     document.getElementById('badge-formule').textContent = FORMULE.label;
     document.getElementById('duree-info').textContent =
       `Durée recommandée : ${FORMULE.reco} · Maximum : ${FORMULE.max_min} minutes`;
+
+    // ── Garde de paiement (formule payante) ──────────────────────────────
+    // Si l'offre liée à la formule est payante et que le client n'a pas de crédit,
+    // on masque l'enregistreur et on présente le paiement. Décochée côté admin → gratuit.
+    function fmtAmount(cents) { return (cents / 100).toFixed(2).replace('.00', '').replace('.', ',') + ' $'; }
+
+    (async function paymentGate() {
+      try {
+        const access = await getSoloAccess(formuleId);
+        if (!access || !access.needs_payment) return; // gratuit ou crédit déjà détenu
+        const amount = fmtAmount(access.amount_cents || 3500);
+        document.getElementById('pay-amount').textContent = amount;
+        document.getElementById('pay-btn-amount').textContent = amount;
+        document.getElementById('step-record').classList.add('hidden');
+        document.getElementById('pay-gate').classList.remove('hidden');
+
+        document.getElementById('btn-pay').addEventListener('click', async (ev) => {
+          const btn = ev.currentTarget;
+          const perr = document.getElementById('pay-error');
+          perr.classList.add('hidden');
+          btn.style.pointerEvents = 'none'; btn.style.opacity = '.6';
+          const retour = location.origin + location.pathname + '?formule=' + encodeURIComponent(formuleId) + '&paye=1';
+          try {
+            const res = await soloRecordingCheckout({ success_url: retour, cancel_url: retour });
+            window.location.href = res.checkout_url; // Stripe, ou page de succès si gratuit (test)
+          } catch (e) {
+            perr.textContent = e.message || "Le paiement n'a pas pu démarrer. Réessayez.";
+            perr.classList.remove('hidden');
+            btn.style.pointerEvents = ''; btn.style.opacity = '';
+          }
+        });
+      } catch (_) { /* en cas d'échec de la vérif, on laisse l'enregistreur — le serveur tranche au POST */ }
+    })();
 
     // ── Visualiseur ──────────────────────────────────────────────────────
     const canvas = document.getElementById('waveform-canvas');
@@ -478,7 +524,13 @@
         document.getElementById('step-3-lbl').classList.replace('text-muted', 'text-forest-deep');
         document.getElementById('step-confirm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } catch (e) {
-        err.textContent = "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez — votre enregistrement est encore là.";
+        if (/[Pp]aiement requis/.test(e.message || '')) {
+          err.textContent = "Cette formule est devenue payante. Faites défiler vers le haut pour régler, puis renvoyez — votre enregistrement est encore là.";
+          document.getElementById('pay-gate').classList.remove('hidden');
+          document.getElementById('pay-gate').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          err.textContent = "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez — votre enregistrement est encore là.";
+        }
         err.classList.remove('hidden');
         btn.textContent = 'Soumettre à IVIA →';
         btn.style.pointerEvents = ''; btn.style.opacity = '';

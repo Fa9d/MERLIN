@@ -73,6 +73,12 @@ class StripeAudioAsyncCheckoutCreate(MerlinSchema):
     cancel_url: str | None = None
 
 
+class SoloRecordingCheckoutCreate(MerlinSchema):
+    """Achat d'un crédit d'enregistrement solo — client résolu côté serveur."""
+    success_url: str | None = None
+    cancel_url: str | None = None
+
+
 class StripeCheckoutSessionRead(MerlinSchema):
     order_id: str
     product_code: str

@@ -180,6 +180,38 @@ async function getMyRecordings() {
   return _req('/api/v1/me/recordings');
 }
 
+/**
+ * Indique si une formule exige un paiement et si un crédit est déjà détenu.
+ * @param {string} formule  ex. 'solo30'
+ * @returns {Promise<{payant, has_credit, needs_payment, amount_cents}>}
+ */
+async function getSoloAccess(formule = 'solo30') {
+  return _req('/api/v1/me/recordings/access?formule=' + encodeURIComponent(formule));
+}
+
+/**
+ * Achète un crédit d'enregistrement solo (35 $, prix serveur).
+ * @param {{success_url?, cancel_url?, client_id, intake_request_id?}} payload
+ * @returns {Promise<{order_id, checkout_url, amount_cents, currency}>}
+ *   Si l'offre est gratuite (mode test), checkout_url pointe directement la page de succès.
+ */
+async function soloRecordingCheckout(payload) {
+  return _req('/api/v1/payments/stripe/public-checkout', {
+    method: 'POST',
+    body: {
+      product_kind_code: 'solo_recording',
+      product_code: 'solo_recording',
+      product_label: 'Enregistrement solo · 30 min',
+      fulfillment_mode_code: 'grant_entitlement_only',
+      entitlement_type_code: 'solo_recording_credit',
+      entitlement_quantity: 1,
+      amount_cents: 0,        // écrasé par le prix serveur (anti-manipulation)
+      currency: 'cad',
+      ...payload,
+    },
+  });
+}
+
 // ── Séance express ────────────────────────────────────────────────────────────
 /**
  * Praticien : crée une séance express, renvoie { session_id, token, ... }.

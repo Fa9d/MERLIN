@@ -94,6 +94,9 @@ class Settings:
     # Prix serveur d'une séance live réservée (jamais fourni par le client — anti-manipulation) = 75 $
     stripe_seance_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SEANCE_AMOUNT_CENTS", "7500"))
     stripe_seance_currency: str = os.getenv("MERLIN_STRIPE_SEANCE_CURRENCY", "cad")
+    # Enregistrement solo 30 min, sans praticien = 35 $
+    stripe_solo_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SOLO_AMOUNT_CENTS", "3500"))
+    stripe_solo_currency: str = os.getenv("MERLIN_STRIPE_SOLO_CURRENCY", "cad")
     # Comptabilité — assujettissement aux taxes (TPS/TVQ). False tant que sous le
     # seuil de petit fournisseur (30 000 $). Les prix sont alors 100 % revenu ;
     # une fois True, la décomposition TTC → HT + TPS + TVQ s'active (voir services/billing.py).

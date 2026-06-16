@@ -20,12 +20,15 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.deps import require_verified_email_user
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
+from app.models.client_entitlement import ClientEntitlement
 from app.models.consent import Consent
 from app.models.enums import (
+    ClientEntitlementTypeCode,
     ConsentTypeCode,
     GrantedByActorCode,
     SessionChannelCode,
@@ -34,6 +37,7 @@ from app.models.enums import (
 )
 from app.models.session import SessionRecord
 from app.schemas.me_recording import MyRecordingCreate, MyRecordingRead
+from app.services import billing
 from app.services.livekit_audio import run_post_recording_pipeline
 
 logger = logging.getLogger(__name__)
@@ -49,6 +53,25 @@ FORMULES: dict[str, dict] = {
     "solo60": {"label": "Séance solo · 1 heure", "max_seconds": 60 * 60 + 90},
     "libre": {"label": "Enregistrement libre", "max_seconds": 40 * 60 + 90},
 }
+
+# Formule payante → offre du catalogue (interrupteur admin is_offer_payant).
+# Seul solo30 correspond à l'offre vendue « enr_seul » (35 $) ; libre/solo60
+# restent gratuits (démo / hors catalogue public).
+FORMULE_OFFER: dict[str, str] = {"solo30": "enr_seul"}
+
+
+def _solo_credit(db: Session, client_id: str) -> ClientEntitlement | None:
+    """Crédit d'enregistrement solo disponible (quantity_remaining > 0)."""
+    return db.scalar(
+        select(ClientEntitlement)
+        .where(ClientEntitlement.client_id == client_id)
+        .where(
+            ClientEntitlement.entitlement_type_code
+            == ClientEntitlementTypeCode.solo_recording_credit
+        )
+        .where(ClientEntitlement.quantity_remaining > 0)
+        .order_by(ClientEntitlement.created_at.asc())
+    )
 
 _MAX_UPLOAD_BYTES = 60 * 1024 * 1024  # nginx plafonne à 64m — garder une marge
 _STORAGE_DIR = "/app/storage/recordings"
@@ -129,6 +152,19 @@ async def upload_my_recording(
 
     client = _get_or_create_my_client(current_user, db)
 
+    # Interrupteur de facturation : si l'offre liée à la formule est payante, exiger
+    # un crédit (acheté via /payments/stripe/public-checkout, produit solo_recording)
+    # et le consommer. Offre décochée côté admin → gratuit (mode test).
+    offer_code = FORMULE_OFFER.get(payload.formule)
+    solo_credit: ClientEntitlement | None = None
+    if offer_code is not None and billing.is_offer_payant(db, offer_code):
+        solo_credit = _solo_credit(db, client.id)
+        if solo_credit is None:
+            raise HTTPException(
+                status_code=status.HTTP_402_PAYMENT_REQUIRED,
+                detail="Paiement requis pour cet enregistrement.",
+            )
+
     next_seq = (
         db.scalar(
             select(func.max(SessionRecord.session_sequence_number)).where(
@@ -176,6 +212,11 @@ async def upload_my_recording(
         out.write(audio_bytes)
     record.audio_file_path = file_path
 
+    # Consommation du crédit (après écriture réussie du fichier).
+    if solo_credit is not None:
+        solo_credit.quantity_remaining -= 1
+        db.add(solo_credit)
+
     db.add(record)
     db.commit()
     db.refresh(record)
@@ -188,6 +229,32 @@ async def upload_my_recording(
         len(audio_bytes),
     )
     return _to_read(record)
+
+
+@router.get("/access")
+def solo_recording_access(
+    formule: str = "solo30",
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_verified_email_user),
+) -> dict:
+    """Indique si la formule exige un paiement et si le client a déjà un crédit.
+
+    `needs_payment` True → le frontend affiche « Payer » avant l'enregistrement.
+    """
+    offer_code = FORMULE_OFFER.get(formule)
+    payant = offer_code is not None and billing.is_offer_payant(db, offer_code)
+    has_credit = False
+    if payant:
+        client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+        has_credit = client is not None and _solo_credit(db, client.id) is not None
+    return {
+        "formule": formule,
+        "offer_code": offer_code,
+        "payant": payant,
+        "has_credit": has_credit,
+        "needs_payment": bool(payant and not has_credit),
+        "amount_cents": settings.stripe_solo_amount_cents if payant else 0,
+    }
 
 
 @router.get("", response_model=list[MyRecordingRead])

@@ -9,12 +9,18 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.deps import require_operator
+from app.core.deps import require_operator, require_verified_email_user
 from app.db.session import get_db
 from app.models.client_entitlement import ClientEntitlement
 from app.models.app_user import AppUser
 from app.models.client import Client
-from app.models.enums import SessionChannelCode, SessionModeCode, SessionStatusCode
+from app.models.enums import (
+    ClientEntitlementTypeCode,
+    PaymentProductKindCode,
+    SessionChannelCode,
+    SessionModeCode,
+    SessionStatusCode,
+)
 from app.models.intake_request import IntakeRequest
 from app.models.payment_order import PaymentOrder
 from app.models.schedule import BookingSlot
@@ -27,6 +33,7 @@ from app.schemas.payment import (
     InteracEtransferRequestRead,
     ManualPaymentAck,
     PaymentCheckoutCreate,
+    SoloRecordingCheckoutCreate,
     StripeAudioAsyncCheckoutCreate,
     StripeCheckoutSessionRead,
     StripeWebhookAck,
@@ -324,6 +331,7 @@ def _offer_code_for_kind(kind: PaymentProductKindCode) -> str | None:
     Sert à consulter l'interrupteur admin « payant / gratuit » par offre.
     """
     mapping = {
+        PaymentProductKindCode.solo_recording: "enr_seul",
         PaymentProductKindCode.audio_async_follow_up: "enr_rappel",
         PaymentProductKindCode.session_intake: "seance_live",
         PaymentProductKindCode.session_follow_up: "seance_live",
@@ -547,6 +555,10 @@ def _public_catalog_amount(kind: PaymentProductKindCode) -> tuple[int, str] | No
     montant fourni par le client — il est remplacé par le prix serveur du produit.
     """
     catalog: dict[PaymentProductKindCode, tuple[int, str]] = {
+        PaymentProductKindCode.solo_recording: (
+            settings.stripe_solo_amount_cents,
+            settings.stripe_solo_currency,
+        ),
         PaymentProductKindCode.audio_async_follow_up: (
             settings.stripe_audio_async_amount_cents,
             settings.stripe_audio_async_currency,
@@ -608,6 +620,42 @@ async def create_audio_async_checkout_session(
     """
     _ = current_user  # garde appliqué par Depends ; variable conservée pour audit futur
     return await _create_checkout_order(_build_audio_async_checkout_payload(payload), db)
+
+
+@router.post(
+    "/stripe/checkout/solo-recording",
+    response_model=StripeCheckoutSessionRead,
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_solo_recording_checkout(
+    payload: SoloRecordingCheckoutCreate,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_verified_email_user),
+) -> StripeCheckoutSessionRead:
+    """Achat d'un crédit d'enregistrement solo (35 $) pour le client connecté.
+
+    Le client est résolu/créé à partir du compte connecté (pas de client_id côté
+    navigateur). Prix serveur (anti-manipulation). Si l'offre `enr_seul` est décochée
+    côté admin, `_create_checkout_order` bascule en parcours gratuit (mode test).
+    """
+    from app.api.routes.me_recordings import _get_or_create_my_client
+
+    client = _get_or_create_my_client(current_user, db)
+    db.commit()  # persiste le dossier client éventuellement créé avant le checkout
+    checkout_payload = PaymentCheckoutCreate(
+        client_id=client.id,
+        product_code="solo_recording",
+        product_label="Enregistrement solo · 30 min",
+        product_kind_code=PaymentProductKindCode.solo_recording,
+        fulfillment_mode_code=PaymentFulfillmentModeCode.grant_entitlement_only,
+        amount_cents=settings.stripe_solo_amount_cents,
+        currency=settings.stripe_solo_currency,
+        entitlement_type_code=ClientEntitlementTypeCode.solo_recording_credit,
+        entitlement_quantity=1,
+        success_url=payload.success_url,
+        cancel_url=payload.cancel_url,
+    )
+    return await _create_checkout_order(checkout_payload, db)
 
 
 @router.post("/stripe/webhook", response_model=StripeWebhookAck)
