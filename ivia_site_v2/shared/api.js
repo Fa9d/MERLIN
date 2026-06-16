@@ -263,6 +263,20 @@ async function validateSessionNote(id, { validated = true, corrections = null } 
     { method: 'PATCH', body: { validated, corrections } });
 }
 
+/**
+ * Crée un document dérivé (reformulation client). Visible au client si
+ * `client_visible: true` ET la note source est validée.
+ * @param {{client_id, session_id, source_note_id, title, body_text, client_visible?}} payload
+ */
+async function createDerivedDocument(payload) {
+  return _req('/api/v1/derived-documents', { method: 'POST', body: payload });
+}
+
+/** Documents livrés au client connecté (reformulations déposées dans son espace). */
+async function getMyDocuments() {
+  return _req('/api/v1/me/documents');
+}
+
 /** Convertit un Blob audio en base64 (sans le préfixe data:). */
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {

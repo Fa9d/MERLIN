@@ -6,7 +6,7 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Compte-rendu de séance</title>
-  <script src="/shared/api.js?v=20260615d"></script>
+  <script src="/shared/api.js?v=20260615f"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -74,10 +74,20 @@
         <div id="c-axes" class="grid sm:grid-cols-2 gap-2.5"></div>
       </section>
 
-      <!-- Reformulation client -->
-      <section id="c-client-wrap" class="hidden card bg-surface/60">
-        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Reformulation pour le client (à valider)</h2>
-        <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" id="c-client"></p>
+      <!-- Reformulation client (éditable + livraison) -->
+      <section id="c-client-wrap" class="card bg-surface/60">
+        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Reformulation pour le client</h2>
+        <p class="text-xs text-muted mb-2">Relisez et ajustez avant d'envoyer. Le texte ci-dessous est ce que la personne verra dans son espace.</p>
+        <textarea id="c-client" rows="6"
+                  class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm text-ink leading-relaxed bg-white outline-none focus:ring-2 focus:ring-forest resize-y"
+                  placeholder="Aucune reformulation générée — écrivez ici le message destiné à la personne."></textarea>
+        <div class="flex flex-wrap items-center gap-3 mt-3">
+          <button id="btn-livrer"
+                  class="bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+            Valider et livrer au client
+          </button>
+          <p id="livrer-msg" class="hidden text-sm"></p>
+        </div>
       </section>
 
       <!-- Transcription -->
@@ -150,10 +160,7 @@
         document.getElementById('c-axes-wrap').classList.remove('hidden');
       }
 
-      if (note.client_facing_summary_text) {
-        document.getElementById('c-client').textContent = note.client_facing_summary_text;
-        document.getElementById('c-client-wrap').classList.remove('hidden');
-      }
+      document.getElementById('c-client').value = note.client_facing_summary_text || '';
 
       document.getElementById('c-modele').textContent =
         (note.model_used || 'modèle IA') + (note.prompt_version ? ' · prompt ' + note.prompt_version : '');
@@ -192,6 +199,45 @@
         msg.className = 'text-sm mt-3 text-red-600';
         msg.classList.remove('hidden');
         btn.style.pointerEvents = ''; btn.style.opacity = ''; btn.textContent = 'Valider cette analyse';
+      }
+    });
+
+    // Valider la note ET déposer la reformulation dans l'espace du client.
+    document.getElementById('btn-livrer').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-livrer'), msg = document.getElementById('livrer-msg');
+      const texte = document.getElementById('c-client').value.trim();
+      msg.classList.add('hidden');
+      if (!texte) {
+        msg.textContent = "Écrivez d'abord la reformulation à livrer.";
+        msg.className = 'text-sm text-red-600'; msg.classList.remove('hidden');
+        return;
+      }
+      if (!note || !note.client_id || !note.session_id) {
+        msg.textContent = "Séance ou client introuvable sur cette note — livraison impossible.";
+        msg.className = 'text-sm text-red-600'; msg.classList.remove('hidden');
+        return;
+      }
+      btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Livraison…';
+      try {
+        // 1) valider la note (relecture humaine) ; 2) déposer le document visible au client.
+        note = await validateSessionNote(noteId, { validated: true });
+        majBadgeValidation();
+        await createDerivedDocument({
+          client_id: note.client_id,
+          session_id: note.session_id,
+          source_note_id: note.id,
+          document_kind_code: 'session_summary',
+          title: 'Résumé de séance',
+          body_text: texte,
+          client_visible: true,
+        });
+        msg.textContent = 'Livré ✓ — la reformulation est déposée dans l\'espace de la personne.';
+        msg.className = 'text-sm text-forest-deep'; msg.classList.remove('hidden');
+        btn.textContent = 'Livré ✓';
+      } catch (e) {
+        msg.textContent = "La livraison n'a pas abouti (" + (e.message || 'erreur') + ').';
+        msg.className = 'text-sm text-red-600'; msg.classList.remove('hidden');
+        btn.style.pointerEvents = ''; btn.style.opacity = ''; btn.textContent = 'Valider et livrer au client';
       }
     });
   </script>

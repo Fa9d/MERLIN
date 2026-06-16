@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Mes résumés de séance</title>
+  <script src="/shared/api.js?v=20260615f"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .card{background:#fff;border:1px solid #D4E8D0;border-radius:20px;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('voir');</script>
+
+<main class="max-w-3xl mx-auto px-4 py-10">
+
+  <div class="mb-8">
+    <h1 class="font-heading text-2xl font-bold text-ink mb-1">Mes résumés de séance</h1>
+    <p class="text-sm text-muted">Les reformulations que votre praticien·ne a déposées pour vous, après relecture. À lire à votre rythme.</p>
+  </div>
+
+  <div id="liste" class="space-y-4">
+    <p class="text-sm text-muted">Chargement…</p>
+  </div>
+
+</main>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('voir');</script>
+
+<script>
+  function dateLisible(iso) {
+    return new Date(iso).toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  async function charger() {
+    const zone = document.getElementById('liste');
+    let docs = [];
+    try {
+      docs = await getMyDocuments();
+    } catch (e) {
+      zone.innerHTML = '<p class="text-sm text-muted">Vos résumés apparaîtront ici.</p>';
+      return;
+    }
+
+    if (!docs.length) {
+      zone.innerHTML = `
+        <div class="card p-8 text-center">
+          <p class="text-sm text-muted leading-relaxed">Rien pour l'instant. Après une séance, votre praticien·ne peut déposer
+          ici une reformulation — un repère écrit, rien que pour vous.</p>
+        </div>`;
+      return;
+    }
+
+    zone.innerHTML = '';
+    docs.forEach(d => {
+      const carte = document.createElement('article');
+      carte.className = 'card p-6';
+      const titre = d.title || 'Résumé de séance';
+      carte.innerHTML = `
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <div>
+            <h2 class="text-base font-semibold text-ink">${titre.replace(/[<>&]/g, '')}</h2>
+            <p class="text-xs text-muted mt-0.5">${dateLisible(d.created_at)}</p>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-forest-deep bg-surface border border-bdr rounded-full px-3 py-1 shrink-0">déposé</span>
+        </div>`;
+      const corps = document.createElement('p');
+      corps.className = 'text-sm text-ink leading-relaxed whitespace-pre-wrap bg-surface/60 border border-bdr rounded-[14px] px-4 py-3';
+      corps.textContent = d.body_text || '';
+      carte.appendChild(corps);
+      zone.appendChild(carte);
+    });
+  }
+  charger();
+</script>
+
+</body>
+</html>
