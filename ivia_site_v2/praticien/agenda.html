@@ -90,6 +90,15 @@
         </div>
       </div>
 
+      <!-- Bannière : session périmée -->
+      <div id="agenda-stale" class="hidden mb-4 bg-amber-50 border border-amber-200 rounded-[12px] px-4 py-3 text-sm text-amber-800">
+        Votre session a été ouverte avant une mise à jour. <a href="/connexion.html?retour=/praticien/agenda.html" class="underline font-semibold">Reconnectez-vous</a> pour voir vos disponibilités réelles.
+      </div>
+      <!-- Bannière : erreur de chargement -->
+      <div id="agenda-error" class="hidden mb-4 bg-red-50 border border-red-200 rounded-[12px] px-4 py-3 text-sm text-red-700">
+        Impossible de charger les créneaux pour l'instant. Réessayez dans un moment.
+      </div>
+
       <!-- Légende -->
       <div class="flex flex-wrap gap-5 mb-4 text-xs text-muted">
         <span class="flex items-center gap-1.5"><span class="legend-dot bg-[#E8F5EE] border border-[#4A7C59]"></span>Disponible</span>
@@ -149,34 +158,38 @@
     // Source : GET /api/v1/schedules/available (API réelle) avec fallback mock
     let slotStates = {};
 
+    // Données réelles uniquement — aucun mock ne masque les vraies disponibilités.
     async function chargerCreneaux() {
+      slotStates = {};
       const { from, to } = getWeekBounds(currentWeekOffset);
       const user = getCurrentUser();
       const praticienId = user?.id;
 
-      if (praticienId && typeof getAvailableSlots === 'function') {
-        try {
-          const slots = await getAvailableSlots(praticienId, from, to);
-          slotStates = {};
-          slots.forEach(s => {
-            // start_time peut être "HH:MM:SS" → normaliser en "HH:MM"
-            const t = (s.start_time || '').slice(0, 5);
-            const key = `${s.slot_date}_${t}`;
-            if (s.status === 'confirmed' || s.status === 'hold') {
-              slotStates[key] = 'reserve';
-              slotStates[key + '_client'] = s.praticien_name || 'Réservé';
-            } else if (s.status === 'available') {
-              slotStates[key] = 'disponible';
-            }
-          });
-          return;
-        } catch (err) {
-          console.warn('[IVIA] API agenda indisponible, bascule sur mock :', err.message);
-        }
+      // Session périmée (stockée avant l'API réelle) : pas d'id → on demande de se reconnecter
+      // plutôt que d'afficher de fausses plages.
+      if (!praticienId) {
+        const banner = document.getElementById('agenda-stale');
+        if (banner) banner.classList.remove('hidden');
+        return;
       }
-      // Fallback mock
-      const mockSlots = await getMockAgendaSlots();
-      slotStates = mockSlots;
+
+      try {
+        const slots = await getAvailableSlots(praticienId, from, to);
+        slots.forEach(s => {
+          const t = (s.start_time || '').slice(0, 5); // "HH:MM:SS" → "HH:MM"
+          const key = `${s.slot_date}_${t}`;
+          if (s.status === 'confirmed' || s.status === 'hold') {
+            slotStates[key] = 'reserve';
+            slotStates[key + '_client'] = s.praticien_name || 'Réservé';
+          } else if (s.status === 'available') {
+            slotStates[key] = 'disponible';
+          }
+        });
+      } catch (err) {
+        console.warn('[IVIA] Agenda : impossible de charger les créneaux —', err.message);
+        const banner = document.getElementById('agenda-error');
+        if (banner) banner.classList.remove('hidden');
+      }
     }
 
     chargerCreneaux().then(() => buildCalendar());

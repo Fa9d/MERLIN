@@ -83,19 +83,19 @@
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-semibold text-ink mb-1.5">Prénom affiché</label>
-            <input type="text" value="Mylène" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+            <input id="profil-prenom" type="text" value="" placeholder="Votre prénom" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
           </div>
           <div>
             <label class="block text-xs font-semibold text-ink mb-1.5">Initiale du nom</label>
-            <input type="text" value="P." class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+            <input id="profil-initiale" type="text" value="" placeholder="ex. P." class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs font-semibold text-ink mb-1.5">Titre / approche</label>
-            <input type="text" value="Écoute somatique · Transitions de vie" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
+            <input id="profil-approche" type="text" value="" placeholder="ex. Écoute somatique · Transitions de vie" class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest bg-white">
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs font-semibold text-ink mb-1.5">Bio publique <span class="text-muted font-normal">(max 300 caractères)</span></label>
-            <textarea maxlength="300" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest bg-white resize-none" rows="4">Je travaille avec le corps et l'écoute pour accompagner les personnes en période de transformation. Mon approche est douce, non-directive, et profondément respectueuse du rythme de chacun·e.</textarea>
+            <textarea maxlength="300" placeholder="Décrivez votre approche en quelques phrases…" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest bg-white resize-none" rows="4"></textarea>
           </div>
         </div>
         <button onclick="saveToast('Profil mis à jour')"
@@ -229,16 +229,20 @@
   <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
 
   <script>
-    // ── Pre-remplissage depuis session / mock ─────────────────────────────────
+    // ── Pré-remplissage depuis la session réelle (jamais de mock) ─────────────
     (function () {
-      const u = (typeof getCurrentUser === 'function' && getCurrentUser()) ||
-                (typeof getMockPratUser === 'function' && getMockPratUser()) || {};
-      const inputs = document.querySelectorAll('input[type=text]:not([id=profil-theme-input])');
-      if (u.prenom && inputs[0]) inputs[0].value = u.prenom;
-      if (u.nom   && inputs[1]) inputs[1].value  = u.nom.charAt(0) + '.';
-      if (u.approche && inputs[2]) inputs[2].value = u.approche;
+      const u = (typeof getCurrentUser === 'function' && getCurrentUser()) || {};
+      // L'utilisateur réel expose `display_name` ("Prénom Nom") — on en dérive prénom + initiale.
+      const nomComplet = (u.display_name || '').trim();
+      const parts = nomComplet ? nomComplet.split(/\s+/) : [];
+      const prenom = parts[0] || '';
+      const initiale = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() + '.' : '';
+      const elPrenom = document.getElementById('profil-prenom');
+      const elInit = document.getElementById('profil-initiale');
+      if (prenom && elPrenom) elPrenom.value = prenom;
+      if (initiale && elInit) elInit.value = initiale;
       const avatarEl = document.querySelector('aside .font-heading');
-      if (avatarEl && u.prenom) avatarEl.textContent = u.prenom.charAt(0).toUpperCase();
+      if (avatarEl && prenom) avatarEl.textContent = prenom.charAt(0).toUpperCase();
       renderLogoutButton(document.getElementById('sidebar-logout'));
     })();
 
