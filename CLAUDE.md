@@ -335,6 +335,7 @@ LIVEKIT_API_SECRET=
 ANTHROPIC_API_KEY=
 ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
 MERLIN_ADMIN_EMAILS=         # liste blanche admin (courriels, séparés par virgule) — droits admin sans changer de rôle
+MERLIN_PAYMENTS_TEST_MODE=   # true = page de paiement simulée (aucun débit) ; auto-actif si pas de clé Stripe. false au lancement.
 ```
 
 **Admin** : un compte est admin s'il a le rôle `admin_tech` **ou** si son courriel est dans
@@ -374,15 +375,15 @@ app/
 │   ├── sessions.py      # POST /sessions/{id}/room → 410 Gone
 │   ├── bookings.py      # hold_slot, confirm_slot (require_verified_email)
 │   ├── public_intake.py # POST /public/intake/start (orchestrateur) + POST /public/activate/{token}
-│   ├── clients.py       # GET /clients/me (fiche durable liée au compte connecté)
+│   ├── clients.py       # GET/PATCH /clients/me (fiche + profil ; profile_complete : age/genre/lieu/territoire)
 │   ├── me_recordings.py # POST/GET /me/recordings (+ /access) — solo + transcription ; solo30=35$ exige solo_recording_credit si payant
 │   ├── me_documents.py  # GET /me/documents — reformulations livrees au client connecte (derived_document visible + note validee)
 │   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
 │   ├── admin_settings.py # GET/PATCH /admin/billing-flags — interrupteurs payant/gratuit par offre (mode test)
-│   ├── payments.py      # checkout Stripe ; offre décochée (is_offer_payant False) → gratuit sans Stripe ; /checkout/solo-recording (35$)
+│   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
 └── alembic/versions/    # Migrations — head courant = 20260615_0030 (app_settings : réglages runtime clé→valeur)
-                         #   0028 = sessions.transcript_text · 0029 = express · 0030 = app_settings (flags facturation)
+                         #   0028 = sessions.transcript_text · 0029 = express · 0030 = app_settings · 0031 = clients.birthplace
 ```
 
 ---

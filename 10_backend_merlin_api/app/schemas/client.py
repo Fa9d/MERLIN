@@ -28,6 +28,9 @@ class MyClientUpdate(MerlinSchema):
     language_code: str | None = None
     timezone: str | None = None
     territory_code: str | None = None
+    birth_year: int | None = None
+    gender_identity: str | None = None
+    birthplace: str | None = None
 
 
 class ClientRead(TimestampedReadSchema):
@@ -44,5 +47,10 @@ class ClientRead(TimestampedReadSchema):
     record_status: RecordStatus
     data_sensitivity_class: DataSensitivityClass
     app_user_id: str | None = None
+    birth_year: int | None = None
+    gender_identity: str | None = None
+    birthplace: str | None = None
+    # Vrai si les champs obligatoires du profil sont remplis (piloté côté serveur).
+    profile_complete: bool = False
     activation_invited_at: datetime | None = None
     activation_accepted_at: datetime | None = None

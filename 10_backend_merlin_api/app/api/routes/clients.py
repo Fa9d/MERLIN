@@ -11,7 +11,7 @@ from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.enums import DataSensitivityClass, RecordStatus
-from app.schemas.client import ClientCreate, ClientRead
+from app.schemas.client import ClientCreate, ClientRead, MyClientUpdate
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
@@ -101,6 +101,27 @@ def get_my_client(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Aucun dossier client n'est rattaché à ce compte.",
         )
+    return client
+
+
+@router.patch("/me", response_model=ClientRead)
+def update_my_client(
+    payload: MyClientUpdate,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(get_current_user),
+) -> Client:
+    """Le client complète/met à jour sa propre fiche (profil de détermination)."""
+    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+    if client is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Aucun dossier client n'est rattaché à ce compte.",
+        )
+    for field, value in payload.model_dump(exclude_unset=True).items():
+        setattr(client, field, value)
+    db.add(client)
+    db.commit()
+    db.refresh(client)
     return client
 
 

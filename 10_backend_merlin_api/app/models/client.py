@@ -44,6 +44,8 @@ class Client(Base):
     birth_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
     # Genre tel que vécu et exprimé par le sujet (champ libre, non normatif)
     gender_identity: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    # Lieu de naissance (ville/région ou pays) — profil de détermination
+    birthplace: Mapped[str | None] = mapped_column(String(120), nullable=True)
     activation_token_hash: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     activation_token_expires_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
@@ -71,6 +73,20 @@ class Client(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
+
+    @property
+    def profile_complete(self) -> bool:
+        """Vrai si les champs obligatoires du profil sont remplis.
+
+        Requis pour accéder au parcours payant/séance : tranche d'âge (birth_year),
+        genre, lieu de naissance, territoire.
+        """
+        return bool(
+            self.birth_year
+            and self.gender_identity
+            and self.birthplace
+            and self.territory_code
+        )
 
     intake_requests = relationship("IntakeRequest", back_populates="client")
     consents = relationship("Consent", back_populates="client")

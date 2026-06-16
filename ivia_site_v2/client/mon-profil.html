@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Mon profil</title>
+  <script src="/shared/api.js?v=20260616a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1{font-family:'Lora',Georgia,serif;}
+    .lbl{display:block;font-size:13px;font-weight:600;color:#4B6350;margin-bottom:6px;}
+    .fld{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:11px 15px;font-size:14px;background:#fff;color:#1A2E1D;outline:none;}
+    .fld:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream">
+
+<div id="ivia-header"></div>
+<script src="/shared/layout.js?v=20260611d"></script>
+<script>renderLayout('aujourdhui');</script>
+
+<main class="max-w-lg mx-auto px-4 py-10">
+
+  <h1 class="font-heading text-2xl font-bold text-ink mb-1">Votre profil</h1>
+  <p class="text-sm text-muted mb-6">Quelques repères pour mieux vous accompagner. Ces informations restent confidentielles (hébergées au Québec, Loi 25) et ne sont jamais partagées sans votre accord.</p>
+
+  <div id="gate-note" class="hidden mb-6 bg-amber-50 border border-amber-200 rounded-[12px] px-4 py-3 text-sm text-amber-800">
+    Merci de compléter votre profil avant de poursuivre.
+  </div>
+
+  <form id="form" class="space-y-5">
+    <div>
+      <label class="lbl" for="f-age">Tranche d'âge</label>
+      <select id="f-age" class="fld" required>
+        <option value="">Choisir…</option>
+        <option value="18-24">18 – 24 ans</option>
+        <option value="25-34">25 – 34 ans</option>
+        <option value="35-44">35 – 44 ans</option>
+        <option value="45-54">45 – 54 ans</option>
+        <option value="55-64">55 – 64 ans</option>
+        <option value="65+">65 ans et plus</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="lbl" for="f-genre">Genre</label>
+      <select id="f-genre" class="fld" required>
+        <option value="">Choisir…</option>
+        <option value="femme">Femme</option>
+        <option value="homme">Homme</option>
+        <option value="non-binaire">Non-binaire</option>
+        <option value="autre">Autre</option>
+        <option value="non-precise">Préfère ne pas répondre</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="lbl" for="f-lieu">Lieu de naissance</label>
+      <input id="f-lieu" type="text" class="fld" placeholder="Ville, région ou pays" required>
+    </div>
+
+    <div>
+      <label class="lbl" for="f-territoire">Région de résidence</label>
+      <select id="f-territoire" class="fld" required>
+        <option value="QC">Québec</option>
+        <option value="ON">Ontario</option>
+        <option value="NB">Nouveau-Brunswick</option>
+        <option value="NS">Nouvelle-Écosse</option>
+        <option value="MB">Manitoba</option>
+        <option value="BC">Colombie-Britannique</option>
+        <option value="AB">Alberta</option>
+        <option value="SK">Saskatchewan</option>
+        <option value="PE">Île-du-Prince-Édouard</option>
+        <option value="NL">Terre-Neuve-et-Labrador</option>
+        <option value="AUTRE">Autre / hors Canada</option>
+      </select>
+    </div>
+
+    <div id="f-error" class="hidden bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
+
+    <button id="f-save" type="submit"
+            class="w-full bg-forest-deep text-white text-sm font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+      Enregistrer et continuer
+    </button>
+  </form>
+</main>
+
+<div id="ivia-footer"></div>
+<script>renderLayout('aujourdhui');</script>
+
+<script>
+  const retour = new URLSearchParams(location.search).get('retour') || '/client/dashboard.html';
+  const ANNEE = new Date().getFullYear();
+  // tranche → année de naissance représentative (point médian) ; et inverse pour le pré-remplissage.
+  const AGE_TO_YEAR = { '18-24': ANNEE-21, '25-34': ANNEE-30, '35-44': ANNEE-40, '45-54': ANNEE-50, '55-64': ANNEE-60, '65+': ANNEE-70 };
+  function yearToRange(y) {
+    if (!y) return '';
+    const age = ANNEE - y;
+    if (age < 25) return '18-24';
+    if (age < 35) return '25-34';
+    if (age < 45) return '35-44';
+    if (age < 55) return '45-54';
+    if (age < 65) return '55-64';
+    return '65+';
+  }
+
+  if (new URLSearchParams(location.search).get('gate') === '1') {
+    document.getElementById('gate-note').classList.remove('hidden');
+  }
+
+  // Pré-remplissage depuis la fiche existante.
+  (async function () {
+    try {
+      const c = await getMyClient();
+      if (c) {
+        if (c.birth_year) document.getElementById('f-age').value = yearToRange(c.birth_year);
+        if (c.gender_identity) document.getElementById('f-genre').value = c.gender_identity;
+        if (c.birthplace) document.getElementById('f-lieu').value = c.birthplace;
+        if (c.territory_code) document.getElementById('f-territoire').value = c.territory_code;
+      }
+    } catch (e) { /* pas encore de fiche — le PATCH la complétera si elle existe */ }
+  })();
+
+  document.getElementById('form').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const err = document.getElementById('f-error');
+    err.classList.add('hidden');
+    const btn = document.getElementById('f-save');
+    const age = document.getElementById('f-age').value;
+    const genre = document.getElementById('f-genre').value;
+    const lieu = document.getElementById('f-lieu').value.trim();
+    const terr = document.getElementById('f-territoire').value;
+    if (!age || !genre || !lieu || !terr) {
+      err.textContent = 'Merci de remplir tous les champs.';
+      err.classList.remove('hidden');
+      return;
+    }
+    btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Enregistrement…';
+    try {
+      await updateMyClient({
+        birth_year: AGE_TO_YEAR[age],
+        gender_identity: genre,
+        birthplace: lieu,
+        territory_code: terr,
+      });
+      window.location.href = retour;
+    } catch (e) {
+      err.textContent = e.message || "L'enregistrement a échoué.";
+      err.classList.remove('hidden');
+      btn.style.pointerEvents = ''; btn.style.opacity = ''; btn.textContent = 'Enregistrer et continuer';
+    }
+  });
+</script>
+</body>
+</html>

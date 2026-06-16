@@ -97,6 +97,10 @@ class Settings:
     # Enregistrement solo 30 min, sans praticien = 35 $
     stripe_solo_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SOLO_AMOUNT_CENTS", "3500"))
     stripe_solo_currency: str = os.getenv("MERLIN_STRIPE_SOLO_CURRENCY", "cad")
+    # Mode paiement de TEST : une page de paiement simulée (in-app) remplace Stripe —
+    # l'étape paiement s'affiche toujours mais ne débite rien. Activé explicitement, OU
+    # automatiquement tant qu'aucune clé Stripe n'est configurée. À mettre false au lancement.
+    payments_test_mode: bool = os.getenv("MERLIN_PAYMENTS_TEST_MODE", "false").lower() == "true"
     # Comptabilité — assujettissement aux taxes (TPS/TVQ). False tant que sous le
     # seuil de petit fournisseur (30 000 $). Les prix sont alors 100 % revenu ;
     # une fois True, la décomposition TTC → HT + TPS + TVQ s'active (voir services/billing.py).

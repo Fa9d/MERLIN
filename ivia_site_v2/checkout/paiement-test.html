@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Paiement (mode test)</title>
+  <script src="/shared/api.js?v=20260616a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1{font-family:'Lora',Georgia,serif;}</style>
+</head>
+<body class="antialiased min-h-screen bg-cream flex items-center justify-center px-4 py-10">
+
+  <div class="w-full max-w-md bg-white border border-bdr rounded-[24px] p-8 shadow-sm">
+    <div class="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 mb-5">
+      Mode test — aucun débit réel
+    </div>
+    <h1 class="font-heading text-2xl font-bold text-ink mb-1">Paiement</h1>
+    <p id="pt-label" class="text-sm text-muted mb-6">—</p>
+
+    <div class="bg-surface/60 border border-bdr rounded-[16px] px-5 py-4 mb-6 flex items-center justify-between">
+      <span class="text-sm text-muted">Montant</span>
+      <span id="pt-amount" class="text-2xl font-bold text-ink">—</span>
+    </div>
+
+    <div id="pt-error" class="hidden mb-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
+
+    <button id="pt-pay"
+            class="w-full bg-forest-deep text-white text-sm font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+      Payer <span id="pt-btn-amount"></span> (mode test)
+    </button>
+    <a id="pt-cancel" href="/client/dashboard.html"
+       class="block text-center text-xs text-muted hover:text-ink mt-4">Annuler</a>
+
+    <p class="text-[11px] text-muted leading-relaxed mt-6">
+      Simulation de paiement pour les tests : aucune carte n'est demandée, aucune somme n'est débitée.
+      Le vrai paiement sécurisé sera activé au lancement.
+    </p>
+  </div>
+
+  <script>
+    const q = new URLSearchParams(location.search);
+    const orderId = q.get('order_id');
+    const amountCents = parseInt(q.get('amount_cents') || '0', 10);
+    const label = q.get('label') || 'Offre IVIA';
+    const next = q.get('next') || '/client/dashboard.html';
+
+    function fmt(cents) { return (cents / 100).toFixed(2).replace('.00', '').replace('.', ',') + ' $'; }
+
+    document.getElementById('pt-label').textContent = label;
+    document.getElementById('pt-amount').textContent = fmt(amountCents);
+    document.getElementById('pt-btn-amount').textContent = fmt(amountCents);
+    document.getElementById('pt-cancel').href = next; // annuler = revenir d'où l'on vient
+
+    document.getElementById('pt-pay').addEventListener('click', async () => {
+      const btn = document.getElementById('pt-pay'), err = document.getElementById('pt-error');
+      err.classList.add('hidden');
+      if (!orderId) {
+        err.textContent = "Commande introuvable dans le lien.";
+        err.classList.remove('hidden');
+        return;
+      }
+      btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Traitement…';
+      try {
+        await confirmTestPayment(orderId);
+        window.location.href = next; // paiement simulé confirmé → suite du parcours
+      } catch (e) {
+        err.textContent = e.message || "Le paiement test n'a pas abouti.";
+        err.classList.remove('hidden');
+        btn.style.pointerEvents = ''; btn.style.opacity = ''; btn.textContent = 'Payer ' + fmt(amountCents) + ' (mode test)';
+      }
+    });
+  </script>
+</body>
+</html>

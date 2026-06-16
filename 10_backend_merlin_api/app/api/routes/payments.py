@@ -384,6 +384,45 @@ async def _fulfill_free_order(
     )
 
 
+def _use_test_payment() -> bool:
+    """Vrai si l'on doit présenter la page de paiement simulée plutôt que Stripe.
+
+    Activé explicitement (MERLIN_PAYMENTS_TEST_MODE) OU tant qu'aucune clé Stripe
+    n'est configurée — la page de test devient alors le seul moyen de payer.
+    """
+    return settings.payments_test_mode or not settings.stripe_secret_key
+
+
+def _create_test_payment_order(
+    payload: PaymentCheckoutCreate,
+    db: Session,
+) -> StripeCheckoutSessionRead:
+    """Crée la commande (pending) et renvoie l'URL de la page de paiement simulée.
+
+    L'étape paiement s'affiche toujours ; le débit est simulé (aucun Stripe). La
+    confirmation se fait via POST /payments/test/confirm/{order_id}.
+    """
+    order = _create_payment_order(db, payload, PaymentProviderCode.stripe)
+    db.commit()
+    db.refresh(order)
+    success_url, _cancel = _resolve_checkout_urls_generic(payload)
+    params = {
+        "order_id": order.id,
+        "amount_cents": str(order.amount_cents),
+        "label": order.product_label,
+        "next": success_url,
+    }
+    test_url = _append_checkout_params(f"{settings.frontend_url}/checkout/paiement-test.html", params)
+    return StripeCheckoutSessionRead(
+        order_id=order.id,
+        product_code=order.product_code,
+        checkout_session_id="",
+        checkout_url=test_url,
+        amount_cents=order.amount_cents,
+        currency=order.currency,
+    )
+
+
 async def _create_checkout_order(
     payload: PaymentCheckoutCreate,
     db: Session,
@@ -395,10 +434,14 @@ async def _create_checkout_order(
         intake_request_id=payload.intake_request_id,
     )
 
-    # Interrupteur admin : offre décochée → parcours gratuit (test), sans Stripe.
+    # Interrupteur admin : offre décochée → parcours gratuit (test), sans Stripe ni page.
     offer_code = _offer_code_for_kind(payload.product_kind_code)
     if offer_code is not None and not billing.is_offer_payant(db, offer_code):
         return await _fulfill_free_order(payload, db)
+
+    # Mode test : page de paiement simulée (toujours une étape paiement, aucun débit).
+    if _use_test_payment():
+        return _create_test_payment_order(payload, db)
 
     _ensure_stripe_config()
     order = _create_payment_order(db, payload, PaymentProviderCode.stripe)
@@ -656,6 +699,51 @@ async def create_solo_recording_checkout(
         cancel_url=payload.cancel_url,
     )
     return await _create_checkout_order(checkout_payload, db)
+
+
+@router.post("/test/confirm/{order_id}", response_model=StripeWebhookAck)
+async def confirm_test_payment(
+    order_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_verified_email_user),
+) -> StripeWebhookAck:
+    """Confirme un paiement SIMULÉ (mode test) — aucun débit réel.
+
+    Refusé hors mode test. Honore la commande (entitlement + session + plage)
+    exactement comme un paiement Stripe réussi.
+    """
+    if not _use_test_payment():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Le mode paiement de test n'est pas actif.",
+        )
+    order = db.get(PaymentOrder, order_id)
+    if order is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Commande introuvable.")
+
+    # Le client connecté ne peut confirmer que sa propre commande.
+    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+    if client is None or order.client_id != client.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Commande non rattachée à ce compte.")
+
+    if order.status_code == PaymentOrderStatusCode.paid:
+        return StripeWebhookAck(status="already_processed", order_id=order.id)
+
+    order.status_code = PaymentOrderStatusCode.paid
+    order.paid_at = datetime.now(timezone.utc)
+    metadata = _load_order_metadata(order)
+    metadata["test_payment"] = "true"
+    order.metadata_json = json.dumps(metadata, ensure_ascii=False)
+    entitlement, session_record = _fulfill_paid_order(db, order)
+    confirmed_slot = await _auto_confirm_paid_slot_if_any(db, order)
+    db.commit()
+    db.refresh(order)
+    return StripeWebhookAck(
+        status="created",
+        order_id=order.id,
+        entitlement_id=entitlement.id if entitlement else None,
+        session_id=(session_record.id if session_record else confirmed_slot.id if confirmed_slot else None),
+    )
 
 
 @router.post("/stripe/webhook", response_model=StripeWebhookAck)

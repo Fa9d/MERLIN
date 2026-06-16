@@ -5,7 +5,7 @@
   <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Réserver une séance</title>
-  <script src="/shared/api.js?v=20260615d"></script>
+  <script src="/shared/api.js?v=20260616a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -211,6 +211,9 @@
 <!-- ── Script ──────────────────────────────────────────────────────── -->
 <script>
 (async function () {
+
+  // Profil obligatoire avant toute réservation/paiement (redirige si incomplet).
+  if (typeof requireCompleteProfile === 'function' && !(await requireCompleteProfile())) return;
 
   // ── État ──────────────────────────────────────────────────────────────────
   let selectedPraticien = null;
@@ -436,12 +439,7 @@
   }
 
   // ── ÉTAPE 3 : Hold + paiement ────────────────────────────────────────────
-  // Mode pilote (?pilote=1) : réservation gratuite sans Stripe (route pilot-book)
-  const PILOT_MODE = new URLSearchParams(location.search).get('pilote') === '1';
-  if (PILOT_MODE) {
-    document.getElementById('btn-confirmer').textContent = 'Confirmer la réservation →';
-    document.getElementById('paiement-note').textContent = 'Phase pilote — cette séance est offerte, aucun paiement ne sera demandé.';
-  }
+  // Le paiement précède toujours la séance (page Stripe, ou paiement simulé en mode test).
 
   // Courriel non vérifié → l'API répond 403 : on guide vers la vérification.
   function redirigerSiNonVerifie(err) {
@@ -511,30 +509,12 @@
     const btn = document.getElementById('btn-confirmer');
     const errDiv = document.getElementById('conf-error');
     btn.disabled = true;
-    btn.textContent = PILOT_MODE ? 'Confirmation en cours…' : 'Préparation du paiement…';
+    btn.textContent = 'Préparation du paiement…';
     errDiv.classList.add('hidden');
     const notes = document.getElementById('conf-note').value || null;
 
     try {
-      if (PILOT_MODE) {
-        // Phase pilote : confirmation directe, séance offerte.
-        await pilotBook({
-          praticien_id: selectedSlot.praticien_id,
-          slot_date:    selectedSlot.slot_date,
-          start_time:   selectedSlot.start_time,
-          end_time:     selectedSlot.end_time,
-          session_type: selectedSlot.session_type,
-          notes,
-        });
-        clearInterval(holdTimer);
-        const dateLabel = formatDateCourteLocale(selectedSlot.slot_date);
-        document.getElementById('success-desc').textContent =
-          `${selectedPraticien.display_name} · ${dateLabel} à ${formatHeure(selectedSlot.start_time)}. Un courriel de confirmation vous a été envoyé.`;
-        setStep('success');
-        return;
-      }
-
-      // Flux payant : le serveur fixe le prix, Stripe encaisse, le webhook confirme.
+      // Flux payant : le serveur fixe le prix ; page Stripe ou paiement simulé (mode test).
       const checkout = await bookingCheckout({
         slot_id: heldSlot.id,
         notes,
@@ -548,7 +528,7 @@
       errDiv.textContent = err.message || 'Impossible de finaliser. Réessayez.';
       errDiv.classList.remove('hidden');
       btn.disabled = false;
-      btn.textContent = PILOT_MODE ? 'Confirmer la réservation →' : 'Confirmer et payer →';
+      btn.textContent = 'Confirmer et payer →';
     }
   });
 

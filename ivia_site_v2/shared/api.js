@@ -148,6 +148,35 @@ async function getMyClient() {
   return _req('/api/v1/clients/me');
 }
 
+/**
+ * Met à jour la fiche client du compte connecté (profil de détermination).
+ * @param {{birth_year?, gender_identity?, birthplace?, territory_code?, ...}} payload
+ */
+async function updateMyClient(payload) {
+  return _req('/api/v1/clients/me', { method: 'PATCH', body: payload });
+}
+
+/** Confirme un paiement SIMULÉ (mode test) — aucun débit. */
+async function confirmTestPayment(orderId) {
+  return _req('/api/v1/payments/test/confirm/' + encodeURIComponent(orderId), { method: 'POST' });
+}
+
+/**
+ * Garde « profil complété » : redirige vers /client/mon-profil.html si le profil
+ * obligatoire (tranche d'âge, genre, lieu de naissance, territoire) n'est pas rempli.
+ * @returns {Promise<boolean>} true si le profil est complet (on peut continuer).
+ */
+async function requireCompleteProfile() {
+  let c = null;
+  try { c = await getMyClient(); } catch (e) { c = null; }
+  if (!c || c.profile_complete === false) {
+    const retour = encodeURIComponent(location.pathname + location.search);
+    location.href = '/client/mon-profil.html?gate=1&retour=' + retour;
+    return false;
+  }
+  return true;
+}
+
 /** Réservations (hold + confirmées) du compte connecté, triées par date. */
 async function getMyBookings() {
   return _req('/api/v1/bookings/my');
