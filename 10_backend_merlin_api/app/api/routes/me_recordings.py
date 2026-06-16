@@ -52,6 +52,8 @@ FORMULES: dict[str, dict] = {
     "solo30": {"label": "Séance solo · 30 minutes", "max_seconds": 30 * 60 + 90},
     "solo60": {"label": "Séance solo · 1 heure", "max_seconds": 60 * 60 + 90},
     "libre": {"label": "Enregistrement libre", "max_seconds": 40 * 60 + 90},
+    # Séance live (déjà payée à la réservation) : pas de frais ici, plafond large.
+    "seance": {"label": "Séance live", "max_seconds": 90 * 60 + 90},
 }
 
 # Formule payante → offre du catalogue (interrupteur admin is_offer_payant).
