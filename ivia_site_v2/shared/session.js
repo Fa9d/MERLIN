@@ -91,6 +91,7 @@ function injectAdminLink() {
   if (!ref || !ref.parentNode) return;
   const liens = [
     { href: '/praticien/admin-comptes.html', label: 'Comptes (admin)' },
+    { href: '/praticien/admin-comptabilite.html', label: 'Comptabilité (admin)' },
     { href: '/praticien/admin-facturation.html', label: 'Facturation (admin)' },
   ];
   liens.forEach(l => {

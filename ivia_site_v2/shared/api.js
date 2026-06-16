@@ -496,6 +496,16 @@ function formatDateCourteLocale(iso) {
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
 }
 
+// ── Admin · comptabilité (grand livre) ───────────────────────────────────────
+/** Résumé comptable agrégé sur une période (cents). */
+async function adminAccountingSummary(dateFrom, dateTo) {
+  return _req(`/api/v1/admin/accounting/summary?date_from=${dateFrom}&date_to=${dateTo}`);
+}
+/** Grand livre ligne à ligne (encaissements ventilés) sur une période. */
+async function adminAccountingLedger(dateFrom, dateTo) {
+  return _req(`/api/v1/admin/accounting/ledger?date_from=${dateFrom}&date_to=${dateTo}`);
+}
+
 // ── Admin · comptes & accès ───────────────────────────────────────────────────
 /** Liste des comptes (filtre courriel/nom optionnel). */
 async function adminListAccounts(q) {
