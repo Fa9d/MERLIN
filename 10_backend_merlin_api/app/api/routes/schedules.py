@@ -256,7 +256,10 @@ def get_available_slots(
 
             # La durée vient de l'offre choisie (paramètre) ; sinon, défaut de la fenêtre.
             slot_len = duration_minutes or sched.session_duration_minutes
-            step = timedelta(minutes=START_GRANULARITY_MIN)
+            # Pas = durée du créneau (pavage propre, ancré au début de la plage) : une
+            # plage 10h–12h en 1 h donne 10h/11h ; en 30 min, 10h/10h30/11h/11h30. On ne
+            # propose pas de départ en milieu de plage qui laisserait une demi-heure orpheline.
+            step = timedelta(minutes=slot_len)
             cursor = datetime.combine(current, sched.start_time)
             end_dt = datetime.combine(current, sched.end_time)
 
