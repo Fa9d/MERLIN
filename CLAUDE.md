@@ -386,8 +386,9 @@ app/
 │   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260615_0030 (app_settings : réglages runtime clé→valeur)
-                         #   0028 = sessions.transcript_text · 0029 = express · 0030 = app_settings · 0031 = clients.birthplace
+└── alembic/versions/    # Migrations — head courant = 20260616_0035 (ventilation séance : frais plateforme + part praticien)
+                         #   0030 app_settings · 0031 clients.birthplace · 0032 intake.assigned_practitioner ·
+                         #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee
 ```
 
 ---
