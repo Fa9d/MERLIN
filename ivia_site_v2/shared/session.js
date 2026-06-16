@@ -81,21 +81,27 @@ function applyAdminVisibility() {
 }
 
 /**
- * Injecte le lien « Facturation (admin) » dans la barre latérale praticien,
- * uniquement pour les admins. Clone le style du lien « Mon profil » de la page
- * pour s'harmoniser automatiquement (une seule source, pas 6 sidebars à éditer).
+ * Injecte les liens d'administration dans la barre latérale praticien, uniquement
+ * pour les admins. Clone le style du lien « Mon profil » de la page pour s'harmoniser
+ * automatiquement (une seule source, pas N sidebars à éditer).
  */
 function injectAdminLink() {
   if (!isAdminUser()) return;
-  if (document.querySelector('aside a[href="/praticien/admin-facturation.html"]')) return; // déjà là
   const ref = document.querySelector('aside a[href="/praticien/profil.html"]');
   if (!ref || !ref.parentNode) return;
-  const link = document.createElement('a');
-  link.href = '/praticien/admin-facturation.html';
-  link.className = (ref.className || '').replace(/\bactive\b/, '').trim();
-  link.setAttribute('data-admin-only', '');
-  link.textContent = 'Facturation (admin)';
-  ref.parentNode.insertBefore(link, ref);
+  const liens = [
+    { href: '/praticien/admin-comptes.html', label: 'Comptes (admin)' },
+    { href: '/praticien/admin-facturation.html', label: 'Facturation (admin)' },
+  ];
+  liens.forEach(l => {
+    if (document.querySelector(`aside a[href="${l.href}"]`)) return; // déjà présent (page courante)
+    const link = document.createElement('a');
+    link.href = l.href;
+    link.className = (ref.className || '').replace(/\bactive\b/, '').trim();
+    link.setAttribute('data-admin-only', '');
+    link.textContent = l.label;
+    ref.parentNode.insertBefore(link, ref);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

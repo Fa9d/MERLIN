@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comptes — Admin IVIA</title>
+  <script src="/shared/session.js?v=20260616b"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260616b"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    #toast{position:fixed;bottom:24px;right:24px;background:#1A2E1D;color:#fff;font-size:14px;font-weight:500;padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:100;}
+    #toast.show{opacity:1;}#toast.err{background:#991B1B;}
+    .badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-radius:9999px;padding:2px 8px;display:inline-block;}
+    .act{font-size:12px;font-weight:600;padding:4px 10px;border-radius:8px;border:1px solid #D4E8D0;background:#fff;cursor:pointer;}
+    .act:hover{background:#F0F7F2;}
+    .fld{border:1.5px solid #D4E8D0;border-radius:10px;padding:6px 10px;font-size:13px;background:#fff;outline:none;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link">Tableau de bord</a>
+        <a href="/praticien/agenda.html" class="sidebar-link">Agenda</a>
+        <a href="/praticien/clients-journal.html" class="sidebar-link">Clients</a>
+        <a href="/praticien/livraisons.html" class="sidebar-link">Livraisons</a>
+        <div class="flex-1"></div>
+        <a href="/praticien/admin-comptes.html" class="sidebar-link active" data-admin-only>Comptes (admin)</a>
+        <a href="/praticien/admin-facturation.html" class="sidebar-link" data-admin-only>Facturation (admin)</a>
+        <a href="/praticien/profil.html" class="sidebar-link">Mon profil public</a>
+        <a href="/praticien/compte.html" class="sidebar-link">Mon compte</a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1000px] space-y-5">
+      <div>
+        <h1 class="font-heading text-2xl font-bold text-ink">Comptes &amp; accès</h1>
+        <p class="text-sm text-muted mt-1">Inscriptions, vérification du courriel, rôles, activation. Réservé à l'administration.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input id="q" class="fld flex-1 max-w-xs" placeholder="Filtrer par courriel ou nom…">
+        <button id="btn-refresh" class="act">Rafraîchir</button>
+      </div>
+
+      <div id="zone" class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
+        <p id="loading" class="text-sm text-muted p-6">Chargement…</p>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const ROLES = ['public_client','practitioner','operator','supervisor','admin_tech'];
+    const ROLE_LBL = {public_client:'Client',practitioner:'Praticien·ne',operator:'Opérateur',supervisor:'Superviseur',admin_tech:'Admin tech'};
+
+    function toast(m, err){const t=document.getElementById('toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+    function dateCourte(iso){return new Date(iso).toLocaleDateString('fr-CA',{day:'numeric',month:'short',year:'numeric'});}
+
+    function render(accounts){
+      const zone=document.getElementById('zone');
+      if(!accounts.length){zone.innerHTML='<p class="text-sm text-muted p-6">Aucun compte.</p>';return;}
+      const rows=accounts.map(a=>{
+        const verifBadge=a.email_verified
+          ? '<span class="badge bg-surface text-forest-deep border border-bdr">vérifié</span>'
+          : '<span class="badge bg-amber-50 text-amber-700 border border-amber-200">non vérifié</span>';
+        const suspended=a.record_status!=='active';
+        const statutBadge=suspended
+          ? '<span class="badge bg-red-50 text-red-700 border border-red-200">suspendu</span>'
+          : '<span class="badge bg-surface text-forest-deep border border-bdr">actif</span>';
+        const adminBadge=a.is_admin?' <span class="badge bg-blue-50 text-trust border border-blue-100">admin</span>':'';
+        const profilBadge=a.profile_complete?'':' <span class="badge bg-amber-50 text-amber-700 border border-amber-200">profil incomplet</span>';
+        const roleSel=`<select class="fld" data-role="${a.id}">`+ROLES.map(r=>`<option value="${r}" ${r===a.role?'selected':''}>${ROLE_LBL[r]}</option>`).join('')+`</select>`;
+        return `<tr class="border-t border-bdr align-top">
+          <td class="p-3">
+            <p class="text-sm font-semibold text-ink">${(a.display_name||'').replace(/[<>&]/g,'')}</p>
+            <p class="text-xs text-muted">${(a.email||'').replace(/[<>&]/g,'')}</p>
+            <p class="text-[11px] text-muted mt-1">inscrit le ${dateCourte(a.created_at)}</p>
+          </td>
+          <td class="p-3 whitespace-nowrap">${verifBadge}${adminBadge}<br>${statutBadge}${profilBadge}</td>
+          <td class="p-3">${roleSel}</td>
+          <td class="p-3 whitespace-nowrap space-x-1 space-y-1">
+            ${a.email_verified?'':`<button class="act" data-resend="${a.id}">Renvoyer lien</button><button class="act" data-verify="${a.id}">Vérifier</button>`}
+            <button class="act" data-suspend="${a.id}" data-on="${suspended?'0':'1'}">${suspended?'Réactiver':'Suspendre'}</button>
+          </td></tr>`;
+      }).join('');
+      zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
+        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
+      bindActions();
+    }
+
+    function bindActions(){
+      document.querySelectorAll('[data-resend]').forEach(b=>b.onclick=async()=>{try{await adminResendVerification(b.dataset.resend);toast('Lien de confirmation envoyé ✓');}catch(e){toast(e.message,true);}});
+      document.querySelectorAll('[data-verify]').forEach(b=>b.onclick=async()=>{if(!confirm('Marquer ce courriel comme vérifié ?'))return;try{await adminVerifyAccount(b.dataset.verify);toast('Compte vérifié ✓');charger();}catch(e){toast(e.message,true);}});
+      document.querySelectorAll('[data-role]').forEach(s=>s.onchange=async()=>{try{await adminSetRole(s.dataset.role,s.value);toast('Rôle mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
+      document.querySelectorAll('[data-suspend]').forEach(b=>b.onclick=async()=>{const suspend=b.dataset.on==='1';if(!confirm(suspend?'Suspendre ce compte ?':'Réactiver ce compte ?'))return;try{await adminSetStatus(b.dataset.suspend,suspend);toast(suspend?'Compte suspendu':'Compte réactivé');charger();}catch(e){toast(e.message,true);}});
+    }
+
+    async function charger(){
+      const zone=document.getElementById('zone');
+      try{
+        const list=await adminListAccounts(document.getElementById('q').value.trim());
+        render(list);
+      }catch(e){
+        zone.innerHTML='<p class="text-sm text-red-700 p-6">Accès refusé ou indisponible : '+(e.message||'erreur')+'</p>';
+      }
+    }
+    document.getElementById('btn-refresh').onclick=charger;
+    document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')charger();});
+    charger();
+  </script>
+</body>
+</html>

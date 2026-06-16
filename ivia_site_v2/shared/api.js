@@ -496,6 +496,28 @@ function formatDateCourteLocale(iso) {
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
 }
 
+// ── Admin · comptes & accès ───────────────────────────────────────────────────
+/** Liste des comptes (filtre courriel/nom optionnel). */
+async function adminListAccounts(q) {
+  return _req('/api/v1/admin/accounts' + (q ? ('?q=' + encodeURIComponent(q)) : ''));
+}
+/** Renvoie le lien de confirmation au courriel du compte. */
+async function adminResendVerification(id) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/resend-verification', { method: 'POST' });
+}
+/** Marque le courriel comme vérifié (dépannage). */
+async function adminVerifyAccount(id) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/verify', { method: 'POST' });
+}
+/** Change le rôle métier du compte. */
+async function adminSetRole(id, role) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/role', { method: 'POST', body: { role } });
+}
+/** Suspend (true) ou réactive (false) le compte. */
+async function adminSetStatus(id, suspend) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/status', { method: 'POST', body: { suspend } });
+}
+
 // ── Admin · interrupteurs de facturation par offre ───────────────────────────
 /**
  * Lit l'état payant/gratuit de chaque offre.
