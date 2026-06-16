@@ -369,10 +369,10 @@ app/
 │   ├── bookings.py      # hold_slot, confirm_slot (require_verified_email)
 │   ├── public_intake.py # POST /public/intake/start (orchestrateur) + POST /public/activate/{token}
 │   ├── clients.py       # GET /clients/me (fiche durable liée au compte connecté)
-│   ├── me_recordings.py # POST/GET /me/recordings — enregistrement solo client + transcription
+│   ├── me_recordings.py # POST/GET /me/recordings (+ /access) — solo + transcription ; solo30=35$ exige solo_recording_credit si payant
 │   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
 │   ├── admin_settings.py # GET/PATCH /admin/billing-flags — interrupteurs payant/gratuit par offre (mode test)
-│   ├── payments.py      # checkout Stripe ; offre décochée (is_offer_payant False) → parcours gratuit sans Stripe
+│   ├── payments.py      # checkout Stripe ; offre décochée (is_offer_payant False) → gratuit sans Stripe ; /checkout/solo-recording (35$)
 │   └── ...
 └── alembic/versions/    # Migrations — head courant = 20260615_0030 (app_settings : réglages runtime clé→valeur)
                          #   0028 = sessions.transcript_text · 0029 = express · 0030 = app_settings (flags facturation)
