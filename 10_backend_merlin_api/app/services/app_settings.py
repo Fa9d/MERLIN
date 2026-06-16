@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.app_setting import AppSetting

@@ -8,7 +8,6 @@ from app.core.deps import (
     is_operator_user,
     require_internal_clinical_roles,
     require_operator,
-    require_supervisor,
 )
 from app.db.session import get_db
 from app.models.app_user import AppUser

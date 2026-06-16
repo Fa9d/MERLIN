@@ -16,7 +16,6 @@ from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.enums import (
     ClientEntitlementTypeCode,
-    PaymentProductKindCode,
     SessionChannelCode,
     SessionModeCode,
     SessionStatusCode,

@@ -229,10 +229,6 @@ def get_available_slots(
             booked_ranges_by_date.setdefault(bs.slot_date, []).append((bs.start_time, bs.end_time))
     db.commit()
 
-    # Granularité des départs proposés dans une fenêtre (le client place sa séance
-    # où il veut). 30 min = compromis lisibilité / souplesse.
-    START_GRANULARITY_MIN = 30
-
     def _overlaps(a_start: time, a_end: time, b_start: time, b_end: time) -> bool:
         return a_start < b_end and b_start < a_end
 
