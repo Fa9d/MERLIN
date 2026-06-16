@@ -28,10 +28,11 @@ class Offer:
 
 
 # Catalogue officiel (miroir des prix serveur ; voir config stripe_*_amount_cents).
+# Les 3 offres IVIA : 35 = enregistrement + rappel 10 min ; 49 = séance live 30 min ;
+# 75 = séance live 1 h. Toutes incluent transcription + analyse.
 OFFERS: dict[str, Offer] = {
-    "enr_seul":   Offer("enr_seul",   "Enregistrement seul",       3500, live=False),
-    "enr_rappel": Offer("enr_rappel", "Enregistrement + rappel",   4900, live=False),
-    "seance_live": Offer("seance_live", "Séance live · 1 h",       7500, live=True),
+    "enr_rappel": Offer("enr_rappel", "Enregistrement + rappel 10 min", 3500, live=False),
+    "seance_live": Offer("seance_live", "Séance live · 30 min / 1 h",    7500, live=True),
 }
 
 # Frais Stripe Canada (cartes domestiques) — pour estimation ; le montant réel

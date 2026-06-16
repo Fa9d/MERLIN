@@ -55,9 +55,9 @@ FORMULES: dict[str, dict] = {
 }
 
 # Formule payante → offre du catalogue (interrupteur admin is_offer_payant).
-# Seul solo30 correspond à l'offre vendue « enr_seul » (35 $) ; libre/solo60
-# restent gratuits (démo / hors catalogue public).
-FORMULE_OFFER: dict[str, str] = {"solo30": "enr_seul"}
+# Le solo30 correspond à l'offre vendue « enr_rappel » (35 $ — enregistrement + rappel
+# 10 min) ; libre/solo60 restent gratuits (démo / hors catalogue public).
+FORMULE_OFFER: dict[str, str] = {"solo30": "enr_rappel"}
 
 
 def _solo_credit(db: Session, client_id: str) -> ClientEntitlement | None:

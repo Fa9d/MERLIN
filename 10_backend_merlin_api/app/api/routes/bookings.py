@@ -428,7 +428,7 @@ async def pilot_book_slot(
     status_code=status.HTTP_201_CREATED,
     summary="Créer la session de paiement Stripe pour un créneau en hold",
 )
-def checkout_held_slot(
+async def checkout_held_slot(
     body: BookingCheckoutIn,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_verified_email_user),
@@ -483,22 +483,35 @@ def checkout_held_slot(
         if slot.session_type == SessionTypeCode.intake
         else PaymentProductKindCode.session_follow_up
     )
+
+    # Prix selon la durée du créneau : ≤ 30 min → 49 $ (live 30 min), sinon → 75 $ (live 1 h).
+    from datetime import date as _date
+    duree_min = (
+        datetime.combine(_date.min, slot.end_time) - datetime.combine(_date.min, slot.start_time)
+    ).seconds // 60
+    if duree_min <= 30:
+        amount_cents = settings.stripe_seance_30min_amount_cents
+        duree_label = "30 min"
+    else:
+        amount_cents = settings.stripe_seance_amount_cents
+        duree_label = "1 h"
+
     payload = PaymentCheckoutCreate(
         client_id=client_record.id,
         slot_id=slot.id,
         product_code="seance_live_booking",
         product_label=(
-            f"Séance IVIA — {slot.slot_date.isoformat()} "
+            f"Séance live IVIA · {duree_label} — {slot.slot_date.isoformat()} "
             f"{slot.start_time.strftime('%H:%M')}"
         ),
         product_kind_code=kind,
         fulfillment_mode_code=PaymentFulfillmentModeCode.grant_entitlement_only,
-        amount_cents=settings.stripe_seance_amount_cents,
+        amount_cents=amount_cents,
         currency=settings.stripe_seance_currency,
         entitlement_type_code=entitlement_type_for_slot(slot),
         entitlement_quantity=1,
         success_url=body.success_url,
         cancel_url=body.cancel_url,
     )
-    return _create_checkout_order(payload, db)
+    return await _create_checkout_order(payload, db)
 

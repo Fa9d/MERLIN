@@ -91,8 +91,10 @@ class Settings:
     # Grille IVIA (prix TTC en cents) — enregistrement + rappel = 49 $
     stripe_audio_async_amount_cents: int = int(os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_AMOUNT_CENTS", "4900"))
     stripe_audio_async_currency: str = os.getenv("MERLIN_STRIPE_AUDIO_ASYNC_CURRENCY", "cad")
-    # Prix serveur d'une séance live réservée (jamais fourni par le client — anti-manipulation) = 75 $
+    # Prix serveur d'une séance live réservée (jamais fourni par le client — anti-manipulation).
+    # Séance live 1 h = 75 $ ; séance live 30 min = 49 $. Le prix est choisi selon la durée du créneau.
     stripe_seance_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SEANCE_AMOUNT_CENTS", "7500"))
+    stripe_seance_30min_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SEANCE_30MIN_AMOUNT_CENTS", "4900"))
     stripe_seance_currency: str = os.getenv("MERLIN_STRIPE_SEANCE_CURRENCY", "cad")
     # Enregistrement solo 30 min, sans praticien = 35 $
     stripe_solo_amount_cents: int = int(os.getenv("MERLIN_STRIPE_SOLO_AMOUNT_CENTS", "3500"))

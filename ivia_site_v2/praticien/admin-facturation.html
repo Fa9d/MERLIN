@@ -72,9 +72,8 @@
   <script>
     // Catalogue d'affichage (libellé + prix TTC). La source de vérité reste le backend.
     const OFFERS = [
-      { code: 'enr_seul',    label: 'Enregistrement seul',        price: '35 $', desc: '30 min d’enregistrement solo, sans praticien.' },
-      { code: 'enr_rappel',  label: 'Enregistrement + rappel',    price: '49 $', desc: 'Enregistrement asynchrone + rappel de suivi.' },
-      { code: 'seance_live', label: 'Séance live · 1 h', price: '75 $', desc: 'Séance en direct avec un praticien.' },
+      { code: 'enr_rappel',  label: 'Enregistrement + rappel 10 min', price: '35 $', desc: 'Vous enregistrez ; rappel de 10 min. Transcription + analyse incluses.' },
+      { code: 'seance_live', label: 'Séance live · 30 min / 1 h', price: '49 / 75 $', desc: 'Séance en direct avec un·e praticien·ne. Transcription + analyse incluses.' },
     ];
 
     function toast(msg, isErr) {

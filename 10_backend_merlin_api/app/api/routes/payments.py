@@ -331,7 +331,7 @@ def _offer_code_for_kind(kind: PaymentProductKindCode) -> str | None:
     Sert à consulter l'interrupteur admin « payant / gratuit » par offre.
     """
     mapping = {
-        PaymentProductKindCode.solo_recording: "enr_seul",
+        PaymentProductKindCode.solo_recording: "enr_rappel",
         PaymentProductKindCode.audio_async_follow_up: "enr_rappel",
         PaymentProductKindCode.session_intake: "seance_live",
         PaymentProductKindCode.session_follow_up: "seance_live",
@@ -688,7 +688,7 @@ async def create_solo_recording_checkout(
     checkout_payload = PaymentCheckoutCreate(
         client_id=client.id,
         product_code="solo_recording",
-        product_label="Enregistrement solo · 30 min",
+        product_label="Enregistrement + rappel 10 min",
         product_kind_code=PaymentProductKindCode.solo_recording,
         fulfillment_mode_code=PaymentFulfillmentModeCode.grant_entitlement_only,
         amount_cents=settings.stripe_solo_amount_cents,

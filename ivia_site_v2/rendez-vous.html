@@ -59,32 +59,32 @@
       <p class="text-xs font-semibold uppercase tracking-widest text-muted mb-5 text-center">Choisissez votre formule</p>
       <div class="grid sm:grid-cols-3 gap-4" id="formules-grid">
 
-        <!-- 65$/1h -->
-        <div class="formule-card bg-white border-2 border-bdr rounded-[20px] p-6 cursor-pointer transition-all hover:border-forest"
-             data-formule="1h" onclick="choisirFormule(this)">
-          <p class="font-heading text-2xl font-bold text-ink">65 $</p>
-          <p class="text-xs text-muted mt-0.5 mb-3">par séance · 1 heure</p>
-          <p class="text-sm font-semibold text-ink mb-2">Séance complète</p>
-          <p class="text-xs text-muted leading-relaxed">Audio en direct ou différé avec un·e praticien·ne IVIA. Journal + nos appréciations inclus.</p>
-        </div>
-
-        <!-- 45$/30min — recommandé -->
-        <div class="formule-card bg-white border-2 border-forest-deep rounded-[20px] p-6 cursor-pointer transition-all relative selected"
-             data-formule="30min" onclick="choisirFormule(this)">
-          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-forest-deep text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">Le plus choisi</span>
-          <p class="font-heading text-2xl font-bold text-ink">45 $</p>
-          <p class="text-xs text-muted mt-0.5 mb-3">par séance · 30 minutes</p>
-          <p class="text-sm font-semibold text-ink mb-2">Demi-séance</p>
-          <p class="text-xs text-muted leading-relaxed">Idéal pour commencer. Même qualité d'écoute, durée condensée. Journal + nos appréciations inclus.</p>
-        </div>
-
-        <!-- 35$/enregistrement seul -->
+        <!-- 35$ — Enregistrement + rappel 10 min -->
         <div class="formule-card bg-white border-2 border-bdr rounded-[20px] p-6 cursor-pointer transition-all hover:border-forest"
              data-formule="enregistrement" onclick="choisirFormule(this)">
           <p class="font-heading text-2xl font-bold text-ink">35 $</p>
-          <p class="text-xs text-muted mt-0.5 mb-3">par enregistrement</p>
-          <p class="text-sm font-semibold text-ink mb-2">Enregistrement seul</p>
-          <p class="text-xs text-muted leading-relaxed">Vous enregistrez votre voix seul·e. Accès à votre espace client inclus. Sans praticien·ne en direct.</p>
+          <p class="text-xs text-muted mt-0.5 mb-3">enregistrement + rappel 10 min</p>
+          <p class="text-sm font-semibold text-ink mb-2">Enregistrement + rappel</p>
+          <p class="text-xs text-muted leading-relaxed">Vous enregistrez votre voix, puis un rappel de 10 min avec un·e praticien·ne. Transcription + analyse incluses.</p>
+        </div>
+
+        <!-- 49$ — Séance live 30 min — recommandé -->
+        <div class="formule-card bg-white border-2 border-forest-deep rounded-[20px] p-6 cursor-pointer transition-all relative selected"
+             data-formule="30min" onclick="choisirFormule(this)">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-forest-deep text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">Le plus choisi</span>
+          <p class="font-heading text-2xl font-bold text-ink">49 $</p>
+          <p class="text-xs text-muted mt-0.5 mb-3">par séance · 30 minutes</p>
+          <p class="text-sm font-semibold text-ink mb-2">Séance live · 30 min</p>
+          <p class="text-xs text-muted leading-relaxed">En direct avec un·e praticien·ne IVIA. Transcription + analyse incluses.</p>
+        </div>
+
+        <!-- 75$ — Séance live 1 h -->
+        <div class="formule-card bg-white border-2 border-bdr rounded-[20px] p-6 cursor-pointer transition-all hover:border-forest"
+             data-formule="1h" onclick="choisirFormule(this)">
+          <p class="font-heading text-2xl font-bold text-ink">75 $</p>
+          <p class="text-xs text-muted mt-0.5 mb-3">par séance · 1 heure</p>
+          <p class="text-sm font-semibold text-ink mb-2">Séance live · 1 h</p>
+          <p class="text-xs text-muted leading-relaxed">En direct avec un·e praticien·ne IVIA. Transcription + analyse incluses.</p>
         </div>
 
       </div>
@@ -92,8 +92,8 @@
       <!-- Bandeau "Enregistrement seul" -->
       <div id="enreg-banner" class="hidden mt-6 bg-surface border border-bdr rounded-[16px] px-6 py-5 flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <p class="font-semibold text-ink text-sm">Enregistrement seul — 35 $</p>
-          <p class="text-xs text-muted mt-1">Vous parlez, IVIA écoute. Accès complet à votre espace client (journal, historique).</p>
+          <p class="font-semibold text-ink text-sm">Enregistrement + rappel 10 min — 35 $</p>
+          <p class="text-xs text-muted mt-1">Vous parlez, IVIA écoute, puis un rappel de 10 min. Transcription + analyse, accès à votre espace client.</p>
         </div>
         <a href="/client/enregistrement.html"
            class="bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer shrink-0">
