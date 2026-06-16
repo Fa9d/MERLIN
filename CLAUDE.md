@@ -380,6 +380,10 @@ app/
 │   ├── me_documents.py  # GET /me/documents — reformulations livrees au client connecte (derived_document visible + note validee)
 │   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
 │   ├── admin_settings.py # GET/PATCH /admin/billing-flags — interrupteurs payant/gratuit par offre (mode test)
+│   ├── admin_accounts.py # /admin/accounts — comptes & accès (resend-verification, verify, role, status) [require_admin]
+│   ├── admin_accounting.py # /admin/accounting (summary, ledger) — grand livre, exclut les paiements test [require_admin]
+│   ├── admin_overview.py # /admin/overview — vue d'ensemble + alertes vigilance [require_admin]
+│   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
 └── alembic/versions/    # Migrations — head courant = 20260615_0030 (app_settings : réglages runtime clé→valeur)

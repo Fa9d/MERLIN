@@ -496,6 +496,12 @@ function formatDateCourteLocale(iso) {
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
 }
 
+// ── Admin · vue d'ensemble ────────────────────────────────────────────────────
+/** Chiffres clés + alertes de vigilance pour le tableau de bord admin. */
+async function adminOverview() {
+  return _req('/api/v1/admin/overview');
+}
+
 // ── Admin · demandes d'entrée (intake) ───────────────────────────────────────
 /** Liste des demandes d'entrée (file d'arrivée via /rendez-vous). */
 async function adminListIntake() {

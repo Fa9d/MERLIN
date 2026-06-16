@@ -90,6 +90,7 @@ function injectAdminLink() {
   const ref = document.querySelector('aside a[href="/praticien/profil.html"]');
   if (!ref || !ref.parentNode) return;
   const liens = [
+    { href: '/praticien/admin-vue.html', label: 'Vue d\'ensemble (admin)' },
     { href: '/praticien/admin-comptes.html', label: 'Comptes (admin)' },
     { href: '/praticien/admin-demandes.html', label: 'Demandes (admin)' },
     { href: '/praticien/admin-comptabilite.html', label: 'Comptabilité (admin)' },
