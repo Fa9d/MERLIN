@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Comptes — Admin IVIA</title>
-  <script src="/shared/session.js?v=20260616e"></script>
+  <script src="/shared/session.js?v=20260616f"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260616e"></script>
+  <script src="/shared/api.js?v=20260616f"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -82,6 +82,10 @@
         const adminBadge=a.is_admin?' <span class="badge bg-blue-50 text-trust border border-blue-100">admin</span>':'';
         const profilBadge=a.profile_complete?'':' <span class="badge bg-amber-50 text-amber-700 border border-amber-200">profil incomplet</span>';
         const roleSel=`<select class="fld" data-role="${a.id}">`+ROLES.map(r=>`<option value="${r}" ${r===a.role?'selected':''}>${ROLE_LBL[r]}</option>`).join('')+`</select>`;
+        const SUBLBL={active:'Actif',unpaid:'Impayé',inactive:'Inactif'};
+        const subCell = a.role==='practitioner'
+          ? `<select class="fld" data-sub="${a.id}">`+['active','unpaid','inactive'].map(s=>`<option value="${s}" ${s===a.subscription_status?'selected':''}>${SUBLBL[s]}</option>`).join('')+`</select>`
+          : '<span class="text-xs text-muted">—</span>';
         return `<tr class="border-t border-bdr align-top">
           <td class="p-3">
             <p class="text-sm font-semibold text-ink">${(a.display_name||'').replace(/[<>&]/g,'')}</p>
@@ -90,13 +94,14 @@
           </td>
           <td class="p-3 whitespace-nowrap">${verifBadge}${adminBadge}<br>${statutBadge}${profilBadge}</td>
           <td class="p-3">${roleSel}</td>
+          <td class="p-3">${subCell}</td>
           <td class="p-3 whitespace-nowrap space-x-1 space-y-1">
             ${a.email_verified?'':`<button class="act" data-resend="${a.id}">Renvoyer lien</button><button class="act" data-verify="${a.id}">Vérifier</button>`}
             <button class="act" data-suspend="${a.id}" data-on="${suspended?'0':'1'}">${suspended?'Réactiver':'Suspendre'}</button>
           </td></tr>`;
       }).join('');
       zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
-        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
+        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Abonnement</th><th class="p-3 font-semibold">Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
       bindActions();
     }
 
@@ -105,6 +110,7 @@
       document.querySelectorAll('[data-verify]').forEach(b=>b.onclick=async()=>{if(!confirm('Marquer ce courriel comme vérifié ?'))return;try{await adminVerifyAccount(b.dataset.verify);toast('Compte vérifié ✓');charger();}catch(e){toast(e.message,true);}});
       document.querySelectorAll('[data-role]').forEach(s=>s.onchange=async()=>{try{await adminSetRole(s.dataset.role,s.value);toast('Rôle mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
       document.querySelectorAll('[data-suspend]').forEach(b=>b.onclick=async()=>{const suspend=b.dataset.on==='1';if(!confirm(suspend?'Suspendre ce compte ?':'Réactiver ce compte ?'))return;try{await adminSetStatus(b.dataset.suspend,suspend);toast(suspend?'Compte suspendu':'Compte réactivé');charger();}catch(e){toast(e.message,true);}});
+      document.querySelectorAll('[data-sub]').forEach(s=>s.onchange=async()=>{try{await adminSetSubscription(s.dataset.sub,s.value);toast('Abonnement mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
     }
 
     async function charger(){

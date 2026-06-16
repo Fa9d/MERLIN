@@ -546,6 +546,10 @@ async function adminSetRole(id, role) {
 async function adminSetStatus(id, suspend) {
   return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/status', { method: 'POST', body: { suspend } });
 }
+/** Abonnement praticien (suivi interne) : "active" | "unpaid" | "inactive". */
+async function adminSetSubscription(id, status) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/subscription', { method: 'POST', body: { status } });
+}
 
 // ── Admin · interrupteurs de facturation par offre ───────────────────────────
 /**

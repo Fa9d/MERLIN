@@ -51,6 +51,9 @@ class AppUser(Base):
     email_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     email_verification_token: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
     token_expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    # Abonnement praticien (suivi interne) : "inactive" | "active" | "unpaid"
+    subscription_status: Mapped[str] = mapped_column(String(16), nullable=False, default="inactive")
+    subscription_since: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
     practitioner_profile: Mapped[Optional["PractitionerProfile"]] = relationship(

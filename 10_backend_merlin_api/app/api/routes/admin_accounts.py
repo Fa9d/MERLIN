@@ -36,6 +36,8 @@ class AdminAccountRead(MerlinSchema):
     record_status: str
     is_admin: bool
     profile_complete: bool
+    subscription_status: str
+    subscription_since: datetime | None
     created_at: datetime
 
 
@@ -45,6 +47,10 @@ class RoleUpdate(MerlinSchema):
 
 class StatusUpdate(MerlinSchema):
     suspend: bool  # True → closed (suspendu) ; False → active
+
+
+class SubscriptionUpdate(MerlinSchema):
+    status: str  # "active" | "unpaid" | "inactive"
 
 
 class AdminActionAck(MerlinSchema):
@@ -62,6 +68,8 @@ def _to_read(u: AppUser, profile_complete: bool) -> AdminAccountRead:
         record_status=u.record_status.value,
         is_admin=is_admin(u),
         profile_complete=profile_complete,
+        subscription_status=u.subscription_status,
+        subscription_since=u.subscription_since,
         created_at=u.created_at,
     )
 
@@ -141,6 +149,31 @@ def verify_manually(
     db.refresh(user)
     pmap = _profile_map(db, [user.id])
     return AdminActionAck(status="verified", account=_to_read(user, pmap.get(user.id, False)))
+
+
+@router.post("/{user_id}/subscription", response_model=AdminActionAck)
+def update_subscription(
+    user_id: str,
+    payload: SubscriptionUpdate,
+    db: Session = Depends(get_db),
+    _: AppUser = Depends(require_admin()),
+) -> AdminActionAck:
+    """Suivi interne de l'abonnement praticien : active / unpaid / inactive (sans Stripe)."""
+    from datetime import datetime, timezone
+
+    if payload.status not in {"active", "unpaid", "inactive"}:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Statut d'abonnement invalide.")
+    user = _get_user(db, user_id)
+    user.subscription_status = payload.status
+    if payload.status == "active" and user.subscription_since is None:
+        user.subscription_since = datetime.now(timezone.utc)
+    if payload.status == "inactive":
+        user.subscription_since = None
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    pmap = _profile_map(db, [user.id])
+    return AdminActionAck(status="subscription_updated", account=_to_read(user, pmap.get(user.id, False)))
 
 
 @router.post("/{user_id}/role", response_model=AdminActionAck)
