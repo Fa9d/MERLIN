@@ -73,6 +73,17 @@
       <form id="connexion-form" novalidate
             class="bg-white border border-bdr rounded-[24px] p-8 shadow-sm space-y-5">
 
+        <!-- Choix de l'espace : route vers client ou praticien (le rôle réel fait foi) -->
+        <div>
+          <span class="field-label">Je me connecte comme</span>
+          <div class="flex bg-surface border border-bdr rounded-[14px] p-1 gap-1" role="group" aria-label="Type d'espace">
+            <button type="button" id="role-client" onclick="setLoginRole('client')"
+                    class="flex-1 py-2 rounded-[10px] text-sm font-semibold transition-colors">Client·e</button>
+            <button type="button" id="role-praticien" onclick="setLoginRole('praticien')"
+                    class="flex-1 py-2 rounded-[10px] text-sm font-semibold transition-colors">Praticien·ne</button>
+          </div>
+        </div>
+
         <div>
           <label for="courriel" class="field-label">Courriel</label>
           <input id="courriel" name="courriel" type="email" autocomplete="email"
@@ -142,6 +153,24 @@
       if (emailStored) document.getElementById('verif-email').textContent = emailStored;
     }
 
+    // Choix de l'espace (client | praticien). Mémorisé, surchargé par ?role=praticien.
+    const ACTIVE = ['bg-white', 'text-ink', 'shadow-sm'];
+    const INACTIVE = ['text-muted'];
+    let loginRole = (p.get('role') === 'praticien')
+      ? 'praticien'
+      : (localStorage.getItem('ivia_login_role') || 'client');
+    function setLoginRole(r) {
+      loginRole = (r === 'praticien') ? 'praticien' : 'client';
+      localStorage.setItem('ivia_login_role', loginRole);
+      const c = document.getElementById('role-client');
+      const pr = document.getElementById('role-praticien');
+      const on = loginRole === 'praticien' ? pr : c;
+      const off = loginRole === 'praticien' ? c : pr;
+      on.classList.add(...ACTIVE); on.classList.remove(...INACTIVE);
+      off.classList.remove(...ACTIVE); off.classList.add(...INACTIVE);
+    }
+    setLoginRole(loginRole);
+
     document.getElementById('toggle-mdp').addEventListener('click', () => {
       const inp = document.getElementById('motdepasse');
       inp.type = inp.type === 'password' ? 'text' : 'password';
@@ -171,8 +200,32 @@
         }
 
         const retour = new URLSearchParams(location.search).get('retour');
-        const dest = res.user?.role === 'practitioner' ? '/praticien/dashboard.html' : '/client/dashboard.html';
-        window.location.href = retour ? decodeURIComponent(retour) : dest;
+        if (retour) { window.location.href = decodeURIComponent(retour); return; }
+
+        // Espace réel du compte (le rôle serveur fait foi), comparé au choix.
+        const role = res.user?.role;
+        const espaceReel = (role && role !== 'public_client') ? 'praticien' : 'client';
+        const destReel = espaceReel === 'praticien' ? '/praticien/dashboard.html' : '/client/dashboard.html';
+
+        if (loginRole === espaceReel) {
+          window.location.href = destReel;
+          return;
+        }
+        // Discordance : le compte n'est pas du type choisi. On l'explique, sans cul-de-sac
+        // (l'utilisateur est déjà authentifié → lien direct vers son espace réel).
+        const labelReel = espaceReel === 'praticien' ? 'praticien·ne' : 'client·e';
+        const labelChoisi = loginRole === 'praticien' ? 'praticien·ne' : 'client·e';
+        const d = document.getElementById('form-error');
+        d.textContent = `Ce compte est un espace ${labelReel}, pas ${labelChoisi}. `;
+        const lien = document.createElement('a');
+        lien.href = destReel;
+        lien.className = 'underline underline-offset-2 font-semibold';
+        lien.textContent = `Entrer dans mon espace ${labelReel} →`;
+        d.appendChild(lien);
+        d.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Se connecter';
+        return;
       } catch (err) {
         affErr(err.message || 'Connexion impossible. Réessayez.');
         btn.disabled = false;
