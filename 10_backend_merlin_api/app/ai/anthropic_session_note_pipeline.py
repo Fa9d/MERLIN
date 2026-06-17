@@ -21,17 +21,69 @@ class AnthropicSessionNoteError(RuntimeError):
     pass
 
 
-def _extract_json_payload(raw_text: str) -> dict[str, Any]:
-    content = raw_text.strip()
-    if content.startswith("```"):
-        lines = content.splitlines()
-        if len(lines) >= 3:
-            content = "\n".join(lines[1:-1]).strip()
+def _strip_code_fence(content: str) -> str:
+    """Retire un éventuel encadrement markdown ```...``` (avec ou sans langue)."""
+    if not content.startswith("```"):
+        return content
+    lines = content.splitlines()
+    if len(lines) >= 2 and lines[-1].strip().startswith("```"):
+        # première ligne = ```json (ou ```), dernière ligne = ```
+        return "\n".join(lines[1:-1]).strip()
+    return content
 
-    try:
-        payload = json.loads(content)
-    except json.JSONDecodeError as exc:
-        raise AnthropicSessionNoteError("Reponse Claude invalide: JSON non parsable.") from exc
+
+def _first_json_object(content: str) -> str | None:
+    """Extrait le premier objet JSON équilibré {...} d'un texte (prose autour tolérée)."""
+    start = content.find("{")
+    if start == -1:
+        return None
+    depth = 0
+    in_string = False
+    escaped = False
+    for i in range(start, len(content)):
+        ch = content[i]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+        else:
+            if ch == '"':
+                in_string = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return content[start : i + 1]
+    return None
+
+
+def _extract_json_payload(raw_text: str) -> dict[str, Any]:
+    content = _strip_code_fence(raw_text.strip())
+
+    # Claude peut entourer le JSON de prose ou de fences ; on tente plusieurs voies.
+    candidates: list[str] = [content]
+    extracted = _first_json_object(content)
+    if extracted and extracted != content:
+        candidates.append(extracted)
+
+    payload: Any = None
+    last_exc: json.JSONDecodeError | None = None
+    for candidate in candidates:
+        try:
+            payload = json.loads(candidate)
+            break
+        except json.JSONDecodeError as exc:
+            last_exc = exc
+            payload = None
+
+    if payload is None:
+        raise AnthropicSessionNoteError(
+            "Reponse Claude invalide: JSON non parsable."
+        ) from last_exc
 
     if not isinstance(payload, dict):
         raise AnthropicSessionNoteError("Reponse Claude invalide: objet JSON attendu.")
@@ -63,7 +115,9 @@ async def generate_session_note_from_transcript(
             },
             json={
                 "model": CLAUDE_SONNET_4_MODEL,
-                "max_tokens": 4000,
+                # 4000 tokens étaient trop justes : une note multi-axes complète
+                # pouvait être tronquée (stop_reason=max_tokens) → JSON incomplet.
+                "max_tokens": 8000,
                 "temperature": 0,
                 "messages": [
                     {
@@ -80,6 +134,10 @@ async def generate_session_note_from_transcript(
         )
 
     payload = response.json()
+    if payload.get("stop_reason") == "max_tokens":
+        raise AnthropicSessionNoteError(
+            "Reponse Claude tronquee (max_tokens atteint) : JSON incomplet."
+        )
     content_items = payload.get("content", [])
     text_parts: list[str] = []
     for item in content_items:
