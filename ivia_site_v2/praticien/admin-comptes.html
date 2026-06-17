@@ -48,9 +48,25 @@
         <p class="text-sm text-muted mt-1">Inscriptions, vérification du courriel, rôles, activation. Réservé à l'administration.</p>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <input id="q" class="fld flex-1 max-w-xs" placeholder="Filtrer par courriel ou nom…">
         <button id="btn-refresh" class="act">Rafraîchir</button>
+      </div>
+
+      <!-- Actions groupées sur les comptes cochés -->
+      <div class="flex flex-wrap items-center gap-2 bg-surface/60 border border-bdr rounded-[12px] px-3 py-2">
+        <span id="sel-count" class="text-xs font-semibold text-muted">0 sélectionné·s</span>
+        <select id="bulk-action" class="fld">
+          <option value="">Action groupée…</option>
+          <option value="resend">Renvoyer le lien de confirmation</option>
+          <option value="verify">Vérifier le courriel</option>
+          <option value="suspend">Suspendre</option>
+          <option value="reactivate">Réactiver</option>
+          <option value="sub_active">Abonnement → Actif</option>
+          <option value="sub_unpaid">Abonnement → Impayé</option>
+          <option value="sub_inactive">Abonnement → Inactif</option>
+        </select>
+        <button id="bulk-apply" class="act font-semibold">Appliquer</button>
       </div>
 
       <div id="zone" class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
@@ -87,6 +103,7 @@
           ? `<select class="fld" data-sub="${a.id}">`+['active','unpaid','inactive'].map(s=>`<option value="${s}" ${s===a.subscription_status?'selected':''}>${SUBLBL[s]}</option>`).join('')+`</select>`
           : '<span class="text-xs text-muted">—</span>';
         return `<tr class="border-t border-bdr align-top">
+          <td class="p-3"><input type="checkbox" data-sel="${a.id}" class="w-4 h-4 accent-forest-deep cursor-pointer"></td>
           <td class="p-3">
             <p class="text-sm font-semibold text-ink">${(a.display_name||'').replace(/[<>&]/g,'')}</p>
             <p class="text-xs text-muted">${(a.email||'').replace(/[<>&]/g,'')}</p>
@@ -94,23 +111,51 @@
           </td>
           <td class="p-3 whitespace-nowrap">${verifBadge}${adminBadge}<br>${statutBadge}${profilBadge}</td>
           <td class="p-3">${roleSel}</td>
-          <td class="p-3">${subCell}</td>
-          <td class="p-3 whitespace-nowrap space-x-1 space-y-1">
-            ${a.email_verified?'':`<button class="act" data-resend="${a.id}">Renvoyer lien</button><button class="act" data-verify="${a.id}">Vérifier</button>`}
-            <button class="act" data-suspend="${a.id}" data-on="${suspended?'0':'1'}">${suspended?'Réactiver':'Suspendre'}</button>
-          </td></tr>`;
+          <td class="p-3">${subCell}</td></tr>`;
       }).join('');
       zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
-        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Abonnement</th><th class="p-3 font-semibold">Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
+        <th class="p-3"><input type="checkbox" id="sel-all" class="w-4 h-4 accent-forest-deep cursor-pointer" title="Tout sélectionner"></th>
+        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Abonnement</th></tr></thead><tbody>${rows}</tbody></table>`;
       bindActions();
     }
 
+    function majCompteur(){
+      const n = document.querySelectorAll('[data-sel]:checked').length;
+      document.getElementById('sel-count').textContent = n + ' sélectionné·s';
+    }
+
     function bindActions(){
-      document.querySelectorAll('[data-resend]').forEach(b=>b.onclick=async()=>{try{await adminResendVerification(b.dataset.resend);toast('Lien de confirmation envoyé ✓');}catch(e){toast(e.message,true);}});
-      document.querySelectorAll('[data-verify]').forEach(b=>b.onclick=async()=>{if(!confirm('Marquer ce courriel comme vérifié ?'))return;try{await adminVerifyAccount(b.dataset.verify);toast('Compte vérifié ✓');charger();}catch(e){toast(e.message,true);}});
+      // Édition inline (par compte) : rôle + abonnement.
       document.querySelectorAll('[data-role]').forEach(s=>s.onchange=async()=>{try{await adminSetRole(s.dataset.role,s.value);toast('Rôle mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
-      document.querySelectorAll('[data-suspend]').forEach(b=>b.onclick=async()=>{const suspend=b.dataset.on==='1';if(!confirm(suspend?'Suspendre ce compte ?':'Réactiver ce compte ?'))return;try{await adminSetStatus(b.dataset.suspend,suspend);toast(suspend?'Compte suspendu':'Compte réactivé');charger();}catch(e){toast(e.message,true);}});
       document.querySelectorAll('[data-sub]').forEach(s=>s.onchange=async()=>{try{await adminSetSubscription(s.dataset.sub,s.value);toast('Abonnement mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
+      // Sélection (cases à cocher).
+      const all = document.getElementById('sel-all');
+      if (all) all.onchange = () => { document.querySelectorAll('[data-sel]').forEach(c=>c.checked=all.checked); majCompteur(); };
+      document.querySelectorAll('[data-sel]').forEach(c=>c.onchange=majCompteur);
+      majCompteur();
+    }
+
+    const BULK_LBL = {resend:'Renvoyer le lien', verify:'Vérifier le courriel', suspend:'Suspendre', reactivate:'Réactiver', sub_active:'Abonnement → Actif', sub_unpaid:'Abonnement → Impayé', sub_inactive:'Abonnement → Inactif'};
+    const BULK_FN = {
+      resend:      id=>adminResendVerification(id),
+      verify:      id=>adminVerifyAccount(id),
+      suspend:     id=>adminSetStatus(id,true),
+      reactivate:  id=>adminSetStatus(id,false),
+      sub_active:  id=>adminSetSubscription(id,'active'),
+      sub_unpaid:  id=>adminSetSubscription(id,'unpaid'),
+      sub_inactive:id=>adminSetSubscription(id,'inactive'),
+    };
+    async function bulkApply(){
+      const action = document.getElementById('bulk-action').value;
+      if(!action){ toast('Choisissez une action.', true); return; }
+      const ids = Array.from(document.querySelectorAll('[data-sel]:checked')).map(c=>c.dataset.sel);
+      if(!ids.length){ toast('Aucun compte sélectionné.', true); return; }
+      if(!confirm(`Appliquer « ${BULK_LBL[action]} » à ${ids.length} compte·s ?`)) return;
+      const res = await Promise.allSettled(ids.map(id => BULK_FN[action](id)));
+      const ok = res.filter(r=>r.status==='fulfilled').length;
+      const ko = res.length - ok;
+      toast(`${ok} appliqué·s` + (ko ? ` · ${ko} échec·s` : ' ✓'), ko>0);
+      charger();
     }
 
     async function charger(){
@@ -123,6 +168,7 @@
       }
     }
     document.getElementById('btn-refresh').onclick=charger;
+    document.getElementById('bulk-apply').onclick=bulkApply;
     document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')charger();});
     charger();
   </script>
