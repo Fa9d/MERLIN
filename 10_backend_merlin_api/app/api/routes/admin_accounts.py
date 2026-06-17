@@ -53,6 +53,10 @@ class SubscriptionUpdate(MerlinSchema):
     status: str  # "active" | "unpaid" | "inactive"
 
 
+class AdminGrantUpdate(MerlinSchema):
+    grant: bool  # True → accorde le droit admin (drapeau) ; False → le retire
+
+
 class AdminActionAck(MerlinSchema):
     status: str
     account: AdminAccountRead
@@ -218,3 +222,30 @@ def update_status(
     db.refresh(user)
     pmap = _profile_map(db, [user.id])
     return AdminActionAck(status="status_updated", account=_to_read(user, pmap.get(user.id, False)))
+
+
+@router.post("/{user_id}/admin", response_model=AdminActionAck)
+def update_admin_grant(
+    user_id: str,
+    payload: AdminGrantUpdate,
+    db: Session = Depends(get_db),
+    admin: AppUser = Depends(require_admin()),
+) -> AdminActionAck:
+    """Accorde ou retire le droit admin (drapeau is_platform_admin), en cumul du rôle.
+
+    Le droit admin par liste blanche (MERLIN_ADMIN_EMAILS) et le rôle admin_tech
+    restent prioritaires : retirer le drapeau ne révoque pas un admin allowlisté.
+    """
+    user = _get_user(db, user_id)
+    # Garde-fou : un admin ne peut pas retirer son propre droit (verrouillage hors admin).
+    if not payload.grant and str(user.id) == str(admin.id):
+        raise HTTPException(
+            status_code=400,
+            detail="Vous ne pouvez pas retirer votre propre droit admin.",
+        )
+    user.is_platform_admin = payload.grant
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    pmap = _profile_map(db, [user.id])
+    return AdminActionAck(status="admin_updated", account=_to_read(user, pmap.get(user.id, False)))

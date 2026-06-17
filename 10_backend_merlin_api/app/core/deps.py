@@ -127,6 +127,8 @@ def is_admin(user: AppUser) -> bool:
 
     if user.role == AppRole.admin_tech:
         return True
+    if getattr(user, "is_platform_admin", False):
+        return True
     return bool(user.email and user.email.strip().lower() in settings.admin_emails)
 
 

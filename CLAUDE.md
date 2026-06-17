@@ -338,10 +338,13 @@ MERLIN_ADMIN_EMAILS=         # liste blanche admin (courriels, séparés par vir
 MERLIN_PAYMENTS_TEST_MODE=   # true = page de paiement simulée (aucun débit) ; auto-actif si pas de clé Stripe. false au lancement.
 ```
 
-**Admin** : un compte est admin s'il a le rôle `admin_tech` **ou** si son courriel est dans
-`MERLIN_ADMIN_EMAILS`. Permet à un praticien d'être aussi admin (ex. fondateur) sans perdre
-ses capacités praticien. Garde `require_admin` (voir `app/core/deps.py`) — utilisé par
-`/admin/billing-flags`.
+**Admin** : un compte est admin s'il a le rôle `admin_tech`, **ou** si son courriel est dans
+`MERLIN_ADMIN_EMAILS`, **ou** si son drapeau `app_users.is_platform_admin` est vrai (accordé
+au cas par cas depuis la console admin — Comptes, case « Admin » / actions groupées, endpoint
+`POST /admin/accounts/{id}/admin`). Le drapeau est un **cumul sur le rôle** (un praticien devient
+admin sans perdre ses capacités praticien), défaut `false`. Retirer le drapeau ne révoque pas un
+admin allowlisté ; garde anti-auto-révocation (on ne peut pas retirer son propre droit). Garde
+`require_admin` (voir `app/core/deps.py`).
 
 **Transcription des séances** : provider piloté par `MERLIN_TRANSCRIPTION_PROVIDER`
 (`auto` par défaut = **faster-whisper** local si installé — open source, données Québec /
@@ -386,9 +389,10 @@ app/
 │   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260616_0035 (ventilation séance : frais plateforme + part praticien)
+└── alembic/versions/    # Migrations — head courant = 20260617_0037 (app_users.is_platform_admin : droit admin par compte)
                          #   0030 app_settings · 0031 clients.birthplace · 0032 intake.assigned_practitioner ·
-                         #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee
+                         #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee ·
+                         #   0036 app_users.themes · 0037 app_users.is_platform_admin
 ```
 
 ---

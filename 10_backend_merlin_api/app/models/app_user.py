@@ -58,6 +58,9 @@ class AppUser(Base):
     # Tarifs de séance fixés par le praticien (cents). Null → défaut serveur (config).
     session_price_30min_cents: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     session_price_60min_cents: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    # Droit admin accordé depuis l'interface (cumul sur le rôle, sans le remplacer).
+    # is_admin = rôle admin_tech OU liste blanche MERLIN_ADMIN_EMAILS OU ce drapeau.
+    is_platform_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
 
     practitioner_profile: Mapped[Optional["PractitionerProfile"]] = relationship(

@@ -6,7 +6,7 @@
   <title>Comptes — Admin IVIA</title>
   <script src="/shared/session.js?v=20260617b"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260617a"></script>
+  <script src="/shared/api.js?v=20260617b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -62,6 +62,8 @@
           <option value="verify">Vérifier le courriel</option>
           <option value="suspend">Suspendre</option>
           <option value="reactivate">Réactiver</option>
+          <option value="grant_admin">Accorder le droit admin</option>
+          <option value="revoke_admin">Retirer le droit admin</option>
           <option value="sub_active">Abonnement → Actif</option>
           <option value="sub_unpaid">Abonnement → Impayé</option>
           <option value="sub_inactive">Abonnement → Inactif</option>
@@ -111,11 +113,12 @@
           </td>
           <td class="p-3 whitespace-nowrap">${verifBadge}${adminBadge}<br>${statutBadge}${profilBadge}</td>
           <td class="p-3">${roleSel}</td>
+          <td class="p-3 text-center"><input type="checkbox" data-admin="${a.id}" ${a.is_admin?'checked':''} class="w-4 h-4 accent-trust cursor-pointer" title="Droit admin — cumulé au rôle, sans le remplacer"></td>
           <td class="p-3">${subCell}</td></tr>`;
       }).join('');
       zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
         <th class="p-3"><input type="checkbox" id="sel-all" class="w-4 h-4 accent-forest-deep cursor-pointer" title="Tout sélectionner"></th>
-        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Abonnement</th></tr></thead><tbody>${rows}</tbody></table>`;
+        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Admin</th><th class="p-3 font-semibold">Abonnement</th></tr></thead><tbody>${rows}</tbody></table>`;
       bindActions();
     }
 
@@ -128,6 +131,7 @@
       // Édition inline (par compte) : rôle + abonnement.
       document.querySelectorAll('[data-role]').forEach(s=>s.onchange=async()=>{try{await adminSetRole(s.dataset.role,s.value);toast('Rôle mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
       document.querySelectorAll('[data-sub]').forEach(s=>s.onchange=async()=>{try{await adminSetSubscription(s.dataset.sub,s.value);toast('Abonnement mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
+      document.querySelectorAll('[data-admin]').forEach(c=>c.onchange=async()=>{try{await adminSetAdmin(c.dataset.admin,c.checked);toast(c.checked?'Droit admin accordé ✓':'Droit admin retiré ✓');}catch(e){toast(e.message,true);charger();}});
       // Sélection (cases à cocher).
       const all = document.getElementById('sel-all');
       if (all) all.onchange = () => { document.querySelectorAll('[data-sel]').forEach(c=>c.checked=all.checked); majCompteur(); };
@@ -135,12 +139,14 @@
       majCompteur();
     }
 
-    const BULK_LBL = {resend:'Renvoyer le lien', verify:'Vérifier le courriel', suspend:'Suspendre', reactivate:'Réactiver', sub_active:'Abonnement → Actif', sub_unpaid:'Abonnement → Impayé', sub_inactive:'Abonnement → Inactif'};
+    const BULK_LBL = {resend:'Renvoyer le lien', verify:'Vérifier le courriel', suspend:'Suspendre', reactivate:'Réactiver', grant_admin:'Accorder admin', revoke_admin:'Retirer admin', sub_active:'Abonnement → Actif', sub_unpaid:'Abonnement → Impayé', sub_inactive:'Abonnement → Inactif'};
     const BULK_FN = {
       resend:      id=>adminResendVerification(id),
       verify:      id=>adminVerifyAccount(id),
       suspend:     id=>adminSetStatus(id,true),
       reactivate:  id=>adminSetStatus(id,false),
+      grant_admin: id=>adminSetAdmin(id,true),
+      revoke_admin:id=>adminSetAdmin(id,false),
       sub_active:  id=>adminSetSubscription(id,'active'),
       sub_unpaid:  id=>adminSetSubscription(id,'unpaid'),
       sub_inactive:id=>adminSetSubscription(id,'inactive'),
@@ -149,14 +155,15 @@
       const action = document.getElementById('bulk-action').value;
       if(!action){ toast('Choisissez une action.', true); return; }
       let ids = Array.from(document.querySelectorAll('[data-sel]:checked')).map(c=>c.dataset.sel);
-      // Garde-fou : ne jamais se suspendre soi-même (verrouillage hors de l'app).
+      // Garde-fou : ne jamais s'appliquer à soi-même une action de verrouillage
+      // (suspension ou retrait d'admin → sortie hors de l'app/admin).
       let autoExclu = false;
-      if(action==='suspend'){
+      if(action==='suspend' || action==='revoke_admin'){
         const moi = (typeof getCurrentUser==='function' ? getCurrentUser() : null);
         const monId = moi && (moi.id || moi.user_id);
         if(monId && ids.includes(String(monId))){ ids = ids.filter(id=>id!==String(monId)); autoExclu = true; }
       }
-      if(!ids.length){ toast(autoExclu ? 'Seul votre propre compte était sélectionné — non suspendu.' : 'Aucun compte sélectionné.', true); return; }
+      if(!ids.length){ toast(autoExclu ? 'Seul votre propre compte était sélectionné — action non appliquée à vous-même.' : 'Aucun compte sélectionné.', true); return; }
       if(!confirm(`Appliquer « ${BULK_LBL[action]} » à ${ids.length} compte·s ?` + (autoExclu ? '\n(Votre propre compte est exclu.)' : ''))) return;
       const res = await Promise.allSettled(ids.map(id => BULK_FN[action](id)));
       const ok = res.filter(r=>r.status==='fulfilled').length;

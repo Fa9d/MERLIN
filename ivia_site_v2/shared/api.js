@@ -580,6 +580,10 @@ async function adminSetStatus(id, suspend) {
 async function adminSetSubscription(id, status) {
   return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/subscription', { method: 'POST', body: { status } });
 }
+/** Accorde (true) ou retire (false) le droit admin (cumul sur le rôle). */
+async function adminSetAdmin(id, grant) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/admin', { method: 'POST', body: { grant } });
+}
 
 // ── Admin · interrupteurs de facturation par offre ───────────────────────────
 /**
