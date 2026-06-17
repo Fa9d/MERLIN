@@ -51,7 +51,9 @@ async def generate_session_note_from_transcript(
         session_context=session_context,
     )
 
-    async with httpx.AsyncClient(timeout=60.0) as client:
+    # Lecture longue : la génération de note (4000 tokens) peut dépasser 60 s sous charge
+    # → ReadTimeout et perte de l'analyse. Marge confortable (connexion courte, lecture longue).
+    async with httpx.AsyncClient(timeout=httpx.Timeout(180.0, connect=10.0)) as client:
         response = await client.post(
             ANTHROPIC_MESSAGES_URL,
             headers={
