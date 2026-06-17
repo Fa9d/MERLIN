@@ -516,6 +516,16 @@ function formatDateCourteLocale(iso) {
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
 }
 
+// ── Admin · dossiers clients (enregistrements + transcriptions + analyses) ────
+/** Liste des clients avec compteurs (enregistrements / transcrits / analyses). */
+async function adminListClients(q) {
+  return _req('/api/v1/admin/clients' + (q ? ('?q=' + encodeURIComponent(q)) : ''));
+}
+/** Dossier complet d'un client : enregistrements + transcriptions + analyses. */
+async function adminClientDossier(id) {
+  return _req('/api/v1/admin/clients/' + encodeURIComponent(id) + '/dossier');
+}
+
 // ── Admin · vue d'ensemble ────────────────────────────────────────────────────
 /** Chiffres clés + alertes de vigilance pour le tableau de bord admin. */
 async function adminOverview() {

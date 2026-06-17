@@ -21,6 +21,7 @@ from app.api.routes.admin_settings import router as admin_settings_router
 from app.api.routes.admin_accounts import router as admin_accounts_router
 from app.api.routes.admin_accounting import router as admin_accounting_router
 from app.api.routes.admin_overview import router as admin_overview_router
+from app.api.routes.admin_clients import router as admin_clients_router
 from app.api.routes.consents import router as consents_router
 from app.api.routes.derived_documents import router as derived_documents_router
 from app.api.routes.era_contexts import router as era_contexts_router
@@ -112,6 +113,7 @@ app.include_router(admin_settings_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_accounts_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_accounting_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_overview_router, prefix=settings.api_v1_prefix)
+app.include_router(admin_clients_router, prefix=settings.api_v1_prefix)
 app.include_router(era_contexts_router, prefix=settings.api_v1_prefix)
 app.include_router(intake_requests_router, prefix=settings.api_v1_prefix)
 app.include_router(consents_router, prefix=settings.api_v1_prefix)
