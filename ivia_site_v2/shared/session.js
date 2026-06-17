@@ -81,31 +81,51 @@ function applyAdminVisibility() {
 }
 
 /**
- * Injecte les liens d'administration dans la barre latérale praticien, uniquement
- * pour les admins. Clone le style du lien « Mon profil » de la page pour s'harmoniser
- * automatiquement (une seule source, pas N sidebars à éditer).
+ * Liens de la console admin (porte séparée). Source unique de la navigation admin.
  */
-function injectAdminLink() {
-  if (!isAdminUser()) return;
-  const ref = document.querySelector('aside a[href="/praticien/profil.html"]');
-  if (!ref || !ref.parentNode) return;
-  const liens = [
-    { href: '/praticien/admin-vue.html', label: 'Vue d\'ensemble (admin)' },
-    { href: '/praticien/admin-dossiers.html', label: 'Dossiers clients (admin)' },
-    { href: '/praticien/admin-comptes.html', label: 'Comptes (admin)' },
-    { href: '/praticien/admin-demandes.html', label: 'Demandes (admin)' },
-    { href: '/praticien/admin-comptabilite.html', label: 'Comptabilité (admin)' },
-    { href: '/praticien/admin-facturation.html', label: 'Facturation (admin)' },
-  ];
-  liens.forEach(l => {
-    if (document.querySelector(`aside a[href="${l.href}"]`)) return; // déjà présent (page courante)
-    const link = document.createElement('a');
-    link.href = l.href;
-    link.className = (ref.className || '').replace(/\bactive\b/, '').trim();
-    link.setAttribute('data-admin-only', '');
-    link.textContent = l.label;
-    ref.parentNode.insertBefore(link, ref);
-  });
+const ADMIN_NAV = [
+  { href: '/praticien/admin-vue.html', label: 'Vue d\'ensemble' },
+  { href: '/praticien/admin-dossiers.html', label: 'Dossiers clients' },
+  { href: '/praticien/admin-comptes.html', label: 'Comptes & accès' },
+  { href: '/praticien/admin-demandes.html', label: 'Demandes d\'entrée' },
+  { href: '/praticien/admin-comptabilite.html', label: 'Comptabilité' },
+  { href: '/praticien/admin-facturation.html', label: 'Facturation' },
+];
+
+/**
+ * Construit la barre latérale « Administration » dédiée dans l'élément #admin-sidebar
+ * (présent sur les pages admin et sur /admin/). Interface séparée de l'espace praticien.
+ * L'espace praticien, lui, n'affiche plus aucun lien admin.
+ */
+function renderAdminSidebar() {
+  const aside = document.getElementById('admin-sidebar');
+  if (!aside) return;
+  const links = ADMIN_NAV.map(l => {
+    const active = location.pathname === l.href ? ' active' : '';
+    return `<a href="${l.href}" class="sidebar-link${active}">${l.label}</a>`;
+  }).join('');
+  aside.innerHTML = `
+    <a href="/admin/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-1 block">IVIA</a>
+    <p class="text-xs text-trust px-2 mb-6 font-semibold uppercase tracking-wider">Administration</p>
+    <nav class="flex flex-col gap-1 flex-1">
+      ${links}
+      <div class="flex-1"></div>
+      <a href="/praticien/dashboard.html" class="sidebar-link">← Espace praticien</a>
+      <div id="admin-logout" class="mt-1"></div>
+    </nav>`;
+  const logout = document.getElementById('admin-logout');
+  if (logout) renderLogoutButton(logout);
+}
+
+/**
+ * Garde d'accès des pages admin : si #admin-sidebar existe mais que l'utilisateur
+ * n'est pas admin, on le renvoie vers l'espace praticien. À n'appeler qu'après
+ * refreshCurrentUser() (données serveur à jour) pour éviter un faux négatif.
+ */
+function enforceAdminPage() {
+  if (document.getElementById('admin-sidebar') && !isAdminUser()) {
+    location.replace('/praticien/dashboard.html');
+  }
 }
 
 /**
@@ -126,12 +146,13 @@ async function refreshCurrentUser() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1er passage immédiat depuis le cache (peut être périmé)…
-  injectAdminLink();
+  renderAdminSidebar();
   applyAdminVisibility();
-  // …puis on resynchronise avec le serveur et on réapplique.
+  // …puis on resynchronise avec le serveur et on réapplique (rôle/droit admin à jour).
   refreshCurrentUser().then(() => {
-    injectAdminLink();
+    renderAdminSidebar();
     applyAdminVisibility();
+    enforceAdminPage();
   });
 });
 

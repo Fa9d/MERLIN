@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Demandes d'entrée — Admin IVIA</title>
-  <script src="/shared/session.js?v=20260617b"></script>
+  <script src="/shared/session.js?v=20260617c"></script>
   <script>requireAuth();</script>
   <script src="/shared/api.js?v=20260617b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,23 +24,7 @@
 </head>
 <body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
   <div class="flex min-h-screen">
-    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
-      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
-      <nav class="flex flex-col gap-1 flex-1">
-        <a href="/praticien/dashboard.html" class="sidebar-link">Tableau de bord</a>
-        <a href="/praticien/agenda.html" class="sidebar-link">Agenda</a>
-        <a href="/praticien/clients-journal.html" class="sidebar-link">Clients</a>
-        <a href="/praticien/livraisons.html" class="sidebar-link">Livraisons</a>
-        <div class="flex-1"></div>
-        <a href="/praticien/admin-comptes.html" class="sidebar-link" data-admin-only>Comptes (admin)</a>
-        <a href="/praticien/admin-demandes.html" class="sidebar-link active" data-admin-only>Demandes (admin)</a>
-        <a href="/praticien/admin-comptabilite.html" class="sidebar-link" data-admin-only>Comptabilité (admin)</a>
-        <a href="/praticien/admin-facturation.html" class="sidebar-link" data-admin-only>Facturation (admin)</a>
-        <a href="/praticien/profil.html" class="sidebar-link">Mon profil public</a>
-        <a href="/praticien/compte.html" class="sidebar-link">Mon compte</a>
-      </nav>
-    </aside>
+    <aside id="admin-sidebar" class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10"></aside>
 
     <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1000px] space-y-5">
       <div class="flex items-center justify-between gap-3 flex-wrap">
