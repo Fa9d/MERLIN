@@ -105,18 +105,35 @@
         return;
       }
 
-      document.getElementById('badge-count').textContent =
-        notes.length + (notes.length > 1 ? ' analyses' : ' analyse');
+      // Filtre éventuel passé par les vignettes du tableau de bord (?filtre=a-valider|vigilance).
+      const filtre = new URLSearchParams(location.search).get('filtre');
+      const estVigilance = (n) => {
+        const c = (n.vigilance_level_code || '').toLowerCase();
+        return c.includes('urgent') || c.includes('eleve') || c.includes('élevé') || c.includes('high');
+      };
+      let liste = notes, titreFiltre = '';
+      if (filtre === 'a-valider') { liste = notes.filter(n => !n.validated_by_practitioner); titreFiltre = 'à valider'; }
+      else if (filtre === 'vigilance') { liste = notes.filter(estVigilance); titreFiltre = 'vigilance élevée'; }
 
-      if (!notes.length) {
-        zone.innerHTML = `<div class="bg-white border border-bdr rounded-[20px] p-8 text-center">
-          <p class="text-sm text-muted leading-relaxed">Aucune analyse pour l'instant. Elles apparaîtront
-          ici automatiquement après le premier enregistrement transcrit (séance solo ou express).</p></div>`;
+      document.getElementById('badge-count').textContent =
+        liste.length + (liste.length > 1 ? ' analyses' : ' analyse');
+
+      const chip = titreFiltre
+        ? `<div class="flex items-center justify-between gap-3 bg-surface border border-bdr rounded-[14px] px-4 py-2.5 mb-4">
+            <span class="text-sm text-ink">Filtre : <strong>${titreFiltre}</strong></span>
+            <a href="/praticien/livraisons.html" class="text-xs font-semibold text-forest-deep hover:underline">Voir tout →</a>
+          </div>` : '';
+
+      if (!liste.length) {
+        zone.innerHTML = chip + `<div class="bg-white border border-bdr rounded-[20px] p-8 text-center">
+          <p class="text-sm text-muted leading-relaxed">${titreFiltre
+            ? 'Aucune analyse ' + titreFiltre + ' pour l\'instant.'
+            : 'Aucune analyse pour l\'instant. Elles apparaîtront ici automatiquement après le premier enregistrement transcrit (séance solo ou express).'}</p></div>`;
         return;
       }
 
-      zone.innerHTML = '';
-      notes.forEach(n => {
+      zone.innerHTML = chip;
+      liste.forEach(n => {
         const card = document.createElement('article');
         card.className = 'bg-white border border-bdr rounded-[20px] p-6 shadow-sm';
 

@@ -68,26 +68,26 @@
 
       <!-- Statistiques d'analyse (réelles) -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="stat-card">
+        <a href="/praticien/livraisons.html" class="stat-card block hover:border-forest transition-colors cursor-pointer">
           <p class="text-xs text-muted mb-1">Analyses</p>
           <p class="font-heading text-3xl font-bold text-ink" id="stat-analyses">…</p>
-          <p class="text-xs text-muted mt-1">générées par l'IA</p>
-        </div>
-        <div class="stat-card">
+          <p class="text-xs text-muted mt-1">générées par l'IA →</p>
+        </a>
+        <a href="/praticien/livraisons.html?filtre=a-valider" class="stat-card block hover:border-forest transition-colors cursor-pointer">
           <p class="text-xs text-muted mb-1">À valider</p>
           <p class="font-heading text-3xl font-bold text-forest-deep" id="stat-valider">…</p>
-          <p class="text-xs text-muted mt-1">relecture humaine</p>
-        </div>
-        <div class="stat-card">
+          <p class="text-xs text-muted mt-1">relecture humaine →</p>
+        </a>
+        <a href="/praticien/livraisons.html?filtre=vigilance" class="stat-card block hover:border-forest transition-colors cursor-pointer">
           <p class="text-xs text-muted mb-1">Vigilance élevée</p>
           <p class="font-heading text-3xl font-bold text-ink" id="stat-vigilance">…</p>
-          <p class="text-xs text-muted mt-1">à regarder en priorité</p>
-        </div>
-        <div class="stat-card">
+          <p class="text-xs text-muted mt-1">à regarder en priorité →</p>
+        </a>
+        <a id="card-seances" href="/praticien/livraisons.html" class="stat-card block hover:border-forest transition-colors cursor-pointer">
           <p class="text-xs text-muted mb-1">Séances</p>
           <p class="font-heading text-3xl font-bold text-ink" id="stat-seances">…</p>
-          <p class="text-xs text-muted mt-1" id="stat-seances-sub">enregistrées</p>
-        </div>
+          <p class="text-xs text-muted mt-1" id="stat-seances-sub">enregistrées →</p>
+        </a>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-6">
@@ -169,7 +169,15 @@
       document.getElementById('stat-seances').textContent = sessions.length;
       const transcrites = sessions.filter(s => s.transcript_text).length;
       document.getElementById('stat-seances-sub').textContent =
-        transcrites ? transcrites + ' transcrites' : 'enregistrées';
+        (transcrites ? transcrites + ' transcrites' : 'enregistrées') + ' →';
+
+      // Carte « Séances » : un admin accède aux dossiers (enregistrements + transcriptions).
+      try {
+        if (typeof isAdminUser === 'function' && isAdminUser()) {
+          const cs = document.getElementById('card-seances');
+          if (cs) cs.href = '/praticien/admin-dossiers.html';
+        }
+      } catch (e) {}
 
       // Praticien·ne sans aucune séance ni analyse → état vide « premiers pas ».
       if (!notes.length && !sessions.length) {
