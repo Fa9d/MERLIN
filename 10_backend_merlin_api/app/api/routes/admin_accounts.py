@@ -202,10 +202,16 @@ def update_status(
     user_id: str,
     payload: StatusUpdate,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_admin()),
+    admin: AppUser = Depends(require_admin()),
 ) -> AdminActionAck:
     """Suspend (closed) ou réactive (active) un compte."""
     user = _get_user(db, user_id)
+    # Garde-fou : un admin ne peut pas se suspendre lui-même (verrouillage hors de l'app).
+    if payload.suspend and str(user.id) == str(admin.id):
+        raise HTTPException(
+            status_code=400,
+            detail="Vous ne pouvez pas suspendre votre propre compte.",
+        )
     user.record_status = RecordStatus.closed if payload.suspend else RecordStatus.active
     db.add(user)
     db.commit()

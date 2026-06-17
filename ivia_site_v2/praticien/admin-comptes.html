@@ -148,9 +148,16 @@
     async function bulkApply(){
       const action = document.getElementById('bulk-action').value;
       if(!action){ toast('Choisissez une action.', true); return; }
-      const ids = Array.from(document.querySelectorAll('[data-sel]:checked')).map(c=>c.dataset.sel);
-      if(!ids.length){ toast('Aucun compte sélectionné.', true); return; }
-      if(!confirm(`Appliquer « ${BULK_LBL[action]} » à ${ids.length} compte·s ?`)) return;
+      let ids = Array.from(document.querySelectorAll('[data-sel]:checked')).map(c=>c.dataset.sel);
+      // Garde-fou : ne jamais se suspendre soi-même (verrouillage hors de l'app).
+      let autoExclu = false;
+      if(action==='suspend'){
+        const moi = (typeof getCurrentUser==='function' ? getCurrentUser() : null);
+        const monId = moi && (moi.id || moi.user_id);
+        if(monId && ids.includes(String(monId))){ ids = ids.filter(id=>id!==String(monId)); autoExclu = true; }
+      }
+      if(!ids.length){ toast(autoExclu ? 'Seul votre propre compte était sélectionné — non suspendu.' : 'Aucun compte sélectionné.', true); return; }
+      if(!confirm(`Appliquer « ${BULK_LBL[action]} » à ${ids.length} compte·s ?` + (autoExclu ? '\n(Votre propre compte est exclu.)' : ''))) return;
       const res = await Promise.allSettled(ids.map(id => BULK_FN[action](id)));
       const ok = res.filter(r=>r.status==='fulfilled').length;
       const ko = res.length - ok;
