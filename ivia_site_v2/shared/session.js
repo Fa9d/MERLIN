@@ -108,9 +108,31 @@ function injectAdminLink() {
   });
 }
 
+/**
+ * Rafraîchit l'utilisateur stocké depuis /auth/me (source de vérité serveur).
+ * Évite un `ivia_user` périmé : un changement de rôle ou de droit admin
+ * (liste blanche) est pris en compte au prochain chargement, sans re-login.
+ */
+async function refreshCurrentUser() {
+  if (typeof apiMe !== 'function') return;
+  if (!localStorage.getItem(SESSION_KEY)) return;
+  try {
+    const me = await apiMe();
+    if (me && me.id) setCurrentUser(me);
+  } catch (e) {
+    // Token invalide/expiré : laisser les gardes habituels gérer la suite.
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // 1er passage immédiat depuis le cache (peut être périmé)…
   injectAdminLink();
   applyAdminVisibility();
+  // …puis on resynchronise avec le serveur et on réapplique.
+  refreshCurrentUser().then(() => {
+    injectAdminLink();
+    applyAdminVisibility();
+  });
 });
 
 /**
