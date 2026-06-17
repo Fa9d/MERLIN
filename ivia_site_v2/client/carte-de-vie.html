@@ -13,29 +13,37 @@
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
     h1,h2{font-family:'Lora',Georgia,serif;}
+    .axe-dot{transition:r .3s ease, opacity .3s ease;}
+    @keyframes breathe { 0%,100%{opacity:.5} 50%{opacity:.9} }
+    .breathe{animation:breathe 5s ease-in-out infinite;}
   </style>
 </head>
 <body class="antialiased">
 <div id="ivia-header"></div>
 <script>renderLayout('voir');</script>
 
-<div class="max-w-3xl mx-auto px-4 py-12">
-  <h1 class="font-heading text-3xl font-bold text-[#1A2E1D] mb-2">Votre carte de vie</h1>
+<div class="max-w-3xl mx-auto px-4 py-10 sm:py-12">
+  <h1 class="font-heading text-2xl sm:text-3xl font-bold text-[#1A2E1D] mb-2">Votre carte de vie</h1>
   <p class="text-[#4B6350] text-sm leading-relaxed max-w-xl mb-8">
     Votre sol, vos appuis, votre ligne de vie, votre horizon — une lecture vivante qui se
     compose au fil de vos séances et de ce que vous choisissez d'écrire.
   </p>
 
-  <div class="bg-white border border-[#D4E8D0] rounded-[20px] p-8 text-center">
-    <div class="w-14 h-14 rounded-full bg-[#F0F7F2] border border-[#D4E8D0] flex items-center justify-center mx-auto mb-4">
-      <svg class="w-7 h-7 text-[#4A7C59]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9" stroke-dasharray="3 4"/>
-      </svg>
+  <!-- Constellation des onze axes -->
+  <div class="bg-white border border-[#D4E8D0] rounded-[24px] p-4 sm:p-7 shadow-sm">
+    <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+      <h2 class="font-heading text-lg font-bold text-[#1A2E1D]">Les onze axes du vivant</h2>
+      <span class="text-[11px] font-semibold uppercase tracking-wider text-[#4B6350] bg-[#F0F7F2] border border-[#D4E8D0] rounded-full px-3 py-1">aperçu · se précise au fil des séances</span>
     </div>
-    <h2 class="font-heading text-xl font-bold text-[#1A2E1D] mb-2">Elle se compose.</h2>
-    <p class="text-sm text-[#4B6350] leading-relaxed max-w-md mx-auto mb-6">
-      Votre carte s'ouvre après votre première séance : chaque rencontre et chaque saison
-      l'enrichissent. Rien n'est noté, rien n'est jugé — c'est votre chemin, rendu visible.
+    <p class="text-xs text-[#4B6350] mb-3">Le territoire en premier — le sol qui précède et porte tout le reste.</p>
+    <svg id="constellation" class="w-full" viewBox="0 0 440 440" role="img" aria-label="Constellation des onze axes de la personne"></svg>
+    <div id="legende" class="flex flex-wrap gap-x-4 gap-y-1.5 mt-3 text-[11px] text-[#4B6350]"></div>
+  </div>
+
+  <div class="bg-[#F0F7F2]/60 border border-[#D4E8D0] rounded-[20px] p-6 mt-6 text-center">
+    <p class="text-sm text-[#4B6350] leading-relaxed max-w-md mx-auto mb-4">
+      Chaque rencontre et chaque saison l'enrichissent. Rien n'est noté, rien n'est jugé —
+      c'est votre chemin, rendu visible.
     </p>
     <a href="/reserver.html" class="inline-block bg-[#2D6A4F] text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-[#4A7C59] transition-colors">
       Vivre une première séance
@@ -45,5 +53,54 @@
 
 <div id="ivia-footer"></div>
 <script>renderLayout('voir');</script>
+
+<script>
+  // Onze axes — ordre canonique (territoire en premier). Intensité « en composition »
+  // (aperçu doux ; sera alimenté par les séances + le journal quand les données existeront).
+  const AXES = [
+    { key:'territoire',       label:'Territoire',        v:0.85 },
+    { key:'corps',            label:'Corps',             v:0.55 },
+    { key:'metabolisme',      label:'Métabolisme',       v:0.40 },
+    { key:'emotions',         label:'Émotions',          v:0.65 },
+    { key:'mental',           label:'Mental',            v:0.60 },
+    { key:'relations',        label:'Relations',         v:0.50 },
+    { key:'famille',          label:'Famille',           v:0.45 },
+    { key:'transgenerationnel',label:'Transgénérationnel',v:0.35 },
+    { key:'societe',          label:'Société',           v:0.40 },
+    { key:'spirituel',        label:'Spirituel',         v:0.50 },
+    { key:'urgence',          label:'Repère / urgence',  v:0.30 },
+  ];
+
+  (function dessiner() {
+    const svg = document.getElementById('constellation');
+    const CX = 220, CY = 220, R = 165;
+    const n = AXES.length;
+    let liens = '', noeuds = '', labels = '';
+    AXES.forEach((a, i) => {
+      const ang = (-Math.PI / 2) + (i * 2 * Math.PI / n); // départ en haut, sens horaire
+      const x = CX + R * Math.cos(ang);
+      const y = CY + R * Math.sin(ang);
+      const r = 7 + a.v * 13;                // rayon selon l'intensité
+      const col = a.v >= 0.7 ? '#2D6A4F' : a.v >= 0.5 ? '#4A7C59' : a.v >= 0.35 ? '#8FB99A' : '#CFE3D2';
+      liens += `<line x1="${CX}" y1="${CY}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#4A7C59" stroke-width="1.5" opacity="${(0.18 + a.v*0.4).toFixed(2)}"/>`;
+      noeuds += `<circle class="axe-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${col}" opacity="0.9"><title>${a.label}</title></circle>`;
+      // label : à l'extérieur, ancrage selon le côté
+      const lx = CX + (R + 26) * Math.cos(ang);
+      const ly = CY + (R + 26) * Math.sin(ang);
+      const anchor = Math.abs(Math.cos(ang)) < 0.3 ? 'middle' : (Math.cos(ang) > 0 ? 'start' : 'end');
+      labels += `<text x="${lx.toFixed(1)}" y="${(ly+3).toFixed(1)}" text-anchor="${anchor}" font-size="11" font-weight="600" fill="#4B6350">${a.label}</text>`;
+    });
+    svg.innerHTML =
+      `<circle class="breathe" cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke="#D4E8D0" stroke-dasharray="3 5"/>` +
+      liens +
+      `<circle cx="${CX}" cy="${CY}" r="26" fill="#2D6A4F"/><text x="${CX}" y="${CY+4}" text-anchor="middle" font-size="12" font-weight="700" fill="white">Vous</text>` +
+      noeuds + labels;
+
+    document.getElementById('legende').innerHTML =
+      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#2D6A4F;display:inline-block"></span>présent</span>' +
+      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#8FB99A;display:inline-block"></span>émergent</span>' +
+      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#CFE3D2;display:inline-block"></span>en attente</span>';
+  })();
+</script>
 </body>
 </html>
