@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <script src="/shared/session.js?v=20260617a"></script>
+  <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Guide praticien·ne</title>
+  <script src="/shared/api.js?v=20260617a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
+    .step{background:#fff;border:1.5px solid #D4E8D0;border-radius:16px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;transition:border-color .15s;}
+    .step:hover{border-color:#4A7C59;}
+    .step-num{flex-shrink:0;width:32px;height:32px;border-radius:9999px;background:#E8F5EE;color:#2D6A4F;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;}
+    .pill{display:inline-block;font-size:11px;font-weight:600;border-radius:9999px;padding:3px 10px;}
+    .pill-ok{background:#E8F5EE;color:#2D6A4F;}
+    .pill-no{background:#FEF2F2;color:#991B1B;border:1px solid #FECACA;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">IVIA</a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</a>
+        <a href="/praticien/agenda.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
+        <a href="/praticien/seance-express.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Séance express</a>
+        <a href="/praticien/livraisons.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+        <a href="/praticien/guide.html" class="sidebar-link active"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Guide</a>
+        <div class="flex-1"></div>
+        <a href="/praticien/profil.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>Mon profil</a>
+        <a href="/praticien/compte.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Mon compte</a>
+        <div id="sidebar-logout" class="mt-2"></div>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[860px]">
+
+      <div class="mb-2">
+        <h1 class="font-heading text-2xl font-bold text-ink">Guide praticien·ne</h1>
+        <p class="text-muted text-sm mt-1 leading-relaxed">
+          Bienvenue dans votre espace. Voici ce que vous pouvez faire et comment une séance se déroule,
+          de l'accueil de la personne jusqu'à la livraison de l'analyse.
+        </p>
+      </div>
+
+      <!-- A — Premiers pas (checklist actionnable) -->
+      <section class="mt-7">
+        <h2 class="font-heading text-base font-bold text-ink mb-3">Premiers pas</h2>
+        <div class="space-y-3">
+          <a href="/praticien/profil.html" class="step">
+            <span class="step-num">1</span>
+            <div>
+              <p class="text-sm font-semibold text-ink">Compléter votre profil public</p>
+              <p class="text-sm text-muted mt-0.5">Votre approche, une bio courte et vos thèmes d'accompagnement. C'est ce que les personnes voient pour vous choisir.</p>
+              <span class="text-xs font-semibold text-forest-deep mt-1 inline-block">Aller au profil →</span>
+            </div>
+          </a>
+          <a href="/praticien/profil.html" class="step">
+            <span class="step-num">2</span>
+            <div>
+              <p class="text-sm font-semibold text-ink">Définir vos tarifs de séance</p>
+              <p class="text-sm text-muted mt-0.5">Vous fixez le prix de vos séances (30 min, 1 h). IVIA applique des frais de plateforme transparents par-dessus.</p>
+              <span class="text-xs font-semibold text-forest-deep mt-1 inline-block">Régler mes tarifs →</span>
+            </div>
+          </a>
+          <a href="/praticien/agenda.html" class="step">
+            <span class="step-num">3</span>
+            <div>
+              <p class="text-sm font-semibold text-ink">Ouvrir vos disponibilités</p>
+              <p class="text-sm text-muted mt-0.5">Indiquez vos plages horaires dans l'agenda pour que les personnes puissent réserver un moment avec vous.</p>
+              <span class="text-xs font-semibold text-forest-deep mt-1 inline-block">Ouvrir l'agenda →</span>
+            </div>
+          </a>
+          <a href="/praticien/seance-express.html" class="step">
+            <span class="step-num">4</span>
+            <div>
+              <p class="text-sm font-semibold text-ink">Recevoir une personne</p>
+              <p class="text-sm text-muted mt-0.5">Créez une <strong>séance express</strong> : un lien partageable que vous envoyez à la personne, sans qu'elle ait à s'inscrire d'abord. Idéal pour une première rencontre.</p>
+              <span class="text-xs font-semibold text-forest-deep mt-1 inline-block">Créer une séance express →</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- B — Le déroulé d'une séance -->
+      <section class="mt-9">
+        <h2 class="font-heading text-base font-bold text-ink mb-3">Comment se déroule une séance</h2>
+        <div class="card space-y-4">
+          <div class="flex gap-3">
+            <span class="text-forest-deep font-bold text-sm">1.</span>
+            <p class="text-sm text-ink"><strong>L'enregistrement</strong> — avec le consentement explicite de la personne, la séance est enregistrée. Le consentement est demandé au moment de la séance, jamais avant.</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-forest-deep font-bold text-sm">2.</span>
+            <p class="text-sm text-ink"><strong>La transcription</strong> — l'audio est transcrit localement (au Québec, sans service tiers). Vous retrouvez le texte relisible dans l'analyse.</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-forest-deep font-bold text-sm">3.</span>
+            <p class="text-sm text-ink"><strong>L'analyse assistée</strong> — à partir de la transcription, une analyse est préparée selon la triade <em>observation · hypothèse · orientation</em>, avec une lecture par axes (cœur, corps, esprit, être).</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-forest-deep font-bold text-sm">4.</span>
+            <p class="text-sm text-ink"><strong>Votre validation</strong> — vous relisez, ajustez et <strong>validez</strong>. Rien n'est livré à la personne sans votre accord. C'est l'étape « Analyses ».</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-forest-deep font-bold text-sm">5.</span>
+            <p class="text-sm text-ink"><strong>La livraison</strong> — une fois validée, la reformulation destinée à la personne lui devient accessible dans son espace.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- C — La posture : l'IA assiste, vous tranchez -->
+      <section class="mt-9">
+        <h2 class="font-heading text-base font-bold text-ink mb-3">L'IA vous assiste — vous tranchez</h2>
+        <div class="card space-y-4">
+          <p class="text-sm text-ink leading-relaxed">
+            L'analyse est une <strong>lecture d'appui</strong>, jamais une décision. Votre jugement prime
+            toujours, et toute sortie destinée à la personne passe par votre validation.
+          </p>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Ce que l'on fait</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="pill pill-ok">observer</span>
+              <span class="pill pill-ok">formuler des hypothèses</span>
+              <span class="pill pill-ok">orienter</span>
+              <span class="pill pill-ok">écouter · accompagner</span>
+              <span class="pill pill-ok">soutenir l'autonomie</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Ce que l'on ne fait jamais</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="pill pill-no">diagnostiquer</span>
+              <span class="pill pill-no">prescrire</span>
+              <span class="pill pill-no">promettre une guérison</span>
+              <span class="pill pill-no">remplacer un service d'urgence</span>
+            </div>
+          </div>
+          <div class="bg-surface border border-bdr rounded-[12px] px-4 py-3">
+            <p class="text-sm text-ink"><strong>Signal de vigilance.</strong> Si une analyse signale une vigilance élevée
+            (détresse, danger pour soi ou autrui), elle est marquée d'un badge. Ce n'est pas un automatisme :
+            c'est un appel à votre attention humaine et, au besoin, à une orientation vers une ressource compétente.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- D — Repère des espaces -->
+      <section class="mt-9">
+        <h2 class="font-heading text-base font-bold text-ink mb-3">Vos espaces, en un coup d'œil</h2>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <a href="/praticien/dashboard.html" class="step"><div><p class="text-sm font-semibold text-ink">Tableau de bord</p><p class="text-sm text-muted mt-0.5">Vue d'ensemble : analyses, à valider, vigilances.</p></div></a>
+          <a href="/praticien/agenda.html" class="step"><div><p class="text-sm font-semibold text-ink">Agenda</p><p class="text-sm text-muted mt-0.5">Vos disponibilités et les moments réservés.</p></div></a>
+          <a href="/praticien/seance-express.html" class="step"><div><p class="text-sm font-semibold text-ink">Séance express</p><p class="text-sm text-muted mt-0.5">Créer un lien de séance partageable.</p></div></a>
+          <a href="/praticien/livraisons.html" class="step"><div><p class="text-sm font-semibold text-ink">Analyses</p><p class="text-sm text-muted mt-0.5">Relire, valider et livrer les analyses.</p></div></a>
+          <a href="/praticien/profil.html" class="step"><div><p class="text-sm font-semibold text-ink">Mon profil</p><p class="text-sm text-muted mt-0.5">Profil public, approche, thèmes et tarifs.</p></div></a>
+          <a href="/praticien/compte.html" class="step"><div><p class="text-sm font-semibold text-ink">Mon compte</p><p class="text-sm text-muted mt-0.5">Vos informations et votre abonnement.</p></div></a>
+        </div>
+      </section>
+
+      <p class="text-xs text-muted mt-9 leading-relaxed">
+        IVIA accueille, structure et accompagne — sans diagnostic, sans prescription, dans le respect du cadre
+        québécois (Loi 25, Loi 21). Vous restez la personne qui écoute et qui décide.
+      </p>
+    </main>
+  </div>
+
+  <!-- Nav mobile -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
+    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Bord</a>
+    <a href="/praticien/seance-express.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Express</a>
+    <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+    <a href="/praticien/guide.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Guide</a>
+  </nav>
+
+  <script>
+    renderLogoutButton(document.getElementById('sidebar-logout'));
+  </script>
+
+</body>
+</html>
