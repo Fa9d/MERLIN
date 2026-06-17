@@ -20,10 +20,24 @@
 <body class="antialiased min-h-screen bg-cream">
 
   <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm">
-    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
-      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
-      <a href="/inscription.html" class="text-sm text-muted hover:text-ink transition-colors cursor-pointer">
-        Pas encore de compte ? Créer le mien
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
+      <a href="/" class="flex items-center gap-2.5 font-heading text-xl font-semibold text-forest-deep tracking-tight" aria-label="IVIA — Accueil">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="#2D6A4F"/>
+          <rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/>
+          <rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/>
+          <rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/>
+        </svg>
+        IVIA
+      </a>
+      <div class="hidden md:flex items-center gap-7 text-sm font-medium text-muted">
+        <a href="/#pourquoi-ivia" class="hover:text-forest transition-colors cursor-pointer">Pourquoi IVIA</a>
+        <a href="/#espace"        class="hover:text-forest transition-colors cursor-pointer">Votre espace</a>
+        <a href="/#offres"        class="hover:text-forest transition-colors cursor-pointer">Entrer</a>
+      </div>
+      <a href="/inscription.html"
+         class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer shrink-0">
+        Créer mon compte
       </a>
     </div>
   </nav>

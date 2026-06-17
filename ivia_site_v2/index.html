@@ -92,22 +92,21 @@
         <a href="#pourquoi-ivia" class="hover:text-forest transition-colors duration-200 cursor-pointer">Pourquoi IVIA</a>
         <a href="#espace"        class="hover:text-forest transition-colors duration-200 cursor-pointer">Votre espace</a>
         <a href="#offres"        class="hover:text-forest transition-colors duration-200 cursor-pointer">Entrer</a>
-        <a href="/connexion.html" class="hover:text-forest transition-colors duration-200 cursor-pointer">Se connecter</a>
       </div>
 
-      <!-- Desktop CTA -->
-      <a href="/inscription.html"
+      <!-- Desktop CTA — auth-aware (Se connecter / Mon espace) -->
+      <a id="nav-auth-cta" href="/connexion.html"
          class="hidden md:inline-flex bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px]
                 hover:bg-forest transition-colors duration-200 cursor-pointer">
-        Créer mon compte
+        Se connecter
       </a>
 
       <!-- Mobile: CTA + hamburger -->
       <div class="flex items-center gap-2 md:hidden">
-        <a href="/inscription.html"
+        <a id="nav-auth-cta-m" href="/connexion.html"
            class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[12px]
                   hover:bg-forest transition-colors duration-200 cursor-pointer">
-          Commencer
+          Se connecter
         </a>
         <button id="nav-burger" onclick="toggleMobileMenu()" aria-label="Ouvrir le menu" aria-expanded="false"
                 class="p-2 rounded-[10px] hover:bg-surface transition-colors duration-200 cursor-pointer text-ink">
@@ -128,7 +127,7 @@
       <a href="#espace" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Votre espace</a>
       <a href="#offres" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Entrer</a>
       <div class="border-t border-bdr mt-1 pt-2">
-        <a href="/connexion.html" class="px-4 py-3 rounded-[10px] text-forest-deep font-semibold hover:bg-surface transition-colors cursor-pointer block">Se connecter</a>
+        <a href="/inscription.html" class="px-4 py-3 rounded-[10px] text-forest-deep font-semibold hover:bg-surface transition-colors cursor-pointer block">Créer mon compte</a>
       </div>
     </nav>
   </div>
@@ -552,6 +551,16 @@
       if (!menu || menu.classList.contains('hidden')) return;
       if (!menu.contains(e.target) && !btn.contains(e.target)) closeMobileMenu();
     });
+
+    // ── Auth-aware : connecté → « Mon espace », sinon « Se connecter » ───────────
+    (function () {
+      var logged = !!localStorage.getItem('ivia_session');
+      if (!logged) return;
+      ['nav-auth-cta', 'nav-auth-cta-m'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) { el.textContent = 'Mon espace'; el.href = '/client/dashboard.html'; }
+      });
+    })();
   </script>
 </body>
 </html>
