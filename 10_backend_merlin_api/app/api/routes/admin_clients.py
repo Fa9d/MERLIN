@@ -120,13 +120,23 @@ def list_clients(
         xs = [d for d in (rec_last.get(cid), note_last.get(cid)) if d]
         return max(xs) if xs else None
 
+    def _depot(cid):
+        """Date/heure du dépôt le plus ancien (premier enregistrement déposé)."""
+        return rec_last.get(cid) or note_last.get(cid)
+
+    # Ordre de dépôt (traitement FIFO) : dossiers avec dépôt en premier, du plus
+    # ancien au plus récent ; comptes sans dépôt rejetés en fin de liste.
+    avec_depot = sorted((c for c in clients if _depot(c.id)), key=lambda c: _depot(c.id))
+    sans_depot = [c for c in clients if not _depot(c.id)]
+    ordered = avec_depot + sans_depot
+
     return [
         ClientRow(
             client_id=c.id, nom=_nom(c), email=c.email, profile_complete=c.profile_complete,
             nb_enregistrements=rec_counts.get(c.id, 0), nb_transcrits=rec_tr.get(c.id, 0),
             nb_analyses=note_counts.get(c.id, 0), derniere_activite=_last(c.id),
         )
-        for c in clients
+        for c in ordered
     ]
 
 
