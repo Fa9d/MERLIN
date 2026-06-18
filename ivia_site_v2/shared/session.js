@@ -104,21 +104,30 @@ const ADMIN_NAV = [
 function renderAdminSidebar() {
   const aside = document.getElementById('admin-sidebar');
   if (!aside) return;
+  // Thème sombre distinct : on est visiblement dans la console d'administration.
+  aside.className = 'hidden lg:flex flex-col w-60 px-4 py-6 fixed top-0 left-0 h-screen z-10 '
+    + 'bg-[#13261A] border-r border-[#22432F]';
+  const base = 'flex items-center px-4 py-2.5 rounded-[10px] text-sm transition-colors';
+  const idle = ' font-medium text-[#A7C4B2] hover:bg-[#1E3A28] hover:text-white';
+  const on = ' font-semibold bg-forest text-white';
   const links = ADMIN_NAV.map(l => {
-    const active = location.pathname === l.href ? ' active' : '';
-    return `<a href="${l.href}" class="sidebar-link${active}">${l.label}</a>`;
+    const active = location.pathname === l.href;
+    return `<a href="${l.href}" class="${base}${active ? on : idle}">${l.label}</a>`;
   }).join('');
   aside.innerHTML = `
-    <a href="/admin/" class="font-heading text-xl font-semibold text-forest-deep px-2 mb-1 block">IVIA</a>
-    <p class="text-xs text-trust px-2 mb-6 font-semibold uppercase tracking-wider">Administration</p>
+    <a href="/admin/" class="font-heading text-xl font-semibold text-white px-2 mb-1 block">IVIA</a>
+    <p class="text-[11px] text-sage px-2 mb-6 font-semibold uppercase tracking-[0.18em]">Administration</p>
     <nav class="flex flex-col gap-1 flex-1">
       ${links}
       <div class="flex-1"></div>
-      <a href="/praticien/dashboard.html" class="sidebar-link">← Espace praticien</a>
+      <a href="/praticien/dashboard.html" class="${base}${idle}">← Espace praticien</a>
       <div id="admin-logout" class="mt-1"></div>
     </nav>`;
   const logout = document.getElementById('admin-logout');
-  if (logout) renderLogoutButton(logout);
+  if (logout) renderLogoutButton(logout, {
+    className: 'flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold '
+      + 'text-red-300 hover:bg-red-500/20 hover:text-red-200 cursor-pointer',
+  });
 }
 
 /**
