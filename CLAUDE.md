@@ -336,6 +336,13 @@ ANTHROPIC_API_KEY=
 ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
 MERLIN_ADMIN_EMAILS=         # liste blanche admin (courriels, séparés par virgule) — droits admin sans changer de rôle
 MERLIN_PAYMENTS_TEST_MODE=   # true = page de paiement simulée (aucun débit) ; auto-actif si pas de clé Stripe. false au lancement.
+# Sauvegarde chiffrée hors-site (Loi 25) — voir docs/ops-sauvegarde.md & deploy/backup.sh
+MERLIN_BACKUP_PASSPHRASE=    # secret de chiffrement AES-256 des sauvegardes (à conserver HORS VPS)
+OVH_S3_ENDPOINT=             # ex. https://s3.bhs.io.cloud.ovh.net (OVH Object Storage, région Québec BHS)
+OVH_S3_REGION=               # ex. bhs
+OVH_S3_BUCKET=               # ex. merlin-backups
+AWS_ACCESS_KEY_ID=           # clé S3 OVH Object Storage
+AWS_SECRET_ACCESS_KEY=       # secret S3 OVH Object Storage
 ```
 
 **Admin** : un compte est admin s'il a le rôle `admin_tech`, **ou** si son courriel est dans
@@ -452,6 +459,9 @@ make config-check  # valider YAML + variables avant redémarrage
 # Déploiement complet en une commande
 bash deploy/prod-up.sh
 
+# Sauvegarde chiffrée hors-site (OVH Object Storage Québec) — voir docs/ops-sauvegarde.md
+bash deploy/backup.sh
+
 # scp d'un fichier backend vers le VPS
 scp 10_backend_merlin_api/app/[...] ubuntu@137.74.42.121:/opt/merlin/10_backend_merlin_api/app/[...]
 ```
@@ -508,6 +518,8 @@ Règles à respecter pour toute évolution de ce parcours :
   - Carte abstraite du praticien : `00_DOCTRINE/IVIA_DOCTRINE_CARTE_ABSTRAITE_v1.0.md`
   - **Correspondances vivantes** : `00_DOCTRINE/correspondances-vivantes.md` + `00_DOCTRINE/ivia_living_lexicon.yaml`
 - Documentation ops Docker : `docs/ops-docker-compose.md`
+- Sauvegarde chiffrée (OVH Québec, Loi 25) : `docs/ops-sauvegarde.md` + `deploy/backup.sh`
+- Coûts conformité données (chiffrage, BP) : `12_JURIDIQUE_AFFAIRES/IVIA_COUTS_CONFORMITE_DONNEES_v1.0.md`
 - Notes laboratoire Ruvnet : `docs/labs/ruvnet-adoption.md`
 - Script déploiement : `deploy/prod-up.sh`
 - Gouvernance et backlog : `00_GOUVERNANCE/`
