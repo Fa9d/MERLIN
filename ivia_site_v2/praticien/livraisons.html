@@ -160,7 +160,7 @@
               ${bloc('Axe de la prochaine séance', n.next_session_focus_text)}
               ${axes ? `<div class="mt-3"><p class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Lecture multidimensionnelle</p><div class="grid sm:grid-cols-2 gap-2">${axes}</div></div>` : ''}
               ${bloc('Reformulation pour le client (à valider)', n.client_facing_summary_text)}
-              <p class="text-[10px] text-muted mt-4">${esc(n.model_used || 'modèle IA')}${n.prompt_version ? ' · prompt ' + esc(n.prompt_version) : ''} · relecture humaine requise avant tout partage</p>
+              <p class="text-[10px] text-muted mt-4">IVIA / MERLIN — Transcription et analyse structurée en temps réel. © IVIA / MERLIN 2026, tous droits réservés.</p>
             </div>
           </details>`;
         zone.appendChild(card);
