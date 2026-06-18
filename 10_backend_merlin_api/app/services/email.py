@@ -263,6 +263,40 @@ def make_appointment_reminder_email(
     return html, text
 
 
+def make_practitioner_reply_email(
+    display_name: str,
+    login_url: str,
+) -> tuple[str, str]:
+    """Notification : un·e praticien·ne a déposé un élément dans l'espace du client.
+
+    Notification seule — jamais le contenu (confidentialité Loi 25). Vocabulaire
+    non clinique (Loi 21) : « écho », « espace », pas « analyse / note clinique ».
+    """
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Votre praticien·ne IVIA vous a <strong>répondu</strong> : un nouvel écho à votre
+       dernière rencontre vient d'être déposé dans votre espace.</p>
+    <a class="btn" href="{login_url}">Ouvrir mon espace</a>
+    <p style="color:#888;font-size:13px;">Pour votre confidentialité, le contenu n'est jamais
+       transmis par courriel — il reste dans votre espace sécurisé, hébergé au Québec.</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Votre praticien·ne IVIA vous a répondu : un nouvel écho à votre dernière "
+        "rencontre vient d'être déposé dans votre espace.\n\n"
+        f"Ouvrir mon espace : {login_url}\n\n"
+        "Pour votre confidentialité, le contenu n'est jamais transmis par courriel.\n\n— IVIA"
+    )
+    return html, text
+
+
 def make_interac_etransfer_email(
     display_name: str,
     recipient_name: str,

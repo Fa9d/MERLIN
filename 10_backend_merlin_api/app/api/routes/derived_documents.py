@@ -1,7 +1,10 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.deps import is_operator_user, require_internal_clinical_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
@@ -11,6 +14,9 @@ from app.models.intake_request import IntakeRequest
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
 from app.schemas.derived_document import DerivedDocumentCreate, DerivedDocumentRead
+from app.services.email import make_practitioner_reply_email, send_email
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/derived-documents", tags=["derived-documents"])
 
@@ -27,7 +33,7 @@ def _resolve_document_publication_state(
 
 
 @router.post("", response_model=DerivedDocumentRead, status_code=status.HTTP_201_CREATED)
-def create_derived_document(
+async def create_derived_document(
     payload: DerivedDocumentCreate,
     db: Session = Depends(get_db),
     # Le praticien livre sa propre analyse (validation humaine) ; opérateur et
@@ -76,6 +82,27 @@ def create_derived_document(
     db.add(derived_document)
     db.commit()
     db.refresh(derived_document)
+
+    # Livraison effective → notifier le client par courriel (notification seule,
+    # jamais le contenu). Best-effort : un échec d'envoi ne bloque pas la livraison.
+    if derived_document.client_visible:
+        account = db.get(AppUser, client.app_user_id) if client.app_user_id else None
+        to_email = (account.email if account else None) or client.email
+        display = (account.display_name if account else None) or "vous"
+        if to_email:
+            login_url = settings.frontend_url.rstrip("/") + "/connexion.html"
+            html, text = make_practitioner_reply_email(display_name=display, login_url=login_url)
+            try:
+                await send_email(
+                    to_email=to_email,
+                    subject="Votre praticien IVIA vous a répondu",
+                    html_body=html,
+                    text_body=text,
+                    audience="client",
+                )
+            except Exception:  # noqa: BLE001 — best-effort, ne bloque pas la livraison
+                logger.warning("Notification de livraison non envoyée à %s", to_email)
+
     return derived_document
 
 
