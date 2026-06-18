@@ -552,13 +552,17 @@
       if (!menu.contains(e.target) && !btn.contains(e.target)) closeMobileMenu();
     });
 
-    // ── Auth-aware : connecté → « Mon espace », sinon « Se connecter » ───────────
+    // ── Auth-aware : connecté → « Mon espace » (espace selon le rôle, NOUVEL onglet),
+    //    sinon « Se connecter ». Le site vitrine reste dissocié des espaces fonctionnels.
     (function () {
       var logged = !!localStorage.getItem('ivia_session');
       if (!logged) return;
+      var role = '';
+      try { role = (JSON.parse(localStorage.getItem('ivia_user') || 'null') || {}).role || ''; } catch (e) {}
+      var dest = (role && role !== 'public_client') ? '/praticien/dashboard.html' : '/client/dashboard.html';
       ['nav-auth-cta', 'nav-auth-cta-m'].forEach(function (id) {
         var el = document.getElementById(id);
-        if (el) { el.textContent = 'Mon espace'; el.href = '/client/dashboard.html'; }
+        if (el) { el.textContent = 'Mon espace'; el.href = dest; el.target = '_blank'; el.rel = 'noopener'; }
       });
     })();
   </script>
