@@ -85,23 +85,41 @@ def create_client(
     return client
 
 
+def _get_or_create_my_client(current_user: AppUser, db: Session) -> Client:
+    """Dossier `Client` lié au compte connecté — créé à la demande s'il manque.
+
+    Un compte créé hors du parcours d'intake (inscription directe, magic link)
+    peut ne pas avoir de dossier. Le premier accès au profil le crée, pour que
+    chacun puisse compléter sa fiche sans erreur 404.
+    """
+    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
+    if client is not None:
+        return client
+    display = current_user.display_name or current_user.email or "Client"
+    parts = display.split(" ", 1)
+    client = Client(
+        app_user_id=current_user.id,
+        first_name_or_alias=parts[0],
+        last_name=parts[1] if len(parts) > 1 else None,
+        email=current_user.email,
+    )
+    db.add(client)
+    db.commit()
+    db.refresh(client)
+    return client
+
+
 @router.get("/me", response_model=ClientRead)
 def get_my_client(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(get_current_user),
 ) -> Client:
-    """Retourne le dossier `Client` durablement lié au compte connecté.
+    """Retourne le dossier `Client` lié au compte connecté (créé à la demande).
 
     Utilisé par `/mon-espace` pour afficher la fiche du client après activation
     via magic link ou inscription via `/acces-client`.
     """
-    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
-    if client is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Aucun dossier client n'est rattaché à ce compte.",
-        )
-    return client
+    return _get_or_create_my_client(current_user, db)
 
 
 @router.patch("/me", response_model=ClientRead)
@@ -111,12 +129,7 @@ def update_my_client(
     current_user: AppUser = Depends(get_current_user),
 ) -> Client:
     """Le client complète/met à jour sa propre fiche (profil de détermination)."""
-    client = db.scalar(select(Client).where(Client.app_user_id == current_user.id))
-    if client is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Aucun dossier client n'est rattaché à ce compte.",
-        )
+    client = _get_or_create_my_client(current_user, db)
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(client, field, value)
     db.add(client)
