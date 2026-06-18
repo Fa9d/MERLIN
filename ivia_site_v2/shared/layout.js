@@ -42,9 +42,10 @@ function renderLayout(active) {
         </a>
         <div class="flex items-center gap-1 overflow-x-auto">${links}</div>
         <div class="flex items-center gap-3 shrink-0">
+          <a href="/client/enregistrement.html" class="bg-[#2D6A4F] text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-[#4A7C59] transition-colors whitespace-nowrap">Séance express</a>
           <a href="/client/compte.html" class="text-sm text-[#4B6350] hover:text-[#1A2E1D]" title="Compte">${prenom || 'Compte'}</a>
           <button onclick="localStorage.removeItem('ivia_session');localStorage.removeItem('ivia_user');location.href='/connexion.html'"
-                  class="text-xs text-[#4B6350] hover:text-red-600 cursor-pointer" title="Déconnexion">Sortir</button>
+                  class="text-xs font-semibold text-red-600 hover:text-red-700 cursor-pointer" title="Déconnexion">Déconnexion</button>
         </div>
       </div>
     </nav>`;

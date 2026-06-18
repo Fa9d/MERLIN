@@ -6,6 +6,7 @@
   <meta name="description" content="IVIA — Fiche du praticien·ne d'écoute.">
   <title>IVIA — Profil praticien·ne</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/shared/avatar.js?v=20260617a"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -47,10 +48,8 @@
     <div class="bg-white border border-bdr rounded-[28px] p-8 shadow-sm mb-6">
       <div class="flex flex-col sm:flex-row gap-6 items-start">
 
-        <!-- Avatar -->
-        <div class="w-24 h-24 rounded-full bg-surface flex items-center justify-center shrink-0 border-2 border-bdr">
-          <span id="fiche-initiales" class="font-heading text-3xl font-bold text-forest-deep">–</span>
-        </div>
+        <!-- Représentation abstraite (constellation, pas de photo) -->
+        <div id="fiche-avatar" class="w-24 h-24 shrink-0"></div>
 
         <!-- Infos principales -->
         <div class="flex-1">
@@ -240,7 +239,8 @@
       const p = PRATICIENS[id] || PRATICIENS['1'];
 
       // Remplir les champs
-      document.getElementById('fiche-initiales').textContent  = p.initiales;
+      const _fa = document.getElementById('fiche-avatar');
+      if (_fa && typeof iviaConstellation === 'function') _fa.innerHTML = iviaConstellation(p.nom || 'IVIA');
       document.getElementById('fiche-nom').textContent        = p.nom;
       document.getElementById('fiche-titre').textContent      = p.titre;
       document.getElementById('fiche-approche').textContent   = '« ' + p.approche + ' »';
