@@ -136,63 +136,78 @@
 
 
   <!-- ═══════════════════════════════════ HERO ═════════════════════════════════════ -->
-  <section id="accueil" class="min-h-[92vh] flex items-center pt-32 pb-24 px-4 relative overflow-hidden bg-cream">
+  <section id="accueil" class="bg-cream pt-32 pb-16 px-4">
 
-    <!-- Blobs SVG organiques -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      <svg class="absolute -right-40 top-10 w-[650px] h-[650px] opacity-[0.10] blob-float"
-           viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M280 50 C390 15,530 85,545 210 C560 335,475 450,350 485
-                 C225 520, 90 455, 55 330 C20 205, 90 90, 195 58 C230 42,260 56,280 50Z"
-              fill="#4A7C59"/>
-      </svg>
-      <svg class="absolute -left-32 bottom-24 w-[420px] h-[420px] opacity-[0.07]"
-           viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M185 28 C265 8,368 62,374 165 C380 268,298 358,196 365
-                 C94 372, 25 286, 18 178 C11 70, 88 46,185 28Z"
-              fill="#8FB99A"/>
-      </svg>
-    </div>
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
 
-    <div class="max-w-3xl mx-auto w-full text-center relative z-10">
+      <!-- Colonne gauche : message + actions -->
+      <div data-reveal>
+        <p class="text-forest text-xs font-semibold uppercase tracking-[0.22em] mb-4">
+          Écoute accompagnée · Présence enracinée
+        </p>
+        <p class="font-heading text-base text-forest-deep mb-5">IVIA — <em class="not-italic">Au sein de l'être, en actes.</em></p>
 
-      <p class="text-forest text-xs font-semibold uppercase tracking-[0.22em] mb-7">
-        Écoute accompagnée · Présence enracinée
-      </p>
+        <h1 class="font-heading text-[2.4rem] md:text-[3.2rem] font-bold text-ink leading-[1.1] mb-6">
+          Un lieu pour être écouté, compris et reprendre la main.
+        </h1>
 
-      <h1 class="font-heading text-[2.7rem] md:text-[3.8rem] font-bold text-ink leading-[1.12] mb-7">
-        IVIA — <em class="text-forest not-italic">Au sein de l'être, en actes.</em>
-      </h1>
+        <p class="text-muted text-lg leading-relaxed mb-9 max-w-xl">
+          Parlez avec un praticien IVIA, laissez une trace dans votre journal personnel,
+          puis revenez à ce qui compte avec plus de clarté, de continuité et d'appui.
+        </p>
 
-      <p class="text-muted text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-        Espace non clinique, privé et confidentiel. En rupture avec les théories habituelles
-        et les remèdes miracles. Venez comme vous êtes, nous serons ce que nous sommes,
-        authentiques et humains.
-      </p>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-7">
+          <a href="/connexion.html"
+             class="inline-flex items-center justify-center bg-forest-deep text-white
+                    text-base font-semibold px-8 py-4 rounded-[14px]
+                    hover:bg-forest transition-colors duration-200 cursor-pointer shadow-sm">
+            Entrer dans IVIA
+          </a>
+          <a href="#espace"
+             class="inline-flex items-center gap-1.5 text-forest-deep text-sm font-semibold
+                    hover:underline underline-offset-4 cursor-pointer">
+            Découvrir comment ça fonctionne →
+          </a>
+        </div>
 
-      <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/inscription.html"
-           class="inline-flex items-center justify-center bg-forest-deep text-white
-                  text-base font-semibold px-9 py-4 rounded-[16px]
-                  hover:bg-forest transition-colors duration-200 cursor-pointer shadow-md">
-          Créer mon compte
-        </a>
-        <a href="#espace"
-           class="inline-flex items-center justify-center text-forest text-sm font-medium
-                  px-7 py-4 rounded-[16px] border border-bdr
-                  hover:bg-surface transition-colors duration-200 cursor-pointer">
-          Découvrir IVIA
-        </a>
+        <p class="text-xs text-muted font-medium tracking-wide">
+          Privé et confidentiel <span class="text-bdr">·</span> Non clinique <span class="text-bdr">·</span> Voix effacée à J+30
+        </p>
       </div>
+
+      <!-- Colonne droite : aperçu sobre de l'espace (continuité réelle) -->
+      <div data-reveal aria-label="Aperçu de votre espace IVIA">
+        <div class="bg-white border border-bdr rounded-[22px] shadow-sm p-6 sm:p-7 max-w-md lg:ml-auto">
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-muted mb-5">Votre espace, en continuité</p>
+
+          <div class="pb-4 border-b border-bdr">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-forest-deep mb-1">Parler</p>
+            <p class="text-sm text-ink">Prochaine rencontre — <span class="font-semibold">jeudi 10 h</span></p>
+            <p class="text-xs text-muted mt-0.5">avec un praticien IVIA, en direct</p>
+          </div>
+
+          <div class="py-4 border-b border-bdr">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-forest-deep mb-1">Écrire</p>
+            <p class="text-sm text-ink italic leading-relaxed">« Ce matin, plus de calme que d'habitude. »</p>
+            <p class="text-xs text-muted mt-1">votre journal personnel · hier</p>
+          </div>
+
+          <div class="pt-4">
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-forest-deep mb-1">Voir</p>
+            <p class="text-sm text-ink">Une lecture plus claire de ce qui revient</p>
+            <p class="text-xs text-muted mt-0.5">votre carte de vie se compose, semaine après semaine</p>
+          </div>
+        </div>
+        <p class="text-center lg:text-right text-xs text-muted mt-3 max-w-md lg:ml-auto">Ce que vous retrouvez dès l'inscription.</p>
+      </div>
+
     </div>
 
-    <!-- Bandeau urgence bas du hero -->
-    <div class="absolute bottom-0 left-0 right-0 bg-amber-50 border-t border-amber-200 py-2 px-4"
-         role="alert">
-      <p class="text-center text-xs text-amber-800">
-        En situation de crise, composez le
+    <!-- Ligne urgence — visible, sobre -->
+    <div class="relative z-10 max-w-6xl mx-auto mt-12">
+      <p class="text-center text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-5 py-2 inline-block w-full sm:w-auto" role="alert">
+        IVIA n'est pas un service d'urgence — en situation de crise, composez le
         <strong><a href="tel:18662773553" class="underline cursor-pointer">1 866 APPELLE (277-3553)</a></strong>
-        — IVIA n'est pas un service d'urgence
       </p>
     </div>
   </section>
