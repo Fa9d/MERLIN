@@ -20,7 +20,11 @@ const USER_KEY    = 'ivia_user';
 function requireAuth() {
   if (!localStorage.getItem(SESSION_KEY)) {
     const retour = encodeURIComponent(location.pathname + location.search);
-    location.replace('/connexion.html?retour=' + retour);
+    // Les pages admin renvoient vers la porte admin dédiée ; le reste vers la connexion publique.
+    const adminPage = location.pathname.startsWith('/admin/')
+      || /\/praticien\/admin-/.test(location.pathname);
+    const porte = adminPage ? '/admin/connexion.html' : '/connexion.html';
+    location.replace(porte + '?retour=' + retour);
   }
 }
 

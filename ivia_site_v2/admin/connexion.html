@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Administration IVIA — Connexion</title>
+  <script src="/shared/api.js?v=20260617b"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background-color:#0F1E14;color:#1A2E1D;}
+    h1{font-family:'Lora',Georgia,serif;}
+    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;font-size:15px;background:#fff;color:#1A2E1D;transition:border-color .15s,box-shadow .15s;outline:none;}
+    .field-input:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+    .field-label{display:block;font-size:13px;font-weight:600;color:#4B6350;margin-bottom:6px;}
+  </style>
+</head>
+<body class="antialiased min-h-screen flex items-center justify-center px-4 py-16">
+  <div class="w-full max-w-md">
+
+    <div class="text-center mb-7">
+      <a href="/" class="inline-flex items-center gap-2.5 font-heading text-2xl font-semibold text-white tracking-tight" aria-label="IVIA — Accueil">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="#4A7C59"/>
+          <rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/>
+          <rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/>
+          <rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/>
+        </svg>
+        IVIA
+      </a>
+      <p class="text-xs text-sage font-semibold uppercase tracking-[0.2em] mt-3">Administration</p>
+    </div>
+
+    <div class="bg-white border border-bdr rounded-[24px] p-8 shadow-xl">
+      <h1 class="text-xl font-bold text-ink mb-1">Accès réservé</h1>
+      <p class="text-sm text-muted mb-6">Cette porte mène à la console d'administration. Réservée aux comptes autorisés.</p>
+
+      <form id="admin-form" novalidate class="space-y-5">
+        <div>
+          <label for="courriel" class="field-label">Courriel</label>
+          <input id="courriel" type="email" autocomplete="email" class="field-input" placeholder="vous@exemple.ca" required>
+        </div>
+        <div>
+          <label for="motdepasse" class="field-label">Mot de passe</label>
+          <div class="relative">
+            <input id="motdepasse" type="password" autocomplete="current-password" class="field-input pr-12" placeholder="••••••••••••" required>
+            <button type="button" id="toggle-mdp" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-ink cursor-pointer" aria-label="Afficher/masquer le mot de passe">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="form-error" class="hidden bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700" role="alert" aria-live="assertive"></div>
+
+        <button type="submit" class="w-full bg-forest-deep text-white font-semibold py-3.5 rounded-[14px] hover:bg-forest transition-colors duration-200 cursor-pointer text-base">
+          Entrer dans la console
+        </button>
+      </form>
+
+      <p class="text-xs text-center text-muted mt-5">
+        Vous n'êtes pas administrateur·rice ?
+        <a href="/connexion.html" class="text-forest underline underline-offset-2 cursor-pointer">Connexion standard</a>
+      </p>
+    </div>
+
+    <p class="text-center text-xs text-sage/70 mt-5">Connexion sécurisée · Loi 25 Québec</p>
+  </div>
+
+  <script>
+    document.getElementById('toggle-mdp').addEventListener('click', () => {
+      const inp = document.getElementById('motdepasse');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    });
+
+    function affErr(msg) {
+      const d = document.getElementById('form-error');
+      d.textContent = msg; d.classList.remove('hidden');
+    }
+
+    document.getElementById('admin-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const courriel = document.getElementById('courriel').value.trim().toLowerCase();
+      const mdp = document.getElementById('motdepasse').value;
+      const btn = e.target.querySelector('button[type="submit"]');
+      document.getElementById('form-error').classList.add('hidden');
+      if (!courriel || !courriel.includes('@')) { affErr('Cette adresse ne semble pas valide.'); return; }
+      if (mdp.length < 4) { affErr('Veuillez entrer votre mot de passe.'); return; }
+
+      btn.disabled = true; btn.textContent = 'Vérification…';
+      try {
+        const res = await apiLogin(courriel, mdp);
+        localStorage.setItem('ivia_email', courriel);
+
+        // Accès admin requis : le serveur calcule is_admin (rôle, liste blanche ou drapeau).
+        if (!res.user || !res.user.is_admin) {
+          // Pas admin : on ne laisse pas de session admin traîner.
+          if (typeof logout === 'function') { /* session.js non chargé ici */ }
+          localStorage.removeItem('ivia_session');
+          localStorage.removeItem('ivia_user');
+          affErr("Ce compte n'a pas d'accès à l'administration.");
+          btn.disabled = false; btn.textContent = 'Entrer dans la console';
+          return;
+        }
+
+        const retour = new URLSearchParams(location.search).get('retour');
+        const dest = (retour && /^\/(admin\/|praticien\/admin-)/.test(decodeURIComponent(retour)))
+          ? decodeURIComponent(retour) : '/admin/';
+        window.location.href = dest;
+      } catch (err) {
+        affErr(err.message || 'Connexion impossible. Réessayez.');
+        btn.disabled = false; btn.textContent = 'Entrer dans la console';
+      }
+    });
+  </script>
+</body>
+</html>
