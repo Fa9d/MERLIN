@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator
+from app.core.deps import is_operator_user, require_internal_clinical_roles
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
@@ -30,7 +30,9 @@ def _resolve_document_publication_state(
 def create_derived_document(
     payload: DerivedDocumentCreate,
     db: Session = Depends(get_db),
-    _: AppUser = Depends(require_operator()),
+    # Le praticien livre sa propre analyse (validation humaine) ; opérateur et
+    # superviseur restent habilités. La propriété est vérifiée ci-dessous.
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> DerivedDocument:
     client = db.get(Client, payload.client_id)
     if client is None:
@@ -43,6 +45,13 @@ def create_derived_document(
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Le client et la seance ne correspondent pas.",
+        )
+    # Garde de propriété : un praticien/opérateur ne livre que ses propres séances
+    # (le superviseur, non « operator-like », reste habilité sur toutes).
+    if is_operator_user(current_user) and session_record.operator_user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Seance rattachee a un autre praticien.",
         )
 
     source_note = db.get(SessionNote, payload.source_note_id)
