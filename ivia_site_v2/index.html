@@ -274,50 +274,76 @@
   <section id="offres" class="py-28 px-4 bg-cream" aria-labelledby="offres-title">
     <div class="max-w-4xl mx-auto">
       <header class="text-center mb-12" data-reveal>
-        <h2 id="offres-title" class="font-heading text-4xl font-bold text-ink mb-4">Entrer simplement</h2>
-        <p class="text-muted max-w-lg mx-auto">
-          Commencer sans abonnement, sans engagement, selon la forme
-          qui vous convient aujourd'hui.
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-forest-deep mb-3">Sans abonnement · sans engagement</p>
+        <h2 id="offres-title" class="font-heading text-4xl md:text-5xl font-bold text-ink mb-4">Choisissez votre porte d'entrée</h2>
+        <p class="text-muted max-w-lg mx-auto leading-relaxed">
+          La forme qui vous convient aujourd'hui. Chaque séance inclut la
+          transcription et une analyse structurée.
         </p>
       </header>
 
-      <div class="grid sm:grid-cols-3 gap-5" data-reveal>
+      <div class="grid sm:grid-cols-3 gap-5 items-stretch" data-reveal>
 
-        <article class="bg-white border border-bdr rounded-[24px] p-7 flex flex-col">
-          <h3 class="font-heading text-lg font-bold text-ink mb-1.5">Enregistrement + rappel 10 min</h3>
-          <p class="text-2xl font-heading font-bold text-ink mb-3">35 <span class="text-sm font-normal text-muted">$</span></p>
-          <p class="text-sm text-muted leading-relaxed mb-6 flex-1">Vous enregistrez à votre rythme, puis un rappel de 10 min avec un·e praticien·ne. Transcription + analyse incluses.</p>
+        <!-- 35 $ -->
+        <article class="group relative bg-white border border-bdr rounded-[24px] p-7 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-forest">
+          <span class="w-11 h-11 rounded-[14px] bg-surface text-forest-deep flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v4m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+          </span>
+          <h3 class="font-heading text-lg font-bold text-ink">Enregistrement <span class="text-muted font-normal">+ rappel 10 min</span></h3>
+          <p class="font-heading font-bold text-ink mt-3 mb-2"><span class="text-4xl">35</span> <span class="text-base font-normal text-muted">$</span></p>
+          <p class="text-sm text-muted leading-relaxed mb-5 flex-1">Vous enregistrez à votre rythme, puis un rappel de 10 min avec un·e praticien·ne.</p>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] font-semibold text-forest-deep">
+            <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Transcription</span>
+            <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Analyse</span>
+          </div>
           <a href="/client/enregistrement.html?formule=solo30"
-             class="inline-flex items-center justify-center border border-bdr text-forest-deep text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-surface transition-colors duration-200 cursor-pointer">
-            Commencer
+             class="mt-auto inline-flex items-center justify-center gap-1.5 border border-bdr text-forest-deep text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-surface transition-colors duration-200 cursor-pointer">
+            Commencer →
           </a>
         </article>
 
-        <article class="bg-white border-2 border-forest-deep rounded-[24px] p-7 flex flex-col shadow-md">
-          <h3 class="font-heading text-lg font-bold text-ink mb-1.5">Séance live · 30 min</h3>
-          <p class="text-2xl font-heading font-bold text-ink mb-3">49 <span class="text-sm font-normal text-muted">$</span></p>
-          <p class="text-sm text-muted leading-relaxed mb-6 flex-1">En direct avec un·e praticien·ne IVIA. Transcription + analyse incluses.</p>
+        <!-- 49 $ — mise en avant -->
+        <article class="group relative bg-white border-2 border-forest-deep rounded-[24px] p-7 flex flex-col shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-forest-deep text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full whitespace-nowrap">Le plus choisi</span>
+          <span class="w-11 h-11 rounded-[14px] bg-[#E8F5EE] text-forest-deep flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
+          </span>
+          <h3 class="font-heading text-lg font-bold text-ink">Séance live <span class="text-muted font-normal">· 30 min</span></h3>
+          <p class="font-heading font-bold text-ink mt-3 mb-2"><span class="text-4xl">49</span> <span class="text-base font-normal text-muted">$</span></p>
+          <p class="text-sm text-muted leading-relaxed mb-5 flex-1">En direct avec un·e praticien·ne IVIA — la rencontre, à votre rythme.</p>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] font-semibold text-forest-deep">
+            <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Transcription</span>
+            <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Analyse</span>
+          </div>
           <a href="/rendez-vous.html?formule=30min"
-             class="inline-flex items-center justify-center bg-forest-deep text-white text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-forest transition-colors duration-200 cursor-pointer">
-            Réserver
+             class="mt-auto inline-flex items-center justify-center gap-1.5 bg-forest-deep text-white text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-forest transition-colors duration-200 cursor-pointer">
+            Réserver →
           </a>
         </article>
 
-        <article class="bg-white border border-bdr rounded-[24px] p-7 flex flex-col">
-          <h3 class="font-heading text-lg font-bold text-ink mb-1.5">Séance live · 1 heure</h3>
-          <p class="text-2xl font-heading font-bold text-ink mb-3">75 <span class="text-sm font-normal text-muted">$</span></p>
-          <p class="text-sm text-muted leading-relaxed mb-6 flex-1">Un espace plus ample pour aller plus loin, en direct. Transcription + analyse incluses.</p>
+        <!-- 75 $ -->
+        <article class="group relative bg-white border border-bdr rounded-[24px] p-7 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-forest">
+          <span class="w-11 h-11 rounded-[14px] bg-surface text-forest-deep flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </span>
+          <h3 class="font-heading text-lg font-bold text-ink">Séance live <span class="text-muted font-normal">· 1 heure</span></h3>
+          <p class="font-heading font-bold text-ink mt-3 mb-2"><span class="text-4xl">75</span> <span class="text-base font-normal text-muted">$</span></p>
+          <p class="text-sm text-muted leading-relaxed mb-5 flex-1">Un espace plus ample pour aller plus loin, en direct.</p>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] font-semibold text-forest-deep">
+            <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Transcription</span>
+            <span class="inline-flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Analyse</span>
+          </div>
           <a href="/rendez-vous.html?formule=1h"
-             class="inline-flex items-center justify-center border border-bdr text-forest-deep text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-surface transition-colors duration-200 cursor-pointer">
-            Réserver
+             class="mt-auto inline-flex items-center justify-center gap-1.5 border border-bdr text-forest-deep text-sm font-semibold px-5 py-3 rounded-[12px] hover:bg-surface transition-colors duration-200 cursor-pointer">
+            Réserver →
           </a>
         </article>
 
       </div>
 
-      <p class="text-center text-xs text-muted mt-8" data-reveal>
-        Sans abonnement · Paiement sécurisé ·
-        <a href="/rendez-vous.html" class="underline underline-offset-2 hover:text-ink transition-colors cursor-pointer">Voir les praticiens disponibles</a>
+      <p class="text-center text-xs text-muted mt-10" data-reveal>
+        Paiement sécurisé · données hébergées au Québec ·
+        <a href="/rendez-vous.html" class="underline underline-offset-2 hover:text-ink transition-colors cursor-pointer">Voir les praticien·nes disponibles</a>
       </p>
     </div>
   </section>
