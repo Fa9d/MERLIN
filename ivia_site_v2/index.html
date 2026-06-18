@@ -177,7 +177,7 @@
                   hover:bg-forest transition-colors duration-200 cursor-pointer shadow-md">
           Créer mon compte
         </a>
-        <a href="#pourquoi-ivia"
+        <a href="#espace"
            class="inline-flex items-center justify-center text-forest text-sm font-medium
                   px-7 py-4 rounded-[16px] border border-bdr
                   hover:bg-surface transition-colors duration-200 cursor-pointer">
@@ -379,36 +379,32 @@
 
 
 
-  <!-- ═══════════════════════════════ POURQUOI IVIA ═════════════════════════════════ -->
-  <section id="pourquoi-ivia" class="py-28 px-4 bg-surface">
-    <div class="max-w-6xl mx-auto">
-      <header class="text-center mb-14 max-w-2xl mx-auto" data-reveal>
-        <h2 class="font-heading text-4xl font-bold text-ink mb-4">Pourquoi IVIA ?</h2>
-        <p class="text-muted">
-          Les services en ligne médicalisent. Les applications vendent du rêve.
-          Le coaching = trop souvent performance. IVIA ouvre un espace sobre, humain,
-          juste, en accord avec vos besoins.
-        </p>
-      </header>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <article class="bg-white rounded-[24px] p-7 border border-bdr">
-          <h3 class="font-heading text-lg font-bold text-ink mb-3">Un outil sobre</h3>
-          <p class="text-muted text-sm leading-relaxed">Limiter les interférences. Un seul canal, la voix. Votre voix, votre guide, votre futur.</p>
-        </article>
-        <article class="bg-white rounded-[24px] p-7 border border-bdr">
-          <h3 class="font-heading text-lg font-bold text-ink mb-3">Plus qu'une application</h3>
-          <p class="text-muted text-sm leading-relaxed">Un praticien IVIA est avec vous. Il écoute, comprend, accompagne.</p>
-        </article>
-        <article class="bg-white rounded-[24px] p-7 border border-bdr">
-          <h3 class="font-heading text-lg font-bold text-ink mb-3">Pas un coaching</h3>
-          <p class="text-muted text-sm leading-relaxed">IVIA ne propose aucun miracle mais une chose simple : l'équilibre.</p>
-        </article>
-        <article class="bg-white rounded-[24px] p-7 border border-bdr">
-          <h3 class="font-heading text-lg font-bold text-ink mb-3">Pas une IA</h3>
-          <p class="text-muted text-sm leading-relaxed">L'approche du vivant IVIA porte chacun vers sa capacité régénératrice et son autodétermination. En dehors des influences et tendances. Votre vérité mise à jour.</p>
-        </article>
+  <!-- ═══════════════════════════════ TEASER RESSOURCES ═════════════════════════════════ -->
+  <section class="relative overflow-hidden bg-[#15121E] text-white py-24 px-4" aria-label="Ressources IVIA">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -right-24 -top-16 w-[420px] h-[420px] rounded-full" style="background:radial-gradient(circle,#4C2A86,transparent 70%);opacity:.5"></div>
+      <div class="absolute -left-20 -bottom-16 w-[340px] h-[340px] rounded-full" style="background:radial-gradient(circle,#E8943A,transparent 70%);opacity:.25"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto text-center" data-reveal>
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-[#E8943A] mb-4">Le labo du vivant</p>
+      <h2 class="font-heading text-3xl sm:text-5xl font-bold leading-[1.08] mb-5">
+        Des ressources qui ne vous vendent rien.
+      </h2>
+      <p class="text-white/75 text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+        Articles, vidéos et outils libres pour comprendre vos besoins et soutenir votre
+        capacité à vous régénérer. On éduque, on s'émerveille du vivant — et on rit, un peu,
+        des vendeurs de rêves.
+      </p>
+      <div class="flex flex-wrap justify-center gap-2.5 mb-10">
+        <span class="text-sm font-semibold bg-white/10 border border-white/15 rounded-full px-4 py-1.5">🌿 Régénération &amp; vitalité</span>
+        <span class="text-sm font-semibold bg-white/10 border border-white/15 rounded-full px-4 py-1.5">🫐 Saveurs du Québec</span>
+        <span class="text-sm font-semibold bg-white/10 border border-white/15 rounded-full px-4 py-1.5">🌲 Savoirs des plantes</span>
+        <span class="text-sm font-semibold bg-white/10 border border-white/15 rounded-full px-4 py-1.5">😏 Le grand bingo des promesses</span>
       </div>
+      <a href="/ressources/" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 bg-[#E8943A] text-[#15121E] font-bold px-7 py-3.5 rounded-full hover:bg-white transition-colors">
+        Explorer les ressources →
+      </a>
     </div>
   </section>
 
@@ -539,7 +535,7 @@
     });
 
     // ── Stagger des cartes dans les sections clés ─────────────────────────────
-    ['#pourquoi-ivia .grid', '#confiance .grid', '#offres .grid'].forEach(function(sel) {
+    ['#confiance .grid', '#offres .grid'].forEach(function(sel) {
       const grid = document.querySelector(sel);
       if (!grid) return;
       gsap.fromTo(Array.from(grid.children),
