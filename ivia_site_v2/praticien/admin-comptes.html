@@ -99,12 +99,11 @@
           </td>
           <td class="p-3 whitespace-nowrap">${verifBadge}${adminBadge}<br>${statutBadge}${profilBadge}</td>
           <td class="p-3">${roleSel}</td>
-          <td class="p-3 text-center"><input type="checkbox" data-admin="${a.id}" ${a.is_admin?'checked':''} class="w-4 h-4 accent-trust cursor-pointer" title="Droit admin — cumulé au rôle, sans le remplacer"></td>
           <td class="p-3">${subCell}</td></tr>`;
       }).join('');
       zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
         <th class="p-3"><input type="checkbox" id="sel-all" class="w-4 h-4 accent-forest-deep cursor-pointer" title="Tout sélectionner"></th>
-        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Admin</th><th class="p-3 font-semibold">Abonnement</th></tr></thead><tbody>${rows}</tbody></table>`;
+        <th class="p-3 font-semibold">Personne</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Rôle</th><th class="p-3 font-semibold">Abonnement</th></tr></thead><tbody>${rows}</tbody></table>`;
       bindActions();
     }
 
@@ -117,7 +116,6 @@
       // Édition inline (par compte) : rôle + abonnement.
       document.querySelectorAll('[data-role]').forEach(s=>s.onchange=async()=>{try{await adminSetRole(s.dataset.role,s.value);toast('Rôle mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
       document.querySelectorAll('[data-sub]').forEach(s=>s.onchange=async()=>{try{await adminSetSubscription(s.dataset.sub,s.value);toast('Abonnement mis à jour ✓');}catch(e){toast(e.message,true);charger();}});
-      document.querySelectorAll('[data-admin]').forEach(c=>c.onchange=async()=>{try{await adminSetAdmin(c.dataset.admin,c.checked);toast(c.checked?'Droit admin accordé ✓':'Droit admin retiré ✓');}catch(e){toast(e.message,true);charger();}});
       // Sélection (cases à cocher).
       const all = document.getElementById('sel-all');
       if (all) all.onchange = () => { document.querySelectorAll('[data-sel]').forEach(c=>c.checked=all.checked); majCompteur(); };
