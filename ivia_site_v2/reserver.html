@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Réserver une séance</title>
   <script src="/shared/api.js?v=20260616a"></script>
+  <script src="/shared/avatar.js?v=20260617a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -85,9 +86,7 @@
     </button>
 
     <div class="flex items-start gap-3 mb-6">
-      <div class="w-10 h-10 rounded-full bg-forest/15 flex items-center justify-center shrink-0">
-        <span class="text-sm font-bold text-forest-deep" id="sel-prat-initiales">—</span>
-      </div>
+      <div class="w-10 h-10 shrink-0" id="sel-prat-avatar"></div>
       <div>
         <h2 class="font-heading text-xl font-bold text-ink" id="sel-prat-nom">—</h2>
         <p class="text-xs text-muted mt-0.5" id="sel-prat-titre">—</p>
@@ -285,14 +284,12 @@
   }
 
   praticiens.forEach(p => {
-    const initiales = (p.display_name || '—').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    const av = (typeof iviaConstellation === 'function') ? iviaConstellation(p.display_name) : '';
     const card = document.createElement('button');
     card.className = 'text-left w-full bg-white border-2 border-bdr rounded-[20px] p-5 hover:border-forest-deep hover:shadow-sm transition-all cursor-pointer';
     card.innerHTML = `
       <div class="flex items-center gap-3 mb-3">
-        <div class="w-10 h-10 rounded-full bg-[#E8F5EE] flex items-center justify-center shrink-0">
-          <span class="text-sm font-bold text-forest-deep">${initiales}</span>
-        </div>
+        <div class="w-10 h-10 shrink-0">${av}</div>
         <div>
           <p class="font-semibold text-ink text-sm">${p.display_name}</p>
           <p class="text-xs text-muted">${p.title_line || ''}</p>
@@ -306,8 +303,8 @@
 
   async function choisirPraticien(p) {
     selectedPraticien = p;
-    const initiales = (p.display_name || '—').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-    document.getElementById('sel-prat-initiales').textContent = initiales;
+    const _av = document.getElementById('sel-prat-avatar');
+    if (_av && typeof iviaConstellation === 'function') _av.innerHTML = iviaConstellation(p.display_name);
     document.getElementById('sel-prat-nom').textContent       = p.display_name;
     document.getElementById('sel-prat-titre').textContent     = p.title_line || '';
     setStep('creneau');
