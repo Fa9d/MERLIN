@@ -28,9 +28,11 @@ from app.models.client import Client
 from app.models.client_entitlement import ClientEntitlement
 from app.models.consent import Consent
 from app.models.enums import (
+    AppRole,
     ClientEntitlementTypeCode,
     ConsentTypeCode,
     GrantedByActorCode,
+    RecordStatus,
     SessionChannelCode,
     SessionModeCode,
     SessionStatusCode,
@@ -102,6 +104,24 @@ def _formule_from_room_name(room_name: str | None) -> str | None:
     if room_name and room_name.startswith(f"{_ROOM_PREFIX}:"):
         return room_name.split(":", 1)[1]
     return None
+
+
+def _default_practitioner(db: Session) -> AppUser | None:
+    """Praticien·ne attribué·e par défaut à une séance solo.
+
+    Tant qu'il n'y a qu'un·e seul·e praticien·ne publié·e et active, on l'attribue
+    automatiquement (« votre praticien IVIA ») pour que la séance arrive dans son
+    espace. Avec plusieurs praticien·nes, l'attribution automatique est désactivée
+    (None) — une page de sélection devra précéder l'envoi.
+    """
+    prats = db.scalars(
+        select(AppUser).where(
+            AppUser.role == AppRole.practitioner,
+            AppUser.record_status == RecordStatus.active,
+            AppUser.is_publicly_listed == True,  # noqa: E712
+        )
+    ).all()
+    return prats[0] if len(prats) == 1 else None
 
 
 def _to_read(record: SessionRecord) -> MyRecordingRead:
@@ -189,7 +209,10 @@ async def upload_my_recording(
         actual_start_at=now,
         duration_minutes=duration_minutes,
         room_name=f"{_ROOM_PREFIX}:{payload.formule}",
-        operator_user_id=current_user.id,  # solo : le client est l'initiateur
+        # Attribution par défaut au·à la praticien·ne (unique pour l'instant) afin que
+        # la séance arrive dans son espace ; repli sur le client si aucun/plusieurs.
+        # Le client garde l'accès via client_id (list_my_recordings).
+        operator_user_id=(_default_practitioner(db) or current_user).id,
         session_status_code=SessionStatusCode.in_progress,
     )
     db.add(record)
