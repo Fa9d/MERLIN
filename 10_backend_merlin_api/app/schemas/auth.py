@@ -11,6 +11,7 @@ class PraticienPublic(MerlinSchema):
     intro_text: str | None
     spoken_languages: str | None  # JSON array string
     available_channels: str | None  # JSON array string
+    themes: str | None  # JSON array string (thèmes d'accompagnement)
 
 
 class RegisterUserRequest(MerlinSchema):

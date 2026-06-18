@@ -7,6 +7,7 @@
   <title>IVIA — Profil praticien·ne</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/shared/avatar.js?v=20260617a"></script>
+  <script src="/shared/api.js?v=20260617b"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -163,131 +164,55 @@
   </footer>
 
   <script>
-    // Données fictives
-    const PRATICIENS = {
-      'mylene': {
-        nom: 'Mylène P.',
-        initiales: 'M',
-        titre: 'Praticienne d’écoute · Pilote IVIA',
-        approche: 'Accompagnement somatique, transitions de vie et identité',
-        bio: 'Mylène pratique l’écoute non-directive depuis 7 ans. Formée en approche somatique, elle travaille avec des personnes en transition — changements de vie, ruptures, questionnements identitaires. Elle croit que chaque personne porte en elle les ressources dont elle a besoin. Son rôle est de créer l’espace pour qu’elles émergent.',
-        themes: ['Transitions de vie', 'Relations', 'Charge mentale', 'Identité'],
-        formats: ['1h', '30min', 'enregistrement'],
-        langues: 'Français',
-        experience: '7 ans de pratique · 38 séances IVIA',
-        disponible: true,
-      },
-      'emilie': {
-        nom: 'Émilie R.',
-        initiales: 'É',
-        titre: 'Praticienne d’écoute · Pilote IVIA',
-        approche: 'Écoute narrative, deuil et corps',
-        bio: 'Émilie accompagne des personnes traversant des deuils, des pertes et des questionnements profonds. Son approche narrative permet à chacun de réinterpréter son histoire avec davantage de douceur. Elle pratique principalement en format audio différé et offre également des séances en direct.',
-        themes: ['Deuil et perte', 'Travail et sens', 'Parentalité', 'Corps et présence'],
-        formats: ['1h', '30min'],
-        langues: 'Français',
-        experience: '5 ans de pratique · 24 séances IVIA',
-        disponible: false,
-      },
-      '1': {
-        nom: 'Marie Fontaine',
-        initiales: 'MF',
-        titre: 'Praticienne d'écoute certifiée',
-        approche: 'Approche somatique, transitions de vie et deuil',
-        bio: 'Formée en accompagnement somatique et en écoute profonde, Marie travaille avec des personnes traversant des moments de transition — qu'il s'agisse d'un deuil, d'une rupture professionnelle ou d'une réorientation identitaire. Son travail s'enracine dans la présence corporelle et la non-directivité. Elle croit fermement que la parole portée avec attention a la capacité de transformer le rapport à soi.',
-        themes: ['Transitions de vie', 'Deuil', 'Somatique', 'Identité', 'Burnout'],
-        formats: ['1h', '30min', 'enregistrement'],
-        langues: 'Français, English',
-        experience: '7 ans de pratique',
-        disponible: true,
-      },
-      '2': {
-        nom: 'Jean-Pierre Bouchard',
-        initiales: 'JB',
-        titre: 'Praticien d'écoute certifié',
-        approche: 'Écoute narrative, deuil et relations',
-        bio: 'Jean-Pierre accompagne des personnes en deuil et en questionnement identitaire depuis plus de dix ans. Formé à l'approche narrative, il aide ses clients à revisiter leur histoire personnelle et à trouver de nouvelles perspectives. Il accorde une importance particulière à l'écoute sans jugement et au rythme propre à chaque personne.',
-        themes: ['Deuil', 'Relations', 'Identité', 'Anx iété'],
-        formats: ['1h', '30min'],
-        langues: 'Français',
-        experience: '10 ans de pratique',
-        disponible: false,
-      },
-      '3': {
-        nom: 'Sophie Tremblay',
-        initiales: 'ST',
-        titre: 'Praticienne d'écoute certifiée',
-        approche: 'Pleine présence, corps et spiritualité',
-        bio: 'Sophie intègre dans sa pratique des éléments de pleine présence, d'écoute du corps et de spiritualité contemporaine. Elle travaille avec des personnes cherchant à mieux comprendre leur vécu intérieur, qu'il soit lié au corps, aux relations ou aux grandes questions de sens. Son approche est douce, non-prescriptive et profondément ancrée dans le respect de l'unicité de chaque personne.',
-        themes: ['Corps', 'Spiritualité', 'Parentalité', 'Somatique', 'Transitions de vie'],
-        formats: ['1h', '30min', 'enregistrement'],
-        langues: 'Français, English',
-        experience: '5 ans de pratique',
-        disponible: true,
-      },
-    };
+    (async function () {
+      const id = new URLSearchParams(location.search).get('id');
+      function esc(t){const d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML;}
+      function jlist(raw){try{const v=JSON.parse(raw||'[]');return Array.isArray(v)?v:[];}catch(e){return[];}}
+      const LANG={fr:'Français',en:'English',es:'Español',ar:'العربية'};
+      const FMT={audio:'Audio (écoute)',enregistrement:'Enregistrement',video:'Vidéo','1h':'1 heure','30min':'30 minutes'};
 
-    const FORMATS_LABELS = {
-      '1h': '1 heure — 65 $',
-      '30min': '30 minutes — 45 $',
-      'enregistrement': 'Enregistrement seul — 35 $',
-    };
+      document.getElementById('cta-resa').href='/reserver.html';
+      document.getElementById('nav-resa-btn').href='/reserver.html';
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id') || '1';
-      const p = PRATICIENS[id] || PRATICIENS['1'];
+      let prats=[];
+      try { prats = await listPraticiens(); } catch(e) {}
+      const p = prats.find(x => String(x.id)===String(id)) || null;
+      const fa=document.getElementById('fiche-avatar');
 
-      // Remplir les champs
-      const _fa = document.getElementById('fiche-avatar');
-      if (_fa && typeof iviaConstellation === 'function') _fa.innerHTML = iviaConstellation(p.nom || 'IVIA');
-      document.getElementById('fiche-nom').textContent        = p.nom;
-      document.getElementById('fiche-titre').textContent      = p.titre;
-      document.getElementById('fiche-approche').textContent   = '« ' + p.approche + ' »';
-      document.getElementById('fiche-bio').textContent        = p.bio;
-      document.getElementById('fiche-experience').textContent = p.experience;
-      document.getElementById('fiche-langues').textContent    = p.langues;
-
-      // Mise à jour du titre de page
-      document.title = 'IVIA — ' + p.nom;
-
-      // Badge disponibilité
-      const badge = document.getElementById('fiche-dispo-badge');
-      const dot   = document.getElementById('fiche-dispo-dot');
-      const lbl   = document.getElementById('fiche-dispo-label');
-      badge.classList.remove('hidden');
-      if (p.disponible) {
-        badge.classList.add('border-green-200', 'bg-green-50', 'text-green-800');
-        dot.classList.add('bg-green-500');
-        lbl.textContent = 'Disponible';
-      } else {
-        badge.classList.add('border-amber-200', 'bg-amber-50', 'text-amber-700');
-        dot.classList.add('bg-amber-400');
-        lbl.textContent = 'Indisponible';
+      if(!p){
+        if(fa&&typeof iviaConstellation==='function') fa.innerHTML=iviaConstellation('IVIA');
+        document.getElementById('fiche-nom').textContent='Fiche introuvable';
+        document.getElementById('fiche-titre').textContent='';
+        document.getElementById('fiche-approche').classList.add('hidden');
+        document.getElementById('fiche-bio').innerHTML='Cette fiche n'est pas disponible. <a href="/rendez-vous.html" class="underline underline-offset-2 text-forest">Voir les praticien·nes →</a>';
+        return;
       }
 
-      // Thèmes
-      const themesEl = document.getElementById('fiche-themes');
-      p.themes.forEach(t => {
-        const chip = document.createElement('span');
-        chip.className = 'chip';
-        chip.textContent = t;
-        themesEl.appendChild(chip);
-      });
+      if(fa&&typeof iviaConstellation==='function') fa.innerHTML=iviaConstellation(p.display_name||'IVIA');
+      document.getElementById('fiche-nom').textContent=p.display_name||'';
+      document.title='IVIA — '+(p.display_name||'Praticien·ne');
+      document.getElementById('fiche-titre').textContent=p.title_line||'';
+      document.getElementById('fiche-approche').classList.add('hidden');
+      document.getElementById('fiche-bio').textContent=p.intro_text||'';
+      const exp=document.getElementById('fiche-experience'); if(exp){ const li=exp.closest('div,li,p'); if(li) li.classList.add('hidden'); }
+      const langs=jlist(p.spoken_languages).map(c=>LANG[c]||c);
+      document.getElementById('fiche-langues').textContent=langs.join(', ')||'—';
 
-      // Formats
-      const formatsEl = document.getElementById('fiche-formats');
-      p.formats.forEach(f => {
-        const row = document.createElement('div');
-        row.className = 'flex items-center gap-2 text-sm text-muted';
-        row.innerHTML = `<svg class="w-4 h-4 text-forest-deep shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>${FORMATS_LABELS[f]}</span>`;
-        formatsEl.appendChild(row);
-      });
+      const badge=document.getElementById('fiche-dispo-badge'),dot=document.getElementById('fiche-dispo-dot'),lbl=document.getElementById('fiche-dispo-label');
+      badge.classList.remove('hidden'); badge.classList.add('border-green-200','bg-green-50','text-green-800'); dot.classList.add('bg-green-500'); lbl.textContent='Disponible';
 
-      // Liens de réservation — calendrier de réservation unifié
-      document.getElementById('cta-resa').href     = '/reserver.html';
-      document.getElementById('nav-resa-btn').href = '/reserver.html';
-    });
+      const themesEl=document.getElementById('fiche-themes');
+      const themes=jlist(p.themes);
+      if(!themes.length){ themesEl.innerHTML='<span class="text-sm text-muted">—</span>'; }
+      else themes.forEach(t=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=t; themesEl.appendChild(c); });
+
+      const formatsEl=document.getElementById('fiche-formats');
+      const formats=jlist(p.available_channels);
+      if(!formats.length){ formatsEl.innerHTML='<p class="text-sm text-muted">Formats précisés à la réservation.</p>'; }
+      else formats.forEach(f=>{ const row=document.createElement('div'); row.className='flex items-center gap-2 text-sm text-muted';
+        row.innerHTML='<svg class="w-4 h-4 text-forest-deep shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span>'+esc(FMT[f]||f)+'</span>';
+        formatsEl.appendChild(row); });
+    })();
   </script>
 </body>
 </html>
