@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ressources IVIA — le labo du vivant. Articles, vidéos et outils libres pour comprendre vos besoins et soutenir votre capacité à vous régénérer. Sans poudre magique, fièrement québécois.">
+  <title>Ressources IVIA — Le labo du vivant</title>
+  <meta property="og:title" content="Ressources IVIA — Le labo du vivant">
+  <meta property="og:description" content="Comprendre ses besoins, soutenir le vivant, rire des vendeurs de rêves. Ressources libres, non médicales, fièrement québécoises.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ivia.quebec/ressources/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB',camerise:'#4C2A86',agrume:'#E8943A',pulpe:'#C6447B',night:'#15121E'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .tilt{transition:transform .18s ease, box-shadow .18s ease;}
+    .tilt:hover{transform:translateY(-4px) rotate(-.6deg);box-shadow:0 18px 40px -18px rgba(76,42,134,.45);}
+    .chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;border-radius:9999px;padding:4px 12px;}
+    @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-22px)}}
+    .drift{animation:drift 11s ease-in-out infinite;}
+    @media (prefers-reduced-motion: reduce){.drift{animation:none}}
+    .underline-wavy{text-decoration:underline wavy #E8943A 2px;text-underline-offset:6px;}
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-50 bg-night/95 backdrop-blur border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
+      <a href="/" class="flex items-center gap-2.5 font-heading text-xl font-semibold text-white tracking-tight" aria-label="IVIA — Accueil">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#4C2A86"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>
+        IVIA <span class="text-agrume font-normal text-sm ml-1">· ressources</span>
+      </a>
+      <div class="flex items-center gap-5 text-sm font-medium text-white/70">
+        <a href="#piliers" class="hover:text-white transition-colors hidden sm:inline">Explorer</a>
+        <a href="/" class="hover:text-white transition-colors">← Le site</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO — dissonant, sombre, énergique -->
+  <header class="relative overflow-hidden bg-night text-white">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="drift absolute -right-24 -top-16 w-[440px] h-[440px] rounded-full" style="background:radial-gradient(circle,#4C2A86,transparent 70%);opacity:.55"></div>
+      <div class="drift absolute -left-20 bottom-0 w-[360px] h-[360px] rounded-full" style="background:radial-gradient(circle,#E8943A,transparent 70%);opacity:.30;animation-delay:-4s"></div>
+    </div>
+    <div class="relative max-w-5xl mx-auto px-5 py-24 sm:py-28">
+      <p class="chip bg-agrume/20 text-agrume border border-agrume/30 mb-6">Le labo du vivant</p>
+      <h1 class="font-heading text-4xl sm:text-6xl font-bold leading-[1.05] mb-6">
+        Ici, on rit des <span class="underline-wavy">vendeurs de rêves</span>.<br>
+        Et on prend le vivant au sérieux.
+      </h1>
+      <p class="text-white/75 text-lg max-w-2xl leading-relaxed mb-9">
+        Des ressources libres pour comprendre vos besoins et soutenir votre capacité naturelle
+        à vous régénérer. Pas de poudre magique, pas de promesse à 9,99 $/mois.
+        Du vrai, du vivant — et fièrement québécois.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="#piliers" class="bg-agrume text-night font-bold px-6 py-3 rounded-full hover:bg-white transition-colors">Explorer les ressources →</a>
+        <a href="/ressources/le-vivant-sait.html" class="border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/10 transition-colors">Lire un premier article</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- TYPES DE CONTENU -->
+  <section class="bg-camerise text-white">
+    <div class="max-w-6xl mx-auto px-5 py-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold">
+      <span class="flex items-center gap-2">📄 Articles</span>
+      <span class="flex items-center gap-2">🎬 Vidéos</span>
+      <span class="flex items-center gap-2">🌱 Formations libres</span>
+      <span class="flex items-center gap-2">🧪 Outils &amp; auto-repères</span>
+      <span class="flex items-center gap-2 text-agrume">😏 Détecteur de poudre de perlimpinpin</span>
+    </div>
+  </section>
+
+  <!-- PILIERS THÉMATIQUES -->
+  <section id="piliers" class="max-w-6xl mx-auto px-5 py-20">
+    <div class="mb-12 max-w-2xl">
+      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-ink mb-3">Par quoi on commence ?</h2>
+      <p class="text-muted leading-relaxed">Six terrains à explorer. Lecture libre, ton franc, zéro jargon. On éduque, on oriente, on s'émerveille — on ne vend rien.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <a href="/ressources/le-vivant-sait.html" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
+        <span class="text-3xl">🌿</span>
+        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Régénération &amp; vitalité</h3>
+        <p class="text-sm text-muted leading-relaxed">Le corps a une capacité d'auto-régénération étonnante. On explore ce qui la soutient — sommeil, mouvement, assiette — avec curiosité, sans dogme.</p>
+        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Découvrir →</span>
+      </a>
+
+      <a href="#" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
+        <span class="text-3xl">🫐</span>
+        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Saveurs du Québec</h3>
+        <p class="text-sm text-muted leading-relaxed">La camerise, l'argousier, les fermentations d'ici… Nos aliments vivants, leur histoire et pourquoi le Québec a de quoi être fier. <span class="chip bg-agrume/15 text-agrume ml-1">bientôt</span></p>
+        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Bientôt →</span>
+      </a>
+
+      <a href="#" class="tilt block bg-white border border-bdr rounded-[22px] p-7 ring-1 ring-camerise/20">
+        <span class="text-3xl">🌲</span>
+        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Savoirs des plantes</h3>
+        <p class="text-sm text-muted leading-relaxed">Les savoirs des gardiennes de la forêt — <strong>cités avec respect et attribution, jamais appropriés</strong>. On apprend, on remercie, on ne s'arroge rien. <span class="chip bg-agrume/15 text-agrume ml-1">bientôt</span></p>
+        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Bientôt →</span>
+      </a>
+
+      <a href="#" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
+        <span class="text-3xl">👂</span>
+        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Écoute &amp; relation</h3>
+        <p class="text-sm text-muted leading-relaxed">Ce qu'est une écoute qui respecte le vivant — et pourquoi « attendre son tour de parler » n'en est pas une. <span class="chip bg-agrume/15 text-agrume ml-1">bientôt</span></p>
+        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Bientôt →</span>
+      </a>
+
+      <a href="#" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
+        <span class="text-3xl">🧭</span>
+        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Traverser &amp; repères</h3>
+        <p class="text-sm text-muted leading-relaxed">Des repères honnêtes pour les passages de la vie. Pas de recette miracle — des points d'appui. <span class="chip bg-agrume/15 text-agrume ml-1">bientôt</span></p>
+        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Bientôt →</span>
+      </a>
+
+      <a href="#" class="tilt block bg-night text-white rounded-[22px] p-7">
+        <span class="text-3xl">😏</span>
+        <h3 class="font-heading text-xl font-bold mt-3 mb-1.5">Le grand bingo des promesses</h3>
+        <p class="text-sm text-white/70 leading-relaxed">Notre rubrique mordante : on décortique, avec humour, les arnaques du bien-être et les apps qui « changent votre vie » en 7 jours. <span class="chip bg-agrume/20 text-agrume ml-1">bientôt</span></p>
+        <span class="text-sm font-semibold text-agrume mt-4 inline-block">Bientôt →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- BANDEAU CADRE (Loi 21/25 + attribution) -->
+  <section class="bg-surface border-y border-bdr">
+    <div class="max-w-4xl mx-auto px-5 py-10 text-center">
+      <p class="text-sm text-ink leading-relaxed">
+        <strong>Le cadre, clairement.</strong> IVIA n'est pas un service médical et ne remplace
+        aucun avis professionnel. Ici on éduque, on oriente, on s'émerveille du vivant — on ne
+        promet rien et on ne vend pas de miracle. Les savoirs des Premières Nations sont cités
+        avec respect et attribution, jamais appropriés. Données hébergées au Québec (Loi 25).
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-night text-white/60 py-10 px-5">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+      <p>IVIA — <em>In Vivo, In Actu</em> · Le labo du vivant · fièrement québécois 🍁</p>
+      <p>Pas un service d'urgence · En crise : <strong class="text-white"><a href="tel:18662773553" class="underline">1 866 APPELLE</a></strong></p>
+    </div>
+  </footer>
+
+</body>
+</html>
