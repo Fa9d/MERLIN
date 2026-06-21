@@ -519,6 +519,7 @@ Règles à respecter pour toute évolution de ce parcours :
   - **Correspondances vivantes** : `00_DOCTRINE/correspondances-vivantes.md` + `00_DOCTRINE/ivia_living_lexicon.yaml`
 - Documentation ops Docker : `docs/ops-docker-compose.md`
 - Sauvegarde chiffrée (OVH Québec, Loi 25) : `docs/ops-sauvegarde.md` + `deploy/backup.sh`
+- Délivrabilité courriels (SPF/DKIM/DMARC OVH, From ivia.quebec) : `docs/ops-email-deliverabilite.md`
 - Coûts conformité données (chiffrage, BP) : `12_JURIDIQUE_AFFAIRES/IVIA_COUTS_CONFORMITE_DONNEES_v1.0.md`
 - Notes laboratoire Ruvnet : `docs/labs/ruvnet-adoption.md`
 - Script déploiement : `deploy/prod-up.sh`
