@@ -176,14 +176,18 @@
         </p>
       </div>
 
-      <!-- Colonne droite : l'application réelle (Mode Signature) -->
+      <!-- Colonne droite : l'app réelle — deux ambiances qui alternent (même moteur) -->
       <div data-reveal class="flex flex-col items-center lg:items-end">
-        <img src="/assets/recorder-signature.png"
-             alt="L'enregistreur IVIA — votre espace d'écoute"
-             loading="lazy"
-             class="w-full max-w-[280px] sm:max-w-[320px] h-auto [filter:drop-shadow(0_30px_55px_rgba(26,46,29,0.28))]">
-        <p class="text-center lg:text-right text-xs text-muted mt-4 max-w-[280px]">
-          L'enregistreur, tel que vous le retrouvez dès l'inscription.
+        <div class="w-full max-w-[280px] sm:max-w-[320px] [perspective:1400px]">
+          <div id="phone-flip" class="relative transition-transform duration-[1100ms] ease-in-out [transform-style:preserve-3d]">
+            <img src="/assets/recorder-signature.png" alt="L'enregistreur IVIA — ambiance Signature" loading="lazy"
+                 class="w-full h-auto [backface-visibility:hidden] [filter:drop-shadow(0_30px_55px_rgba(26,46,29,0.28))]">
+            <img src="/assets/recorder-doux.png" alt="L'enregistreur IVIA — ambiance Doux" loading="lazy"
+                 class="absolute inset-0 w-full h-auto [backface-visibility:hidden] [transform:rotateY(180deg)] [filter:drop-shadow(0_30px_55px_rgba(120,80,95,0.28))]">
+          </div>
+        </div>
+        <p class="text-center lg:text-right text-xs text-muted mt-5 max-w-[280px]">
+          Deux ambiances, un même espace — <span class="text-forest-deep font-semibold">Signature</span> ou <span class="text-forest-deep font-semibold">Doux</span>, à votre goût.
         </p>
       </div>
 
@@ -573,6 +577,15 @@
         var el = document.getElementById(id);
         if (el) { el.textContent = 'Mon espace'; el.href = dest; el.target = '_blank'; el.rel = 'noopener'; }
       });
+    })();
+
+    // ── Rotation des ambiances de l'enregistreur : Signature ↔ Doux (même moteur) ──
+    (function () {
+      var el = document.getElementById('phone-flip');
+      if (!el) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var deg = 0;
+      setInterval(function () { deg += 180; el.style.transform = 'rotateY(' + deg + 'deg)'; }, 4500);
     })();
   </script>
 </body>
