@@ -10,15 +10,23 @@ from datetime import datetime, timedelta, timezone
 from urllib.parse import urlencode
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import select
+from sqlalchemy import delete, select, update
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.deps import is_admin, require_admin
 from app.db.session import get_db
 from app.models.app_user import AppUser
+from app.models.audio_recording import AudioRecording
+from app.models.audio_session import AudioSession
 from app.models.client import Client
+from app.models.consent import Consent
+from app.models.derived_document import DerivedDocument
 from app.models.enums import AppRole, RecordStatus
+from app.models.intake_request import IntakeRequest
+from app.models.session import SessionRecord
+from app.models.session_note import SessionNote
+from app.models.session_temporal_anchor import SessionTemporalAnchor
 from app.schemas.common import MerlinSchema
 from app.services.email import make_verification_email, send_email
 
@@ -249,3 +257,58 @@ def update_admin_grant(
     db.refresh(user)
     pmap = _profile_map(db, [user.id])
     return AdminActionAck(status="admin_updated", account=_to_read(user, pmap.get(user.id, False)))
+
+
+@router.delete("/{user_id}")
+def delete_account(
+    user_id: str,
+    db: Session = Depends(get_db),
+    admin: AppUser = Depends(require_admin()),
+) -> dict:
+    """Supprime définitivement un compte et ses données liées (effacement — Loi 25).
+
+    Cascade : séances opérées par le compte + dépendances (audio, notes, documents,
+    ancres) ; consentements et références d'intake neutralisés ; puis le compte
+    (la fiche Client et les paiements sont dissociés au niveau DB). Journalisé.
+    Un admin ne peut pas supprimer son propre compte.
+    """
+    user = _get_user(db, user_id)
+    if str(user.id) == str(admin.id):
+        raise HTTPException(
+            status_code=400,
+            detail="Vous ne pouvez pas supprimer votre propre compte.",
+        )
+
+    # ids seulement (évite le décodage d'un enum legacy en chargeant les séances).
+    sess_ids = list(
+        db.scalars(select(SessionRecord.id).where(SessionRecord.operator_user_id == user.id))
+    )
+    if sess_ids:
+        audio_ids = list(
+            db.scalars(select(AudioSession.id).where(AudioSession.session_id.in_(sess_ids)))
+        )
+        if audio_ids:
+            db.execute(delete(AudioRecording).where(AudioRecording.audio_session_id.in_(audio_ids)))
+        db.execute(delete(AudioSession).where(AudioSession.session_id.in_(sess_ids)))
+        db.execute(delete(DerivedDocument).where(DerivedDocument.session_id.in_(sess_ids)))
+        db.execute(delete(SessionNote).where(SessionNote.session_id.in_(sess_ids)))
+        db.execute(delete(SessionTemporalAnchor).where(SessionTemporalAnchor.session_id.in_(sess_ids)))
+        db.execute(update(Consent).where(Consent.session_id.in_(sess_ids)).values(session_id=None))
+        db.execute(delete(SessionRecord).where(SessionRecord.id.in_(sess_ids)))
+    db.execute(
+        update(IntakeRequest)
+        .where(IntakeRequest.handled_by_user_id == user.id)
+        .values(handled_by_user_id=None)
+    )
+    db.execute(
+        update(IntakeRequest)
+        .where(IntakeRequest.assigned_practitioner_id == user.id)
+        .values(assigned_practitioner_id=None)
+    )
+    email = user.email
+    db.execute(delete(AppUser).where(AppUser.id == user.id))
+    db.commit()
+    logger.warning(
+        "Compte supprimé par admin %s : %s (%d séances effacées)", admin.email, email, len(sess_ids)
+    )
+    return {"status": "account_deleted", "id": user_id}

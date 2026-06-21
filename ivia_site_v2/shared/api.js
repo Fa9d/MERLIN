@@ -584,6 +584,10 @@ async function adminSetSubscription(id, status) {
 async function adminSetAdmin(id, grant) {
   return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/admin', { method: 'POST', body: { grant } });
 }
+/** Supprime définitivement un compte et ses données liées (effacement Loi 25). */
+async function adminDeleteAccount(id) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id), { method: 'DELETE' });
+}
 
 // ── Admin · interrupteurs de facturation par offre ───────────────────────────
 /**
