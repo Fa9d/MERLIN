@@ -40,5 +40,20 @@ __pycache__/
 *.tar.gz
 *.zip
 
-# Auth basic Dozzle (jamais commit�)
+# Auth basic Dozzle (jamais commit�)
 nginx/.htpasswd_dozzle
+
+# Sauvegardes locales (filet de sécurité Loi 25) — données, jamais versionnées
+backups/
+
+# Copies de secrets / d'environnement (on garde le fichier, on ne versionne pas)
+.env.prod.bak*
+.env.prod.backup*
+
+# Débris historiques (anciennes versions de dossiers/configs déposées sur le VPS)
+*.OLD_*
+*.bak
+*.bak-
+*.bak_*
+*_prev/
+*.livekitfix
