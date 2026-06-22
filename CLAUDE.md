@@ -456,7 +456,13 @@ make prod-logs-api # logs API temps réel
 make prod-logs     # tous les logs
 make config-check  # valider YAML + variables avant redémarrage
 
-# Déploiement complet en une commande
+# Déploiement TRACÉ (canonique) — /opt/merlin est un dépôt Git (clé de déploiement
+# lecture seule). Workflow : commit + push en local → sur le VPS :
+#   cd /opt/merlin && bash deploy/pull-deploy.sh            # statique seul (git pull)
+#   cd /opt/merlin && bash deploy/pull-deploy.sh --build    # backend/compose/migrations
+# La prod correspond TOUJOURS à un commit. Le tar/scp manuel est DÉPRÉCIÉ.
+
+# Déploiement complet en une commande (rebuild + migrations)
 bash deploy/prod-up.sh
 
 # Sauvegarde — voir docs/ops-sauvegarde.md. Script DÉGRADABLE :
