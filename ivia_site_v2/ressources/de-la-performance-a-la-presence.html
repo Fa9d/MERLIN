@@ -15,20 +15,25 @@
   { "@context":"https://schema.org","@type":"Article","headline":"De la performance à la présence : vers une politique du soin","description":"Il y a une question qu'on ne pose presque jamais collectivement :","author":{"@type":"Organization","name":"IVIA"},"publisher":{"@type":"Organization","name":"IVIA","url":"https://ivia.quebec"},"inLanguage":"fr-CA","isAccessibleForFree":true,"url":"https://ivia.quebec/ressources/de-la-performance-a-la-presence.html" }
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',camerise:'#4C2A86',agrume:'#E8943A',night:'#15121E'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',camerise:'#4C2A86',agrume:'#E8943A',pulpe:'#C6447B',night:'#15121E'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .prose-ivia p{margin:0 0 1.1rem;line-height:1.75;color:#2c3a30;}
-    .prose-ivia h2{font-size:1.5rem;font-weight:700;color:#1A2E1D;margin:2.2rem 0 .8rem;}
-    .prose-ivia ul{margin:0 0 1.1rem 1.1rem;list-style:disc;}
-    .prose-ivia li{margin:.3rem 0;line-height:1.7;color:#2c3a30;}
-    .prose-ivia blockquote{border-left:3px solid #E8943A;padding:.2rem 0 .2rem 1.1rem;margin:1.4rem 0;font-style:italic;color:#4B6350;}
+    .tilt{transition:transform .18s ease, box-shadow .18s ease;}
+    .tilt:hover{transform:translateY(-3px);box-shadow:0 16px 34px -18px var(--accent);}
+    .prose-ivia p{margin:0 0 1.15rem;line-height:1.8;color:#2c3a30;}
+    .prose-ivia > p:first-of-type::first-letter{font-family:'Lora',Georgia,serif;font-size:3.4rem;font-weight:700;line-height:.82;float:left;margin:.15rem .65rem 0 0;color:var(--accent);}
+    .prose-ivia h2{font-size:1.55rem;font-weight:700;color:#1A2E1D;margin:2.6rem 0 .85rem;}
+    .prose-ivia h2::before{content:"";display:block;width:34px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:.7rem;}
+    .prose-ivia ul{margin:0 0 1.15rem 1.15rem;list-style:none;}
+    .prose-ivia li{position:relative;margin:.4rem 0;line-height:1.7;color:#2c3a30;padding-left:1.1rem;}
+    .prose-ivia li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+    .prose-ivia blockquote{border-left:4px solid var(--accent);background:#F0F7F2;border-radius:0 12px 12px 0;padding:1rem 1.3rem;margin:1.6rem 0;font-style:italic;font-size:1.12rem;color:#1A2E1D;}
     .prose-ivia strong{color:#1A2E1D;}
   </style>
 </head>
-<body class="antialiased">
+<body class="antialiased" style="--accent:#C6447B">
 
   <nav class="sticky top-0 z-50 bg-night/95 backdrop-blur border-b border-white/10">
     <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
@@ -46,11 +51,20 @@
     </div>
   </nav>
 
-  <article class="max-w-3xl mx-auto px-5 py-12">
-    <a href="/ressources/#th-empathie" class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4 inline-block hover:underline">Empathie &amp; Société</a>
-    <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-[1.08] mb-5">De la performance à la présence : vers une politique du soin</h1>
-    <p class="text-sm text-muted mb-10">Lecture libre · ~5 min · par IVIA</p>
+  <!-- Bandeau d'en-tete — sombre, accentue par le theme (cohérent avec le hub) -->
+  <header class="relative overflow-hidden bg-night text-white">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -right-16 -top-20 w-[380px] h-[380px] rounded-full" style="background:radial-gradient(circle,#C6447B,transparent 70%);opacity:.5"></div>
+      <div class="absolute -left-24 -bottom-24 w-[280px] h-[280px] rounded-full" style="background:radial-gradient(circle,#C6447B,transparent 70%);opacity:.22"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-5 pt-12 pb-14">
+      <a href="/ressources/#th-empathie" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] rounded-full px-3 py-1.5" style="background:#C6447B;color:#fff">🫂 Empathie &amp; Société</a>
+      <h1 class="font-heading text-4xl sm:text-5xl font-bold leading-[1.06] mt-6 mb-4">De la performance à la présence : vers une politique du soin</h1>
+      <p class="text-white/55 text-sm">Lecture libre · ~5 min · par IVIA</p>
+    </div>
+  </header>
 
+  <article class="max-w-3xl mx-auto px-5 py-12">
     <div class="prose-ivia text-[17px]">
       <h2>Introduction</h2>
       <p>Il y a une question qu'on ne pose presque jamais collectivement : dans quel type de monde voulons-nous prendre soin les uns des autres ?</p>
@@ -92,25 +106,23 @@
       <p class="text-sm text-muted leading-relaxed"><strong class="text-ink">Le cadre.</strong> Cet article est éducatif. IVIA est un service non clinique : il ne pose aucun nom sur ce que vous vivez et ne remplace aucun avis professionnel. En situation de crise : <strong class="text-ink">1 866 APPELLE (277-3553)</strong>.</p>
     </div>
 
-    <!-- Dans le même thème -->
     <div class="mt-12 pt-8 border-t border-bdr">
-      <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4">Dans le même thème · Empathie &amp; Société</p>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] mb-4" style="color:var(--accent)">Dans le même thème · Empathie &amp; Société</p>
       <div class="grid sm:grid-cols-3 gap-3">
-        <a href="/ressources/espaces-collectifs-qui-epuisent.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors"><span class="text-sm font-medium text-ink leading-snug">Pourquoi certains espaces collectifs nous épuisent</span></a>
-        <a href="/ressources/empathie-et-pouvoir.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors"><span class="text-sm font-medium text-ink leading-snug">Quand l&#x27;empathie devient instrument de pouvoir</span></a>
-        <a href="/ressources/espaces-de-parole-vrais.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors"><span class="text-sm font-medium text-ink leading-snug">Créer des espaces de parole vrais</span></a>
+        <a href="/ressources/espaces-collectifs-qui-epuisent.html" class="tilt block bg-white border border-bdr rounded-[16px] p-4"><span class="block w-6 h-1 rounded-full mb-2" style="background:var(--accent)"></span><span class="text-sm font-semibold text-ink leading-snug">Pourquoi certains espaces collectifs nous épuisent</span></a>
+        <a href="/ressources/empathie-et-pouvoir.html" class="tilt block bg-white border border-bdr rounded-[16px] p-4"><span class="block w-6 h-1 rounded-full mb-2" style="background:var(--accent)"></span><span class="text-sm font-semibold text-ink leading-snug">Quand l&#x27;empathie devient instrument de pouvoir</span></a>
+        <a href="/ressources/espaces-de-parole-vrais.html" class="tilt block bg-white border border-bdr rounded-[16px] p-4"><span class="block w-6 h-1 rounded-full mb-2" style="background:var(--accent)"></span><span class="text-sm font-semibold text-ink leading-snug">Créer des espaces de parole vrais</span></a>
       </div>
     </div>
 
-    <!-- Précédent / Suivant -->
     <div class="mt-6 flex items-stretch gap-3">
-      <a href="/ressources/espaces-de-parole-vrais.html" class="flex-1 border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors"><span class="block text-xs text-muted mb-0.5">‹ Précédent</span><span class="block text-sm font-semibold text-forest-deep leading-snug">Créer des espaces de parole vrais</span></a>
-      <a href="/ressources/tout-vibre.html" class="flex-1 text-right border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors"><span class="block text-xs text-muted mb-0.5">Suivant ›</span><span class="block text-sm font-semibold text-forest-deep leading-snug">Tout vibre : ce que la physique montre vraiment</span></a>
+      <a href="/ressources/espaces-de-parole-vrais.html" class="flex-1 border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors" style="border-color:var(--accent)"><span class="block text-xs text-muted mb-0.5">‹ Précédent</span><span class="block text-sm font-semibold text-ink leading-snug">Créer des espaces de parole vrais</span></a>
+      <a href="/ressources/tout-vibre.html" class="flex-1 text-right border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors" style="border-color:var(--accent)"><span class="block text-xs text-muted mb-0.5">Suivant ›</span><span class="block text-sm font-semibold text-ink leading-snug">Tout vibre : ce que la physique montre vraiment</span></a>
     </div>
 
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="/ressources/" class="border border-bdr text-forest-deep font-semibold px-5 py-3 rounded-full hover:bg-surface transition-colors">← Toutes les ressources</a>
-      <a href="/#offres" class="bg-camerise text-white font-semibold px-5 py-3 rounded-full hover:bg-night transition-colors">Ouvrir mon espace IVIA</a>
+      <a href="/#offres" class="text-white font-semibold px-5 py-3 rounded-full transition-opacity hover:opacity-90" style="background:var(--accent)">Ouvrir mon espace IVIA</a>
     </div>
   </article>
 

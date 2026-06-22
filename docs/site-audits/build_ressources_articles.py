@@ -4,9 +4,9 @@
 Source : 04_METHODES/articles/IVIA_ARTICLE_X_Y_v1.0.md (drafts).
 - Assainit le vocabulaire interdit (Loi 21) via une table de remplacements ciblee.
 - Convertit le markdown simple (##, -, >, **gras**, paragraphes) en HTML.
-- Encapsule dans le gabarit du hub /ressources AVEC navigation persistante :
-  barre thematique (logo + 4 themes + retour), bloc "Dans le meme theme",
-  et navigation Precedent / Suivant. A relancer si les drafts changent.
+- Gabarit "labo du vivant" : barre thematique persistante, BANDEAU SOMBRE d'en-tete
+  colore par theme, lettrine, titres accentues, cartes de fin (meme theme + prec/suiv).
+A relancer si les drafts changent.
 """
 import html
 import os
@@ -16,7 +16,6 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SRC = os.path.join(ROOT, "04_METHODES", "articles")
 OUT = os.path.join(ROOT, "ivia_site_v2", "ressources")
 
-# num -> (slug, section_label, related[num,num])
 META = {
     "1_1": ("ecoute-qui-respecte-le-vivant", "Écoute & Relation", ["2_1", "3_1"]),
     "1_2": ("empathie-ethique",              "Écoute & Relation", ["3_2", "4_4"]),
@@ -37,16 +36,14 @@ META = {
 }
 ORDER = list(META.keys())
 
-# section label -> (ancre sur le hub, libelle court dans la barre, emoji)
-THEME_NAV = [
-    ("Écoute & Relation",     "th-ecoute",    "Écoute"),
-    ("Équilibre & Vivant",    "th-equilibre", "Équilibre"),
-    ("Empathie & Société",    "th-empathie",  "Empathie"),
-    ("Fréquence & Présence",  "th-frequence", "Fréquence"),
-]
-ANCHOR = {label: anchor for label, anchor, _ in THEME_NAV}
+# section -> (ancre hub, libelle court, couleur d'accent, emoji)
+THEME = {
+    "Écoute & Relation":    ("th-ecoute",    "Écoute",    "#4C2A86", "👂"),  # camerise
+    "Équilibre & Vivant":   ("th-equilibre", "Équilibre", "#2D6A4F", "🌿"),  # forest
+    "Empathie & Société":   ("th-empathie",  "Empathie",  "#C6447B", "🫂"),  # pulpe
+    "Fréquence & Présence": ("th-frequence", "Fréquence", "#E8943A", "✨"),  # agrume
+}
 
-# Remplacements Loi 21 — par chaine exacte, sens preserve (voir contextes audites)
 REPL = [
     ("ne pas forcer la guérison. La laisser venir.", "ne pas forcer le rétablissement. Le laisser venir."),
     ("ne cherche pas à guérir.", "ne cherche pas à réparer l'autre."),
@@ -77,6 +74,8 @@ EXTRA_NOTE = {
     "4_3": "Les savoirs des plantes — dont ceux des Premières Nations — sont cités avec respect et jamais appropriés. Registre éducatif ; toute question de santé relève d'une personne qualifiée.",
     "4_4": "Registre éducatif : aucune promesse, aucun protocole d'usage.",
 }
+
+TITLES = {}
 
 
 def apply_repl(text):
@@ -124,9 +123,8 @@ def md_to_html(body_lines):
 
 
 def nav_html(active_anchor):
-    """Barre thematique persistante. Le theme actif est surligne."""
     items = []
-    for label, anchor, short in THEME_NAV:
+    for label, (anchor, short, _c, _e) in THEME.items():
         cls = "text-agrume font-semibold" if anchor == active_anchor else "text-white/70 hover:text-white"
         items.append(f'<a href="/ressources/#{anchor}" class="{cls} transition-colors">{short}</a>')
     items.append('<a href="/" class="text-white/90 hover:text-white transition-colors">Retour&nbsp;↗</a>')
@@ -151,8 +149,9 @@ def same_theme_html(num):
     for n in others:
         slug = META[n][0]
         cards.append(
-            f'        <a href="/ressources/{slug}.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors">'
-            f'<span class="text-sm font-medium text-ink leading-snug">{html.escape(TITLES[n])}</span></a>'
+            f'        <a href="/ressources/{slug}.html" class="tilt block bg-white border border-bdr rounded-[16px] p-4">'
+            f'<span class="block w-6 h-1 rounded-full mb-2" style="background:var(--accent)"></span>'
+            f'<span class="text-sm font-semibold text-ink leading-snug">{html.escape(TITLES[n])}</span></a>'
         )
     return "\n".join(cards)
 
@@ -162,15 +161,15 @@ def prevnext_html(num):
     prev = ORDER[i - 1] if i > 0 else None
     nxt = ORDER[i + 1] if i < len(ORDER) - 1 else None
     left = (
-        f'<a href="/ressources/{META[prev][0]}.html" class="flex-1 border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors">'
+        f'<a href="/ressources/{META[prev][0]}.html" class="flex-1 border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors" style="border-color:var(--accent)">'
         f'<span class="block text-xs text-muted mb-0.5">‹ Précédent</span>'
-        f'<span class="block text-sm font-semibold text-forest-deep leading-snug">{html.escape(TITLES[prev])}</span></a>'
+        f'<span class="block text-sm font-semibold text-ink leading-snug">{html.escape(TITLES[prev])}</span></a>'
         if prev else '<span class="flex-1"></span>'
     )
     right = (
-        f'<a href="/ressources/{META[nxt][0]}.html" class="flex-1 text-right border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors">'
+        f'<a href="/ressources/{META[nxt][0]}.html" class="flex-1 text-right border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors" style="border-color:var(--accent)">'
         f'<span class="block text-xs text-muted mb-0.5">Suivant ›</span>'
-        f'<span class="block text-sm font-semibold text-forest-deep leading-snug">{html.escape(TITLES[nxt])}</span></a>'
+        f'<span class="block text-sm font-semibold text-ink leading-snug">{html.escape(TITLES[nxt])}</span></a>'
         if nxt else '<span class="flex-1"></span>'
     )
     return left + "\n      " + right
@@ -193,28 +192,42 @@ TPL = """<!DOCTYPE html>
   {{ "@context":"https://schema.org","@type":"Article","headline":"{title_js}","description":"{desc_js}","author":{{"@type":"Organization","name":"IVIA"}},"publisher":{{"@type":"Organization","name":"IVIA","url":"https://ivia.quebec"}},"inLanguage":"fr-CA","isAccessibleForFree":true,"url":"https://ivia.quebec/ressources/{slug}.html" }}
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={{theme:{{extend:{{colors:{{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',camerise:'#4C2A86',agrume:'#E8943A',night:'#15121E'}},fontFamily:{{heading:['"Lora"','Georgia','serif']}}}}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>tailwind.config={{theme:{{extend:{{colors:{{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',camerise:'#4C2A86',agrume:'#E8943A',pulpe:'#C6447B',night:'#15121E'}},fontFamily:{{heading:['"Lora"','Georgia','serif']}}}}}}}}</script>
   <style>
     body{{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}}
     h1,h2,h3{{font-family:'Lora',Georgia,serif;}}
-    .prose-ivia p{{margin:0 0 1.1rem;line-height:1.75;color:#2c3a30;}}
-    .prose-ivia h2{{font-size:1.5rem;font-weight:700;color:#1A2E1D;margin:2.2rem 0 .8rem;}}
-    .prose-ivia ul{{margin:0 0 1.1rem 1.1rem;list-style:disc;}}
-    .prose-ivia li{{margin:.3rem 0;line-height:1.7;color:#2c3a30;}}
-    .prose-ivia blockquote{{border-left:3px solid #E8943A;padding:.2rem 0 .2rem 1.1rem;margin:1.4rem 0;font-style:italic;color:#4B6350;}}
+    .tilt{{transition:transform .18s ease, box-shadow .18s ease;}}
+    .tilt:hover{{transform:translateY(-3px);box-shadow:0 16px 34px -18px var(--accent);}}
+    .prose-ivia p{{margin:0 0 1.15rem;line-height:1.8;color:#2c3a30;}}
+    .prose-ivia > p:first-of-type::first-letter{{font-family:'Lora',Georgia,serif;font-size:3.4rem;font-weight:700;line-height:.82;float:left;margin:.15rem .65rem 0 0;color:var(--accent);}}
+    .prose-ivia h2{{font-size:1.55rem;font-weight:700;color:#1A2E1D;margin:2.6rem 0 .85rem;}}
+    .prose-ivia h2::before{{content:"";display:block;width:34px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:.7rem;}}
+    .prose-ivia ul{{margin:0 0 1.15rem 1.15rem;list-style:none;}}
+    .prose-ivia li{{position:relative;margin:.4rem 0;line-height:1.7;color:#2c3a30;padding-left:1.1rem;}}
+    .prose-ivia li::before{{content:"";position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent);}}
+    .prose-ivia blockquote{{border-left:4px solid var(--accent);background:#F0F7F2;border-radius:0 12px 12px 0;padding:1rem 1.3rem;margin:1.6rem 0;font-style:italic;font-size:1.12rem;color:#1A2E1D;}}
     .prose-ivia strong{{color:#1A2E1D;}}
   </style>
 </head>
-<body class="antialiased">
+<body class="antialiased" style="--accent:{accent}">
 
 {nav}
 
-  <article class="max-w-3xl mx-auto px-5 py-12">
-    <a href="/ressources/#{anchor}" class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4 inline-block hover:underline">{section}</a>
-    <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-[1.08] mb-5">{title}</h1>
-    <p class="text-sm text-muted mb-10">Lecture libre · ~5 min · par IVIA</p>
+  <!-- Bandeau d'en-tete — sombre, accentue par le theme (cohérent avec le hub) -->
+  <header class="relative overflow-hidden bg-night text-white">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -right-16 -top-20 w-[380px] h-[380px] rounded-full" style="background:radial-gradient(circle,{accent},transparent 70%);opacity:.5"></div>
+      <div class="absolute -left-24 -bottom-24 w-[280px] h-[280px] rounded-full" style="background:radial-gradient(circle,{accent},transparent 70%);opacity:.22"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-5 pt-12 pb-14">
+      <a href="/ressources/#{anchor}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] rounded-full px-3 py-1.5" style="background:{accent};color:#fff">{emoji} {section}</a>
+      <h1 class="font-heading text-4xl sm:text-5xl font-bold leading-[1.06] mt-6 mb-4">{title}</h1>
+      <p class="text-white/55 text-sm">Lecture libre · ~5 min · par IVIA</p>
+    </div>
+  </header>
 
+  <article class="max-w-3xl mx-auto px-5 py-12">
     <div class="prose-ivia text-[17px]">
 {content}
     </div>
@@ -223,22 +236,20 @@ TPL = """<!DOCTYPE html>
       <p class="text-sm text-muted leading-relaxed"><strong class="text-ink">Le cadre.</strong> Cet article est éducatif. IVIA est un service non clinique : il ne pose aucun nom sur ce que vous vivez et ne remplace aucun avis professionnel.{extra} En situation de crise : <strong class="text-ink">1 866 APPELLE (277-3553)</strong>.</p>
     </div>
 
-    <!-- Dans le même thème -->
     <div class="mt-12 pt-8 border-t border-bdr">
-      <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4">Dans le même thème · {section}</p>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] mb-4" style="color:var(--accent)">Dans le même thème · {section}</p>
       <div class="grid sm:grid-cols-3 gap-3">
 {same_theme}
       </div>
     </div>
 
-    <!-- Précédent / Suivant -->
     <div class="mt-6 flex items-stretch gap-3">
       {prevnext}
     </div>
 
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="/ressources/" class="border border-bdr text-forest-deep font-semibold px-5 py-3 rounded-full hover:bg-surface transition-colors">← Toutes les ressources</a>
-      <a href="/#offres" class="bg-camerise text-white font-semibold px-5 py-3 rounded-full hover:bg-night transition-colors">Ouvrir mon espace IVIA</a>
+      <a href="/#offres" class="text-white font-semibold px-5 py-3 rounded-full transition-opacity hover:opacity-90" style="background:var(--accent)">Ouvrir mon espace IVIA</a>
     </div>
   </article>
 
@@ -250,18 +261,15 @@ TPL = """<!DOCTYPE html>
 </html>
 """
 
-TITLES = {}
-
 
 def main():
-    # 1re passe : titres
     for num in META:
         p = os.path.join(SRC, f"IVIA_ARTICLE_{num}_v1.0.md")
         with open(p, encoding="utf-8") as f:
             TITLES[num] = apply_repl(f.readline().lstrip("# ").strip())
-    # 2e passe : generation
     for num in META:
         slug, section, rel = META[num]
+        anchor, short, accent, emoji = THEME[section]
         p = os.path.join(SRC, f"IVIA_ARTICLE_{num}_v1.0.md")
         text = apply_repl(open(p, encoding="utf-8").read())
         lines = text.split("\n")
@@ -279,14 +287,13 @@ def main():
         out_html = TPL.format(
             title=html.escape(title, quote=True), title_js=title.replace('"', "'"),
             desc=html.escape(desc, quote=True), desc_js=desc.replace('"', "'"),
-            slug=slug, section=html.escape(section), anchor=ANCHOR[section],
-            content=content, extra=extra,
-            nav=nav_html(ANCHOR[section]),
+            slug=slug, section=html.escape(section), anchor=anchor, accent=accent, emoji=emoji,
+            content=content, extra=extra, nav=nav_html(anchor),
             same_theme=same_theme_html(num), prevnext=prevnext_html(num),
         )
         with open(os.path.join(OUT, f"{slug}.html"), "w", encoding="utf-8") as f:
             f.write(out_html)
-        print(f"OK {num} -> {slug}.html")
+        print(f"OK {num} -> {slug}.html  [{short} {accent}]")
 
 
 if __name__ == "__main__":
