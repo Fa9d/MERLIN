@@ -4,192 +4,321 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Ressources IVIA — le labo du vivant. Articles, vidéos et outils libres pour comprendre vos besoins et soutenir votre capacité à vous régénérer. Sans poudre magique, fièrement québécois.">
-  <title>Ressources IVIA — Le labo du vivant</title>
-  <meta property="og:title" content="Ressources IVIA — Le labo du vivant">
-  <meta property="og:description" content="Comprendre ses besoins, soutenir le vivant, rire des vendeurs de rêves. Ressources libres, non médicales, fièrement québécoises.">
+  <meta name="description" content="Ressources IVIA — une médiathèque vivante : articles, outils et contenus éditoriaux pour comprendre vos besoins et soutenir le vivant. Sobre, libre, fièrement québécois.">
+  <title>IVIA – Ressources · Le labo du vivant</title>
+  <meta property="og:title" content="IVIA – Ressources">
+  <meta property="og:description" content="Une médiathèque vivante : articles, outils et contenus éditoriaux. Sobre, libre, québécois.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ivia.quebec/ressources/">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB',camerise:'#4C2A86',agrume:'#E8943A',pulpe:'#C6447B',night:'#15121E'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',camerise:'#4C2A86',agrume:'#E8943A',pulpe:'#C6447B',night:'#15121E'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .tilt{transition:transform .18s ease, box-shadow .18s ease;}
-    .tilt:hover{transform:translateY(-4px) rotate(-.6deg);box-shadow:0 18px 40px -18px rgba(76,42,134,.45);}
-    .chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;border-radius:9999px;padding:4px 12px;}
-    @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-22px)}}
-    .drift{animation:drift 11s ease-in-out infinite;}
-    @media (prefers-reduced-motion: reduce){.drift{animation:none}}
-    .underline-wavy{text-decoration:underline wavy #E8943A 2px;text-underline-offset:6px;}
+    /* Rails */
+    .rail-track{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 1.25rem;padding:.4rem .25rem 1.2rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+    .rail-track::-webkit-scrollbar{display:none;}
+    .card{scroll-snap-align:start;flex:0 0 clamp(210px,72vw,250px);text-decoration:none;}
+    .card .cover{aspect-ratio:4/3;}
+    .card h3{transition:color .15s ease;}
+    .card:hover h3{color:var(--a,#2D6A4F);}
+    .card .cover{transition:transform .2s ease, box-shadow .2s ease;}
+    .card:hover .cover{transform:translateY(-3px);box-shadow:0 16px 32px -18px rgba(26,46,29,.35);}
+    .card:focus-visible{outline:none;}
+    .card:focus-visible .cover{outline:2px solid var(--a,#2D6A4F);outline-offset:3px;}
+    .rail-empty{display:none;}
+    @media (prefers-reduced-motion: reduce){.card:hover .cover{transform:none;}}
   </style>
 </head>
 <body class="antialiased">
 
   <!-- NAV -->
   <nav class="sticky top-0 z-50 bg-night/95 backdrop-blur border-b border-white/10">
-    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
-      <a href="/" class="flex items-center gap-2.5 font-heading text-xl font-semibold text-white tracking-tight" aria-label="IVIA — Accueil">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
+      <a href="/ressources/" class="flex items-center gap-2 font-heading text-lg font-semibold text-white shrink-0">
         <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#4C2A86"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>
-        IVIA <span class="text-agrume font-normal text-sm ml-1">· ressources</span>
+        IVIA <span class="text-agrume font-normal text-sm">· ressources</span>
       </a>
-      <div class="flex items-center gap-5 text-sm font-medium text-white/70">
-        <a href="#piliers" class="hover:text-white transition-colors hidden sm:inline">Explorer</a>
-        <a href="/" class="hover:text-white transition-colors">← RETOUR IVIA</a>
+      <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium flex-wrap">
+        <a href="#th-ecoute" class="text-white/70 hover:text-white transition-colors">Écoute</a>
+        <a href="#th-equilibre" class="text-white/70 hover:text-white transition-colors">Équilibre</a>
+        <a href="#th-empathie" class="text-white/70 hover:text-white transition-colors">Empathie</a>
+        <a href="#th-frequence" class="text-white/70 hover:text-white transition-colors">Fréquence</a>
+        <a href="/" class="text-white/90 hover:text-white transition-colors">Retour&nbsp;↗</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO — dissonant, sombre, énergique -->
-  <header class="relative overflow-hidden bg-night text-white">
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div class="drift absolute -right-24 -top-16 w-[440px] h-[440px] rounded-full" style="background:radial-gradient(circle,#4C2A86,transparent 70%);opacity:.55"></div>
-      <div class="drift absolute -left-20 bottom-0 w-[360px] h-[360px] rounded-full" style="background:radial-gradient(circle,#E8943A,transparent 70%);opacity:.30;animation-delay:-4s"></div>
-    </div>
-    <div class="relative max-w-5xl mx-auto px-5 py-24 sm:py-28">
-      <p class="chip bg-agrume/20 text-agrume border border-agrume/30 mb-6">Le labo du vivant</p>
-      <h1 class="font-heading text-4xl sm:text-6xl font-bold leading-[1.05] mb-6">
-        Ici, on rit des <span class="underline-wavy">vendeurs de rêves</span>.<br>
-        Et on prend le vivant au sérieux.
-      </h1>
-      <p class="text-white/75 text-lg max-w-2xl leading-relaxed mb-9">
-        Des ressources libres pour comprendre vos besoins et soutenir votre capacité naturelle
-        à vous régénérer. Pas de poudre magique, pas de promesse à 9,99 $/mois.
-        Du vrai, du vivant — et fièrement québécois.
-      </p>
-      <div class="flex flex-wrap gap-3">
-        <a href="#piliers" class="bg-agrume text-night font-bold px-6 py-3 rounded-full hover:bg-white transition-colors">Explorer les ressources →</a>
-        <a href="/ressources/le-vivant-sait.html" class="border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/10 transition-colors">Lire un premier article</a>
+  <!-- HERO editorial leger -->
+  <header class="bg-cream border-b border-bdr">
+    <div class="max-w-6xl mx-auto px-5 pt-12 pb-10">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="shrink-0 w-12 h-12 rounded-[14px] bg-surface text-forest-deep border border-bdr flex items-center justify-center"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></span>
+        <div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-bold text-ink leading-tight">IVIA – Ressources</h1>
+          <p class="text-muted text-sm sm:text-base mt-1 max-w-xl">Une médiathèque vivante — articles, outils et repères à parcourir à votre rythme. Sobre, libre, sans poudre magique.</p>
+        </div>
       </div>
+
+      <div class="relative max-w-xl">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-muted"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+        <input id="ressources-search" type="search" autocomplete="off"
+               placeholder="Chercher un sujet, un thème, un type…"
+               aria-label="Rechercher dans les ressources"
+               class="w-full bg-white border border-bdr rounded-full pl-12 pr-4 py-3.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-forest/40 focus:border-forest">
+      </div>
+
+      <div class="flex flex-wrap gap-2 mt-5" aria-label="Accès rapides">
+        <a href="#commencer" class="text-xs font-semibold text-forest-deep bg-surface border border-bdr rounded-full px-4 py-2 hover:border-forest transition-colors">Par où commencer</a>
+        <a href="#regeneration" class="text-xs font-semibold text-forest-deep bg-surface border border-bdr rounded-full px-4 py-2 hover:border-forest transition-colors">Sommeil &amp; régénération</a>
+        <a href="#nouveautes" class="text-xs font-semibold text-forest-deep bg-surface border border-bdr rounded-full px-4 py-2 hover:border-forest transition-colors">Nouveautés</a>
+      </div>
+
+      <p id="no-results" class="hidden text-sm text-muted mt-6">Aucune ressource ne correspond. <button type="button" id="clear-search" class="text-forest-deep font-semibold hover:underline">Tout afficher</button></p>
     </div>
   </header>
 
-  <!-- TYPES DE CONTENU -->
-  <section class="bg-camerise text-white">
-    <div class="max-w-6xl mx-auto px-5 py-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold">
-      <span class="flex items-center gap-2">📄 Articles</span>
-      <span class="flex items-center gap-2">🎬 Vidéos</span>
-      <span class="flex items-center gap-2">🌱 Formations libres</span>
-      <span class="flex items-center gap-2">🧪 Outils &amp; auto-repères</span>
-      <span class="flex items-center gap-2 text-agrume">😏 Détecteur de poudre de perlimpinpin</span>
+  <main class="pb-8">
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="commencer" aria-labelledby="commencer-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="commencer-t" class="font-heading text-2xl font-bold text-ink">Commencer avec IVIA</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
+    </div>
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/plusieurs-regards.html" role="listitem" data-tags="plusieurs regards sur ce que vous vivez littératie article modeles regards comprendre">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plusieurs regards sur ce que vous vivez</h3></div>
+      </a>
+      <a class="card group" href="/ressources/ecoute-qui-respecte-le-vivant.html" role="listitem" data-tags="une écoute qui respecte le vivant écoute &amp; relation article ecoute presence relation">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Écoute</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Une écoute qui respecte le vivant</h3></div>
+      </a>
+      <a class="card group" href="/ressources/penser-sa-vie-en-cycles.html" role="listitem" data-tags="penser sa vie en cycles équilibre &amp; vivant article cycles equilibre rythme machine">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Penser sa vie en cycles</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-vivant-sait.html" role="listitem" data-tags="le vivant sait se régénérer régénération article regeneration sommeil corps vitalite">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · ~4 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le vivant sait se régénérer</h3></div>
+      </a>
+      <a class="card group" href="/ressources/espaces-de-parole-vrais.html" role="listitem" data-tags="créer des espaces de parole vrais empathie &amp; société article parole espace groupe">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Créer des espaces de parole vrais</h3></div>
+      </a>
     </div>
   </section>
 
-  <!-- PILIERS THÉMATIQUES -->
-  <section id="piliers" class="max-w-6xl mx-auto px-5 py-20">
-    <div class="mb-12 max-w-2xl">
-      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-ink mb-3">Par quoi on commence ?</h2>
-      <p class="text-muted leading-relaxed">Six terrains à explorer. Lecture libre, ton franc, zéro jargon. On éduque, on oriente, on s'émerveille — on ne vend rien.</p>
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-ecoute" aria-labelledby="th-ecoute-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="th-ecoute-t" class="font-heading text-2xl font-bold text-ink">Écoute &amp; relation</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="ecoute">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
     </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-      <a href="/ressources/plusieurs-regards.html" class="tilt block bg-white border border-bdr rounded-[22px] p-7 ring-1 ring-camerise/20">
-        <span class="text-3xl">🧭</span>
-        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Plusieurs regards sur ce que vous vivez</h3>
-        <p class="text-sm text-muted leading-relaxed">Le corps, les pensées, les liens, le sens : chaque modèle voit quelque chose — et en oublie un autre. La lecture du vivant les met en dialogue, au lieu de réduire.</p>
-        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Découvrir →</span>
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/ecoute-qui-respecte-le-vivant.html" role="listitem" data-tags="une écoute qui respecte le vivant écoute &amp; relation article ecoute presence relation">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Écoute</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Une écoute qui respecte le vivant</h3></div>
       </a>
-
-      <a href="/ressources/le-vivant-sait.html" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
-        <span class="text-3xl">🌿</span>
-        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Régénération &amp; vitalité</h3>
-        <p class="text-sm text-muted leading-relaxed">Le corps a une capacité d'auto-régénération étonnante. On explore ce qui la soutient — sommeil, mouvement, assiette — avec curiosité, sans dogme.</p>
-        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Découvrir →</span>
+      <a class="card group" href="/ressources/empathie-ethique.html" role="listitem" data-tags="empathie éthique : ressentir sans se perdre écoute &amp; relation article empathie ecoute">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Écoute</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Empathie éthique : ressentir sans se perdre</h3></div>
       </a>
-
-      <a href="#" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
-        <span class="text-3xl">🫐</span>
-        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Saveurs du Québec</h3>
-        <p class="text-sm text-muted leading-relaxed">La camerise, l'argousier, les fermentations d'ici… Nos aliments vivants, leur histoire et pourquoi le Québec a de quoi être fier. <span class="chip bg-agrume/15 text-agrume ml-1">bientôt</span></p>
-        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Bientôt →</span>
+      <a class="card group" href="/ressources/lois-de-l-echange.html" role="listitem" data-tags="les lois de l&#x27;échange écoute &amp; relation article echange lien relation">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Écoute</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Les lois de l&#x27;échange</h3></div>
       </a>
-
-      <a href="/ressources/le-savoir-des-plantes.html" class="tilt block bg-white border border-bdr rounded-[22px] p-7 ring-1 ring-camerise/20">
-        <span class="text-3xl">🌲</span>
-        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Savoirs des plantes</h3>
-        <p class="text-sm text-muted leading-relaxed">Les savoirs des gardiennes de la forêt — <strong>cités avec respect et attribution, jamais appropriés</strong>. On apprend, on remercie, on ne s'arroge rien.</p>
-        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Découvrir →</span>
+      <a class="card group" href="/ressources/responsabilite-et-dignite.html" role="listitem" data-tags="la responsabilité comme dignité écoute &amp; relation article responsabilite dignite">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Écoute</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">La responsabilité comme dignité</h3></div>
       </a>
-
-      <a href="/ressources/ecoute-qui-respecte-le-vivant.html" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
-        <span class="text-3xl">👂</span>
-        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Écoute &amp; relation</h3>
-        <p class="text-sm text-muted leading-relaxed">Ce qu'est une écoute qui respecte le vivant — et pourquoi « attendre son tour de parler » n'en est pas une.</p>
-        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Découvrir →</span>
+      <a class="card group" href="/ressources/plusieurs-regards.html" role="listitem" data-tags="plusieurs regards sur ce que vous vivez littératie article modeles regards comprendre">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plusieurs regards sur ce que vous vivez</h3></div>
       </a>
-
-      <a href="#" class="tilt block bg-white border border-bdr rounded-[22px] p-7">
-        <span class="text-3xl">🧭</span>
-        <h3 class="font-heading text-xl font-bold text-ink mt-3 mb-1.5">Traverser &amp; repères</h3>
-        <p class="text-sm text-muted leading-relaxed">Des repères honnêtes pour les passages de la vie. Pas de recette miracle — des points d'appui. <span class="chip bg-agrume/15 text-agrume ml-1">bientôt</span></p>
-        <span class="text-sm font-semibold text-camerise mt-4 inline-block">Bientôt →</span>
-      </a>
-
-      <a href="#" class="tilt block bg-night text-white rounded-[22px] p-7">
-        <span class="text-3xl">😏</span>
-        <h3 class="font-heading text-xl font-bold mt-3 mb-1.5">Le grand bingo des promesses</h3>
-        <p class="text-sm text-white/70 leading-relaxed">Notre rubrique mordante : on décortique, avec humour, les arnaques du bien-être et les apps qui « changent votre vie » en 7 jours. <span class="chip bg-agrume/20 text-agrume ml-1">bientôt</span></p>
-        <span class="text-sm font-semibold text-agrume mt-4 inline-block">Bientôt →</span>
-      </a>
-
     </div>
   </section>
 
-  <!-- LES 16 ARTICLES FONDATEURS -->
-  <section class="max-w-6xl mx-auto px-5 pb-20">
-    <div class="mb-10 max-w-2xl">
-      <h2 class="font-heading text-3xl sm:text-4xl font-bold text-ink mb-3">Les 16 articles fondateurs</h2>
-      <p class="text-muted leading-relaxed">Quatre terrains, quatre textes chacun. Lecture libre, ton franc, zéro jargon.</p>
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-equilibre" aria-labelledby="th-equilibre-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="th-equilibre-t" class="font-heading text-2xl font-bold text-ink">Équilibre &amp; vivant</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="equilibre">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-
-      <div id="th-ecoute" class="scroll-mt-24">
-        <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-3">👂 Écoute &amp; relation</p>
-        <ul class="space-y-2.5 text-sm">
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/ecoute-qui-respecte-le-vivant.html">Une écoute qui respecte le vivant</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/empathie-ethique.html">Empathie éthique : ressentir sans se perdre</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/lois-de-l-echange.html">Les lois de l'échange : pourquoi certains liens épuisent</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/responsabilite-et-dignite.html">La responsabilité comme acte de dignité</a></li>
-        </ul>
-      </div>
-
-      <div id="th-equilibre" class="scroll-mt-24">
-        <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-3">🌿 Équilibre &amp; vivant</p>
-        <ul class="space-y-2.5 text-sm">
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/penser-sa-vie-en-cycles.html">Penser sa vie en cycles, pas en machine</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/le-cercle-carte-d-equilibre.html">Le cercle comme carte d'équilibre</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/economie-et-nature.html">Quand l'économie oublie qu'elle vit dans la nature</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/habiter-son-corps.html">Habiter son corps dans un monde qui le nie</a></li>
-        </ul>
-      </div>
-
-      <div id="th-empathie" class="scroll-mt-24">
-        <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-3">🫂 Empathie &amp; société</p>
-        <ul class="space-y-2.5 text-sm">
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/espaces-collectifs-qui-epuisent.html">Pourquoi certains espaces collectifs nous épuisent</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/empathie-et-pouvoir.html">Quand l'empathie devient instrument de pouvoir</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/espaces-de-parole-vrais.html">Créer des espaces de parole vrais</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/de-la-performance-a-la-presence.html">De la performance à la présence</a></li>
-        </ul>
-      </div>
-
-      <div id="th-frequence" class="scroll-mt-24">
-        <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-3">✨ Fréquence &amp; présence</p>
-        <ul class="space-y-2.5 text-sm">
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/tout-vibre.html">Tout vibre : ce que la physique montre vraiment</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/le-corps-instrument-de-presence.html">Le corps comme premier instrument de présence</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/le-savoir-des-plantes.html">Plantes, minéraux : pistes sérieuses de régénération</a></li>
-          <li><a class="text-ink hover:text-camerise font-medium" href="/ressources/frequence-et-autonomie.html">Fréquence et autonomie : habiter sa vie de l'intérieur</a></li>
-        </ul>
-      </div>
-
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/penser-sa-vie-en-cycles.html" role="listitem" data-tags="penser sa vie en cycles équilibre &amp; vivant article cycles equilibre rythme machine">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Penser sa vie en cycles</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-cercle-carte-d-equilibre.html" role="listitem" data-tags="le cercle, carte d&#x27;équilibre équilibre &amp; vivant article cercle equilibre carte">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le cercle, carte d&#x27;équilibre</h3></div>
+      </a>
+      <a class="card group" href="/ressources/economie-et-nature.html" role="listitem" data-tags="quand l&#x27;économie oublie la nature équilibre &amp; vivant article economie nature suzuki">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Quand l&#x27;économie oublie la nature</h3></div>
+      </a>
+      <a class="card group" href="/ressources/habiter-son-corps.html" role="listitem" data-tags="habiter son corps équilibre &amp; vivant article corps presence regeneration">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Habiter son corps</h3></div>
+      </a>
     </div>
   </section>
+
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-empathie" aria-labelledby="th-empathie-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="th-empathie-t" class="font-heading text-2xl font-bold text-ink">Empathie &amp; société</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="empathie">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
+    </div>
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/espaces-collectifs-qui-epuisent.html" role="listitem" data-tags="ces espaces collectifs qui épuisent empathie &amp; société article collectif groupe societe">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Ces espaces collectifs qui épuisent</h3></div>
+      </a>
+      <a class="card group" href="/ressources/empathie-et-pouvoir.html" role="listitem" data-tags="quand l&#x27;empathie devient pouvoir empathie &amp; société article empathie pouvoir">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Quand l&#x27;empathie devient pouvoir</h3></div>
+      </a>
+      <a class="card group" href="/ressources/espaces-de-parole-vrais.html" role="listitem" data-tags="créer des espaces de parole vrais empathie &amp; société article parole espace groupe">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Créer des espaces de parole vrais</h3></div>
+      </a>
+      <a class="card group" href="/ressources/de-la-performance-a-la-presence.html" role="listitem" data-tags="de la performance à la présence empathie &amp; société article performance presence soin">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">De la performance à la présence</h3></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-frequence" aria-labelledby="th-frequence-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="th-frequence-t" class="font-heading text-2xl font-bold text-ink">Fréquence &amp; présence</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="frequence">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
+    </div>
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/tout-vibre.html" role="listitem" data-tags="tout vibre : ce que dit la physique fréquence &amp; présence article frequence vibration physique">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Tout vibre : ce que dit la physique</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-corps-instrument-de-presence.html" role="listitem" data-tags="le corps, premier instrument de présence fréquence &amp; présence article corps presence regeneration">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le corps, premier instrument de présence</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-savoir-des-plantes.html" role="listitem" data-tags="plantes &amp; minéraux : pistes de régénération fréquence &amp; présence article plantes regeneration corps sommeil">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plantes &amp; minéraux : pistes de régénération</h3></div>
+      </a>
+      <a class="card group" href="/ressources/frequence-et-autonomie.html" role="listitem" data-tags="fréquence et autonomie fréquence &amp; présence article frequence autonomie">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Fréquence et autonomie</h3></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="regeneration" aria-labelledby="regeneration-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="regeneration-t" class="font-heading text-2xl font-bold text-ink">Sommeil &amp; régénération</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="regeneration">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
+    </div>
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/le-vivant-sait.html" role="listitem" data-tags="le vivant sait se régénérer régénération article regeneration sommeil corps vitalite">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · ~4 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le vivant sait se régénérer</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-savoir-des-plantes.html" role="listitem" data-tags="plantes &amp; minéraux : pistes de régénération fréquence &amp; présence article plantes regeneration corps sommeil">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plantes &amp; minéraux : pistes de régénération</h3></div>
+      </a>
+      <a class="card group" href="/ressources/habiter-son-corps.html" role="listitem" data-tags="habiter son corps équilibre &amp; vivant article corps presence regeneration">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Habiter son corps</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-corps-instrument-de-presence.html" role="listitem" data-tags="le corps, premier instrument de présence fréquence &amp; présence article corps presence regeneration">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le corps, premier instrument de présence</h3></div>
+      </a>
+      <a class="card group" href="/ressources/penser-sa-vie-en-cycles.html" role="listitem" data-tags="penser sa vie en cycles équilibre &amp; vivant article cycles equilibre rythme machine">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Penser sa vie en cycles</h3></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="outils" aria-labelledby="outils-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="outils-t" class="font-heading text-2xl font-bold text-ink">Outils &amp; auto-repères</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="outil">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
+    </div>
+    <div class="rail-track" role="list">
+      <div class="card opacity-80" role="listitem" data-tags="auto-repères du quotidien régénération outil outil auto-reperes" aria-disabled="true">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Outil</span><span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider text-muted bg-white/85 rounded-full px-2 py-1">Bientôt</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · Bientôt</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Auto-repères du quotidien</h3></div>
+      </div>
+      <div class="card opacity-80" role="listitem" data-tags="le détecteur de poudre de perlimpinpin littératie outil outil detecteur arnaque" aria-disabled="true">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Outil</span><span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider text-muted bg-white/85 rounded-full px-2 py-1">Bientôt</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · Bientôt</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le détecteur de poudre de perlimpinpin</h3></div>
+      </div>
+      <div class="card opacity-80" role="listitem" data-tags="cartographier votre cercle équilibre &amp; vivant outil outil cercle carte" aria-disabled="true">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Outil</span><span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider text-muted bg-white/85 rounded-full px-2 py-1">Bientôt</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · Bientôt</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Cartographier votre cercle</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="nouveautes" aria-labelledby="nouveautes-t">
+    <div class="flex items-end justify-between gap-4 mb-4">
+      <h2 id="nouveautes-t" class="font-heading text-2xl font-bold text-ink">Nouveautés</h2>
+      <div class="flex items-center gap-4">
+        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="">Tout voir →</button>
+        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+      </div>
+    </div>
+    <div class="rail-track" role="list">
+      <a class="card group" href="/ressources/plusieurs-regards.html" role="listitem" data-tags="plusieurs regards sur ce que vous vivez littératie article modeles regards comprendre">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plusieurs regards sur ce que vous vivez</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-savoir-des-plantes.html" role="listitem" data-tags="plantes &amp; minéraux : pistes de régénération fréquence &amp; présence article plantes regeneration corps sommeil">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plantes &amp; minéraux : pistes de régénération</h3></div>
+      </a>
+      <a class="card group" href="/ressources/frequence-et-autonomie.html" role="listitem" data-tags="fréquence et autonomie fréquence &amp; présence article frequence autonomie">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Fréquence et autonomie</h3></div>
+      </a>
+      <a class="card group" href="/ressources/de-la-performance-a-la-presence.html" role="listitem" data-tags="de la performance à la présence empathie &amp; société article performance presence soin">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">De la performance à la présence</h3></div>
+      </a>
+      <a class="card group" href="/ressources/le-vivant-sait.html" role="listitem" data-tags="le vivant sait se régénérer régénération article regeneration sommeil corps vitalite">
+        <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
+        <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · ~4 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le vivant sait se régénérer</h3></div>
+      </a>
+    </div>
+  </section>
+  </main>
 
   <!-- BANDEAU CADRE (Loi 21/25 + attribution) -->
-  <section class="bg-surface border-y border-bdr">
+  <section class="bg-surface border-y border-bdr mt-14">
     <div class="max-w-4xl mx-auto px-5 py-10 text-center">
       <p class="text-sm text-ink leading-relaxed">
         <strong>Le cadre, clairement.</strong> IVIA n'est pas un service médical et ne remplace
@@ -200,13 +329,61 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="bg-night text-white/60 py-10 px-5">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
       <p>IVIA — <em>In Vivo, In Actu</em> · Le labo du vivant · fièrement québécois 🍁</p>
       <p>Pas un service d'urgence · En crise : <strong class="text-white"><a href="tel:18662773553" class="underline">1 866 APPELLE</a></strong></p>
     </div>
   </footer>
+
+  <script>
+    // ── Flèches des rails (desktop) ──────────────────────────────────────────
+    document.querySelectorAll('.rail').forEach(function (rail) {
+      var track = rail.querySelector('.rail-track');
+      var prev = rail.querySelector('.rail-prev');
+      var next = rail.querySelector('.rail-next');
+      function step() {
+        var card = track.querySelector('.card');
+        return card ? card.getBoundingClientRect().width + 16 : 240;
+      }
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() * 2, behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() * 2, behavior: 'smooth' }); });
+    });
+
+    // ── Recherche / filtre (insensible aux accents) ──────────────────────────
+    var input = document.getElementById('ressources-search');
+    var noRes = document.getElementById('no-results');
+    function norm(s) { return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+    function applyFilter(q) {
+      var nq = norm(q.trim());
+      var anyVisible = false;
+      document.querySelectorAll('.rail').forEach(function (rail) {
+        var shown = 0;
+        rail.querySelectorAll('.card').forEach(function (card) {
+          var match = !nq || norm(card.getAttribute('data-tags')).indexOf(nq) !== -1;
+          card.style.display = match ? '' : 'none';
+          if (match) shown++;
+        });
+        rail.classList.toggle('rail-empty', shown === 0);
+        if (shown > 0) anyVisible = true;
+      });
+      noRes.classList.toggle('hidden', anyVisible || nq === '');
+    }
+    if (input) input.addEventListener('input', function () { applyFilter(input.value); });
+
+    // 'Tout voir' → remplit la recherche avec le mot-clé du rail
+    document.querySelectorAll('.voir-tout').forEach(function (b) {
+      b.addEventListener('click', function () {
+        input.value = b.getAttribute('data-q') || '';
+        applyFilter(input.value);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        input.focus();
+      });
+    });
+
+    var clr = document.getElementById('clear-search');
+    if (clr) clr.addEventListener('click', function () { input.value = ''; applyFilter(''); input.focus(); });
+  </script>
 
 </body>
 </html>
