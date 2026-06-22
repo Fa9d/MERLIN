@@ -1,8 +1,9 @@
 name: CI
 
-# Filet CI MERLIN — lint + tests. Gate vérifié : ruff + tests référentiels (sans DB).
-# La suite complète (smoke + DB) et les safety evals sont scaffolés mais non bloquants
-# tant que l'environnement n'est pas durci (voir jobs full-suite / safety-suite).
+# Filet CI MERLIN — lint + tests. Gates BLOQUANTS : ruff (lint) + tests sans DB (unit) +
+# suite complète avec Postgres (full-suite, bloquant depuis le 22 juin 2026).
+# Les safety evals restent scaffolées (job commenté) tant que le secret ANTHROPIC_API_KEY
+# n'est pas fourni — à activer pour faire de la safety suite un gate dur (CLAUDE.md §8.3).
 
 on:
   push:
@@ -43,10 +44,10 @@ jobs:
           tests/test_transcription_provider.py
           -o addopts="" -p no:cacheprovider -q
 
-  # ── Suite complète avec Postgres (informatif : à durcir avant de rendre bloquant) ──
+  # ── Suite complète avec Postgres (BLOQUANT depuis le 22 juin 2026) : migrations + tous
+  #    les tests sauf real_api. Une régression DB casse désormais le build (au lieu de passer). ──
   full-suite:
     runs-on: ubuntu-latest
-    continue-on-error: true
     services:
       postgres:
         image: postgres:15-alpine
