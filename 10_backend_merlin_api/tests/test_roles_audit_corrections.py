@@ -220,15 +220,19 @@ class TestBackDeps001SupervisorRename:
             "L'alias require_supervision_roles doit pointer vers require_supervisor"
         )
 
-    def test_session_notes_validate_uses_supervisor_role(self, app_client, admin_headers, operator_headers):
-        """PATCH /session-notes/{id}/validate doit refuser un operator (seul supervisor passe)."""
-        # Tenter avec operator → 403 attendu (require_supervisor refuse operator)
+    def test_session_notes_validate_allows_internal_clinical_roles(self, app_client, admin_headers, operator_headers):
+        """PATCH /session-notes/{id}/validate est ouvert aux rôles cliniques internes.
+
+        Constitution MERLIN : le praticien valide sa propre note ; le superviseur reste
+        habilité, et l'opérateur aussi (cf. `require_internal_clinical_roles`). Un opérateur
+        est donc ADMIS par le garde-fou — sur une note inexistante il obtient 404 (pas 403).
+        """
         resp = app_client.patch(
             "/api/v1/session-notes/00000000-0000-0000-0000-000000000aaa/validate",
-            json={"validated": True},  # corps VALIDE → le refus doit venir du rôle (403), pas de la validation (422)
+            json={"validated": True},
             headers=operator_headers,
         )
-        # Le guard doit refuser AVANT d'arriver à la logique métier (404)
-        assert resp.status_code == 403, (
-            f"require_supervisor doit refuser un operator ; reçu {resp.status_code}"
+        assert resp.status_code == 404, (
+            "un opérateur (rôle clinique interne) doit passer le garde-fou et atteindre la "
+            f"logique métier (404 sur note inexistante) ; reçu {resp.status_code}"
         )

@@ -52,12 +52,11 @@ def test_public_rendez_vous_intake_accepts_required_consents() -> None:
         )
         assert intake_response.status_code == 201, intake_response.text
 
+        # Doctrine §16 : SEULS 3 consentements sont autorisés en entrée publique.
         public_consent_types = [
             "consent_session",
             "consent_session_note",
             "consent_history",
-            "consent_recording",
-            "consent_transcription",
         ]
         for consent_type in public_consent_types:
             consent_response = client.post(
@@ -72,6 +71,22 @@ def test_public_rendez_vous_intake_accepts_required_consents() -> None:
             assert consent_response.status_code == 201, (
                 f"{consent_type} should be accepted in public intake; "
                 f"got {consent_response.status_code}: {consent_response.text}"
+            )
+
+        # consent_recording / consent_transcription NE doivent PAS être acceptés en public :
+        # ils sont captés plus tard, authentifiés, au moment de la séance (doctrine §16).
+        for restricted in ("consent_recording", "consent_transcription"):
+            resp = client.post(
+                "/api/v1/consents",
+                json={
+                    "client_id": client_id,
+                    "consent_type_code": restricted,
+                    "consent_value": True,
+                    "granted_by_actor_code": "client",
+                },
+            )
+            assert resp.status_code == 401, (
+                f"{restricted} ne doit PAS être accepté en entrée publique; got {resp.status_code}: {resp.text}"
             )
 
 
