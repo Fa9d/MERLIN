@@ -583,24 +583,27 @@
       });
     })();
 
-    // ── Rotation des ambiances de l'enregistreur : Signature ↔ Doux (même moteur) ──
+    // ── Rotation des ambiances Signature ↔ Doux ──────────────────────────────────
+    //   Pilotée image par image en JS (requestAnimationFrame) : on n'utilise PAS de
+    //   transition CSS, qui serait neutralisée par « Réduire les animations » (Android/
+    //   Samsung, économie de batterie). Ainsi la rotation s'anime sur tous les appareils.
     (function () {
       var el = document.getElementById('phone-flip');
       if (!el) return;
-      var imgs = el.querySelectorAll('img');
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce && imgs.length === 2) {
-        // Repli accessible : alternance par fondu doux, sans rotation 3D
-        el.style.transformStyle = 'flat';
-        imgs[1].style.transform = 'none';
-        imgs[0].style.transition = imgs[1].style.transition = 'opacity 700ms ease';
-        imgs[1].style.opacity = '0';
-        var on = false;
-        setInterval(function () { on = !on; imgs[1].style.opacity = on ? '1' : '0'; }, 4500);
-        return;
+      el.style.transition = 'none';                 // on anime nous-mêmes, pas via CSS
+      var from = 0, to = 0, start = 0, dur = 950, animating = false;
+      function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+      function frame(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        el.style.transform = 'rotateY(' + (from + (to - from) * easeInOutCubic(p)) + 'deg)';
+        if (p < 1) { requestAnimationFrame(frame); } else { animating = false; }
       }
-      var deg = 0;
-      setInterval(function () { deg += 180; el.style.transform = 'rotateY(' + deg + 'deg)'; }, 4500);
+      setInterval(function () {
+        if (animating) return;
+        from = to; to = from + 180; start = 0; animating = true;
+        requestAnimationFrame(frame);
+      }, 4500);
     })();
   </script>
 </body>
