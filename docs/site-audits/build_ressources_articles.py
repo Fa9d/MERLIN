@@ -4,8 +4,9 @@
 Source : 04_METHODES/articles/IVIA_ARTICLE_X_Y_v1.0.md (drafts).
 - Assainit le vocabulaire interdit (Loi 21) via une table de remplacements ciblee.
 - Convertit le markdown simple (##, -, >, **gras**, paragraphes) en HTML.
-- Encapsule dans le gabarit sobre du hub /ressources (cf. le-vivant-sait.html).
-A relancer si les drafts changent.
+- Encapsule dans le gabarit du hub /ressources AVEC navigation persistante :
+  barre thematique (logo + 4 themes + retour), bloc "Dans le meme theme",
+  et navigation Precedent / Suivant. A relancer si les drafts changent.
 """
 import html
 import os
@@ -34,6 +35,16 @@ META = {
     "4_3": ("le-savoir-des-plantes",         "Fréquence & Présence", ["2_3", "2_1"]),
     "4_4": ("frequence-et-autonomie",        "Fréquence & Présence", ["1_4", "3_4"]),
 }
+ORDER = list(META.keys())
+
+# section label -> (ancre sur le hub, libelle court dans la barre, emoji)
+THEME_NAV = [
+    ("Écoute & Relation",     "th-ecoute",    "Écoute"),
+    ("Équilibre & Vivant",    "th-equilibre", "Équilibre"),
+    ("Empathie & Société",    "th-empathie",  "Empathie"),
+    ("Fréquence & Présence",  "th-frequence", "Fréquence"),
+]
+ANCHOR = {label: anchor for label, anchor, _ in THEME_NAV}
 
 # Remplacements Loi 21 — par chaine exacte, sens preserve (voir contextes audites)
 REPL = [
@@ -61,22 +72,24 @@ REPL = [
     ("des vibrations à guérir, transformer, attirer.", "des vibrations à tout réparer, transformer, attirer."),
 ]
 
-# Note de prudence additionnelle par article (constitution §6.4)
 EXTRA_NOTE = {
     "4_1": "Registre éducatif uniquement : aucune affirmation de mieux-être par les sons n'est ici un protocole d'usage.",
     "4_3": "Les savoirs des plantes — dont ceux des Premières Nations — sont cités avec respect et jamais appropriés. Registre éducatif ; toute question de santé relève d'une personne qualifiée.",
     "4_4": "Registre éducatif : aucune promesse, aucun protocole d'usage.",
 }
 
+
 def apply_repl(text):
     for a, b in REPL:
         text = text.replace(a, b)
     return text
 
+
 def inline(s):
     s = html.escape(s, quote=False)
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     return s
+
 
 def md_to_html(body_lines):
     out, para, ul, bq = [], [], [], []
@@ -92,8 +105,7 @@ def md_to_html(body_lines):
             out.append("      <blockquote>" + "<br>".join(inline(x) for x in bq) + "</blockquote>"); bq.clear()
     def flush_all(): flush_para(); flush_ul(); flush_bq()
     for raw in body_lines:
-        line = raw.rstrip()
-        st = line.strip()
+        st = raw.rstrip().strip()
         if st == "---" or st == "":
             flush_all(); continue
         if st.startswith("## "):
@@ -105,10 +117,64 @@ def md_to_html(body_lines):
         if st.startswith(">"):
             flush_para(); flush_ul(); bq.append(st.lstrip("> ").strip()); continue
         if st.startswith("*") and st.endswith("*") and "Article" in st:
-            continue  # "*Article suivant : ...*"
+            continue
         flush_ul(); flush_bq(); para.append(st)
     flush_all()
     return "\n".join(out)
+
+
+def nav_html(active_anchor):
+    """Barre thematique persistante. Le theme actif est surligne."""
+    items = []
+    for label, anchor, short in THEME_NAV:
+        cls = "text-agrume font-semibold" if anchor == active_anchor else "text-white/70 hover:text-white"
+        items.append(f'<a href="/ressources/#{anchor}" class="{cls} transition-colors">{short}</a>')
+    items.append('<a href="/" class="text-white/90 hover:text-white transition-colors">Retour&nbsp;↗</a>')
+    links = "\n        ".join(items)
+    return f"""  <nav class="sticky top-0 z-50 bg-night/95 backdrop-blur border-b border-white/10">
+    <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
+      <a href="/ressources/" class="flex items-center gap-2 font-heading text-lg font-semibold text-white shrink-0">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#4C2A86"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>
+        IVIA <span class="text-agrume font-normal text-sm">· ressources</span>
+      </a>
+      <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium flex-wrap">
+        {links}
+      </div>
+    </div>
+  </nav>"""
+
+
+def same_theme_html(num):
+    section = META[num][1]
+    others = [n for n in ORDER if META[n][1] == section and n != num]
+    cards = []
+    for n in others:
+        slug = META[n][0]
+        cards.append(
+            f'        <a href="/ressources/{slug}.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors">'
+            f'<span class="text-sm font-medium text-ink leading-snug">{html.escape(TITLES[n])}</span></a>'
+        )
+    return "\n".join(cards)
+
+
+def prevnext_html(num):
+    i = ORDER.index(num)
+    prev = ORDER[i - 1] if i > 0 else None
+    nxt = ORDER[i + 1] if i < len(ORDER) - 1 else None
+    left = (
+        f'<a href="/ressources/{META[prev][0]}.html" class="flex-1 border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors">'
+        f'<span class="block text-xs text-muted mb-0.5">‹ Précédent</span>'
+        f'<span class="block text-sm font-semibold text-forest-deep leading-snug">{html.escape(TITLES[prev])}</span></a>'
+        if prev else '<span class="flex-1"></span>'
+    )
+    right = (
+        f'<a href="/ressources/{META[nxt][0]}.html" class="flex-1 text-right border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors">'
+        f'<span class="block text-xs text-muted mb-0.5">Suivant ›</span>'
+        f'<span class="block text-sm font-semibold text-forest-deep leading-snug">{html.escape(TITLES[nxt])}</span></a>'
+        if nxt else '<span class="flex-1"></span>'
+    )
+    return left + "\n      " + right
+
 
 TPL = """<!DOCTYPE html>
 <html lang="fr">
@@ -142,18 +208,10 @@ TPL = """<!DOCTYPE html>
 </head>
 <body class="antialiased">
 
-  <nav class="sticky top-0 z-50 bg-night/95 backdrop-blur border-b border-white/10">
-    <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
-      <a href="/ressources/" class="flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-white">← Ressources</a>
-      <a href="/" class="flex items-center gap-2 font-heading text-lg font-semibold text-white">
-        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#4C2A86"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>
-        IVIA
-      </a>
-    </div>
-  </nav>
+{nav}
 
-  <article class="max-w-3xl mx-auto px-5 py-14">
-    <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4">{section}</p>
+  <article class="max-w-3xl mx-auto px-5 py-12">
+    <a href="/ressources/#{anchor}" class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4 inline-block hover:underline">{section}</a>
     <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-[1.08] mb-5">{title}</h1>
     <p class="text-sm text-muted mb-10">Lecture libre · ~5 min · par IVIA</p>
 
@@ -165,11 +223,17 @@ TPL = """<!DOCTYPE html>
       <p class="text-sm text-muted leading-relaxed"><strong class="text-ink">Le cadre.</strong> Cet article est éducatif. IVIA est un service non clinique : il ne pose aucun nom sur ce que vous vivez et ne remplace aucun avis professionnel.{extra} En situation de crise : <strong class="text-ink">1 866 APPELLE (277-3553)</strong>.</p>
     </div>
 
-    <div class="mt-10">
-      <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-3">Pour aller plus loin</p>
-      <div class="flex flex-col gap-2">
-{related}
+    <!-- Dans le même thème -->
+    <div class="mt-12 pt-8 border-t border-bdr">
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4">Dans le même thème · {section}</p>
+      <div class="grid sm:grid-cols-3 gap-3">
+{same_theme}
       </div>
+    </div>
+
+    <!-- Précédent / Suivant -->
+    <div class="mt-6 flex items-stretch gap-3">
+      {prevnext}
     </div>
 
     <div class="mt-8 flex flex-wrap gap-3">
@@ -186,45 +250,44 @@ TPL = """<!DOCTYPE html>
 </html>
 """
 
+TITLES = {}
+
+
 def main():
-    titles = {}
     # 1re passe : titres
-    for num, (slug, section, rel) in META.items():
+    for num in META:
         p = os.path.join(SRC, f"IVIA_ARTICLE_{num}_v1.0.md")
         with open(p, encoding="utf-8") as f:
-            first = f.readline()
-        titles[num] = apply_repl(first.lstrip("# ").strip())
+            TITLES[num] = apply_repl(f.readline().lstrip("# ").strip())
     # 2e passe : generation
-    for num, (slug, section, rel) in META.items():
+    for num in META:
+        slug, section, rel = META[num]
         p = os.path.join(SRC, f"IVIA_ARTICLE_{num}_v1.0.md")
         text = apply_repl(open(p, encoding="utf-8").read())
         lines = text.split("\n")
-        title = titles[num]
+        title = TITLES[num]
         dash = [i for i, l in enumerate(lines) if l.strip() == "---"]
         body_start = dash[1] + 1 if len(dash) >= 2 else 1
         content = md_to_html(lines[body_start:])
-        # description : 1er paragraphe nettoye
         first_para = ""
         for l in lines[body_start:]:
             s = l.strip()
             if s and not s.startswith(("#", "-", ">", "*", "---")):
                 first_para = re.sub(r"\*\*(.+?)\*\*", r"\1", s); break
         desc = (first_para[:155]).strip()
-        related = "\n".join(
-            f'        <a href="/ressources/{META[r][0]}.html" class="text-sm text-forest-deep font-semibold hover:underline">→ {titles[r]}</a>'
-            for r in rel
-        )
-        extra = ""
-        if num in EXTRA_NOTE:
-            extra = " " + EXTRA_NOTE[num]
+        extra = (" " + EXTRA_NOTE[num]) if num in EXTRA_NOTE else ""
         out_html = TPL.format(
             title=html.escape(title, quote=True), title_js=title.replace('"', "'"),
             desc=html.escape(desc, quote=True), desc_js=desc.replace('"', "'"),
-            slug=slug, section=section, content=content, related=related, extra=extra,
+            slug=slug, section=html.escape(section), anchor=ANCHOR[section],
+            content=content, extra=extra,
+            nav=nav_html(ANCHOR[section]),
+            same_theme=same_theme_html(num), prevnext=prevnext_html(num),
         )
         with open(os.path.join(OUT, f"{slug}.html"), "w", encoding="utf-8") as f:
             f.write(out_html)
         print(f"OK {num} -> {slug}.html")
+
 
 if __name__ == "__main__":
     main()

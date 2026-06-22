@@ -31,17 +31,23 @@
 <body class="antialiased">
 
   <nav class="sticky top-0 z-50 bg-night/95 backdrop-blur border-b border-white/10">
-    <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
-      <a href="/ressources/" class="flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-white">← Ressources</a>
-      <a href="/" class="flex items-center gap-2 font-heading text-lg font-semibold text-white">
+    <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
+      <a href="/ressources/" class="flex items-center gap-2 font-heading text-lg font-semibold text-white shrink-0">
         <svg width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#4C2A86"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>
-        IVIA
+        IVIA <span class="text-agrume font-normal text-sm">· ressources</span>
       </a>
+      <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium flex-wrap">
+        <a href="/ressources/#th-ecoute" class="text-white/70 hover:text-white transition-colors">Écoute</a>
+        <a href="/ressources/#th-equilibre" class="text-white/70 hover:text-white transition-colors">Équilibre</a>
+        <a href="/ressources/#th-empathie" class="text-white/70 hover:text-white transition-colors">Empathie</a>
+        <a href="/ressources/#th-frequence" class="text-agrume font-semibold transition-colors">Fréquence</a>
+        <a href="/" class="text-white/90 hover:text-white transition-colors">Retour&nbsp;↗</a>
+      </div>
     </div>
   </nav>
 
-  <article class="max-w-3xl mx-auto px-5 py-14">
-    <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4">Fréquence & Présence</p>
+  <article class="max-w-3xl mx-auto px-5 py-12">
+    <a href="/ressources/#th-frequence" class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4 inline-block hover:underline">Fréquence &amp; Présence</a>
     <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-[1.08] mb-5">Le corps comme premier instrument de présence</h1>
     <p class="text-sm text-muted mb-10">Lecture libre · ~5 min · par IVIA</p>
 
@@ -87,12 +93,20 @@
       <p class="text-sm text-muted leading-relaxed"><strong class="text-ink">Le cadre.</strong> Cet article est éducatif. IVIA est un service non clinique : il ne pose aucun nom sur ce que vous vivez et ne remplace aucun avis professionnel. En situation de crise : <strong class="text-ink">1 866 APPELLE (277-3553)</strong>.</p>
     </div>
 
-    <div class="mt-10">
-      <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-3">Pour aller plus loin</p>
-      <div class="flex flex-col gap-2">
-        <a href="/ressources/habiter-son-corps.html" class="text-sm text-forest-deep font-semibold hover:underline">→ Habiter son corps dans un monde qui le nie</a>
-        <a href="/ressources/empathie-ethique.html" class="text-sm text-forest-deep font-semibold hover:underline">→ Empathie éthique : ressentir sans se perdre</a>
+    <!-- Dans le même thème -->
+    <div class="mt-12 pt-8 border-t border-bdr">
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-camerise mb-4">Dans le même thème · Fréquence &amp; Présence</p>
+      <div class="grid sm:grid-cols-3 gap-3">
+        <a href="/ressources/tout-vibre.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors"><span class="text-sm font-medium text-ink leading-snug">Tout vibre : ce que la physique montre vraiment</span></a>
+        <a href="/ressources/le-savoir-des-plantes.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors"><span class="text-sm font-medium text-ink leading-snug">Plantes, minéraux, vivant : pistes sérieuses de régénération</span></a>
+        <a href="/ressources/frequence-et-autonomie.html" class="block bg-cream border border-bdr rounded-[14px] px-4 py-3 hover:border-camerise transition-colors"><span class="text-sm font-medium text-ink leading-snug">Fréquence et autonomie : habiter sa vie depuis l&#x27;intérieur</span></a>
       </div>
+    </div>
+
+    <!-- Précédent / Suivant -->
+    <div class="mt-6 flex items-stretch gap-3">
+      <a href="/ressources/tout-vibre.html" class="flex-1 border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors"><span class="block text-xs text-muted mb-0.5">‹ Précédent</span><span class="block text-sm font-semibold text-forest-deep leading-snug">Tout vibre : ce que la physique montre vraiment</span></a>
+      <a href="/ressources/le-savoir-des-plantes.html" class="flex-1 text-right border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors"><span class="block text-xs text-muted mb-0.5">Suivant ›</span><span class="block text-sm font-semibold text-forest-deep leading-snug">Plantes, minéraux, vivant : pistes sérieuses de régénération</span></a>
     </div>
 
     <div class="mt-8 flex flex-wrap gap-3">
