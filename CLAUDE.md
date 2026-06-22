@@ -521,6 +521,7 @@ Règles à respecter pour toute évolution de ce parcours :
 - Sauvegarde chiffrée (OVH Québec, Loi 25) : `docs/ops-sauvegarde.md` + `deploy/backup.sh`
 - Délivrabilité courriels (SPF/DKIM/DMARC OVH, From ivia.quebec) : `docs/ops-email-deliverabilite.md`
 - Coûts conformité données (chiffrage, BP) : `12_JURIDIQUE_AFFAIRES/IVIA_COUTS_CONFORMITE_DONNEES_v1.0.md`
+- Feuille de route innovation (preuve datée, voies non explorées) : `12_JURIDIQUE_AFFAIRES/IVIA_FEUILLE_DE_ROUTE_INNOVATION_v1.0.md`
 - Notes laboratoire Ruvnet : `docs/labs/ruvnet-adoption.md`
 - Script déploiement : `deploy/prod-up.sh`
 - Gouvernance et backlog : `00_GOUVERNANCE/`
