@@ -61,6 +61,9 @@
       transform-origin: bottom center;
     }
 
+    /* Flip 3D du hero — prefixes -webkit- requis par iOS Safari (Tailwind ne les emet pas) */
+    #phone-flip { -webkit-transform-style: preserve-3d; transform-style: preserve-3d; will-change: transform; }
+    #phone-flip img { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
     @media (prefers-reduced-motion: reduce) {
       .blob-float, .wave-bar { animation: none; }
       .wave-bar { transform: scaleY(0.6); }
@@ -583,7 +586,18 @@
     (function () {
       var el = document.getElementById('phone-flip');
       if (!el) return;
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var imgs = el.querySelectorAll('img');
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce && imgs.length === 2) {
+        // Repli accessible : alternance par fondu doux, sans rotation 3D
+        el.style.transformStyle = 'flat';
+        imgs[1].style.transform = 'none';
+        imgs[0].style.transition = imgs[1].style.transition = 'opacity 700ms ease';
+        imgs[1].style.opacity = '0';
+        var on = false;
+        setInterval(function () { on = !on; imgs[1].style.opacity = on ? '1' : '0'; }, 4500);
+        return;
+      }
       var deg = 0;
       setInterval(function () { deg += 180; el.style.transform = 'rotateY(' + deg + 'deg)'; }, 4500);
     })();
