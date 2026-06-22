@@ -459,7 +459,9 @@ make config-check  # valider YAML + variables avant redémarrage
 # Déploiement complet en une commande
 bash deploy/prod-up.sh
 
-# Sauvegarde chiffrée hors-site (OVH Object Storage Québec) — voir docs/ops-sauvegarde.md
+# Sauvegarde — voir docs/ops-sauvegarde.md. Script DÉGRADABLE :
+#   sans variables OVH/passphrase → sauvegarde LOCALE gratuite (mode dev, non chiffrée)
+#   avec MERLIN_BACKUP_PASSPHRASE + variables OVH → chiffrée AES-256 + copie hors-site Québec
 bash deploy/backup.sh
 
 # scp d'un fichier backend vers le VPS
