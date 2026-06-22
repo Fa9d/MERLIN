@@ -113,11 +113,25 @@ def reset_app_users():
     la fixture saute silencieusement le reset au lieu de bloquer toute la suite. Les
     tests qui ont réellement besoin de la DB échoueront d'eux-mêmes à leur propre étape.
     """
+    import socket
+
     from app.db.base import load_models
     from app.db.session import engine
     from app.models.app_user import AppUser
     from sqlalchemy.exc import SQLAlchemyError
     from sqlalchemy.orm import Session
+
+    # Pré-vérification rapide : si la base Postgres est injoignable (tests sans DB locale),
+    # on saute IMMÉDIATEMENT au lieu d'attendre le timeout de connexion (~30 s) à chaque test.
+    # Sqlite (host vide) et toute base réellement joignable suivent le chemin normal.
+    url = engine.url
+    if url.get_backend_name().startswith("postgresql") and url.host:
+        try:
+            with socket.create_connection((url.host, url.port or 5432), timeout=1.5):
+                pass
+        except OSError:
+            yield
+            return
 
     try:
         load_models()
