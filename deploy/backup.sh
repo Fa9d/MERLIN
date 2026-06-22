@@ -21,9 +21,21 @@
 set -euo pipefail
 
 cd /opt/merlin
-set -a; # shellcheck disable=SC1091
-source .env.prod
-set +a
+
+# Lecture SÛRE des variables (PAS de `source` : .env.prod peut contenir des espaces,
+# des $ ou des : que bash interpréterait — docker compose, lui, les lit sans souci).
+getenv(){ sed -n "s/^$1=//p" .env.prod | head -1; }
+POSTGRES_DB="$(getenv POSTGRES_DB)"
+POSTGRES_USER="$(getenv POSTGRES_USER)"
+MERLIN_BACKUP_PASSPHRASE="$(getenv MERLIN_BACKUP_PASSPHRASE)"
+OVH_S3_ENDPOINT="$(getenv OVH_S3_ENDPOINT)"
+OVH_S3_REGION="$(getenv OVH_S3_REGION)"
+OVH_S3_BUCKET="$(getenv OVH_S3_BUCKET)"
+AWS_ACCESS_KEY_ID="$(getenv AWS_ACCESS_KEY_ID)"
+AWS_SECRET_ACCESS_KEY="$(getenv AWS_SECRET_ACCESS_KEY)"
+export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+MERLIN_BACKUP_LOCAL_DIR="$(getenv MERLIN_BACKUP_LOCAL_DIR)"
+MERLIN_BACKUP_LOCAL_KEEP="$(getenv MERLIN_BACKUP_LOCAL_KEEP)"
 
 : "${POSTGRES_DB:?manquant}"; : "${POSTGRES_USER:?manquant}"
 
