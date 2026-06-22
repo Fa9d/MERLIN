@@ -396,10 +396,11 @@ app/
 │   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260617_0037 (app_users.is_platform_admin : droit admin par compte)
+└── alembic/versions/    # Migrations — head courant = 20260622_0038 (intake_requests.handling_* : colonnes de traitement, migration idempotente rattrapant une dérive modèle/migration)
                          #   0030 app_settings · 0031 clients.birthplace · 0032 intake.assigned_practitioner ·
                          #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee ·
-                         #   0036 app_users.themes · 0037 app_users.is_platform_admin
+                         #   0036 app_users.themes · 0037 app_users.is_platform_admin ·
+                         #   0038 intake_requests.handling_* (rattrapage dérive : handling_status_code/notes, handled_by/at)
 ```
 
 ---

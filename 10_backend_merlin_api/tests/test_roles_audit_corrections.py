@@ -225,7 +225,7 @@ class TestBackDeps001SupervisorRename:
         # Tenter avec operator → 403 attendu (require_supervisor refuse operator)
         resp = app_client.patch(
             "/api/v1/session-notes/00000000-0000-0000-0000-000000000aaa/validate",
-            json={"approved": True},
+            json={"validated": True},  # corps VALIDE → le refus doit venir du rôle (403), pas de la validation (422)
             headers=operator_headers,
         )
         # Le guard doit refuser AVANT d'arriver à la logique métier (404)
