@@ -427,6 +427,17 @@ def _coerce_next_step_type(value: str | None) -> AnalysisNextStepCode | None:
 
 
 async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> None:
+    import os
+    import time
+
+    # Chronométrage du pipeline (transcription + note) — traces d'observabilité.
+    t_start = time.perf_counter()
+    try:
+        audio_bytes = os.path.getsize(audio_file_path)
+    except OSError:
+        audio_bytes = -1
+    note_ms = 0  # rempli plus bas si une note est générée
+
     provider = resolve_transcription_provider()
     if provider == "assemblyai" and not settings.assemblyai_api_key:
         logger.info(
@@ -436,6 +447,7 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
         )
         return
 
+    t_tr = time.perf_counter()
     try:
         if provider == "faster_whisper":
             transcript_text = await transcribe_with_faster_whisper(audio_file_path)
@@ -449,6 +461,11 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             "Echec transcription (%s) pour %s: %s", provider, session_id, exc
         )
         return
+    transcription_ms = int((time.perf_counter() - t_tr) * 1000)
+    logger.info(
+        "[chrono] transcription seance=%s provider=%s audio=%do transcript=%dc duree=%dms",
+        session_id, provider, audio_bytes, len(transcript_text), transcription_ms,
+    )
 
     with SessionLocal() as db:
         session_record = db.get(SessionRecord, session_id)
@@ -482,6 +499,7 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             )
             return
 
+        t_note = time.perf_counter()
         try:
             ai_payload = await generate_session_note_from_transcript(
                 transcript_text,
@@ -498,6 +516,7 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
         except AnthropicSessionNoteError as exc:
             logger.exception("Echec generation Claude post-enregistrement pour %s: %s", session_id, exc)
             return
+        note_ms = int((time.perf_counter() - t_note) * 1000)
 
         production_note = ai_payload.get("production_note", {})
         client_delivery = ai_payload.get("client_delivery", {})
@@ -544,4 +563,8 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
         db.flush()
         ensure_session_derived_document(db, session_record, generated_note)
         db.commit()
-        logger.info("Pipeline post-enregistrement complete pour la seance %s.", session_id)
+        total_ms = int((time.perf_counter() - t_start) * 1000)
+        logger.info(
+            "[chrono] pipeline complet seance=%s transcription=%dms note=%dms total=%dms",
+            session_id, transcription_ms, note_ms, total_ms,
+        )
