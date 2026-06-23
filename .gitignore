@@ -57,3 +57,5 @@ backups/
 *.bak_*
 *_prev/
 *.livekitfix
+
+docs/stripe_backup_code.txt
