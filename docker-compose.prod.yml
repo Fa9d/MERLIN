@@ -106,21 +106,12 @@ services:
     networks:
       - merlin_network
 
-  frontend:
-    build:
-      context: ./09_app_ivia_merlin
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_MERLIN_API_BASE_URL: ${NEXT_PUBLIC_MERLIN_API_BASE_URL}
-    restart: unless-stopped
-    depends_on:
-      api:
-        condition: service_healthy
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_MERLIN_API_BASE_URL: ${NEXT_PUBLIC_MERLIN_API_BASE_URL}
-    networks:
-      - merlin_network
+  # ── Frontend Next.js (09_app_ivia_merlin) RETIRÉ de la prod — 2026-06-23 ──────
+  # Le site public est servi par nginx depuis ivia_site_v2/ (statique) :
+  #   nginx/default.conf → location / { root /opt/merlin/ivia_site_v2; }
+  # nginx ne route JAMAIS vers ce conteneur : il était rebâti (~8 min) à chaque
+  # déploiement SANS recevoir de trafic public. Code conservé en repo (legacy).
+  # Pour le réactiver un jour : restaurer ce service + un location nginx dédié.
 
   livekit:
     image: livekit/livekit-server:v1.8.3
