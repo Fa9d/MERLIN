@@ -28,7 +28,28 @@
     .card:focus-visible{outline:none;}
     .card:focus-visible .cover{outline:2px solid var(--a,#2D6A4F);outline-offset:3px;}
     .rail-empty{display:none;}
-    @media (prefers-reduced-motion: reduce){.card:hover .cover{transform:none;}}
+    /* Viewport + flèches "Netflix" par-dessus les vignettes (au survol) */
+    .rail-viewport{position:relative;}
+    .rail-arrow{position:absolute;top:34%;transform:translateY(-50%);z-index:20;width:46px;height:46px;border-radius:9999px;background:#fff;border:1px solid #D4E8D0;box-shadow:0 10px 26px -10px rgba(26,46,29,.45);display:flex;align-items:center;justify-content:center;color:#1A2E1D;opacity:0;transition:opacity .22s ease, transform .18s ease;cursor:pointer;}
+    .rail-prev{left:-6px;} .rail-next{right:-6px;}
+    .rail-arrow:hover{transform:translateY(-50%) scale(1.07);background:#F0F7F2;}
+    .rail-fade{position:absolute;top:.4rem;bottom:1.2rem;width:64px;z-index:10;pointer-events:none;opacity:0;transition:opacity .22s ease;}
+    .rail-fade-l{left:0;background:linear-gradient(to right,#FAFDF8 28%,rgba(250,253,248,0));}
+    .rail-fade-r{right:0;background:linear-gradient(to left,#FAFDF8 28%,rgba(250,253,248,0));}
+    @media (hover:hover){
+      .rail-viewport:hover .rail-arrow{opacity:1;}
+      .rail-viewport:hover .rail-fade{opacity:1;}
+    }
+    .rail-viewport.at-start .rail-prev,.rail-viewport.at-start .rail-fade-l{opacity:0 !important;pointer-events:none;}
+    .rail-viewport.at-end .rail-next,.rail-viewport.at-end .rail-fade-r{opacity:0 !important;pointer-events:none;}
+    /* Apparition douce des rails à l'entrée dans le viewport */
+    .reveal-on .rail{opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease;}
+    .reveal-on .rail.in{opacity:1;transform:none;}
+    @media (prefers-reduced-motion: reduce){
+      .card:hover .cover{transform:none;}
+      .rail-arrow{transition:none;}
+      .reveal-on .rail{opacity:1 !important;transform:none !important;transition:none !important;}
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -83,12 +104,10 @@
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="commencer" aria-labelledby="commencer-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="commencer-t" class="font-heading text-2xl font-bold text-ink">Commencer avec IVIA</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/plusieurs-regards.html" role="listitem" data-tags="plusieurs regards sur ce que vous vivez littératie article modeles regards comprendre">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plusieurs regards sur ce que vous vivez</h3></div>
@@ -109,18 +128,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Créer des espaces de parole vrais</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-ecoute" aria-labelledby="th-ecoute-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="th-ecoute-t" class="font-heading text-2xl font-bold text-ink">Écoute &amp; relation</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="ecoute">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="ecoute">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/ecoute-qui-respecte-le-vivant.html" role="listitem" data-tags="une écoute qui respecte le vivant écoute &amp; relation article ecoute presence relation">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Écoute</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Une écoute qui respecte le vivant</h3></div>
@@ -141,18 +162,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plusieurs regards sur ce que vous vivez</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-equilibre" aria-labelledby="th-equilibre-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="th-equilibre-t" class="font-heading text-2xl font-bold text-ink">Équilibre &amp; vivant</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="equilibre">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="equilibre">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/penser-sa-vie-en-cycles.html" role="listitem" data-tags="penser sa vie en cycles équilibre &amp; vivant article cycles equilibre rythme machine">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Penser sa vie en cycles</h3></div>
@@ -169,18 +192,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Habiter son corps</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-empathie" aria-labelledby="th-empathie-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="th-empathie-t" class="font-heading text-2xl font-bold text-ink">Empathie &amp; société</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="empathie">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="empathie">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/espaces-collectifs-qui-epuisent.html" role="listitem" data-tags="ces espaces collectifs qui épuisent empathie &amp; société article collectif groupe societe">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Ces espaces collectifs qui épuisent</h3></div>
@@ -197,18 +222,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#C6447B;background:#C6447B12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#C6447B"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#C6447B">Empathie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">De la performance à la présence</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="th-frequence" aria-labelledby="th-frequence-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="th-frequence-t" class="font-heading text-2xl font-bold text-ink">Fréquence &amp; présence</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="frequence">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="frequence">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/tout-vibre.html" role="listitem" data-tags="tout vibre : ce que dit la physique fréquence &amp; présence article frequence vibration physique">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Tout vibre : ce que dit la physique</h3></div>
@@ -225,18 +252,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Fréquence</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Fréquence et autonomie</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="regeneration" aria-labelledby="regeneration-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="regeneration-t" class="font-heading text-2xl font-bold text-ink">Sommeil &amp; régénération</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="regeneration">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="regeneration">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/le-vivant-sait.html" role="listitem" data-tags="le vivant sait se régénérer régénération article regeneration sommeil corps vitalite">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · ~4 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le vivant sait se régénérer</h3></div>
@@ -257,18 +286,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Penser sa vie en cycles</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="outils" aria-labelledby="outils-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="outils-t" class="font-heading text-2xl font-bold text-ink">Outils &amp; auto-repères</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="outil">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="outil">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <div class="card opacity-80" role="listitem" data-tags="auto-repères du quotidien régénération outil outil auto-reperes" aria-disabled="true">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Outil</span><span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider text-muted bg-white/85 rounded-full px-2 py-1">Bientôt</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · Bientôt</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Auto-repères du quotidien</h3></div>
@@ -281,18 +312,20 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#2D6A4F;background:#2D6A4F12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#2D6A4F"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Outil</span><span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider text-muted bg-white/85 rounded-full px-2 py-1">Bientôt</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#2D6A4F">Équilibre</span> · Bientôt</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Cartographier votre cercle</h3></div>
       </div>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
 
   <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="nouveautes" aria-labelledby="nouveautes-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="nouveautes-t" class="font-heading text-2xl font-bold text-ink">Nouveautés</h2>
-      <div class="flex items-center gap-4">
-        <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" data-q="">Tout voir →</button>
-        <div class="hidden sm:flex items-center gap-1.5 shrink-0"><button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
+      <button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" data-q="">Tout voir →</button>
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
       <a class="card group" href="/ressources/plusieurs-regards.html" role="listitem" data-tags="plusieurs regards sur ce que vous vivez littératie article modeles regards comprendre">
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#4C2A86;background:#4C2A8612"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#4C2A86"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#4C2A86">Littératie</span> · ~5 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Plusieurs regards sur ce que vous vivez</h3></div>
@@ -313,6 +346,10 @@
         <div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:#E8943A;background:#E8943A12"><svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g></svg><span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur text-[11px] font-bold rounded-full pl-2 pr-2.5 py-1" style="color:#E8943A"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Article</span></div>
         <div class="px-0.5"><p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:#E8943A">Régénération</span> · ~4 min</p><h3 class="font-heading text-[15px] font-bold text-ink leading-snug">Le vivant sait se régénérer</h3></div>
       </a>
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      <button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </section>
   </main>
@@ -337,18 +374,40 @@
   </footer>
 
   <script>
-    // ── Flèches des rails (desktop) ──────────────────────────────────────────
+    // Révélation progressive activée (sans JS, les rails restent visibles)
+    document.documentElement.classList.add('reveal-on');
+
+    // ── Rails : flèches "Netflix" + état début/fin de course ─────────────────
     document.querySelectorAll('.rail').forEach(function (rail) {
+      var vp = rail.querySelector('.rail-viewport');
       var track = rail.querySelector('.rail-track');
       var prev = rail.querySelector('.rail-prev');
       var next = rail.querySelector('.rail-next');
       function step() {
-        var card = track.querySelector('.card');
-        return card ? card.getBoundingClientRect().width + 16 : 240;
+        var c = track.querySelector('.card');
+        return c ? c.getBoundingClientRect().width + 16 : 240;
+      }
+      function update() {
+        var max = track.scrollWidth - track.clientWidth - 2;
+        vp.classList.toggle('at-start', track.scrollLeft <= 2);
+        vp.classList.toggle('at-end', max <= 0 || track.scrollLeft >= max);
       }
       if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() * 2, behavior: 'smooth' }); });
       if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() * 2, behavior: 'smooth' }); });
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
     });
+
+    // ── Apparition douce des rails à l'entrée dans le viewport ───────────────
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('.rail').forEach(function (r) { io.observe(r); });
+    } else {
+      document.querySelectorAll('.rail').forEach(function (r) { r.classList.add('in'); });
+    }
 
     // ── Recherche / filtre (insensible aux accents) ──────────────────────────
     var input = document.getElementById('ressources-search');
@@ -368,6 +427,7 @@
         if (shown > 0) anyVisible = true;
       });
       noRes.classList.toggle('hidden', anyVisible || nq === '');
+      window.dispatchEvent(new Event('resize'));
     }
     if (input) input.addEventListener('input', function () { applyFilter(input.value); });
 

@@ -132,23 +132,23 @@ def card_html(key):
 
 def rail_html(rid, title, q, keys):
     cards = "\n".join(card_html(k) for k in keys)
-    voir = (f'<button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap" '
+    voir = (f'<button type="button" class="voir-tout text-sm font-semibold text-forest-deep hover:underline whitespace-nowrap shrink-0" '
             f'data-q="{html.escape(q, quote=True)}">Tout voir →</button>')
     arrows = (
-        '<div class="hidden sm:flex items-center gap-1.5 shrink-0">'
-        f'<button type="button" class="rail-prev w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Précédent">{lucide("chevron-left","w-4 h-4")}</button>'
-        f'<button type="button" class="rail-next w-9 h-9 rounded-full border border-bdr text-muted hover:text-ink hover:border-forest flex items-center justify-center transition-colors" aria-label="Suivant">{lucide("chevron-right","w-4 h-4")}</button>'
-        '</div>')
+        f'<button type="button" class="rail-arrow rail-prev" aria-label="Faire défiler vers la gauche">{lucide("chevron-left","w-5 h-5")}</button>'
+        f'<button type="button" class="rail-arrow rail-next" aria-label="Faire défiler vers la droite">{lucide("chevron-right","w-5 h-5")}</button>')
     return f"""  <section class="rail max-w-6xl mx-auto px-5 mt-12 scroll-mt-24" id="{rid}" aria-labelledby="{rid}-t">
     <div class="flex items-end justify-between gap-4 mb-4">
       <h2 id="{rid}-t" class="font-heading text-2xl font-bold text-ink">{html.escape(title)}</h2>
-      <div class="flex items-center gap-4">
-        {voir}
-        {arrows}
-      </div>
+      {voir}
     </div>
-    <div class="rail-track" role="list">
+    <div class="rail-viewport at-start at-end">
+      <div class="rail-track" role="list">
 {cards}
+      </div>
+      <div class="rail-fade rail-fade-l" aria-hidden="true"></div>
+      <div class="rail-fade rail-fade-r" aria-hidden="true"></div>
+      {arrows}
     </div>
   </section>"""
 
@@ -183,7 +183,28 @@ HEAD = """<!DOCTYPE html>
     .card:focus-visible{outline:none;}
     .card:focus-visible .cover{outline:2px solid var(--a,#2D6A4F);outline-offset:3px;}
     .rail-empty{display:none;}
-    @media (prefers-reduced-motion: reduce){.card:hover .cover{transform:none;}}
+    /* Viewport + flèches "Netflix" par-dessus les vignettes (au survol) */
+    .rail-viewport{position:relative;}
+    .rail-arrow{position:absolute;top:34%;transform:translateY(-50%);z-index:20;width:46px;height:46px;border-radius:9999px;background:#fff;border:1px solid #D4E8D0;box-shadow:0 10px 26px -10px rgba(26,46,29,.45);display:flex;align-items:center;justify-content:center;color:#1A2E1D;opacity:0;transition:opacity .22s ease, transform .18s ease;cursor:pointer;}
+    .rail-prev{left:-6px;} .rail-next{right:-6px;}
+    .rail-arrow:hover{transform:translateY(-50%) scale(1.07);background:#F0F7F2;}
+    .rail-fade{position:absolute;top:.4rem;bottom:1.2rem;width:64px;z-index:10;pointer-events:none;opacity:0;transition:opacity .22s ease;}
+    .rail-fade-l{left:0;background:linear-gradient(to right,#FAFDF8 28%,rgba(250,253,248,0));}
+    .rail-fade-r{right:0;background:linear-gradient(to left,#FAFDF8 28%,rgba(250,253,248,0));}
+    @media (hover:hover){
+      .rail-viewport:hover .rail-arrow{opacity:1;}
+      .rail-viewport:hover .rail-fade{opacity:1;}
+    }
+    .rail-viewport.at-start .rail-prev,.rail-viewport.at-start .rail-fade-l{opacity:0 !important;pointer-events:none;}
+    .rail-viewport.at-end .rail-next,.rail-viewport.at-end .rail-fade-r{opacity:0 !important;pointer-events:none;}
+    /* Apparition douce des rails à l'entrée dans le viewport */
+    .reveal-on .rail{opacity:0;transform:translateY(20px);transition:opacity .6s ease, transform .6s ease;}
+    .reveal-on .rail.in{opacity:1;transform:none;}
+    @media (prefers-reduced-motion: reduce){
+      .card:hover .cover{transform:none;}
+      .rail-arrow{transition:none;}
+      .reveal-on .rail{opacity:1 !important;transform:none !important;transition:none !important;}
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -261,18 +282,40 @@ CADRE_FOOTER = """  </main>
   </footer>
 
   <script>
-    // ── Flèches des rails (desktop) ──────────────────────────────────────────
+    // Révélation progressive activée (sans JS, les rails restent visibles)
+    document.documentElement.classList.add('reveal-on');
+
+    // ── Rails : flèches "Netflix" + état début/fin de course ─────────────────
     document.querySelectorAll('.rail').forEach(function (rail) {
+      var vp = rail.querySelector('.rail-viewport');
       var track = rail.querySelector('.rail-track');
       var prev = rail.querySelector('.rail-prev');
       var next = rail.querySelector('.rail-next');
       function step() {
-        var card = track.querySelector('.card');
-        return card ? card.getBoundingClientRect().width + 16 : 240;
+        var c = track.querySelector('.card');
+        return c ? c.getBoundingClientRect().width + 16 : 240;
+      }
+      function update() {
+        var max = track.scrollWidth - track.clientWidth - 2;
+        vp.classList.toggle('at-start', track.scrollLeft <= 2);
+        vp.classList.toggle('at-end', max <= 0 || track.scrollLeft >= max);
       }
       if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() * 2, behavior: 'smooth' }); });
       if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() * 2, behavior: 'smooth' }); });
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
     });
+
+    // ── Apparition douce des rails à l'entrée dans le viewport ───────────────
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('.rail').forEach(function (r) { io.observe(r); });
+    } else {
+      document.querySelectorAll('.rail').forEach(function (r) { r.classList.add('in'); });
+    }
 
     // ── Recherche / filtre (insensible aux accents) ──────────────────────────
     var input = document.getElementById('ressources-search');
@@ -292,6 +335,7 @@ CADRE_FOOTER = """  </main>
         if (shown > 0) anyVisible = true;
       });
       noRes.classList.toggle('hidden', anyVisible || nq === '');
+      window.dispatchEvent(new Event('resize'));
     }
     if (input) input.addEventListener('input', function () { applyFilter(input.value); });
 
