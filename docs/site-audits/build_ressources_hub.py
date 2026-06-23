@@ -90,12 +90,21 @@ def lucide(name, cls="w-5 h-5"):
 
 TYPE_ICON = {"Article": "file-text", "Vidéo": "play", "Outil": "wrench", "Audio": "audio-lines"}
 
-MOTIF = ('<svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'
-         '<g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22">'
-         '<path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/>'
-         '<path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/>'
-         '<path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/>'
-         '</g></svg>')
+# 6 motifs organiques sobres (lignes), teintés par var(--a). Variés par contenu.
+_MOTIFS = [
+    '<g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 95 C 40 65, 80 115, 130 80 S 220 55, 230 85"/><path d="M-10 115 C 40 85, 80 135, 130 100 S 220 75, 230 105"/><path d="M-10 135 C 40 105, 80 150, 130 120 S 220 95, 230 125"/></g>',
+    '<g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.2"><circle cx="38" cy="150" r="38"/><circle cx="38" cy="150" r="68"/><circle cx="38" cy="150" r="98"/><circle cx="38" cy="150" r="128"/></g>',
+    '<g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.2"><circle cx="82" cy="72" r="44"/><circle cx="122" cy="72" r="44"/><circle cx="102" cy="100" r="44"/></g>',
+    '<g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.22"><path d="M-10 60 q 25 -20 50 0 t 50 0 t 50 0 t 50 0 t 50 0"/><path d="M-10 82 q 25 -20 50 0 t 50 0 t 50 0 t 50 0 t 50 0"/><path d="M-10 104 q 25 -20 50 0 t 50 0 t 50 0 t 50 0 t 50 0"/></g>',
+    '<g fill="none" stroke="var(--a)" stroke-width="1.5" opacity="0.2"><path d="M100 152 L 38 18"/><path d="M100 152 L 78 8"/><path d="M100 152 L 122 8"/><path d="M100 152 L 162 18"/><path d="M100 152 L 8 58"/><path d="M100 152 L 192 58"/></g>',
+    '<g fill="var(--a)" opacity="0.26"><circle cx="40" cy="40" r="3"/><circle cx="82" cy="58" r="3"/><circle cx="124" cy="36" r="3"/><circle cx="164" cy="64" r="3"/><circle cx="60" cy="102" r="3"/><circle cx="112" cy="112" r="3"/><circle cx="152" cy="98" r="3"/><circle cx="30" cy="78" r="3"/><circle cx="182" cy="40" r="3"/></g>',
+]
+
+
+def motif_svg(key):
+    idx = sum(ord(c) for c in key) % len(_MOTIFS)
+    return ('<svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 150" '
+            'preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + _MOTIFS[idx] + '</svg>')
 
 
 def short_theme(theme):
@@ -117,7 +126,7 @@ def card_html(key):
              f'{lucide(TYPE_ICON[typ], "w-3.5 h-3.5")}{typ}</span>')
     soon = '<span class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider text-muted bg-white/85 rounded-full px-2 py-1">Bientôt</span>' if place else ''
     cover = (f'<div class="cover relative rounded-[16px] overflow-hidden border border-bdr" style="--a:{accent};background:{accent}12">'
-             f'{MOTIF}{badge}{soon}</div>')
+             f'{motif_svg(key)}{badge}{soon}</div>')
     meta = (f'<p class="text-[11px] text-muted mt-3 mb-1"><span class="font-semibold" style="color:{accent}">'
             f'{html.escape(short_theme(theme))}</span> · {html.escape(dur)}</p>')
     h3 = f'<h3 class="font-heading text-[15px] font-bold text-ink leading-snug">{html.escape(title)}</h3>'
