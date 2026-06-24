@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Maquette : Voir, ma carte de vie (Signature / Doux)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ivia-habitee.css">
+  <style>
+    .carte{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);padding:8px;margin-bottom:28px;box-shadow:var(--shadow);overflow:hidden;}
+    .carte svg{width:100%;height:auto;display:block;border-radius:16px;}
+    .legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 2px 0;font-size:12px;color:var(--muted);}
+    .legend i{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle;}
+    .axes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:8px;}
+    @media (max-width:680px){ .axes{grid-template-columns:1fr;} }
+    .axe{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px 18px;}
+    .axe .n{font-family:'Lora',serif;font-size:16px;font-weight:600;}
+    .axe .bar{height:6px;border-radius:9999px;background:var(--pill-bg);overflow:hidden;margin:10px 0 8px;}
+    .axe .bar i{display:block;height:100%;border-radius:9999px;background:var(--cta-bg);}
+    .axe .s{font-size:12.5px;color:var(--muted);line-height:1.45;}
+  </style>
+</head>
+<body data-theme="signature">
+
+  <nav class="top">
+    <div class="row">
+      <a class="brand" href="espace-client-accueil.html">
+        <span class="chip"><svg viewBox="0 0 28 28" fill="none"><rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/><rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/><rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/></svg></span>
+        IVIA
+      </a>
+      <div class="navlinks">
+        <a href="espace-client-accueil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Accueil</a>
+        <a href="espace-client-deposer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Déposer</a>
+        <a href="espace-client-rencontrer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-1a4 4 0 00-3-3.87M9 20H4v-1a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg>Rencontrer</a>
+        <a href="espace-client-ecrire.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>Écrire</a>
+        <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Voir</a>
+      </div>
+      <div class="navend">
+        <div class="menu">
+          <button class="menu-btn" id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Menu du compte" onclick="toggleMenu(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="menu-panel" id="menu-panel" role="menu">
+            <p class="lbl">Ambiance</p>
+            <div class="ambiance-row" role="tablist" aria-label="Ambiance">
+              <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
+              <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
+            </div>
+            <hr>
+            <button class="logout" onclick="alert('Déconnexion (maquette)')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg>
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="fil"><a href="espace-client-accueil.html">Accueil</a> › <span class="here">Voir</span></div>
+
+    <div class="page-h">
+      <h1>Votre carte de vie</h1>
+      <p>Les fils de vos dépôts, écrits et rencontres, mis en perspective dans la durée. Une lecture — jamais un diagnostic. Ce que vous en faites vous appartient.</p>
+    </div>
+
+    <div class="carte">
+      <svg viewBox="0 0 900 360" fill="none" aria-label="Carte de vie (illustration)">
+        <defs>
+          <radialGradient id="halo" cx="50%" cy="42%" r="60%">
+            <stop offset="0%" stop-color="var(--halo)"/><stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <rect width="900" height="360" fill="url(#halo)"/>
+        <!-- liens -->
+        <g stroke="var(--card-border)" stroke-width="1.4">
+          <path d="M210 180 L420 110"/><path d="M420 110 L640 150"/><path d="M210 180 L380 250"/>
+          <path d="M380 250 L600 270"/><path d="M640 150 L600 270"/><path d="M420 110 L380 250"/>
+        </g>
+        <!-- noeuds (axes de vie) -->
+        <g>
+          <circle cx="210" cy="180" r="16" fill="var(--accent)"/>
+          <circle cx="420" cy="110" r="22" fill="var(--accent-2)"/>
+          <circle cx="640" cy="150" r="13" fill="var(--accent)"/>
+          <circle cx="380" cy="250" r="18" fill="var(--accent-2)"/>
+          <circle cx="600" cy="270" r="11" fill="var(--accent)"/>
+        </g>
+        <g fill="var(--text)" font-family="Lora, serif" font-size="14">
+          <text x="210" y="216" text-anchor="middle">territoire</text>
+          <text x="420" y="84" text-anchor="middle">corps</text>
+          <text x="640" y="180" text-anchor="middle">mental</text>
+          <text x="380" y="286" text-anchor="middle">relations</text>
+          <text x="600" y="296" text-anchor="middle">famille</text>
+        </g>
+      </svg>
+      <div class="legend">
+        <span><i style="background:var(--accent-2)"></i>Fils qui se tendent en ce moment</span>
+        <span><i style="background:var(--accent)"></i>Repères stables</span>
+      </div>
+    </div>
+
+    <p class="section-h">Lecture du mois</p>
+    <div class="axes">
+      <div class="axe">
+        <div class="n">Relations</div>
+        <div class="bar"><i style="width:72%"></i></div>
+        <div class="s">Un nouveau fil s'est dessiné — vous nommez plus souvent ce dont vous avez besoin.</div>
+      </div>
+      <div class="axe">
+        <div class="n">Corps</div>
+        <div class="bar"><i style="width:55%"></i></div>
+        <div class="s">Le calme du matin revient comme un repère. À cultiver, peut-être.</div>
+      </div>
+      <div class="axe">
+        <div class="n">Mental</div>
+        <div class="bar"><i style="width:38%"></i></div>
+        <div class="s">Moins de boucles cette semaine que la précédente. Une hypothèse, pas une certitude.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Maquette — écran <b>Voir</b>. Lecture multidimensionnelle (axes de la doctrine) — <b>observation / hypothèse</b>, jamais diagnostic. Deux ambiances.</p>
+
+  <script src="ivia-habitee.js"></script>
+</body>
+</html>

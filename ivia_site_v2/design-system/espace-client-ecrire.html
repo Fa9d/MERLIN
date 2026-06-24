@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Maquette : Écrire (Signature / Doux)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ivia-habitee.css">
+  <style>
+    .compose{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);padding:22px;margin-bottom:30px;box-shadow:var(--shadow);}
+    .compose textarea{width:100%;min-height:150px;resize:vertical;border:0;outline:0;background:transparent;
+                      color:var(--text);font-family:'Lora',serif;font-size:18px;line-height:1.6;}
+    .compose textarea::placeholder{color:var(--soft);}
+    .compose .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border);flex-wrap:wrap;}
+    .compose .privacy{font-size:12px;color:var(--soft);display:flex;align-items:center;gap:7px;}
+    .compose .privacy svg{width:13px;height:13px;}
+    .entries{display:flex;flex-direction:column;gap:12px;}
+    .entry{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:18px 20px;transition:.18s;}
+    .entry:hover{background:var(--card-2);}
+    .entry .d{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--soft);}
+    .entry .x{font-family:'Lora',serif;font-size:16px;color:var(--text);line-height:1.55;margin-top:6px;}
+    .entry .tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:600;color:var(--accent-2);background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:9999px;padding:3px 10px;}
+  </style>
+</head>
+<body data-theme="signature">
+
+  <nav class="top">
+    <div class="row">
+      <a class="brand" href="espace-client-accueil.html">
+        <span class="chip"><svg viewBox="0 0 28 28" fill="none"><rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/><rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/><rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/></svg></span>
+        IVIA
+      </a>
+      <div class="navlinks">
+        <a href="espace-client-accueil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Accueil</a>
+        <a href="espace-client-deposer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Déposer</a>
+        <a href="espace-client-rencontrer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-1a4 4 0 00-3-3.87M9 20H4v-1a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg>Rencontrer</a>
+        <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>Écrire</a>
+        <a href="espace-client-voir.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Voir</a>
+      </div>
+      <div class="navend">
+        <div class="menu">
+          <button class="menu-btn" id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Menu du compte" onclick="toggleMenu(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="menu-panel" id="menu-panel" role="menu">
+            <p class="lbl">Ambiance</p>
+            <div class="ambiance-row" role="tablist" aria-label="Ambiance">
+              <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
+              <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
+            </div>
+            <hr>
+            <button class="logout" onclick="alert('Déconnexion (maquette)')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg>
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="fil"><a href="espace-client-accueil.html">Accueil</a> › <span class="here">Écrire</span></div>
+
+    <div class="page-h">
+      <h1>Écrire</h1>
+      <p>Déposer en mots ce qui pèse, quand la parole n'est pas là. À vous, toujours — rien n'est partagé sans votre accord.</p>
+    </div>
+
+    <div class="compose">
+      <textarea placeholder="Ce soir, je voulais dire que…"></textarea>
+      <div class="foot">
+        <span class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v4m-6 6h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg>Privé · chiffré · à vous seul·e</span>
+        <button class="cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Déposer cette entrée</button>
+      </div>
+    </div>
+
+    <p class="section-h">Vos dernières entrées</p>
+    <div class="entries">
+      <div class="entry">
+        <div class="d">Hier soir</div>
+        <div class="x">« J'ai réussi à dire non, pour une fois. C'était petit, mais ça comptait. »</div>
+        <span class="tag">nourrit votre carte · relations</span>
+      </div>
+      <div class="entry">
+        <div class="d">Dimanche</div>
+        <div class="x">« Le silence du matin m'a fait du bien. Je devrais m'en souvenir les jours lourds. »</div>
+        <span class="tag">nourrit votre carte · corps</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Maquette — écran <b>Écrire</b>. Chaque entrée reste privée et <b>nourrit la carte de vie</b> (lien vers « Voir »), deux ambiances.</p>
+
+  <script src="ivia-habitee.js"></script>
+</body>
+</html>

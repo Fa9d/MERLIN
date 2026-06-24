@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Maquette : parcours Première fois (Signature / Doux)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ivia-habitee.css">
+  <style>
+    /* Bandeau étapes du parcours (démo) */
+    .flow{position:sticky;top:0;z-index:50;background:var(--card-2);backdrop-filter:blur(10px);border-bottom:1px solid var(--card-border);}
+    .flow .row{max-width:1000px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .flow .brand{margin-right:8px;}
+    .stepnav{display:flex;gap:6px;flex-wrap:wrap;}
+    .stepnav button{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--pill-border);background:var(--pill-bg);
+                    color:var(--pill-text);border-radius:9999px;padding:7px 13px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s;}
+    .stepnav button.on{background:var(--nav-active-bg);color:var(--nav-active-text);border-color:transparent;}
+    .stepnav .num{width:18px;height:18px;border-radius:50%;background:rgba(127,127,127,.25);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+    .stepnav button.on .num{background:rgba(255,255,255,.25);}
+    .menu{margin-left:auto;}
+
+    .screen{display:none;animation:fade .35s ease;}
+    .screen.on{display:block;}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    .hero{text-align:center;max-width:640px;margin:0 auto;padding:30px 0 8px;}
+    .eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);}
+    .hero h1{font-size:40px;font-weight:600;line-height:1.12;margin:12px 0;}
+    .hero p{color:var(--muted);font-size:16px;line-height:1.6;max-width:52ch;margin:0 auto 20px;}
+    .center{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+    .reassure{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:12.5px;color:var(--soft);}
+    .reassure span{display:inline-flex;align-items:center;gap:6px;}
+    .reassure svg{width:13px;height:13px;}
+
+    .panel{max-width:480px;margin:18px auto 0;background:var(--card);border:1px solid var(--card-border);border-radius:24px;padding:26px;box-shadow:var(--shadow);}
+    .panel h2{font-size:22px;font-weight:600;text-align:center;}
+    .panel .lead{font-size:14px;color:var(--muted);text-align:center;margin:8px 0 18px;line-height:1.5;}
+    .field{display:block;margin-bottom:14px;}
+    .field label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px;}
+    .field input{width:100%;background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:12px;padding:12px 14px;color:var(--text);font:inherit;font-size:15px;outline:0;}
+    .field input::placeholder{color:var(--soft);}
+    .mini{font-size:11.5px;color:var(--soft);text-align:center;margin-top:12px;line-height:1.5;}
+    .timer-demo{font-family:'Lora',serif;font-size:38px;text-align:center;color:var(--text);margin:6px 0;}
+    .recap{display:flex;align-items:center;gap:10px;justify-content:center;font-size:13px;color:var(--muted);margin-bottom:8px;}
+    .ok{width:56px;height:56px;border-radius:50%;background:var(--cta-bg);color:var(--cta-text);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+    .ok svg{width:28px;height:28px;}
+  </style>
+</head>
+<body data-theme="signature">
+
+  <!-- Bandeau parcours -->
+  <div class="flow">
+    <div class="row">
+      <span class="brand" style="font-size:19px"><span class="chip"><svg viewBox="0 0 28 28" fill="none"><rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/><rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/><rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/></svg></span> IVIA</span>
+      <div class="stepnav">
+        <button class="on" data-step="1" onclick="go(1)"><span class="num">1</span>Accueil</button>
+        <button data-step="2" onclick="go(2)"><span class="num">2</span>Déposer (offert)</button>
+        <button data-step="3" onclick="go(3)"><span class="num">3</span>Créer l'espace</button>
+        <button data-step="4" onclick="go(4)"><span class="num">4</span>Dans l'espace</button>
+      </div>
+      <div class="menu">
+        <button class="menu-btn" id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Ambiance" onclick="toggleMenu(event)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="menu-panel" id="menu-panel" role="menu">
+          <p class="lbl">Ambiance</p>
+          <div class="ambiance-row" role="tablist" aria-label="Ambiance">
+            <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
+            <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ÉTAPE 1 — Accueil public -->
+    <section class="screen on" id="s1">
+      <div class="hero">
+        <p class="eyebrow">In Vivo, In Actu — au sein de l'être, en actes</p>
+        <h1>Être entendu, vraiment.</h1>
+        <p>IVIA est une maison du vivant. Déposez votre voix, à votre rythme — et voyez ce qui s'en dégage. Votre premier dépôt est offert.</p>
+        <div class="center">
+          <button class="cta" onclick="go(2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Essayez — 1ᵉʳ dépôt offert</button>
+          <button class="pill" onclick="go(3)">J'ai déjà un espace</button>
+        </div>
+        <div class="reassure">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v4m-6 6h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg>Voix effacée à J+30</span>
+          <span>Données au Québec (Loi 25)</span>
+          <span>Sans abonnement, sans engagement</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 2 — Déposer (offert) -->
+    <section class="screen" id="s2">
+      <div class="hero" style="padding-bottom:0">
+        <p class="eyebrow">Étape 1 sur 2 · gratuit</p>
+        <h1>Déposez votre voix.</h1>
+        <p>Parlez librement. Rien n'est envoyé tant que vous ne le décidez pas. À la fin, vous créerez votre espace pour relire.</p>
+      </div>
+      <div class="panel">
+        <div class="serif" style="text-align:center;font-size:24px;font-weight:600;letter-spacing:.12em">IVIA</div>
+        <div class="timer-demo">02:14</div>
+        <p class="recap"><span style="width:9px;height:9px;border-radius:50%;background:#dc2626;display:inline-block"></span>Enregistrement en cours…</p>
+        <button class="cta" style="width:100%;margin-top:6px" onclick="go(3)"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>Terminer et relire</button>
+        <p class="mini">Aucun paiement. Votre voix reste à vous.</p>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 3 — Créer l'espace -->
+    <section class="screen" id="s3">
+      <div class="hero" style="padding-bottom:0">
+        <p class="eyebrow">Étape 2 sur 2</p>
+        <h1>Créez votre espace.</h1>
+        <p>Pour garder votre dépôt et relire sa transcription, il suffit de votre courriel. Un lien d'accès vous est envoyé — pas de mot de passe à retenir.</p>
+      </div>
+      <div class="panel">
+        <h2>Votre courriel</h2>
+        <p class="lead">On vous envoie un lien magique pour entrer dans votre espace.</p>
+        <label class="field"><span>Courriel</span><input type="email" placeholder="vous@exemple.ca"></label>
+        <button class="cta" style="width:100%" onclick="go(4)">Recevoir mon lien d'accès →</button>
+        <p class="mini">En créant votre espace, vous acceptez les CGU et la politique de confidentialité (Loi 25). Vos données restent au Québec.</p>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 4 — Arrivée dans l'espace -->
+    <section class="screen" id="s4">
+      <div class="hero" style="padding-bottom:0">
+        <div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+        <h1>Bienvenue chez vous.</h1>
+        <p>Votre dépôt est en cours de transcription. Voici votre maison IVIA — vous pourrez toujours revenir ici.</p>
+      </div>
+      <div class="panel" style="max-width:560px">
+        <h2 style="text-align:left;font-size:18px">Ce que vous pouvez faire maintenant</h2>
+        <p class="lead" style="text-align:left;margin-bottom:14px">Quatre gestes, toujours au même endroit.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <a class="pill" href="espace-client-accueil.html" style="justify-content:flex-start">Relire mon dépôt</a>
+          <a class="pill" href="espace-client-rencontrer.html" style="justify-content:flex-start">Rencontrer un·e praticien·ne</a>
+          <a class="pill" href="espace-client-ecrire.html" style="justify-content:flex-start">Écrire</a>
+          <a class="pill" href="espace-client-voir.html" style="justify-content:flex-start">Voir ma carte de vie</a>
+        </div>
+        <a class="cta" href="espace-client-accueil.html" style="width:100%;margin-top:16px">Entrer dans mon espace →</a>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="note">Maquette — parcours <b>Première fois</b>. Le 1ᵉʳ dépôt est <b>offert</b> et précède la création de compte (magic link) ; on arrive dans l'espace avec « voici ce que vous pouvez faire ». Cliquez les étapes en haut. Deux ambiances.</p>
+
+  <script src="ivia-habitee.js"></script>
+  <script>
+    function go(n){
+      for (let i=1;i<=4;i++){
+        document.getElementById('s'+i).classList.toggle('on', i===n);
+        document.querySelector('.stepnav button[data-step="'+i+'"]').classList.toggle('on', i===n);
+      }
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>
