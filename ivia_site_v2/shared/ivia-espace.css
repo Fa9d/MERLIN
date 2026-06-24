@@ -1,0 +1,45 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   IVIA — Thème « Maison habitée » pour l'espace connecté.
+   Mappe les couleurs nommées des pages (cream, surface, ink, muted, bdr,
+   forest…) à des VARIABLES d'ambiance. Chaque page pointe sa tailwind.config
+   sur ces variables → bascule Signature/Doux automatique, y compris pour le
+   contenu injecté en JS. Le sélecteur vit dans shared/layout.js.
+
+   Défaut = Signature (sombre). [data-theme="doux"] surcharge.
+─────────────────────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme="signature"] {
+  --cream:   #14150e;   /* fond de page (velours sombre) */
+  --surface: #1b1c14;   /* panneaux doux */
+  --ink:     #F3EFE2;   /* texte principal (ivoire chaud) */
+  --muted:   #A9A693;   /* texte secondaire */
+  --bdr:     #34362a;   /* bordures */
+  --card-bg: #1a1b13;   /* fond des cartes */
+  --card-bg-soft: #1f2017;
+  --forest-deep: #4A7C59;   /* vert IVIA — éclairci pour lisibilité sur sombre */
+  --forest:      #5e9d6f;
+  --sage:        #8FB99A;
+  --copper:      #C8965A;   /* accent cuivre (Signature) */
+  --accent-2:    #C8965A;
+  --on-accent:   #ffffff;   /* texte sur boutons verts */
+}
+
+[data-theme="doux"] {
+  --cream:   #ead9dd;
+  --surface: #f3e3e6;
+  --ink:     #5b4750;
+  --muted:   #9a7f88;
+  --bdr:     #d9c2c8;
+  --card-bg: #fbf4f5;
+  --card-bg-soft: #f6ebee;
+  --forest-deep: #3f7350;
+  --forest:      #4A7C59;
+  --sage:        #7fa07f;
+  --copper:      #c98b9b;   /* accent rosé (Doux) */
+  --accent-2:    #c98b9b;
+  --on-accent:   #ffffff;
+}
+
+/* Transition douce entre ambiances */
+html, body { transition: background-color .4s ease, color .4s ease; }
