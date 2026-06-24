@@ -552,17 +552,22 @@
         </div>
       </div>
 
-      <!-- ── Proposition commerciale ───────────────────────────────────────── -->
-      <div data-reveal class="mt-10 rounded-[28px] bg-forest-deep text-white p-7 sm:p-10 grid lg:grid-cols-[1.35fr_1fr] gap-8 lg:gap-12 items-center relative overflow-hidden">
+      <!-- ── Proposition commerciale (tarifs réels — BP v2.3) ──────────────── -->
+      <div data-reveal class="mt-10 rounded-[28px] bg-forest-deep text-white p-7 sm:p-10 grid lg:grid-cols-[1.25fr_1fr] gap-8 lg:gap-12 items-center relative overflow-hidden">
         <div class="absolute -right-20 -top-24 w-[360px] h-[360px] rounded-full pointer-events-none" style="background:radial-gradient(circle,#4A7C59,transparent 70%);opacity:.5" aria-hidden="true"></div>
         <div class="relative z-10">
           <p class="text-sage text-xs font-semibold uppercase tracking-[0.22em] mb-3">Rejoindre IVIA</p>
           <h3 class="font-heading text-2xl sm:text-3xl font-bold mb-3 leading-snug">Une place pour les praticiens qui veulent rester présents</h3>
-          <p class="text-white/80 leading-relaxed max-w-xl mb-7">
+          <p class="text-white/80 leading-relaxed max-w-xl mb-6">
             Membre d'un ordre ou indépendant : IVIA vous rend du temps, élargit votre regard et vous met
             en lien avec des personnes — sans jamais sortir de votre périmètre.
-            <span class="text-white font-semibold">Conçu avec vous, sans engagement, données au Québec.</span>
           </p>
+          <div class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/85 mb-7">
+            <span class="flex items-center gap-1.5"><span class="text-sage font-bold">✓</span> Fini la double tâche</span>
+            <span class="flex items-center gap-1.5"><span class="text-sage font-bold">✓</span> Lecture à valider</span>
+            <span class="flex items-center gap-1.5"><span class="text-sage font-bold">✓</span> Ordre <em>et</em> indépendant</span>
+            <span class="flex items-center gap-1.5"><span class="text-sage font-bold">✓</span> Conçu avec vous</span>
+          </div>
           <div class="flex flex-wrap items-center gap-3">
             <a href="mailto:contact@ivia.quebec?subject=Rejoindre%20IVIA%20comme%20praticien"
                class="bg-white text-forest-deep font-semibold px-6 py-3.5 rounded-[14px] hover:bg-sage hover:text-ink transition-colors shadow-sm">
@@ -573,14 +578,29 @@
               Voir la page complète →
             </a>
           </div>
-          <p class="text-white/55 text-xs mt-4">Aucun acte réservé · Vous gardez votre titre et votre jugement · Non clinique</p>
+          <p class="text-white/55 text-xs mt-4">Sans engagement · Aucun acte réservé · Données au Québec (Loi 25)</p>
         </div>
-        <ul class="relative z-10 space-y-3.5 text-sm">
-          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>Reprenez votre présence — fini la double tâche pendant la séance.</span></li>
-          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>Une seconde lecture structurée, à valider — vous gardez la main.</span></li>
-          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>Deux marchés : ordre <em>et</em> indépendant, sans acte réservé.</span></li>
-          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>L'outil grandit avec vos demandes — chaque ajout, une preuve datée.</span></li>
-        </ul>
+
+        <!-- Carte tarifaire -->
+        <div class="relative z-10 bg-white text-ink rounded-[20px] p-6 shadow-lg">
+          <p class="font-heading text-sm font-semibold text-forest-deep mb-1">Abonnement praticien</p>
+          <p class="text-xs text-muted mb-4">Selon votre volume de séances. Sans engagement.</p>
+          <div class="space-y-2.5">
+            <div class="flex items-baseline justify-between border-b border-bdr pb-2.5">
+              <span class="text-sm font-semibold text-ink">Petit <span class="text-muted font-normal">· jusqu'à 30 séances/mois</span></span>
+              <span class="font-heading font-bold text-forest-deep whitespace-nowrap">27,99 $<span class="text-xs text-muted font-normal">/mois</span></span>
+            </div>
+            <div class="flex items-baseline justify-between border-b border-bdr pb-2.5">
+              <span class="text-sm font-semibold text-ink">Régulier <span class="text-muted font-normal">· 31 à 80</span></span>
+              <span class="font-heading font-bold text-forest-deep whitespace-nowrap">47,99 $<span class="text-xs text-muted font-normal">/mois</span></span>
+            </div>
+            <div class="flex items-baseline justify-between">
+              <span class="text-sm font-semibold text-ink">Gros <span class="text-muted font-normal">· 81 et +</span></span>
+              <span class="font-heading font-bold text-forest-deep whitespace-nowrap">84,99 $<span class="text-xs text-muted font-normal">/mois</span></span>
+            </div>
+          </div>
+          <p class="text-[11px] text-muted mt-4 pt-3 border-t border-bdr">Plans Essentiel · Standard · Premium. Services analytiques à la carte (résumé, analyse, suivi) selon le plan.</p>
+        </div>
       </div>
 
     </div>
