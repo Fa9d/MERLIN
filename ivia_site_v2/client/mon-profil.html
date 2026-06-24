@@ -10,13 +10,15 @@
   <script src="/shared/api.js?v=20260616a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)',card:'var(--card-bg)'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1{font-family:'Lora',Georgia,serif;}
-    .lbl{display:block;font-size:13px;font-weight:600;color:#4B6350;margin-bottom:6px;}
-    .fld{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:11px 15px;font-size:14px;background:#fff;color:#1A2E1D;outline:none;}
-    .fld:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+    .lbl{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px;}
+    .fld{width:100%;border:1.5px solid var(--bdr);border-radius:12px;padding:11px 15px;font-size:14px;background:var(--card-bg);color:var(--ink);outline:none;}
+    .fld:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(74,124,89,.12);}
   </style>
 </head>
 <body class="antialiased min-h-screen bg-cream">

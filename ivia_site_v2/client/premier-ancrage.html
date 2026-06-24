@@ -9,45 +9,47 @@
   <title>IVIA — Premier ancrage</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background-color:#FAFDF8;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background-color:var(--cream);color:var(--ink);}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .field-input{width:100%;border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;font-size:15px;background:#fff;color:#1A2E1D;transition:border-color .15s,box-shadow .15s;outline:none;resize:vertical;font-family:inherit;}
-    .field-input:focus{border-color:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,.12);}
-    .field-label{display:block;font-size:14px;font-weight:600;color:#1A2E1D;margin-bottom:8px;}
-    .field-hint{font-size:12px;color:#4B6350;margin-top:6px;line-height:1.5;}
+    .field-input{width:100%;border:1.5px solid var(--bdr);border-radius:12px;padding:12px 16px;font-size:15px;background:var(--card-bg);color:var(--ink);transition:border-color .15s,box-shadow .15s;outline:none;resize:vertical;font-family:inherit;}
+    .field-input:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(74,124,89,.12);}
+    .field-label{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+    .field-hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5;}
     .question-step{display:none;}
     .question-step.active{display:block;}
     /* Chips registres / intentions / canal */
-    .chip-btn{border:1.5px solid #D4E8D0;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:500;color:#4B6350;background:#fff;cursor:pointer;transition:all .15s;text-align:left;}
-    .chip-btn.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:700;}
+    .chip-btn{border:1.5px solid var(--bdr);border-radius:10px;padding:10px 18px;font-size:13px;font-weight:500;color:var(--muted);background:var(--card-bg);cursor:pointer;transition:all .15s;text-align:left;}
+    .chip-btn.selected{border-color:var(--forest);background:var(--surface);color:var(--forest-deep);font-weight:700;}
     /* Cartes format */
-    .format-card{border:1.5px solid #D4E8D0;border-radius:14px;padding:16px;cursor:pointer;transition:all .15s;background:#fff;}
-    .format-card.selected{border-color:#4A7C59;background:#F0F7F2;}
+    .format-card{border:1.5px solid var(--bdr);border-radius:14px;padding:16px;cursor:pointer;transition:all .15s;background:var(--card-bg);}
+    .format-card.selected{border-color:var(--forest);background:var(--surface);}
     .format-card input[type="radio"]{display:none;}
     /* Cartes rythme */
-    .rythme-card{border:1.5px solid #D4E8D0;border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;background:#fff;display:flex;align-items:center;gap:12px;}
-    .rythme-card.selected{border-color:#4A7C59;background:#F0F7F2;}
+    .rythme-card{border:1.5px solid var(--bdr);border-radius:12px;padding:12px 16px;cursor:pointer;transition:all .15s;background:var(--card-bg);display:flex;align-items:center;gap:12px;}
+    .rythme-card.selected{border-color:var(--forest);background:var(--surface);}
     .rythme-card input[type="radio"]{display:none;}
     /* Options durée */
-    .duree-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border:1.5px solid #D4E8D0;border-radius:12px;cursor:pointer;transition:all .15s;background:#fff;font-size:14px;color:#4B6350;}
-    .duree-opt:hover{border-color:#8FB99A;background:#F0F7F2;}
-    .duree-opt.selected{border-color:#4A7C59;background:#F0F7F2;color:#2D6A4F;font-weight:600;}
+    .duree-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border:1.5px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .15s;background:var(--card-bg);font-size:14px;color:var(--muted);}
+    .duree-opt:hover{border-color:var(--sage);background:var(--surface);}
+    .duree-opt.selected{border-color:var(--forest);background:var(--surface);color:var(--forest-deep);font-weight:600;}
     .duree-opt input[type="radio"]{display:none;}
-    .duree-dot{width:16px;height:16px;border:2px solid #D4E8D0;border-radius:50%;flex-shrink:0;transition:all .15s;}
-    .duree-opt.selected .duree-dot{border-color:#2D6A4F;background:#2D6A4F;}
+    .duree-dot{width:16px;height:16px;border:2px solid var(--bdr);border-radius:50%;flex-shrink:0;transition:all .15s;}
+    .duree-opt.selected .duree-dot{border-color:var(--forest-deep);background:var(--forest-deep);}
     /* Grille profil dimensionnel */
-    .dim-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #F0F7F2;}
+    .dim-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--surface);}
     .dim-row:last-child{border-bottom:none;}
-    .dim-label{font-size:13px;font-weight:600;color:#1A2E1D;}
-    .dim-desc{font-size:11px;color:#4B6350;margin-top:1px;}
+    .dim-label{font-size:13px;font-weight:600;color:var(--ink);}
+    .dim-desc{font-size:11px;color:var(--muted);margin-top:1px;}
     .dim-options{display:flex;gap:6px;}
-    .dim-opt{width:72px;padding:6px 4px;border:1.5px solid #D4E8D0;border-radius:8px;font-size:11px;font-weight:500;color:#4B6350;background:#fff;cursor:pointer;text-align:center;transition:all .15s;}
-    .dim-opt:hover{border-color:#8FB99A;background:#F0F7F2;}
-    .dim-opt.selected{border-color:#2D6A4F;background:#2D6A4F;color:#fff;font-weight:700;}
+    .dim-opt{width:72px;padding:6px 4px;border:1.5px solid var(--bdr);border-radius:8px;font-size:11px;font-weight:500;color:var(--muted);background:var(--card-bg);cursor:pointer;text-align:center;transition:all .15s;}
+    .dim-opt:hover{border-color:var(--sage);background:var(--surface);}
+    .dim-opt.selected{border-color:var(--forest-deep);background:var(--forest-deep);color:var(--card-bg);font-weight:700;}
     /* Étiquettes section */
-    .section-tag{display:inline-flex;align-items:center;gap:6px;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4B6350;margin-bottom:20px;}
+    .section-tag{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--bdr);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
     .progress-bar-fill{transition:width .4s ease;}
   </style>
 </head>
@@ -87,7 +89,7 @@
       <form id="ancrage-form" novalidate>
 
         <!-- Q1 — Intention narrative -->
-        <div class="question-step active bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q1">
+        <div class="question-step active bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q1">
           <div class="section-tag">Ce que vous portez</div>
           <label for="q1-input" class="field-label text-base">
             Qu'est-ce qui vous a amené ici, en quelques mots ?
@@ -101,7 +103,7 @@
         </div>
 
         <!-- Q2 — Durée -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q2">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q2">
           <div class="section-tag">Ce que vous portez</div>
           <p class="field-label text-base">Depuis combien de temps portez-vous cela ?</p>
           <p class="text-sm text-muted mb-5">La temporalité nous aide à mieux comprendre où vous en êtes.</p>
@@ -135,7 +137,7 @@
         </div>
 
         <!-- Q3 — Profil dimensionnel (les 6 cercles) -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q3">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q3">
           <div class="section-tag">Votre paysage intérieur</div>
           <p class="field-label text-base">Comment vous situez-vous en ce moment dans chacun de ces espaces ?</p>
           <p class="text-sm text-muted mb-6 leading-relaxed">
@@ -196,7 +198,7 @@
         </div>
 
         <!-- Q4 — Registres dominants -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q4">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q4">
           <div class="section-tag">Votre paysage intérieur</div>
           <p class="field-label text-base">Dans quels espaces cela se passe-t-il surtout ? <span class="font-normal text-muted">(3 max)</span></p>
           <p class="text-sm text-muted mb-5">Où ressentez-vous le plus le poids de ce que vous portez ?</p>
@@ -214,7 +216,7 @@
         </div>
 
         <!-- Q5 — Intentions / espoirs -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q5">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q5">
           <div class="section-tag">Ce que vous cherchez</div>
           <p class="field-label text-base">Qu'est-ce que vous espérez de cet espace ? <span class="font-normal text-muted">(3 max)</span></p>
           <p class="text-sm text-muted mb-5">Pas d'obligation d'être précis·e — une direction suffit.</p>
@@ -233,7 +235,7 @@
         </div>
 
         <!-- Q6 — Format préféré -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q6">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q6">
           <div class="section-tag">Comment travailler ensemble</div>
           <p class="field-label text-base">Comment préférez-vous travailler ?</p>
           <p class="text-sm text-muted mb-5">Votre praticien·ne adapte son approche selon votre format.</p>
@@ -263,7 +265,7 @@
         </div>
 
         <!-- Q7 — Rythme -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q7">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q7">
           <div class="section-tag">Comment travailler ensemble</div>
           <p class="field-label text-base">À quel rythme vous voyez-vous travailler ?</p>
           <p class="text-sm text-muted mb-5">Une indication — pas un engagement ferme.</p>
@@ -293,7 +295,7 @@
         </div>
 
         <!-- Q8 — Limites + contexte praticien + canal -->
-        <div class="question-step bg-white border border-bdr rounded-[24px] p-8 shadow-sm" id="q8">
+        <div class="question-step bg-card border border-bdr rounded-[24px] p-8 shadow-sm" id="q8">
           <div class="section-tag">Ce que vous souhaitez que la praticienne sache</div>
           <div class="space-y-6">
             <div>

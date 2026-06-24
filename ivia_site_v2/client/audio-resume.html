@@ -12,16 +12,18 @@
   <!-- WaveSurfer v7 -->
   <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
   <script src="/shared/mock.js"></script>
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1,h2{font-family:'Lora',Georgia,serif;}
     /* Conteneur WaveSurfer */
-    #waveform{border-radius:12px;overflow:hidden;background:#F0F7F2;padding:12px 0;}
+    #waveform{border-radius:12px;overflow:hidden;background:var(--surface);padding:12px 0;}
     /* Sélecteur de vitesse */
-    .speed-btn{padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid #D4E8D0;color:#4B6350;background:#fff;cursor:pointer;transition:all .12s;}
-    .speed-btn.active{background:#2D6A4F;border-color:#2D6A4F;color:#fff;}
-    .tag{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:2px 10px;font-size:12px;color:#4B6350;font-weight:500;}
+    .speed-btn{padding:4px 10px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid var(--bdr);color:var(--muted);background:var(--card-bg);cursor:pointer;transition:all .12s;}
+    .speed-btn.active{background:var(--forest-deep);border-color:var(--forest-deep);color:var(--card-bg);}
+    .tag{display:inline-block;background:var(--surface);border:1px solid var(--bdr);border-radius:6px;padding:2px 10px;font-size:12px;color:var(--muted);font-weight:500;}
   </style>
 </head>
 <body class="antialiased min-h-screen bg-cream">
@@ -40,7 +42,7 @@
       </nav>
 
       <!-- En-tête séance -->
-      <div class="bg-white border border-bdr rounded-[24px] p-7 mb-5 shadow-sm">
+      <div class="bg-card border border-bdr rounded-[24px] p-7 mb-5 shadow-sm">
         <div class="flex items-start justify-between gap-4 flex-wrap mb-5">
           <div>
             <h1 id="seance-titre" class="font-heading text-xl font-bold text-ink mb-1">Chargement…</h1>
@@ -93,7 +95,7 @@
       </div>
 
       <!-- Autres résumés disponibles -->
-      <section class="bg-white border border-bdr rounded-[24px] p-6" aria-labelledby="autres-title">
+      <section class="bg-card border border-bdr rounded-[24px] p-6" aria-labelledby="autres-title">
         <h2 id="autres-title" class="font-heading text-base font-semibold text-ink mb-4">Autres résumés</h2>
         <ul id="autres-list" class="space-y-3">
           <li class="text-sm text-muted py-2">Chargement…</li>

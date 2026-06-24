@@ -10,11 +10,13 @@
   <script src="/shared/api.js?v=20260624a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)',card:'var(--card-bg)'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
-    .card{background:#fff;border:1px solid #D4E8D0;border-radius:20px;}
+    .card{background:var(--card-bg);border:1px solid var(--bdr);border-radius:20px;}
     @keyframes pulse-soft{0%,100%{opacity:.5}50%{opacity:1}}
     .en-cours{animation:pulse-soft 1.8s ease-in-out infinite;}
   </style>
@@ -109,7 +111,7 @@
         resume.className = 'text-sm font-semibold text-forest-deep cursor-pointer hover:underline';
         resume.textContent = 'Relire mes mots';
         const texte = document.createElement('p');
-        texte.className = 'text-sm text-ink leading-relaxed mt-3 whitespace-pre-wrap bg-surface/60 border border-bdr rounded-[14px] px-4 py-3';
+        texte.className = 'text-sm text-ink leading-relaxed mt-3 whitespace-pre-wrap bg-surface border border-bdr rounded-[14px] px-4 py-3';
         texte.textContent = r.transcript_text;
         det.appendChild(resume);
         det.appendChild(texte);

@@ -11,23 +11,25 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB',amber:'#D97706'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)',trust:'#2563EB',amber:'#D97706'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body { font-family: 'Raleway', system-ui, sans-serif; background-color: #F0F7F2; color: #1A2E1D; }
+    body { font-family: 'Raleway', system-ui, sans-serif; background-color: var(--surface); color: var(--ink); }
     h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
-    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #4B6350; transition: all .15s; cursor: pointer; }
-    .sidebar-link:hover, .sidebar-link.active { background: #D4E8D0; color: #1A2E1D; }
+    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--muted); transition: all .15s; cursor: pointer; }
+    .sidebar-link:hover, .sidebar-link.active { background: var(--bdr); color: var(--ink); }
     .sidebar-link.active { font-weight: 700; }
-    .card { background: #fff; border: 1.5px solid #D4E8D0; border-radius: 20px; padding: 24px; }
-    .dim-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #4B6350; }
-    .progress-track { height: 10px; border-radius: 999px; background: #D4E8D0; overflow: hidden; }
+    .card { background: var(--card-bg); border: 1.5px solid var(--bdr); border-radius: 20px; padding: 24px; }
+    .dim-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+    .progress-track { height: 10px; border-radius: 999px; background: var(--bdr); overflow: hidden; }
     .progress-fill  { height: 100%; border-radius: 999px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
     .jalon-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; border: 1.5px solid; }
-    .jalon-atteint { background: #F0F7F2; border-color: #4A7C59; color: #2D6A4F; }
-    .jalon-futur   { background: #F8FAF9; border-color: #D4E8D0; color: #8FB99A; }
+    .jalon-atteint { background: var(--surface); border-color: var(--forest); color: var(--forest-deep); }
+    .jalon-futur   { background: var(--surface); border-color: var(--bdr); color: var(--sage); }
     .stade-step { display: flex; align-items: center; gap: 8px; }
     .stade-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-    .stade-line { flex: 1; height: 2px; background: #D4E8D0; }
+    .stade-line { flex: 1; height: 2px; background: var(--bdr); }
     @media (max-width: 1024px) { .chart-container { max-width: 100%; } }
   </style>
 </head>
@@ -170,7 +172,7 @@
     </section>
 
     <!-- Note de Mylène ─────────────────────────────────────────────────── -->
-    <section class="card bg-[#f8fdf8] border-[#b8d8c0]" aria-labelledby="note-titre">
+    <section class="card bg-surface" aria-labelledby="note-titre">
       <div class="flex items-start gap-3">
         <div class="w-9 h-9 rounded-full bg-forest-deep/10 flex items-center justify-center shrink-0 mt-0.5">
           <span class="text-sm font-semibold text-forest-deep">MP</span>
