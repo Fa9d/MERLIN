@@ -94,8 +94,9 @@
 
       <div class="hidden md:flex items-center gap-7 text-sm font-medium text-muted">
         <a href="#accueil"       class="hover:text-forest transition-colors duration-200 cursor-pointer">Accueil</a>
+        <a href="#espace"        class="hover:text-forest transition-colors duration-200 cursor-pointer">Mon journal</a>
         <a href="#offres"        class="hover:text-forest transition-colors duration-200 cursor-pointer">Mon espace</a>
-        <a href="/praticiens.html" class="hover:text-forest transition-colors duration-200 cursor-pointer">Praticiens</a>
+        <a href="#decouvrir" class="hover:text-forest transition-colors duration-200 cursor-pointer">Praticiens</a>
         <a href="/ressources/" target="_blank" rel="noopener" class="hover:text-forest transition-colors duration-200 cursor-pointer">Ressources</a>
       </div>
 
@@ -129,8 +130,9 @@
   <div id="nav-mobile-menu" class="hidden fixed top-[72px] left-4 right-4 z-40 bg-white border border-bdr rounded-[16px] shadow-lg p-3">
     <nav class="flex flex-col gap-0.5">
       <a href="#accueil" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Accueil</a>
+      <a href="#espace" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Mon journal</a>
       <a href="#offres" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Mon espace</a>
-      <a href="/praticiens.html" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Praticiens</a>
+      <a href="#decouvrir" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Praticiens</a>
       <a href="/ressources/" target="_blank" rel="noopener" onclick="closeMobileMenu()" class="px-4 py-3 rounded-[10px] text-ink font-medium hover:bg-surface transition-colors cursor-pointer">Ressources</a>
       <div class="border-t border-bdr mt-1 pt-2">
         <a href="/inscription.html" class="px-4 py-3 rounded-[10px] text-forest-deep font-semibold hover:bg-surface transition-colors cursor-pointer block">Créer mon compte</a>
@@ -165,7 +167,7 @@
                     hover:bg-forest transition-colors duration-200 cursor-pointer shadow-sm">
             Entrer dans IVIA
           </a>
-          <a href="#offres"
+          <a href="#espace"
              class="inline-flex items-center gap-1.5 text-forest-deep text-sm font-semibold
                     hover:underline underline-offset-4 cursor-pointer">
             Découvrir comment ça fonctionne →
@@ -204,7 +206,7 @@
   </section>
 
 
-  <section id="offres" class="pt-10 pb-10 px-4 bg-cream" aria-labelledby="offres-title">
+  <section id="offres" class="pt-10 pb-28 px-4 bg-cream" aria-labelledby="offres-title">
     <div class="max-w-4xl mx-auto">
       <header class="text-center mb-12" data-reveal>
         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-forest-deep mb-3">Sans abonnement · sans engagement</p>
@@ -281,11 +283,35 @@
   </section>
 
 
-
-
-  <!-- ═══════════════════════ APERÇU INTERACTIF DE L'ESPACE ═══════════════════════ -->
-  <section id="espace" class="py-10 px-4 bg-white border-b border-bdr overflow-hidden">
+  <!-- ═══════════════════════════ ESPACE DE CONTINUITÉ (remonté) ════════════════════ -->
+  <section id="espace" class="py-24 px-4 bg-white border-b border-bdr overflow-hidden">
     <div class="max-w-6xl mx-auto">
+
+      <!-- Copie -->
+      <div class="max-w-3xl mb-12" data-reveal>
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">Un journal pour dire, lire et voir clair</h2>
+        <p class="text-muted leading-relaxed max-w-2xl">
+          Chez IVIA, une séance d'écoute ne disparaît pas dans le vide. Elle peut devenir
+          le fil d'une lecture plus juste de ce que vous traversez.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-6 mb-12" data-reveal>
+        <div>
+          <h3 class="font-heading text-xl font-bold text-forest-deep mb-2">Parler</h3>
+          <p class="text-muted text-sm leading-relaxed">Avec un praticien IVIA, être écouté sans jugement. Un accompagnement authentique, hors des sentiers battus. Clarifier, désamorcer la surcharge, traverser plus léger.</p>
+        </div>
+        <div>
+          <h3 class="font-heading text-xl font-bold text-forest-deep mb-2">Écrire</h3>
+          <p class="text-muted text-sm leading-relaxed">Dans votre journal, entre deux rendez-vous, déposez ce que vous n'avez pu dire. Nous en tenons compte dans vos suivis. On fait bien plus qu'une heure d'écoute !</p>
+        </div>
+        <div>
+          <h3 class="font-heading text-xl font-bold text-forest-deep mb-2">Voir</h3>
+          <p class="text-muted text-sm leading-relaxed">Matérialiser ce qui est dit, enraciner ce qui doit l'être. Une vision claire de votre réalité, pour des décisions éclairées — les vôtres.</p>
+        </div>
+      </div>
+
+      <!-- Interface interactive — l'espace réel, encadré -->
       <figure class="m-0" data-reveal>
         <div class="rounded-[24px] border border-bdr shadow-xl overflow-hidden bg-white">
           <div class="flex items-center gap-3 px-4 sm:px-5 py-3 border-b border-bdr bg-surface/60">
@@ -302,12 +328,15 @@
         </div>
         <figcaption class="text-center text-xs text-muted mt-4">Cet espace existe déjà — c'est celui que vous retrouvez dès l'inscription. Cliquez dans l'aperçu : il est vivant.</figcaption>
       </figure>
+
     </div>
   </section>
 
 
+
+
   <!-- ══════════════════════════════ CTA FINAL ═════════════════════════════════════ -->
-  <section class="py-12 px-4 bg-forest-deep relative overflow-hidden">
+  <section class="py-32 px-4 bg-forest-deep relative overflow-hidden">
     <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <svg class="absolute -right-32 -bottom-32 w-[500px] h-[500px] opacity-10"
            viewBox="0 0 500 500" fill="none">
@@ -335,7 +364,7 @@
 
 
   <!-- ═══════════════════════════════ TEASER RESSOURCES ═════════════════════════════════ -->
-  <section class="py-8 px-4 bg-cream" aria-label="Ressources IVIA">
+  <section class="py-20 px-4 bg-cream" aria-label="Ressources IVIA">
     <div class="max-w-5xl mx-auto" data-reveal>
       <div class="relative overflow-hidden bg-[#15121E] text-white rounded-[32px] px-6 sm:px-12 py-14 sm:py-16 text-center shadow-xl">
         <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -369,7 +398,7 @@
 
 
   <!-- ═══════════════════════════════ CONFIANCE ═════════════════════════════════════ -->
-  <section id="confiance" class="py-10 px-4 bg-surface">
+  <section id="confiance" class="py-28 px-4 bg-surface">
     <div class="max-w-5xl mx-auto">
       <header class="text-center mb-14 max-w-xl mx-auto" data-reveal>
         <h2 class="font-heading text-4xl font-bold text-ink mb-4">La confiance, en actes</h2>
@@ -405,6 +434,153 @@
 
   <!-- ═══════════════════════════════════ OFFRES ════════════════════════════════════ -->
 
+
+
+  <!-- ═══════════════════════ DÉCOUVRIR (onglets praticiens, sur place) ═══════════════ -->
+  <section id="decouvrir" class="py-14 px-4 bg-white border-t border-bdr scroll-mt-24">
+    <div class="max-w-6xl mx-auto">
+      <div class="max-w-3xl mb-10" data-reveal>
+        <p class="text-forest text-xs font-semibold uppercase tracking-[0.22em] mb-3">Pour les praticiens</p>
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-ink mb-3">Comprendre l'outil, sans quitter la page</h2>
+        <p class="text-muted leading-relaxed max-w-2xl">L'essentiel de l'approche IVIA pour les praticiens — choisissez un volet.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-[260px_1fr] gap-6 lg:gap-10" data-reveal>
+
+        <!-- Barre d'onglets (gauche) -->
+        <div role="tablist" aria-label="Sujets praticiens"
+             class="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0">
+          <button role="tab" id="ptab-presence" aria-controls="ppanel-presence" aria-selected="true"
+                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
+            La présence
+          </button>
+          <button role="tab" id="ptab-recentrer" aria-controls="ppanel-recentrer" aria-selected="false"
+                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
+            Comment ça recentre
+          </button>
+          <button role="tab" id="ptab-lecture" aria-controls="ppanel-lecture" aria-selected="false"
+                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
+            La lecture
+          </button>
+          <button role="tab" id="ptab-innovation" aria-controls="ppanel-innovation" aria-selected="false"
+                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
+            L'innovation
+          </button>
+          <a href="/praticiens.html"
+             class="mt-1 lg:mt-3 text-center shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold bg-forest-deep text-white hover:bg-forest transition-colors">
+            Page complète →
+          </a>
+        </div>
+
+        <!-- Panneaux (droite) -->
+        <div class="min-h-[320px]">
+
+          <!-- Présence -->
+          <div role="tabpanel" id="ppanel-presence" aria-labelledby="ptab-presence" class="prat-panel">
+            <h3 class="font-heading text-2xl font-bold text-ink mb-3">Ce que l'outil change pour vous</h3>
+            <p class="text-muted leading-relaxed mb-6 max-w-2xl">IVIA ne remplace pas votre jugement. Il vous libère de la double tâche, élargit votre regard, et trace ce qui mérite de l'être — toujours sous votre validation.</p>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div class="bg-cream border border-bdr rounded-[16px] p-5">
+                <h4 class="font-heading text-lg font-bold text-forest-deep mb-2">L'outil vous rend votre présence</h4>
+                <p class="text-muted text-sm leading-relaxed">Plus de prise de notes pendant la séance. Vous écoutez vraiment, vous regardez la personne. La transcription et la lecture se font en parallèle.</p>
+              </div>
+              <div class="bg-cream border border-bdr rounded-[16px] p-5">
+                <h4 class="font-heading text-lg font-bold text-forest-deep mb-2">Une seconde lecture, structurée</h4>
+                <p class="text-muted text-sm leading-relaxed">Après la séance, MERLIN restitue une lecture sur les axes du vivant — en Observation / Hypothèse / Orientation. Ce que vous auriez pu manquer remonte.</p>
+              </div>
+              <div class="bg-cream border border-bdr rounded-[16px] p-5">
+                <h4 class="font-heading text-lg font-bold text-forest-deep mb-2">Conçu avec des praticiens</h4>
+                <p class="text-muted text-sm leading-relaxed">Chaque fonction ajoutée devient une preuve datée de notre axe innovant. Et nous ne diagnostiquons pas : c'est un choix, pas une limite.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recentrer -->
+          <div role="tabpanel" id="ppanel-recentrer" aria-labelledby="ptab-recentrer" class="prat-panel hidden">
+            <h3 class="font-heading text-2xl font-bold text-ink mb-3">Avant, pendant, après — vous restez au centre</h3>
+            <p class="text-muted leading-relaxed mb-6 max-w-2xl">« Recentrer », ce n'est pas déléguer le soin à une machine. C'est sortir de la double tâche pour revenir à l'essentiel : l'écoute, le lien, la personne devant vous.</p>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div class="bg-surface/50 border border-bdr rounded-[16px] p-5">
+                <p class="text-forest font-heading text-xl font-bold mb-2">Avant</p>
+                <p class="text-muted text-sm leading-relaxed">Les consentements d'enregistrement et de transcription sont expliqués clairement et recueillis au moment de la séance — jamais imposés.</p>
+              </div>
+              <div class="bg-surface/50 border border-bdr rounded-[16px] p-5">
+                <p class="text-forest font-heading text-xl font-bold mb-2">Pendant</p>
+                <p class="text-muted text-sm leading-relaxed">Vous êtes présent, entièrement. L'outil capte la parole en arrière-plan. Pas d'écran à remplir. Juste la rencontre.</p>
+              </div>
+              <div class="bg-surface/50 border border-bdr rounded-[16px] p-5">
+                <p class="text-forest font-heading text-xl font-bold mb-2">Après</p>
+                <p class="text-muted text-sm leading-relaxed">Une lecture structurée vous attend : axes du vivant, temporalité, triade O / H / O. Vous relisez, ajustez, validez. Rien n'est livré sans votre accord.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lecture -->
+          <div role="tabpanel" id="ppanel-lecture" aria-labelledby="ptab-lecture" class="prat-panel hidden">
+            <div class="grid lg:grid-cols-2 gap-8 items-start">
+              <div>
+                <h3 class="font-heading text-2xl font-bold text-ink mb-3">Onze axes du vivant, lus ensemble</h3>
+                <p class="text-muted leading-relaxed mb-4">MERLIN traduit ce qui est dit — en mots ordinaires — vers les axes du vivant. Le territoire d'abord, comme un sol qui conditionne tout le reste, puis le corps, le métabolisme, les émotions, le mental, les relations, la famille, le transgénérationnel, la société, l'existentiel, et la vigilance d'urgence s'il y a lieu.</p>
+                <p class="text-muted leading-relaxed">Vous obtenez non pas un verdict, mais un <strong class="text-ink">élargissement du regard</strong> : des liens posés devant vous, prudemment, à confirmer ou à écarter.</p>
+              </div>
+              <div class="bg-cream border border-bdr rounded-[20px] p-6">
+                <p class="font-heading text-sm font-semibold text-forest-deep mb-4">Toujours sous votre garde</p>
+                <ul class="space-y-3 text-sm text-muted">
+                  <li class="flex gap-3"><span class="text-forest mt-0.5">✓</span><span>Jamais de diagnostic, de pronostic ni de prescription — observation, hypothèse, orientation.</span></li>
+                  <li class="flex gap-3"><span class="text-forest mt-0.5">✓</span><span>Tout signal d'urgence est signalé pour escalade humaine immédiate.</span></li>
+                  <li class="flex gap-3"><span class="text-forest mt-0.5">✓</span><span>Aucune sortie n'est remise à la personne sans votre validation explicite.</span></li>
+                  <li class="flex gap-3"><span class="text-forest mt-0.5">✓</span><span>Transcription au Québec, voix effacée à J+30, hébergement conforme à la Loi 25.</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Innovation -->
+          <div role="tabpanel" id="ppanel-innovation" aria-labelledby="ptab-innovation" class="prat-panel hidden">
+            <div class="bg-ink text-sage rounded-[20px] p-7 sm:p-9">
+              <p class="text-sage text-xs font-semibold uppercase tracking-[0.22em] mb-3">L'axe innovant</p>
+              <h3 class="font-heading text-2xl sm:text-3xl font-bold text-white mb-4">Chaque ajout, une preuve datée</h3>
+              <p class="leading-relaxed max-w-2xl text-sage/90 mb-6">IVIA ne promet pas l'innovation : elle l'inscrit. Ce qui est livré est factuel et daté ; ce qui vient — les fonctions que vous demandez, celles qui nous mettent au niveau des meilleurs — se documente au fur et à mesure. La feuille de route est une trace, pas un slogan.</p>
+              <div class="grid sm:grid-cols-3 gap-3">
+                <div class="bg-white/5 border border-forest-deep rounded-[14px] p-4"><span class="text-[10px] uppercase tracking-wider text-sage bg-forest-deep/60 rounded-full px-2 py-0.5">Livré</span><p class="text-white font-heading text-base mt-2">Transcription locale au Québec</p></div>
+                <div class="bg-white/5 border border-forest-deep rounded-[14px] p-4"><span class="text-[10px] uppercase tracking-wider text-sage bg-forest-deep/60 rounded-full px-2 py-0.5">Livré</span><p class="text-white font-heading text-base mt-2">Lecture multidimensionnelle</p></div>
+                <div class="bg-white/5 border border-forest-deep/60 border-dashed rounded-[14px] p-4"><span class="text-[10px] uppercase tracking-wider text-sage/70 bg-white/5 rounded-full px-2 py-0.5">À venir</span><p class="text-white/90 font-heading text-base mt-2">Vos fonctions demandées</p></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .prat-tab { border-color: #D4E8D0; color: #4B6350; background: #fff; }
+    .prat-tab:hover { background: #F0F7F2; color: #1A2E1D; }
+    .prat-tab[aria-selected="true"] { background: #2D6A4F; border-color: #2D6A4F; color: #fff; }
+  </style>
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.prat-tab'));
+      if (!tabs.length) return;
+      function select(tab) {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          var panel = document.getElementById(t.getAttribute('aria-controls'));
+          if (panel) panel.classList.toggle('hidden', !on);
+        });
+      }
+      tabs.forEach(function (tab, i) {
+        tab.addEventListener('click', function () { select(tab); });
+        tab.addEventListener('keydown', function (e) {
+          var idx = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? i + 1
+                  : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? i - 1 : -1;
+          if (idx >= 0 && idx < tabs.length) { e.preventDefault(); tabs[idx].focus(); select(tabs[idx]); }
+        });
+      });
+    })();
+  </script>
 
 
   <!-- ══════════════════════════════ FOOTER ════════════════════════════════════════ -->
