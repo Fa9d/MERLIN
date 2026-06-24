@@ -2,12 +2,10 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <script src="/shared/session.js"></script>
   <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname+location.search));}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IVIA — Séance en cours</title>
-  <script src="/shared/api.js?v=20260616g"></script>
+  <title>IVIA â€” SÃ©ance en cours</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend({colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}})}}</script>
@@ -45,7 +43,7 @@
     #screen-end { display: none; }
     #screen-end.active { display: flex; }
 
-    /* ── Salle d'attente ── */
+    /* â”€â”€ Salle d'attente â”€â”€ */
     #screen-waiting {
       position: fixed; inset: 0; z-index: 40;
       background: #080f0a;
@@ -68,7 +66,7 @@
     .dots-waiting span:nth-child(3){animation-delay:.4s}
     @keyframes dot-pulse { 0%,80%,100%{opacity:.3;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }
 
-    /* ── Countdown ── */
+    /* â”€â”€ Countdown â”€â”€ */
     #countdown-overlay { position:fixed;inset:0;background:rgba(8,15,10,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;transition:opacity .4s; }
     #countdown-overlay.hidden { display:none; }
     #countdown-num { font-family:'Lora',serif;font-size:96px;font-weight:700;color:#8FB99A;line-height:1;animation:count-pop .6s ease-in-out; }
@@ -77,14 +75,14 @@
 </head>
 <body class="antialiased">
 
-<!-- ── Countdown overlay ── -->
+<!-- â”€â”€ Countdown overlay â”€â”€ -->
 <div id="countdown-overlay" class="hidden">
-  <p class="text-[#8FB99A] text-sm font-semibold uppercase tracking-widest mb-4">La séance commence dans</p>
+  <p class="text-[#8FB99A] text-sm font-semibold uppercase tracking-widest mb-4">La sÃ©ance commence dans</p>
   <p id="countdown-num">3</p>
   <p class="text-[#4B6350] text-sm mt-4" id="countdown-sub">Respirez.</p>
 </div>
 
-<!-- ── Salle d'attente ── -->
+<!-- â”€â”€ Salle d'attente â”€â”€ -->
 <div id="screen-waiting">
   <div class="breath-outer mb-8">
     <div class="breath-mid">
@@ -95,45 +93,45 @@
       </div>
     </div>
   </div>
-  <h1 class="font-heading text-3xl font-bold text-[#e0f0e3] mb-3">Votre espace est prêt</h1>
-  <p class="text-[#6b9e78] text-base max-w-xs mb-2" id="prat-waiting-label">En attente de votre praticien·ne</p>
+  <h1 class="font-heading text-3xl font-bold text-[#e0f0e3] mb-3">Votre espace est prÃªt</h1>
+  <p class="text-[#6b9e78] text-base max-w-xs mb-2" id="prat-waiting-label">En attente de votre praticienÂ·ne</p>
   <div class="flex items-center justify-center gap-2 h-8 mb-5">
     <div class="dots-waiting" id="dots-area"><span></span><span></span><span></span></div>
     <div id="prat-connected-badge" style="display:none" class="flex items-center gap-2">
       <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-      <span class="text-sm text-emerald-400 font-medium" id="prat-connected-label">— est connecté·e</span>
+      <span class="text-sm text-emerald-400 font-medium" id="prat-connected-label">â€” est connectÃ©Â·e</span>
     </div>
   </div>
   <p class="text-xs text-[#2d4a35] tabular-nums mb-8" id="wait-display">En attente depuis 00:00</p>
   <button id="btn-ready"
     class="bg-[#2D6A4F] text-white font-semibold text-base px-8 py-4 rounded-[16px] hover:bg-[#4A7C59] transition-colors duration-200 cursor-pointer shadow-lg mb-4">
-    Je suis prêt·e →
+    Je suis prÃªtÂ·e â†’
   </button>
-  <p class="text-xs text-[#2d4a35] max-w-xs">Appuyez quand vous êtes prêt·e. L'enregistrement démarrera automatiquement.</p>
+  <p class="text-xs text-[#2d4a35] max-w-xs">Appuyez quand vous Ãªtes prÃªtÂ·e. L'enregistrement dÃ©marrera automatiquement.</p>
 </div>
 
-<!-- ── Barre de statut ── -->
+<!-- â”€â”€ Barre de statut â”€â”€ -->
 <div class="flex items-center justify-between px-5 py-3 border-b border-[#1e3328] bg-[#0a1510]">
   <div class="flex items-center gap-3">
     <span class="font-heading font-semibold text-[#8FB99A] text-sm">IVIA</span>
-    <span class="text-[#1e3328]">·</span>
-    <span class="text-xs text-[#4B6350]" id="prat-label">Séance</span>
+    <span class="text-[#1e3328]">Â·</span>
+    <span class="text-xs text-[#4B6350]" id="prat-label">SÃ©ance</span>
   </div>
   <div class="flex items-center gap-3">
-    <span id="conn-dot" class="w-2 h-2 rounded-full bg-emerald-500" title="Séance active"></span>
+    <span id="conn-dot" class="w-2 h-2 rounded-full bg-emerald-500" title="SÃ©ance active"></span>
     <span class="text-xs text-[#4B6350]" id="conn-label">En cours</span>
-    <span class="text-[#1e3328]">·</span>
+    <span class="text-[#1e3328]">Â·</span>
     <span id="chrono" class="text-sm font-bold text-[#8FB99A] tabular-nums">00:00</span>
   </div>
 </div>
 
-<!-- ── Corps ── -->
+<!-- â”€â”€ Corps â”€â”€ -->
 <div class="max-w-xl mx-auto px-4 py-8 space-y-5" id="screen-main">
 
-  <!-- Info séance -->
+  <!-- Info sÃ©ance -->
   <div class="text-center mb-2">
-    <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-1">Votre séance</p>
-    <p class="font-heading text-xl font-bold text-[#e0f0e3]" id="titre-seance">Séance IVIA</p>
+    <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-1">Votre sÃ©ance</p>
+    <p class="font-heading text-xl font-bold text-[#e0f0e3]" id="titre-seance">SÃ©ance IVIA</p>
     <p class="text-xs text-[#4B6350] mt-1" id="session-code-display"></p>
   </div>
 
@@ -142,7 +140,7 @@
     <div class="flex items-center justify-between mb-4">
       <div>
         <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350]">Votre enregistrement</p>
-        <p class="text-[#8FB99A] text-xs mt-0.5" id="rec-hint">Parlez naturellement — votre voix est enregistrée localement.</p>
+        <p class="text-[#8FB99A] text-xs mt-0.5" id="rec-hint">Parlez naturellement â€” votre voix est enregistrÃ©e localement.</p>
       </div>
       <p class="text-2xl font-bold text-[#e0f0e3] tabular-nums" id="timer-display">00:00</p>
     </div>
@@ -150,7 +148,7 @@
     <!-- Visualiseur -->
     <canvas id="waveform" class="mb-5 bg-[#0a1510]" aria-hidden="true"></canvas>
 
-    <!-- Contrôles -->
+    <!-- ContrÃ´les -->
     <div class="flex items-center justify-center gap-8">
 
       <!-- Pause -->
@@ -163,7 +161,7 @@
       </button>
 
       <!-- Micro -->
-      <button id="btn-mic" class="mic-btn mic-idle" aria-label="Démarrer l'enregistrement">
+      <button id="btn-mic" class="mic-btn mic-idle" aria-label="DÃ©marrer l'enregistrement">
         <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
           <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
@@ -173,7 +171,7 @@
       <!-- Stop -->
       <button id="btn-stop" disabled
         class="w-11 h-11 rounded-full border border-[#1e3328] text-[#2d5039] flex items-center justify-center transition-colors hover:border-red-700 hover:text-red-400 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-        aria-label="Arrêter">
+        aria-label="ArrÃªter">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
       </button>
     </div>
@@ -185,7 +183,7 @@
 
     <!-- Erreur micro -->
     <div id="mic-error" class="hidden mt-4 bg-red-950 border border-red-800 rounded-[10px] px-4 py-3 text-sm text-red-300">
-      L'accès au microphone a été refusé. Autorisez-le dans les paramètres, puis rechargez.
+      L'accÃ¨s au microphone a Ã©tÃ© refusÃ©. Autorisez-le dans les paramÃ¨tres, puis rechargez.
     </div>
   </div>
 
@@ -196,26 +194,26 @@
       <span class="text-xs text-[#4B6350]" id="notes-saved"></span>
     </div>
     <textarea id="notes-pad"
-      placeholder="Ce que vous ressentez, ce qui émerge… Sauvegardé automatiquement."
-      aria-label="Notes personnelles pendant la séance"></textarea>
+      placeholder="Ce que vous ressentez, ce qui Ã©mergeâ€¦ SauvegardÃ© automatiquement."
+      aria-label="Notes personnelles pendant la sÃ©ance"></textarea>
     <p class="text-xs text-[#2d5039] mt-1.5">Ctrl+Enter pour horodater</p>
   </div>
 
   <!-- Bouton terminer -->
   <button id="btn-terminer"
     class="w-full py-4 rounded-[16px] font-semibold text-base bg-[#1e3d2a] border border-[#4A7C59] text-[#8FB99A] hover:bg-[#2D6A4F] hover:text-white transition-colors cursor-pointer">
-    Terminer ma séance →
+    Terminer ma sÃ©ance â†’
   </button>
 
-  <!-- Note confidentialité -->
+  <!-- Note confidentialitÃ© -->
   <p class="text-center text-xs text-[#2d5039] leading-relaxed">
-    Votre enregistrement reste sur votre appareil jusqu'au téléchargement.<br>
+    Votre enregistrement reste sur votre appareil jusqu'au tÃ©lÃ©chargement.<br>
     Il ne quitte jamais votre navigateur sans votre accord explicite.
   </p>
 
 </div>
 
-<!-- ── Écran de fin ── -->
+<!-- â”€â”€ Ã‰cran de fin â”€â”€ -->
 <div id="screen-end" class="flex-col items-center justify-center min-h-[80vh] text-center px-4">
 
   <div class="w-16 h-16 rounded-full bg-[#1e3d2a] flex items-center justify-center mx-auto mb-6">
@@ -224,11 +222,10 @@
     </svg>
   </div>
 
-  <h2 class="font-heading text-2xl font-bold text-[#e0f0e3] mb-2">Séance terminée.</h2>
+  <h2 class="font-heading text-2xl font-bold text-[#e0f0e3] mb-2">SÃ©ance terminÃ©e.</h2>
   <p class="text-[#8FB99A] text-sm mb-8 max-w-sm mx-auto">
-    Votre praticien·ne prépare votre résumé. Téléchargez votre audio si vous souhaitez le conserver.
+    Votre praticienÂ·ne prÃ©pare votre rÃ©sumÃ©. TÃ©lÃ©chargez votre audio si vous souhaitez le conserver.
   </p>
-  <p id="fin-upload-note" class="hidden text-xs text-[#8FB99A] mb-4"></p>
 
   <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
     <button id="btn-download"
@@ -236,68 +233,68 @@
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
       </svg>
-      Télécharger mon audio
+      TÃ©lÃ©charger mon audio
     </button>
     <a href="/client/dashboard.html"
       class="flex items-center justify-center gap-2 bg-[#2D6A4F] text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-[#4A7C59] transition-colors cursor-pointer">
-      Retour à mon espace
+      Retour Ã  mon espace
     </a>
   </div>
 
-  <!-- Résumé rapide -->
+  <!-- RÃ©sumÃ© rapide -->
   <div class="max-w-sm mx-auto card-dark p-5 text-left">
-    <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-3">Votre séance</p>
+    <p class="text-xs font-semibold uppercase tracking-wider text-[#4B6350] mb-3">Votre sÃ©ance</p>
     <div class="grid grid-cols-2 gap-3 text-sm">
-      <div><span class="text-[#4B6350] text-xs">Durée</span><p class="font-semibold text-[#e0f0e3]" id="fin-duree">—</p></div>
-      <div><span class="text-[#4B6350] text-xs">Praticien·ne</span><p class="font-semibold text-[#e0f0e3]" id="fin-prat">—</p></div>
+      <div><span class="text-[#4B6350] text-xs">DurÃ©e</span><p class="font-semibold text-[#e0f0e3]" id="fin-duree">â€”</p></div>
+      <div><span class="text-[#4B6350] text-xs">PraticienÂ·ne</span><p class="font-semibold text-[#e0f0e3]" id="fin-prat">â€”</p></div>
     </div>
     <div class="border-t border-[#1e3328] pt-3 mt-3">
       <p class="text-xs text-[#4B6350] mb-1">Mes notes</p>
-      <p class="text-xs text-[#8FB99A] leading-relaxed line-clamp-3" id="fin-notes">—</p>
+      <p class="text-xs text-[#8FB99A] leading-relaxed line-clamp-3" id="fin-notes">â€”</p>
     </div>
   </div>
 
 </div>
 
-<!-- ── Script ── -->
+<!-- â”€â”€ Script â”€â”€ -->
 <script>
 (function () {
   'use strict';
 
-  // ── Paramètres ──────────────────────────────────────────────────────────
+  // â”€â”€ ParamÃ¨tres â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const params      = new URLSearchParams(location.search);
-  const sessionCode = params.get('session') || '';
-  const pratNom     = params.get('praticien') || 'votre praticien·ne';
+  const sessionCode = params.get('room') || params.get('session') || '';
+  const pratNom     = params.get('praticien') || 'votre praticienÂ·ne';
   const clientId    = params.get('client') || '';
 
   // Labels
   document.getElementById('prat-waiting-label').textContent = `En attente de ${pratNom}`;
-  document.getElementById('prat-connected-label').textContent = `${pratNom} est connecté·e`;
+  document.getElementById('prat-connected-label').textContent = `${pratNom} est connectÃ©Â·e`;
   document.getElementById('prat-label').textContent  = `Avec ${pratNom}`;
-  document.getElementById('titre-seance').textContent = `Séance avec ${pratNom}`;
+  document.getElementById('titre-seance').textContent = `SÃ©ance avec ${pratNom}`;
   document.getElementById('session-code-display').textContent = sessionCode;
   document.getElementById('fin-prat').textContent = pratNom;
-  document.title = `IVIA — Séance avec ${pratNom}`;
+  document.title = `IVIA â€” SÃ©ance avec ${pratNom}`;
 
-  // ── BroadcastChannel (même navigateur) ──────────────────────────────────
+  // â”€â”€ BroadcastChannel (mÃªme navigateur) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   let bc = null;
-  try { if (sessionCode) bc = new BroadcastChannel('ivia_session_' + sessionCode); } catch(_) {}
+  try { if (sessionCode) bc = new BroadcastChannel('ivia_room_' + sessionCode); } catch(_) {}
 
-  // ── État ─────────────────────────────────────────────────────────────────
+  // â”€â”€ Ã‰tat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   let sessionStarted = false;
   let waitSec = 0, sessionSec = 0;
   let waitInterval = null, sessionInterval = null;
   let mediaRecorder = null, audioChunks = [], audioBlob = null;
   let analyser = null, animFrame = null;
 
-  // ── Notes ────────────────────────────────────────────────────────────────
+  // â”€â”€ Notes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const notesPad = document.getElementById('notes-pad');
   const notesKey = 'ivia_client_notes_' + (sessionCode || 'default');
   const savedNotes = localStorage.getItem(notesKey);
   if (savedNotes) notesPad.value = savedNotes;
   notesPad.addEventListener('input', () => {
     localStorage.setItem(notesKey, notesPad.value);
-    document.getElementById('notes-saved').textContent = 'Sauvegardé';
+    document.getElementById('notes-saved').textContent = 'SauvegardÃ©';
     setTimeout(() => { document.getElementById('notes-saved').textContent = ''; }, 1200);
   });
   notesPad.addEventListener('keydown', e => {
@@ -311,21 +308,21 @@
     }
   });
 
-  // ── Minuterie d'attente ──────────────────────────────────────────────────
+  // â”€â”€ Minuterie d'attente â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   waitInterval = setInterval(() => {
     waitSec++;
     document.getElementById('wait-display').textContent = 'En attente depuis ' + fmt(waitSec);
-    // Vérification localStorage (appareils différents)
-    if (!sessionStarted && sessionCode && localStorage.getItem('ivia_prat_ready_' + sessionCode)) {
+    // VÃ©rification localStorage (appareils diffÃ©rents)
+    if (!sessionStarted && sessionCode && localStorage.getItem('ivia_room_' + sessionCode + '_prat_ready')) {
       showPratConnected();
     }
   }, 1000);
 
-  // ── BroadcastChannel ────────────────────────────────────────────────────
+  // â”€â”€ BroadcastChannel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (bc) {
     bc.onmessage = (e) => {
-      if (e.data.type === 'PRAT_READY'   && !sessionStarted) showPratConnected();
-      if (e.data.type === 'SESSION_END')  endSession();
+      if ((e.data.type === 'prat_ready' || e.data.type === 'session_start') && !sessionStarted) showPratConnected();
+      if (e.data.type === 'session_ended_prat') endSession();
     };
   }
 
@@ -334,19 +331,19 @@
     document.getElementById('prat-connected-badge').style.display = 'flex';
   }
 
-  // ── Bouton « Je suis prêt·e » ───────────────────────────────────────────
+  // â”€â”€ Bouton Â« Je suis prÃªtÂ·e Â» â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   document.getElementById('btn-ready').addEventListener('click', () => {
     if (sessionStarted) return;
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then(stream => {
-        if (sessionCode) localStorage.setItem('ivia_client_ready_' + sessionCode, Date.now().toString());
-        if (bc) bc.postMessage({ type: 'CLIENT_READY', sessionCode });
+        if (sessionCode) localStorage.setItem('ivia_room_' + sessionCode + '_client_ready', Date.now().toString());
+        if (bc) bc.postMessage({ type: 'client_ready', room: sessionCode });
         startCountdown(() => beginSession(stream));
       })
       .catch(() => { document.getElementById('mic-error').classList.remove('hidden'); });
   });
 
-  // ── Countdown 3-2-1 ─────────────────────────────────────────────────────
+  // â”€â”€ Countdown 3-2-1 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function startCountdown(cb) {
     const overlay = document.getElementById('countdown-overlay');
     const numEl   = document.getElementById('countdown-num');
@@ -369,7 +366,7 @@
     }, 900);
   }
 
-  // ── Démarrer la séance ───────────────────────────────────────────────────
+  // â”€â”€ DÃ©marrer la sÃ©ance â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function beginSession(stream) {
     if (sessionStarted) return;
     sessionStarted = true;
@@ -392,10 +389,10 @@
     const dot = document.getElementById('conn-dot');
     dot.classList.remove('bg-emerald-500');
     dot.classList.add('bg-red-500');
-    document.getElementById('conn-label').textContent = '● REC';
+    document.getElementById('conn-label').textContent = 'â— REC';
   }
 
-  // ── Enregistrement audio ─────────────────────────────────────────────────
+  // â”€â”€ Enregistrement audio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function startRecording(stream) {
     try {
       const audioCtx = new AudioContext();
@@ -413,17 +410,17 @@
         showEndScreen();
       };
       mediaRecorder.start(500);
-      // Mettre à jour l'UI
+      // Mettre Ã  jour l'UI
       document.getElementById('btn-mic').className = 'mic-btn mic-recording';
       document.getElementById('btn-mic').disabled  = true;
       document.getElementById('btn-pause').disabled = false;
       document.getElementById('btn-stop').disabled  = false;
-      document.getElementById('rec-hint').textContent = 'Enregistrement en cours — parlez naturellement.';
+      document.getElementById('rec-hint').textContent = 'Enregistrement en cours â€” parlez naturellement.';
       drawWave();
     } catch(err) { console.error('Enregistrement:', err); }
   }
 
-  // ── Visualiseur ──────────────────────────────────────────────────────────
+  // â”€â”€ Visualiseur â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const canvas = document.getElementById('waveform');
   const ctx2d  = canvas.getContext('2d');
   function resizeCanvas() { canvas.width=canvas.offsetWidth; canvas.height=56; }
@@ -440,13 +437,13 @@
     ctx2d.lineTo(canvas.width,canvas.height/2); ctx2d.stroke();
   }
 
-  // ── Pause ────────────────────────────────────────────────────────────────
+  // â”€â”€ Pause â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   document.getElementById('btn-pause').addEventListener('click', () => {
     if (!mediaRecorder) return;
     if (mediaRecorder.state === 'recording') {
       mediaRecorder.pause(); clearInterval(sessionInterval); cancelAnimationFrame(animFrame);
       document.getElementById('btn-mic').className = 'mic-btn mic-paused';
-      document.getElementById('conn-label').textContent = '⏸ Pause';
+      document.getElementById('conn-label').textContent = 'â¸ Pause';
     } else if (mediaRecorder.state === 'paused') {
       mediaRecorder.resume();
       sessionInterval = setInterval(() => {
@@ -456,24 +453,24 @@
       }, 1000);
       drawWave();
       document.getElementById('btn-mic').className = 'mic-btn mic-recording';
-      document.getElementById('conn-label').textContent = '● REC';
+      document.getElementById('conn-label').textContent = 'â— REC';
     }
   });
 
-  // ── Stop + Terminer ──────────────────────────────────────────────────────
+  // â”€â”€ Stop + Terminer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   document.getElementById('btn-stop').addEventListener('click', finSession);
   document.getElementById('btn-terminer').addEventListener('click', finSession);
 
   function finSession() {
     clearInterval(sessionInterval); cancelAnimationFrame(animFrame);
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop(); // → onstop → showEndScreen
+      mediaRecorder.stop(); // â†’ onstop â†’ showEndScreen
     } else {
       audioBlob = null; showEndScreen();
     }
   }
 
-  // ── Fin depuis praticien (BroadcastChannel) ──────────────────────────────
+  // â”€â”€ Fin depuis praticien (BroadcastChannel) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function endSession() { finSession(); }
 
   function showEndScreen() {
@@ -483,7 +480,7 @@
     document.getElementById('fin-duree').textContent = fmt(sessionSec);
     document.getElementById('fin-prat').textContent  = pratNom;
     document.getElementById('fin-notes').textContent = notesPad.value || 'Aucune note.';
-    // Transmettre le blob au praticien (même appareil)
+    // Transmettre le blob au praticien (mÃªme appareil)
     if (audioBlob && sessionCode) {
       try {
         const url = URL.createObjectURL(audioBlob);
@@ -491,28 +488,14 @@
         if (bc) bc.postMessage({ type: 'CLIENT_AUDIO_READY', sessionCode, url });
       } catch(_) {}
     }
-    // Upload réel : la séance est persistée + transcrite (apparaît dans « Mes enregistrements »).
-    if (audioBlob && typeof uploadMyRecording === 'function') {
-      const note = document.getElementById('fin-upload-note');
-      (async () => {
-        try {
-          const audio_data = await blobToBase64(audioBlob);
-          await uploadMyRecording({ audio_data, filename: 'seance.webm', formule: 'seance',
-                                    duration_seconds: Math.max(1, sessionSec) });
-          if (note) { note.textContent = 'Enregistrement transmis — transcription en cours.'; note.classList.remove('hidden'); }
-        } catch (e) {
-          if (note) { note.textContent = "L'enregistrement n'a pas pu être transmis : " + (e.message || 'erreur'); note.classList.remove('hidden'); }
-        }
-      })();
-    }
     if (!audioBlob) {
       const dlBtn = document.getElementById('btn-download');
       if (dlBtn) { dlBtn.disabled=true; dlBtn.classList.add('opacity-40','cursor-not-allowed'); }
     }
-    document.title = `IVIA — Séance terminée`;
+    document.title = `IVIA â€” SÃ©ance terminÃ©e`;
   }
 
-  // ── Télécharger ──────────────────────────────────────────────────────────
+  // â”€â”€ TÃ©lÃ©charger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   document.getElementById('btn-download').addEventListener('click', () => {
     if (!audioBlob) return;
     const date = new Date().toISOString().slice(0,10);
@@ -522,208 +505,11 @@
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   });
 
-  // ── Utilitaire ───────────────────────────────────────────────────────────
+  // â”€â”€ Utilitaire â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function fmt(s) {
     return Math.floor(s/60).toString().padStart(2,'0')+':'
           +(s%60).toString().padStart(2,'0');
   }
-
-})();
-
-  document.getElementById('prat-label').textContent = `Avec ${pratNom}`;
-  document.getElementById('titre-seance').textContent = `Séance avec ${pratNom}`;
-  document.getElementById('session-code-display').textContent = sessionCode;
-  document.getElementById('fin-prat').textContent = pratNom;
-  document.title = `IVIA — Séance avec ${pratNom}`;
-
-  // ── Notes ──────────────────────────────────────────────────────────────────
-  const notesPad = document.getElementById('notes-pad');
-  const notesKey = `ivia_client_notes_${sessionCode}`;
-  const saved = localStorage.getItem(notesKey);
-  if (saved) notesPad.value = saved;
-
-  notesPad.addEventListener('input', () => {
-    localStorage.setItem(notesKey, notesPad.value);
-    document.getElementById('notes-saved').textContent = 'Sauvegardé';
-    setTimeout(() => { document.getElementById('notes-saved').textContent = ''; }, 1200);
-  });
-
-  notesPad.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      const ts = `\n[${formatTime(secondsElapsed)}] `;
-      const pos = notesPad.selectionStart;
-      notesPad.value = notesPad.value.slice(0, pos) + ts + notesPad.value.slice(pos);
-      notesPad.selectionStart = notesPad.selectionEnd = pos + ts.length;
-      notesPad.dispatchEvent(new Event('input'));
-    }
-  });
-
-  // ── Timer ──────────────────────────────────────────────────────────────────
-  let secondsElapsed = 0;
-  let timerInterval  = null;
-  const MAX_SEC      = 90 * 60;
-
-  function formatTime(s) {
-    if (s >= 3600) {
-      const h = Math.floor(s / 3600);
-      const m = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
-      const ss = (s % 60).toString().padStart(2, '0');
-      return `${h}:${m}:${ss}`;
-    }
-    const m = Math.floor(s / 60).toString().padStart(2, '0');
-    const ss = (s % 60).toString().padStart(2, '0');
-    return `${m}:${ss}`;
-  }
-
-  function startTimer() {
-    timerInterval = setInterval(() => {
-      secondsElapsed++;
-      const t = formatTime(secondsElapsed);
-      document.getElementById('chrono').textContent = t;
-      document.getElementById('timer-display').textContent = t;
-      const pct = Math.min((secondsElapsed / MAX_SEC) * 100, 100);
-      document.getElementById('rec-progress').style.width = pct + '%';
-      if (secondsElapsed >= MAX_SEC) finSession();
-    }, 1000);
-  }
-
-  // ── Visualiseur ────────────────────────────────────────────────────────────
-  const canvas = document.getElementById('waveform');
-  const ctx2d  = canvas.getContext('2d');
-  let analyser = null;
-  let animFrame = null;
-
-  function resizeCanvas() {
-    canvas.width  = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  function drawWave() {
-    if (!analyser) return;
-    animFrame = requestAnimationFrame(drawWave);
-    const buf = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteTimeDomainData(buf);
-    ctx2d.fillStyle = '#0a1510';
-    ctx2d.fillRect(0, 0, canvas.width, canvas.height);
-    ctx2d.lineWidth = 2;
-    ctx2d.strokeStyle = '#4A7C59';
-    ctx2d.beginPath();
-    const sliceW = canvas.width / buf.length;
-    let x = 0;
-    buf.forEach((v, i) => {
-      const y = (v / 128.0) * (canvas.height / 2);
-      i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y);
-      x += sliceW;
-    });
-    ctx2d.lineTo(canvas.width, canvas.height / 2);
-    ctx2d.stroke();
-  }
-
-  // ── MediaRecorder ──────────────────────────────────────────────────────────
-  let mediaRecorder = null;
-  let audioChunks   = [];
-  let audioBlob     = null;
-  let isPaused      = false;
-
-  document.getElementById('btn-mic').addEventListener('click', async () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') return;
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const audioCtx = new AudioContext();
-      const src = audioCtx.createMediaStreamSource(stream);
-      analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 2048;
-      src.connect(analyser);
-
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks   = [];
-      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-      mediaRecorder.onstop = onRecordStop;
-      mediaRecorder.start(250);
-
-      document.getElementById('btn-mic').className = 'mic-btn mic-recording';
-      document.getElementById('btn-mic').disabled  = true;
-      document.getElementById('btn-pause').disabled = false;
-      document.getElementById('btn-stop').disabled  = false;
-      document.getElementById('rec-hint').textContent = 'Enregistrement en cours…';
-      document.getElementById('conn-label').textContent = 'Enregistrement';
-      startTimer();
-      drawWave();
-    } catch (err) {
-      document.getElementById('mic-error').classList.remove('hidden');
-    }
-  });
-
-  document.getElementById('btn-pause').addEventListener('click', () => {
-    if (!mediaRecorder) return;
-    if (!isPaused) {
-      mediaRecorder.pause();
-      clearInterval(timerInterval);
-      cancelAnimationFrame(animFrame);
-      document.getElementById('btn-mic').className = 'mic-btn mic-paused';
-      document.getElementById('conn-label').textContent = 'En pause';
-      isPaused = true;
-    } else {
-      mediaRecorder.resume();
-      startTimer();
-      drawWave();
-      document.getElementById('btn-mic').className = 'mic-btn mic-recording';
-      document.getElementById('conn-label').textContent = 'Enregistrement';
-      isPaused = false;
-    }
-  });
-
-  document.getElementById('btn-stop').addEventListener('click', () => {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      clearInterval(timerInterval);
-      cancelAnimationFrame(animFrame);
-      mediaRecorder.stop();
-      document.getElementById('btn-mic').disabled = true;
-      document.getElementById('btn-pause').disabled = true;
-      document.getElementById('btn-stop').disabled = true;
-      document.getElementById('conn-label').textContent = 'Terminé';
-    }
-  });
-
-  document.getElementById('btn-terminer').addEventListener('click', finSession);
-
-  function finSession() {
-    clearInterval(timerInterval);
-    cancelAnimationFrame(animFrame);
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
-    } else {
-      audioBlob = null;
-      showEndScreen();
-    }
-  }
-
-  function onRecordStop() {
-    audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-    showEndScreen();
-  }
-
-  function showEndScreen() {
-    document.getElementById('screen-main').style.display = 'none';
-    document.getElementById('screen-end').classList.add('active');
-    document.getElementById('fin-duree').textContent = formatTime(secondsElapsed);
-    document.getElementById('fin-notes').textContent = notesPad.value || 'Aucune note.';
-    // Sauvegarder code pour que le praticien puisse récupérer si besoin
-    localStorage.setItem('ivia_client_session_done_' + sessionCode, '1');
-    document.title = `IVIA — Séance terminée`;
-  }
-
-  document.getElementById('btn-download').addEventListener('click', () => {
-    if (!audioBlob) { alert('Aucun enregistrement disponible.'); return; }
-    const date = new Date().toISOString().slice(0, 10);
-    const url  = URL.createObjectURL(audioBlob);
-    const a    = document.createElement('a');
-    a.href = url; a.download = `ivia-client-${sessionCode}-${date}.webm`; a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-  });
 
 })();
 </script>
