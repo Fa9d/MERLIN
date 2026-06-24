@@ -6,91 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Maquette : Accueil de l'espace (Signature / Doux)</title>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ivia-habitee.css">
   <style>
     /* ─────────────────────────────────────────────────────────────────────
-       MAQUETTE — Accueil de l'espace client, ambiance « Maison habitée ».
-       UN composant, deux habillages via [data-theme] — mêmes tokens que
-       design-system/recorder-card.html (Signature / Doux).
-       Aucune logique réelle : contenu de démonstration.
+       MAQUETTE — Accueil de l'espace client. Tokens + coquille (nav, menu)
+       partagés via ivia-habitee.css. Ici : seulement le spécifique à l'écran.
     ───────────────────────────────────────────────────────────────────── */
-    :root{ --ivia-green:#2D6A4F; --ivia-green-soft:#4A7C59; --r:22px; }
-
-    [data-theme="signature"]{
-      --bg: radial-gradient(120% 80% at 50% 0%, #20241c 0%, #14150e 55%, #0c0d08 100%);
-      --card: rgba(255,255,255,.035); --card-2: rgba(255,255,255,.06);
-      --card-border: rgba(196,176,128,.16);
-      --text:#F3EFE2; --muted:#A9A693; --soft:#75735f;
-      --accent: var(--ivia-green-soft); --accent-2:#C8965A;
-      --pill-bg: rgba(255,255,255,.06); --pill-border: rgba(255,255,255,.10); --pill-text:#E8E4D6;
-      --cta-bg: linear-gradient(180deg,#3f6f50,#2d5b42); --cta-text:#F3EFE2;
-      --logo-fill:#5e7d59; --nav-active-bg: var(--ivia-green); --nav-active-text:#F3EFE2;
-      --shadow:0 30px 80px -44px rgba(0,0,0,.8); --halo: rgba(200,150,90,.10);
-    }
-    [data-theme="doux"]{
-      --bg: radial-gradient(120% 85% at 50% 0%, #f7e7e9 0%, #efd7da 45%, #e4c9d2 100%);
-      --card: rgba(255,255,255,.5); --card-2: rgba(255,255,255,.66);
-      --card-border: rgba(180,140,150,.26);
-      --text:#5b4750; --muted:#9a7f88; --soft:#b59aa3;
-      --accent: var(--ivia-green-soft); --accent-2:#c98b9b;
-      --pill-bg: rgba(255,255,255,.6); --pill-border: rgba(180,140,150,.3); --pill-text:#6b5560;
-      --cta-bg: linear-gradient(180deg,#8aa583,#6f8c6c); --cta-text:#fbfaf6;
-      --logo-fill:#8aa583; --nav-active-bg:#6f8c6c; --nav-active-text:#fbfaf6;
-      --shadow:0 30px 80px -46px rgba(120,80,95,.4); --halo: rgba(201,139,155,.14);
-    }
-
-    *{box-sizing:border-box;margin:0;}
-    body{font-family:'Raleway',system-ui,sans-serif;min-height:100vh;color:var(--text);
-         background:var(--bg);transition:background .45s;padding-bottom:48px;}
-    h1,h2,h3,.serif{font-family:'Lora',Georgia,serif;}
-
-    /* Menu compte (à droite de la nav) : Ambiance + Déconnexion */
-    .menu{position:relative;}
-    .menu-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--pill-border);
-              background:var(--pill-bg);color:var(--pill-text);border-radius:9999px;padding:6px 10px;font:inherit;transition:.15s;}
-    .menu-btn:hover{filter:brightness(1.08);}
-    .menu-btn svg{width:18px;height:18px;}
-    .menu-btn .caret{width:13px;height:13px;}
-    .menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:212px;z-index:70;
-                background:var(--card-2);border:1px solid var(--card-border);border-radius:16px;padding:14px;
-                box-shadow:var(--shadow);backdrop-filter:blur(12px);display:none;}
-    .menu-panel.open{display:block;}
-    .menu-panel .lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;}
-    .ambiance-row{display:inline-flex;gap:5px;background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:9999px;padding:4px;margin-bottom:12px;}
-    .ambiance-row button{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:700;padding:6px 14px;border-radius:9999px;background:transparent;color:var(--pill-text);transition:.18s;}
-    .ambiance-row button.on{background:var(--accent);color:#fff;}
-    .menu-panel hr{border:0;border-top:1px solid var(--card-border);margin:2px 0 12px;}
-    .menu-panel .logout{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;cursor:pointer;
-                        font:inherit;font-size:13.5px;font-weight:600;color:#d97a6a;padding:4px 2px;}
-    .menu-panel .logout svg{width:16px;height:16px;}
-
-    .wrap{max-width:1000px;margin:0 auto;padding:0 22px;}
-
-    /* Nav haute */
-    nav.top{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);
-            border-bottom:1px solid var(--card-border);}
-    nav.top .row{max-width:1000px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:16px;}
-    .brand{display:flex;align-items:center;gap:10px;font-family:'Lora',serif;font-size:21px;font-weight:600;letter-spacing:.12em;color:var(--text);}
-    .brand .chip{width:32px;height:32px;border-radius:9px;background:rgba(127,127,127,.16);display:inline-flex;align-items:center;justify-content:center;}
-    .brand .chip svg{width:18px;height:18px;}
-    .navlinks{display:flex;gap:4px;margin-left:8px;flex:1;flex-wrap:wrap;}
-    .navlinks a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:9999px;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;transition:.15s;}
-    .navlinks a svg{width:15px;height:15px;}
-    .navlinks a:hover{color:var(--text);background:var(--card);}
-    .navlinks a.active{background:var(--nav-active-bg);color:var(--nav-active-text);}
-    .navend{display:flex;align-items:center;gap:14px;}
-    .navend a{font-size:13px;color:var(--muted);text-decoration:none;}
-    .navend a:hover{color:var(--text);}
-
-    /* Fil conducteur : où je suis */
-    .fil{font-size:12px;color:var(--soft);padding:18px 0 4px;display:flex;align-items:center;gap:8px;}
-    .fil .here{color:var(--accent-2);font-weight:600;}
-
     /* Salutation */
     .hello{padding:6px 0 26px;}
     .hello h1{font-size:34px;font-weight:600;line-height:1.15;}
     .hello p{color:var(--muted);font-size:15px;margin-top:8px;max-width:48ch;line-height:1.55;}
-
-    .section-h{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:8px 0 14px;}
 
     /* Cartes d'action (les 4 voies) */
     .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:34px;}
@@ -133,8 +58,8 @@
       </span>
       <div class="navlinks">
         <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Accueil</a>
-        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Déposer</a>
-        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-1a4 4 0 00-3-3.87M9 20H4v-1a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg>Rencontrer</a>
+        <a href="espace-client-deposer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Déposer</a>
+        <a href="espace-client-rencontrer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-1a4 4 0 00-3-3.87M9 20H4v-1a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg>Rencontrer</a>
         <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>Écrire</a>
         <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Voir</a>
       </div>
@@ -171,7 +96,7 @@
 
     <p class="section-h">Ce que vous pouvez faire</p>
     <div class="actions">
-      <a class="act" href="#">
+      <a class="act" href="espace-client-deposer.html">
         <span class="halo"></span>
         <span class="badge-free">1ᵉʳ dépôt offert</span>
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg></span>
@@ -179,7 +104,7 @@
         <p>Parlez librement, à votre rythme. Votre voix est transcrite pour vous, effacée après 30 jours.</p>
         <span class="next">Commencer un dépôt →</span>
       </a>
-      <a class="act" href="#">
+      <a class="act" href="espace-client-rencontrer.html">
         <span class="halo"></span>
         <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-1a4 4 0 00-3-3.87M9 20H4v-1a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg></span>
         <h3>Rencontrer un·e praticien·ne</h3>
@@ -227,30 +152,6 @@
 
   <p class="note">Maquette — <b>un seul composant, deux ambiances</b> (Signature / Doux). Structure, contenu et logique identiques ; seul l'habillage change. Le choix sera proposé dans l'espace (défaut : Signature).</p>
 
-  <script>
-    function setTheme(t){
-      document.body.dataset.theme = t;
-      document.getElementById('t-signature').classList.toggle('on', t==='signature');
-      document.getElementById('t-doux').classList.toggle('on', t==='doux');
-      document.getElementById('t-signature').setAttribute('aria-selected', t==='signature');
-      document.getElementById('t-doux').setAttribute('aria-selected', t==='doux');
-      try{ localStorage.setItem('ivia_recorder_theme', t); }catch(e){}
-    }
-    try{ const s=localStorage.getItem('ivia_recorder_theme'); if(s) setTheme(s); }catch(e){}
-
-    function toggleMenu(e){
-      e.stopPropagation();
-      const p=document.getElementById('menu-panel'), b=document.getElementById('menu-btn');
-      const open=p.classList.toggle('open');
-      b.setAttribute('aria-expanded', open);
-    }
-    document.addEventListener('click', (e)=>{
-      const p=document.getElementById('menu-panel');
-      if(p.classList.contains('open') && !e.target.closest('.menu')){
-        p.classList.remove('open');
-        document.getElementById('menu-btn').setAttribute('aria-expanded','false');
-      }
-    });
-  </script>
+  <script src="ivia-habitee.js"></script>
 </body>
 </html>

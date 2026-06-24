@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Maquette : Rencontrer un·e praticien·ne (Signature / Doux)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ivia-habitee.css">
+  <style>
+    .prats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:30px;}
+    @media (max-width:680px){ .prats{grid-template-columns:1fr;} }
+    .prat{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);padding:20px;display:flex;gap:16px;transition:.2s;}
+    .prat:hover{background:var(--card-2);border-color:var(--accent);}
+    .mark{width:56px;height:56px;border-radius:16px;flex-shrink:0;background:var(--pill-bg);border:1px solid var(--pill-border);
+          display:flex;align-items:center;justify-content:center;}
+    .mark svg{width:34px;height:34px;}
+    .prat h3{font-size:18px;font-weight:600;}
+    .prat .role{font-size:12.5px;color:var(--accent-2);font-weight:600;margin:2px 0 8px;}
+    .prat .desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px;}
+    .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+    .chip-l{font-size:11px;font-weight:600;color:var(--soft);background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:9999px;padding:3px 10px;}
+    .slot-row{display:flex;gap:8px;flex-wrap:wrap;}
+    .slot{font-size:12.5px;font-weight:600;color:var(--text);background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:10px;padding:7px 12px;cursor:pointer;transition:.15s;}
+    .slot:hover{border-color:var(--accent);color:var(--accent-2);}
+    .priceline{font-size:13px;color:var(--muted);margin:4px 0 18px;}
+    .priceline b{color:var(--text);}
+  </style>
+</head>
+<body data-theme="signature">
+
+  <nav class="top">
+    <div class="row">
+      <a class="brand" href="espace-client-accueil.html">
+        <span class="chip"><svg viewBox="0 0 28 28" fill="none"><rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/><rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/><rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/></svg></span>
+        IVIA
+      </a>
+      <div class="navlinks">
+        <a href="espace-client-accueil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Accueil</a>
+        <a href="espace-client-deposer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Déposer</a>
+        <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-1a4 4 0 00-3-3.87M9 20H4v-1a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg>Rencontrer</a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>Écrire</a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Voir</a>
+      </div>
+      <div class="navend">
+        <div class="menu">
+          <button class="menu-btn" id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Menu du compte" onclick="toggleMenu(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="menu-panel" id="menu-panel" role="menu">
+            <p class="lbl">Ambiance</p>
+            <div class="ambiance-row" role="tablist" aria-label="Ambiance">
+              <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
+              <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
+            </div>
+            <hr>
+            <button class="logout" onclick="alert('Déconnexion (maquette)')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg>
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="fil"><a href="espace-client-accueil.html">Accueil</a> › <span class="here">Rencontrer</span></div>
+
+    <div class="page-h">
+      <h1>Rencontrer un·e praticien·ne</h1>
+      <p>Une présence humaine, en direct, audio seulement — pas de caméra, pas de mise en scène. Choisissez la voix qui résonne, puis un créneau.</p>
+    </div>
+    <p class="priceline">Séance live · 30 min <b>49 $</b> · 1 h <b>75 $</b> — paiement à la réservation.</p>
+
+    <p class="section-h">Des voix disponibles cette semaine</p>
+    <div class="prats">
+
+      <div class="prat">
+        <span class="mark"><svg viewBox="0 0 40 40" fill="none" stroke="var(--accent-2)" stroke-width="1.5"><circle cx="13" cy="14" r="2.2"/><circle cx="27" cy="11" r="1.6"/><circle cx="22" cy="26" r="2.6"/><circle cx="30" cy="24" r="1.4"/><path stroke-linecap="round" d="M13 14l9 12 8-2M27 11l-5 15"/></svg></span>
+        <div>
+          <h3>Mylène</h3>
+          <div class="role">Écoute enracinée · présence du corps</div>
+          <div class="desc">Accompagne le retour au calme, la respiration, ce qui se dépose quand on ralentit.</div>
+          <div class="chips"><span class="chip-l">Français</span><span class="chip-l">Audio</span><span class="chip-l">Soir</span></div>
+          <div class="slot-row"><span class="slot">Jeu. 10 h</span><span class="slot">Jeu. 14 h</span><span class="slot">Ven. 9 h</span><span class="slot">+ 4 autres</span></div>
+        </div>
+      </div>
+
+      <div class="prat">
+        <span class="mark"><svg viewBox="0 0 40 40" fill="none" stroke="var(--accent-2)" stroke-width="1.5"><circle cx="12" cy="20" r="2.2"/><circle cx="22" cy="12" r="1.6"/><circle cx="28" cy="22" r="2.4"/><circle cx="18" cy="29" r="1.5"/><path stroke-linecap="round" d="M12 20l10-8 6 10-10 7z"/></svg></span>
+        <div>
+          <h3>Samuel</h3>
+          <div class="role">Clarté du mental · mise en mots</div>
+          <div class="desc">Aide à nommer ce qui tourne en boucle, à démêler les fils sans rien forcer.</div>
+          <div class="chips"><span class="chip-l">Français</span><span class="chip-l">English</span><span class="chip-l">Audio</span></div>
+          <div class="slot-row"><span class="slot">Mer. 11 h</span><span class="slot">Mer. 16 h</span><span class="slot">Ven. 13 h</span><span class="slot">+ 6 autres</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <a class="pill" href="#" style="display:inline-flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>Voir toutes les voix et tous les créneaux</a>
+  </div>
+
+  <p class="note">Maquette — écran <b>Rencontrer</b>. Cartes praticien·ne <b>abstraites</b> (pas de photo — doctrine carte abstraite), deux ambiances. Étape suivante : créneau → paiement → confirmation.</p>
+
+  <script src="ivia-habitee.js"></script>
+</body>
+</html>

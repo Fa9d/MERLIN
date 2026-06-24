@@ -1,0 +1,104 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   IVIA — Design system « Maison habitée »
+   UN composant, deux ambiances via [data-theme="signature|doux"].
+   Source unique des tokens + coquille (nav, menu) + composants partagés.
+   Référence : design-system/recorder-card.html.
+   Typo : Lora (titres) / Raleway (texte) — à charger dans la page.
+─────────────────────────────────────────────────────────────────────────── */
+
+:root{ --ivia-green:#2D6A4F; --ivia-green-soft:#4A7C59; --r:22px; }
+
+/* ── Ambiance Signature (défaut) : velours sombre, cuivre, ivoire ── */
+[data-theme="signature"]{
+  --bg: radial-gradient(120% 80% at 50% 0%, #20241c 0%, #14150e 55%, #0c0d08 100%);
+  --card: rgba(255,255,255,.035); --card-2: rgba(255,255,255,.06);
+  --card-border: rgba(196,176,128,.16);
+  --text:#F3EFE2; --muted:#A9A693; --soft:#75735f;
+  --accent: var(--ivia-green-soft); --accent-2:#C8965A;
+  --pill-bg: rgba(255,255,255,.06); --pill-border: rgba(255,255,255,.10); --pill-text:#E8E4D6;
+  --cta-bg: linear-gradient(180deg,#3f6f50,#2d5b42); --cta-text:#F3EFE2;
+  --logo-fill:#5e7d59; --nav-active-bg: var(--ivia-green); --nav-active-text:#F3EFE2;
+  --ring:#3a3c2f; --ring-active:#C8965A; --wave:#C8965A; --wave-2:#5e7d59;
+  --shadow:0 30px 80px -44px rgba(0,0,0,.8); --halo: rgba(200,150,90,.10);
+}
+/* ── Ambiance Doux : prune/rosé satiné, vert IVIA en accent ── */
+[data-theme="doux"]{
+  --bg: radial-gradient(120% 85% at 50% 0%, #f7e7e9 0%, #efd7da 45%, #e4c9d2 100%);
+  --card: rgba(255,255,255,.5); --card-2: rgba(255,255,255,.66);
+  --card-border: rgba(180,140,150,.26);
+  --text:#5b4750; --muted:#9a7f88; --soft:#b59aa3;
+  --accent: var(--ivia-green-soft); --accent-2:#c98b9b;
+  --pill-bg: rgba(255,255,255,.6); --pill-border: rgba(180,140,150,.3); --pill-text:#6b5560;
+  --cta-bg: linear-gradient(180deg,#8aa583,#6f8c6c); --cta-text:#fbfaf6;
+  --logo-fill:#8aa583; --nav-active-bg:#6f8c6c; --nav-active-text:#fbfaf6;
+  --ring:#e6cdd3; --ring-active:#c98b9b; --wave:#c98b9b; --wave-2:#7fa07f;
+  --shadow:0 30px 80px -46px rgba(120,80,95,.4); --halo: rgba(201,139,155,.14);
+}
+
+*{box-sizing:border-box;margin:0;}
+body{font-family:'Raleway',system-ui,sans-serif;min-height:100vh;color:var(--text);
+     background:var(--bg);transition:background .45s;padding-bottom:48px;}
+h1,h2,h3,.serif{font-family:'Lora',Georgia,serif;}
+a{color:inherit;}
+
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px;}
+
+/* ── Coquille : navigation haute ─────────────────────────────────────────── */
+nav.top{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);border-bottom:1px solid var(--card-border);}
+nav.top .row{max-width:1000px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:16px;}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Lora',serif;font-size:21px;font-weight:600;letter-spacing:.12em;color:var(--text);text-decoration:none;}
+.brand .chip{width:32px;height:32px;border-radius:9px;background:rgba(127,127,127,.16);display:inline-flex;align-items:center;justify-content:center;}
+.brand .chip svg{width:18px;height:18px;}
+.navlinks{display:flex;gap:4px;margin-left:8px;flex:1;flex-wrap:wrap;}
+.navlinks a{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:9999px;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;transition:.15s;}
+.navlinks a svg{width:15px;height:15px;}
+.navlinks a:hover{color:var(--text);background:var(--card);}
+.navlinks a.active{background:var(--nav-active-bg);color:var(--nav-active-text);}
+.navend{display:flex;align-items:center;gap:14px;}
+
+/* ── Menu compte déroulant (Ambiance + Déconnexion) ──────────────────────── */
+.menu{position:relative;}
+.menu-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--pill-border);
+          background:var(--pill-bg);color:var(--pill-text);border-radius:9999px;padding:6px 10px;font:inherit;transition:.15s;}
+.menu-btn:hover{filter:brightness(1.08);}
+.menu-btn svg{width:18px;height:18px;}
+.menu-btn .caret{width:13px;height:13px;}
+.menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:212px;z-index:70;
+            background:var(--card-2);border:1px solid var(--card-border);border-radius:16px;padding:14px;
+            box-shadow:var(--shadow);backdrop-filter:blur(12px);display:none;}
+.menu-panel.open{display:block;}
+.menu-panel .lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;}
+.ambiance-row{display:inline-flex;gap:5px;background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:9999px;padding:4px;margin-bottom:12px;}
+.ambiance-row button{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:700;padding:6px 14px;border-radius:9999px;background:transparent;color:var(--pill-text);transition:.18s;}
+.ambiance-row button.on{background:var(--accent);color:#fff;}
+.menu-panel hr{border:0;border-top:1px solid var(--card-border);margin:2px 0 12px;}
+.menu-panel .logout{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;cursor:pointer;
+                    font:inherit;font-size:13.5px;font-weight:600;color:#d97a6a;padding:4px 2px;}
+.menu-panel .logout svg{width:16px;height:16px;}
+
+/* ── Fil conducteur : où je suis ─────────────────────────────────────────── */
+.fil{font-size:12px;color:var(--soft);padding:18px 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fil .here{color:var(--accent-2);font-weight:600;}
+.fil a{color:var(--muted);text-decoration:none;}
+.fil a:hover{color:var(--text);}
+
+/* ── En-tête de page ─────────────────────────────────────────────────────── */
+.page-h{padding:6px 0 24px;}
+.page-h h1{font-size:32px;font-weight:600;line-height:1.15;}
+.page-h p{color:var(--muted);font-size:15px;margin-top:8px;max-width:52ch;line-height:1.55;}
+.section-h{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin:8px 0 14px;}
+
+/* ── Composants partagés ─────────────────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--r);padding:22px;}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;border:0;border-radius:14px;
+     background:var(--cta-bg);color:var(--cta-text);padding:14px 22px;font:inherit;font-size:15px;font-weight:700;transition:.15s;text-decoration:none;}
+.cta:hover{filter:brightness(1.06);}
+.cta svg{width:18px;height:18px;}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+      background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--pill-text);
+      border-radius:14px;padding:12px 18px;font:inherit;font-size:14px;font-weight:600;transition:.15s;text-decoration:none;}
+.pill:hover{filter:brightness(1.08);}
+.pill svg{width:16px;height:16px;}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.03em;
+       color:var(--cta-text);background:var(--cta-bg);border-radius:9999px;padding:4px 10px;}
+.note{max-width:1000px;margin:30px auto 0;padding:0 22px;font-size:12px;color:var(--soft);text-align:center;line-height:1.6;}
