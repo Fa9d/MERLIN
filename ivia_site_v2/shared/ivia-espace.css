@@ -1,45 +1,88 @@
 /* ───────────────────────────────────────────────────────────────────────────
-   IVIA — Thème « Maison habitée » pour l'espace connecté.
-   Mappe les couleurs nommées des pages (cream, surface, ink, muted, bdr,
-   forest…) à des VARIABLES d'ambiance. Chaque page pointe sa tailwind.config
-   sur ces variables → bascule Signature/Doux automatique, y compris pour le
-   contenu injecté en JS. Le sélecteur vit dans shared/layout.js.
+   IVIA — Thème « Maison habitée » de l'espace connecté.
 
-   Défaut = Signature (sombre). [data-theme="doux"] surcharge.
+   Source unique : tokens d'ambiance + composants de coquille (nav, menu, fil
+   d'Ariane, footer) stylés en CSS (indépendants de la config Tailwind de chaque
+   page → robuste même sur les pages sans tailwind.config).
+
+   - :root                = CLAIR (l'apparence actuelle, défaut sûr)
+   - [data-theme=signature] = sombre velours
+   - [data-theme=doux]      = rosé satiné
+
+   Une page « opte » pour le thème en posant data-theme sur <html> (script tôt
+   en <head>) + en pointant sa tailwind.config sur les variables. Une page non
+   convertie reste claire (:root) et garde un header clair cohérent.
 ─────────────────────────────────────────────────────────────────────────── */
 
-:root,
+:root {
+  --cream:#FAFDF8; --surface:#F0F7F2; --ink:#1A2E1D; --muted:#4B6350; --bdr:#D4E8D0;
+  --forest-deep:#2D6A4F; --forest:#4A7C59; --sage:#8FB99A;
+  --card-bg:#ffffff; --card-soft:#F0F7F2; --copper:#2D6A4F; --accent-2:#2D6A4F;
+  --on-accent:#ffffff;
+  --header-bg:rgba(255,255,255,.9); --menu-bg:#ffffff; --fil-bg:#FAFDF8; --footer-bg:rgba(240,247,242,.5);
+}
 [data-theme="signature"] {
-  --cream:   #14150e;   /* fond de page (velours sombre) */
-  --surface: #1b1c14;   /* panneaux doux */
-  --ink:     #F3EFE2;   /* texte principal (ivoire chaud) */
-  --muted:   #A9A693;   /* texte secondaire */
-  --bdr:     #34362a;   /* bordures */
-  --card-bg: #1a1b13;   /* fond des cartes */
-  --card-bg-soft: #1f2017;
-  --forest-deep: #4A7C59;   /* vert IVIA — éclairci pour lisibilité sur sombre */
-  --forest:      #5e9d6f;
-  --sage:        #8FB99A;
-  --copper:      #C8965A;   /* accent cuivre (Signature) */
-  --accent-2:    #C8965A;
-  --on-accent:   #ffffff;   /* texte sur boutons verts */
+  --cream:#14150e; --surface:#1b1c14; --ink:#F3EFE2; --muted:#A9A693; --bdr:#34362a;
+  --forest-deep:#4A7C59; --forest:#5e9d6f; --sage:#8FB99A;
+  --card-bg:#1a1b13; --card-soft:#1f2017; --copper:#C8965A; --accent-2:#C8965A;
+  --on-accent:#ffffff;
+  --header-bg:rgba(18,19,13,.85); --menu-bg:#1a1b13; --fil-bg:#14150e; --footer-bg:rgba(27,28,20,.5);
 }
-
 [data-theme="doux"] {
-  --cream:   #ead9dd;
-  --surface: #f3e3e6;
-  --ink:     #5b4750;
-  --muted:   #9a7f88;
-  --bdr:     #d9c2c8;
-  --card-bg: #fbf4f5;
-  --card-bg-soft: #f6ebee;
-  --forest-deep: #3f7350;
-  --forest:      #4A7C59;
-  --sage:        #7fa07f;
-  --copper:      #c98b9b;   /* accent rosé (Doux) */
-  --accent-2:    #c98b9b;
-  --on-accent:   #ffffff;
+  --cream:#ead9dd; --surface:#f3e3e6; --ink:#5b4750; --muted:#9a7f88; --bdr:#d9c2c8;
+  --forest-deep:#3f7350; --forest:#4A7C59; --sage:#7fa07f;
+  --card-bg:#fbf4f5; --card-soft:#f6ebee; --copper:#c98b9b; --accent-2:#c98b9b;
+  --on-accent:#ffffff;
+  --header-bg:rgba(247,231,233,.88); --menu-bg:#fbf4f5; --fil-bg:#ead9dd; --footer-bg:rgba(243,227,230,.5);
 }
 
-/* Transition douce entre ambiances */
 html, body { transition: background-color .4s ease, color .4s ease; }
+
+/* ── Coquille : navigation ────────────────────────────────────────────────── */
+.ivia-nav{position:sticky;top:0;z-index:50;background:var(--header-bg);backdrop-filter:blur(8px);border-bottom:1px solid var(--bdr);}
+.ivia-nav-row{max-width:64rem;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.ivia-brand{display:flex;align-items:center;gap:8px;font-family:'Lora',Georgia,serif;font-size:20px;font-weight:600;color:var(--forest-deep);flex-shrink:0;text-decoration:none;}
+.ivia-links{display:flex;align-items:center;gap:4px;overflow-x:auto;}
+.ivia-link{padding:6px 12px;border-radius:9999px;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;white-space:nowrap;transition:.15s;}
+.ivia-link:hover{color:var(--ink);background:var(--surface);}
+.ivia-link.active{background:var(--forest-deep);color:var(--on-accent);font-weight:600;}
+.ivia-end{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.ivia-cta{background:var(--forest-deep);color:var(--on-accent);font-size:12px;font-weight:600;padding:6px 12px;border-radius:9999px;text-decoration:none;white-space:nowrap;transition:.15s;}
+.ivia-cta:hover{filter:brightness(1.08);}
+
+/* Menu compte */
+.ivia-menu{position:relative;}
+.ivia-menu-btn{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--bdr);background:transparent;color:var(--muted);border-radius:9999px;padding:6px 8px;cursor:pointer;transition:.15s;}
+.ivia-menu-btn:hover{background:var(--surface);color:var(--ink);}
+.ivia-menu-panel{position:absolute;right:0;margin-top:8px;width:14rem;background:var(--menu-bg);border:1px solid var(--bdr);border-radius:16px;box-shadow:0 20px 50px -20px rgba(0,0,0,.5);padding:12px;z-index:60;}
+.ivia-menu-panel[hidden]{display:none;}
+.ivia-menu-lbl{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.ivia-amb{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--bdr);border-radius:9999px;padding:4px;margin-bottom:10px;}
+.ivia-amb button{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:700;padding:6px 14px;border-radius:9999px;background:transparent;color:var(--muted);transition:.15s;}
+.ivia-amb button.on{background:var(--forest-deep);color:var(--on-accent);}
+.ivia-menu-sep{border:0;border-top:1px solid var(--bdr);margin:8px 0;}
+.ivia-menu-item{display:flex;align-items:center;gap:8px;width:100%;font:inherit;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;background:none;border:0;cursor:pointer;border-radius:8px;padding:8px;text-align:left;}
+.ivia-menu-item:hover{background:var(--surface);}
+.ivia-menu-item.danger{color:#d9776a;font-weight:600;}
+.ivia-menu-item.danger:hover{background:rgba(217,119,106,.12);}
+
+/* Fil d'Ariane */
+.ivia-fil{background:var(--fil-bg);border-bottom:1px solid var(--bdr);}
+.ivia-fil-row{max-width:64rem;margin:0 auto;padding:8px 20px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ivia-fil a{color:var(--muted);text-decoration:none;}
+.ivia-fil a:hover{color:var(--ink);}
+.ivia-fil .here{color:var(--accent-2);font-weight:600;}
+.ivia-fil .sep{color:var(--muted);opacity:.5;}
+
+/* Footer */
+.ivia-footer{margin-top:4rem;border-top:1px solid var(--bdr);background:var(--footer-bg);}
+.ivia-footer-in{max-width:64rem;margin:0 auto;padding:40px 20px;}
+.ivia-footer-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin-bottom:32px;}
+@media (min-width:640px){.ivia-footer-cols{grid-template-columns:repeat(3,1fr);}}
+.ivia-footer-col p{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--forest-deep);margin-bottom:12px;}
+.ivia-footer-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
+.ivia-footer-col a{font-size:14px;color:var(--muted);text-decoration:none;}
+.ivia-footer-col a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:2px;}
+.ivia-footer-base{border-top:1px solid var(--bdr);padding-top:24px;display:flex;flex-direction:column;gap:12px;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
+@media (min-width:640px){.ivia-footer-base{flex-direction:row;}}
+.ivia-footer-base a{color:inherit;text-decoration:underline;}
