@@ -450,26 +450,26 @@
         <!-- Barre d'onglets (gauche) -->
         <div role="tablist" aria-label="Sujets praticiens"
              class="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0">
-          <button role="tab" id="ptab-presence" aria-controls="ppanel-presence" aria-selected="true"
-                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
-            La présence
+          <button role="tab" id="ptab-presence" aria-controls="ppanel-presence" aria-selected="true" class="prat-tab shrink-0">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>La présence</span>
+            <svg class="prat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
-          <button role="tab" id="ptab-recentrer" aria-controls="ppanel-recentrer" aria-selected="false"
-                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
-            Comment ça recentre
+          <button role="tab" id="ptab-recentrer" aria-controls="ppanel-recentrer" aria-selected="false" class="prat-tab shrink-0">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Comment ça recentre</span>
+            <svg class="prat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
-          <button role="tab" id="ptab-lecture" aria-controls="ppanel-lecture" aria-selected="false"
-                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
-            La lecture
+          <button role="tab" id="ptab-lecture" aria-controls="ppanel-lecture" aria-selected="false" class="prat-tab shrink-0">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 4.9V17L12 22 3 17V6.9Z"/><path d="M12 22V12"/><path d="m3 7 9 5 9-5"/></svg>
+            <span>La lecture</span>
+            <svg class="prat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
-          <button role="tab" id="ptab-innovation" aria-controls="ppanel-innovation" aria-selected="false"
-                  class="prat-tab text-left shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold border transition-colors">
-            L'innovation
+          <button role="tab" id="ptab-innovation" aria-controls="ppanel-innovation" aria-selected="false" class="prat-tab shrink-0">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v2M12 19v2M5 5l1.5 1.5M17.5 17.5 19 19M3 12h2M19 12h2"/><circle cx="12" cy="12" r="4"/></svg>
+            <span>L'innovation</span>
+            <svg class="prat-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
-          <a href="/praticiens.html"
-             class="mt-1 lg:mt-3 text-center shrink-0 px-4 py-3 rounded-[12px] text-sm font-semibold bg-forest-deep text-white hover:bg-forest transition-colors">
-            Page complète →
-          </a>
         </div>
 
         <!-- Panneaux (droite) -->
@@ -551,13 +551,55 @@
 
         </div>
       </div>
+
+      <!-- ── Proposition commerciale ───────────────────────────────────────── -->
+      <div data-reveal class="mt-10 rounded-[28px] bg-forest-deep text-white p-7 sm:p-10 grid lg:grid-cols-[1.35fr_1fr] gap-8 lg:gap-12 items-center relative overflow-hidden">
+        <div class="absolute -right-20 -top-24 w-[360px] h-[360px] rounded-full pointer-events-none" style="background:radial-gradient(circle,#4A7C59,transparent 70%);opacity:.5" aria-hidden="true"></div>
+        <div class="relative z-10">
+          <p class="text-sage text-xs font-semibold uppercase tracking-[0.22em] mb-3">Rejoindre IVIA</p>
+          <h3 class="font-heading text-2xl sm:text-3xl font-bold mb-3 leading-snug">Une place pour les praticiens qui veulent rester présents</h3>
+          <p class="text-white/80 leading-relaxed max-w-xl mb-7">
+            Membre d'un ordre ou indépendant : IVIA vous rend du temps, élargit votre regard et vous met
+            en lien avec des personnes — sans jamais sortir de votre périmètre.
+            <span class="text-white font-semibold">Conçu avec vous, sans engagement, données au Québec.</span>
+          </p>
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="mailto:contact@ivia.quebec?subject=Rejoindre%20IVIA%20comme%20praticien"
+               class="bg-white text-forest-deep font-semibold px-6 py-3.5 rounded-[14px] hover:bg-sage hover:text-ink transition-colors shadow-sm">
+              Réserver un échange
+            </a>
+            <a href="/praticiens.html"
+               class="border border-white/40 text-white font-semibold px-6 py-3.5 rounded-[14px] hover:bg-white/10 transition-colors">
+              Voir la page complète →
+            </a>
+          </div>
+          <p class="text-white/55 text-xs mt-4">Aucun acte réservé · Vous gardez votre titre et votre jugement · Non clinique</p>
+        </div>
+        <ul class="relative z-10 space-y-3.5 text-sm">
+          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>Reprenez votre présence — fini la double tâche pendant la séance.</span></li>
+          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>Une seconde lecture structurée, à valider — vous gardez la main.</span></li>
+          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>Deux marchés : ordre <em>et</em> indépendant, sans acte réservé.</span></li>
+          <li class="flex gap-3"><span class="text-sage font-bold mt-0.5">✓</span><span>L'outil grandit avec vos demandes — chaque ajout, une preuve datée.</span></li>
+        </ul>
+      </div>
+
     </div>
   </section>
 
   <style>
-    .prat-tab { border-color: #D4E8D0; color: #4B6350; background: #fff; }
-    .prat-tab:hover { background: #F0F7F2; color: #1A2E1D; }
-    .prat-tab[aria-selected="true"] { background: #2D6A4F; border-color: #2D6A4F; color: #fff; }
+    .prat-tab { display:flex; align-items:center; gap:.6rem; width:100%; text-align:left;
+      padding:.85rem 1rem; border-radius:14px; font-size:.92rem; font-weight:600;
+      color:#4B6350; background:#fff; border:1px solid #D4E8D0; transition:all .18s ease; cursor:pointer; }
+    .prat-tab svg.ic { width:18px; height:18px; flex:0 0 auto; opacity:.75; }
+    .prat-tab .prat-arrow { margin-left:auto; opacity:0; transform:translateX(-4px); transition:all .18s ease; }
+    .prat-tab:hover { background:#F0F7F2; color:#1A2E1D; border-color:#bcdcc4; }
+    .prat-tab[aria-selected="true"] { background:#2D6A4F; border-color:#2D6A4F; color:#fff;
+      box-shadow:0 12px 26px -14px rgba(45,106,79,.75); }
+    .prat-tab[aria-selected="true"] svg.ic { opacity:1; }
+    .prat-tab[aria-selected="true"] .prat-arrow { opacity:1; transform:none; }
+    .prat-panel { animation:pratfade .35s ease; }
+    @keyframes pratfade { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    @media (prefers-reduced-motion: reduce){ .prat-panel{ animation:none; } .prat-tab,.prat-arrow{ transition:none; } }
   </style>
   <script>
     (function () {
