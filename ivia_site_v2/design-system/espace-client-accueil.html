@@ -43,12 +43,25 @@
          background:var(--bg);transition:background .45s;padding-bottom:48px;}
     h1,h2,h3,.serif{font-family:'Lora',Georgia,serif;}
 
-    /* Barre d'ambiance (hors maquette — pour la démo) */
-    .ambiance{position:fixed;top:14px;right:18px;z-index:60;display:inline-flex;align-items:center;gap:8px;
-              background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:9999px;padding:5px;backdrop-filter:blur(8px);}
-    .ambiance .lbl{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--soft);padding-left:8px;text-transform:uppercase;}
-    .ambiance button{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:700;padding:6px 14px;border-radius:9999px;background:transparent;color:var(--pill-text);transition:.18s;}
-    .ambiance button.on{background:var(--accent);color:#fff;}
+    /* Menu compte (à droite de la nav) : Ambiance + Déconnexion */
+    .menu{position:relative;}
+    .menu-btn{display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--pill-border);
+              background:var(--pill-bg);color:var(--pill-text);border-radius:9999px;padding:6px 10px;font:inherit;transition:.15s;}
+    .menu-btn:hover{filter:brightness(1.08);}
+    .menu-btn svg{width:18px;height:18px;}
+    .menu-btn .caret{width:13px;height:13px;}
+    .menu-panel{position:absolute;right:0;top:calc(100% + 8px);min-width:212px;z-index:70;
+                background:var(--card-2);border:1px solid var(--card-border);border-radius:16px;padding:14px;
+                box-shadow:var(--shadow);backdrop-filter:blur(12px);display:none;}
+    .menu-panel.open{display:block;}
+    .menu-panel .lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;}
+    .ambiance-row{display:inline-flex;gap:5px;background:var(--pill-bg);border:1px solid var(--pill-border);border-radius:9999px;padding:4px;margin-bottom:12px;}
+    .ambiance-row button{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:700;padding:6px 14px;border-radius:9999px;background:transparent;color:var(--pill-text);transition:.18s;}
+    .ambiance-row button.on{background:var(--accent);color:#fff;}
+    .menu-panel hr{border:0;border-top:1px solid var(--card-border);margin:2px 0 12px;}
+    .menu-panel .logout{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;cursor:pointer;
+                        font:inherit;font-size:13.5px;font-weight:600;color:#d97a6a;padding:4px 2px;}
+    .menu-panel .logout svg{width:16px;height:16px;}
 
     .wrap{max-width:1000px;margin:0 auto;padding:0 22px;}
 
@@ -111,13 +124,6 @@
 </head>
 <body data-theme="signature">
 
-  <!-- Sélecteur d'ambiance (démo) -->
-  <div class="ambiance" role="tablist" aria-label="Ambiance">
-    <span class="lbl">Ambiance</span>
-    <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
-    <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
-  </div>
-
   <!-- Navigation : la grammaire unique -->
   <nav class="top">
     <div class="row">
@@ -133,8 +139,24 @@
         <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>Voir</a>
       </div>
       <div class="navend">
-        <a href="#">David</a>
-        <a href="#" style="color:#d97a6a">Déconnexion</a>
+        <div class="menu">
+          <button class="menu-btn" id="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Menu du compte" onclick="toggleMenu(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="menu-panel" id="menu-panel" role="menu">
+            <p class="lbl">Ambiance</p>
+            <div class="ambiance-row" role="tablist" aria-label="Ambiance">
+              <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
+              <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
+            </div>
+            <hr>
+            <button class="logout" onclick="alert('Déconnexion (maquette)')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg>
+              Déconnexion
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -215,6 +237,20 @@
       try{ localStorage.setItem('ivia_recorder_theme', t); }catch(e){}
     }
     try{ const s=localStorage.getItem('ivia_recorder_theme'); if(s) setTheme(s); }catch(e){}
+
+    function toggleMenu(e){
+      e.stopPropagation();
+      const p=document.getElementById('menu-panel'), b=document.getElementById('menu-btn');
+      const open=p.classList.toggle('open');
+      b.setAttribute('aria-expanded', open);
+    }
+    document.addEventListener('click', (e)=>{
+      const p=document.getElementById('menu-panel');
+      if(p.classList.contains('open') && !e.target.closest('.menu')){
+        p.classList.remove('open');
+        document.getElementById('menu-btn').setAttribute('aria-expanded','false');
+      }
+    });
   </script>
 </body>
 </html>
