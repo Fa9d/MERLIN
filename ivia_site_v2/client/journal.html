@@ -7,15 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
   <title>IVIA — Journal</title>
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
   <script src="/shared/api.js?v=20260615d"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
-    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1,h2{font-family:'Lora',Georgia,serif;}
-    .tone-chip{border:1.5px solid #D4E8D0;border-radius:99px;padding:5px 14px;font-size:12px;font-weight:600;color:#4B6350;cursor:pointer;background:#fff;transition:all .15s;}
-    .tone-chip.selected{background:#2D6A4F;border-color:#2D6A4F;color:#fff;}
+    .tone-chip{border:1.5px solid var(--bdr);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;background:var(--card-bg);transition:all .15s;}
+    .tone-chip.selected{background:var(--forest-deep);border-color:var(--forest-deep);color:var(--on-accent);}
   </style>
 </head>
 <body class="antialiased">
@@ -27,7 +29,7 @@
 <div class="max-w-3xl mx-auto px-4 py-10 space-y-8">
 
   <!-- Composer -->
-  <section class="bg-white border border-bdr rounded-[20px] p-6">
+  <section class="bg-card border border-bdr rounded-[20px] p-6">
     <h1 class="font-heading text-xl font-bold text-ink mb-1">Déposer ce qui est là.</h1>
     <p class="text-sm text-muted mb-4">Quelques mots suffisent. Personne ne corrige, personne ne note.</p>
 
@@ -96,7 +98,7 @@
         .forEach(en => {
           const d = new Date(en.written_at);
           const el = document.createElement('article');
-          el.className = 'bg-white border border-bdr rounded-[16px] px-5 py-4';
+          el.className = 'bg-card border border-bdr rounded-[16px] px-5 py-4';
           el.innerHTML = `
             <p class="text-xs text-muted mb-1.5">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
               · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}${en.emotional_tone ? ' · <span class="text-forest font-medium">' + (TONES_LABELS[en.emotional_tone] || en.emotional_tone) + '</span>' : ''}</p>
