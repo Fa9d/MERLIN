@@ -18,6 +18,8 @@
 function _apiBase() {
   if (typeof window !== 'undefined' && window.IVIA_API_BASE) return window.IVIA_API_BASE.replace(/\/$/, '');
   if (typeof window !== 'undefined') {
+    // Prod : le site statique est servi sur ivia.quebec, l'API sur api.ivia.quebec (443).
+    if (/(^|\.)ivia\.quebec$/.test(location.hostname)) return 'https://api.ivia.quebec';
     const proto = location.protocol;
     return `${proto}//${location.hostname}:8000`;
   }
@@ -51,6 +53,14 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
 
   const json = await res.json().catch(() => null);
 
+  // Jeton absent/expiré/ancien format (mock '1') → on repart proprement par la connexion.
+  if (res.status === 401 && !publicEndpoint) {
+    localStorage.removeItem('ivia_session');
+    localStorage.removeItem('ivia_user');
+    location.href = '/connexion.html?retour=' + encodeURIComponent(location.pathname + location.search);
+    throw new Error('Session expirée — reconnectez-vous.');
+  }
+
   if (!res.ok) {
     const detail = typeof json?.detail === 'string' ? json.detail
       : Array.isArray(json?.detail) ? json.detail.map(e => e.msg || JSON.stringify(e)).join(' · ')
@@ -58,6 +68,272 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
     throw new Error(detail);
   }
   return json;
+}
+
+// ── Authentification & compte ────────────────────────────────────────────────
+/**
+ * Connexion par courriel + mot de passe.
+ * Stocke le JWT (ivia_session) et le profil (ivia_user) en localStorage.
+ * @returns {Promise<{access_token, token_type, user}>}
+ */
+async function apiLogin(email, password) {
+  const res = await _req('/api/v1/auth/login', {
+    method: 'POST',
+    body: { email, password },
+    publicEndpoint: true,
+  });
+  localStorage.setItem('ivia_session', res.access_token);
+  localStorage.setItem('ivia_user', JSON.stringify(res.user));
+  if (res.user?.display_name) localStorage.setItem('ivia_prenom', res.user.display_name.split(' ')[0]);
+  return res;
+}
+
+/**
+ * Inscription publique d'un client. Déclenche le courriel de vérification.
+ * @param {{email, password, display_name, redirect_path?}} payload
+ * @returns {Promise<{id, email, display_name, email_sent, message}>}
+ */
+async function apiRegisterClient(payload) {
+  return _req('/api/v1/register/client', { method: 'POST', body: payload, publicEndpoint: true });
+}
+
+/**
+ * Consomme un token de vérification courriel.
+ * @returns {Promise<{message}>}
+ */
+async function apiVerifyEmail(token) {
+  return _req(`/api/v1/verify-email/${encodeURIComponent(token)}`, { publicEndpoint: true });
+}
+
+/**
+ * Profil du compte connecté (source de vérité, dont email_verified).
+ */
+async function apiMe() {
+  return _req('/api/v1/auth/me');
+}
+
+/**
+ * Définit ou change le mot de passe du compte connecté.
+ * current_password requis seulement si un mot de passe existe déjà.
+ */
+async function apiSetPassword(newPassword, currentPassword = null) {
+  return _req('/api/v1/auth/set-password', {
+    method: 'POST',
+    body: { new_password: newPassword, current_password: currentPassword },
+  });
+}
+
+// ── Paiement d'un créneau (prix serveur) ─────────────────────────────────────
+/**
+ * Crée la session Stripe Checkout pour un créneau en hold.
+ * Le prix est fixé côté serveur — on ne transmet jamais de montant.
+ * @param {{slot_id, notes?, success_url?, cancel_url?}} payload
+ * @returns {Promise<{order_id, checkout_url, amount_cents, currency}>}
+ */
+async function bookingCheckout(payload) {
+  return _req('/api/v1/bookings/checkout', { method: 'POST', body: payload });
+}
+
+/**
+ * Réservation pilote tout-en-un (sans paiement) — phase pilote uniquement.
+ * @param {{praticien_id, slot_date, start_time, end_time, session_type?, notes?}} payload
+ */
+async function pilotBook(payload) {
+  return _req('/api/v1/bookings/pilot-book', { method: 'POST', body: payload });
+}
+
+// ── Espace client (authentifié) ──────────────────────────────────────────────
+/** Fiche Client durable du compte connecté (404 si pas encore de dossier). */
+async function getMyClient() {
+  return _req('/api/v1/clients/me');
+}
+
+/**
+ * Met à jour la fiche client du compte connecté (profil de détermination).
+ * @param {{birth_year?, gender_identity?, birthplace?, territory_code?, ...}} payload
+ */
+async function updateMyClient(payload) {
+  return _req('/api/v1/clients/me', { method: 'PATCH', body: payload });
+}
+
+/** Confirme un paiement SIMULÉ (mode test) — aucun débit. */
+async function confirmTestPayment(orderId) {
+  return _req('/api/v1/payments/test/confirm/' + encodeURIComponent(orderId), { method: 'POST' });
+}
+
+/**
+ * Garde « profil complété » : redirige vers /client/mon-profil.html si le profil
+ * obligatoire (tranche d'âge, genre, lieu de naissance, territoire) n'est pas rempli.
+ * @returns {Promise<boolean>} true si le profil est complet (on peut continuer).
+ */
+async function requireCompleteProfile() {
+  let c = null;
+  try { c = await getMyClient(); } catch (e) { c = null; }
+  if (!c || c.profile_complete === false) {
+    const retour = encodeURIComponent(location.pathname + location.search);
+    location.href = '/client/mon-profil.html?gate=1&retour=' + retour;
+    return false;
+  }
+  return true;
+}
+
+/** Profil public du praticien connecté. */
+async function getMyProfil() {
+  return _req('/api/v1/praticiens/me/profil');
+}
+/** Met à jour le profil praticien (champs partiels). */
+async function updateMyProfil(payload) {
+  return _req('/api/v1/praticiens/me/profil', { method: 'PATCH', body: payload });
+}
+
+/** Tarifs de séance du praticien connecté (défaut serveur si non fixés). */
+async function getMyTarifs() {
+  return _req('/api/v1/praticiens/me/tarifs');
+}
+/** Le praticien fixe ses prix (cents) ; null pour revenir au défaut. */
+async function setMyTarifs(session_price_30min_cents, session_price_60min_cents) {
+  return _req('/api/v1/praticiens/me/tarifs', {
+    method: 'PATCH', body: { session_price_30min_cents, session_price_60min_cents },
+  });
+}
+
+/** Réservations (hold + confirmées) du compte connecté, triées par date. */
+async function getMyBookings() {
+  return _req('/api/v1/bookings/my');
+}
+
+/** Entrées de journal du compte connecté (plus récentes d'abord côté rendu). */
+async function getMyJournal(includeArchived = false) {
+  return _req('/api/v1/me/journal' + (includeArchived ? '?include_archived=true' : ''));
+}
+
+/**
+ * Crée une entrée de journal.
+ * @param {{body_text, entry_type?, emotional_tone?, event_year_ref?}} payload
+ */
+async function createMyJournalEntry(payload) {
+  return _req('/api/v1/me/journal', { method: 'POST', body: payload });
+}
+
+// ── Enregistrements solo (client connecté) ───────────────────────────────────
+/**
+ * Envoie un enregistrement solo (base64) — transcription lancée en tâche de fond.
+ * @param {{audio_data, filename?, formule?, duration_seconds?}} payload
+ */
+async function uploadMyRecording(payload) {
+  return _req('/api/v1/me/recordings', { method: 'POST', body: payload });
+}
+
+/** Enregistrements solo du compte connecté, avec transcription quand prête. */
+async function getMyRecordings() {
+  return _req('/api/v1/me/recordings');
+}
+
+/**
+ * Indique si une formule exige un paiement et si un crédit est déjà détenu.
+ * @param {string} formule  ex. 'solo30'
+ * @returns {Promise<{payant, has_credit, needs_payment, amount_cents}>}
+ */
+async function getSoloAccess(formule = 'solo30') {
+  return _req('/api/v1/me/recordings/access?formule=' + encodeURIComponent(formule));
+}
+
+/**
+ * Achète un crédit d'enregistrement solo (35 $, prix serveur).
+ * @param {{success_url?, cancel_url?, client_id, intake_request_id?}} payload
+ * @returns {Promise<{order_id, checkout_url, amount_cents, currency}>}
+ *   Si l'offre est gratuite (mode test), checkout_url pointe directement la page de succès.
+ */
+async function soloRecordingCheckout(payload) {
+  return _req('/api/v1/payments/stripe/public-checkout', {
+    method: 'POST',
+    body: {
+      product_kind_code: 'solo_recording',
+      product_code: 'solo_recording',
+      product_label: 'Enregistrement solo · 30 min',
+      fulfillment_mode_code: 'grant_entitlement_only',
+      entitlement_type_code: 'solo_recording_credit',
+      entitlement_quantity: 1,
+      amount_cents: 0,        // écrasé par le prix serveur (anti-manipulation)
+      currency: 'cad',
+      ...payload,
+    },
+  });
+}
+
+// ── Séance express ────────────────────────────────────────────────────────────
+/**
+ * Praticien : crée une séance express, renvoie { session_id, token, ... }.
+ * @param {{client_name?, duration_minutes, payment_status, private_notes?}} payload
+ */
+async function createExpressSession(payload) {
+  return _req('/api/v1/sessions/express', { method: 'POST', body: payload });
+}
+
+/** Public (token) : infos d'accueil d'une séance express. */
+async function getExpressSession(token) {
+  return _req('/api/v1/public/express/' + encodeURIComponent(token), { publicEndpoint: true });
+}
+
+/** Public (token) : dépôt de l'enregistrement du client sur une séance express. */
+async function uploadExpressRecording(token, payload) {
+  return _req('/api/v1/public/express/' + encodeURIComponent(token) + '/recording',
+    { method: 'POST', body: payload, publicEndpoint: true });
+}
+
+// ── Analyses de séance (praticien / clinique interne) ───────────────────────
+/** Liste les notes d'analyse générées par le pipeline IA (filtrables). */
+async function getSessionNotes({ sessionId, clientId } = {}) {
+  const qs = new URLSearchParams();
+  if (sessionId) qs.set('session_id', sessionId);
+  if (clientId) qs.set('client_id', clientId);
+  const s = qs.toString();
+  return _req('/api/v1/session-notes' + (s ? '?' + s : ''));
+}
+
+/** Détail d'une note d'analyse. */
+async function getSessionNote(id) {
+  return _req('/api/v1/session-notes/' + encodeURIComponent(id));
+}
+
+/** Séances du praticien connecté (filtré côté serveur par praticien_id). */
+async function listMySessions() {
+  return _req('/api/v1/sessions');
+}
+
+/** Détail d'une séance (dont transcript_text). */
+async function getSession(id) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(id));
+}
+
+/** Valider une note d'analyse (praticien/opérateur/superviseur). */
+async function validateSessionNote(id, { validated = true, corrections = null } = {}) {
+  return _req('/api/v1/session-notes/' + encodeURIComponent(id) + '/validate',
+    { method: 'PATCH', body: { validated, corrections } });
+}
+
+/**
+ * Crée un document dérivé (reformulation client). Visible au client si
+ * `client_visible: true` ET la note source est validée.
+ * @param {{client_id, session_id, source_note_id, title, body_text, client_visible?}} payload
+ */
+async function createDerivedDocument(payload) {
+  return _req('/api/v1/derived-documents', { method: 'POST', body: payload });
+}
+
+/** Documents livrés au client connecté (reformulations déposées dans son espace). */
+async function getMyDocuments() {
+  return _req('/api/v1/me/documents');
+}
+
+/** Convertit un Blob audio en base64 (sans le préfixe data:). */
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(String(reader.result).split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 }
 
 // ── Praticiens (public) ───────────────────────────────────────────────────────
@@ -84,8 +360,9 @@ async function listPraticiens() {
  *   slot_id, status   // "available"|"hold"|"confirmed"|"cancelled"
  * }
  */
-async function getAvailableSlots(praticienId, dateFrom, dateTo) {
+async function getAvailableSlots(praticienId, dateFrom, dateTo, durationMinutes) {
   const qs = new URLSearchParams({ praticien_id: praticienId, date_from: dateFrom, date_to: dateTo });
+  if (durationMinutes) qs.set('duration_minutes', durationMinutes);
   return _req(`/api/v1/schedules/available?${qs}`, { publicEndpoint: true });
 }
 
@@ -183,122 +460,6 @@ async function cancelSlot(slotId) {
   return _req('/api/v1/bookings/cancel', { method: 'POST', body: { slot_id: slotId } });
 }
 
-/**
- * Réservation pilote tout-en-un (sans Stripe).
- * Hold + crédit gratuit automatique + confirmation en une seule requête.
- * @param {{ praticien_id, slot_date, start_time, end_time, session_type?, notes? }} payload
- * @returns {Promise<BookingSlotRecord & { session_id: string }>}
- */
-async function pilotBookSlot(payload) {
-  return _req('/api/v1/bookings/pilot-book', { method: 'POST', body: payload });
-}
-
-/**
- * Retourne le premier créneau disponible d'un praticien sur les 60 prochains jours.
- * @param {string} praticienId
- * @returns {Promise<{slot_date, start_time, end_time}|null>}
- */
-async function getNextAvailableSlot(praticienId) {
-  const from = new Date();
-  const to = new Date();
-  to.setDate(to.getDate() + 60);
-  const dateFrom = from.toISOString().slice(0, 10);
-  const dateTo   = to.toISOString().slice(0, 10);
-  const slots = await getAvailableSlots(praticienId, dateFrom, dateTo);
-  return Array.isArray(slots) && slots.length > 0 ? slots[0] : null;
-}
-
-// ── Sessions (praticien) ──────────────────────────────────────────────────────
-
-/**
- * Démarre une séance (status → in_progress).
- * @param {string} sessionId
- * @returns {Promise<SessionRead>}
- */
-async function startSession(sessionId) {
-  return _req(`/api/v1/sessions/${sessionId}/start`, { method: 'POST', body: {} });
-}
-
-/**
- * Upload un fichier audio WebM pour transcription + analyse AI.
- * @param {string} sessionId
- * @param {Blob} audioBlob
- * @returns {Promise<{ session_id, audio_file_path, pipeline_queued }>}
- */
-async function uploadSessionAudio(sessionId, audioBlob) {
-  // Encode blob to base64 (avoids python-multipart requirement on server)
-  const arrayBuffer = await audioBlob.arrayBuffer();
-  const bytes = new Uint8Array(arrayBuffer);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-  const audio_data = btoa(binary);
-  const filename = `session_${sessionId}.webm`;
-  return _req(`/api/v1/sessions/${sessionId}/upload-audio`, {
-    method: 'POST',
-    body: { audio_data, filename },
-  });
-}
-
-/**
- * Clôture une séance (requiert transcript_text).
- * Déclenche l'analyse AI si transcript_text fourni.
- * @param {string} sessionId
- * @param {{ session_status_code, presenting_topic_text?, session_highlights_text?,
- *           transcript_text?, operator_assessment_text?, client_visible? }} payload
- */
-async function closeSession(sessionId, payload) {
-  return _req(`/api/v1/sessions/${sessionId}/close`, { method: 'POST', body: payload });
-}
-
-// ── Enregistrements solo (client connecté) ────────────────────────────────────
-/**
- * Convertit un Blob audio en base64 « nu » (sans préfixe data:…;base64,) —
- * format attendu par le backend (base64.b64decode).
- * @param {Blob} blob
- * @returns {Promise<string>}
- */
-function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error("Lecture du fichier audio impossible."));
-    reader.onload = () => {
-      const result = String(reader.result || '');
-      const comma = result.indexOf(',');
-      resolve(comma >= 0 ? result.slice(comma + 1) : result);
-    };
-    reader.readAsDataURL(blob);
-  });
-}
-
-/**
- * Envoie un enregistrement solo (audio base64) pour transcription en tâche de fond.
- * @param {{ audio_data: string, filename?: string, formule?: string,
- *           duration_seconds?: number }} payload
- * @returns {Promise<MyRecordingRead>}  // status 202 — transcription en file
- */
-async function uploadMyRecording(payload) {
-  return _req('/api/v1/me/recordings', { method: 'POST', body: payload });
-}
-
-/**
- * Liste les enregistrements solo du client connecté (avec statut de transcription).
- * @returns {Promise<Array<{ id, formule, created_at, actual_end_at, duration_minutes,
- *           status, transcript_ready, transcript_text }>>}
- */
-async function getMyRecordings() {
-  return _req('/api/v1/me/recordings');
-}
-
-/**
- * Indique si une formule exige un paiement et si le client a déjà un crédit.
- * @param {string} formule
- * @returns {Promise<{ formule, requires_payment, has_credit }>}
- */
-async function getMyRecordingAccess(formule = 'solo30') {
-  const qs = new URLSearchParams({ formule });
-  return _req(`/api/v1/me/recordings/access?${qs}`);
-}
-
 // ── Helpers utilitaires ──────────────────────────────────────────────────────
 const JOURS_FR = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 const JOURS_LONG = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
@@ -353,6 +514,97 @@ function formatDateCourteLocale(iso) {
   const d = new Date(iso + 'T12:00:00');
   const jour = JOURS_LONG[d.getDay() === 0 ? 6 : d.getDay() - 1];
   return `${jour} ${d.getDate()} ${MOIS_FR[d.getMonth()]}`;
+}
+
+// ── Admin · dossiers clients (enregistrements + transcriptions + analyses) ────
+/** Liste des clients avec compteurs (enregistrements / transcrits / analyses). */
+async function adminListClients(q) {
+  return _req('/api/v1/admin/clients' + (q ? ('?q=' + encodeURIComponent(q)) : ''));
+}
+/** Dossier complet d'un client : enregistrements + transcriptions + analyses. */
+async function adminClientDossier(id) {
+  return _req('/api/v1/admin/clients/' + encodeURIComponent(id) + '/dossier');
+}
+
+// ── Admin · vue d'ensemble ────────────────────────────────────────────────────
+/** Chiffres clés + alertes de vigilance pour le tableau de bord admin. */
+async function adminOverview() {
+  return _req('/api/v1/admin/overview');
+}
+
+// ── Admin · demandes d'entrée (intake) ───────────────────────────────────────
+/** Liste des demandes d'entrée (file d'arrivée via /rendez-vous). */
+async function adminListIntake() {
+  return _req('/api/v1/intake-requests');
+}
+/** Traite une demande : statut + note + assignation à un praticien (id ou "" pour retirer). */
+async function adminUpdateIntakeHandling(id, handling_status_code, handling_notes, assigned_practitioner_id) {
+  const body = { handling_status_code, handling_notes };
+  if (assigned_practitioner_id !== undefined) body.assigned_practitioner_id = assigned_practitioner_id;
+  return _req('/api/v1/intake-requests/' + encodeURIComponent(id) + '/handling',
+    { method: 'PATCH', body });
+}
+
+// ── Admin · comptabilité (grand livre) ───────────────────────────────────────
+/** Résumé comptable agrégé sur une période (cents). */
+async function adminAccountingSummary(dateFrom, dateTo) {
+  return _req(`/api/v1/admin/accounting/summary?date_from=${dateFrom}&date_to=${dateTo}`);
+}
+/** Grand livre ligne à ligne (encaissements ventilés) sur une période. */
+async function adminAccountingLedger(dateFrom, dateTo) {
+  return _req(`/api/v1/admin/accounting/ledger?date_from=${dateFrom}&date_to=${dateTo}`);
+}
+
+// ── Admin · comptes & accès ───────────────────────────────────────────────────
+/** Liste des comptes (filtre courriel/nom optionnel). */
+async function adminListAccounts(q) {
+  return _req('/api/v1/admin/accounts' + (q ? ('?q=' + encodeURIComponent(q)) : ''));
+}
+/** Renvoie le lien de confirmation au courriel du compte. */
+async function adminResendVerification(id) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/resend-verification', { method: 'POST' });
+}
+/** Marque le courriel comme vérifié (dépannage). */
+async function adminVerifyAccount(id) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/verify', { method: 'POST' });
+}
+/** Change le rôle métier du compte. */
+async function adminSetRole(id, role) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/role', { method: 'POST', body: { role } });
+}
+/** Suspend (true) ou réactive (false) le compte. */
+async function adminSetStatus(id, suspend) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/status', { method: 'POST', body: { suspend } });
+}
+/** Abonnement praticien (suivi interne) : "active" | "unpaid" | "inactive". */
+async function adminSetSubscription(id, status) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/subscription', { method: 'POST', body: { status } });
+}
+/** Accorde (true) ou retire (false) le droit admin (cumul sur le rôle). */
+async function adminSetAdmin(id, grant) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id) + '/admin', { method: 'POST', body: { grant } });
+}
+/** Supprime définitivement un compte et ses données liées (effacement Loi 25). */
+async function adminDeleteAccount(id) {
+  return _req('/api/v1/admin/accounts/' + encodeURIComponent(id), { method: 'DELETE' });
+}
+
+// ── Admin · interrupteurs de facturation par offre ───────────────────────────
+/**
+ * Lit l'état payant/gratuit de chaque offre.
+ * @returns {Promise<{flags: Object<string, boolean>}>}  coché=payant
+ */
+async function apiGetBillingFlags() {
+  return _req('/api/v1/admin/billing-flags');
+}
+
+/**
+ * Met à jour les interrupteurs. Décoché = gratuit (mode test).
+ * @param {Object<string, boolean>} flags  { offre_code: payant }
+ * @returns {Promise<{flags: Object<string, boolean>}>}  état après mise à jour
+ */
+async function apiSetBillingFlags(flags) {
+  return _req('/api/v1/admin/billing-flags', { method: 'PATCH', body: { flags } });
 }
 
 // Export implicite — toutes les fonctions sont disponibles en global
