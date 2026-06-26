@@ -52,6 +52,12 @@ Bloc « # CHANGELOG v2.3 → v2.4 » + 4 puces (suppression noms / pilote juille
    - Page de garde « **Remplace** : BP_FINANCEMENT_v2.2 » conservé tel quel (le v2.3 lui‑même ne l'avait pas mis à jour).
 4. **3 documents référencés non encore créés** : `ARCHITECTURE.md`, `02_NATIONS_QC/LETTRE_INVITATION_COCONSTRUCTION_v1.0.md`, `12_JURIDIQUE_AFFAIRES/FINANCEMENT_PUBLIC_PROGRAMMES_2026.md` — les annexes pointent vers eux ; à produire séparément.
 
+## Suite — 3 documents d'annexe créés (même jour)
+Les 3 documents référencés en Annexes 17‑19 ont été produits :
+- `ARCHITECTURE.md` (racine) v1.0 — **factuel**, dérivé du repo (stack, données, évolutivité, posture non‑médicale).
+- `12_JURIDIQUE_AFFAIRES/FINANCEMENT_PUBLIC_PROGRAMMES_2026.md` v1.0 — 5 cibles 250‑430 K$ ; **montants présentés comme cibles à valider** (fiscaliste/avocat), non confirmés.
+- `02_NATIONS_QC/LETTRE_INVITATION_COCONSTRUCTION_v1.0.md` v1.0 — **BROUILLON à ne pas envoyer en l'état** ; posture humble/non‑appropriative (constitution), relecture autochtone requise avant tout envoi.
+
 ## Références
 - Doctrine / conventions : `CLAUDE.md`
 - Document source : `IVIA_BP_FINANCEMENT_v2.3.md` (conservé, non modifié)
