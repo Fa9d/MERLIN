@@ -13,6 +13,7 @@ from app.api.routes.clients import router as clients_router
 from app.api.routes.client_entitlements import router as client_entitlements_router
 from app.api.routes.client_life_events import router as client_life_events_router
 from app.api.routes.client_journal_entries import router as client_journal_entries_router
+from app.api.routes.profiling import router as profiling_router
 from app.api.routes.me_journal import router as me_journal_router
 from app.api.routes.me_recordings import router as me_recordings_router
 from app.api.routes.me_documents import router as me_documents_router
@@ -107,6 +108,7 @@ app.include_router(client_life_events_router, prefix=settings.api_v1_prefix)
 app.include_router(client_journal_entries_router, prefix=settings.api_v1_prefix)
 app.include_router(me_journal_router, prefix=settings.api_v1_prefix)
 app.include_router(me_recordings_router, prefix=settings.api_v1_prefix)
+app.include_router(profiling_router, prefix=settings.api_v1_prefix)
 app.include_router(me_documents_router, prefix=settings.api_v1_prefix)
 app.include_router(express_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_settings_router, prefix=settings.api_v1_prefix)

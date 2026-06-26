@@ -84,6 +84,9 @@ class Settings:
     whisper_device: str = os.getenv("MERLIN_WHISPER_DEVICE", "cpu")
     whisper_compute_type: str = os.getenv("MERLIN_WHISPER_COMPUTE_TYPE", "int8")
     anthropic_api_key: str | None = os.getenv("ANTHROPIC_API_KEY")
+    # Interrupteur des insights LLM (profilage). Défaut FALSE : aucun appel Anthropic
+    # réel tant que la barrière B1 (cadre transfrontalier + consentement) n'est pas levée.
+    insights_enabled: bool = _as_bool(os.getenv("MERLIN_INSIGHTS_ENABLED"), False)
     stripe_secret_key: str | None = os.getenv("MERLIN_STRIPE_SECRET_KEY")
     stripe_webhook_secret: str | None = os.getenv("MERLIN_STRIPE_WEBHOOK_SECRET")
     stripe_checkout_success_url: str | None = os.getenv("MERLIN_STRIPE_CHECKOUT_SUCCESS_URL")

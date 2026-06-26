@@ -256,3 +256,40 @@ def build_narrative_context(responses: dict[str, int]) -> dict:
             "Orientation. Préférences relationnelles, jamais un diagnostic ni un verdict."
         ),
     }
+
+
+def compose_client_view(context: dict) -> dict:
+    """Restitution CLIENT déterministe (hors LLM) — B3 : aucun score, aucune étiquette.
+
+    Construit une triade Observation/Hypothèse/Orientation à partir du contexte, puis
+    la passe au pare-feu Loi 21. Utilisable sans appel Anthropic. Forme alignée sur
+    `ClientFacingProfileView` (app/schemas/behavioral_profile.py).
+    """
+    from app.services.loi21_filter import assert_client_safe  # import local (évite cycle)
+
+    doms = [d["label"].lower() for d in context.get("dominantes", [])][:2]
+    if doms:
+        liste = " et ".join(doms)
+        observation = (
+            f"Ce que vous avez partagé met en lumière l'importance, pour vous, de {liste}."
+        )
+    else:
+        observation = "Vos réponses donnent un premier éclairage sur ce qui vous fait du bien."
+
+    hypothese = (
+        "Il se pourrait que ces préférences éclairent ce qui vous aide à vous sentir "
+        "considéré·e et relié·e — c'est un repère, pas une étiquette."
+    )
+    if context.get("fiabilite") == "à nuancer":
+        hypothese += " On pourra y revenir : ce premier passage reste à confirmer."
+
+    orientation = (
+        "Gardez cela comme un point de départ. Si vous le souhaitez, vous pourrez en "
+        "parler avec un·e praticien·ne pour l'explorer à votre rythme."
+    )
+
+    return {
+        "observation": assert_client_safe(observation),
+        "hypothese": assert_client_safe(hypothese),
+        "orientation": assert_client_safe(orientation),
+    }
