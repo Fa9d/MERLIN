@@ -263,3 +263,37 @@ class AuthoredByCode(str, Enum):
     client       = "client"
     practitioner = "practitioner"
     system       = "system"
+
+
+# ── Profilage comportemental à 5 couches (cf. app/models/behavioral_profile.py) ──
+# Posture (constitution IVIA, opposable) : ces profils sont des OBSERVATIONS /
+# HYPOTHÈSES versionnées, jamais des diagnostics.
+
+class ProfileSubjectKind(str, Enum):
+    """Le sujet d'un profil comportemental : un client OU un praticien (matching)."""
+    client       = "client"
+    practitioner = "practitioner"
+
+
+class ProfileSource(str, Enum):
+    """Provenance d'un score — traçabilité Loi 25 + posture non-diagnostic."""
+    self_report              = "self_report"               # auto-déclaré par le sujet
+    practitioner_observation = "practitioner_observation"  # observé en relation
+    ai_inferred              = "ai_inferred"               # inféré (IA) — toujours hypothèse
+    blended                  = "blended"                   # composite
+
+
+class ProfileStatus(str, Enum):
+    """Statut d'un score. Défaut = hypothèse : JAMAIS présenté comme diagnostic."""
+    hypothese     = "hypothese"
+    en_validation = "en_validation"
+    valide_humain = "valide_humain"   # relu/validé par un humain
+    retire        = "retire"
+
+
+class AttachmentStyle(str, Enum):
+    """Bartholomew (4 quadrants) — modèle de soi × modèle de l'autre."""
+    secure    = "secure"
+    preoccupe = "preoccupe"   # anxious-preoccupied
+    detache   = "detache"     # dismissing-avoidant
+    craintif  = "craintif"    # fearful-avoidant

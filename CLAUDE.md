@@ -399,12 +399,21 @@ app/
 │   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260622_0038 (intake_requests.handling_* : colonnes de traitement, migration idempotente rattrapant une dérive modèle/migration)
+└── alembic/versions/    # Migrations — head courant = 20260625_0039 (profilage comportemental 5 couches)
                          #   0030 app_settings · 0031 clients.birthplace · 0032 intake.assigned_practitioner ·
                          #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee ·
                          #   0036 app_users.themes · 0037 app_users.is_platform_admin ·
-                         #   0038 intake_requests.handling_* (rattrapage dérive : handling_status_code/notes, handled_by/at)
+                         #   0038 intake_requests.handling_* (rattrapage dérive : handling_status_code/notes, handled_by/at) ·
+                         #   0039 profilage comportemental 5 couches (behavioral_profile : OCEAN, Schwartz,
+                         #        Amour×8, Bartholomew, VAD ; append-only versionné, sujet polymorphe client/praticien,
+                         #        statut 'hypothese' non-diagnostic, lien consentement Loi 25, index de matching)
 ```
+
+> **Profilage comportemental (5 couches)** — `app/models/behavioral_profile.py` + `app/schemas/behavioral_profile.py`.
+> Posture **opposable** : observations/**hypothèses** versionnées, **jamais des diagnostics**. Scores bruts
+> et étiquettes **jamais exposés au client** (vue `ClientFacingProfileView` = Observation/Hypothèse/Orientation
+> uniquement). Toute écriture exige un **consentement** (N2/N3) ; sensibilité `high`. À passer en `security-review`
+> + safety evals avant exposition.
 
 ---
 

@@ -26,6 +26,7 @@ def load_models() -> None:
     import app.models.client_life_event  # noqa: F401
     import app.models.client_journal_entry  # noqa: F401
     import app.models.session_temporal_anchor  # noqa: F401
+    import app.models.behavioral_profile  # noqa: F401
 
 
 def init_models() -> None:
