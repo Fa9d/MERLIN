@@ -29,6 +29,8 @@ _PROMPT_PATHS: dict[str, str] = {
     "PROD-007": "04_admin/PROMPT_onboarding_client.md",
     "PROD-008": "04_admin/PROMPT_audit_dossier.md",
     "PROD-009": "05_pilote/PROMPT_validation_pilote.md",
+    "PROD-PROF-001": "06_profilage/PROMPT_quiz_amour_narratif_v1.md",
+    "PROD-PROF-002": "06_profilage/PROMPT_insights_comportementaux_v1.md",
 }
 
 _PROMPT_CACHE: dict[str, str] = {}
