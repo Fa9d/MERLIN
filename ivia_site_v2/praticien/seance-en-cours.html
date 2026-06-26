@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <script src="/shared/session.js?v=20260617e"></script>
+  <script src="/shared/session.js"></script>
+  <script src="/shared/api.js"></script>
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Séance en cours</title>
@@ -256,10 +256,16 @@
     </div>
 
     <h2 class="font-heading text-2xl font-bold text-[#e8f5eb] mb-2">Séance terminée</h2>
-    <p class="text-[#8FB99A] text-sm mb-8 max-w-md mx-auto">
+    <p class="text-[#8FB99A] text-sm mb-4 max-w-md mx-auto">
       L'enregistrement est prêt. Téléchargez-le ou soumettez-le directement à IVIA
       pour générer le résumé audio et préparer votre compte-rendu.
     </p>
+
+    <!-- Statut d'upload + pipeline AI (visible si session_id dans l'URL) -->
+    <div id="upload-status-bar" class="max-w-md mx-auto mb-5 text-sm text-[#8FB99A] bg-[#162119] border border-[#2a4031] rounded-[12px] px-4 py-3 text-left hidden">
+      <span class="text-[#4A7C59] font-semibold">↑</span>
+      <span id="upload-status">Préparation de l'envoi…</span>
+    </div>
 
     <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
       <button id="btn-download"
@@ -310,6 +316,7 @@
   // ── Données client ────────────────────────────────────────────────────────
   const params   = new URLSearchParams(location.search);
   const clientId = params.get('client') || 'usr_001';
+  const sessionId = params.get('session_id') || null; // ID de la SessionRecord (créé par pilot-book)
   const clients  = await getMockClients();
   const prat     = await getMockPratUser();
   const client   = clients.find(c => c.id === clientId) || clients[0];
@@ -386,7 +393,7 @@
 
   // ── Code de session + lien client ────────────────────────────────────────
   const roomCode    = params.get('room') || params.get('session') || ('SES-' + Date.now().toString(36).toUpperCase());
-  const clientLienUrl = `${location.origin}/client/seance.html?room=${encodeURIComponent(roomCode)}&praticien=${encodeURIComponent(prat.prenom)}`;
+  const clientLienUrl = `${location.origin}/client/seance-active.html?room=${encodeURIComponent(roomCode)}&praticien=${encodeURIComponent(prat.prenom)}`;
 
   // ── BroadcastChannel (même navigateur, onglets différents) ───────────────
   let bc = null;
@@ -625,6 +632,25 @@
   function onRecordStop() {
     audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
     showConfirmScreen();
+    // Upload vers le backend si session_id connu
+    if (sessionId && audioBlob) {
+      uploadToBackend();
+    }
+  }
+
+  async function uploadToBackend() {
+    const uploadStatus = document.getElementById('upload-status');
+    if (uploadStatus) uploadStatus.textContent = 'Envoi de l\'enregistrement…';
+    try {
+      const result = await uploadSessionAudio(sessionId, audioBlob);
+      if (uploadStatus) uploadStatus.textContent = 'Transcription et analyse en cours…';
+      // Poll léger : afficher message de confirmation après 3s
+      setTimeout(() => {
+        if (uploadStatus) uploadStatus.textContent = '✓ Enregistrement reçu — analyse IA en cours en arrière-plan.';
+      }, 3000);
+    } catch (err) {
+      if (uploadStatus) uploadStatus.textContent = 'Erreur upload : ' + err.message;
+    }
   }
 
   // ── Notes auto-save ────────────────────────────────────────────────────────
@@ -663,6 +689,11 @@
     document.getElementById('fin-client').textContent = `${client.prenom} ${client.nom}`;
     document.getElementById('fin-notes').textContent  = notesPad.value || 'Aucune note.';
     document.title = `IVIA — Séance avec ${client.prenom} — Terminée`;
+
+    // Afficher la barre de statut d'upload si session_id présent
+    if (sessionId) {
+      document.getElementById('upload-status-bar').classList.remove('hidden');
+    }
   }
 
   // ── Télécharger l'audio ──────────────────────────────────────────────────────
