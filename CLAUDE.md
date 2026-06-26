@@ -409,11 +409,15 @@ app/
                          #        statut 'hypothese' non-diagnostic, lien consentement Loi 25, index de matching)
 ```
 
-> **Profilage comportemental (5 couches)** — `app/models/behavioral_profile.py` + `app/schemas/behavioral_profile.py`.
-> Posture **opposable** : observations/**hypothèses** versionnées, **jamais des diagnostics**. Scores bruts
-> et étiquettes **jamais exposés au client** (vue `ClientFacingProfileView` = Observation/Hypothèse/Orientation
-> uniquement). Toute écriture exige un **consentement** (N2/N3) ; sensibilité `high`. À passer en `security-review`
-> + safety evals avant exposition.
+> **Profilage comportemental (5 couches)** — modèle `app/models/behavioral_profile.py` + schémas
+> `app/schemas/behavioral_profile.py`. Services : `app/services/profile_matching.py` (matching cosine +
+> euclidienne pondérée, modes similarité/complémentarité), `app/services/love_quiz.py` (quiz adaptatif 8
+> Expressions, scoring + biais), `app/services/behavioral_insights.py` (insights LLM). Prompts dans
+> `11_PROMPTS/06_profilage/` (ids `PROD-PROF-001` restitution client, `PROD-PROF-002` insights praticien ;
+> routés dans `app/ai/prompt_loader.py`). Composant front (legacy React) : `09_app_ivia_merlin/src/components/ProfileRadar.tsx`.
+> Posture **opposable** : observations/**hypothèses**, **jamais des diagnostics**. Scores/étiquettes **jamais
+> exposés au client** (`ClientFacingProfileView` = Observation/Hypothèse/Orientation). Écriture conditionnée à un
+> **consentement** (N2/N3) ; sensibilité `high`. À passer en `security-review` + safety evals avant exposition client.
 
 ---
 
