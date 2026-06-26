@@ -1,0 +1,894 @@
+Tous droits réservés © Les Presses de l'Université de Montréal, 1999 Ce document est protégé par la loi sur le droit d’auteur. L’utilisation des
+services d’Érudit (y compris la reproduction) est assujettie à sa politique
+d’utilisation que vous pouvez consulter en ligne.
+https://apropos.erudit.org/fr/usagers/politique-dutilisation/
+Cet article est diffusé et préservé par Érudit.
+Érudit est un consortium interuniversitaire sans but lucratif composé de
+l’Université de Montréal, l’Université Laval et l’Université du Québec à
+Montréal. Il a pour mission la promotion et la valorisation de la recherche.
+https://www.erudit.org/fr/
+Document généré le 23/06/2026 10:01
+Criminologie
+Les cercles de guérison et les cercles de sentence autochtones
+au Canada
+Mylène Jaccoud
+Volume 32, numéro 1, printemps 1999
+La justice réparatrice
+URI : https://id.erudit.org/iderudit/004725ar
+DOI : https://doi.org/10.7202/004725ar
+Aller au sommaire du numéro
+Éditeur(s)
+Les Presses de l'Université de Montréal
+ISSN
+0316-0041 (imprimé)
+1492-1367 (numérique)
+Découvrir la revue
+Citer cet article
+Jaccoud, M. (1999). Les cercles de guérison et les cercles de sentence
+autochtones au Canada. Criminologie, 32(1), 7–105.
+https://doi.org/10.7202/004725ar
+Résumé de l'article
+Au Canada, les cercles de sentence et les cercles de guérison constituent les
+deux principaux modèles de justice réparatrice en milieu autochtone. Ces
+initiatives se sont développées surtout à partir des années 1990. L'article
+propose d'abord d'identifier le contexte précurseur à leur émergence puis de
+décrire et de comparer leurs principes et leur fonctionnement respectifs.
+L'auteure est amenée à conclure que les cercles de guérison s'inscrivent
+davantage dans une démarche d'autonomisation (empowerment) alors que les
+cercles de sentence risquent de se situer dans une démarche de légitimation de
+l'intervention du système de justice étatique.
+Criminologie, vol. 32, n° 1 (1999)
+Les cercles de guérison
+et les cercles de sentence
+autochtones au Canada
+Mylène Jaccoud
+Professeure
+École de criminologie · Université de Montréal
+jaccoudm@crim.umontreal.ca
+criminologie, vol 32 n° 1 (1999)Criminologie, vol. 32, n° 1 (1999)
+RÉSUMÉ Au Canada, les cercles de sentence et les cercles de guérison
+constituent les deux principaux modèles de justice réparatrice en milieu autochtone. Ces
+initiatives se sont développées surtout à partir des années 1990. L’article propose d’abord
+d’identifier le contexte précurseur à leur émergence puis de décrire et de comparer leurs
+principes et leur fonctionnement respectifs. L’auteure est amenée à conclure que les
+cercles de guérison s’inscrivent davantage dans une démarche d’autonomisation
+(empowerment) alors que les cercles de sentence risquent de se situer dans une démarche
+de légitimation de l’intervention du système de justice étatique.
+ABSTRACT In Canada, sentencing and healing circles represent the
+two main models of restorative justice in the First Nations environment. These
+initiatives were developed in the 90’s. This paper first identifies the context from
+which these initiatives come, then describes and compares their principles and
+functions. The author concludes that healing circles are largely inscribed in an attempt
+to empower native communities whereas sentencing circles are more of a step for
+creating a new legitimacy for the intervention of the state justice system.
+80 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+Introduction
+Les cercles de sentences et les cercles de guérison1 constituent actuellement les modèles de justice dite alternative dominants en milieu autochtone au Canada. Praticiens, fonctionnaires et chercheurs s’entendent pour
+inscrire ces initiatives dans un paradigme de justice réparatrice. Les objectifs de cet article consistent à présenter et à comparer ces deux modèles.
+Nous identifierons d’abord les principaux éléments de contexte qui
+permettent de comprendre l’émergence et le développement de ces initiatives. Nous présenterons les caractéristiques communes et spécifiques de
+chacun des modèles et en discuterons les forces et limites principales.
+Le contexte précurseur des cercles de
+guérison et des cercles de sentence
+Les cercles de sentence et les cercles de guérison se sont développés au
+milieu des années 1980 et de manière encore plus marquée à partir des
+années 1990. Ils forment les principales initiatives dans le secteur de la
+justice alternative en milieu autochtone, mais n’en constituent pas pour
+autant les seules. Dans un guide conçu pour les collectivités autochtones,
+Linden et Clairmont (1998) identifient d’autres programmes désignés
+comme étant alternatifs, tels les programmes d’indemnisation des
+victimes à l’intention des jeunes contrevenants autochtones, les services
+de probation dans les communautés, l’accompagnement des détenus par
+un Aîné aux comparutions de la Commission nationale des libérations
+conditionnelles, les comités de justice et les comités de victimes et de
+délinquants2. Ces initiatives et ces programmes se sont déployés dans le
+sillon de ce que le ministère du Solliciteur général nomme les « services
+correctionnels communautaires » et les « services de réconciliation ».
+. Comme nous aurons l’occasion de le préciser dans la suite de ce texte, les conférences
+familiales, surtout développées en Nouvelle-Zélande et en Australie, représentent une forme
+particulière de cercle de guérison.
+. Des rencontres sont organisées entre des victimes et des contrevenants qui n’ont pas été
+impliqués dans les mêmes dossiers mais dont les infractions sont similaires. Ces programmes
+sont utilisés en particulier dans des cas de jeunes inculpés pour cambriolage et pour des
+infractions relatives aux facultés affaiblies. Il s’agit d’un programme dit de réparation indirecte.
+Les cercles de guérison 81
+La prolifération de ces initiatives, soutenues et encouragées par les
+pouvoirs publics, s’explique ou est du moins justifiée par les séquelles
+laissées par plusieurs siècles de colonisation. Dans le domaine de la
+justice, l’histoire des rapports entre les Autochtones et l’État, au Canada
+comme ailleurs, est marquée par l’imposition de valeurs, de pratiques,
+d’agents et d’institutions propres au pouvoir colonial. Cette imposition
+a eu non seulement pour effet mais aussi pour enjeu de réduire les pluralismes juridiques, dans la mesure où la diversité normative rendait
+l’atteinte des objectifs de promotion et de maintien de la souveraineté
+étatique nationale plus difficile3 (Jaccoud, 1992, 1995). Bien que les
+recherches historiques témoignent de la grande diversité des « systèmes
+juridiques » traditionnels autochtones, elles mettent aussi en évidence
+leurs principes communs. La flexibilité des processus mis en œuvre, le
+désir ultime de rétablir l’harmonie sociale au sein du groupe en cas de
+transgressions et l’implication constante des membres influents de la
+communauté (par exemple les Aînés) dans la recherche de solutions aux
+problèmes ou perturbations vécus forment les traits communs d’une
+justice axée sur des principes de conciliation et de réparation, contrairement à l’approche utilisée dans les systèmes juridiques occidentaux
+qui, eux, privilégient une justice punitive4.
+La surreprésentation quasi endémique des Autochtones à tous les
+paliers du système pénal résulte des conséquences et des effets de la politique de colonisation et de réduction (dans des espaces « réservés ») dont
+ont été l’objet les Premières Nations. Mais elle constitue surtout le produit
+d’un ensemble complexe de dynamiques qui s’entrelacent : aliénation,
+déstabilisation voire anéantissement des mécanismes internes de régulation sociale, intensité et rapidité des changements sociaux, atomisation de
+la collectivité, conflits de génération, transformation des rôles sociaux,
+sédentarisation, dépendance croissante à l’égard de l’État, etc. Cet ensemble
+. Comme le rappelle Rouland (1988), le degré de souveraineté d’une nation est
+souvent évalué à partir de sa capacité de produire et d’appliquer des normes juridiques.
+. Il faut toutefois apporter les nuances qui conviennent. Les pratiques traditionnelles
+autochtones en matière de justice comportent aussi des éléments punitifs (par exemple le
+bannissement ou l’exécution) tout comme le système de justice eurocanadien revêt lui aussi
+des aspects éducatifs, thérapeutiques et même réparateurs. Pour une comparaison des
+principes occidentaux aux principes autochtones de justice, voir Dumont (1996).
+82 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+complexe de dynamiques a eu aussi pour effet d’engendrer des bouleversements qui se traduisent, entre autres, par l’apparition de nouveaux
+problèmes sociaux, en particulier des problèmes de violence familiale dont
+les femmes et les jeunes font principalement l’objet. À cela s’ajoute également une dépendance croissante des Autochtones qui ont pris l’habitude
+de « confier » la gestion de leurs désordres aux institutions de l’État. Cette
+attitude résulte en partie de la réduction sociopolitique historique des
+collectivités autochtones mais participe aussi du renforcement du sentiment d’aliénation et d’impuissance de ces collectivités.
+Ceci dit, force est de constater que l’imposition du système de justice
+n’a jamais été absolue au cours de l’histoire de la colonisation. Les politiques pénales et les pratiques des agents du système de justice ont
+souvent été appliquées avec ambivalence, une ambivalence nourrie au
+départ par les préjugés racistes à l’endroit des peuples autochtones, hésitant entre l’adoption d’une politique de tolérance et d’une politique
+interventionniste5. Par la suite, sous l’influence notamment du mouvement nationaliste autochtone qui se structure après l’annonce du gouvernement Trudeau de son intention d’abolir les réserves à la fin des années
+1960, l’État va constamment appliquer le droit eurocanadien tout en
+cherchant à respecter les particularités prônées et portées par les
+Premières nations. Le nationalisme autochtone est sans conteste le point
+de départ d’un nouveau rapport de force entre les Autochtones et les
+différents paliers de gouvernement. Les revendications politiques et
+identitaires des Autochtones ont eu des répercussions indéniables et ont
+notamment incité les tribunaux à prendre part au processus de reconstruction politique et identitaire des Premières Nations en accordant des
+reconnaissances juridiques à leur statut. C’est ainsi que depuis 1982, les
+droits ancestraux autochtones sont reconnus (mais non définis) dans la
+constitution canadienne. Dans ce contexte sociopolitique, l’intervention
+de l’État en matière de justice en milieu autochtone a été profondément
+et constamment déchirée entre l’exigence de permanence des frontières
+. Les préjugés racistes à l’endroit des Premières nations susciteront autant
+l’interventionnisme que le laxisme ; l’interventionnisme était considéré comme un moyen de
+« civiliser » les Autochtones, le laxisme étant justifié par la trop grande distance entre peuples
+civilisés et peuples sauvages.
+Les cercles de guérison 83
+de l’État nation par le biais d’une incorporation juridique et politique
+des Autochtones, et la sensibilité ou conscience (contrainte ou non) face
+au respect de la spécificité culturelle et politique des Premières Nations.
+Cette double contrainte est à l’origine du choix politique du Canada
+qui a préféré adapter la pratique du droit étatique en milieu autochtone
+plutôt que d’en modifier le contenu en y incorporant par exemple des
+principes de droit autochtone6. Cette adaptation s’est tellement imprégnée
+d’une lecture culturaliste des rapports conflictuels entre les Autochtones et
+l’État que ce sont surtout des politiques pénales fondées sur des stratégies
+de réduction de l’écart culturel ou de valorisation de la culture du groupe
+minoritaire qui ont été préconisées et adoptées7. Malgré la bonne volonté
+des pouvoirs publics et l’ouverture et la clairvoyance de certains praticiens
+du droit, les approches culturalistes n’ont pas eu les effets escomptés. Les
+problèmes sociaux dans les communautés n’ont pas diminué et la surre-
+. Les États qui ont colonisé des territoires autochtones n’ont pas réagi de façon
+identique quand ils se sont heurtés aux systèmes de justice traditionnels autochtones. Ils ont
+opté pour des modèles différents, allant du simple rejet des systèmes de droit et de justice
+autochtones à la séparation, en passant par l’incorporation du droit autochtone au droit du
+colonisateur ou par une certaine coopération entre les deux systèmes de droit. Le Canada
+s’insère actuellement dans un modèle de coopération (Morse, 1988 ; Rouland, 1988).
+. Parmi ces stratégies, on retrouve l’acculturation des Autochtones au groupe
+majoritaire par le biais notamment des cours d’information sur la pratique du droit ou par la
+mise en place de structures mitoyennes telles que les conseillers parajudiciaires chargés de
+servir de pont entre justiciables autochtones et système de justice ; l’acculturation des acteurs
+du groupe majoritaire au groupe minoritaire est favorisée quant à elle en encourageant les
+praticiens à adapter leurs pratiques (sentencielles) à la culture autochtone par le biais de cours
+de sensibilisation à la culture autochtone ou par la consultation des personnes-clés de la
+communauté. L’État s’est également engagé vers une stratégie de valorisation de la spécificité
+culturelle autochtone en intégrant par exemple certains éléments de la culture autochtone
+dans les structures du système de justice (les programmes de spiritualité autochtone dans les
+prisons en sont certainement l’exemple le plus marquant). Plus systématiquement, Jackson
+(1992) identifie trois types de politiques pénales, chacune reposant sur une interprétation
+spécifique de la surreprésentation des Autochtones dans le système de justice pénale. Le modèle
+culturel s’inspire des thèses explicatives du conflit de cultures et suggère la mise en place
+d’initiatives telles que la sensibilisation aux différences culturelles, l’emploi de conseillers
+parajudiciaires et l’autochtonisation. Le modèle structurel entrevoit la marginalité économique
+et sociale comme étant à la source des démêlés des Autochtones avec l’appareil pénal et
+suggère par conséquent une politique axée sur l’implantation de stratégies de lutte à la
+pauvreté. Le modèle du colonialisme insiste sur l’assujettissement des autochtones et propose
+l’autodétermination comme voie de solutions aux problèmes de la surreprésentation des
+Autochtones dans les institutions de détention.
+84 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+présentation des autochtones dans les services correctionnels a augmenté
+en même temps que les politiques d’autochtonisation se mettaient en place
+(dès 1980). À ce constat d’échec s’ajoutent les pressions politiques des
+Premières nations pour parvenir à l’autodétermination, la persistance de
+valeurs et d’une vision du monde différentes de celles des sociétés occidentales, les acquis juridiques et politiques des peuples autochtones, les
+coûts financiers qu’engendrent leur surreprésentation pour un État providence en crise, mais également les pressions de plus en plus incontournables des associations locales et nationales de femmes autochtones qui ont
+commencé à dénoncer publiquement les violences qu’elles et leurs enfants
+vivent quotidiennement dans les communautés. Les femmes autochtones
+réclament des changements rapides et efficaces pour que la paix et la sécurité soient garanties dans les communautés8.
+Ce sont là les principaux facteurs qui ont favorisé le déploiement
+d’initiatives spontanées, et parfois « illicites », de la part de certaines
+communautés autochtones9 pressées de trouver des solutions à leurs
+problèmes et de contrer une ingérence de l’État jugée peu fructueuse. Les
+praticiens du système de justice, et particulièrement les juges des tribunaux
+itinérants siégeant dans les communautés autochtones, ont eux-mêmes
+participé à ce mouvement de contestation et de réforme. Plusieurs rapports
+ont donné le ton ou ont tout au moins endossé ce mouvement visant à
+renouveler en profondeur les pratiques en matière de justice pénale en
+milieu autochtone : le rapport de la Commission de réforme du droit du
+Canada (Canada, 1991), le rapport d’enquête sur l’administration de la
+justice en milieu autochtone au Manitoba (Hamilton et Sinclair, 1991), le
+rapport du juge Coutu (Québec, 1995) et le rapport spécial consacré à la
+justice pénale préparé par la Commission royale d’enquête sur les peuples
+. Ces dénonciations publiques et courageuses ont pris beaucoup d’ampleur à l’occasion
+de la tournée pancanadienne des commissaires chargés d’enquêter sur les conditions de vie
+des Premières nations, la Commission royale d’enquête sur les peuples autochtones, instituée
+par le gouvernement Mulroney en 1992. Cette commission, coprésidée par Georges Erasmus,
+ancien président de l’Assemblée des Premières nations, et par René Dussault, juge à la Cour
+supérieure de Québec, a siégé dans 125 communautés autochtones et dans 31 principales
+villes du pays. Le rapport final a été déposé en 1997.
+. Voir par exemple les tentatives des Inuit de Povungnituk du Nunavik de mettre en
+place un comité de justice en 1985 dans Jaccoud, 1995.
+Les cercles de guérison 85
+autochtones (Canada, 1996). Ces rapports ont en commun le fait qu’ils
+rompent avec les recommandations issues des rapports des décennies
+précédentes en mettant un accent prioritaire sur l’importance de procéder
+à un transfert de pouvoirs aux collectivités autochtones afin que celles-ci
+reprennent en main leur destinée. Certes, on y retrouve l’engagement et les
+énoncés relatifs à la nécessité de reconnaître et de respecter la spécificité
+culturelle, mais l’autonomie politique figure au premier plan des recommandations. Ces rapports accordent une place très importante aux pratiques coutumières en matière de droit autochtone, et c’est en interconnexion
+avec ces pratiques que les initiatives de justice réparatrice y sont encouragées. La mise en place de la plus vaste commission royale d’enquête10 jamais
+établie au Canada vient par ailleurs démontrer que l’État a bel et bien
+reconnu politiquement le fait colonial et qu’il s’est engagé dans un processus
+manifeste mais non moins complexe de réparation.
+Les cercles de guérison et de sentence sont le produit direct du contexte
+sociopolitique et historique que nous venons de décrire. D’ailleurs, en
+1992, le ministère du Solliciteur général du Canada prenait part à ce développement par le biais de la création du Groupe de la politique correctionnelle autochtone. Ce Groupe est responsable de la production d’un certain
+nombre de publications sur les processus de guérison et de réparation
+(Lajeunesse, 1993 ; Krawl,1994 ; Canada, 1997 ; Clairmont et Linden,
+1998). De son côté, le ministère de la Justice du Canada créait la même
+année la Direction de la Justice applicable aux Autochtones. Sous l’impulsion de ces ministères et des milieux de pratique concernés, un Réseau de
+la justice autochtone regroupant juges, policiers, procureurs et représentants des services correctionnels a été récemment créé. Ce Réseau s’est
+donné le mandat d’examiner particulièrement les cercles de guérison et les
+cercles de détermination de la peine (Clairmont et Linden, 1998).
+Les cercles de guérison
+Le concept de guérison est utilisé pour décrire un processus de changement dans lequel les communautés doivent s’engager pour retrouver un
+. Voir note 8.
+86 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+équilibre brisé par plusieurs siècles de colonisation. Il souscrit à l’idée
+que les désordres sociaux qui y sont vécus actuellement sont l’indice
+résiduel de l’état malsain et de déséquilibres que la colonisation a
+produit. Dans sa tentative de cerner la notion de guérison11, Krawl
+(1994) est amenée à conclure qu’il n’en existe pas de définition unique.
+La guérison renvoie à un « sentiment d’équilibre et de globalité ». Elle
+désigne un processus dont le déroulement est d’abord individuel puis
+interindividuel. Trois moments caractérisent son déroulement : la
+guérison commencerait à l’intérieur de l’individu, s’étendrait ensuite à la
+famille puis à la collectivité12.
+Le processus de guérison est holistique, c’est-à-dire qu’il englobe les
+aspects physique, affectif, psychologique et spirituel de la vie. Les
+Autochtones estiment que la nature de la criminalité qui se produit dans
+leurs communautés convient particulièrement bien à une approche
+centrée sur la guérison. La plupart des délits sont commis par des
+personnes vivant dans la même communauté envers d’autres personnes
+avec lesquelles elles sont intrinsèquement liées (par exemple la violence
+familiale et les abus sexuels). Par conséquent, le concept de guérison
+évoque l’idée que les liens unissant les personnes, altérés au cours du
+processus de colonisation, doivent être reconstruits.
+L’idée sous-jacente à l’approche de la guérison consiste à concevoir la
+restauration de l’équilibre entre la victime et le délinquant comme la voie
+conduisant la collectivité à retrouver son équilibre. Cette approche insiste
+sur le fait que la guérison est incompatible avec l’exclusion du délinquant,
+la guérison ne pouvant se produire que dans une relation et non dans
+l’isolement. La guérison nécessite par conséquent le rétablissement des
+relations sociales, c’est-à-dire celles qui concernent la victime, le délinquant, leur famille respective et la collectivité entière (Sivell-Ferri, 1997).
+. Krawl a conduit des entrevues auprès des gens de la Première nation de Nuxalk, la
+Nation des Nisga’a et la Nation des Gitksan Wet’suwet’en en Colombie-Britannique, la
+Première nation de Hollow Water au Manitoba, la Première nation de Grassy Narrows en
+Ontario et la Première nation de Conne River à Terre-Neuve.
+. « Le processus de guérison s’amorce lorsqu’un individu ou la collectivité entière
+passe de la réflexion (niveau « cérébral ») à la motivation profonde (niveau « viscéral ») »
+(Krawl, 1994 : 35).
+Les cercles de guérison 87
+La notion de cercle, quant à elle, constitue l’un des fondements de la
+philosophie amérindienne. Le cercle symbolise l’égalité, la globalité, la
+terre et le cycle de vie (Sioui, 1992). Il signifie que la collectivité est considérée comme un réseau de relations significatives entre les gens de même
+parenté, le territoire et le monde spirituel (Sivell-Ferri, 1997). En juxtaposant la notion de guérison à celle de cercle, les Autochtones veulent souligner que la colonisation a endommagé le cercle et qu’il s’agit de travailler
+à sa restructuration. Dans cette optique, le cercle de guérison constitue une
+démarche thérapeutique de décolonisation (Sivell-Ferri, 1997).
+Les premiers cercles de guérison ont été conçus pour tenter d’enrayer
+les problèmes (et leurs conséquences) de violence familiale et les abus
+sexuels dans les collectivités. S’agissant du premier cercle de guérison
+structuré au Canada, le cercle de Hollow Water13 est certainement le plus
+documenté (voir entre autres Lajeunesse, 1993 ; Krawl, 1994 ; Ross,
+1994 ; Conseil des Églises, 1996 ; Ross, 1996 ; Canada, 1996, 1997 ;
+Green, 1998 ; LaPrairie, 1998). Il est né en 1983 grâce à l’initiative de
+personnes œuvrant dans le secteur des services sociaux décidées à
+trouver des solutions aux problèmes vécus par les jeunes de leur communauté aux prises avec l’abus de substances toxiques, le vandalisme, le
+décrochage scolaire et le suicide. Ce groupe va rapidement découvrir
+que l’abus sexuel dont sont victimes les jeunes constitue le véritable
+problème sous-jacent aux débordements de leur jeunesse. Devant
+l’ampleur du problème14, il décide de mettre sur pied un programme de
+guérison, le « Community Holistic Circle Healing Program » (CHCHP).
+Entre 1983 et 1988, les membres de l’équipe, ayant eux-mêmes été
+victimes d’abus, vont procéder à leur propre guérison et suivre 22 sessions
+de formation sur des thèmes aussi variés que la culture, la nutrition, la
+sexualité, la prévention du suicide ou l’intervention auprès des alcooliques (Ross, 1994).
+Depuis son origine, le fonctionnement du cercle a quelque peu
+changé. Au début, les dénonciations étaient acheminées à la police et
+. Hollow Water est une communauté ojibway de 600 personnes située à 200 km au
+nord de Winnipeg au Manitoba.
+. 75% de la population de la communauté de Hollow Water auraient été victimes
+d’abus sexuels et 35% de la communauté seraient des agresseurs (Ross, 1994).
+88 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+celle-ci contactait l’équipe de Hollow Water. Un protocole a été établi et
+les dénonciations sont maintenant adressées directement à l’équipe de
+guérison. Le fonctionnement du processus comporte plusieurs étapes
+(voir figure 1) : après la dénonciation de l’abus (étape 1), l’équipe
+s’assure de la protection de la victime (étape 2). Deux équipes de soutien
+sont constituées, l’une pour la victime et sa famille, l’autre pour l’agresseur et sa famille. Les équipes confrontent ensuite l’agresseur (étape 3).
+Ce dernier peut alors décider d’être renvoyé au système de justice et
+courir le risque d’être condamné ou la chance d’être disculpé ; s’il décide
+de s’engager dans le cercle, il doit alors reconnaître sa responsabilité et
+il est informé du déroulement du cercle. Dans ce dernier cas, l’équipe
+participe à la préparation de la mise en accusation avec la police et les
+avocats. Lors de la comparution, un plaidoyer de culpabilité est enregistré. L’équipe demande alors au juge de suspendre la sentence le plus
+longtemps possible afin de lui permettre de procéder au cercle de
+guérison. En général, les délais sont de quatre mois15. Au cours de ces
+quatre mois, les équipes de soutien apportent l’aide nécessaire au
+conjoint de l’agresseur (étape 4), aux membres des familles respectives
+de l’agresseur et de la victime et à la collectivité en général (étape 5).
+L’équipe d’évaluation rencontre ensuite les agents de la GRC (étape 6).
+Cette étape a pour but de présenter l’information obtenue sur les événements et de décider des interventions à venir. Il est possible que l’équipe,
+de concert avec les agents de la GRC, décident de renvoyer le dossier au
+système judiciaire. Dans le cas contraire, un « contrat de réconciliation »
+est établi pour l’agresseur. Ce contrat est présenté dans le cadre de cercles
+d’échange (étape 7 et 8) organisés en petit comité avec l’agresseur et la
+victime séparément. Au cours de ces rencontres, les personnes sont
+amenées à reconnaître les faits et à suivre des séances de soutien thérapeutique (étape 9 et 10). L’agresseur est notamment invité à reconnaître
+et à accepter sa responsabilité devant sa propre famille. À mesure que la
+victime devient plus forte, le cercle s’agrandit jusqu’à « rencontre
+spéciale » (étape 11). Celle-ci représente le cœur même du processus de
+guérison. L’agresseur et la victime sont face à face. Leurs familles respec-
+. L’accusé peut recevoir une sentence de probation de trois ans ou obtenir une
+suspension de sentence de quatre mois.
+Les cercles de guérison 89
+tives sont présentes, ainsi que les membres de la communauté élargie.
+Chacun peut s’exprimer. C’est au cours de cette rencontre qu’un
+« contrat de guérison » est signé par toutes les personnes présentes au
+cercle. Ce contrat renferme un ensemble de mesures visant à transformer
+les relations entre l’agresseur et sa victime ou avec toute autre personne
+de la communauté. La durée minimale d’application du contrat est habituellement de deux ans16, mais comme le mentionne Ross (1994), il
+arrive qu’un contrat soit encore en vigueur cinq ans après sa signature.
+Le processus de guérison prend symboliquement fin par une cérémonie
+de purification (étape 13). Des cercles de sentence ont récemment été
+intégrés au processus (étape 11-12) afin de permettre aux principales
+personnes concernées par l’agression ainsi qu’aux membres de la
+communauté de faire part de leurs recommandations au juge afin que
+celui-ci tienne compte du travail réalisé au cours du processus de
+guérison dans le type de sentence prononcée.
+Les cercles de sentence
+La pratique des cercles de sentence, appelés aussi cercles de détermination de la peine, s’est systématisée dans le Territoire du Yukon dès 1992,
+notamment sous l’impulsion du juge Barry Stuart qui, dans un jugement
+devenu célèbre depuis17, décidait de rendre sa décision en s’inspirant des
+cercles traditionnels autochtones de résolution de conflits18. Un cercle
+de sentence consiste à faire participer la communauté au processus
+d’imposition des sanctions. Concrètement, les participants (des
+membres de la communauté) sont assis en cercle avec le juge, l’accusé et
+la victime pour exprimer et partager leurs points de vue sur le conflit afin
+d’arriver à une décision (recommandation) qui puisse guider le juge dans
+le prononcé de la sentence. Habituellement, les cercles incluent la participation (ou la présence) de vingt à trente personnes (Green, 1994). Le
+. Si le contrat n’est pas respecté, l’agresseur est alors renvoyé au tribunal. Ayant plaidé
+coupable, le non respect des conditions du cercle correspondent à un bris de probation.
+. R. v. Philip Moses (1992), 11 C.R. (4th) 357 (Yukon Terr.Ct.).
+. Les cercles de sentence ont débuté au Yukon en 1979 sans que cette pratique ne soit
+constante (Campbell Research Associates, 1995).
+90 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+cercle, censé symboliser mais aussi concrétiser l’égalité face au partage
+de la responsabilité de la résolution du conflit (Stuart, 1996) et
+l’échange informel parmi les participants, contribuerait à l’élaboration
+de recommandations (et donc celle d’une décision) plus adaptées aux
+circonstances et aux acteurs concernés par le conflit. Les cercles de
+sentence débutent fréquemment par une prière et se terminent par des
+rituels au cours desquels les propos sont résumés, les participants remerciés et une prière prononcée (Stuart, 1996).
+Depuis 1992, les cercles de sentence ont pris une certaine ampleur,
+particulièrement dans les Territoires du Yukon et du Nord-Ouest et dans
+les provinces de la Saskatchewan et du Manitoba. Au Québec, ces mécanismes sont encore peu utilisés19. L’adoption des cercles de sentence n’a
+pas exigé d’amendements législatifs particuliers. La Cour d’appel de
+FIGURE 1
+Le processus du Community Holistic Circle Healing
+Source : Sivell-Ferri (1997 : 131)
+. Le juge Dutil est le premier magistrat à avoir rapatrié l’expérience du Yukon en
+l’appliquant aux communautés inuit du Nunavik. Il poursuit actuellement cette initiative avec
+la cour itinérante qui siège dans les communautés cries et naskapies du nord-est québécois. La
+première cause dans laquelle ce processus a été appliqué concerne un cas de voies de fait d’un
+conjoint à l’endroit de son épouse (en 1993). Notons que le juge Dutil préfère substituer le
+terme de cercle de consultation à celui de cercle de sentence.
+Les cercles de guérison 91
+Saskatchewan20, dans le jugement Morin, est la première cour d’appel au
+Canada à avoir expressément approuvé les cercles de sentence (Löfgren,
+1997). Jusqu’à maintenant, plusieurs centaines de cercles ont été tenus à
+travers le pays dans des cas tels que la conduite en état d’ivresse (ayant
+ou non causé la mort), le vol avec violence, l’agression grave, l’agression
+avec lésions corporelles et l’agression sexuelle.
+L’absence de critères préalables à la pratique des cercles de sentence
+précisant les modalités d’application et de fonctionnement du cercle a
+favorisé le développement de pratiques diversifiées parmi les juges,
+autant par le type de fonctionnement privilégié que par les principes, les
+buts et le rôle attribué aux participants du cercle. Trois types de cercles
+peuvent être identifiés : le cercle de détermination simple, le cercle
+double et les deux cercles séparés. Le cercle simple consiste à réunir les
+accusés, la victime, leurs familles respectives, les représentants de la
+communauté et les représentants du système de justice dans un seul et
+même cercle. Le cercle double consiste à former un cercle interne avec les
+personnes actives dans le processus de détermination de la peine, c’està-dire avec les mêmes personnes formant le premier type de cercle et un
+cercle externe incluant des spectateurs. À tout moment, un spectateur
+désirant intégrer le cercle interne peut le faire en déplaçant sa chaise. Le
+dernier type de cercle est plus récent. Il consiste à former un premier
+cercle, désigné comme un comité conseil en matière de détermination de
+la peine, sans la présence du juge. Une fois que le consensus est atteint
+par ce comité, un deuxième cercle est organisé, cette fois en la présence
+du juge qui se voit informé des recommandations auxquelles est parvenu
+le comité conseil. Développé entre autres en Saskatchewan par le juge
+Fafard, ce mode de fonctionnement est considéré comme facilitant les
+échanges et les recommandations en raison de l’absence du juge et
+permettant de gagner du temps. Toutefois, ce type de cercle ne fait pas
+l’unanimité parmi les juges. Le juge Stuart, par exemple, croit au
+contraire que la présence du juge est essentielle, car elle contribue à
+identifier et à contrebalancer les distributions inégales de pouvoir
+d’influence des membres participant au processus (in Green, 1998).
+. R.v. Morin [1995] 9 WWR 696-708 per Sherstobitoff JA.
+92 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+À cette typologie il est intéressant d’ajouter les précisions récentes du
+juge Stuart (app. 1997) qui désormais nomme cercle judiciaire de détermination de la peine (cercle de sentence) tout cercle présidé par un juge et
+constitué dans l’enceinte du tribunal. Tous les représentants du système
+judiciaire officiel y participent. Ce type de cercle gère des accusations
+graves qui échappent à la compétence du juge de paix. Le cercle de conciliation communautaire, qui se distingue du cercle de détermination de la
+peine, est quant à lui dirigé par un gardien local travaillant en collaboration avec un juge de paix. Les avocats de la défense et de la Couronne
+y sont exclus. Ces distinctions ont été apportées par le juge Stuart principalement pour développer une diversité dans les modalités d’application de la justice communautaire, une diversité qui, on le voit, s’inscrit
+dans une logique de continuum hiérarchisé en fonction du degré de
+participation et de pouvoir communautaire, et du degré d’interdépendance avec les instances judiciaires formelles.
+Cela dit, les magistrats n’utilisent pas le processus du cercle de sentence
+uniformément. Pour certains, le cercle de sentence se substitue ni plus ni
+moins au rôle de l’agent de probation, les recommandations des participants devenant l’équivalent d’un rapport présentenciel. D’autres juges
+voient dans les cercles une manière de détourner le processus sentenciel de
+ses objectifs punitifs et de le diriger vers des objectifs de réintégration, de
+réhabilitation et de restauration de l’harmonie sociale. Dans ce sens, le
+cercle représente l’occasion de renforcer politiquement la communauté et
+d’accorder une plus grande place aux victimes. Le rapport que les juges
+entretiennent avec les recommandations des membres du cercle est lui
+aussi diversifié. Certains juges jouent un rôle actif dans la recherche de
+consensus alors que d’autres, plus passifs, attendent l’atteinte du consensus
+pour prendre une décision. Certains juges jouent donc un rôle de
+« traducteur » de recommandations en inscrivant le consensus dans une
+forme légale21 alors que d’autres conservent un rôle très arbitral.
+Par ailleurs, tous les juges ne définissent pas le consensus de la même
+manière. Certains adoptent l’approche du consensus à l’unanimité,
+. « After the circle has reached a consensus as to what should happen with the
+offender, the Judge steps back into his or her judicial role and puts the consensus into a legal
+sentence » (Nightingale, 1995).
+Les cercles de guérison 93
+d’autres celle du consensus à la majorité. Green (1998) estime, pour sa
+part, que l’unanimité est difficile à atteindre et qu’il faut davantage chercher à obtenir un consensus qui soit « viable ». Quoi qu’il en soit, les
+juges sont conscients qu’il leur est difficile de conserver un rôle d’arbitre.
+Comme le fait remarquer le juge Dutil, si un juge rejetait systématiquement les recommandations d’un cercle, la crédibilité du processus en
+serait grandement affectée (Dutil, 1993). Le juge Fafard, qui a participé
+à plus de 70 cercles de sentence jusqu’à maintenant, affirme n’avoir
+jamais rejeté le consensus d’un cercle (in Green, 1998). Il semble qu’à
+l’instar du juge Fafard, les juges tendent à suivre les recommandations
+des participants au cercle (Campbell Research Associates, 1995).
+Ce qui précède nous amène à concevoir qu’il existe trois types de fonctionnement du cercle de sentence, le cercle simple, le cercle double et les
+deux cercles distincts et séparés, mais la diversité des principes qui soustendent leur application suggère l’existence de ce que nous pourrions
+appeler deux types paradigmatiques de cercle : le « cercle appendice »,
+prolongement immédiat d’un processus judiciaire étatique dépouillé et
+moins formel, et le « cercle hybride », processus intégrant certains principes et formes traditionnels de résolution de conflits autochtones aux principes du système de justice officiel conçu dans une optique d’empowerment.
+Les magistrats tentent depuis quelques années de délimiter certains
+principes d’application et de fonctionnement des cercles de sentence22 afin
+d’uniformiser leurs pratiques mais surtout afin de minimiser les disparités.
+Le juge Fafard justifie le besoin de délimiter des principes d’application
+par le fait que la Cour exerce une véritable fonction judiciaire à travers
+l’utilisation des cercles. Dans ces circonstances, il estime que la Cour ne
+peut accepter de s’engager dans un processus risquant d’engendrer des
+décisions arbitraires. Les critères d’application et de renvoi au cercle de
+sentence identifiés par les juges diffèrent, mais certains principes
+communs ressortent. Parmi les principes communs, on peut noter
+l’exigence que la participation des protagonistes du cercle soit volontaire,
+. Voir par exemple les critères établis dans les jugements du juge Stuart dans le
+Territoire du Yukon (Stuart, 1992), du juge Dutil au Québec (Dutil, 1993), du juge Fafard
+(Fafard, 1995), du juge Nightingale de la Saskatchewan (Nightingale, 1995) et du juge
+Barnett de la Colombie-Britannique (Barnett, 1995).
+94 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+et notamment celle de la cour, de l’accusé, de la victime (les juges insistant
+particulièrement dans ce cas sur un volontariat absent de toute pression ou
+contrainte) et celle de la communauté, particulièrement celle des Aînés et
+de leaders non politiques respectés. Les juges ont même émis des critères
+spécifiques dans les cas de violence conjugale : la victime doit avoir
+obtenu de l’aide et doit être accompagnée par un groupe de soutien lors
+de la comparution au cercle. Certains magistrats considèrent qu’un cercle
+ne peut être recommandé sans que l’accusé soit profondément enraciné
+dans la communauté dans laquelle le cercle aura lieu. Quant aux types de
+délits, certains magistrats, dont le juge Fafard, s’opposent à ce que les
+cercles soient restreints à des types précis d’infractions, tout en reconnaissant que les cercles ne sont pas appropriés dans tous les cas. Certains juges
+(notamment le juge Dutil du Québec et le juge Barnett de ColombieBritannique) ne renvoient au cercle que les infractions pour lesquelles les
+auteurs sont susceptibles d’être condamnés à une ordonnance de probation, ce qui exclut par le fait même les cas graves. D’autres magistrats estiment qu’un cas ne peut être ni trop grave ni trop mineur. Le degré
+d’affliction de la communauté devient ainsi un critère de renvoi au cercle
+dans l’esprit de certains magistrats (notamment le juge Barnett) qui estiment que les situations n’ayant pas suffisamment affecté la communauté
+constituent une perte de temps. Le juge Barnett ajoute un critère que ses
+collègues ne mentionnent pas : la nécessité que le juge connaisse bien la
+communauté dans laquelle le cercle se déroule, cette connaissance offrant
+une meilleure garantie de la protection des droits des accusés et de ceux
+des victimes. Celui-ci cite la situation d’un juge qui, faute de liens avec la
+communauté et de connaissance de celle-ci, n’a pu sentir que les recommandations du cercle désavantageaient nettement la victime qui n’était pas
+originaire de la communauté. Cet exemple illustre bien qu’un consensus
+n’est pas systématiquement le produit d’un processus empreint de principes d’égalité et d’équité. Enfin, la plupart des juges s’entendent pour
+reconnaître que, préalablement à tout renvoi au cercle, l’accusé doit avoir
+reconnu sa responsabilité et avoir enregistré un plaidoyer de culpabilité et
+que les faits allégués doivent avoir été acceptés par les parties. Selon le juge
+Fafard, les cercles ne sont pas des espaces appropriés pour l’établissement
+des faits (Fafard, 1995).
+Les cercles de guérison 95
+Discussion
+Les cercles de guérison et les cercles de sentence sont des initiatives louables pour trouver des solutions aux problèmes récurrents de l’administration de la justice en milieu autochtone. Mais les Autochtones, tout
+comme les magistrats, admettent que ces initiatives ne constituent pas
+une panacée. La reconstruction économique et sociale des communautés
+autochtones doit se développer parallèlement. En ignorant l’interdépendance entre les conditions socio-économiques et les problèmes auxquels
+les communautés autochtones font face, tout programme de justice réparatrice, aussi prometteur et bien conçu soit-il, sera voué à l’échec
+(Jaccoud, 1998). Certaines contraintes légales, politiques et financières
+entravent également leur développement (Linden et Clairmont, 1998).
+Au plan légal, ces initiatives se développent dans le cadre du système
+de justice pénale canadien et particulièrement dans le cadre des mesures
+de rechange prévues dans la Loi sur les jeunes contrevenants (1984) et
+celles, plus récentes (1997), du Code criminel. Or, ces programmes sont
+des programmes discrétionnaires. Un juge n’est ni tenu d’accepter le
+renvoi à un cercle ni tenu d’entériner les décisions prises par les participants à un cercle (Linden et Clairmont, 1998). Ces contraintes légales
+font en sorte que les communautés autochtones ne jouissent pas de la
+même marge de manœuvre. Les cours d’appel de l’Alberta et de la
+Saskatchewan ont rejeté la pratique des juges qui, au Manitoba (dans la
+communauté de Hollow Water), ajournent les sentences sur de longues
+périodes pour permettre l’application du processus de guérison (Green,
+1998). Sur un plan plus politique, il faut admettre que certains agents du
+système de justice, les représentants des pouvoirs publics et certains
+groupes de pression autochtones, dont en particulier les regroupements
+de femmes, sont réticents à procéder à un transfert des pouvoirs aux
+collectivités. Ces réticences ne s’inscrivent pas toutefois dans le même
+registre : les politiciens ont à cœur de procéder à certains transferts sans
+mettre en péril les frontières de l’État, les magistrats, quant à eux, redoutent une dilution de leurs rôles et responsabilités alors que les femmes
+autochtones doutent des capacités des leaders autochtones masculins à
+bien garantir et respecter leurs droits.
+96 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+Au plan financier, il faut reconnaître que le développement actuel des
+projets de justice réparatrice, en milieu autochtone ou non, est fortement
+motivé par les pressions d’un État providence à l’affût de toute option
+susceptible de contribuer à une réduction de ses dépenses. Or, les
+communautés autochtones se trouvent elles-mêmes dans des situations
+financières précaires et, sans ressources financières adéquates, ces initiatives risquent bel et bien d’échouer (Linden et Clairmont, 1998).
+LaPrairie (1994) souligne à ce titre que la dépendance financière des
+collectivités autochtones oriente davantage le choix du type d’initiative
+au détriment de leurs besoins véritables. Les cercles de sentence ne
+représentent pas non plus une alternative à la réduction des délais et à
+l’engorgement de l’administration de la justice. La lenteur du processus
+représente même l’un des obstacles majeurs à son expansion. Dans les
+six communautés que Green (1998) a étudiées, aucun cercle de sentence
+n’a duré moins de deux heures.
+Outre ces considérations sur le développement de ces initiatives, il faut
+admettre que leurs principes et objectifs sont quelque peu éclatés, voire
+divergents. Le cercle de guérison constitue un véritable processus holistique de restauration, de réparation et de reconstruction individuelles et
+collectives. Il est en soi un processus de déjudiciarisation. Le cercle de
+sentence n’est, par contre, qu’un processus de consultation dans le cadre
+d’une procédure judiciaire aménagée en conséquence. Il ne constitue ni un
+processus ni une mesure systématiques de déjudiciarisation. Les recommandations des participants au cercle, et par le fait même les décisions du
+juge, peuvent autant déboucher sur l’incarcération, l’amende ou la probation que sur des mesures réparatrices, des travaux communautaires ou des
+suivis thérapeutiques. Les cercles de guérison et les cercles de sentence
+n’octroient pas non plus les mêmes pouvoirs aux collectivités. Le cercle de
+guérison instaure une participation de type décisionnel. Le cercle de
+sentence instaure davantage une participation de type consultatif, contrairement à ce que certains présentent comme l’un des modèles dans lequel
+le partage de pouvoir est le plus complet (Bazemore et Griffiths, 1997).
+Ces deux approches ont par contre un certain nombre de points
+communs. Elles s’inscrivent toutes deux en interconnexion, pour ne pas
+dire dépendance, à l’endroit du système de justice étatique. Il faut
+Les cercles de guérison 97
+d’ailleurs reconnaître que cette dépendance satisfait les Autochtones
+dans une large mesure. À Hollow Water, la menace d’une incarcération
+ou celle du renvoi au système de justice étatique est perçue comme
+quelque chose de nécessaire pour assurer l’engagement actif des agresseurs dans le processus de guérison (Ross, 1994). Les deux approches
+exigent l’enregistrement préalable d’un plaidoyer de culpabilité. Elles
+accordent également la même place aux principaux acteurs touchés par
+le délit ; les personnes contrevenantes, les personnes victimes et leurs
+proches, immédiats ou non, qui disposent d’un forum dans lequel ils
+peuvent s’exprimer. Dans ce sens, les processus, bien que différents dans
+leurs objectifs, recèlent des effets réparateurs potentiels indéniables.
+C’est ainsi qu’il convient de distinguer entre les processus et leurs effets :
+un cercle de sentence n’est pas un processus de justice réparatrice, mais
+un processus arbitral23 dans lequel la consultation et la participation des
+personnes concernées par le conflit peut avoir des effets réparateurs.
+Enfin, les deux initiatives reposent sur un fondement commun, le principe de l’humiliation et de la honte envisagé dans une optique de réintégration théorique et non dans une optique d’exclusion de la personne
+contrevenante, principe largement théorisé par Braithwaite (1989).
+Certains conviennent qu’il est prématuré d’évaluer l’impact de ces initiatives, non seulement parce que l’on ne dispose pas encore du recul nécessaire
+mais encore parce que ces projets n’ont guère fait l’objet d’évaluations et
+d’analyses critiques (LaPrairie, 1994, 1996 et 1998 ; Green, 1998). Un
+débat s’est d’ailleurs amorcé sur les critères d’évaluation à utiliser. Green
+(1998) tout comme le juge Stuart (in Green, 1998) remettent en question le
+critère de récidive comme critère d’évaluation des cercles. Le juge Stuart
+rappelle que le système de justice étatique subit lui aussi de nombreux échecs
+avec le même contrevenant. Il croit qu’il serait par conséquent injuste de ne
+pas laisser la même chance aux communautés autochtones.
+Quoi qu’il en soit, le cercle de guérison de Hollow Water est suivi de
+près. Depuis son implantation jusqu’en 1995, le CHCHP a suivi 409
+personnes dont 94 victimes, 52 agresseurs, 180 membres des familles des
+victimes et 83 membres des familles des agresseurs. Selon les informations
+. Il demeure un processus théoriquement arbitral. Évidemment, si le juge entérine les
+recommandations, le processus arbitral s’en voit considérablement amenuisé dans les faits.
+98 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+fournies par le CHCHP, seuls deux agresseurs auraient récidivé (Commission royale sur les peuples autochtones, 1996). En 1993, le gouvernement
+du Canada et le ministère de la Justice manitobaine ont financé un projet
+pilote d’évaluation. Tout porte à croire que les opinions des personnes de
+la communauté sont partagées puisque 44 % des personnes ayant participé au cercle estiment avoir vécu une expérience positive et 33 % une
+expérience négative. Les victimes sont beaucoup moins favorables à
+l’expérience puisque, parmi les personnes ayant estimé que l’expérience
+était positive, on compte 28 % de personnes victimes et 72 % de
+personnes contrevenantes. L’évaluation du programme fait également
+ressortir le fait qu’une proportion importante de victimes, soit 66 %, estiment que la communauté n’était pas soutenante à leur égard. Un tiers des
+familles des personnes contrevenantes et des personnes victimes considèrent que la manière dont les contrevenants ont été traités a été aidante pour
+elles et pour la communauté alors que 47 % des victimes jugent que les
+contrevenants ont été traités adéquatement (LaPrairie, 1998).
+Ces résultats semblent décevants à première vue. Mais il faut se
+demander si les stratégies méthodologiques adoptées permettent de bien
+évaluer les effets du programme dans leur complexité. Les points de vue
+des acteurs ne forment qu’un aspect de la question, important certes,
+mais limité. Ne devrait-on pas, par exemple, relativiser ces résultats en
+comparant ces points de vue et expériences à ceux de personnes contrevenantes et victimes ayant passé à travers le système de justice officiel
+dans le cas de délits comparables? S’il s’avérait que, même mitigés, les
+points de vue et expériences des personnes ayant expérimenté le cercle
+de guérison étaient plus positifs que pour celles qui ont fait l’expérience
+du système de justice, n’aurait-on pas déjà obtenu un gain?
+Reste qu’à l’heure actuelle, il est impossible de se prononcer concrètement sur les conséquences de ces initiatives. Les travaux disponibles ne
+permettent d’envisager que théoriquement la question des effets, des
+forces et limites de ces projets en l’absence de matériel évaluatif et en
+raison du caractère morcelé des études.
+L’une des critiques adressées à ces initiatives est celle qui consiste à
+douter de la persistance des traditions et des valeurs ancestrales en
+matière de résolution de conflits. Or, pour des projets s’inspirant des
+Les cercles de guérison 99
+principes ancestraux tels que le cercle et la guérison, il pourrait s’avérer
+en effet très problématique d’implanter des initiatives qui ne s’appuient
+que sur un fondement mythique. À titre de procureur œuvrant depuis de
+nombreuses années dans les communautés ojibway et cries du nord de
+l’Ontario, Ross (1996) admet avoir douté au départ de l’enracinement
+du concept de guérison dans ces communautés. Il s’est toutefois rendu
+à l’évidence, au cours de sa pratique, que la guérison était une approche
+fortement enracinée et qu’il ne s’agissait pas d’une « réinvention romantique des approches traditionnelles ». Cependant, il faut admettre que le
+constat de Ross ne s’applique ni à toutes les communautés ni à toutes les
+générations. Les jeunes sont particulièrement éloignés des traditions,
+pour ne pas dire qu’ils y sont carrément opposés (Jaccoud, 1995). Or, la
+forte croissance démographique des communautés autochtones fait en
+sorte que les jeunes forment une proportion considérable de la population et, qui plus est, une population fortement concernée par les
+problèmes vécus. Le décalage possible entre les traditions que ces initiatives se targuent de vouloir restaurer et les valeurs auxquelles les jeunes
+adhèrent risque bien de nuire au principe de la représentativité de la
+population inscrite théoriquement dans le cercle et, par le fait même, de
+rendre les décisions du cercle sans effet. L’une des difficultés que posent
+ces initiatives est que celles-ci reposent précisément sur un postulat de
+consensus culturel non vérifié (LaPrairie in Clairmont et Linden, 1998).
+Il faudrait aussi se demander si le problème d’enracinement que
+certains craignent ou constatent dans les communautés autochtones
+n’est pas tout simplement lié au fait que ces initiatives s’inspirent de
+principes attribués par l’État sans égard aux pratiques ancestrales des
+Premières nations. Ce serait alors moins un problème d’enracinement
+qu’un problème d’inadéquation, les pratiques ancestrales autochtones ne
+correspondant pas à ces initiatives. Par exemple, les cercles de sentence
+sont appliqués dans les communautés inuit alors que le cercle est une
+tradition amérindienne qui n’est pas observée dans les pratiques ancestrales de résolution de conflits des peuples inuit. Certaines nations
+amérindiennes ne s’identifient pas non plus à ces pratiques. Janvier, un
+coordonnateur de l’Institut de justice et de famille d’origine métis auprès
+de la nation métis de la Saskatchewan, estime que le cercle de sentence
+100 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+reste une émanation du système de justice étatique très éloigné de leur
+cercle traditionnel autochtone de résolution de conflits et qu’il ne pourra
+jamais se substituer à lui (Janvier, 1994). Les Innus de Terre-Neuve
+émettent un point de vue semblable. Selon eux, les cercles de sentence ne
+correspondent pas à leurs pratiques traditionnelles qui elles seraient
+davantage axées sur des pratiques de résolution en face-à-face (in
+Harrison, Meric et Dixon, 1995). Ce décalage entre le principe que
+l’État attribue aux traditions autochtones dans ces nouvelles initiatives
+de justice et les véritables pratiques ancestrales de certaines nations
+menace de perpétuer le sentiment d’aliénation éprouvé par les Premières
+nations au contact du système de justice étatique, sentiment que l’État
+cherche justement à atténuer par le biais de ces nouvelles approches.
+Des deux approches, ce sont surtout les cercles de sentence qui suscitent le plus de réserves et de commentaires critiques. Certains autochtones reprochent aux cercles de sentence de ne pas leur donner
+suffisamment de pouvoir en les tenant confinés à un rôle de « consultés »
+et non de décideurs (Janvier, 1994). Ils estiment aussi que les cercles
+demeurent trop centrés sur l’accusé et que la victime manque de support
+(in Harrison, Meric et Dixon, 1995). Le premier cercle de consultation
+tenu au Nunavik par le juge Dutil a fait l’objet d’une évaluation très
+sévère (voir Crnkovich, 1993). Crnkovich, qui a émis un rapport
+d’évaluation pour le compte de l’Association des femmes inuit et du
+ministère de la Justice du Canada, doute très sérieusement du caractère
+égalitaire de la démarche puisque le juge conserve son rôle d’arbitre. La
+représentativité des membres du cercle est également remise en question
+par un certain nombre d’observateurs. Dans le cercle organisé par le juge
+Dutil, très peu de personnes participant au cercle représentaient les intérêts de la victime. Crnkovich souhaite donc un élargissement du
+processus de sélection des participants afin de garantir une meilleure
+représentativité des intérêts des parties. D’ailleurs, l’une des critiques les
+plus souvent adressées au cercle de sentence est le risque d’interférence
+politique de la part de certains membres cherchant à protéger certains
+agresseurs influents dans la communauté (Crnkovich, 1993 ; Ross,
+1996 ; Green, 1998). Certains observateurs notent qu’il s’agit d’un
+problème particulièrement aigu dans les petites communautés dans
+Les cercles de guérison 101
+lesquelles le risque est plus grand de voir une élite locale exercer son
+pouvoir (Clairmont, 1996). La capacité de gérer les processus est notamment mise en doute par le fait même que certains membres qui siègent
+sur ces projets sont eux-mêmes des agresseurs (Crnkovich, 1993). Les
+collectivités seraient trop dysfonctionnelles pour être capables de
+prendre en charge la justice communautaire et s’impliquer dans des
+projets qui requièrent précisément une participation active des résidents
+(Bazemore et Griffiths, 1997 ; LaPrairie, 1998).
+LaPrairie (1998) ajoute un aspect qui doit être pris très au sérieux
+puisqu’il s’inscrit en porte-à-faux par rapport à ce que les initiatives sont
+censées apporter : la justice communautaire pourrait en effet diviser
+davantage la communauté qu’elle ne la réconcilierait24. Dans le cas du
+premier cercle de sentence organisé par le juge Dutil au Nunavik, la
+victime aurait vécu beaucoup de rejet et d’ostracisme de la part de la
+communauté, tant et si bien qu’elle aurait dû la quitter25. Crawford
+(1996) et Depew (1996) nous mettent en garde contre une idéalisation
+des principes de justice communautaire. Crawford estime que la justice
+communautaire peut aussi signifier étroitesse d’esprit, intolérance,
+contraintes, jeux de pouvoir et punition alors que Depew considère que
+les projets de justice communautaire en viennent à ressembler aux structures qu’ils sont censés remplacer, à la différence près qu’ils offrent une
+moins grande protection juridique aux principaux concernés. Selon
+Depew, le paradigme de guérison est réducteur car il passe sous silence
+les questions relatives aux structures de pouvoir.
+Comme on le constate, les cercles de guérison et les cercles de sentence
+ne font guère l’unanimité et suscitent des questions cruciales tant du
+point de vue du respect des principes d’égalité et d’équité que des effets
+qu’ils sont susceptibles d’apporter. Il est nécessaire de procéder rapidement à des recherches évaluatives pour établir dans quelle mesure ces
+initiatives sont porteuses de changement constructif pour les communautés autochtones. L’absence d’évaluation n’est certainement pas le fruit
+. Dans notre étude sur les Inuit de Povunngituk au Nunavik, nous avons également
+constaté que le projet de comité de justice mis en place à titre d’essai en 1985 ne faisait ni
+l’unanimité ni l’objet de soutien parmi la communauté (Jaccoud, 1995).
+. Information obtenue d’un intervenant judiciaire du Nunavik par l’auteure en 1997.
+102 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+du hasard ou de l’oubli. Dans le contexte des relations entre les Premières
+nations et l’État, l’évaluation de projets perçus comme une porte d’entrée
+pour l’autodétermination demeure une question politiquement délicate
+pour ne pas dire piégée. L’un des prérequis à la production d’évaluations
+constructives consistera, dans l’avenir, à dépolitiser les recherches et leurs
+résultats afin que ceux-ci servent davantage d’outil pour améliorer les
+initiatives en fonction des besoins des communautés que d’arguments
+pour alimenter le discours des partisans à l’intégration ou à l’autonomie
+politique. Enfin, il faudrait également éviter que, sous le couvert de la
+participation des Autochtones à l’administration de la justice, l’État n’ait
+trouvé, particulièrement par le biais des cercles de sentence, le moyen de
+créer une nouvelle forme de légitimité à son intervention.
+Références
+BARNETT, C. (1995), Circle Sentencing/Alternative Sentencing, polycopié, 6 p.
+BAZEMORE, G. et GRIFFITHS, C.T. (1997), « Conferences, Circles, Boards, and
+Mediations : The “New Wave” of Community Justice Decisionmaking »,
+Federal Probation, vol. 61, no 2, p. 25-37.
+BRAITHWAITE, J. (1989), Crime, Shame and Reintegration, Cambridge, Cambridge
+University Press.
+Campbell Research Associates (1995), Sentencing Circles. A Review, prepared for
+Aboriginal Justice Directorate, Department of Justice Canada.
+Canada (1991), Les peuples autochtones et la justice pénale, Ottawa, Commission de
+réforme du droit.
+Canada (1996), Par-delà les divisions culturelles : un rapport sur les autochtones et la
+justice pénale au Canada, Ottawa, ministère des Approvisionnements et
+Services.
+Canada (1997), Les quatre cercles de Hollow Water, Groupe de la politique
+correctionnelle autochtone, Ottawa, Solliciteur général et ministère des
+Approvisionnements et Services.
+CLAIRMONT, D. (1996), « Alternative Justice Issues for Aboriginal Justice »,
+Journal of Legal Pluralism, no 36, p. 125-157.
+CLAIRMONT, D. et LINDEN, R. (1998), Élaboration et évaluation de projets en matière
+de justice dans les collectivités autochtones : analyse documentaire, Ottawa,
+Solliciteur général, Collection sur les Autochtones, Groupe de la politique
+Les cercles de guérison 103
+correctionnelle autochtone, série technique, CA16APC (1998), ministère
+des Approvisionnements et Services.
+Commission royale sur les peuples autochtones (1996), Par-delà les divisions
+culturelles : un rapport sur les autochtones et la justice pénale au Canada, Ottawa,
+Ministère des Approvisionnements et Services Canada.
+Conseil des Églises (1996), Pour une vraie justice, Ottawa, Le Conseil des Églises
+pour la justice et la criminologie.
+CRAWFORD, A. (1996), « The Spirit of Community : Rights, Responsabilities
+and the Communitarian Agenda », Journal of Law and Society, vol. 23, no 2,
+p. 247-262.
+CRNKOVICH, M. (1993), Rapport sur le cercle de concertation tenu à Kangiqsujuaqq,
+pour le compte de Pauktuutit/Inuit Women’s Association et du ministère de
+la Justice du Canada, 14 juin 1993. Inédit.
+DEPEW, R. (1996), « Popular Justice and Aboriginal Communities », Journal of
+Legal Pluralism and Unofficial Law, no 36, p. 21-67.
+DUMONT, J. (1996), « Justice and Native Peoples », in NIELSEN, M.O. et
+SILVERMAN, R. (dir.), Native Americans, Crime, and Justice, Boulder (Colorado),
+Westview Press, p. 20-33.
+DUTIL, J.L. (1993) in R.c. Tiivi Alaku [1993] 640-000065-939, Cour du
+Québec, Chambre criminelle et pénale, Province de Québec, District
+d’Abitibi, 19 octobre 1993.
+FAFARD, C.R. (1995) in R.c. Robert Rupert Joseyounen [1995] 6 w.w.r. 438,
+Province de Saskatchewan.
+GREEN, R.G. (1998), « Aboriginal Community Sentencing and Mediation :
+Within and Without the Circle », Manitoba Law Journal, vol. 25, no 1, p. 77-
+125.
+HAMILTON, A.C. et SINCLAIR, C.M. (1991), The Justice System and Aboriginal
+People : Report of the Aboriginal Justice Inquiry of Manitoba Volume 1, Winnipeg,
+The Queen’s Printer.
+HARRISON, A., MERIC, M. et DIXON, A. (1995), Justice and Healing in Sheshatshit
+and Davis Inlet. A Report by Peace Brigades Internationl, document en ligne.
+JACKSON, M. (1992), « In Search of the Pathways to Justice : Alternative Dispute
+Resolution in Aboriginal Communities », U.B.C. Law Review, no 26, p. 147-
+238.
+JACCOUD, M. (1992), « Processus pénal et identitaire : le cas des Inuit au
+Nouveau-Québec », Sociologie et sociétés, vol. 24, no 2, p. 25-43.
+JACCOUD, M. (1995), Justice blanche au Nunavik, Montréal, Éditions du Méridien,
+« Repère ».
+104 CRIMINOLOGIE, VOL 32 N° 1 (1999)
+JACCOUD, M. (1998), « Restoring Justice in Native Communities in Canada »,
+in WALGRAVE, L. (dir.), Restorative Justice for Juveniles. Potentialities, Risks and
+Problems for Research, Leuven, Leuven University Press, p. 285-299.
+JANVIER, A. (1994), « Sentencing Circles », in GOSSE, R., HENDERSON, J.Y. et
+CARTER, R. (dir.), Continuing Poundmaker & Riel’s Quest, Saskatoon, Purich,
+p. 301-302.
+KRAWL, M. (1994), Comprendre le rôle de la guérison, Ottawa, Groupe de la
+politique correctionnelle autochtone, Ottawa Solliciteur général et ministère
+des Approvisionnements et Services.
+LAJEUNESSE, T. (1993), Community Holistic Circle Healing. Hollow Water First
+Nation, Ottawa, Solliciteur général et ministère des Approvisionnements et
+Services.
+LAPRAIRIE, C. (1994), Evaluating Aboriginal Justice Projects, Ottawa, Ministère de
+la Justice.
+LAPRAIRIE, C. (1996), « Altering Course : New Directions in Criminal Justice
+Sentencing Circles and Family Group Conferences », The Australian and New
+Zealand Journal of Criminology, no 28, p. 78-99.
+LAPRAIRIE, C. (1998), « The “New” Justice : Some Implications for Aboriginal
+Communities », Revue canadienne de criminologie/Canadian Journal of
+Criminology, vol. 40, no 1, p. 61-79.
+LINDEN, R. et CLAIRMONT D. (1998), Pour un résultat positif : Planification et
+évaluation des projets de mise sur pied de services correctionnels communautaires et de
+réconciliation dans les collectivités autochtones, Ottawa, Solliciteur général,
+Collection sur les Autochtones, Groupe de la politique correctionnelle
+autochtone, série technique, CA3APC-TS (1998), ministère des
+Approvisionnements et Services.
+LÖFGREN, N. (1997), « Aboriginal Comunity (sic) Participation in
+Sentencing », Criminal Law Journal, vol. 21, no 1, p. 127-133.
+MORSE, B.W. (1988), « Indigenous Law and State Legal System : Conflict and
+Compatibility », in MORSE, B.W. et WOODMAN, G.R. (dir.), Indigenous Law
+and the State, Dordrech, Foris Publications, p. 101-120.
+Nightingale, Judge J. (1995), Sentencing Circles, Toronto, National Judicial
+Institute/Institut National de la Magistrature, Criminal Law, Procedure and
+Evidence, November 8-10, 1995, polycopié, 7 p.
+Québec (1995), La justice pour et par les autochtones, rapport et recommandations
+du Comité de consultation sur l’administration de la justice en milieu
+autochtone, Québec, Bibliothèque nationale du Québec.
+Les cercles de guérison 105
+QUINGLEY, T. (1994), « Some Issues in Sentencing of Aboriginal Offenders »,
+in GOSSE, R., HENDERSON, J.H. et CARTER, R. (dir.), Continuing Poundmaker
+& Riel’s Quest, Saskatoon, Canada, Purich, p. 269-300.
+ROSS, R. (1992), Dancing with a Ghost. Exploring Indian Reality, Markham,
+Ontario, Octopus Publishing Group.
+ROSS, R. (1994), « Duelling Pradigms? Western Criminal justice Versus
+Aboriginal Community Healing », in GOSSE, R., HENDERSON, J.Y. et
+CARTER, R. (dir.), Continuing Poundmaker & Riel’s Quest, Saskatoon, Canada,
+Purich, p. 241-268.
+ROSS, R. (1996), Returning to the Teachings. Exploring Aboriginal Justice, Toronto,
+Penguin Books.
+ROULAND, N. (1988), Anthropologie juridique. Paris, PUF.
+SIOUI, G.E. (1992), Pour une autohistoire amérindienne. Essai sur les fondements d’une
+morale sociale, Montréal, McGill-Queen’s.
+SIVELL-FERRI, C. (1997), « Le cercle de la victime : Agression sexuelle et
+traumatisme dans une collectivité ojibwa », in Canada (dir.). Les quatre cercles
+de Hollow Water, Ottawa, Groupe de la politique correctionnelle autochtone,
+Sollciteur général, Collection sur les Autochtones, ministère des
+Approvisionnements et Services, p. 95-138.
+Solliciteur général (1993), Community Holistic Circle Healing. Hollow Water First
+Nation, Ottawa, Secrétariat du ministère, ministère des Approvisionnements
+et Services.
+Solliciteur général (1994), Comprendre le rôle de la guérison, Ottawa, collection sur
+les Autochtones, ministère des Approvisionnements et Services.
+Solliciteur général (1996), Les Services correctionnels pour Autochtones, Secrétariat
+du ministère, Ottawa, ministère des Approvisionnements et Services.
+Solliciteur général (1997), Les quatre cercles de Hollow Water, Ottawa, collection
+sur les Autochtones, ministère des Approvisionnements et Services.
+STUART, B. (1992), in R. v. Philip Moses (1992). 11 C.R. (4th) 357 (Yukon
+Terr.Ct.).
+STUART, B. (1996), « Circle Sentencing : Turning Swords into Ploughshares »,
+in GALAWAY, B. et HUDSON, J. (dir.), Restorative Justice : International Perspectives,
+Monsey (NY), Criminal Justice Press, p. 193-206.
+STUART, B. (app. 1997), Créer des partenariats de justice communautaire : Les cercles de
+conciliation communautaires, Ottawa, Direction de la justice applicable aux
+Autochtones, ministère de la Justice, Canada.
