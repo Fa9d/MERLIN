@@ -148,6 +148,8 @@ async def generate_insights(
             "prepared_input": build_insights_input(profile),
         }
 
-    from app.services.behavioral_insights import generate_behavioral_insights
-    logger.info("insights LLM générés client=%s", payload.client_id)
-    return {"enabled": True, "insights": await generate_behavioral_insights(profile)}
+    from app.services.behavioral_insights import generate_with_fallback
+    result = await generate_with_fallback(profile)
+    logger.info("insights LLM client=%s ok=%s degraded=%s",
+                payload.client_id, result.get("ok"), result.get("degraded"))
+    return {"enabled": True, **result}

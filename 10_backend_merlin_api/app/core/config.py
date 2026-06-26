@@ -87,6 +87,11 @@ class Settings:
     # Interrupteur des insights LLM (profilage). Défaut FALSE : aucun appel Anthropic
     # réel tant que la barrière B1 (cadre transfrontalier + consentement) n'est pas levée.
     insights_enabled: bool = _as_bool(os.getenv("MERLIN_INSIGHTS_ENABLED"), False)
+    # Activation contrôlée des insights (Prompt 5) — paramètres de coût / modèle / quota.
+    insights_model: str = os.getenv("MERLIN_INSIGHTS_MODEL", "claude-sonnet-4-6")
+    insights_max_tokens: int = int(os.getenv("MERLIN_INSIGHTS_MAX_TOKENS", "1100"))
+    # Plafond souple d'appels/jour (0 = désactivé). Garde-fou de coût en mémoire process.
+    insights_daily_cap: int = int(os.getenv("MERLIN_INSIGHTS_DAILY_CAP", "200"))
     stripe_secret_key: str | None = os.getenv("MERLIN_STRIPE_SECRET_KEY")
     stripe_webhook_secret: str | None = os.getenv("MERLIN_STRIPE_WEBHOOK_SECRET")
     stripe_checkout_success_url: str | None = os.getenv("MERLIN_STRIPE_CHECKOUT_SUCCESS_URL")
