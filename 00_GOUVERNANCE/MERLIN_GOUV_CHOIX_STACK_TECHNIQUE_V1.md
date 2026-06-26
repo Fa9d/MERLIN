@@ -1,3 +1,11 @@
+> ⛔ **SUPERSÉDÉ par ADR-0006 (2026-06-26) — NE PLUS UTILISER pour la stack.**
+> Stack canonique figée : backend **Python/FastAPI** + frontend **statique `ivia_site_v2/`**,
+> IA en Python, Next.js archivé, **aucune migration Node/Prisma**. Voir
+> `00_GOUVERNANCE/ADR/ADR-0006-…`, `IVIA_SPEC_TECHNIQUE_CANONIQUE_v1.0.md`, `IVIA_PRD_CANONIQUE_v1.0.md`.
+> Conservé pour historique uniquement.
+
+---
+
 # MERLIN - Choix stack technique V1
 
 Date: 2026-04-21

@@ -1,3 +1,11 @@
+> ⚠️ **STACK À ALIGNER SUR ADR-0006 (2026-06-26).** Toute mention d'une stack autre que
+> **Python/FastAPI (backend) + statique `ivia_site_v2/` (frontend), IA en Python** est
+> **périmée** (pas de Node/Prisma/Next.js ; Next.js archivé). Le reste du document (vision,
+> souveraineté, sécurité) reste indicatif. Référence stack : `ADR-0006`,
+> `IVIA_SPEC_TECHNIQUE_CANONIQUE_v1.0.md`.
+
+---
+
 # STRATÉGIE TECHNOLOGIQUE 36 MOIS — IVIA / MERLIN
 ## Architecture, pipeline, souveraineté, sécurité et continuité technique
 
