@@ -1,3 +1,12 @@
+> ⛔ **ARCHIVÉ — NE PAS DÉVELOPPER (ADR-0006, 2026-06-26).**
+> Ce frontend Next.js est **legacy, gelé, conservé pour référence uniquement**.
+> Il **n'est pas servi en production** (le frontend prod est le site statique
+> `ivia_site_v2/`, servi par nginx). Aucune nouvelle fonctionnalité ici.
+> Stack canonique : backend **Python/FastAPI** + frontend **statique**. Voir
+> `00_GOUVERNANCE/ADR/ADR-0006-stack-python-fastapi-frontend-statique.md` et `CLAUDE.md` §2.
+
+---
+
 # IVIA / MERLIN App V1
 
 Application V1 en construction pour:

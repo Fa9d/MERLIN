@@ -68,13 +68,17 @@ DB        : PostgreSQL 15 (migrations via Alembic — HEAD = 20260504_0017)
 IA        : API Anthropic (Claude) — haiku ou sonnet selon la tâche
 Frontend  : SITE PUBLIC = statique ivia_site_v2/ (HTML + Tailwind CDN), servi par nginx
             (nginx/default.conf → root /opt/merlin/ivia_site_v2). C'est la version LIVE.
-            Next.js 16.2.4 (09_app_ivia_merlin/) = LEGACY, retiré de la prod le 2026-06-23
-            (nginx ne routait jamais dessus) ; code conservé en repo pour référence.
+            Next.js 16.2.4 (09_app_ivia_merlin/) = LEGACY **ARCHIVÉ** (ADR-0006) — gelé,
+            conservé pour référence, NON servi, NON développé. Ne rien y ajouter.
 Media     : LiveKit v1.8.3 (sessions audio/vidéo)
 Infra     : Docker Compose — OVH VPS ubuntu@137.74.42.121:/opt/merlin
 Reverse   : Nginx 1.27 (TLS Let's Encrypt)
 Versioning: Git / GitHub — branche d'intégration master ; branche refonte courante refonte-ivia-site-unifie
 ```
+
+**STACK CANONIQUE (ADR-0006, actée 2026-06-26) :** backend **Python/FastAPI** + frontend
+**statique `ivia_site_v2/`**. Le pipeline IA reste **en Python** (faster-whisper local =
+données Québec/Loi 25). **Aucune migration Node.js/Prisma/Next.js.** Le Next.js est archivé.
 
 **URLs prod :**
 - Frontend : `https://ivia.quebec`
