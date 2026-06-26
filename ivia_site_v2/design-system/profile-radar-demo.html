@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Démo : ProfileRadar statique (Signature / Doux)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/ivia-espace.css" data-ivia-espace="1">
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;padding:28px 16px;}
+    h1{font-family:'Lora',serif;font-size:24px;font-weight:600;text-align:center;}
+    .sub{text-align:center;color:var(--muted);font-size:13px;margin:6px 0 18px;}
+    .panel{max-width:30rem;margin:0 auto;background:var(--card-bg);border:1px solid var(--bdr);border-radius:24px;padding:22px;box-shadow:var(--shadow);}
+    .amb{display:flex;justify-content:center;gap:6px;margin-bottom:16px;}
+    .amb button{cursor:pointer;border:1px solid var(--bdr);background:var(--surface);color:var(--muted);border-radius:9999px;padding:6px 16px;font:inherit;font-size:12px;font-weight:700;}
+    .amb button.on{background:var(--forest-deep);color:#fff;border-color:transparent;}
+    .note{max-width:30rem;margin:18px auto 0;font-size:12px;color:var(--muted);text-align:center;line-height:1.6;}
+  </style>
+</head>
+<body data-theme="signature">
+  <h1>ProfileRadar — version statique</h1>
+  <p class="sub">Web Component natif, zéro dépendance. Démo non liée à la prod.</p>
+
+  <div class="amb" role="tablist" aria-label="Ambiance">
+    <button id="t-sig" class="on" onclick="setTheme('signature')">Signature</button>
+    <button id="t-doux" onclick="setTheme('doux')">Doux</button>
+  </div>
+
+  <div class="panel">
+    <ivia-profile-radar id="radar" active-layer="love" label-a="Client" label-b="Praticien·ne"></ivia-profile-radar>
+  </div>
+
+  <p class="note">Surface <b>interne</b> (praticien). Visualisation de <b>tendances</b>, jamais un diagnostic.
+  Une variante client devrait être revue (B3 : pas de scores bruts).</p>
+
+  <script src="/shared/profile-radar.js"></script>
+  <script>
+    function setTheme(t){
+      document.body.dataset.theme = t;
+      document.getElementById('t-sig').classList.toggle('on', t==='signature');
+      document.getElementById('t-doux').classList.toggle('on', t==='doux');
+    }
+    // Données de démonstration (fictives) pour les 5 couches.
+    const radar = document.getElementById('radar');
+    radar.profileA = {
+      ocean:{openness:.8,conscientiousness:.5,extraversion:.4,agreeableness:.7,neuroticism:.6},
+      schwartz:{self_direction:.7,stimulation:.4,hedonism:.3,achievement:.5,power:.2,security:.6,conformity:.4,tradition:.3,benevolence:.9,universalism:.8},
+      love:{paroles_valorisantes:.6,moments_qualite:.85,contact_physique:.3,services_rendus:.5,cadeaux:.2,soutien_emotionnel:.9,espace_autonomie:.55,engagement_fiabilite:.8},
+      attachment:{secure_score:.4,preoccupied_score:.7,dismissing_score:.2,fearful_score:.3},
+      vad:{valence:-.2,arousal:.3,dominance:-.1},
+    };
+    radar.profileB = {
+      ocean:{openness:.6,conscientiousness:.8,extraversion:.6,agreeableness:.8,neuroticism:.3},
+      schwartz:{self_direction:.6,stimulation:.5,hedonism:.4,achievement:.6,power:.3,security:.5,conformity:.5,tradition:.4,benevolence:.85,universalism:.7},
+      love:{paroles_valorisantes:.7,moments_qualite:.7,contact_physique:.5,services_rendus:.6,cadeaux:.3,soutien_emotionnel:.75,espace_autonomie:.5,engagement_fiabilite:.85},
+      attachment:{secure_score:.85,preoccupied_score:.2,dismissing_score:.25,fearful_score:.15},
+      vad:{valence:.4,arousal:.1,dominance:.3},
+    };
+    radar.addEventListener('layer-change', e => console.log('couche →', e.detail.layer));
+  </script>
+</body>
+</html>
