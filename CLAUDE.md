@@ -493,3 +493,65 @@ Règles à respecter pour toute évolution de ce parcours :
 - Bibliothèque de prompts : `11_PROMPTS/`
 - Registre d'évaluations : `managed_agents/evals.registry.yaml`
 - Structure juridique : `12_JURIDIQUE_AFFAIRES/`
+
+---
+
+## Module comportemental MERLIN (v1.0 — 2026-06-29)
+
+> Documentation complète : `00_GOUVERNANCE/COMPORTEMENTAL/`
+
+### Dépôt canonique (ADR-0007)
+
+`Fa9d/MERLIN` est le **seul dépôt actif**. `Fa9d/ivia` est archivé (lecture seule).  
+Tous les outils IA travaillent exclusivement sur ce repo.
+
+### Modèles actifs — Strate 1 (IPM ≥ 12)
+
+| Modèle | IPM /15 | Source de données |
+|---|---|---|
+| Big Five / OCEAN via NLP | 13 | `session_notes.observations_text` → pipeline Anthropic |
+| LEARY / Circumplex | 13 | `session_notes` → pipeline Anthropic |
+| Prosodie vocale | 13 | `audio_recordings` |
+| Schwartz Values | 12 | `intake_requests` |
+| Matching vectoriel étendu | 12 | Extension de `services/matching.py` existant |
+| Ternary Plot (Autonomie/Lien/Structure) | 14 | `intake_requests` + `session_notes` |
+| Radar / Spider Chart | 14 | Agrégation multi-sources |
+| Heatmap temporelle | 12 | `session_temporal_anchors` |
+| Jungien (types) | 13 | `client_life_events` + `session_notes` |
+| Enneagramme | 13 | Module optionnel praticien |
+
+### Carte des vues par interface
+
+**Praticien** (dashboard) :
+- Radar 8 axes — son profil comportemental (Big Five + 3 valeurs IVIA)
+- Circumplex LEARY — sa position interpersonnelle (après 3 séances)
+- Ses clients avec score de matching étendu
+
+**Séance** (vue session + session_notes) :
+- Ternary Plot client (Autonomie / Lien / Structure)
+- LEARY praticien + client superposés
+- Heatmap temporelle Big Five — delta séance par séance (dès 2e séance)
+
+**Admin** :
+- Rentabilité par modèle actif (ROI mensuel)
+- Veille thématique — 10 domaines, toggle ON/OFF, OFF par défaut
+- Carte matching global
+
+### Nouvelles tables à créer (post head 0017)
+
+- `profil_comportemental` — vecteur Big Five + Schwartz + LEARY + Ternary par user
+- `veille_configs` — 10 domaines de veille, OFF par défaut
+- `veille_digests` — résultats de veille stockés
+
+### Champs à ajouter à tables existantes
+
+- `session_notes` : `big_five_scores` (JSON), `leary_position` (JSON)
+- `practitioner_profiles` : `big_five_scores`, `schwartz_values`, `leary_position`, `ternary_values` (JSON)
+
+### Ordre d'implémentation (9 étapes)
+
+Voir `00_GOUVERNANCE/COMPORTEMENTAL/SCHEMA_ETAT_REEL.md` — section "Ordre d'implémentation".
+
+**Règle critique** : étendre `services/matching.py` existant, ne pas le remplacer.  
+**Règle critique** : étendre `ai/anthropic_session_note_pipeline.py` existant, ne pas le dupliquer.
+
