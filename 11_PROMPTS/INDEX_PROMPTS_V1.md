@@ -172,3 +172,28 @@ Voir `AUDIT_PROMPTS_EXISTANTS_V1.md` pour le détail.
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
 | 1.3 | 2026-05-05 | fondateur | Vague 5 Phase C — création METH-004, enregistrement loader, 13 prompts total |
+
+---
+
+## Registre Vague 6 — Couche SYSTEME (agents C-suite)
+
+> Vague 6 — 2026-06-29 — Création des 6 agents C-suite stratégiques
+
+| ID | Fichier | Dossier | Trigger | Statut |
+|---|---|---|---|---|
+| MERLIN-PROMPT-CSUITE-STRAT-V1 | MERLIN_PROMPT_CSUITE-STRAT_v1.0.md | 06_CSUITE/ | Décision structurante, ADR, revue roadmap | active |
+| MERLIN-PROMPT-CSUITE-ARCH-V1 | MERLIN_PROMPT_CSUITE-ARCH_v1.0.md | 06_CSUITE/ | Choix d'implémentation, migration Alembic, revue stack | active |
+| MERLIN-PROMPT-CSUITE-COMM-V1 | MERLIN_PROMPT_CSUITE-COMM_v1.0.md | 06_CSUITE/ | Contenu externe, dossier financement, voix de marque | active |
+| MERLIN-PROMPT-CSUITE-UX-V1 | MERLIN_PROMPT_CSUITE-UX_v1.0.md | 06_CSUITE/ | Nouveau composant frontend, parcours utilisateur | active |
+| MERLIN-PROMPT-CSUITE-FIN-V1 | MERLIN_PROMPT_CSUITE-FIN_v1.0.md | 06_CSUITE/ | ROI module, revue financière mensuelle, tarification | active |
+| MERLIN-PROMPT-CSUITE-QA-V1 | MERLIN_PROMPT_CSUITE-QA_v1.0.md | 06_CSUITE/ | Revue PR, validation migration, monitoring production | active |
+
+Total bibliothèque après Vague 6 : **19 prompts gouvernés**
+
+---
+
+## Historique de révisions (suite)
+
+| Version | Date | Auteur | Nature de la révision |
+|---|---|---|---|
+| 1.4 | 2026-06-29 | fondateur | Vague 6 — ajout 6 agents C-suite (SYSTEME), 19 prompts total |
