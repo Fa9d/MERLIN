@@ -1,6 +1,5 @@
 """Tests du matching comportemental (sans base — logique pure NumPy)."""
 from app.services.profile_matching import (
-    DEFAULT_CONFIG,
     LayerConfig,
     LayerMode,
     match_profiles,

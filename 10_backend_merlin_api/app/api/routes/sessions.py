@@ -30,7 +30,6 @@ from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
 from app.services.livekit_audio import (
     LiveKitAudioError,
-    create_livekit_room_for_session,
     run_post_recording_pipeline,
     start_livekit_recording_for_session,
     stop_livekit_recording_for_session,
@@ -43,7 +42,6 @@ from app.schemas.session import (
     SessionCreate,
     SessionDeliver,
     SessionRecordingRead,
-    SessionRoomRead,
     SessionRead,
     SessionStart,
 )

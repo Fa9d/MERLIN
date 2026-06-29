@@ -11,5 +11,7 @@ aiosmtplib==3.0.2
 anthropic>=0.99.0
 jsonschema>=4.26.0
 pyyaml==6.0.2
+# Matching comportemental (app/services/profile_matching.py)
+numpy>=2.0,<3
 # Borné : v15 validée en prod (objets par attribut, plus de .get() dict-style)
 stripe>=15.0.0,<16
