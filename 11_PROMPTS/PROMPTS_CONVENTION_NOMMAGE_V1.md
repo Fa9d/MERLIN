@@ -7,7 +7,7 @@ couche: PROD
 périmètre: 11_PROMPTS
 auteur: fondateur
 date: 2026-05-05
-version: 1.0
+version: 1.1
 dépend_de: [MERLIN-CONVENTION-NOMMAGE-V2, ADR-0002, MERLIN-MODELE-COUCHES-V1]
 remplace: []
 arbitrage_requis: oui — toute modification de ces règles de nommage
@@ -154,3 +154,5 @@ Si aucun code de couche ne convient clairement, le fondateur doit :
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
 | 1.0 | 2026-05-05 | fondateur | Création initiale — Vague 2 structuration prompts |
+
+| 1.1 | 2026-06-30 | fondateur | Ajout code de couche CSUITE (ADR-0008) + dossier 06_CSUITE/ dans structure cible |

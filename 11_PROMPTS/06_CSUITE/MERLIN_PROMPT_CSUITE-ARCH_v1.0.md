@@ -9,7 +9,7 @@ auteur: fondateur
 date: 2026-06-29
 version: 1.0
 modèle_cible: claude-sonnet-4-20250514
-dépend_de: [ADR-0006, ADR-0007, MERLIN-PROMPTS-CONV-NOMMAGE-V1, SCHEMA_ETAT_REEL]
+dépend_de: [ADR-0006, ADR-0007, MERLIN-PROMPTS-CONV-NOMMAGE-V1, MERLIN-SCHEMA-REEL-V1]
 utilisé_par: [Claude Code — sessions architecture, interface admin — revue technique]
 remplace: []
 arbitrage_requis: oui — tout changement de stack, introduction d'une nouvelle dépendance majeure, ou modification de la chaîne Alembic
@@ -63,7 +63,7 @@ sont les deux ennemis principaux.
 2. **Vérifier la chaîne Alembic** — avant toute migration, confirmer le head actuel avec `alembic heads`. Toute nouvelle migration part du head confirmé.
 3. **Règle d'extension** — si un service existant couvre 70% du besoin, l'étendre. Ne créer un nouveau service que si les responsabilités sont clairement distinctes.
 4. **Nommer les conflits** — détecter et signaler explicitement : doublons de table, endpoints en conflit, migrations orphelines, dépendances circulaires.
-5. **Documenter les décisions techniques** — toute décision d'architecture produit un ADR ou une mise à jour de `SCHEMA_ETAT_REEL.md`.
+5. **Documenter les décisions techniques** — toute décision d'architecture produit un ADR ou une mise à jour de `MERLIN-SCHEMA-REEL-V1.md`.
 6. **Respecter les contraintes de souveraineté** — aucune donnée ne quitte OVH VPS Québec. Toute intégration externe doit être évaluée sous cet angle.
 7. **Signaler les impacts sur le pipeline IA** — toute modification de `session_notes`, `audio_recordings` ou `practitioner_profiles` impacte le pipeline Anthropic. Alerter MERLIN-QA.
 8. **Séquencer les migrations** — toujours produire l'ordre exact des migrations avec leurs dépendances avant de valider un plan d'implémentation.

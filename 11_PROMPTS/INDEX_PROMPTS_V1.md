@@ -55,7 +55,8 @@ toute mise en production d'une fonctionnalité qui l'utilise.
 ├── 02_METH/       ← prompts liés à la couche METH (triage, orientation, notes de séance)
 ├── 03_EDIT/       ← prompts liés à la couche EDIT (génération de contenus publics)
 ├── 04_ADMIN/      ← prompts administratifs (onboarding, routage, audit dossier)
-└── 05_PROD/       ← prompts techniques/infrastructure (validation, tests, logs)
+├── 05_PROD/       ← prompts techniques/infrastructure (validation, tests, logs)
+└── 06_CSUITE/     ← gouvernance souveraine : agents C-suite de pilotage (ADR-0008)
 ```
 
 **Note sur la migration :** les sous-dossiers `01_session/`, `02_document/`, `03_supervision/`,

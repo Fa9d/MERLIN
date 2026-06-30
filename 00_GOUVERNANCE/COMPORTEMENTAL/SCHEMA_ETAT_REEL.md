@@ -1,3 +1,19 @@
+---
+titre: Carte d'état réel du schéma PostgreSQL — MERLIN
+id: MERLIN-SCHEMA-REEL-V1
+statut: active
+type: charte
+couche: PROD
+périmètre: backend
+auteur: fondateur
+date: 2026-06-29
+version: 1.0
+dépend_de: [ADR-0007, ADR-0008]
+remplace: []
+arbitrage_requis: oui — toute modification structurelle du schéma PostgreSQL
+source_canonique: 00_GOUVERNANCE/COMPORTEMENTAL/SCHEMA_ETAT_REEL.md
+---
+
 # MERLIN — Carte d'état réel du schéma PostgreSQL
 **Généré le :** 29 juin 2026  
 **Source :** `10_backend_merlin_api/app/models/` + migrations `0001–0027`  
