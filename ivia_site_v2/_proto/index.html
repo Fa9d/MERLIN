@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — prototype header + journal (style getacuity)</title>
+  <!-- PROTOTYPE — ne touche pas index.html ni la prod. Données fictives. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        colors: {
+          forest:'#4A7C59', sage:'#8FB99A', 'forest-deep':'#2D6A4F',
+          cream:'#FAFDF8', surface:'#F0F7F2', ink:'#1A2E1D', muted:'#4B6350',
+          bdr:'#D4E8D0', trust:'#2563EB',
+          /* mode nuit */
+          night:'#0F1711', 'night-surface':'#19231C', 'night-bdr':'#2A3A2E',
+          'night-ink':'#E8F0E9', 'forest-lit':'#7DB389',
+        },
+        fontFamily: { heading:['"Lora"','Georgia','serif'], body:['"Raleway"','system-ui','sans-serif'] },
+      }}
+    }
+  </script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;}
+    h1,h2,h3,h4{font-family:'Lora',Georgia,serif;}
+    *{transition:background-color .3s ease,color .3s ease,border-color .3s ease;}
+  </style>
+</head>
+<body class="antialiased bg-cream text-ink dark:bg-night dark:text-night-ink">
+
+  <!-- ════ HEADER : plein · sticky · flou · menu à droite ════ -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-cream/70 dark:bg-night/70 border-b border-bdr/60 dark:border-night-bdr">
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#" class="font-heading text-xl font-bold tracking-tight text-ink dark:text-night-ink">◐ IVIA</a>
+      <div class="flex items-center gap-6 text-sm font-medium">
+        <a href="#" class="hidden md:inline hover:text-forest dark:hover:text-forest-lit">Mon espace</a>
+        <a href="#" class="hidden md:inline hover:text-forest dark:hover:text-forest-lit">Praticiens</a>
+        <a href="#" class="hidden md:inline hover:text-forest dark:hover:text-forest-lit">Ressources</a>
+        <a href="#" class="hidden md:inline hover:text-forest dark:hover:text-forest-lit">À propos</a>
+        <!-- bascule jour / nuit -->
+        <button id="theme" aria-label="Changer le mode d'affichage"
+          class="w-9 h-9 grid place-items-center rounded-full hover:bg-surface dark:hover:bg-night-surface">
+          <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
+        </button>
+        <a href="#" class="hidden sm:inline hover:text-forest dark:hover:text-forest-lit">Connexion</a>
+        <a href="#" class="px-4 py-2 rounded-full bg-forest text-cream hover:bg-forest-deep dark:bg-forest-lit dark:text-night">Commencer</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ════ HERO + mockups téléphone ════ -->
+  <section class="max-w-6xl mx-auto px-6 pt-20 pb-16 grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight">Dire ce que tu vis.<br>Être écouté, pour vrai.</h1>
+      <p class="mt-6 text-lg text-muted dark:text-sage leading-relaxed">
+        IVIA est un lieu de recueillement. Un endroit pour déposer ce que tu vis, à ton rythme,
+        dans tes mots. Y trouver une écoute vraie — et, peu à peu, des pistes.
+      </p>
+      <p class="mt-4 font-heading text-xl text-forest dark:text-forest-lit">Pas un algorithme. Quelqu'un.</p>
+      <div class="mt-8 flex gap-3">
+        <a href="#" class="px-6 py-3 rounded-full bg-forest text-cream hover:bg-forest-deep dark:bg-forest-lit dark:text-night">Commencer</a>
+        <a href="#journal" class="px-6 py-3 rounded-full border border-bdr dark:border-night-bdr hover:bg-surface dark:hover:bg-night-surface">Voir le journal ↓</a>
+      </div>
+    </div>
+    <!-- deux téléphones = les deux objets d'analyse -->
+    <div class="flex justify-center gap-5">
+      <div class="w-44 h-80 rounded-[2rem] border-4 border-ink/80 dark:border-night-bdr bg-surface dark:bg-night-surface p-3 shadow-xl">
+        <p class="text-[10px] uppercase tracking-wide text-muted dark:text-sage">Client</p>
+        <p class="mt-2 text-sm font-medium">Mon journal</p>
+        <div class="mt-2 text-[11px] rounded-lg bg-cream dark:bg-night p-2 border border-bdr dark:border-night-bdr">📌 Depuis ta rencontre…</div>
+        <div class="mt-2 text-[11px] rounded-lg bg-cream dark:bg-night p-2 border border-bdr dark:border-night-bdr">🎤 parler / écrire</div>
+        <p class="mt-3 text-[10px] text-muted dark:text-sage">le fil, l'écoute</p>
+      </div>
+      <div class="w-44 h-80 rounded-[2rem] border-4 border-ink/80 dark:border-night-bdr bg-surface dark:bg-night-surface p-3 shadow-xl mt-6">
+        <p class="text-[10px] uppercase tracking-wide text-muted dark:text-sage">Praticien</p>
+        <p class="mt-2 text-sm font-medium">La lecture</p>
+        <div class="mt-2 text-[11px] rounded-lg bg-cream dark:bg-night p-2 border border-bdr dark:border-night-bdr">repères du vivant</div>
+        <div class="mt-2 text-[11px] rounded-lg bg-cream dark:bg-night p-2 border border-bdr dark:border-night-bdr">pleinement présent</div>
+        <p class="mt-3 text-[10px] text-muted dark:text-sage">outillé, pas remplacé</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ LE JOURNAL refondu (format écran) ════ -->
+  <section id="journal" class="max-w-3xl mx-auto px-6 py-16">
+    <h2 class="text-2xl font-bold mb-6">Mon journal</h2>
+    <div class="rounded-2xl border border-bdr dark:border-night-bdr bg-surface dark:bg-night-surface p-6">
+      <!-- compte rendu épinglé = le différenciateur -->
+      <p class="text-xs uppercase tracking-wide text-muted dark:text-sage">📌 Depuis ta dernière rencontre · 12 juin</p>
+      <div class="mt-2 rounded-xl bg-cream dark:bg-night border border-bdr dark:border-night-bdr p-4 flex justify-between items-center">
+        <span class="text-sm">Ce qu'on a déposé ensemble…</span>
+        <a href="#" class="text-sm text-forest dark:text-forest-lit hover:underline">relire</a>
+      </div>
+      <!-- entrée rapide -->
+      <p class="mt-6 font-heading text-lg">Qu'est-ce qui vient aujourd'hui ?</p>
+      <div class="mt-2 rounded-xl bg-cream dark:bg-night border border-bdr dark:border-night-bdr p-4 flex justify-between items-center">
+        <span class="text-sm text-muted dark:text-sage">écrire…</span>
+        <button class="text-sm px-3 py-1.5 rounded-full bg-forest text-cream dark:bg-forest-lit dark:text-night">🎤 parler</button>
+      </div>
+      <!-- le fil -->
+      <p class="mt-6 text-sm font-medium">Ton fil</p>
+      <ul class="mt-2 space-y-2 text-sm text-muted dark:text-sage">
+        <li class="border-l-2 border-sage pl-3">aujourd'hui — une journée plus légère.</li>
+        <li class="border-l-2 border-sage pl-3">9 juin — beaucoup de fatigue, mais j'ai posé des mots.</li>
+        <li class="border-l-2 border-sage pl-3">5 juin — la conversation difficile, enfin dite.</li>
+      </ul>
+      <p class="mt-6 text-sm text-forest dark:text-forest-lit">⤷ À ta prochaine séance, tu arrives avec tout ça.</p>
+    </div>
+  </section>
+
+  <!-- faux contenu pour voir le flou défiler sous le header -->
+  <section class="max-w-3xl mx-auto px-6 py-24 text-center text-muted dark:text-sage">
+    <p class="font-heading text-2xl">Défile pour voir le header rester flou au-dessus.</p>
+  </section>
+
+  <!-- ════ FOOTER + urgence (sortie du header) ════ -->
+  <footer class="border-t border-bdr dark:border-night-bdr bg-surface dark:bg-night-surface">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-muted dark:text-sage">
+      <p class="font-medium text-ink dark:text-night-ink">IVIA n'est pas un service d'urgence et ne pose pas de diagnostic.</p>
+      <p class="mt-1">En détresse : <strong>1 866 APPELLE (277-3553)</strong> · ou <strong>911</strong>.</p>
+      <p class="mt-4 text-xs">Mentions · Confidentialité (Loi 25) · CGU — prototype, données fictives.</p>
+    </div>
+  </footer>
+
+  <script>
+    // jour par défaut ; nuit seulement si déjà choisi
+    const root = document.documentElement;
+    if (localStorage.iviaTheme === 'dark') root.classList.add('dark');
+    document.getElementById('theme').addEventListener('click', () => {
+      root.classList.toggle('dark');
+      localStorage.iviaTheme = root.classList.contains('dark') ? 'dark' : 'light';
+    });
+  </script>
+</body>
+</html>
