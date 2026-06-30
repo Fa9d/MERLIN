@@ -318,7 +318,12 @@ La prochaine action recommande e est:
 - produire la grille comparative V1
 - puis executer l'etude acteur par acteur.
 
+> COMPLEMENT (cote demande) — ce document cadre le cote OFFRE/concurrents. Le cote DEMANDE
+> (besoins, maux du QC, carte des zones ou IVIA agit/oriente) vit dans son companion :
+> `MERLIN_GOUV_ETUDE_MARCHE_BESOINS_QC_V1.md` (cf. ADR-0008).
+
 References:
+- [MERLIN_GOUV_ETUDE_MARCHE_BESOINS_QC_V1.md](MERLIN_GOUV_ETUDE_MARCHE_BESOINS_QC_V1.md) — companion cote demande
 - [MERLIN_GOUV_GRILLE_COMPARATIVE_MARCHE_V1.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_GRILLE_COMPARATIVE_MARCHE_V1.md)
 - [MERLIN_GOUV_TEMPLATE_GRILLE_COMPARATIVE_MARCHE_V1.csv](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_TEMPLATE_GRILLE_COMPARATIVE_MARCHE_V1.csv)
 - [MERLIN_GOUV_BENCHMARK_MARCHE_ECHANTILLON_INITIAL_2026-04-20.md](C:/MERLIN/00_GOUVERNANCE/MERLIN_GOUV_BENCHMARK_MARCHE_ECHANTILLON_INITIAL_2026-04-20.md)
