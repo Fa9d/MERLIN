@@ -2,7 +2,7 @@
 titre: Index des agents C-suite — MERLIN
 id: MERLIN-INDEX-CSUITE-V1
 statut: active
-type: index
+type: charte
 couche: SYSTEME
 périmètre: admin
 auteur: fondateur

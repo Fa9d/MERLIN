@@ -1,7 +1,7 @@
 ---
 titre: Agent C-suite — MERLIN-COMM (Communications / CCO)
 id: MERLIN-PROMPT-CSUITE-COMM-V1
-statut: active
+statut: draft
 type: prompt
 couche: SYSTEME
 périmètre: admin

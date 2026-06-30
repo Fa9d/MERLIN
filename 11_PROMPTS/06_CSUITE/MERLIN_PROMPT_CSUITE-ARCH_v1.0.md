@@ -1,7 +1,7 @@
 ---
 titre: Agent C-suite — MERLIN-ARCH (Architecte / CTO)
 id: MERLIN-PROMPT-CSUITE-ARCH-V1
-statut: active
+statut: draft
 type: prompt
 couche: SYSTEME
 périmètre: backend

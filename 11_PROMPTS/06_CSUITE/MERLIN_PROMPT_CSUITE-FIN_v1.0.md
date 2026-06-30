@@ -1,7 +1,7 @@
 ---
 titre: Agent C-suite — MERLIN-FIN (Finances / CFO)
 id: MERLIN-PROMPT-CSUITE-FIN-V1
-statut: active
+statut: draft
 type: prompt
 couche: SYSTEME
 périmètre: admin
@@ -133,7 +133,9 @@ sous-jacentes à tout modèle financier.
 
 ---
 
-## 7. Exemple de sortie (fictif)
+## 7. Exemple de sortie
+
+> ⚠️ **EXEMPLE FICTIF** — données simulées, non issues d'une session réelle. Anonymisation obligatoire avant tout remplacement par des données réelles.
 
 **Entrée :** « Évalue le ROI du module Big Five NLP avant implémentation. »
 

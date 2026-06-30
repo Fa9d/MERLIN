@@ -1,7 +1,7 @@
 ---
 titre: Agent C-suite — MERLIN-QA (Qualité & DevOps)
 id: MERLIN-PROMPT-CSUITE-QA-V1
-statut: active
+statut: draft
 type: prompt
 couche: SYSTEME
 périmètre: backend

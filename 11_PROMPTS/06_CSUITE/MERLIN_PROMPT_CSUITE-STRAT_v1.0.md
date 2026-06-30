@@ -1,7 +1,7 @@
 ---
 titre: Agent C-suite — MERLIN-STRAT (Stratège / CEO)
 id: MERLIN-PROMPT-CSUITE-STRAT-V1
-statut: active
+statut: draft
 type: prompt
 couche: SYSTEME
 périmètre: admin

@@ -1,7 +1,7 @@
 ---
 titre: Agent C-suite — MERLIN-UX (Expérience utilisateur / CXO)
 id: MERLIN-PROMPT-CSUITE-UX-V1
-statut: active
+statut: draft
 type: prompt
 couche: SYSTEME
 périmètre: frontend
