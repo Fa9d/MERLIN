@@ -47,7 +47,16 @@
           class="w-9 h-9 grid place-items-center rounded-full hover:bg-surface dark:hover:bg-night-surface">
           <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
         </button>
-        <a href="#" class="hidden sm:inline hover:text-forest dark:hover:text-forest-lit">Connexion</a>
+        <!-- menu déroulant connexion : client / praticien / créer -->
+        <div class="relative">
+          <button id="cnx" class="hidden sm:inline-flex items-center gap-1 hover:text-forest dark:hover:text-forest-lit">Connexion <span class="text-xs">▾</span></button>
+          <div id="cnxmenu" class="hidden absolute right-0 mt-3 w-52 rounded-xl border border-bdr dark:border-night-bdr bg-cream dark:bg-night-surface shadow-xl py-1 text-sm">
+            <a href="#" class="block px-4 py-2.5 hover:bg-surface dark:hover:bg-night">Espace <strong>client</strong></a>
+            <a href="#" class="block px-4 py-2.5 hover:bg-surface dark:hover:bg-night">Espace <strong>praticien</strong></a>
+            <div class="border-t border-bdr dark:border-night-bdr my-1"></div>
+            <a href="#" class="block px-4 py-2.5 hover:bg-surface dark:hover:bg-night">Créer un compte</a>
+          </div>
+        </div>
         <a href="#" class="px-4 py-2 rounded-full bg-forest text-cream hover:bg-forest-deep dark:bg-forest-lit dark:text-night">Commencer</a>
       </div>
     </nav>
@@ -135,6 +144,10 @@
       root.classList.toggle('dark');
       localStorage.iviaTheme = root.classList.contains('dark') ? 'dark' : 'light';
     });
+    // menu déroulant connexion
+    const cnx = document.getElementById('cnx'), cnxmenu = document.getElementById('cnxmenu');
+    cnx.addEventListener('click', (e) => { e.stopPropagation(); cnxmenu.classList.toggle('hidden'); });
+    document.addEventListener('click', () => cnxmenu.classList.add('hidden'));
   </script>
 </body>
 </html>
