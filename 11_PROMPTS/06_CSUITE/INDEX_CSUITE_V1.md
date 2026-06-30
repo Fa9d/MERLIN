@@ -1,111 +1,79 @@
 ---
-titre: Index des agents C-suite — MERLIN
+titre: Index des sièges C-suite — MERLIN
 id: MERLIN-INDEX-CSUITE-V1
 statut: active
 type: index
 couche: SYSTEME
 périmètre: admin
 auteur: fondateur
-date: 2026-06-29
-version: 1.0
-dépend_de: [ADR-0006, ADR-0007, MERLIN-INDEX-PROMPTS-V1, MERLIN-PROMPTS-CONV-NOMMAGE-V1]
+date: 2026-06-30
+version: 1.1
+dépend_de: [ADR-0008, MERLIN-CSUITE-ANATOMIE-SIEGE-V1, MERLIN-CSUITE-CIRCULATION-V1]
 remplace: []
 arbitrage_requis: non — index de référence
 source_canonique: 11_PROMPTS/06_CSUITE/INDEX_CSUITE_V1.md
 ---
 
-# MERLIN — Index des agents C-suite V1.0
+# MERLIN — Index des sièges C-suite V1.1
 
-> **Statut** : active — 2026-06-29  
-> **Vague** : 6 — Agents C-suite stratégiques  
-> **Dossier** : `11_PROMPTS/06_CSUITE/`
-
----
-
-## Principe de la couche C-suite
-
-Les agents C-suite sont des **prompts de coordination stratégique et opérationnelle**.
-Ils ne remplacent pas les prompts de couche METH, FOND, EDIT ou PROD — ils les orchestrent.
-
-Chaque agent C-suite représente un rôle de direction :
-
-| Agent | Rôle | Analogie |
-|---|---|---|
-| MERLIN-STRAT | Stratégie, roadmap, arbitrages | CEO |
-| MERLIN-ARCH | Architecture technique, migrations, stack | CTO |
-| MERLIN-COMM | Communications, contenu, financement | CCO |
-| MERLIN-UX | Expérience utilisateur, design, interfaces | CXO |
-| MERLIN-FIN | Finances, ROI, métriques, tarification | CFO |
-| MERLIN-QA | Qualité, DevOps, tests, monitoring | VP QA / DevOps |
+> **Statut** : active — 2026-06-30
+> **Structure** : un dossier par siège (cellule). Voir `_anatomie-siege.md` (gabarit) et
+> `_circulation.md` (routage des artefacts). Décision fondatrice : **ADR-0008**.
 
 ---
 
-## Registre complet
+## Principe
 
-| ID | Fichier | Version | Couche | Périmètre | Trigger principal | Statut |
-|---|---|---|---|---|---|---|
-| `MERLIN-PROMPT-CSUITE-STRAT-V1` | `MERLIN_PROMPT_CSUITE-STRAT_v1.0.md` | 1.0 | SYSTEME | admin | Décision structurante, ADR, roadmap | active |
-| `MERLIN-PROMPT-CSUITE-ARCH-V1` | `MERLIN_PROMPT_CSUITE-ARCH_v1.0.md` | 1.0 | SYSTEME | backend | Choix d'implémentation, migration Alembic | active |
-| `MERLIN-PROMPT-CSUITE-COMM-V1` | `MERLIN_PROMPT_CSUITE-COMM_v1.0.md` | 1.0 | SYSTEME | admin | Contenu externe, dossier financement | active |
-| `MERLIN-PROMPT-CSUITE-UX-V1` | `MERLIN_PROMPT_CSUITE-UX_v1.0.md` | 1.0 | SYSTEME | frontend | Nouveau composant, parcours utilisateur | active |
-| `MERLIN-PROMPT-CSUITE-FIN-V1` | `MERLIN_PROMPT_CSUITE-FIN_v1.0.md` | 1.0 | SYSTEME | admin | ROI module, revue mensuelle, tarification | active |
-| `MERLIN-PROMPT-CSUITE-QA-V1` | `MERLIN_PROMPT_CSUITE-QA_v1.0.md` | 1.0 | SYSTEME | backend | Revue PR, validation migration, monitoring | active |
+Les sièges C-suite **orchestrent** les prompts des couches inférieures (METH, FOND, EDIT,
+PROD, ADMIN), ils ne les remplacent pas. Chaque siège est une **cellule autonome** :
+`<SIEGE>/siege.md` (manifeste) + `<SIEGE>/prompts/` + circulation déclarée.
+
+Aucun siège ne décide seul : il produit un **artefact typé** que le routage distribue
+(`_circulation.md`). Validation finale = fondateur.
 
 ---
 
-## Matrice de collaboration inter-agents
+## Registre des sièges
 
-Certaines décisions nécessitent la consultation de plusieurs agents C-suite.
+| Siège | Rôle / Analogie | Statut | Cellule |
+|---|---|---|---|
+| STRAT | Stratégie, roadmap, arbitrages — CEO | actif | `STRAT/` |
+| ARCH | Architecture, stack, migrations — CTO | actif | `ARCH/` |
+| FIN | Finances, ROI, tarification — CFO | actif | `FIN/` |
+| COMM | Communications, contenu, financement — CCO | actif | `COMM/` |
+| UX | Expérience, parcours, design — CXO | actif | `UX/` |
+| QA | Qualité, DevOps, tests — VP QA/DevOps | actif | `QA/` |
+| **GROWTH** | Mise en marché, acquisition — CRO | actif | `GROWTH/` |
+| **LEGAL** | Conformité Loi 21/25, contrats, risque — General Counsel | actif | `LEGAL/` |
+| **COS** | Cadence, orchestration, hygiène — Chief of Staff | actif | `COS/` |
+| **OPS** | Opérations, succès client, rétention — COO | dormant | `OPS/` |
+| **DATA** | Données, rentabilité des méthodes — CDO | dormant | `DATA/` |
+| **CARE** | Couture de domaine — contrats gardiens (par objet) | actif | `CARE/` → `contrats/` |
 
-| Situation | Agent principal | Agents consultés |
-|---|---|---|
-| Nouvelle strate ou nouveau module | STRAT | ARCH (faisabilité), FIN (ROI), QA (tests) |
-| Implémentation d'un composant | ARCH | QA (revue), UX (spécification) |
-| Contenu client ou externe | COMM | UX (conformité non-clinique), QA (validation contenu) |
-| Nouveau parcours utilisateur | UX | ARCH (faisabilité), QA (tests) |
-| Dossier de financement | COMM | FIN (section financière), STRAT (mission et impact) |
-| Tarification ou plan praticien | FIN | STRAT (positionnement), COMM (communication) |
-| Incident de production | QA | ARCH (cause technique), FIN (impact financier) |
-| Décision de migration Alembic | ARCH | QA (validation), STRAT (si impact roadmap) |
+> **CARE est un cas spécial** : non un pair horizontal, mais la couture verticale entre le
+> noyau et l'objet d'analyse. Il s'exprime par des **contrats** (`contrats/client/`,
+> `contrats/praticien/`), pas par une session générative.
+
+---
+
+## Documents de référence du bureau
+
+| Fichier | Rôle |
+|---|---|
+| `_anatomie-siege.md` | Gabarit d'un siège (4 faces) + cycle de vie d'un appel |
+| `_circulation.md` | Table canonique de routage des artefacts |
+| `INDEX_CSUITE_V1.md` | Ce registre |
 
 ---
 
 ## Règles d'utilisation
 
-1. **Un agent = un rôle** — ne pas combiner deux agents C-suite dans une même session. Changer d'agent explicitement quand le rôle change.
-2. **Toujours valider avec le fondateur** — aucun agent C-suite ne produit de décision finale. Il formule des recommandations que le fondateur valide.
-3. **Produire un artefact** — chaque session C-suite produit un artefact : ADR, mise à jour de CLAUDE.md, section de document, ou ticket d'implémentation.
-4. **Respecter la séquence** — pour une décision d'implémentation : STRAT (direction) → ARCH (faisabilité) → UX (design si pertinent) → FIN (ROI) → QA (validation avant merge).
-5. **Pas de dérivation clinique** — aucun agent C-suite ne produit de contenu clinique, de diagnostic, ou de recommandation thérapeutique.
-
----
-
-## Intégration avec la bibliothèque de prompts existante
-
-Les agents C-suite s'appuient sur les prompts de couches inférieures sans les remplacer :
-
-| Agent C-suite | Prompts de couche opérationnelle liés |
-|---|---|
-| MERLIN-ARCH | `02_METH/METH-003` (pipeline note de séance) |
-| MERLIN-QA | `05_PROD/` (tous les prompts de validation) |
-| MERLIN-COMM | `03_EDIT/` (prompts de contenu public) |
-| MERLIN-UX | `04_ADMIN/` (onboarding, routage client) |
-| MERLIN-FIN | `04_ADMIN/PROMPT_audit_dossier.md` |
-
----
-
-## Mots-clés d'activation recommandés
-
-Pour activer un agent C-suite dans une session, utiliser l'un de ces préfixes :
-
-| Préfixe | Agent activé |
-|---|---|
-| « En tant que MERLIN-STRAT... » | MERLIN-STRAT |
-| « Revue architecturale... » ou « MERLIN-ARCH... » | MERLIN-ARCH |
-| « Communications IVIA... » ou « MERLIN-COMM... » | MERLIN-COMM |
-| « Conception UX... » ou « MERLIN-UX... » | MERLIN-UX |
-| « Analyse financière... » ou « MERLIN-FIN... » | MERLIN-FIN |
-| « Revue QA... » ou « MERLIN-QA... » | MERLIN-QA |
+1. **Un siège = un rôle** — ne pas combiner deux sièges dans une même session.
+2. **Toujours valider avec le fondateur** — un siège recommande, le fondateur décide.
+3. **Produire un artefact** — chaque session produit un artefact à destination déclarée.
+4. **Respecter la séquence** — décision d'implémentation : STRAT → ARCH → UX → FIN → QA.
+5. **Sortie client/praticien** — passe toujours par le **contrat CARE** de l'objet concerné.
+6. **Hygiène** — le siège COS fait respecter la loi de circulation des sources (ADR-0008 §6).
 
 ---
 
@@ -113,4 +81,5 @@ Pour activer un agent C-suite dans une session, utiliser l'un de ces préfixes :
 
 | Version | Date | Auteur | Nature de la révision |
 |---|---|---|---|
-| 1.0 | 2026-06-29 | fondateur | Création initiale — Vague 6 agents C-suite |
+| 1.0 | 2026-06-29 | fondateur | Création initiale — 6 agents C-suite (à plat) |
+| 1.1 | 2026-06-30 | fondateur | Cellules par siège + 5 nouveaux sièges + CARE (ADR-0008) |
