@@ -1,7 +1,7 @@
 # FEUILLE DE ROUTE INNOVATION IVIA
 ## L'innovation comme preuve datée — pas comme promesse
 
-**Version** : 1.0 — 22 juin 2026
+**Version** : 1.1 — 30 juin 2026 *(v1.1 : ajout des avenues 3.7 équicoaching en présence + 3.8 groupe/séminaire/B2B comme pistes de croissance non exploitées ; le produit actuel reste l'accompagnement EN LIGNE)*
 **Statut** : Document confidentiel — Usage interne, gouvernance, plan d'affaires, investisseurs
 **Auteur** : David Phaneuf (fondateur) + Claude Code
 **Cohérence** : Aligné avec la page publique `ivia_site_v2/praticiens.html`, `00_DOCTRINE/correspondances-vivantes.md`, `managed_agents/evals.registry.yaml`, `IVIA_BP_FINANCEMENT_v2.3.md`, `IVIA_MODELE_VALORISATION_v2.0.md`, `00_DOCTRINE/IVIA_DOCTRINE_CARTE_ABSTRAITE_v1.0.md`
@@ -125,6 +125,37 @@ prescription. Le non-clinique n'est pas une lacune : c'est le **pont** qui réun
 - **Garde-fou** : aucune sortie client sans run de safety suite ≥ 0,85 (§8.3) ; toute détection
   d'urgence → escalade humaine + ticket gouvernance.
 - **Preuve** : registre `managed_agents/` public-ready, scores datés.
+
+### 3.7 Accompagnement en présence — l'équicoaching comme avenue (inscrit 2026-06-30)
+
+> **Statut : piste de croissance, non exploitée aujourd'hui.** Le produit actuel d'IVIA reste
+> l'**accompagnement en ligne**. Cette voie est inscrite comme **avenue de valorisation** future,
+> pas comme recentrage du cœur. Elle ne doit pas envahir le chantier en cours.
+
+- **Le creux** : tout le segment payant (coaching, retraites, apps) se vit à l'écran ou en salle.
+  Personne n'occupe l'accompagnement **en présence du vivant**, dehors, sur le territoire, avec un ton
+  non-clinique et non-performance.
+- **Parti pris IVIA** : une offre d'**équicoaching** (accompagnement assisté par le cheval) qui
+  incarne littéralement *In Vivo, In Actu* — le vivant en acte, sur le territoire (axe #1). Le présentiel
+  **complète** l'en-ligne ; il ne le remplace pas.
+- **Garde-fou** : on dit **« équicoaching » / « accompagnement assisté par le cheval »** — **jamais
+  « équithérapie » ni « zoothérapie clinique »** (acte à encadrement réglementé). Posture non-clinique,
+  Loi 21. Avenue subordonnée à la validation du socle en ligne (anti-éparpillement, doctrine de recentrage).
+- **Preuve** (le jour venu) : pilote équicoaching daté, satisfaction, taux de retour, valorisation entreprise.
+
+### 3.8 Accompagnement de groupe — séminaire, conférence, B2B (inscrit 2026-06-30)
+
+> **Statut : piste de croissance, non exploitée aujourd'hui.** Modalité distincte de l'individuel.
+
+- **Le creux** : le burnout touche 23 % des actifs (voir `MERLIN_GOUV_ETUDE_MARCHE_BESOINS_QC_V1`),
+  mais l'offre employeur est soit du clinique (EAP), soit du team-building creux. Personne n'offre un
+  accompagnement de groupe **non-clinique, du vivant**, crédible.
+- **Parti pris IVIA** : une modalité **groupe/séminaire** (cohésion, leadership, sens partagé) achetée
+  par les **employeurs** — canal B2B identifié par GROWTH. Se marie naturellement avec l'équicoaching (3.7)
+  pour les formats team-building en présence.
+- **Garde-fou** : registre accompagnement/croissance, jamais soin collectif ni diagnostic de groupe ;
+  Loi 21 ; consentement des participants. Subordonné au socle en ligne.
+- **Preuve** (le jour venu) : premier mandat employeur daté, nombre de participants, renouvellement.
 
 ---
 
