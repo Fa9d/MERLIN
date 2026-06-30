@@ -1,27 +1,24 @@
 ---
 titre: Discours IVIA — voix, hero, trépied de valeur, registres par type × genre
 id: MERLIN-CSUITE-COMM-DISCOURS-IVIA
-statut: draft
+statut: active
 type: artefact_comm
 couche: SYSTEME
 périmètre: admin
-auteur: COMM (Claude Code) — socle validé fondateur 2026-06-30
+auteur: COMM (Claude Code) — décisions arrêtées par délégation du fondateur 2026-06-30
 date: 2026-06-30
-version: 0.4
+version: 1.0
 dépend_de: [MERLIN-GOUV-ETUDE-MARCHE-BESOINS-QC-V1, MERLIN-CARE-CONTRAT-CLIENT-V1, ADR-0008]
 coordination: [COMM (plume), CARE (non-clinique + non-appropriation), STRAT (wedge), LEGAL (Loi 21), UX (lisibilité)]
-intrants_consommés:
-  - _archives/intrants/2026-06/Au-dela-des-Statistiques-Dix-Maux-Psychologiques-QC.md
-  - _archives/intrants/2026-06/approche-proactive-classe-moyenne-anxieuse-QC.md
-  - référence de ton (analyse) : getacuity.io (miroir inversé), presence.quebec
-source_canonique: 11_PROMPTS/06_CSUITE/COMM/artefacts/voix-et-discours-par-mal_DRAFT.md
+remplace: [MERLIN-CSUITE-COMM-VOIX-DISCOURS-DRAFT]
+source_canonique: 11_PROMPTS/06_CSUITE/COMM/artefacts/discours-ivia.md
 ---
 
-# Discours IVIA — V0.4
+# Discours IVIA — V1.0
 
 > Discours de référence, coordonné COMM · CARE · STRAT · LEGAL · UX.
-> **Socle validé fondateur (2026-06-30)** : hero, trépied de valeur, journal différenciateur,
-> wedge, Sept Enseignements en boussole interne. **À confirmer** : le titre exact (§8).
+> **Décisions arrêtées (délégation fondateur, 2026-06-30).** Le *wording* reste ajustable d'un
+> mot par le fondateur (bump de version) ; la structure et les garde-fous, non.
 
 ## 1. Le wedge — une phrase
 > Le marché met de l'**IA en façade** et vend **vitesse / performance / clarté solitaire**.
@@ -35,9 +32,9 @@ source_canonique: 11_PROMPTS/06_CSUITE/COMM/artefacts/voix-et-discours-par-mal_D
 | **② Praticien présent** | praticien + client | l'outil capte et structure → le praticien est *avec toi*, et mieux outillé pour orienter |
 | **③ Le journal / le fil** | client + praticien | la continuité entre les séances → on avance sans repartir de zéro, sans multiplier les séances |
 
-## 3. Texte d'accueil (hero — socle validé)
+## 3. Texte d'accueil (hero)
 
-> **Dire ce que tu vis. Être écouté, pour vrai.**   *(titre à confirmer — §8)*
+> **Dire ce que tu vis. Être écouté, pour vrai.**
 >
 > IVIA est un **lieu de recueillement**.
 > Un endroit pour déposer ce que tu vis, à ton rythme, dans tes mots.
@@ -69,12 +66,12 @@ Amour · Respect · Courage · Honnêteté · Sagesse · Humilité · Vérité.
 constitution §6.4.4 ; cf. co-construction `02_NATIONS_QC/`). On honore par le ton, on n'exhibe pas.
 
 ## 7. Registres par type × genre (un cœur, plusieurs voix)
-Le genre est une **couche** qui traverse chaque situation — pas un type à part. On ajuste la
-*voix*, on n'enferme personne (repères, pas des cases). Aucune caricature.
+Le genre est une **couche** qui traverse chaque situation. On ajuste la *voix*, on n'enferme
+personne (repères, pas des cases). Aucune caricature.
 
 | Situation | Voix au féminin | Voix au masculin |
 |---|---|---|
-| **La carapace** (on tient, on minimise) | « T'as pas à être forte tout le temps. » | « Parles-en avant que ça fasse mal. » |
+| **La carapace** | « T'as pas à être forte tout le temps. » | « Parles-en avant que ça fasse mal. » |
 | **L'accompagnant·e épuisé·e** | « Tu portes tout le monde. Ici, c'est toi qu'on écoute. » | « Pourvoir, soutenir, encaisser. Et toi, qui te soutient ? » |
 | **La haute performance** | « Performer au bureau, tenir à la maison. Souffler quelque part. » | « Un espace pour penser clair, sans rôle à tenir. » |
 | **La transition** | « Quand tout bascule, un repère qui reste. » | « Les grands virages se prennent mieux à deux. » |
@@ -85,13 +82,19 @@ Le genre est une **couche** qui traverse chaque situation — pas un type à par
 en parler sans filtre. » · charge mentale (F) « Penser à tout, pour tout le monde. Pose-le un
 instant. » · nouveau père isolé (H) « Devenir père, ça brasse aussi. T'as le droit d'en parler. »
 
-## 8. Garde-fous + à confirmer
-**Garde-fous transverses (CARE/LEGAL)** : non-clinique (Loi 21, « on ne te répare pas » assumé) ;
-zone rouge (suicide/substances) jamais ciblée → « on t'oriente, on ne te laisse pas seul » ;
-mineurs = consentement ; Sept Enseignements non affichés ; « des pistes » jamais « des solutions
-garanties » ; « le fil / on avance » jamais « résultats rapides ».
+## 8. Démarrage (Pareto) — décision arrêtée
+On construit d'abord pour **l'accompagnant·e épuisé·e** (fit marque fort + capacité de payer +
+nourrit l'objet praticien), puis **le chercheur·euse de sens** (ADN « maison du vivant »). Les
+autres registres restent prêts, activés ensuite.
 
-**À confirmer par le fondateur** :
-- [ ] Titre exact : « Dire ce que tu vis. Être écouté, pour vrai. » *(travail)* / autre.
-- [ ] « des pistes » (reco) vs « éventuellement des solutions ».
-- [ ] Registre/segment de démarrage (Pareto, 1-2).
+## 9. Garde-fous transverses (CARE/LEGAL)
+Non-clinique (Loi 21, « on ne te répare pas » assumé) ; zone rouge (suicide/substances) jamais
+ciblée → « on t'oriente, on ne te laisse pas seul » ; mineurs = consentement ; Sept Enseignements
+non affichés ; « des pistes » jamais « solutions garanties » ; « le fil / on avance » jamais
+« résultats rapides ».
+
+## Historique
+| Version | Date | Nature |
+|---|---|---|
+| 0.1→0.4 | 2026-06-30 | brouillons (accroches → registres → trépied + journal) |
+| 1.0 | 2026-06-30 | arrêté (délégation fondateur) ; renommé depuis `voix-et-discours-par-mal_DRAFT` |
