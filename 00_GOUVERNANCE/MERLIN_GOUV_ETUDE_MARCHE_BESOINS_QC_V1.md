@@ -72,6 +72,28 @@ des minorités — 8. Suicide & tentatives (~3 décès/jour ; admissions urgence
 | 5 | Substances / addiction | 🔴 oriente | médical → **jamais traiter** |
 | 8 | Suicide / crise | 🔴 escalade | reconnaître le signal → **escalade humaine immédiate**, jamais l'intervention |
 
+## 3bis. Le segment payant — « la classe moyenne anxieuse » (côté revenu)
+
+Source : intrant `_archives/intrants/2026-06/approche-proactive-classe-moyenne-anxieuse-QC.md`
+(compilé IA — **filtré** : on retient le segment, **pas** son vocabulaire clinique/perf).
+
+Profil = individus **fonctionnels, capables de payer**, en détresse moderne (anxiété, burnout,
+perte de sens), qui cherchent discrétion et accompagnement — **pas** un cas clinique lourd :
+- **Cadres / professionnels 35-55** (burnout, imposteur, anxiété de performance) ;
+- **Parents surmenés** (charge mentale, culpabilité) ;
+- **Jeunes pros 25-35** (anxiété sociale, peur de l'avenir, isolement numérique) ;
+- **Personnes en transition** (deuil, divorce, reconversion).
+
+Disposition à payer documentée : **2 000–5 000 $/an** alloués au bien-être mental.
+
+> **Le wedge (différenciation, opposable)** : dans ce segment, *tout le monde* vend
+> **vitesse / résultats / performance / optimisation**. IVIA vend **présence, sens, être
+> entendu — sans rôle à tenir**. Même portefeuille, **promesse inverse**. Personne n'occupe
+> cette place. ⚠️ Risque à tenir : servir ce segment **sans** glisser vers le registre clinique
+> ou « résultats » (sinon perte du positionnement non-clinique, Loi 21).
+
+Substituts de ce segment : voir `MERLIN_GOUV_SUBSTITUTS_SEGMENT_PAYANT_V1.md`.
+
 ## 4. Déblocages stratégiques
 - **GROWTH — canal B2B** : le burnout (23 % des actifs) ouvre un entonnoir **employeurs** (accès
   IVIA pour le personnel), distinct de l'entonnoir client direct.
