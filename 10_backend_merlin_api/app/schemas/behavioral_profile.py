@@ -16,6 +16,7 @@ from pydantic import Field
 
 from app.models.enums import (
     AttachmentStyle,
+    JungianFunction,
     ProfileSource,
     ProfileStatus,
     ProfileSubjectKind,
@@ -152,6 +153,26 @@ class VadCreate(ProfileLayerCreate, VadScores):
 
 
 class VadRead(ProfileLayerRead, VadScores):
+    pass
+
+
+# ── Couche 6 — Types jungiens (attitude + 4 fonctions) ────────────────────────
+class JungianScores(MerlinSchema):
+    # Attitude : proéminence introvertie [0,1] (extraversion = pôle opposé)
+    introversion: float | None = Field(default=None, ge=0, le=1)
+    # 4 fonctions psychiques — proéminence relative, pour se comprendre (pas se classer)
+    thinking: float | None = Field(default=None, ge=0, le=1)
+    feeling: float | None = Field(default=None, ge=0, le=1)
+    sensing: float | None = Field(default=None, ge=0, le=1)
+    intuition: float | None = Field(default=None, ge=0, le=1)
+    dominant_function: JungianFunction | None = None
+
+
+class JungianCreate(ProfileLayerCreate, JungianScores):
+    pass
+
+
+class JungianRead(ProfileLayerRead, JungianScores):
     pass
 
 

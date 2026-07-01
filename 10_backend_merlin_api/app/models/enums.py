@@ -297,3 +297,13 @@ class AttachmentStyle(str, Enum):
     preoccupe = "preoccupe"   # anxious-preoccupied
     detache   = "detache"     # dismissing-avoidant
     craintif  = "craintif"    # fearful-avoidant
+
+
+class JungianFunction(str, Enum):
+    """Jung — fonction psychique dominante. Repère de compréhension de soi,
+    JAMAIS une case exposée au client ni un diagnostic
+    (cf. 00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md)."""
+    pensee    = "pensee"      # thinking
+    sentiment = "sentiment"   # feeling
+    sensation = "sensation"   # sensing
+    intuition = "intuition"   # intuition

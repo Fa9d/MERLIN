@@ -37,6 +37,7 @@ from app.db.base import Base
 from app.models.enums import (
     AttachmentStyle,
     DataSensitivityClass,
+    JungianFunction,
     ProfileSource,
     ProfileStatus,
     ProfileSubjectKind,
@@ -278,6 +279,37 @@ class StateProfileVad(ProfileLayerMixin, Base):
             "ix_vad_match",
             "valence",
             "arousal",
+            postgresql_where=text("is_current"),
+        ),
+    )
+
+
+# ── Couche 6 — Types jungiens : attitude + 4 fonctions ────────────────────────
+class TypeProfileJungian(ProfileLayerMixin, Base):
+    """Jung : repères de compréhension de soi (individuation), **jamais** un
+    diagnostic ni une case exposée au client. Cf.
+    `00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md`. Proéminences [0,1]."""
+
+    __tablename__ = "profile_types_jungian"
+
+    # Attitude : proéminence introvertie (extraversion = pôle opposé)
+    introversion: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # 4 fonctions psychiques (proéminence relative) — se comprendre, pas se classer
+    thinking: Mapped[float | None] = mapped_column(Float, nullable=True)   # pensée
+    feeling: Mapped[float | None] = mapped_column(Float, nullable=True)    # sentiment
+    sensing: Mapped[float | None] = mapped_column(Float, nullable=True)    # sensation
+    intuition: Mapped[float | None] = mapped_column(Float, nullable=True)  # intuition
+    # Fonction dominante (repère, jamais exposée telle quelle au client)
+    dominant_function: Mapped[JungianFunction | None] = mapped_column(
+        Enum(JungianFunction, native_enum=False), nullable=True, index=True
+    )
+
+    __table_args__ = (
+        *_common_table_args("profile_types_jungian"),
+        Index(
+            "ix_jung_match",
+            "dominant_function",
+            "introversion",
             postgresql_where=text("is_current"),
         ),
     )

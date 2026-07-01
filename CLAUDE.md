@@ -413,7 +413,7 @@ app/
                          #        statut 'hypothese' non-diagnostic, lien consentement Loi 25, index de matching)
 ```
 
-> **Profilage comportemental (5 couches)** — modèle `app/models/behavioral_profile.py` + schémas
+> **Profilage comportemental (6 couches)** — modèle `app/models/behavioral_profile.py` + schémas
 > `app/schemas/behavioral_profile.py`. Services : `app/services/profile_matching.py` (matching cosine +
 > euclidienne pondérée, modes similarité/complémentarité), `app/services/love_quiz.py` (quiz adaptatif 8
 > Expressions, scoring + biais), `app/services/behavioral_insights.py` (insights LLM). Prompts dans
@@ -422,6 +422,12 @@ app/
 > Posture **opposable** : observations/**hypothèses**, **jamais des diagnostics**. Scores/étiquettes **jamais
 > exposés au client** (`ClientFacingProfileView` = Observation/Hypothèse/Orientation). Écriture conditionnée à un
 > **consentement** (N2/N3) ; sensibilité `high`. À passer en `security-review` + safety evals avant exposition client.
+>
+> **6ᵉ couche — types jungiens** (ajout 2026-07-01) : `profile_types_jungian` (attitude `introversion`
+> + 4 fonctions pensée/sentiment/sensation/intuition + `dominant_function` enum `JungianFunction`).
+> Modèle + schéma + enum **en place** ; **migration Alembic à auto-générer (`alembic revision --autogenerate`)
+> + tester** avant application ; **non exposée client**, security-review requise. Cadre :
+> `00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md`.
 
 ---
 
