@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — app client v2 (structure gardée, sortie du look IA tendance)</title>
+  <!-- PROTO : meme structure que app-client, traitement visuel non-generique. Donnees fictives. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--cream:#FBFAF4;--ink:#1B2820;--deep:#153026;--forest:#3E6B4E;--line:#E3E7DD;--sand:#EFEBDD;--muted:#6E7A6E;}
+    *{margin:0;box-sizing:border-box;}
+    body{font-family:'Raleway',sans-serif;background:#B9B29C;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;color:var(--ink);}
+    .device{width:390px;height:844px;border:12px solid #0F160F;border-radius:52px;overflow:hidden;position:relative;background:var(--cream);box-shadow:0 40px 90px rgba(15,25,15,.4);}
+    .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#0F160F;border-radius:0 0 14px 14px;z-index:20;}
+    @media(max-height:920px){.device{transform:scale(.82);}}
+    @media(max-width:440px){.device{width:100vw;height:100dvh;border:0;border-radius:0;transform:none;}.notch{display:none;}}
+    .screen{position:absolute;inset:0;display:flex;flex-direction:column;}
+    .sc{flex:1;overflow-y:auto;padding:0 22px 92px;}.sc::-webkit-scrollbar{display:none;}
+    .status{display:flex;justify-content:space-between;padding:14px 22px 4px;font-size:11px;font-weight:700;color:var(--ink);}
+    h1{font-family:'Lora',serif;font-weight:600;font-size:26px;letter-spacing:-.01em;}
+    .kick{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;}
+    @keyframes wave{0%,100%{transform:scaleY(.28)}50%{transform:scaleY(1)}}
+    .bar{width:3px;border-radius:2px;transform-origin:bottom;animation:wave 1.4s ease-in-out infinite;}
+    /* nav : aplat, contraste, coins nets */
+    .nav{position:absolute;bottom:0;inset-inline:0;background:var(--cream);border-top:1.5px solid var(--ink);display:flex;justify-content:space-around;padding:12px 0 16px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;}
+    .nav a{color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:5px;}
+    .nav .on{color:var(--ink);}.nav svg{width:20px;height:20px;}
+  </style>
+</head>
+<body>
+<div class="device">
+  <div class="notch"></div>
+  <div class="screen">
+    <div class="status"><span>9:41</span><span>● ● ● 🔋</span></div>
+    <div class="sc">
+
+      <!-- salutation -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-top:12px;">
+        <div>
+          <p class="kick" style="color:var(--forest);">Mercredi 1 juillet</p>
+          <h1 style="margin-top:6px;">Bonjour, Camille.</h1>
+        </div>
+        <div style="width:44px;height:44px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:'Lora';font-weight:600;">C</div>
+      </div>
+
+      <!-- BLOC PRINCIPAL : déposer — aplat vert profond, contraste franc (pas carte molle) -->
+      <div style="margin-top:18px;background:var(--deep);color:var(--cream);border-radius:18px;padding:22px;">
+        <p class="kick" style="color:#9FC3A9;">Ton espace, à toi seul·e</p>
+        <p style="font-family:'Lora';font-size:22px;margin-top:10px;line-height:1.2;">Dépose ce qui vient.</p>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,.18);padding-top:14px;">
+          <span style="flex:1;font-size:14px;color:rgba(251,250,244,.65);">écrire ou parler…</span>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:20px;">
+            <span class="bar h" style="height:8px;background:#EFEBDD"></span>
+            <span class="bar" style="height:18px;background:#EFEBDD;animation-delay:.15s"></span>
+            <span class="bar" style="height:12px;background:#EFEBDD;animation-delay:.3s"></span>
+            <span class="bar" style="height:16px;background:#EFEBDD;animation-delay:.1s"></span>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EFEBDD" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="21"/></svg>
+        </div>
+      </div>
+
+      <!-- compte rendu : carte claire, barre d'accent à gauche, coin net, PAS d'ombre molle -->
+      <div style="margin-top:16px;border:1.5px solid var(--ink);border-radius:14px;padding:18px;position:relative;overflow:hidden;">
+        <span style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--forest);"></span>
+        <p class="kick" style="color:var(--forest);">Depuis ta dernière rencontre · 12 juin</p>
+        <p style="font-family:'Lora';font-size:17px;margin-top:8px;line-height:1.35;">Ce qu'on a déposé ensemble, gardé pour toi.</p>
+        <a style="display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--ink);border-bottom:2px solid var(--forest);padding-bottom:1px;">Relire →</a>
+      </div>
+
+      <!-- ton fil : lignes nettes, pas de cartes flottantes -->
+      <p class="kick" style="margin-top:26px;color:var(--muted);">Ton fil</p>
+      <div style="margin-top:10px;border-top:1px solid var(--line);">
+        <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);">
+          <span style="font-family:'Lora';font-size:12px;color:var(--forest);width:52px;flex-shrink:0;">Auj.</span>
+          <p style="font-size:15px;">Une journée plus légère.</p>
+        </div>
+        <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);">
+          <span style="font-family:'Lora';font-size:12px;color:var(--forest);width:52px;flex-shrink:0;">9 juin</span>
+          <p style="font-size:15px;">Beaucoup de fatigue, mais j'ai posé des mots.</p>
+        </div>
+        <div style="display:flex;gap:14px;padding:16px 0;">
+          <span style="font-family:'Lora';font-size:12px;color:var(--forest);width:52px;flex-shrink:0;">5 juin</span>
+          <p style="font-size:15px;">La conversation difficile, enfin dite.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- navigation du bas -->
+    <nav class="nav">
+      <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Accueil</a>
+      <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2z"/><path d="M9 3v18"/></svg>Journal</a>
+      <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>Séances</a>
+      <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</a>
+    </nav>
+  </div>
+</div>
+</body>
+</html>
