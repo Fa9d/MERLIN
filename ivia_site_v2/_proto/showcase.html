@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Mobile Screens Showcase (spec mss)</title>
+  <!-- Implemente fidelement mss.md + mssIItocken.md (tokens). Clair/sombre. Donnees fictives. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F5F4EE; --surface:#FFFFFF; --surfaceSubtle:#FAFAF8;
+      --text:#1F2933; --text2:#6B7280; --invert:#F9FAFB;
+      --rgnr:#3B7F6A; --soft1:#FBE8D3; --soft2:#E3F4E0;
+      --border:#E5E7EB; --borderStrong:#D1D5DB;
+      --nav:#FAFAF8; --navInactive:#9CA3AF;
+      --r-sm:8px; --r-md:12px; --r-lg:16px;
+      --shadow-card:0 8px 20px rgba(15,23,42,.08); --shadow-nav:0 -4px 12px rgba(15,23,42,.10);
+      --stage:#CFCEC4;
+    }
+    [data-theme="dark"]{
+      --bg:#0F1720; --surface:#111827; --surfaceSubtle:#020617;
+      --text:#F9FAFB; --text2:#9CA3AF; --invert:#0F1720;
+      --rgnr:#5BD9A3; --soft1:#1F2933; --soft2:#064E3B;
+      --border:#1F2933; --borderStrong:#4B5563;
+      --nav:#020617; --navInactive:#6B7280;
+      --shadow-card:0 8px 20px rgba(0,0,0,.35); --shadow-nav:0 -4px 12px rgba(0,0,0,.4);
+      --stage:#0a0f16;
+    }
+    *{margin:0;box-sizing:border-box;}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--stage);min-height:100vh;padding:70px 24px 40px;color:var(--text);transition:background .3s;}
+    .toolbar{position:fixed;top:0;inset-inline:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+      padding:14px 24px;background:var(--surface);border-bottom:1px solid var(--border);}
+    .toolbar b{font-size:14px;color:var(--text);} .toolbar span{font-size:12px;color:var(--text2);}
+    .tgl{border:1px solid var(--borderStrong);background:var(--bg);color:var(--text);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+    .row{display:flex;gap:34px;justify-content:flex-start;overflow-x:auto;padding-bottom:10px;}
+    @media(min-width:1100px){.row{justify-content:center;}}
+    figure{flex:0 0 auto;}
+    figcaption{text-align:center;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px;}
+    /* device */
+    .device{width:300px;height:650px;border:11px solid #0d1117;border-radius:44px;overflow:hidden;position:relative;background:var(--bg);box-shadow:0 30px 70px rgba(10,15,20,.35);}
+    .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:22px;background:#0d1117;border-radius:0 0 12px 12px;z-index:30;}
+    .screen{position:absolute;inset:0;display:flex;flex-direction:column;}
+    .sc{flex:1;overflow-y:auto;padding:14px 16px 84px;}.sc::-webkit-scrollbar{display:none;}
+    .status{display:flex;justify-content:space-between;padding:10px 16px 2px;font-size:10px;font-weight:600;color:var(--text);}
+    h1{font-size:22px;font-weight:700;letter-spacing:-.01em;}
+    h2{font-size:16px;font-weight:600;}
+    .sub{font-size:13px;color:var(--text2);line-height:1.45;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;box-shadow:var(--shadow-card);}
+    .btn{height:44px;border-radius:var(--r-md);background:var(--rgnr);color:var(--invert);font-weight:600;font-size:14px;border:0;width:100%;cursor:pointer;}
+    .btn-sec{height:40px;border-radius:var(--r-md);background:var(--surface);color:var(--rgnr);border:1.5px solid var(--rgnr);font-weight:600;font-size:13px;width:100%;}
+    .chip{font-size:12px;padding:7px 12px;border-radius:999px;background:var(--surfaceSubtle);border:1px solid var(--border);color:var(--text2);}
+    .kick{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rgnr);font-weight:700;}
+    /* bottom nav + bouton central RGNR */
+    .nav{position:absolute;bottom:0;inset-inline:0;height:70px;background:var(--nav);box-shadow:var(--shadow-nav);
+      display:flex;align-items:center;justify-content:space-around;padding:0 10px;z-index:10;}
+    .nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:var(--navInactive);font-weight:500;flex:1;}
+    .nav a.on{color:var(--rgnr);} .nav svg{width:20px;height:20px;}
+    .rgnrBtn{width:52px;height:52px;border-radius:50%;background:var(--rgnr);display:grid;place-items:center;margin-top:-22px;box-shadow:0 6px 16px rgba(59,127,106,.45);flex:0 0 auto;}
+    .bar-wrap{display:flex;gap:10px;align-items:flex-end;height:70px;}
+    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+    .bar{width:100%;background:var(--soft2);border-radius:6px;position:relative;}
+    .bar i{position:absolute;bottom:0;left:0;right:0;background:var(--rgnr);border-radius:6px;}
+    .bar-col small{font-size:9px;color:var(--text2);}
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div><b>IVIA — Screens Showcase</b> <span>· spec mss (clair / sombre)</span></div>
+    <button class="tgl" onclick="toggle()">🌙 Basculer clair / sombre</button>
+  </div>
+
+  <div class="row">
+
+    <!-- ══ TÉLÉPHONE 1 — Découverte + check-in ══ -->
+    <figure>
+      <figcaption>1 · Découverte + check‑in</figcaption>
+      <div class="device"><div class="notch"></div><div class="screen">
+        <div class="status"><span>9:41</span><span>● ● ● 🔋</span></div>
+        <div class="sc">
+          <h1>Bon retour, Camille.</h1>
+          <div class="card" style="margin-top:16px;">
+            <h2>Prendre un moment pour toi</h2>
+            <p class="sub" style="margin-top:6px;">Quelques questions pour mieux t'accompagner aujourd'hui.</p>
+            <button class="btn" style="margin-top:14px;">Faire un check‑in</button>
+          </div>
+          <p class="sub" style="text-align:center;margin-top:12px;">Tu peux arrêter à tout moment.</p>
+
+          <p class="kick" style="margin-top:24px;">Aperçu du check‑in</p>
+          <div class="card" style="margin-top:8px;">
+            <h2 style="font-size:15px;">Comment te sens‑tu en ce moment ?</h2>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+              <span class="chip">🙂 Ça va</span><span class="chip">😔 Lourd</span>
+              <span class="chip">😌 Calme</span><span class="chip">😣 Tendu</span>
+              <span class="chip">😐 Mêlé</span>
+            </div>
+            <button class="btn" style="margin-top:14px;">Suivant</button>
+            <p class="sub" style="text-align:center;margin-top:8px;">Passer pour l'instant</p>
+          </div>
+        </div>
+        <nav class="nav">
+          <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5"/></svg>Accueil</a>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3 8-8M20 12v7H4V5h11"/></svg>Check‑in</a>
+          <div class="rgnrBtn"><svg viewBox="0 0 24 24" fill="none" stroke="var(--invert)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9M12 3v6l4 2"/></svg>RGNR</a>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 3.5a3 3 0 0 1 0 5.8M21 20a5 5 0 0 0-4-4.9"/></svg>Praticiens</a>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- ══ TÉLÉPHONE 2 — RGNR ══ -->
+    <figure>
+      <figcaption>2 · RGNR (accompagnement continu)</figcaption>
+      <div class="device"><div class="notch"></div><div class="screen">
+        <div class="status"><span>9:41</span><span>● ● ● 🔋</span></div>
+        <div class="sc">
+          <h1>Ton chemin de RGNRation.</h1>
+          <div class="card" style="margin-top:16px;">
+            <p class="kick">Où tu en es</p>
+            <div class="bar-wrap" style="margin-top:12px;">
+              <div class="bar-col"><div class="bar" style="height:60px;"><i style="height:70%;"></i></div><small>Corps</small></div>
+              <div class="bar-col"><div class="bar" style="height:60px;"><i style="height:45%;"></i></div><small>Émotions</small></div>
+              <div class="bar-col"><div class="bar" style="height:60px;"><i style="height:55%;"></i></div><small>Pensées</small></div>
+              <div class="bar-col"><div class="bar" style="height:60px;"><i style="height:35%;"></i></div><small>Environ.</small></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:14px;">
+            <h2 style="font-size:15px;">Où en es‑tu aujourd'hui ?</h2>
+            <button class="btn" style="margin-top:12px;">Faire un micro check‑in</button>
+          </div>
+          <div class="card" style="margin-top:14px;background:var(--soft2);border-color:transparent;">
+            <p class="kick">Suggestion du moment</p>
+            <p class="sub" style="color:var(--text);margin-top:6px;">Et si tu prenais 5 minutes pour respirer, là, avant le reste ?</p>
+          </div>
+        </div>
+        <nav class="nav">
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5"/></svg>Accueil</a>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3 8-8M20 12v7H4V5h11"/></svg>Check‑in</a>
+          <div class="rgnrBtn"><svg viewBox="0 0 24 24" fill="none" stroke="var(--invert)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+          <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9M12 3v6l4 2"/></svg>RGNR</a>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 3.5a3 3 0 0 1 0 5.8M21 20a5 5 0 0 0-4-4.9"/></svg>Praticiens</a>
+        </nav>
+      </div></div>
+    </figure>
+
+    <!-- ══ TÉLÉPHONE 3 — Praticiens ══ -->
+    <figure>
+      <figcaption>3 · Lien avec le·la praticien·ne</figcaption>
+      <div class="device"><div class="notch"></div><div class="screen">
+        <div class="status"><span>9:41</span><span>● ● ● 🔋</span></div>
+        <div class="sc">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h1 style="font-size:19px;">Les personnes qui peuvent t'accompagner</h1>
+          </div>
+          <div class="card" style="margin-top:14px;display:flex;gap:12px;align-items:center;">
+            <div style="width:46px;height:46px;border-radius:50%;background:var(--soft1);flex:0 0 auto;"></div>
+            <div style="flex:1;"><b style="font-size:14px;">Marie‑Ève L.</b><p class="sub">Travailleuse sociale</p><p class="sub">Écoute, transitions de vie.</p></div>
+            <span class="chip" style="color:var(--rgnr);border-color:var(--rgnr);">En ligne</span>
+          </div>
+          <div class="card" style="margin-top:12px;display:flex;gap:12px;align-items:center;">
+            <div style="width:46px;height:46px;border-radius:50%;background:var(--soft2);flex:0 0 auto;"></div>
+            <div style="flex:1;"><b style="font-size:14px;">David P.</b><p class="sub">Psychopraticien</p><p class="sub">Anxiété, sens, présence.</p></div>
+            <span class="chip">En personne</span>
+          </div>
+          <div class="card" style="margin-top:12px;display:flex;gap:12px;align-items:center;">
+            <div style="width:46px;height:46px;border-radius:50%;background:var(--soft1);flex:0 0 auto;"></div>
+            <div style="flex:1;"><b style="font-size:14px;">Awashish K.</b><p class="sub">Accompagnement holistique</p><p class="sub">Territoire, transmission.</p></div>
+            <span class="chip" style="color:var(--rgnr);border-color:var(--rgnr);">En ligne</span>
+          </div>
+          <button class="btn-sec" style="margin-top:16px;">Voir tous les praticien·nes</button>
+        </div>
+        <nav class="nav">
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5"/></svg>Accueil</a>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3 8-8M20 12v7H4V5h11"/></svg>Check‑in</a>
+          <div class="rgnrBtn"><svg viewBox="0 0 24 24" fill="none" stroke="var(--invert)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+          <a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9M12 3v6l4 2"/></svg>RGNR</a>
+          <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 3.5a3 3 0 0 1 0 5.8M21 20a5 5 0 0 0-4-4.9"/></svg>Praticiens</a>
+        </nav>
+      </div></div>
+    </figure>
+
+  </div>
+
+  <script>
+    function toggle(){
+      const h=document.documentElement;
+      h.dataset.theme = h.dataset.theme==='dark' ? 'light' : 'dark';
+    }
+  </script>
+</body>
+</html>
