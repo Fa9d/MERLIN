@@ -43,10 +43,11 @@ source_canonique: 11_PROMPTS/06_CSUITE/UX/artefacts/composition-accueil.md
 │     ✓ écoute, présence, orientation                       │
 │     ✗ pas un diagnostic, pas un soin, pas un algorithme   │
 ├──────────────────────────────────────────────────────────┤
-│  ④ COMMENT ÇA MARCHE + LE JOURNAL  ★ clé         [UX+COMM] │
-│     déposer → être écouté → repartir avec un repère       │
-│     LE JOURNAL : le fil entre les séances (différenciateur)│
-│     « tu arrives avec le compte rendu de la dernière fois »│
+│  ④ TON ESPACE EN TROIS TEMPS  ★ clé              [UX+COMM] │
+│     Où j'en suis (présent) · Mon passé (le fil) · Mon futur│
+│     illustré par 3 mockups téléphone (les faces de l'app) │
+│     journal/fil vit dans « Où j'en suis » + « Mon passé »  │
+│     ⚠ « Mon futur » = intentions/pistes, jamais pronostic  │
 ├──────────────────────────────────────────────────────────┤
 │  ⑤ POUR LE PRATICIEN — l'outil                [STRAT+UX]   │
 │     capte/structure → praticien pleinement présent +      │
