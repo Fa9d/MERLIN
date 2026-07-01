@@ -403,7 +403,7 @@ app/
 │   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260625_0039 (profilage comportemental 5 couches)
+└── alembic/versions/    # Migrations — head courant = 20260701_0040 (profilage comportemental 6 couches)
                          #   0030 app_settings · 0031 clients.birthplace · 0032 intake.assigned_practitioner ·
                          #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee ·
                          #   0036 app_users.themes · 0037 app_users.is_platform_admin ·
@@ -425,8 +425,8 @@ app/
 >
 > **6ᵉ couche — types jungiens** (ajout 2026-07-01) : `profile_types_jungian` (attitude `introversion`
 > + 4 fonctions pensée/sentiment/sensation/intuition + `dominant_function` enum `JungianFunction`).
-> Modèle + schéma + enum **en place** ; **migration Alembic à auto-générer (`alembic revision --autogenerate`)
-> + tester** avant application ; **non exposée client**, security-review requise. Cadre :
+> Modèle + schéma + enum + **migration `20260701_0040`** en place ; **à tester (`alembic upgrade head`)
+> + appliquer** ; **non exposée client**, security-review requise. Cadre :
 > `00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md`.
 
 ---
