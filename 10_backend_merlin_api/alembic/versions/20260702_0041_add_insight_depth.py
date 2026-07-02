@@ -18,9 +18,12 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+    # Create enum type first
+    op.execute("CREATE TYPE insightdepth AS ENUM ('basic', 'intermediate', 'expert')")
     op.add_column('app_users', sa.Column('insight_depth', sa.Enum('basic', 'intermediate', 'expert', name='insightdepth'), nullable=False, server_default='basic'))
 
 
 def downgrade() -> None:
     op.drop_column('app_users', 'insight_depth')
+    op.execute("DROP TYPE insightdepth")
 
