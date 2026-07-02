@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVIA — Registre des routes : valider / invalider / rediriger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F4EE;--surface:#FFF;--text:#1F2933;--text2:#6B7280;--rgnr:#3B7F6A;--red:#C0562F;--amber:#B8860B;--border:#E5E7EB;}
+  *{margin:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
+  body{background:var(--bg);color:var(--text);padding:0 0 120px;}
+  header{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  header h1{font-size:18px;} header p{font-size:12px;color:var(--text2);}
+  .btn{background:var(--rgnr);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer;}
+  main{max-width:920px;margin:24px auto;padding:0 24px;}
+  .grp{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden;}
+  .grp>h2{font-size:14px;padding:12px 16px;background:#EFEEE7;border-bottom:1px solid var(--border);}
+  .row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);}
+  .row:last-child{border-bottom:0;}
+  .nm{font-size:14px;font-weight:500;} .note{font-size:11px;color:var(--amber);}
+  .ctrl{display:flex;align-items:center;gap:4px;}
+  .ctrl label{font-size:12px;padding:5px 9px;border-radius:8px;border:1px solid var(--border);cursor:pointer;user-select:none;}
+  .ctrl input{display:none;}
+  .ctrl input:checked+span{font-weight:700;}
+  label.v input:checked~*{}
+  .ctrl .v.on{background:#E3F4E0;border-color:var(--rgnr);color:#166534;}
+  .ctrl .i.on{background:#FBE3D8;border-color:var(--red);color:var(--red);}
+  .ctrl .r.on{background:#FBF0D3;border-color:var(--amber);color:var(--amber);}
+  .redir{width:150px;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:8px;display:none;}
+  .redir.show{display:inline-block;}
+  #out{width:100%;height:220px;margin-top:16px;font-family:monospace;font-size:12px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Registre des routes — tu décides</h1><p>Pour chaque route : Valider (garder) · Invalider (supprimer) · Rediriger (→ vers quoi). Défaut = Valider.</p></div>
+  <button class="btn" onclick="exporter()">⬇ Exporter mes décisions</button>
+</header>
+<main id="app"></main>
+<main><textarea id="out" placeholder="Clique « Exporter » — le résultat s'affiche ici, tu me le colles."></textarea>
+  <button class="btn" style="margin-top:8px" onclick="navigator.clipboard.writeText(document.getElementById('out').value)">Copier</button>
+</main>
+<script>
+const data = {
+ "Parcours public (racine)":[
+   ["index","le wip d'accueil à trancher"],["pourquoi"],["praticiens"],
+   ["rendez-vous"],["reserver","doublon possible avec rendez-vous"],
+   ["inscription"],["connexion"],["activer","landing du magic link"],
+   ["confirmation"],["verify-email"],["cgu"],["confidentialite"],["mentions"],["404"]],
+ "Espace client":[
+   ["dashboard"],["seances"],["seance"],["seance-active"],["seance-express-join"],
+   ["journal"],["journal-nouvelle-entree"],["carte-de-vie"],["ma-progression"],
+   ["premier-ancrage"],["enregistrement"],["mes-enregistrements"],["audio-resume"],
+   ["mes-resumes"],["compte"],["mon-profil","doublon possible avec compte"],["mot-de-passe-oublie"]],
+ "Espace praticien":[
+   ["dashboard"],["agenda"],["fiche"],["profil"],["compte","doublon possible avec profil"],
+   ["clients-journal"],["analyse-seance"],["compte-rendu-seance"],["seance-en-cours"],
+   ["seance-express"],["carte-de-vie-demo"],["guide"],["livraisons"],
+   ["admin-vue","page admin logée dans praticien/ — à clarifier"],
+   ["admin-comptes","idem admin dans praticien/"],["admin-demandes","idem"],
+   ["admin-dossiers","idem"],["admin-comptabilite","idem"],["admin-facturation","idem"]],
+ "Checkout":[["cancel"],["paiement-test"],["success"]],
+ "Admin (dossier admin/)":[["connexion"],["index"]],
+ "Blocs (décision groupée)":[
+   ["ressources/ (19 articles)","tout garder ?"],
+   ["design-system/ (10 pages internes)","sortir du site public ?"],
+   ["_proto/ (mes maquettes)","retirer en fin de campagne ?"]],
+ "Backend — groupes d'API (valider / déprécier)":[
+   ["auth · register · verify_email"],["clients · me_* (journal/recordings/documents)"],
+   ["journal · life_events · era_contexts · temporal_anchors"],
+   ["audio_recordings · audio_sessions"],["sessions.py (4× 410 mortes)","garder tel quel ?"],
+   ["session_notes · express"],["profiling (+ Jung 0040)"],["praticiens · matching"],
+   ["bookings · schedules"],["payments · entitlements"],
+   ["admin_* (accounts/settings/accounting/overview/clients)"],
+   ["public_intake · consents · intake_requests · derived_documents"],
+   ["referentiels · health"],
+   ["organization_leads (ORPHELIN, non monté)","monter (B2B) ou supprimer ?"]],
+};
+let i=0;
+const app=document.getElementById('app');
+for(const [grp,rows] of Object.entries(data)){
+  const g=document.createElement('div');g.className='grp';
+  g.innerHTML=`<h2>${grp}</h2>`;
+  rows.forEach(([nm,note])=>{
+    const id='r'+(i++);
+    const row=document.createElement('div');row.className='row';row.dataset.grp=grp;row.dataset.nm=nm;
+    row.innerHTML=`<div><span class="nm">${nm}</span>${note?` <span class="note">— ${note}</span>`:''}</div>
+      <div class="ctrl">
+        <label class="v on"><input type="radio" name="${id}" value="VALIDER" checked><span>✅</span></label>
+        <label class="i"><input type="radio" name="${id}" value="INVALIDER"><span>❌</span></label>
+        <label class="r"><input type="radio" name="${id}" value="REDIRIGER"><span>↪️</span></label>
+        <input class="redir" placeholder="→ vers…">
+      </div>`;
+    g.appendChild(row);
+  });
+  app.appendChild(g);
+}
+// interactions : surligner le choix + afficher le champ redirection
+app.addEventListener('change',e=>{
+  if(e.target.type!=='radio')return;
+  const ctrl=e.target.closest('.ctrl');
+  ctrl.querySelectorAll('label').forEach(l=>l.classList.remove('on'));
+  e.target.closest('label').classList.add('on');
+  ctrl.querySelector('.redir').classList.toggle('show', e.target.value==='REDIRIGER');
+});
+function exporter(){
+  let out="=== DÉCISIONS ROUTES IVIA ===\n";
+  let cur="";
+  document.querySelectorAll('.row').forEach(row=>{
+    if(row.dataset.grp!==cur){cur=row.dataset.grp;out+=`\n[${cur}]\n`;}
+    const val=row.querySelector('input[type=radio]:checked').value;
+    const cible=row.querySelector('.redir').value.trim();
+    if(val==="VALIDER")return; // on n'exporte que les changements
+    out+=`  ${row.dataset.nm} : ${val}${val==="REDIRIGER"&&cible?` → ${cible}`:''}\n`;
+  });
+  out+="\n(tout ce qui n'apparaît pas = VALIDER / gardé tel quel)";
+  document.getElementById('out').value=out;
+}
+</script>
+</body>
+</html>
