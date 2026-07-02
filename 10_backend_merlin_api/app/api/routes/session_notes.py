@@ -13,6 +13,7 @@ from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.derived_document import DerivedDocument
+from app.models.enums import RecordStatus
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
 from app.schemas.session_note import (
@@ -80,11 +81,19 @@ def list_session_notes(
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(require_internal_clinical_roles()),
 ) -> list[SessionNote]:
-    statement = select(SessionNote).order_by(SessionNote.created_at.desc())
-    if is_operator_user(current_user):
-        statement = statement.join(SessionRecord, SessionRecord.id == SessionNote.session_id).where(
-            SessionRecord.operator_user_id == current_user.id
+    statement = (
+        select(SessionNote)
+        .join(SessionRecord, SessionRecord.id == SessionNote.session_id)
+        .where(
+            SessionNote.record_status != RecordStatus.archived,
+            SessionRecord.record_status != RecordStatus.archived,
         )
+        .order_by(SessionNote.created_at.desc())
+    )
+    if current_user.role == "practitioner":
+        statement = statement.where(SessionRecord.praticien_id == current_user.id)
+    elif is_operator_user(current_user):
+        statement = statement.where(SessionRecord.operator_user_id == current_user.id)
     if session_id is not None:
         statement = statement.where(SessionNote.session_id == session_id)
     if client_id is not None:
