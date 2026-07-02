@@ -317,6 +317,11 @@ async function archiveSession(sessionId) {
   return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/archive', { method: 'PATCH' });
 }
 
+/** Supprime definitivement une seance et ses artefacts relies. */
+async function deleteSession(sessionId) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId), { method: 'DELETE' });
+}
+
 /**
  * Envoie un courriel de relance au client d'une séance pour l'inviter à reprendre son suivi.
  * @param {string} sessionId

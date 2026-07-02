@@ -7,7 +7,7 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Analyses de séances</title>
-  <script src="/shared/api.js?v=20260617c"></script>
+  <script src="/shared/api.js?v=20260702a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -95,9 +95,31 @@
         <p class="text-xs text-ink leading-relaxed">${esc(texte)}</p></div>`;
     }
 
+    async function archiverSeance(sessionId) {
+      if (typeof archiveSession === 'function') {
+        return archiveSession(sessionId);
+      }
+      if (typeof _req === 'function') {
+        return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/archive', { method: 'PATCH' });
+      }
+      throw new Error('Action d\'archivage indisponible (archiveSession non chargee).');
+    }
+
+    async function supprimerSeance(sessionId) {
+      if (typeof deleteSession === 'function') {
+        return deleteSession(sessionId);
+      }
+      if (typeof _req === 'function') {
+        return _req('/api/v1/sessions/' + encodeURIComponent(sessionId), { method: 'DELETE' });
+      }
+      throw new Error('Action de suppression indisponible (deleteSession non chargee).');
+    }
+
     (async function charger() {
       const zone = document.getElementById('liste');
       let notes = [];
+      let sessions = [];
+      let clients = [];
       try {
         notes = await getSessionNotes();
       } catch (e) {
@@ -105,19 +127,42 @@
         document.getElementById('badge-count').textContent = '—';
         return;
       }
+      try { sessions = await listMySessions(); } catch (e) {}
+      try {
+        if (typeof _req === 'function') clients = await _req('/api/v1/clients?limit=200');
+      } catch (e) {}
+
+      const sessionsById = new Map(sessions.map(s => [s.id, s]));
+      const clientsById = new Map((clients || []).map(c => {
+        const nom = [c.first_name_or_alias, c.last_name].filter(Boolean).join(' ').trim();
+        return [c.id, nom || c.email || c.public_client_code || 'Client'];
+      }));
 
       // Filtre éventuel passé par les vignettes du tableau de bord (?filtre=a-valider|vigilance).
       const filtre = new URLSearchParams(location.search).get('filtre');
+      const titre = document.querySelector('h1');
       const estVigilance = (n) => {
         const c = (n.vigilance_level_code || '').toLowerCase();
         return c.includes('urgent') || c.includes('eleve') || c.includes('élevé') || c.includes('high');
       };
       let liste = notes, titreFiltre = '';
-      if (filtre === 'a-valider') { liste = notes.filter(n => !n.validated_by_practitioner); titreFiltre = 'à valider'; }
-      else if (filtre === 'vigilance') { liste = notes.filter(estVigilance); titreFiltre = 'vigilance élevée'; }
+      if (filtre === 'a-valider') {
+        liste = notes.filter(n => !n.validated_by_practitioner);
+        titreFiltre = 'à valider';
+        if (titre) titre.textContent = 'Analyses à valider';
+      } else if (filtre === 'vigilance') {
+        liste = notes.filter(estVigilance);
+        titreFiltre = 'vigilance élevée';
+        if (titre) titre.textContent = 'Analyses en vigilance élevée';
+      } else if (titre) {
+        titre.textContent = 'Toutes les analyses de séances';
+      }
 
-      document.getElementById('badge-count').textContent =
-        liste.length + (liste.length > 1 ? ' analyses' : ' analyse');
+      function refreshBadge() {
+        const remaining = zone.querySelectorAll('article').length;
+        document.getElementById('badge-count').textContent =
+          remaining + (remaining > 1 ? ' analyses' : ' analyse');
+      }
 
       const chip = titreFiltre
         ? `<div class="flex items-center justify-between gap-3 bg-surface border border-bdr rounded-[14px] px-4 py-2.5 mb-4">
@@ -134,9 +179,14 @@
       }
 
       zone.innerHTML = chip;
+      document.getElementById('badge-count').textContent =
+        liste.length + (liste.length > 1 ? ' analyses' : ' analyse');
       liste.forEach(n => {
         const card = document.createElement('article');
         card.className = 'bg-white border border-bdr rounded-[20px] p-6 shadow-sm';
+        const session = sessionsById.get(n.session_id);
+        const patientId = n.client_id || session?.client_id || null;
+        const patientLabel = patientId ? (clientsById.get(patientId) || ('Client ' + patientId.slice(0, 8))) : 'Client non attribue';
 
         const axes = [axe('Cœur', n.coeur_summary_text), axe('Corps', n.corps_summary_text),
                       axe('Esprit', n.esprit_summary_text), axe('Être', n.etre_summary_text)].filter(Boolean).join('');
@@ -149,6 +199,7 @@
             <div>
               <a href="/praticien/compte-rendu-seance.html?note=${encodeURIComponent(n.id)}" class="text-sm font-semibold text-forest-deep hover:underline">Séance analysée${n.note_sequence_number ? ' · n°' + n.note_sequence_number : ''} ↗</a>
               <p class="text-xs text-muted mt-0.5">${dateLisible(n.created_at)}</p>
+              <p class="text-xs text-muted mt-0.5">Patient : <span class="font-semibold text-ink">${esc(patientLabel)}</span></p>
             </div>
             <div class="flex items-center gap-2 flex-wrap justify-end">${vigilanceBadge(n.vigilance_level_code)} ${valide}</div>
           </div>
@@ -178,6 +229,12 @@
                 title="Archiver cette séance (masquée, non supprimée)">
                 ⊘ Archiver
               </button>
+              <button
+                data-note-id="${esc(n.id)}" data-session-id="${esc(n.session_id)}"
+                class="btn-supprimer inline-flex items-center gap-1.5 text-xs text-red-700 border border-red-300 rounded-[10px] px-3 py-1.5 hover:bg-red-100 transition-colors"
+                title="Supprimer définitivement cette séance et ses artefacts">
+                ✕ Supprimer
+              </button>
               <a href="/praticien/compte-rendu-seance.html?note=${encodeURIComponent(n.id)}"
                  class="${n.validated_by_practitioner
                    ? 'inline-flex items-center text-sm font-medium text-muted hover:text-ink'
@@ -195,12 +252,30 @@
           this.disabled = true;
           this.textContent = '…';
           try {
-            await archiveSession(sid);
+            await archiverSeance(sid);
             card.remove();
+            refreshBadge();
           } catch (e) {
             alert('Impossible d\'archiver : ' + (e.message || e));
             this.disabled = false;
             this.textContent = '⊘ Archiver';
+          }
+        });
+
+        // Supprimer definitivement
+        card.querySelector('.btn-supprimer').addEventListener('click', async function () {
+          const sid = this.dataset.sessionId;
+          if (!confirm('Supprimer definitivement cette séance ? Cette action est irreversible.')) return;
+          this.disabled = true;
+          this.textContent = '…';
+          try {
+            await supprimerSeance(sid);
+            card.remove();
+            refreshBadge();
+          } catch (e) {
+            alert('Impossible de supprimer : ' + (e.message || e));
+            this.disabled = false;
+            this.textContent = '✕ Supprimer';
           }
         });
 
