@@ -6,6 +6,7 @@ class RecordStatus(str, Enum):
     active = "active"
     validated = "validated"
     closed = "closed"
+    archived = "archived"
     deprecated = "deprecated"
     archived = "archived"
 

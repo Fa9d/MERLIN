@@ -312,6 +312,21 @@ async function validateSessionNote(id, { validated = true, corrections = null } 
     { method: 'PATCH', body: { validated, corrections } });
 }
 
+/** Archive (soft-delete) une séance sans valeur. Accessible au praticien ou admin. */
+async function archiveSession(sessionId) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/archive', { method: 'PATCH' });
+}
+
+/**
+ * Envoie un courriel de relance au client d'une séance pour l'inviter à reprendre son suivi.
+ * @param {string} sessionId
+ * @param {string|null} message - message personnalisé optionnel du praticien
+ */
+async function sendClientFollowup(sessionId, message = null) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/send-followup',
+    { method: 'POST', body: { message } });
+}
+
 /**
  * Crée un document dérivé (reformulation client). Visible au client si
  * `client_visible: true` ET la note source est validée.

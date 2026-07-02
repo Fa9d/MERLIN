@@ -12,7 +12,9 @@ from app.ai.anthropic_session_note_pipeline import (
     AnthropicSessionNoteError,
     generate_session_note_from_transcript,
 )
-from app.core.deps import is_operator_user, require_internal_clinical_roles, require_operator, require_production_roles
+from app.core.deps import is_operator_user, require_admin, require_internal_clinical_roles, require_operator, require_production_roles  # noqa: F401 (require_admin used below)
+from app.services.email import make_followup_reminder_email, send_email
+from pydantic import BaseModel as _PydanticBaseModel
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
@@ -21,6 +23,7 @@ from app.models.client import Client
 from app.models.enums import (
     AnalysisNextStepCode,
     AudioSessionStatusCode,
+    RecordStatus,
     RiskLevelCode,
     SessionChannelCode,
     SessionStatusCode,
@@ -603,6 +606,83 @@ def assign_praticien(
     db.commit()
     db.refresh(session_record)
     return session_record
+
+
+@router.patch("/{session_id}/archive", response_model=SessionRead)
+def archive_session(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> SessionRecord:
+    """Archive (soft-delete) une séance sans valeur.
+
+    Accessible par le praticien propriétaire ou un admin.
+    La séance devient invisible dans les vues normales mais reste en base pour traçabilité.
+    """
+    session_record = db.get(SessionRecord, session_id)
+    if session_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+
+    from app.core.deps import is_admin
+    owns = session_record.operator_user_id == current_user.id or session_record.praticien_id == current_user.id
+    is_admin_flag = is_admin(current_user)
+    if not owns and not is_admin_flag:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+
+    if session_record.record_status == RecordStatus.archived:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Seance deja archivee.")
+
+    session_record.record_status = RecordStatus.archived
+    db.add(session_record)
+    db.commit()
+    db.refresh(session_record)
+    return session_record
+
+
+class FollowupPayload(_PydanticBaseModel):
+    message: str | None = None
+
+
+@router.post("/{session_id}/send-followup", status_code=status.HTTP_204_NO_CONTENT)
+async def send_followup_to_client(
+    session_id: str,
+    payload: FollowupPayload,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> None:
+    """Envoie un courriel de relance au client d'une séance pour l'inviter à reprendre son suivi."""
+    session_record = db.get(SessionRecord, session_id)
+    if session_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+
+    from app.core.deps import is_admin
+    owns = session_record.operator_user_id == current_user.id or session_record.praticien_id == current_user.id
+    if not owns and not is_admin(current_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+
+    client = db.get(Client, session_record.client_id)
+    if client is None or not client.email:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Client sans adresse courriel.")
+
+    display_name = client.first_name_or_alias or client.email.split("@")[0]
+    login_url = "https://ivia.quebec/connexion.html"
+    html, text = make_followup_reminder_email(
+        display_name=display_name,
+        login_url=login_url,
+        custom_message=payload.message,
+    )
+    sent = await send_email(
+        to_email=client.email,
+        subject="Un petit mot de votre praticien·ne IVIA",
+        html_body=html,
+        text_body=text,
+        audience="client",
+    )
+    if not sent:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Impossible d'envoyer le courriel (SMTP non configuré ou erreur réseau).",
+        )
 
 
 @router.post(

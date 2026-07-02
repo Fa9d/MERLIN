@@ -165,14 +165,62 @@
           </details>
           <div class="mt-4 pt-3 border-t border-bdr flex items-center justify-between gap-3 flex-wrap">
             <p class="text-[10px] text-muted">IVIA / MERLIN — Transcription et analyse structurée en temps réel. © IVIA / MERLIN 2026, tous droits réservés.</p>
-            <a href="/praticien/compte-rendu-seance.html?note=${encodeURIComponent(n.id)}"
-               class="${n.validated_by_practitioner
-                 ? 'inline-flex items-center text-sm font-medium text-muted hover:text-ink'
-                 : 'inline-flex items-center bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[12px] hover:bg-forest transition-colors'}">
-              ${n.validated_by_practitioner ? 'Voir le compte-rendu →' : 'Relire et valider →'}
-            </a>
+            <div class="flex items-center gap-2 flex-wrap justify-end">
+              <button
+                data-session-id="${esc(n.session_id)}"
+                class="btn-relancer inline-flex items-center gap-1.5 text-xs text-muted border border-bdr rounded-[10px] px-3 py-1.5 hover:bg-surface transition-colors"
+                title="Envoyer un courriel d'invitation à reprendre le suivi">
+                ✉ Relancer le client
+              </button>
+              <button
+                data-note-id="${esc(n.id)}" data-session-id="${esc(n.session_id)}"
+                class="btn-archiver inline-flex items-center gap-1.5 text-xs text-red-500 border border-red-200 rounded-[10px] px-3 py-1.5 hover:bg-red-50 transition-colors"
+                title="Archiver cette séance (masquée, non supprimée)">
+                ⊘ Archiver
+              </button>
+              <a href="/praticien/compte-rendu-seance.html?note=${encodeURIComponent(n.id)}"
+                 class="${n.validated_by_practitioner
+                   ? 'inline-flex items-center text-sm font-medium text-muted hover:text-ink'
+                   : 'inline-flex items-center bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[12px] hover:bg-forest transition-colors'}">
+                ${n.validated_by_practitioner ? 'Voir le compte-rendu →' : 'Relire et valider →'}
+              </a>
+            </div>
           </div>`;
         zone.appendChild(card);
+
+        // Archiver
+        card.querySelector('.btn-archiver').addEventListener('click', async function () {
+          const sid = this.dataset.sessionId;
+          if (!confirm('Archiver cette séance ? Elle disparaîtra de la liste mais restera en base pour traçabilité.')) return;
+          this.disabled = true;
+          this.textContent = '…';
+          try {
+            await archiveSession(sid);
+            card.remove();
+          } catch (e) {
+            alert('Impossible d\'archiver : ' + (e.message || e));
+            this.disabled = false;
+            this.textContent = '⊘ Archiver';
+          }
+        });
+
+        // Relancer le client
+        card.querySelector('.btn-relancer').addEventListener('click', async function () {
+          const sid = this.dataset.sessionId;
+          const msg = prompt('Message optionnel à inclure dans le courriel de relance\n(laisser vide pour le message par défaut) :');
+          if (msg === null) return; // annulé
+          this.disabled = true;
+          this.textContent = '…';
+          try {
+            await sendClientFollowup(sid, msg || null);
+            this.textContent = '✓ Envoyé';
+            setTimeout(() => { this.textContent = '✉ Relancer le client'; this.disabled = false; }, 3000);
+          } catch (e) {
+            alert('Impossible d\'envoyer : ' + (e.message || e));
+            this.disabled = false;
+            this.textContent = '✉ Relancer le client';
+          }
+        });
       });
     })();
   </script>
