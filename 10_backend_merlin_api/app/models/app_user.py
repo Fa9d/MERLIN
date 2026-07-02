@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import Optional
 
 from app.db.base import Base
-from app.models.enums import AppRole, RecordStatus
+from app.models.enums import AppRole, RecordStatus, InsightDepth
 
 
 class AppUser(Base):
@@ -61,6 +61,12 @@ class AppUser(Base):
     # Droit admin accordé depuis l'interface (cumul sur le rôle, sans le remplacer).
     # is_admin = rôle admin_tech OU liste blanche MERLIN_ADMIN_EMAILS OU ce drapeau.
     is_platform_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # Profondeur des insights recommandés pour ce praticien (ne s'applique que si role=practitioner)
+    insight_depth: Mapped[str] = mapped_column(
+        Enum(InsightDepth, native_enum=False),
+        nullable=False,
+        default=InsightDepth.basic,
+    )
 
 
     practitioner_profile: Mapped[Optional["PractitionerProfile"]] = relationship(

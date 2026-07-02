@@ -22,7 +22,7 @@ from app.models.audio_session import AudioSession
 from app.models.client import Client
 from app.models.consent import Consent
 from app.models.derived_document import DerivedDocument
-from app.models.enums import AppRole, RecordStatus
+from app.models.enums import AppRole, RecordStatus, InsightDepth
 from app.models.intake_request import IntakeRequest
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
@@ -63,6 +63,10 @@ class SubscriptionUpdate(MerlinSchema):
 
 class AdminGrantUpdate(MerlinSchema):
     grant: bool  # True → accorde le droit admin (drapeau) ; False → le retire
+
+
+class InsightDepthUpdate(MerlinSchema):
+    insight_depth: InsightDepth  # basic | intermediate | expert
 
 
 class AdminActionAck(MerlinSchema):
@@ -257,6 +261,28 @@ def update_admin_grant(
     db.refresh(user)
     pmap = _profile_map(db, [user.id])
     return AdminActionAck(status="admin_updated", account=_to_read(user, pmap.get(user.id, False)))
+
+
+@router.patch("/{user_id}/insight-depth", response_model=AdminActionAck)
+def update_insight_depth(
+    user_id: str,
+    payload: InsightDepthUpdate,
+    db: Session = Depends(get_db),
+    _: AppUser = Depends(require_admin()),
+) -> AdminActionAck:
+    """Configure la profondeur des insights recommandés pour ce praticien (basic/intermediate/expert)."""
+    user = _get_user(db, user_id)
+    if user.role != AppRole.practitioner:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="La profondeur des insights ne s'applique qu'aux praticiens.",
+        )
+    user.insight_depth = payload.insight_depth
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    pmap = _profile_map(db, [user.id])
+    return AdminActionAck(status="insight_depth_updated", account=_to_read(user, pmap.get(user.id, False)))
 
 
 @router.delete("/{user_id}")
