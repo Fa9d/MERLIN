@@ -8,7 +8,6 @@ class RecordStatus(str, Enum):
     closed = "closed"
     archived = "archived"
     deprecated = "deprecated"
-    archived = "archived"
 
 
 class AppRole(str, Enum):
