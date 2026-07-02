@@ -341,3 +341,48 @@ def make_interac_etransfer_email(
         f"Utilisez la reference {transfer_reference} dans le message du virement.\n\n— IVIA"
     )
     return html, text
+
+
+def make_followup_reminder_email(
+    display_name: str,
+    login_url: str,
+    custom_message: str | None = None,
+) -> tuple[str, str]:
+    """Courriel de relance envoyé par un praticien pour inviter le client à reprendre son chemin.
+
+    Ton chaleureux, non clinique (Loi 21). Le contenu reste dans l'espace — jamais
+    dans le courriel (confidentialité Loi 25).
+    """
+    custom_block = ""
+    custom_text_block = ""
+    if custom_message:
+        custom_block = f'<p style="background:#f8f8f8;border-left:3px solid #4a4a4a;padding:12px;border-radius:4px;font-style:italic;">{custom_message}</p>'
+        custom_text_block = f"\n\nMessage de votre praticien·ne :\n{custom_message}"
+
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Votre praticien·ne IVIA pense à vous et vous invite à reprendre votre chemin
+       quand vous vous sentez prêt·e.</p>
+    {custom_block}
+    <p>Votre espace vous attend, à votre rythme.</p>
+    <a class="btn" href="{login_url}">Reprendre mon chemin</a>
+    <p style="color:#888;font-size:13px;">Pour votre confidentialité, aucun contenu n'est
+       transmis par courriel — votre espace est sécurisé et hébergé au Québec.</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Votre praticien·ne IVIA pense à vous et vous invite à reprendre votre chemin "
+        "quand vous vous sentez prêt·e."
+        f"{custom_text_block}\n\n"
+        f"Reprendre mon chemin : {login_url}\n\n"
+        "Pour votre confidentialité, aucun contenu n'est transmis par courriel.\n\n— IVIA"
+    )
+    return html, text
+
