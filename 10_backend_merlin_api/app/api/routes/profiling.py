@@ -30,7 +30,7 @@ from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.enums import ProfileSource, ProfileSubjectKind, RecordStatus
 from app.models.consent import Consent
-from app.models.session_record import SessionRecord
+from app.models.session import SessionRecord
 from app.schemas.common import MerlinSchema
 from app.services import behavioral_profile_service as svc
 from app.services import love_quiz
