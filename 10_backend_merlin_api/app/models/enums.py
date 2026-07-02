@@ -48,6 +48,12 @@ class NeedCode(str, Enum):
     other = "other"
 
 
+class InsightDepth(str, Enum):
+    basic = "basic"
+    intermediate = "intermediate"
+    expert = "expert"
+
+
 class RiskLevelCode(str, Enum):
     non_urgent = "non_urgent"
     watch = "watch"

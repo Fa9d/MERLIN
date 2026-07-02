@@ -117,7 +117,7 @@ class ProfileLayerMixin:
         Enum(RecordStatus, native_enum=False), nullable=False, default=RecordStatus.active
     )
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
-    raw_payload: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON brut de l'instrument
+    raw_payload: Mapped[str | None] = mapped_column(Text(length=16384), nullable=True)  # P2-6: max 16KB
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)

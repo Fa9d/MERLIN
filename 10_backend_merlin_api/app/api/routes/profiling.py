@@ -28,7 +28,9 @@ from app.core.deps import (
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
-from app.models.enums import ProfileSource, ProfileSubjectKind
+from app.models.enums import ProfileSource, ProfileSubjectKind, RecordStatus
+from app.models.consent import Consent
+from app.models.session_record import SessionRecord
 from app.schemas.common import MerlinSchema
 from app.services import behavioral_profile_service as svc
 from app.services import love_quiz
@@ -112,6 +114,15 @@ def compute_matching(
     db: Session = Depends(get_db),
     _: AppUser = Depends(require_production_roles()),
 ):
+    # P0-2 IDOR guard: vérifier praticien↔client via SessionRecord active
+    session_check = db.query(SessionRecord).filter(
+        SessionRecord.client_id == payload.client_id,
+        SessionRecord.assigned_practitioner_user_id == payload.practitioner_user_id,
+        SessionRecord.record_status == RecordStatus.active,
+    ).first()
+    if not session_check:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Praticien n'a pas d'accès à ce client.")
+    
     pa = svc.get_current_profile(db, client_id=payload.client_id)
     pb = svc.get_current_profile(db, practitioner_user_id=payload.practitioner_user_id)
     if not pa or not pb:
@@ -140,12 +151,11 @@ async def generate_insights(
 
     if not settings.insights_enabled:
         # B1 — pas d'appel Anthropic tant que la barrière transfrontalière n'est pas levée.
-        from app.services.behavioral_insights import build_insights_input
+        # P0-1: NE PAS exposer prepared_input / scores bruts
         logger.info("insights demandés mais DÉSACTIVÉS (flag) client=%s", payload.client_id)
         return {
             "enabled": False,
             "message": "Insights LLM désactivés (barrière B1 — cadre transfrontalier + consentement requis).",
-            "prepared_input": build_insights_input(profile),
         }
 
     from app.services.behavioral_insights import generate_with_fallback
