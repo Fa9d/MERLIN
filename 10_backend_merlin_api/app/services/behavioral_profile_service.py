@@ -22,7 +22,8 @@ from app.models.behavioral_profile import (
     TraitProfileOcean,
     ValueProfileSchwartz,
 )
-from app.models.enums import ProfileSource, ProfileSubjectKind
+from app.models.consent import Consent
+from app.models.enums import ProfileSource, ProfileSubjectKind, RecordStatus
 from app.services.intake_analysis import analyse_intake_text
 from app.services.profile_matching import LAYER_DIMENSIONS
 
@@ -113,6 +114,16 @@ def record_layer(
         raise ValueError(f"Couche inconnue : {layer}")
     if consent_id is None:
         raise ConsentRequiredError("Écriture de profil refusée : consentement (consent_id) requis.")
+    
+    # P1-3: Valider consent existe, est actif, et cohérent
+    consent = db.get(Consent, consent_id)
+    if consent is None:
+        raise ValueError(f"Consentement {consent_id} inexistant.")
+    if consent.record_status != RecordStatus.active:
+        raise ValueError(f"Consentement {consent_id} n'est pas actif (status={consent.record_status.value}).")
+    if consent.revoked_at is not None:
+        raise ValueError(f"Consentement {consent_id} a été révoqué.")
+    
     if (client_id is None) == (practitioner_user_id is None):
         raise ValueError("Exactement un sujet attendu (client_id XOR practitioner_user_id).")
 
@@ -121,6 +132,7 @@ def record_layer(
         select(model)
         .where(_subject_filter(model, client_id=client_id, practitioner_user_id=practitioner_user_id))
         .where(model.is_current.is_(True))
+        .with_for_update()  # P1-4: Verrouiller la lecture pour éviter race condition
     )
     version = (prev.version + 1) if prev else 1
     if prev is not None:
