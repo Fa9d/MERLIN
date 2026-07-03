@@ -18,8 +18,8 @@
 function _apiBase() {
   if (typeof window !== 'undefined' && window.IVIA_API_BASE) return window.IVIA_API_BASE.replace(/\/$/, '');
   if (typeof window !== 'undefined') {
-    // Prod : le site statique est servi sur ivia.quebec, l'API sur api.ivia.quebec (443).
-    if (/(^|\.)ivia\.quebec$/.test(location.hostname)) return 'https://api.ivia.quebec';
+    // Prod : nginx sur ivia.quebec proxifie /api/ vers le backend — même origine, sans CORS.
+    if (/(^|\.)ivia\.quebec$/.test(location.hostname)) return '';
     const proto = location.protocol;
     return `${proto}//${location.hostname}:8000`;
   }
@@ -46,7 +46,8 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
       body: body != null ? JSON.stringify(body) : undefined,
     });
   } catch (err) {
-    throw new Error(`API inaccessible sur ${base}. Vérifiez que le backend tourne. (${err.message})`);
+    const loc = base || location.origin;
+    throw new Error(`Impossible de joindre le serveur (${err.message}). Vérifiez votre connexion ou rechargez la page.`);
   }
 
   if (res.status === 204) return null;
