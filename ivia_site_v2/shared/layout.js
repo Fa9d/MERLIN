@@ -2,7 +2,7 @@
  * IVIA — shared/layout.js
  * Header et footer uniques de l'espace connecté — UNE seule source pour toutes les pages.
  * Coquille stylée par /shared/ivia-espace.css (thème « Maison habitée » Signature/Doux,
- * défaut clair). Navigation quatre verbes : Aujourd'hui · Parler · Écrire · Voir.
+ * défaut clair). Navigation client : Mon espace · Journal · Ligne de vie.
  *
  * Usage dans une page :
  *   <script src="/shared/api.js?v=..."></script>
@@ -13,19 +13,19 @@
  */
 
 const IVIA_NAV = [
-  { id: 'aujourdhui', label: "Aujourd'hui", href: '/client/dashboard.html' },
-  { id: 'parler',     label: 'Parler',      href: '/client/seances.html' },
-  { id: 'ecrire',     label: 'Écrire',      href: '/client/journal.html' },
-  { id: 'voir',       label: 'Voir',        href: '/client/carte-de-vie.html' },
+  { id: 'aujourdhui', label: 'Mon espace',  href: '/client/dashboard.html' },
+  { id: 'ecrire',     label: 'Journal',     href: '/client/journal.html' },
+  { id: 'voir',       label: 'Ligne de vie', href: '/client/ma-progression.html' },
 ];
 
 const IVIA_FOOTER = {
   espace: [
-    { label: "Aujourd'hui",          href: '/client/dashboard.html' },
+    { label: 'Mon espace',           href: '/client/dashboard.html' },
     { label: 'Mes séances',          href: '/client/seances.html' },
     { label: 'Séance express',       href: '/client/enregistrement.html' },
     { label: 'Mes enregistrements',  href: '/client/mes-enregistrements.html' },
     { label: 'Journal',              href: '/client/journal.html' },
+    { label: 'Ligne de vie',         href: '/client/ma-progression.html' },
     { label: 'Ma carte de vie',      href: '/client/carte-de-vie.html' },
     { label: 'Mon compte',           href: '/client/compte.html' },
   ],
@@ -64,9 +64,7 @@ const IVIA_ICON = {
 function renderLayout(active, pageLabel) {
   const header = document.getElementById('ivia-header');
   if (header) {
-    const links = IVIA_NAV.map(n =>
-      `<a href="${n.href}" class="ivia-link${n.id === active ? ' active' : ''}">${IVIA_ICON[n.id] || ''}${n.label}</a>`
-    ).join('');
+    const links = '';
 
     const section = IVIA_NAV.find(n => n.id === active);
     const crumbs = ['<a href="/client/dashboard.html">Accueil</a>'];
@@ -113,6 +111,33 @@ function renderLayout(active, pageLabel) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
                 Mon compte
               </a>
+              <hr class="ivia-menu-sep">
+              <a href="/client/dashboard.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>
+                Aujourd'hui
+              </a>
+              <a href="/client/seances.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+                Parler
+              </a>
+              <a href="/client/journal.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>
+                Écrire
+              </a>
+              <a href="/client/carte-de-vie.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                Voir
+              </a>
+              <hr class="ivia-menu-sep">
+              <a href="/client/enregistrement.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+                Séance express
+              </a>
+              <a href="/client/ma-progression.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ligne de vie
+              </a>
+              <hr class="ivia-menu-sep">
               <button type="button" class="ivia-menu-item danger" onclick="localStorage.removeItem('ivia_session');localStorage.removeItem('ivia_user');location.href='/connexion.html'">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg>
                 Déconnexion

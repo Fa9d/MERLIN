@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Réserver une séance — IVIA</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/shared/session.js?v=20260617e"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/index.global.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.10/index.global.min.css" rel="stylesheet">
+  <script src="/shared/api.js?v=20260617c"></script>
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body {
+      font-family: 'Raleway', system-ui, sans-serif;
+      background-color: #F0F7F2;
+      color: #1A2E1D;
+    }
+
+    h1, h2 {
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4B6350;
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      background: #D4E8D0;
+      color: #1A2E1D;
+    }
+
+    .sidebar-link.active {
+      font-weight: 700;
+    }
+
+    .fc {
+      font-family: 'Raleway', system-ui, sans-serif;
+    }
+
+    .fc .fc-button-primary {
+      background-color: #2D6A4F !important;
+      border-color: #2D6A4F !important;
+    }
+
+    .fc .fc-button-primary:hover {
+      background-color: #1F5238 !important;
+    }
+
+    .fc .fc-event {
+      background-color: #2D6A4F !important;
+      border-color: #2D6A4F !important;
+      cursor: pointer;
+    }
+
+    .fc .fc-event:hover {
+      background-color: #1F5238 !important;
+    }
+
+    .fc .fc-daygrid-day.fc-day-today {
+      background-color: #F0F7F2 !important;
+    }
+
+    .practitioner-card {
+      background: white;
+      border: 1px solid #D4E8D0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .practitioner-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .audio-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      background: #2D6A4F;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .audio-button:hover {
+      background: #1F5238;
+      transform: scale(1.05);
+    }
+
+    .practitioner-info h3 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1A2E1D;
+      margin: 0;
+    }
+
+    .practitioner-info p {
+      font-size: 0.875rem;
+      color: #4B6350;
+      margin: 0.25rem 0 0 0;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #2D6A4F;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1A2E1D;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #2D6A4F;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1F5238;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1A2E1D;
+      border: 1px solid #D4E8D0;
+    }
+
+    .btn-secondary:hover {
+      background: #F0F7F2;
+    }
+
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .slot-button {
+      padding: 0.75rem;
+      border: 2px solid #D4E8D0;
+      border-radius: 8px;
+      background: white;
+      color: #1A2E1D;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .slot-button:hover {
+      border-color: #2D6A4F;
+      background: #F0F7F2;
+    }
+
+    .slot-button.selected {
+      background: #2D6A4F;
+      color: white;
+      border-color: #2D6A4F;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #4B6350;
+    }
+  </style>
+</head>
+<body class="antialiased pb-20 lg:pb-0">
+
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/client/mon-espace.html" class="flex items-center gap-2.5 font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2D6A4F"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>
+        IVIA
+      </a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Mon compte</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/client/mon-espace.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 10h.01M15 10h.01M9 15a3 3 0 0 1 6 0"/></svg>
+          Mon espace
+        </a>
+        <a href="/client/seances.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+          Mes séances
+        </a>
+        <a href="/client/agenda.html" class="sidebar-link active">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/></svg>
+          Réserver
+        </a>
+        <a href="/client/documents.html" class="sidebar-link">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg>
+          Documents
+        </a>
+      </nav>
+      <div id="sidebar-logout"></div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8">
+
+      <h1 class="font-heading text-3xl font-bold text-ink mb-8">Réserver une séance</h1>
+
+      <!-- Praticiens List -->
+      <div id="practitioners-list" class="space-y-6">
+        <!-- Will be populated by JavaScript -->
+      </div>
+
+      <!-- Loading state -->
+      <div id="loading" class="loading">
+        <p>Chargement des praticiens...</p>
+      </div>
+
+      <!-- No practitioners -->
+      <div id="no-practitioners" class="loading hidden">
+        <p>Aucun praticien disponible pour le moment.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="modal-header">Sélectionner un créneau</h2>
+        <button onclick="closeBookingModal()" class="text-muted hover:text-ink text-2xl">×</button>
+      </div>
+      
+      <div id="modalPractitioner" class="mb-4 pb-4 border-b border-bdr">
+        <!-- Praticien info will be inserted here -->
+      </div>
+
+      <div id="modalCalendar" style="margin-bottom: 1.5rem;"></div>
+
+      <div class="flex gap-2 justify-end">
+        <button onclick="closeBookingModal()" class="btn btn-secondary">Annuler</button>
+        <button id="confirmBookingBtn" onclick="confirmBooking()" class="btn btn-primary" disabled>
+          Réserver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.10/index.global.min.js"></script>
+
+  <script>
+    let token = localStorage.getItem('ivia_auth_token');
+    let currentUser = null;
+    let selectedSlot = null;
+    let modalCalendar = null;
+
+    (async function init() {
+      // Get current user if authenticated
+      if (token) {
+        try {
+          const res = await fetch('/api/v1/clients/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (res.ok) currentUser = await res.json();
+        } catch (err) {
+          console.error('Error fetching user:', err);
+        }
+      }
+
+      await loadPractitioners();
+    })();
+
+    async function loadPractitioners() {
+      try {
+        // In a real app, fetch list of practitioners
+        // For now, use mock data or fetch from /api/v1/practitioners
+        const res = await fetch('/api/v1/public/practitioners', {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        let practitioners = [];
+        if (res.ok) {
+          practitioners = await res.json();
+        } else {
+          // Fallback: load from mock
+          practitioners = [
+            {
+              id: 'prat-001',
+              display_name: 'David Phaneuf',
+              specialty: 'Thérapeute',
+              bio: 'Accompagnement holistique et résonance vibratoire'
+            }
+          ];
+        }
+
+        document.getElementById('loading').classList.add('hidden');
+
+        if (practitioners.length === 0) {
+          document.getElementById('no-practitioners').classList.remove('hidden');
+          return;
+        }
+
+        const list = document.getElementById('practitioners-list');
+        list.innerHTML = '';
+
+        for (const prat of practitioners) {
+          const card = document.createElement('div');
+          card.className = 'practitioner-card';
+          card.innerHTML = `
+            <div class="practitioner-header">
+              <button class="audio-button" onclick="playAudio('${prat.id}')" title="Écouter">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5h4V7h2v5h4l-5 5z"/></svg>
+              </button>
+              <div class="practitioner-info">
+                <h3>${prat.display_name || 'Praticien'}</h3>
+                <p>${prat.specialty || ''}</p>
+                <p style="font-size: 0.8rem; color: #8FB99A;">${prat.bio || ''}</p>
+              </div>
+            </div>
+            <button class="btn btn-primary w-full" onclick="openBookingModal('${prat.id}', '${prat.display_name}')">
+              Voir disponibilités
+            </button>
+          `;
+          list.appendChild(card);
+        }
+      } catch (err) {
+        console.error('Error loading practitioners:', err);
+        showToast('Erreur lors du chargement des praticiens');
+      }
+    }
+
+    async function openBookingModal(practitionerId, practitionerName) {
+      document.getElementById('bookingModal').classList.add('show');
+
+      // Show practitioner info in modal
+      const modalPrat = document.getElementById('modalPractitioner');
+      modalPrat.innerHTML = `
+        <h4 class="font-semibold text-ink">${practitionerName}</h4>
+        <p class="text-sm text-muted">Sélectionnez un créneau disponible</p>
+      `;
+
+      // Initialize calendar if not already done
+      if (!modalCalendar) {
+        const calEl = document.getElementById('modalCalendar');
+        modalCalendar = new FullCalendar.Calendar(calEl, {
+          initialView: 'timeGridWeek',
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'timeGridWeek,timeGridDay'
+          },
+          locale: 'fr',
+          height: 'auto',
+          slotDuration: '00:30:00',
+          slotLabelInterval: '00:30:00',
+          eventClick: (info) => selectSlot(info)
+        });
+        modalCalendar.render();
+      }
+
+      // Load slots for this practitioner
+      try {
+        const res = await fetch(`/api/v1/slots/available/${practitionerId}`, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        if (!res.ok) throw new Error('Failed to load slots');
+
+        const slots = await res.json() || [];
+        const events = slots.map(s => ({
+          id: s.id,
+          title: '✓ Disponible',
+          start: s.start_time,
+          end: s.end_time,
+          backgroundColor: '#2D6A4F',
+          borderColor: '#2D6A4F',
+          extendedProps: { slotData: s, practitionerId }
+        }));
+
+        modalCalendar.removeAllEvents();
+        modalCalendar.addEventSource(events);
+      } catch (err) {
+        showToast('Erreur: ' + err.message);
+      }
+    }
+
+    function selectSlot(info) {
+      selectedSlot = {
+        id: info.event.id,
+        practitionerId: info.event.extendedProps.practitionerId,
+        start: info.event.start,
+        end: info.event.end,
+        title: info.event.title
+      };
+
+      // Update visual feedback
+      document.querySelectorAll('.fc-event').forEach(el => el.style.opacity = '0.6');
+      info.el.style.opacity = '1';
+
+      // Enable confirm button
+      document.getElementById('confirmBookingBtn').disabled = false;
+    }
+
+    async function confirmBooking() {
+      if (!selectedSlot) {
+        showToast('Veuillez sélectionner un créneau');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/v1/slots/appointments', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token || ''}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            slot_id: selectedSlot.id,
+            practitioner_id: selectedSlot.practitionerId,
+            start_time: selectedSlot.start.toISOString(),
+            end_time: selectedSlot.end.toISOString()
+          })
+        });
+
+        if (!res.ok) throw new Error('Failed to book appointment');
+
+        const appointment = await res.json();
+        showToast('✓ Séance réservée!');
+        closeBookingModal();
+
+        // Redirect to confirmation or my sessions
+        setTimeout(() => {
+          window.location.href = '/client/seances.html';
+        }, 1500);
+      } catch (err) {
+        showToast('Erreur: ' + err.message);
+      }
+    }
+
+    function closeBookingModal() {
+      document.getElementById('bookingModal').classList.remove('show');
+      selectedSlot = null;
+      document.getElementById('confirmBookingBtn').disabled = true;
+      if (modalCalendar) {
+        modalCalendar.removeAllEvents();
+      }
+    }
+
+    async function playAudio(practitionerId) {
+      try {
+        const res = await fetch(`/api/v1/praticiens/${practitionerId}/audio`, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        if (!res.ok) {
+          showToast('Audio non disponible');
+          return;
+        }
+
+        const data = await res.json();
+        if (data.audio_url) {
+          const audio = new Audio(data.audio_url);
+          audio.play().catch(err => showToast('Erreur de lecture audio'));
+        }
+      } catch (err) {
+        console.error('Error playing audio:', err);
+        showToast('Erreur: ' + err.message);
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+  </script>
+
+</body>
+</html>

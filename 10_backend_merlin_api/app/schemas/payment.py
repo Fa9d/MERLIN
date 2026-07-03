@@ -165,3 +165,16 @@ class ManualPaymentAck(MerlinSchema):
     order_id: str
     entitlement_id: str | None = None
     session_id: str | None = None
+
+
+class CheckoutRequest(MerlinSchema):
+    """Request body for creating a Stripe checkout session for appointments."""
+    appointment_id: str
+    amount_cents: int
+
+    @field_validator("amount_cents")
+    @classmethod
+    def validate_amount(cls, value: int) -> int:
+        if value <= 0:
+            raise ValueError("amount_cents must be greater than 0.")
+        return value

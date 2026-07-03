@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex">
   <title>IVIA — Journal</title>
   <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
-  <script src="/shared/api.js?v=20260615d"></script>
+  <script src="/shared/api.js?v=20260702b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
@@ -16,120 +16,552 @@
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1,h2{font-family:'Lora',Georgia,serif;}
-    .tone-chip{border:1.5px solid var(--bdr);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;background:var(--card-bg);transition:all .15s;}
-    .tone-chip.selected{background:var(--forest-deep);border-color:var(--forest-deep);color:var(--on-accent);}
+    .card{background:var(--card-bg);border:1px solid var(--bdr);border-radius:20px;}
+    .field-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+    .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--bdr);font-size:12px;font-weight:600;color:var(--muted);background:var(--card-bg);}
+    .fold{background:var(--card-bg);border:1px solid var(--bdr);border-radius:18px;overflow:hidden;}
+    .fold summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .fold summary::-webkit-details-marker{display:none;}
+    .fold summary p{font-size:12px;color:var(--muted);}
+    .fold .chev{transition:transform .2s ease;color:var(--muted);}
+    .fold[open] .chev{transform:rotate(180deg);}
   </style>
 </head>
 <body class="antialiased">
 
 <div id="ivia-header"></div>
-<script src="/shared/layout.js?v=20260624b"></script>
+<script src="/shared/layout.js?v=20260702a"></script>
 <script>renderLayout('ecrire');</script>
 
-<div class="max-w-3xl mx-auto px-4 py-10 space-y-8">
-
-  <!-- Composer -->
-  <section class="bg-card border border-bdr rounded-[20px] p-6">
-    <h1 class="font-heading text-xl font-bold text-ink mb-1">Déposer ce qui est là.</h1>
-    <p class="text-sm text-muted mb-4">Quelques mots suffisent. Personne ne corrige, personne ne note.</p>
-
-    <textarea id="entry-text" rows="5" placeholder="Aujourd'hui…"
-      class="w-full border border-bdr rounded-[14px] px-4 py-3 text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-forest resize-none"></textarea>
-
-    <p class="text-xs font-semibold text-muted uppercase tracking-wider mt-4 mb-2">Le ton du moment <span class="font-normal normal-case">(facultatif)</span></p>
-    <div class="flex flex-wrap gap-2" id="tones">
-      <button class="tone-chip" data-tone="calme">calme</button>
-      <button class="tone-chip" data-tone="charge">chargé·e</button>
-      <button class="tone-chip" data-tone="fatigue">fatigué·e</button>
-      <button class="tone-chip" data-tone="confus">confus·e</button>
-      <button class="tone-chip" data-tone="leger">léger·ère</button>
-      <button class="tone-chip" data-tone="triste">triste</button>
-      <button class="tone-chip" data-tone="en_colere">en colère</button>
+<main class="max-w-5xl mx-auto px-4 py-8 sm:py-10 space-y-6">
+  <section class="card p-6 sm:p-7">
+    <div class="flex items-start justify-between gap-4 flex-wrap">
+      <div>
+        <h1 class="font-heading text-2xl font-bold text-ink">Journal</h1>
+        <p class="text-sm text-muted mt-1">Écrivez directement votre état du jour. Les sections guidées restent disponibles en dessous.</p>
+      </div>
     </div>
-
-    <div id="entry-error" class="hidden mt-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
-
-    <button id="btn-save" class="mt-5 bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
-      Déposer cette entrée
-    </button>
+    <div class="mt-4">
+      <label class="field-label">Écriture libre</label>
+      <textarea id="entry-text" rows="6" placeholder="Déposez ici ce que vous vivez, sans structure imposée…" class="mt-1 w-full border border-bdr rounded-[14px] px-4 py-3 bg-surface text-sm resize-y"></textarea>
+    </div>
+    <div id="quick-error" class="hidden mt-3 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
+    <div class="mt-4 flex flex-col sm:flex-row sm:items-center items-start gap-3">
+      <button id="btn-quick-save" class="bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">Enregistrer</button>
+      <p class="text-xs text-muted">Mode direct : une note rapide, sans questionnaire.</p>
+    </div>
   </section>
 
-  <!-- Entrées -->
-  <section>
-    <h2 class="font-heading text-lg font-bold text-ink mb-4">Vos entrées</h2>
+  <details class="fold" id="architecte-fold">
+    <summary>
+      <div>
+        <h2 class="font-heading text-lg font-bold text-ink">Mon Architecte intérieur</h2>
+        <p>Journal structuré : humeur, énergie, sommeil, déclencheurs, grâce et leçon.</p>
+      </div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="px-4 pb-4 sm:px-6 sm:pb-6">
+      <div class="flex items-center justify-between gap-3 flex-wrap mb-4">
+        <span class="chip w-full sm:w-auto justify-center sm:justify-start"><span>✨</span><span id="score-chip">Score de résilience : 0</span></span>
+        <p class="text-xs text-muted">Formule : pratique + humeur + énergie.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4 mt-2">
+      <div>
+        <label class="field-label">Date</label>
+        <input id="entry-date" type="date" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
+      </div>
+      <div>
+        <label class="field-label">Humeur globale</label>
+        <select id="humeur" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
+          <option value="stress">🔴 Stress / incohérence</option>
+          <option value="neutre">🟡 Neutre / transition</option>
+          <option value="coherence">🟢 Cohérence / calme</option>
+          <option value="flow">🔵 Flow / créativité</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Niveau d’énergie (1-10)</label>
+        <div class="mt-1 flex items-center gap-3">
+          <input id="energie" type="range" min="1" max="10" value="6" class="w-full">
+          <span id="energie-val" class="text-sm font-semibold text-ink w-6 text-right">6</span>
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Qualité du sommeil</label>
+        <select id="sommeil" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
+          <option value="mauvais">😴 Mauvais</option>
+          <option value="moyen">😐 Moyen</option>
+          <option value="excellent">😌 Excellent</option>
+        </select>
+      </div>
+    </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <p class="field-label">Pratique HeartMath</p>
+        <div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+          <label class="chip"><input type="checkbox" id="hm-matin"> Matin</label>
+          <label class="chip"><input type="checkbox" id="hm-midi"> Midi</label>
+          <label class="chip"><input type="checkbox" id="hm-soir"> Soir</label>
+        </div>
+      </div>
+      <div>
+        <p class="field-label">Déclencheur de stress</p>
+        <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+          <label class="chip"><input type="checkbox" value="Réunion difficile" class="stress-item"> Réunion difficile</label>
+          <label class="chip"><input type="checkbox" value="Conflit familial" class="stress-item"> Conflit familial</label>
+          <label class="chip"><input type="checkbox" value="Charge mentale" class="stress-item"> Charge mentale</label>
+          <label class="chip"><input type="checkbox" value="Manque de temps" class="stress-item"> Manque de temps</label>
+        </div>
+        <div class="mt-2">
+          <label for="stress-other" class="field-label">Autre (texte libre)</label>
+          <input id="stress-other" type="text" placeholder="Ex. attente médicale, imprévu financier…" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
+        </div>
+      </div>
+    </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
+      <div>
+        <label class="field-label">Moment de grâce</label>
+        <textarea id="grace" rows="3" placeholder="Ce qui a bien fonctionné aujourd’hui…" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm resize-none"></textarea>
+      </div>
+      <div>
+        <label class="field-label">Leçon du jour</label>
+        <textarea id="lecon" rows="3" placeholder="Ce que j’ai appris sur ma réaction…" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm resize-none"></textarea>
+      </div>
+    </div>
+
+      <div id="entry-error" class="hidden mt-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>
+      <div class="mt-5 flex flex-col sm:flex-row sm:items-center items-start gap-3">
+        <button id="btn-save" class="bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+          Enregistrer la version structurée
+        </button>
+        <p class="text-xs text-muted">Ajoute des métadonnées à l’entrée écrite.</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="fold" id="exercise-fold">
+    <summary>
+      <div>
+        <h2 class="font-heading text-lg font-bold text-ink">Exercice du jour</h2>
+        <p id="exo-why">Chargement de la recommandation…</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="exo-tag" class="chip">Recommandation adaptative</span>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </summary>
+    <div class="px-4 pb-4 sm:px-6 sm:pb-6">
+      <div class="bg-surface border border-bdr rounded-[14px] p-4">
+        <p id="exo-title" class="text-sm font-semibold text-ink">—</p>
+        <p id="exo-duration" class="text-xs text-muted mt-1">—</p>
+        <p id="exo-steps" class="text-sm text-ink leading-relaxed mt-2 whitespace-pre-wrap">—</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-3 mt-4">
+      <div>
+        <label class="field-label">État avant exercice (1-10)</label>
+        <input id="exo-before" type="range" min="1" max="10" value="5" class="mt-1 w-full">
+      </div>
+      <div>
+        <label class="field-label">Disponibilité</label>
+        <select id="exo-time" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
+          <option value="3min">3 minutes</option>
+          <option value="5-10min">5 à 10 minutes</option>
+          <option value="15min+">15 minutes et plus</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Format préféré</label>
+        <select id="exo-format" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
+          <option value="respiration">Respiration</option>
+          <option value="mouvement">Mouvement doux</option>
+          <option value="ecriture">Écriture guidée</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Effet ressenti après (1-10)</label>
+        <input id="exo-after" type="range" min="1" max="10" value="6" class="mt-1 w-full">
+      </div>
+    </div>
+      <div class="mt-3">
+        <label class="field-label">Commentaire rapide</label>
+        <textarea id="exo-note" rows="2" placeholder="Ce qui a changé après l'exercice…" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm resize-none"></textarea>
+      </div>
+      <div class="mt-4 flex flex-col sm:flex-row sm:items-center items-start gap-2">
+        <button id="btn-validate-exo" class="bg-forest-deep text-white font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Valider cet exercice</button>
+        <span id="exo-feedback" class="text-xs text-muted sm:ml-2"></span>
+      </div>
+    </div>
+  </details>
+
+  <section class="card p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-heading text-lg font-bold text-ink">Journal quotidien</h2>
+      <a href="/client/dashboard.html" class="text-xs font-semibold text-forest-deep hover:underline">Retour à mon espace →</a>
+    </div>
     <div id="entries" class="space-y-3">
       <p class="text-sm text-muted">Chargement…</p>
     </div>
   </section>
 
-</div>
+  <section class="card p-6" id="session-reperes">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-heading text-lg font-bold text-ink">Repères de séances validées</h2>
+      <span class="text-xs text-muted">Depuis vos séances confirmées</span>
+    </div>
+    <div id="session-reperes-list" class="space-y-3">
+      <p class="text-sm text-muted">Chargement…</p>
+    </div>
+  </section>
+</main>
 
-<p class="max-w-3xl mx-auto px-4 text-center text-xs text-muted">
-  Votre journal vous appartient. Il n'est partagé avec votre praticien·ne que si vous le décidez, en séance.
-</p>
 <div id="ivia-footer"></div>
 <script>renderLayout('ecrire');</script>
 
 <script>
 (function () {
-  let selectedTone = null;
-  document.querySelectorAll('.tone-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      const isSel = chip.classList.contains('selected');
-      document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('selected'));
-      selectedTone = isSel ? null : chip.dataset.tone;
-      if (!isSel) chip.classList.add('selected');
-    });
-  });
+  const HUMEUR_LABELS = {
+    stress: '🔴 Stress / incohérence',
+    neutre: '🟡 Neutre / transition',
+    coherence: '🟢 Cohérence / calme',
+    flow: '🔵 Flow / créativité',
+  };
 
-  const TONES_LABELS = { calme:'calme', charge:'chargé·e', fatigue:'fatigué·e', confus:'confus·e', leger:'léger·ère', triste:'triste', en_colere:'en colère' };
+  function moodToTone(humeur) {
+    if (humeur === 'coherence') return 'calme';
+    if (humeur === 'flow') return 'leger';
+    if (humeur === 'stress') return 'charge';
+    return 'confus';
+  }
+
+  function parseArchi(bodyText) {
+    if (!bodyText || typeof bodyText !== 'string') return null;
+    if (!bodyText.startsWith('ARCHI_INTERIEUR::')) return null;
+    try { return JSON.parse(bodyText.slice('ARCHI_INTERIEUR::'.length)); } catch (e) { return null; }
+  }
+
+  function parseExo(bodyText) {
+    if (!bodyText || typeof bodyText !== 'string') return null;
+    if (!bodyText.startsWith('ARCHI_EXERCICE::')) return null;
+    try { return JSON.parse(bodyText.slice('ARCHI_EXERCICE::'.length)); } catch (e) { return null; }
+  }
+  function safe(t) {
+    const d = document.createElement('div');
+    d.textContent = t == null ? '' : String(t);
+    return d.innerHTML;
+  }
+
+  function getExerciseRecommendation(latestArchi) {
+    const humeur = latestArchi?.humeur || 'neutre';
+    const energie = Number(latestArchi?.energie || 5);
+    const sommeil = latestArchi?.sommeil || 'moyen';
+
+    if (humeur === 'stress' || energie <= 4) {
+      return {
+        id: 'resp-478',
+        title: 'Cohérence cardiaque 4-7-8',
+        duration: '5 minutes',
+        why: 'Votre état suggère de stabiliser rapidement le système nerveux.',
+        steps: '1. Inspirez 4 secondes.\n2. Retenez 7 secondes.\n3. Expirez 8 secondes.\n4. Répétez 6 cycles en posture assise.',
+      };
+    }
+    if (sommeil === 'mauvais') {
+      return {
+        id: 'grounding-5senses',
+        title: 'Ancrage 5 sens + respiration lente',
+        duration: '7 à 10 minutes',
+        why: 'Après un sommeil fragilisé, l’objectif est de retrouver un ancrage corporel.',
+        steps: '1. Nommez 5 choses que vous voyez.\n2. Nommez 4 choses que vous sentez au toucher.\n3. Respirez lentement 2 minutes.\n4. Terminez par une marche douce de 5 minutes.',
+      };
+    }
+    if (humeur === 'flow' || humeur === 'coherence') {
+      return {
+        id: 'consolidation-journal',
+        title: 'Consolidation : gratitude + intention',
+        duration: '8 minutes',
+        why: 'Votre état est favorable à renforcer les acquis plutôt qu’à corriger.',
+        steps: '1. Écrivez 3 éléments qui soutiennent votre équilibre.\n2. Formulez 1 intention concrète pour demain.\n3. Relisez à voix basse.',
+      };
+    }
+    return {
+      id: 'breath-box',
+      title: 'Respiration carrée 4-4-4-4',
+      duration: '4 minutes',
+      why: 'Exercice neutre pour clarifier l’état du jour.',
+      steps: '1. Inspirez 4 secondes.\n2. Retenez 4 secondes.\n3. Expirez 4 secondes.\n4. Retenez 4 secondes.\n5. Répétez 8 cycles.',
+    };
+  }
+
+  function calcScore() {
+    const humeur = document.getElementById('humeur').value;
+    const energie = Number(document.getElementById('energie').value || 1);
+    const hm = document.getElementById('hm-matin').checked || document.getElementById('hm-midi').checked || document.getElementById('hm-soir').checked;
+    let base = 2;
+    if (hm && (humeur === 'coherence' || humeur === 'flow')) base = 10;
+    else if (hm && humeur === 'stress') base = 7;
+    else if (!hm && (humeur === 'coherence' || humeur === 'flow')) base = 5;
+    const score = base + energie;
+    document.getElementById('score-chip').textContent = 'Score de résilience : ' + score;
+    return score;
+  }
+
+  function selectedStressors() {
+    const selected = Array.from(document.querySelectorAll('.stress-item:checked')).map(i => i.value);
+    const other = document.getElementById('stress-other').value.trim();
+    if (other) selected.push('Autre: ' + other);
+    return selected;
+  }
+
+  function buildBody() {
+    const date = document.getElementById('entry-date').value || new Date().toISOString().slice(0,10);
+    const humeur = document.getElementById('humeur').value;
+    const energie = Number(document.getElementById('energie').value || 1);
+    const sommeil = document.getElementById('sommeil').value;
+    const hm = ['hm-matin','hm-midi','hm-soir'].filter(id => document.getElementById(id).checked).map(id => id.replace('hm-',''));
+    const stressors = selectedStressors();
+    const grace = document.getElementById('grace').value.trim();
+    const lecon = document.getElementById('lecon').value.trim();
+    const note = document.getElementById('entry-text').value.trim();
+    const score = calcScore();
+
+    const payload = {
+      version: 'architecte-interieur-v1',
+      date,
+      humeur,
+      energie,
+      sommeil,
+      heartmath: hm,
+      stressors,
+      grace,
+      lecon,
+      score,
+      note,
+    };
+    return 'ARCHI_INTERIEUR::' + JSON.stringify(payload);
+  }
+
+  function renderEntry(en) {
+    const d = new Date(en.written_at);
+    const el = document.createElement('article');
+    el.className = 'bg-card border border-bdr rounded-[16px] px-5 py-4';
+
+    let body = en.body_text || '';
+    const exo = parseExo(body);
+    if (exo) {
+      el.innerHTML = `
+        <p class="text-xs text-muted mb-2">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
+        <p class="text-sm font-semibold text-ink">Exercice validé : ${exo.title || 'exercice'}</p>
+        <p class="text-xs text-muted mt-1">Avant ${exo.before || '-'} / Après ${exo.after || '-'} · format ${exo.format || '-'}</p>
+        ${exo.note ? '<p class="text-sm text-ink mt-2 whitespace-pre-wrap">' + exo.note + '</p>' : ''}
+      `;
+      return el;
+    }
+
+    if (body.startsWith('ARCHI_INTERIEUR::')) {
+      try {
+        const data = JSON.parse(body.slice('ARCHI_INTERIEUR::'.length));
+        const hm = (data.heartmath || []).join(', ') || 'non';
+        const stress = (data.stressors || []).join(', ') || 'aucun';
+        el.innerHTML = `
+          <p class="text-xs text-muted mb-2">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
+          <div class="grid sm:grid-cols-2 gap-2 text-xs mb-3">
+            <p><strong>Humeur :</strong> ${HUMEUR_LABELS[data.humeur] || data.humeur}</p>
+            <p><strong>Énergie :</strong> ${data.energie}/10</p>
+            <p><strong>Sommeil :</strong> ${data.sommeil}</p>
+            <p><strong>HeartMath :</strong> ${hm}</p>
+            <p class="sm:col-span-2"><strong>Déclencheurs :</strong> ${stress}</p>
+            <p><strong>Score :</strong> ${data.score}</p>
+          </div>
+          ${data.grace ? '<p class="text-sm text-ink"><strong>Moment de grâce :</strong> ' + data.grace + '</p>' : ''}
+          ${data.lecon ? '<p class="text-sm text-ink mt-1"><strong>Leçon :</strong> ' + data.lecon + '</p>' : ''}
+          ${data.note ? '<p class="text-sm text-ink mt-2 whitespace-pre-wrap">' + data.note + '</p>' : ''}
+        `;
+        return el;
+      } catch (e) {}
+    }
+
+    el.innerHTML = `
+      <p class="text-xs text-muted mb-1.5">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+      · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
+      <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap"></p>`;
+    el.querySelector('p:last-child').textContent = body;
+    return el;
+  }
+
+  let entriesCache = [];
+
+  function refreshExercisePanel() {
+    const latestArchi = entriesCache
+      .map(e => parseArchi(e.body_text))
+      .find(Boolean);
+    const rec = getExerciseRecommendation(latestArchi);
+    const lastExo = entriesCache
+      .map(e => parseExo(e.body_text))
+      .find(Boolean);
+
+    document.getElementById('exo-title').textContent = rec.title;
+    document.getElementById('exo-duration').textContent = 'Durée cible : ' + rec.duration;
+    document.getElementById('exo-steps').textContent = rec.steps;
+    document.getElementById('exo-why').textContent = rec.why;
+    const tag = document.getElementById('exo-tag');
+    if (lastExo && lastExo.reco_id === rec.id && lastExo.date === new Date().toISOString().slice(0, 10)) {
+      tag.textContent = 'Déjà validé aujourd’hui';
+      document.getElementById('exo-feedback').textContent = '✓ Exercice déjà validé pour aujourd’hui.';
+    } else {
+      tag.textContent = 'Recommandation adaptative';
+      document.getElementById('exo-feedback').textContent = '';
+    }
+    return rec;
+  }
 
   async function chargerEntrees() {
     const zone = document.getElementById('entries');
+    const repereZone = document.getElementById('session-reperes-list');
+    let docs = [];
     try {
       const entries = await getMyJournal();
+      entriesCache = entries;
       zone.innerHTML = '';
       if (!entries.length) {
-        zone.innerHTML = '<p class="text-sm text-muted">Encore vierge. La première entrée est souvent la plus courte.</p>';
+        zone.innerHTML = '<p class="text-sm text-muted">Aucune entrée pour l’instant.</p>';
+        refreshExercisePanel();
         return;
       }
       entries
         .sort((a, b) => new Date(b.written_at) - new Date(a.written_at))
-        .forEach(en => {
-          const d = new Date(en.written_at);
-          const el = document.createElement('article');
-          el.className = 'bg-card border border-bdr rounded-[16px] px-5 py-4';
-          el.innerHTML = `
-            <p class="text-xs text-muted mb-1.5">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-              · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}${en.emotional_tone ? ' · <span class="text-forest font-medium">' + (TONES_LABELS[en.emotional_tone] || en.emotional_tone) + '</span>' : ''}</p>
-            <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap entry-body"></p>`;
-          el.querySelector('.entry-body').textContent = en.body_text;
-          zone.appendChild(el);
-        });
+        .forEach(en => zone.appendChild(renderEntry(en)));
+      refreshExercisePanel();
     } catch (err) {
       zone.innerHTML = '<p class="text-sm text-muted">Vos entrées apparaîtront ici après votre première écriture.</p>';
+      entriesCache = [];
+      refreshExercisePanel();
     }
+
+    try {
+      docs = await getMyDocuments();
+    } catch (err) {
+      docs = [];
+    }
+    repereZone.innerHTML = '';
+    if (!docs.length) {
+      repereZone.innerHTML = '<p class="text-sm text-muted">Aucune séance validée visible pour le moment.</p>';
+      return;
+    }
+    docs
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      .forEach((doc) => {
+        const el = document.createElement('article');
+        el.className = 'border border-bdr rounded-[14px] px-4 py-3 bg-surface';
+        el.innerHTML = `<p class="text-xs text-muted mb-1">${new Date(doc.created_at).toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
+          <p class="text-sm font-semibold text-ink">${safe(doc.title || 'Repère de séance')}</p>
+          <p class="text-sm text-ink mt-1 line-clamp-3">${safe((doc.body_text || '').replace(/\s+/g, ' ').trim())}</p>`;
+        repereZone.appendChild(el);
+      });
   }
 
-  document.getElementById('btn-save').addEventListener('click', async () => {
-    const txt = document.getElementById('entry-text').value.trim();
-    const errDiv = document.getElementById('entry-error');
-    const btn = document.getElementById('btn-save');
-    errDiv.classList.add('hidden');
-    if (!txt) { errDiv.textContent = 'Quelques mots d\'abord — même trois.'; errDiv.classList.remove('hidden'); return; }
+  document.getElementById('entry-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('energie').addEventListener('input', (e) => {
+    document.getElementById('energie-val').textContent = e.target.value;
+    calcScore();
+  });
+  document.getElementById('humeur').addEventListener('change', calcScore);
+  ['hm-matin','hm-midi','hm-soir'].forEach(id => document.getElementById(id).addEventListener('change', calcScore));
+  calcScore();
 
-    btn.disabled = true; btn.textContent = 'Dépôt en cours…';
+  document.getElementById('btn-quick-save').addEventListener('click', async () => {
+    const errDiv = document.getElementById('quick-error');
+    const btn = document.getElementById('btn-quick-save');
+    const text = document.getElementById('entry-text').value.trim();
+    errDiv.classList.add('hidden');
+    if (!text) {
+      errDiv.textContent = 'Écrivez quelques lignes avant d’enregistrer.';
+      errDiv.classList.remove('hidden');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enregistrement…';
     try {
-      await createMyJournalEntry({ body_text: txt, emotional_tone: selectedTone || null });
+      await createMyJournalEntry({ body_text: text, emotional_tone: 'confus' });
       document.getElementById('entry-text').value = '';
-      document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('selected'));
-      selectedTone = null;
       await chargerEntrees();
     } catch (err) {
-      errDiv.textContent = err.message || 'Impossible d\'enregistrer. Réessayez.';
+      errDiv.textContent = err.message || 'Impossible d’enregistrer la note.';
       errDiv.classList.remove('hidden');
     } finally {
-      btn.disabled = false; btn.textContent = 'Déposer cette entrée';
+      btn.disabled = false;
+      btn.textContent = 'Enregistrer';
+    }
+  });
+
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const errDiv = document.getElementById('entry-error');
+    const btn = document.getElementById('btn-save');
+    const grace = document.getElementById('grace').value.trim();
+    const lecon = document.getElementById('lecon').value.trim();
+    const note = document.getElementById('entry-text').value.trim();
+    errDiv.classList.add('hidden');
+    if (!grace && !lecon && !note) {
+      errDiv.textContent = 'Ajoutez au moins un élément : moment de grâce, leçon ou note libre.';
+      errDiv.classList.remove('hidden');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enregistrement…';
+    try {
+      const humeur = document.getElementById('humeur').value;
+      await createMyJournalEntry({ body_text: buildBody(), emotional_tone: moodToTone(humeur) });
+      document.getElementById('grace').value = '';
+      document.getElementById('lecon').value = '';
+      document.getElementById('entry-text').value = '';
+      document.getElementById('stress-other').value = '';
+      document.querySelectorAll('.stress-item').forEach(i => { i.checked = false; });
+      ['hm-matin','hm-midi','hm-soir'].forEach(id => { document.getElementById(id).checked = false; });
+      calcScore();
+      await chargerEntrees();
+    } catch (err) {
+      errDiv.textContent = err.message || 'Impossible d’enregistrer. Réessayez.';
+      errDiv.classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enregistrer l’entrée';
+    }
+  });
+
+  document.getElementById('btn-validate-exo').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-validate-exo');
+    const feedback = document.getElementById('exo-feedback');
+    const rec = refreshExercisePanel();
+    const payload = {
+      version: 'architecte-exercice-v1',
+      date: new Date().toISOString().slice(0, 10),
+      reco_id: rec.id,
+      title: rec.title,
+      duration: rec.duration,
+      before: Number(document.getElementById('exo-before').value || 5),
+      after: Number(document.getElementById('exo-after').value || 6),
+      time_slot: document.getElementById('exo-time').value,
+      format: document.getElementById('exo-format').value,
+      note: document.getElementById('exo-note').value.trim(),
+    };
+    btn.disabled = true;
+    btn.textContent = 'Validation…';
+    try {
+      await createMyJournalEntry({
+        body_text: 'ARCHI_EXERCICE::' + JSON.stringify(payload),
+        emotional_tone: payload.after >= payload.before ? 'calme' : 'confus',
+      });
+      document.getElementById('exo-note').value = '';
+      feedback.textContent = '✓ Exercice validé et enregistré.';
+      await chargerEntrees();
+    } catch (e) {
+      feedback.textContent = 'Impossible d’enregistrer l’exercice.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Valider cet exercice';
     }
   });
 

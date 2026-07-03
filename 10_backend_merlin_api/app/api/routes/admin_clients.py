@@ -14,6 +14,7 @@ from app.core.deps import require_admin
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
+from app.models.enums import SessionChannelCode
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
 from app.schemas.common import MerlinSchema
@@ -30,7 +31,10 @@ class ClientRow(MerlinSchema):
     nom: str
     email: str | None
     profile_complete: bool
+    date_inscription: datetime
+    premiere_activite: datetime | None
     nb_enregistrements: int
+    nb_seances_live: int
     nb_transcrits: int
     nb_analyses: int
     derniere_activite: datetime | None
@@ -63,9 +67,24 @@ class AnalyseItem(MerlinSchema):
 
 class DossierRead(MerlinSchema):
     client_id: str
+    public_client_code: str
     nom: str
     email: str | None
+    phone: str | None
     profile_complete: bool
+    territory_code: str | None
+    birth_year: int | None
+    gender_identity: str | None
+    birthplace: str | None
+    activation_invited_at: datetime | None
+    activation_accepted_at: datetime | None
+    date_inscription: datetime
+    premiere_activite: datetime | None
+    derniere_activite: datetime | None
+    nb_enregistrements: int
+    nb_seances_live: int
+    nb_transcrits: int
+    nb_analyses: int
     enregistrements: list[RecordingItem]
     analyses: list[AnalyseItem]
 
@@ -96,33 +115,42 @@ def list_clients(
     if not ids:
         return []
     # Comptes agrégés (enregistrements, transcrits, analyses) + dernière activité.
-    rec_counts, rec_tr, rec_last = {}, {}, {}
-    for cid, total, transcrits, last in db.execute(
+    rec_counts, rec_live, rec_tr, rec_last, rec_first = {}, {}, {}, {}, {}
+    for cid, total, live_total, transcrits, first, last in db.execute(
         select(
             SessionRecord.client_id,
             func.count(),
+            func.count().filter(SessionRecord.session_channel_code == SessionChannelCode.audio_live),
             func.count(SessionRecord.transcript_text),
+            func.min(SessionRecord.created_at),
             func.max(SessionRecord.created_at),
         ).where(SessionRecord.client_id.in_(ids)).group_by(SessionRecord.client_id)
     ):
         rec_counts[cid] = total or 0
+        rec_live[cid] = live_total or 0
         rec_tr[cid] = transcrits or 0
+        rec_first[cid] = first
         rec_last[cid] = last
-    note_counts, note_last = {}, {}
-    for cid, total, last in db.execute(
-        select(SessionNote.client_id, func.count(), func.max(SessionNote.created_at))
+    note_counts, note_last, note_first = {}, {}, {}
+    for cid, total, first, last in db.execute(
+        select(SessionNote.client_id, func.count(), func.min(SessionNote.created_at), func.max(SessionNote.created_at))
         .where(SessionNote.client_id.in_(ids)).group_by(SessionNote.client_id)
     ):
         note_counts[cid] = total or 0
+        note_first[cid] = first
         note_last[cid] = last
+
+    def _first(cid):
+        xs = [d for d in (rec_first.get(cid), note_first.get(cid)) if d]
+        return min(xs) if xs else None
 
     def _last(cid):
         xs = [d for d in (rec_last.get(cid), note_last.get(cid)) if d]
         return max(xs) if xs else None
 
     def _depot(cid):
-        """Date/heure du dépôt le plus ancien (premier enregistrement déposé)."""
-        return rec_last.get(cid) or note_last.get(cid)
+        """Date/heure du premier dépôt pour l'ordre FIFO."""
+        return _first(cid)
 
     # Ordre de dépôt (traitement FIFO) : dossiers avec dépôt en premier, du plus
     # ancien au plus récent ; comptes sans dépôt rejetés en fin de liste.
@@ -133,7 +161,9 @@ def list_clients(
     return [
         ClientRow(
             client_id=c.id, nom=_nom(c), email=c.email, profile_complete=c.profile_complete,
+            date_inscription=c.created_at, premiere_activite=_first(c.id),
             nb_enregistrements=rec_counts.get(c.id, 0), nb_transcrits=rec_tr.get(c.id, 0),
+            nb_seances_live=rec_live.get(c.id, 0),
             nb_analyses=note_counts.get(c.id, 0), derniere_activite=_last(c.id),
         )
         for c in ordered
@@ -155,8 +185,22 @@ def client_dossier(
     notes = db.scalars(
         select(SessionNote).where(SessionNote.client_id == client_id).order_by(SessionNote.created_at.desc())
     ).all()
+    first_session = min((r.created_at for r in recs), default=None)
+    last_session = max((r.created_at for r in recs), default=None)
+    first_note = min((n.created_at for n in notes), default=None)
+    last_note = max((n.created_at for n in notes), default=None)
+    first_activity = min((d for d in (first_session, first_note) if d), default=None)
+    last_activity = max((d for d in (last_session, last_note) if d), default=None)
+    live_count = sum(1 for r in recs if r.session_channel_code == SessionChannelCode.audio_live)
+    transcript_count = sum(1 for r in recs if bool(r.transcript_text))
     return DossierRead(
-        client_id=c.id, nom=_nom(c), email=c.email, profile_complete=c.profile_complete,
+        client_id=c.id, public_client_code=c.public_client_code, nom=_nom(c), email=c.email,
+        phone=c.phone, profile_complete=c.profile_complete, territory_code=c.territory_code,
+        birth_year=c.birth_year, gender_identity=c.gender_identity, birthplace=c.birthplace,
+        activation_invited_at=c.activation_invited_at, activation_accepted_at=c.activation_accepted_at,
+        date_inscription=c.created_at, premiere_activite=first_activity, derniere_activite=last_activity,
+        nb_enregistrements=len(recs), nb_seances_live=live_count, nb_transcrits=transcript_count,
+        nb_analyses=len(notes),
         enregistrements=[
             RecordingItem(
                 id=r.id, date=r.created_at, label=_formule(r.room_name, r.session_channel_code.value),

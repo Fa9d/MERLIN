@@ -30,4 +30,3 @@ class MyRecordingRead(MerlinSchema):
     duration_minutes: int | None = None
     status: str
     transcript_ready: bool
-    transcript_text: str | None = None

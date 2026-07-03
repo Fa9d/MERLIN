@@ -33,6 +33,7 @@
         <a href="/praticien/dashboard.html" class="sidebar-link active"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</a>
         <a href="/praticien/agenda.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
         <a href="/praticien/seance-express.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Séance express</a>
+        <a href="/praticien/admin-dossiers.html" class="sidebar-link" data-admin-only><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M7 16h6"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Dossiers clients</a>
         <a href="/praticien/livraisons.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
         <a href="/praticien/guide.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Guide</a>
         <div class="flex-1"></div>
@@ -84,7 +85,7 @@
           <p class="font-heading text-3xl font-bold text-ink" id="stat-vigilance">…</p>
           <p class="text-xs text-muted mt-1">à regarder en priorité →</p>
         </a>
-        <a id="card-seances" href="/praticien/livraisons.html" class="stat-card block hover:border-forest transition-colors cursor-pointer">
+        <a id="card-seances" href="/praticien/admin-dossiers.html" class="stat-card block hover:border-forest transition-colors cursor-pointer">
           <p class="text-xs text-muted mb-1">Séances</p>
           <p class="font-heading text-3xl font-bold text-ink" id="stat-seances">…</p>
           <p class="text-xs text-muted mt-1" id="stat-seances-sub">enregistrées →</p>
@@ -122,6 +123,7 @@
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
     <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Bord</a>
     <a href="/praticien/seance-express.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Express</a>
+    <a href="/praticien/admin-dossiers.html" data-admin-only class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M7 16h6"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Dossiers</a>
     <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
     <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
   </nav>
@@ -174,9 +176,9 @@
 
       // Carte « Séances » : un admin accède aux dossiers (enregistrements + transcriptions).
       try {
-        if (typeof isAdminUser === 'function' && isAdminUser()) {
+        if (typeof isAdminUser === 'function' && !isAdminUser()) {
           const cs = document.getElementById('card-seances');
-          if (cs) cs.href = '/praticien/admin-dossiers.html';
+          if (cs) cs.href = '/praticien/livraisons.html';
         }
       } catch (e) {}
 

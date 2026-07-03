@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dossiers clients — Admin IVIA</title>
+  <title>IVIA — Dossiers clients</title>
   <script src="/shared/session.js?v=20260617e"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260617c"></script>
+  <script src="/shared/api.js?v=20260702b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -26,13 +26,36 @@
 </head>
 <body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
   <div class="flex min-h-screen">
-    <aside id="admin-sidebar" class="hidden lg:flex flex-col w-60 bg-[#13261A] border-r border-[#22432F] px-4 py-6 fixed top-0 left-0 h-screen z-10"></aside>
+    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
+      <a href="/praticien/dashboard.html" class="flex items-center gap-2.5 font-heading text-xl font-semibold text-forest-deep px-2 mb-2 block" aria-label="IVIA — Accueil"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#2D6A4F"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>IVIA</a>
+      <p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="/praticien/dashboard.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</a>
+        <a href="/praticien/agenda.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
+        <a href="/praticien/seance-express.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Séance express</a>
+        <a href="/praticien/admin-dossiers.html" class="sidebar-link active"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M7 16h6"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Dossiers clients</a>
+        <a href="/praticien/livraisons.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+        <a href="/praticien/guide.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Guide</a>
+        <div class="flex-1"></div>
+        <a href="/praticien/profil.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>Mon profil</a>
+        <a href="/praticien/compte.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Mon compte</a>
+        <div id="sidebar-logout" class="mt-2"></div>
+      </nav>
+    </aside>
 
     <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1100px]">
       <div class="mb-4">
         <h1 class="font-heading text-2xl font-bold text-ink">Dossiers clients</h1>
         <p class="text-sm text-muted mt-1">Pour chaque personne : enregistrements, transcriptions et analyses, réunis.</p>
       </div>
+
+      <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
+        <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Bord</a>
+        <a href="/praticien/seance-express.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Express</a>
+        <a href="/praticien/admin-dossiers.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M7 16h6"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Dossiers</a>
+        <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
+        <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
+      </nav>
 
       <div class="grid lg:grid-cols-[320px_1fr] gap-5">
         <!-- Liste clients -->
@@ -51,7 +74,9 @@
   </div>
 
   <script>
+    renderLogoutButton(document.getElementById('sidebar-logout'));
     function dateCourte(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{day:'numeric',month:'short',year:'numeric'}):'—';}
+    function dateLongue(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{day:'numeric',month:'long',year:'numeric'}):'—';}
     function esc(t){const d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML;}
     function vigBadge(v){if(!v)return '';const u=v.toLowerCase();const urgent=u.includes('urgent')||u.includes('priority');return `<span class="badge ${urgent?'bg-red-100 text-red-700':'bg-amber-50 text-amber-700 border border-amber-200'}">vigilance · ${esc(v)}</span>`;}
 
@@ -63,7 +88,8 @@
         <div class="cli-row" data-id="${c.client_id}">
           <p class="text-sm font-semibold text-ink">${esc(c.nom)}</p>
           <p class="text-xs text-muted">${esc(c.email||'')}</p>
-          <p class="text-[11px] text-muted mt-1">${c.nb_enregistrements} enr. · ${c.nb_transcrits} transcrits · ${c.nb_analyses} analyses${c.derniere_activite?(' · '+dateCourte(c.derniere_activite)):''}</p>
+          <p class="text-[11px] text-muted mt-1">Inscrit·e ${dateCourte(c.date_inscription)}${c.premiere_activite?(' · 1re activité '+dateCourte(c.premiere_activite)):''}</p>
+          <p class="text-[11px] text-muted mt-1">${c.nb_seances_live} live · ${c.nb_enregistrements} enr. · ${c.nb_transcrits} transcrits · ${c.nb_analyses} analyses${c.derniere_activite?(' · actif·ve '+dateCourte(c.derniere_activite)):''}</p>
         </div>`).join('');
       z.querySelectorAll('.cli-row').forEach(r=>r.onclick=()=>{
         z.querySelectorAll('.cli-row').forEach(x=>x.classList.remove('active'));
@@ -109,7 +135,41 @@
       d.innerHTML=`
         <div class="mb-4">
           <h2 class="font-heading text-xl font-bold text-ink">${esc(dos.nom)}</h2>
-          <p class="text-xs text-muted">${esc(dos.email||'')} ${dos.profile_complete?'':'· <span class="text-amber-700">profil incomplet</span>'}</p>
+          <p class="text-xs text-muted">${esc(dos.email||'')} ${dos.phone?('· '+esc(dos.phone)):''} ${dos.profile_complete?'':'· <span class="text-amber-700">profil incomplet</span>'}</p>
+        </div>
+        <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-5">
+          <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface/50">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted">Inscription</p>
+            <p class="text-sm font-semibold text-ink mt-1">${dateLongue(dos.date_inscription)}</p>
+            <p class="text-xs text-muted mt-1">${esc(dos.public_client_code || '')}</p>
+          </div>
+          <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface/50">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted">Activité</p>
+            <p class="text-sm font-semibold text-ink mt-1">1re · ${dateLongue(dos.premiere_activite)}</p>
+            <p class="text-xs text-muted mt-1">Dernière · ${dateLongue(dos.derniere_activite)}</p>
+          </div>
+          <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface/50">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted">Suivi</p>
+            <p class="text-sm font-semibold text-ink mt-1">${dos.nb_seances_live} séances live</p>
+            <p class="text-xs text-muted mt-1">${dos.nb_enregistrements} enregistrements · ${dos.nb_transcrits} transcrits</p>
+          </div>
+          <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface/50">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted">Profil</p>
+            <p class="text-sm font-semibold text-ink mt-1">${esc(dos.territory_code || '—')}${dos.birth_year?(' · '+esc(dos.birth_year)) : ''}</p>
+            <p class="text-xs text-muted mt-1">${esc(dos.gender_identity || 'Genre non renseigné')}</p>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3 mb-6">
+          <div class="border border-bdr rounded-[14px] px-4 py-3">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted">Origine</p>
+            <p class="text-sm text-ink mt-1">${esc(dos.birthplace || 'Lieu de naissance non renseigné')}</p>
+            <p class="text-xs text-muted mt-1">Invitation · ${dateCourte(dos.activation_invited_at)} · Activation · ${dateCourte(dos.activation_accepted_at)}</p>
+          </div>
+          <div class="border border-bdr rounded-[14px] px-4 py-3">
+            <p class="text-[10px] font-semibold uppercase tracking-wider text-muted">Analyses</p>
+            <p class="text-sm text-ink mt-1">${dos.nb_analyses} note(s) clinique(s)</p>
+            <p class="text-xs text-muted mt-1">Repères rapides pour situer le parcours avant lecture détaillée.</p>
+          </div>
         </div>
         <h3 class="text-sm font-bold text-ink mb-2">Enregistrements &amp; transcriptions</h3>
         <div class="space-y-3 mb-6">${enr}</div>

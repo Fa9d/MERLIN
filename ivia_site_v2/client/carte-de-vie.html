@@ -8,8 +8,8 @@
   <meta name="robots" content="noindex">
   <title>IVIA — Votre carte de vie</title>
   <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
-  <script src="/shared/api.js?v=20260615d"></script>
-  <script src="/shared/layout.js?v=20260624b"></script>
+  <script src="/shared/api.js?v=20260702b"></script>
+  <script src="/shared/layout.js?v=20260702a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
@@ -24,38 +24,73 @@
     #constellation text.axe-label{fill:var(--muted);}
     #constellation .ring{stroke:var(--bdr);}
     #constellation .hub{fill:var(--forest-deep);}
+    .axis-row{background:var(--card-bg);border:1px solid var(--bdr);border-radius:14px;padding:10px 12px;}
+    .axis-track{height:8px;background:var(--surface);border-radius:999px;overflow:hidden;border:1px solid var(--bdr);}
+    .axis-fill{height:100%;background:linear-gradient(90deg,#8FB99A,#2D6A4F);}
   </style>
 </head>
 <body class="antialiased">
 <div id="ivia-header"></div>
 <script>renderLayout('voir');</script>
 
-<div class="max-w-3xl mx-auto px-4 py-10 sm:py-12">
-  <h1 class="font-heading text-2xl sm:text-3xl font-bold text-ink mb-2">Votre carte de vie</h1>
-  <p class="text-muted text-sm leading-relaxed max-w-xl mb-8">
-    Votre sol, vos appuis, votre ligne de vie, votre horizon — une lecture vivante qui se
-    compose au fil de vos séances et de ce que vous choisissez d'écrire.
-  </p>
-
-  <!-- Constellation des onze axes -->
-  <div class="bg-card border border-bdr rounded-[24px] p-4 sm:p-7 shadow-sm">
-    <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
-      <h2 class="font-heading text-lg font-bold text-ink">Les onze axes du vivant</h2>
-      <span class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-surface border border-bdr rounded-full px-3 py-1">aperçu · se précise au fil des séances</span>
+<div class="max-w-6xl mx-auto px-4 py-8 sm:py-10 space-y-6">
+  <div class="flex items-start justify-between gap-4 flex-wrap">
+    <div>
+      <h1 class="font-heading text-2xl sm:text-3xl font-bold text-ink mb-2">Carte du vivant · onze axes</h1>
+      <p class="text-muted text-sm leading-relaxed max-w-2xl">
+        Non, vous n'avez pas besoin d'ajouter du contenu pour faire apparaître la progression.
+        Elle est calculée automatiquement à partir de vos traces (séances, journal, repères).
+      </p>
     </div>
-    <p class="text-xs text-muted mb-3">Le territoire en premier — le sol qui précède et porte tout le reste.</p>
-    <svg id="constellation" class="w-full" viewBox="0 0 440 440" role="img" aria-label="Constellation des onze axes de la personne"></svg>
-    <div id="legende" class="flex flex-wrap gap-x-4 gap-y-1.5 mt-3 text-[11px] text-muted"></div>
+    <span id="level-chip" class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-surface border border-bdr rounded-full px-3 py-1">Niveau initial</span>
   </div>
 
-  <div class="bg-surface border border-bdr rounded-[20px] p-6 mt-6 text-center">
-    <p class="text-sm text-muted leading-relaxed max-w-md mx-auto mb-4">
-      Chaque rencontre et chaque saison l'enrichissent. Rien n'est noté, rien n'est jugé —
-      c'est votre chemin, rendu visible.
+  <div class="grid xl:grid-cols-[1.25fr_0.75fr] gap-5 items-start">
+    <section class="bg-card border border-bdr rounded-[24px] p-4 sm:p-6 shadow-sm">
+      <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+        <h2 class="font-heading text-lg font-bold text-ink">Constellation vivante</h2>
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-surface border border-bdr rounded-full px-3 py-1">mise à jour dynamique</span>
+      </div>
+      <p class="text-xs text-muted mb-3">Territoire en premier : le sol vivant qui précède et conditionne les autres axes.</p>
+      <div class="w-full overflow-hidden rounded-[16px] border border-bdr bg-surface p-2 sm:p-3">
+        <svg id="constellation" class="w-full h-auto block" viewBox="0 0 440 440" role="img" aria-label="Constellation des onze axes du vivant"></svg>
+      </div>
+      <div id="legende" class="flex flex-wrap gap-x-4 gap-y-1.5 mt-3 text-[11px] text-muted"></div>
+    </section>
+
+    <aside class="bg-card border border-bdr rounded-[24px] p-5">
+      <h2 class="font-heading text-lg font-bold text-ink">Concepts clés</h2>
+      <p class="text-xs text-muted mt-1 mb-4">Cliquez un axe dans la liste pour voir ce qu'il signifie.</p>
+      <div id="concept-card" class="bg-surface border border-bdr rounded-[14px] p-4">
+        <p id="concept-title" class="text-sm font-semibold text-ink">Territoire</p>
+        <p id="concept-text" class="text-xs text-muted leading-relaxed mt-1">Le sol vécu : lieux, contexte, sécurité et appartenance.</p>
+      </div>
+      <div class="mt-4 text-xs text-muted leading-relaxed">
+        <p><strong class="text-ink">Repère :</strong> cette visualisation n'est pas un diagnostic.</p>
+        <p class="mt-1">Elle sert à observer des tendances, puis à en discuter en séance.</p>
+      </div>
+      <a href="/client/ma-progression.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir la ligne de vie →</a>
+    </aside>
+  </div>
+
+  <section class="bg-card border border-bdr rounded-[24px] p-5 sm:p-6">
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-4">
+      <h2 class="font-heading text-lg font-bold text-ink">Progression par axe</h2>
+      <span id="source-line" class="text-[11px] text-muted">Sources : séances, journal, repères</span>
+    </div>
+    <div id="axes-list" class="grid md:grid-cols-2 gap-3">
+      <p class="text-sm text-muted">Chargement des axes…</p>
+    </div>
+  </section>
+
+  <div class="bg-surface border border-bdr rounded-[20px] p-6 text-center">
+    <p class="text-sm text-muted leading-relaxed max-w-xl mx-auto mb-4">
+      Chaque rencontre et chaque saison enrichissent la carte. Votre journal reste central : c'est lui qui donne la matière la plus fine.
     </p>
-    <a href="/reserver.html" class="inline-block bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors">
-      Vivre une première séance
-    </a>
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      <a href="/client/journal.html" class="inline-block border border-bdr text-ink font-semibold px-5 py-2.5 rounded-[12px] hover:bg-white transition-colors">Écrire dans le journal</a>
+      <a href="/reserver.html" class="inline-block bg-forest-deep text-white font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Réserver une séance</a>
+    </div>
   </div>
 </div>
 
@@ -63,28 +98,73 @@
 <script>renderLayout('voir');</script>
 
 <script>
-  // Onze axes — ordre canonique (territoire en premier). Intensité « en composition »
-  // (aperçu doux ; sera alimenté par les séances + le journal quand les données existeront).
-  const AXES = [
-    { key:'territoire',       label:'Territoire',        v:0.85 },
-    { key:'corps',            label:'Corps',             v:0.55 },
-    { key:'metabolisme',      label:'Métabolisme',       v:0.40 },
-    { key:'emotions',         label:'Émotions',          v:0.65 },
-    { key:'mental',           label:'Mental',            v:0.60 },
-    { key:'relations',        label:'Relations',         v:0.50 },
-    { key:'famille',          label:'Famille',           v:0.45 },
-    { key:'transgenerationnel',label:'Transgénérationnel',v:0.35 },
-    { key:'societe',          label:'Société',           v:0.40 },
-    { key:'spirituel',        label:'Spirituel',         v:0.50 },
-    { key:'urgence',          label:'Repère / urgence',  v:0.30 },
+  const AXES_META = [
+    { key:'territoire', label:'Territoire', base:0.46, w:1.15, concept:'Le sol vécu : lieux, contexte, sécurité et appartenance.' },
+    { key:'corps', label:'Corps', base:0.44, w:1.0, concept:'Rythmes corporels, sensations et signaux du quotidien.' },
+    { key:'metabolisme', label:'Métabolisme', base:0.4, w:0.92, concept:'Énergie, récupération, sommeil et régulation de base.' },
+    { key:'emotions', label:'Émotions', base:0.43, w:1.05, concept:'Capacité à reconnaître, nommer et traverser les états émotionnels.' },
+    { key:'mental', label:'Mental', base:0.45, w:1.0, concept:'Clarté de pensée, attention, prise de recul et compréhension.' },
+    { key:'relations', label:'Relations', base:0.42, w:0.95, concept:'Qualité des liens, frontières et soutien relationnel.' },
+    { key:'famille', label:'Famille', base:0.39, w:0.88, concept:'Dynamiques familiales présentes et héritées.' },
+    { key:'transgenerationnel', label:'Transgénérationnel', base:0.34, w:0.82, concept:'Traces, loyautés invisibles, transmissions intergénérationnelles.' },
+    { key:'societe', label:'Société', base:0.38, w:0.86, concept:'Contexte social, travail, collectifs, pression et appuis.' },
+    { key:'spirituel', label:'Spirituel / existentiel', base:0.4, w:0.84, concept:'Sens, direction, valeurs, lien à plus grand que soi.' },
+    { key:'urgence', label:'Repère / urgence', base:0.33, w:0.78, concept:'Signal d’alerte, besoins immédiats, orientation de sécurité.' },
   ];
 
-  (function dessiner() {
+  function clamp(v) { return Math.max(0.1, Math.min(0.98, v)); }
+  function scoreToLevel(v) {
+    if (v >= 0.72) return 'présent';
+    if (v >= 0.5) return 'émergent';
+    return 'en attente';
+  }
+
+  function averageToneBoost(entries) {
+    if (!entries || !entries.length) return 0;
+    const table = { calme:0.06, leger:0.05, charge:0.02, fatigue:-0.02, confus:-0.02, triste:-0.03, en_colere:-0.04 };
+    let sum = 0, n = 0;
+    entries.forEach(e => {
+      if (e && e.emotional_tone && table[e.emotional_tone] != null) {
+        sum += table[e.emotional_tone];
+        n += 1;
+      }
+    });
+    if (!n) return 0;
+    return Math.max(-0.05, Math.min(0.06, sum / n));
+  }
+
+  function renderConcept(axis) {
+    document.getElementById('concept-title').textContent = axis.label;
+    document.getElementById('concept-text').textContent = axis.concept;
+  }
+
+  function renderBars(axes) {
+    const zone = document.getElementById('axes-list');
+    zone.innerHTML = '';
+    axes.forEach(a => {
+      const pct = Math.round(a.v * 100);
+      const level = scoreToLevel(a.v);
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'axis-row text-left hover:border-forest transition-colors';
+      row.innerHTML = `
+        <div class="flex items-center justify-between gap-2">
+          <p class="text-sm font-semibold text-ink">${a.label}</p>
+          <span class="text-[11px] font-semibold uppercase tracking-wider text-muted">${pct}% · ${level}</span>
+        </div>
+        <div class="axis-track mt-2"><div class="axis-fill" style="width:${pct}%"></div></div>
+      `;
+      row.addEventListener('click', () => renderConcept(a));
+      zone.appendChild(row);
+    });
+  }
+
+  function drawConstellation(axes) {
     const svg = document.getElementById('constellation');
     const CX = 220, CY = 220, R = 165;
-    const n = AXES.length;
+    const n = axes.length;
     let liens = '', noeuds = '', labels = '';
-    AXES.forEach((a, i) => {
+    axes.forEach((a, i) => {
       const ang = (-Math.PI / 2) + (i * 2 * Math.PI / n); // départ en haut, sens horaire
       const x = CX + R * Math.cos(ang);
       const y = CY + R * Math.sin(ang);
@@ -108,6 +188,34 @@
       '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#2D6A4F;display:inline-block"></span>présent</span>' +
       '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#8FB99A;display:inline-block"></span>émergent</span>' +
       '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#CFE3D2;display:inline-block"></span>en attente</span>';
+  }
+
+  (async function initCarteVivant() {
+    let bookings = [], entries = [], docs = [], recs = [];
+    try { bookings = await getMyBookings(); } catch (e) {}
+    try { entries = await getMyJournal(); } catch (e) {}
+    try { docs = await getMyDocuments(); } catch (e) {}
+    try { recs = await getMyRecordings(); } catch (e) {}
+
+    const today = new Date().toISOString().slice(0, 10);
+    const confirmed = bookings.filter(b => b.status === 'confirmed');
+    const pastSessions = confirmed.filter(b => b.slot_date < today).length;
+    const upcomingSessions = confirmed.filter(b => b.slot_date >= today).length;
+    const journalCount = entries.length;
+    const repereCount = docs.length + recs.filter(r => !!r.transcript_ready).length;
+    const toneBoost = averageToneBoost(entries);
+    const volume = Math.min(1, (pastSessions * 0.12) + (journalCount * 0.04) + (repereCount * 0.06) + (upcomingSessions * 0.03));
+
+    const axes = AXES_META.map(a => ({ ...a, v: clamp(a.base + (volume * a.w * 0.35) + toneBoost) }));
+    const mean = axes.reduce((s, a) => s + a.v, 0) / axes.length;
+    const level = mean >= 0.7 ? 'Niveau ancré' : mean >= 0.52 ? 'Niveau émergent' : 'Niveau initial';
+    document.getElementById('level-chip').textContent = level;
+    document.getElementById('source-line').textContent =
+      `Sources : ${pastSessions} séance(s) vécue(s), ${journalCount} entrée(s) journal, ${repereCount} repère(s)`;
+
+    drawConstellation(axes);
+    renderBars(axes);
+    renderConcept(axes[0]);
   })();
 </script>
 </body>

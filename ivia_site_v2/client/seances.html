@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Mes séances</title>
   <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
-  <script src="/shared/api.js?v=20260615d"></script>
+  <script src="/shared/api.js?v=20260702b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
@@ -29,8 +29,8 @@
 <body class="antialiased min-h-screen bg-cream">
 
 <div id="ivia-header"></div>
-<script src="/shared/layout.js?v=20260624b"></script>
-<script>renderLayout('parler');</script>
+<script src="/shared/layout.js?v=20260702a"></script>
+<script>renderLayout('aujourdhui', 'Mes séances');</script>
 
     <!-- MAIN -->
     <main class="max-w-5xl mx-auto px-4 sm:px-8 py-8">
@@ -61,7 +61,7 @@
       </section>
 
       <!-- Séances passées -->
-      <section aria-labelledby="passees-title">
+      <section aria-labelledby="passees-title" id="liste-section">
         <h2 id="passees-title" class="font-heading text-base font-semibold text-ink mb-4">Séances passées</h2>
         <div class="space-y-3" id="passees-list">
           <!-- rempli par JS -->
@@ -71,7 +71,7 @@
     </main>
 
 <div id="ivia-footer"></div>
-<script>renderLayout('parler');</script>
+<script>renderLayout('aujourdhui', 'Mes séances');</script>
 
   <script>
     // ── Helpers d'affichage ────────────────────────────────────────────
@@ -84,17 +84,39 @@
     function dateLongue(isoDate) {
       return new Date(isoDate + 'T12:00:00').toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     }
+    function renderSessionCard(s, badgeLabel, badgeClass) {
+      return `
+        <div class="card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
+            <span class="text-[10px] font-semibold text-muted uppercase">${moisAbrege(s.slot_date)}</span>
+            <span class="text-xl font-bold text-ink leading-none">${jourNum(s.slot_date)}</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-0.5">
+              <p class="font-semibold text-ink text-sm">${dateLongue(s.slot_date)}</p>
+              <span class="badge ${badgeClass}">${badgeLabel}</span>
+            </div>
+            <p class="text-xs text-muted">${formatHeure(s.start_time)} – ${formatHeure(s.end_time)}</p>
+          </div>
+        </div>`;
+    }
 
     // ── Séances réelles — GET /bookings/my (hold + confirmées) ──────────
     async function chargerSeances() {
       const pc   = document.getElementById('prochaine-content');
       const list = document.getElementById('passees-list');
+      const prochaineSection = document.getElementById('prochaine-section');
+      const listeSection = document.getElementById('liste-section');
+      const listeTitle = document.getElementById('passees-title');
+      const vue = new URLSearchParams(location.search).get('vue');
+      const vueAVenir = vue === 'a-venir';
+      const vueVecues = vue === 'vecues';
       let slots = [];
       try {
         slots = await getMyBookings();
       } catch (e) {
         if (list) list.innerHTML = '<p class="text-sm text-muted">Vos séances apparaîtront ici.</p>';
-        document.getElementById('prochaine-section').classList.add('hidden');
+        prochaineSection.classList.add('hidden');
         return;
       }
 
@@ -102,9 +124,18 @@
       const a_venir = slots.filter(s => s.slot_date >= aujourdhui);
       const passees = slots.filter(s => s.slot_date < aujourdhui).reverse();
 
+      if (vueVecues) {
+        prochaineSection.classList.add('hidden');
+        listeTitle.textContent = 'Séances vécues';
+      } else if (vueAVenir) {
+        listeTitle.textContent = 'Autres séances à venir';
+      } else {
+        listeTitle.textContent = 'Séances passées';
+      }
+
       // Prochaine séance
       const prochaine = a_venir[0];
-      if (prochaine && pc) {
+      if (!vueVecues && prochaine && pc) {
         const enAttente = prochaine.status === 'hold';
         const badge = document.querySelector('#prochaine-section .badge');
         if (badge) badge.textContent = enAttente ? 'À confirmer' : 'À venir';
@@ -118,39 +149,32 @@
             <p class="text-sm text-muted mt-0.5">${formatHeure(prochaine.start_time)} – ${formatHeure(prochaine.end_time)}${enAttente ? ' · <strong class="text-amber-700">paiement à compléter</strong>' : ' · le lien arrive par courriel avant l\'heure'}</p>
             <div class="flex gap-2 mt-3">
               ${enAttente ? `<button onclick="payerSeance('${prochaine.id}')" class="text-sm font-semibold bg-forest-deep text-white rounded-[10px] px-5 py-2 hover:bg-forest transition-colors cursor-pointer">Payer maintenant →</button>` : ''}
-              <button onclick="annulerSeance('${prochaine.id}')" class="text-xs font-medium text-muted hover:text-red-600 px-3 py-1.5 cursor-pointer">
+              <button onclick="annulerSeance('${prochaine.id}')"               class="text-xs font-medium text-muted hover:text-red-600 px-3 py-1.5 cursor-pointer">
                 Annuler
               </button>
             </div>
           </div>`;
-        if (a_venir.length > 1) {
-          pc.insertAdjacentHTML('afterend',
-            `<p class="text-xs text-muted mt-3">${a_venir.length - 1} autre(s) séance(s) à venir.</p>`);
-        }
       } else {
-        document.getElementById('prochaine-section').classList.add('hidden');
+        prochaineSection.classList.add('hidden');
       }
 
-      // Séances passées
+      // Liste secondaire selon la vue
       if (list) {
-        if (!passees.length) {
-          list.innerHTML = `<p class="text-sm text-muted">Aucune séance passée pour l'instant.</p>`;
+        const items = vueAVenir ? a_venir.slice(1) : passees;
+        if (!items.length) {
+          list.innerHTML = vueAVenir
+           ? `<p class="text-sm text-muted">Aucune autre séance à venir pour l'instant.</p>`
+           : `<p class="text-sm text-muted">Aucune séance passée pour l'instant.</p>`;
+          if (vueAVenir && !prochaine) {
+           listeSection.classList.add('hidden');
+          }
           return;
         }
-        list.innerHTML = passees.map(s => `
-          <div class="card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-              <span class="text-[10px] font-semibold text-muted uppercase">${moisAbrege(s.slot_date)}</span>
-              <span class="text-xl font-bold text-ink leading-none">${jourNum(s.slot_date)}</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-0.5">
-                <p class="font-semibold text-ink text-sm">${dateLongue(s.slot_date)}</p>
-                <span class="badge badge-past">Passée</span>
-              </div>
-              <p class="text-xs text-muted">${formatHeure(s.start_time)} – ${formatHeure(s.end_time)}</p>
-            </div>
-          </div>`).join('');
+        list.innerHTML = items.map(s => renderSessionCard(
+          s,
+          vueAVenir ? (s.status === 'hold' ? 'À confirmer' : 'À venir') : 'Passée',
+          vueAVenir ? (s.status === 'hold' ? 'badge-pending' : 'badge-upcoming') : 'badge-past'
+        )).join('');
       }
     }
     chargerSeances();

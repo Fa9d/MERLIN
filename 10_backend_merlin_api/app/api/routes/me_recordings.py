@@ -133,7 +133,6 @@ def _to_read(record: SessionRecord) -> MyRecordingRead:
         duration_minutes=record.duration_minutes,
         status=record.session_status_code.value,
         transcript_ready=bool(record.transcript_text),
-        transcript_text=record.transcript_text,
     )
 
 
