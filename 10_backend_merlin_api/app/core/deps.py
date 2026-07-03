@@ -92,6 +92,16 @@ def require_practitioner_or_operator():
     return require_roles(AppRole.practitioner, AppRole.operator)
 
 
+def require_client():
+    """Alias de compatibilité pour les routes client historiques.
+
+    Plusieurs surfaces client utilisent déjà `get_current_user` sans contrainte
+    de rôle stricte (ex. /me/*). On garde ce comportement ici pour éviter de
+    casser les imports et le démarrage API.
+    """
+    return get_current_user
+
+
 def require_supervisor():
     """Guard réservé au rôle `supervisor` uniquement.
 
