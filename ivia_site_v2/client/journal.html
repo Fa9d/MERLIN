@@ -497,73 +497,189 @@
 
   const TODAY = new Date().toISOString().slice(0, 10);
 
-  // ── Moteur d'analyse du jour ──────────────────────────────────────────────
+  // ── Moteur d'analyse contextuelle (utilise l'historique complet) ─────────
   function analyserJournee(todayEntries) {
-    const archi = todayEntries.map(e => parseArchi(e.body_text)).find(Boolean);
-    const libre = todayEntries.find(e => !e.body_text.startsWith('ARCHI_') );
-    const texteLibre = libre ? libre.body_text : (archi ? archi.note : '');
+    const archi    = todayEntries.map(e => parseArchi(e.body_text)).find(Boolean);
+    const libreEn  = todayEntries.find(e => !e.body_text.startsWith('ARCHI_'));
+    const texteLibre = libreEn ? libreEn.body_text : (archi ? archi.note : '');
 
-    if (!archi) {
-      // Entrée libre seulement
-      return {
-        resume: 'Vous avez déposé une note libre aujourd\'hui.',
-        observation: texteLibre ? `« ${texteLibre.slice(0, 180)}${texteLibre.length > 180 ? '…' : ''} »` : '',
-        hypothese: 'Écrire, c\'est déjà observer. Cette trace restera disponible pour votre praticien.',
-        orientation: 'Prenez un instant ce soir pour noter une chose qui vous a ancré aujourd\'hui.',
-        score: null,
-        couleur: '#4A7C59',
-        emoji: '📝',
-      };
+    // ── Contexte historique depuis entriesCache ──────────────────────────
+    const now = new Date(TODAY + 'T12:00:00');
+    const historique = (entriesCache || [])
+      .map(e => { const a = parseArchi(e.body_text); return a ? { ...a, written_at: e.written_at } : null; })
+      .filter(Boolean)
+      .filter(e => new Date(e.written_at).toISOString().slice(0,10) !== TODAY)
+      .sort((a, b) => new Date(b.written_at) - new Date(a.written_at));
+
+    function daysAgo(entry) { return (now - new Date(entry.written_at)) / 86400000; }
+    const hist7  = historique.filter(e => daysAgo(e) <= 7);
+    const hist14 = historique.filter(e => daysAgo(e) <= 14);
+    const hist30 = historique.filter(e => daysAgo(e) <= 30);
+
+    const avg = (arr, key) => arr.length ? (arr.reduce((s,e) => s + (e[key] || 0), 0) / arr.length) : null;
+    const avg7Energie  = avg(hist7,  'energie');
+    const avg14Energie = avg(hist14, 'energie');
+
+    // Stresseurs récurrents cette semaine
+    const stressMap = {};
+    hist7.flatMap(e => (e.stressors||[]).filter(Boolean)).forEach(s => { stressMap[s] = (stressMap[s]||0)+1; });
+    const topStressor = Object.entries(stressMap).sort((a,b)=>b[1]-a[1])[0];
+
+    // HeartMath
+    const hmCount7  = hist7.filter(e => (e.heartmath||[]).length > 0).length;
+    const hmToday   = archi && (archi.heartmath||[]).length > 0;
+
+    // Streaks consécutifs (à partir d'hier)
+    let streakPos = 0, streakStress = 0;
+    for (const e of historique) {
+      if (e.humeur === 'coherence' || e.humeur === 'flow') streakPos++;
+      else break;
+    }
+    for (const e of historique) {
+      if (e.humeur === 'stress') streakStress++;
+      else break;
+    }
+
+    // Scores historiques
+    const scores14 = hist14.map(e => e.score || 0);
+    const minScore14 = scores14.length ? Math.min(...scores14) : null;
+    const maxScore14 = scores14.length ? Math.max(...scores14) : null;
+
+    // Corrélation sommeil → énergie
+    let corrSommeil = null;
+    if (hist14.length >= 4) {
+      const mauvaisNuits = hist14.filter(e => e.sommeil === 'mauvais');
+      if (mauvaisNuits.length >= 2) {
+        const moy = avg(mauvaisNuits, 'energie');
+        if (moy !== null && moy <= 4.5)
+          corrSommeil = `Chaque fois que le sommeil est noté "mauvais", l'énergie tombe à ${moy.toFixed(1)}/10 en moyenne — la corrélation est établie dans votre historique.`;
+      }
     }
 
     const humeurMap = {
-      stress:    { label: 'stress et incohérence', couleur: '#DC2626', emoji: '🔴' },
-      neutre:    { label: 'neutralité et transition', couleur: '#D97706', emoji: '🟡' },
-      coherence: { label: 'cohérence et calme', couleur: '#16A34A', emoji: '🟢' },
-      flow:      { label: 'flow et créativité', couleur: '#2563EB', emoji: '🔵' },
+      stress:    { label: 'stress',     couleur: '#DC2626', emoji: '🔴' },
+      neutre:    { label: 'neutralité', couleur: '#D97706', emoji: '🟡' },
+      coherence: { label: 'cohérence',  couleur: '#16A34A', emoji: '🟢' },
+      flow:      { label: 'flow',       couleur: '#2563EB', emoji: '🔵' },
     };
+
+    // ── CAS : entrée libre seulement ──────────────────────────────────────
+    if (!archi) {
+      const ctxSemaine = hist7.length > 0
+        ? `Sur vos ${hist7.length} dernière${hist7.length>1?'s':''} journée${hist7.length>1?'s':''} tracée${hist7.length>1?'s':''} : énergie moyenne ${avg7Energie !== null ? avg7Energie.toFixed(1) : '—'}/10.`
+        : '';
+      let hyp = 'Écrire sans structure, c\'est parfois la forme la plus honnête.';
+      if (hist7.length === 0) {
+        hyp = 'Première trace dans le journal. L\'analyse s\'enrichira à mesure que vous revenez.';
+      } else if (hist7.filter(e => e.humeur==='stress').length >= 3) {
+        const n = hist7.filter(e => e.humeur==='stress').length;
+        hyp = `${n} journées de stress cette semaine — choisir l'écriture libre aujourd'hui plutôt que le questionnaire peut être une façon de ne pas se mesurer. C'est une donnée en soi.`;
+      }
+      return {
+        resume: `Note libre déposée. ${ctxSemaine}`,
+        observation: texteLibre ? `« ${texteLibre.slice(0,200)}${texteLibre.length>200?'…':''} »` : '',
+        hypothese: hyp,
+        orientation: 'Ce soir, nommez intérieurement une seule émotion dominante de la journée. Pas besoin de l\'écrire — juste la reconnaître.',
+        score: null, couleur: '#4A7C59', emoji: '📝', insights: [],
+      };
+    }
+
+    // ── CAS : entrée structurée ───────────────────────────────────────────
     const h = humeurMap[archi.humeur] || humeurMap.neutre;
-    const energie = archi.energie || 5;
-    const score = archi.score || 0;
-    const stressors = (archi.stressors || []).filter(Boolean);
-    const hm = (archi.heartmath || []).length > 0;
+    const energie   = archi.energie || 5;
+    const todayScore = archi.score  || 0;
 
-    // Résumé narratif
-    const energieMot = energie <= 3 ? 'faible' : energie <= 6 ? 'modérée' : energie <= 8 ? 'bonne' : 'élevée';
-    const sommeilMot = { mauvais: 'fragile', moyen: 'correcte', excellent: 'excellente' }[archi.sommeil] || 'correcte';
-    let resume = `Journée marquée par un état de ${h.label}, avec une énergie ${energieMot} (${energie}/10) et une qualité de sommeil ${sommeilMot}.`;
-    if (hm) resume += ' Pratique HeartMath présente — signal positif pour la régulation.';
-    if (stressors.length) resume += ` Déclencheurs identifiés : ${stressors.slice(0,2).join(', ')}.`;
+    // Résumé contextuel
+    let resume = '';
+    if (hist7.length === 0) {
+      resume = `Première entrée structurée — état de ${h.label}, énergie ${energie}/10.`;
+    } else {
+      const delta = avg7Energie !== null ? (energie - avg7Energie) : null;
+      let tendance = '';
+      if (delta !== null) {
+        if (delta > 1.5) tendance = `, en hausse de +${delta.toFixed(1)} par rapport à votre semaine (moy. ${avg7Energie.toFixed(1)})`;
+        else if (delta < -1.5) tendance = `, en baisse de ${Math.abs(delta).toFixed(1)} pts vs votre semaine (moy. ${avg7Energie.toFixed(1)})`;
+        else tendance = `, dans la continuité de votre semaine (moy. ${avg7Energie.toFixed(1)}/10)`;
+      }
+      resume = `État de ${h.label} aujourd'hui, énergie ${energie}/10${tendance}.`;
+    }
 
-    // Observation structurée
-    let observation = '';
-    if (archi.grace) observation += `Moment de grâce : « ${archi.grace} ». `;
-    if (archi.lecon) observation += `Leçon retenue : « ${archi.lecon} ».`;
-    if (texteLibre && !observation) observation = `Note : « ${texteLibre.slice(0, 160)}… »`;
+    // Insights factuels (max 4, les plus significatifs d'abord)
+    const insights = [];
 
-    // Hypothèse
+    if ((archi.humeur==='coherence'||archi.humeur==='flow') && streakPos >= 2)
+      insights.push({ icon:'🔥', text:`${streakPos+1} jours consécutifs en cohérence/flow — c'est un élan mesurable.` });
+
+    if (archi.humeur==='stress' && streakStress >= 2)
+      insights.push({ icon:'⚠️', text:`${streakStress+1} journées de stress consécutives. Ce n'est pas une mauvaise journée isolée — c'est un signal de fond.` });
+
+    if (scores14.length >= 3) {
+      const moy14 = scores14.reduce((a,b)=>a+b,0)/scores14.length;
+      if (todayScore <= minScore14)
+        insights.push({ icon:'📉', text:`Score le plus bas des 14 derniers jours (${todayScore} vs moy. ${moy14.toFixed(0)}). Votre praticien·ne doit savoir.` });
+      else if (todayScore >= maxScore14)
+        insights.push({ icon:'📈', text:`Score le plus élevé des 14 derniers jours (${todayScore}). Remarquable.` });
+    }
+
+    if (topStressor && topStressor[1] >= 2)
+      insights.push({ icon:'🔁', text:`"${topStressor[0]}" revient ${topStressor[1]+1} fois cette semaine — déclencheur récurrent à nommer explicitement en séance.` });
+
+    if (hmToday && hmCount7 >= 3)
+      insights.push({ icon:'💚', text:`HeartMath ${hmCount7+1} fois cette semaine — l'habitude s'ancre. Les effets sur votre énergie devraient être visibles dans 2–3 semaines.` });
+    else if (!hmToday && hist7.length >= 4 && hmCount7 === 0)
+      insights.push({ icon:'💤', text:`Aucune pratique HeartMath cette semaine. Si ce n'est pas intentionnel, votre praticien·ne peut vous aider à identifier le blocage.` });
+
+    if (corrSommeil)
+      insights.push({ icon:'🌙', text: corrSommeil });
+
+    // Observation (grâce + leçon + note libre)
+    const parts = [];
+    if (archi.grace) parts.push(`Moment de grâce : « ${archi.grace} »`);
+    if (archi.lecon) parts.push(`Leçon : « ${archi.lecon} »`);
+    if (texteLibre && !archi.grace && !archi.lecon) parts.push(`Note : « ${texteLibre.slice(0,160)}${texteLibre.length>160?'…':''} »`);
+    const observation = parts.join(' · ');
+
+    // Hypothèse — basée sur les patterns, pas sur la journée seule
     let hypothese = '';
-    if (archi.humeur === 'stress' && energie <= 4) {
-      hypothese = 'Le système nerveux semble sous tension. L\'accumulation de déclencheurs peut amplifier la perception de surcharge.';
-    } else if (archi.humeur === 'flow' || archi.humeur === 'coherence') {
-      hypothese = 'Vous êtes dans un état de ressource. C\'est le bon moment pour ancrer les apprentissages et poser des intentions.';
-    } else if (archi.sommeil === 'mauvais') {
-      hypothese = 'Un sommeil fragilisé colore souvent la perception de la journée. L\'état observé pourrait s\'améliorer avec un meilleur repos.';
+    if (streakStress >= 2) {
+      hypothese = `Plusieurs journées consécutives en stress génèrent une fatigue de régulation qui colore même les moments neutres. Ce n'est pas une fatalité — c'est un signe que quelque chose demande à être adressé, pas ignoré.`;
+    } else if (streakPos >= 2 && (archi.humeur==='coherence'||archi.humeur==='flow')) {
+      hypothese = `Vous êtes dans une dynamique de cohérence soutenue. Ces fenêtres sont rares — votre système nerveux est en mode d'apprentissage optimal. C'est le moment d'ancrer, pas seulement de profiter.`;
+    } else if (archi.humeur==='stress' && archi.sommeil==='mauvais') {
+      hypothese = `L'association stress + mauvais sommeil est un cycle auto-entretenu : chacun nourrit l'autre. La question n'est pas "pourquoi je me sens mal" mais "lequel arrive en premier, et peut-on intervenir là".`;
+    } else if (hist7.length >= 4) {
+      const humeursDiverses = new Set(hist7.map(e => e.humeur)).size;
+      if (humeursDiverses >= 3) {
+        hypothese = `Votre semaine montre ${humeursDiverses} états différents — forte variabilité. Cela peut indiquer une réactivité élevée aux événements externes, ou une capacité d'adaptation. Votre praticien·ne peut vous aider à distinguer les deux.`;
+      } else {
+        const dominante = hist7.reduce((acc,e) => { acc[e.humeur]=(acc[e.humeur]||0)+1; return acc; }, {});
+        const [top] = Object.entries(dominante).sort((a,b)=>b[1]-a[1]);
+        hypothese = `Votre semaine est dominée par un état de ${humeurMap[top[0]]?.label||top[0]} (${top[1]}/${hist7.length} jours). La régularité du journal permet maintenant de voir si c'est une tendance ou une phase.`;
+      }
     } else {
-      hypothese = 'Journée de transition — ni pic ni creux. Ces moments de neutralité sont souvent des espaces de réorganisation intérieure.';
+      hypothese = `${hist7.length + 1} données cette semaine — les patterns commencent à être lisibles. Chaque entrée future affine la lecture.`;
     }
 
-    // Orientation
+    // Orientation — concrète, ancrée dans ce qui vient d'être observé
     let orientation = '';
-    if (archi.humeur === 'stress' || energie <= 4) {
-      orientation = 'Ce soir : 5 min de cohérence cardiaque avant le coucher. Demain matin, notez une seule priorité avant d\'ouvrir votre téléphone.';
-    } else if (archi.humeur === 'flow' || score >= 15) {
-      orientation = 'Capitalisez sur cet élan : notez 1 intention concrète pour demain. Votre praticien·ne saura valoriser ce moment de flow.';
+    if (streakStress >= 2) {
+      orientation = `Ce soir : nommez une seule chose concrète qui a alimenté ce stress. Pas pour la résoudre — pour la voir clairement. Amenez-la nommée à votre prochaine séance.`;
+    } else if (archi.humeur==='flow' && archi.grace) {
+      const g = archi.grace.slice(0,60) + (archi.grace.length>60?'…':'');
+      orientation = `Ancrez ce moment de grâce — « ${g} ». Demain matin, relisez-le avant de commencer votre journée. Votre praticien·ne peut partir de là pour construire.`;
+    } else if (topStressor && topStressor[1] >= 2) {
+      orientation = `"${topStressor[0]}" est revenu ${topStressor[1]+1} fois. Ce n'est plus une coïncidence — c'est une donnée. Formulez-la en une phrase avant votre prochaine séance.`;
+    } else if (hmToday) {
+      orientation = `Pratique HeartMath notée. Si vous la répétez ce soir, notez demain la qualité de votre sommeil — la corrélation est documentée et personnellement mesurable.`;
+    } else if (archi.sommeil==='mauvais') {
+      orientation = `Sommeil fragile noté. Ce soir : pas d'écran 45 min avant le coucher + 5 min de cohérence cardiaque. Demain, notez si l'énergie diffère — c'est la seule façon de savoir si ça marche pour vous.`;
+    } else if (archi.humeur==='coherence'||archi.humeur==='flow') {
+      orientation = `Journée de ressource. Posez une intention concrète pour demain avant de fermer vos yeux ce soir. Pas un objectif — une direction.`;
     } else {
-      orientation = 'Demain, observez le premier signal de votre corps en vous réveillant — c\'est souvent le plus honnête.';
+      orientation = `Demain matin, avant d'ouvrir votre téléphone : notez mentalement votre premier état au réveil. Ce micro-signal est souvent le plus honnête de la journée.`;
     }
 
-    return { resume, observation, hypothese, orientation, score, couleur: h.couleur, emoji: h.emoji };
+    return { resume, observation, hypothese, orientation, score: todayScore, couleur: h.couleur, emoji: h.emoji, insights };
   }
 
   // ── Bascule vers la vue résultat ─────────────────────────────────────────
@@ -575,36 +691,50 @@
     const resultSection = document.getElementById('today-result');
     resultSection.classList.remove('hidden');
 
-    const dateLabel = new Date(TODAY + 'T12:00:00').toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const dateLabel = new Date(TODAY + 'T12:00:00').toLocaleDateString('fr-CA', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
     document.getElementById('today-result-date').textContent = dateLabel;
 
-    const analyse = analyserJournee(todayEntries);
+    const a = analyserJournee(todayEntries);
     const body = document.getElementById('today-result-body');
 
+    const insightsHtml = (a.insights||[]).length ? `
+      <div class="mt-4 space-y-2">
+        <p class="field-label mb-2">Ce que votre historique révèle</p>
+        ${a.insights.map(i => `
+          <div class="flex items-start gap-3 p-3 rounded-[12px] bg-surface border border-bdr">
+            <span class="text-base mt-0.5 shrink-0">${i.icon}</span>
+            <p class="text-sm text-ink leading-relaxed">${i.text}</p>
+          </div>`).join('')}
+      </div>` : '';
+
     body.innerHTML = `
-      <div class="flex items-center gap-3 p-4 rounded-[14px] border" style="border-color:${analyse.couleur}22;background:${analyse.couleur}08;">
-        <span class="text-2xl">${analyse.emoji}</span>
-        <p class="text-sm text-ink leading-relaxed">${analyse.resume}</p>
-        ${analyse.score !== null ? `<span class="ml-auto shrink-0 text-xs font-bold px-3 py-1 rounded-full" style="background:${analyse.couleur}18;color:${analyse.couleur}">✨ ${analyse.score}</span>` : ''}
+      <div class="flex items-start gap-3 p-4 rounded-[14px] border" style="border-color:${a.couleur}22;background:${a.couleur}08;">
+        <span class="text-2xl shrink-0">${a.emoji}</span>
+        <p class="text-sm text-ink leading-relaxed">${a.resume}</p>
+        ${a.score ? `<span class="ml-auto shrink-0 text-xs font-bold px-3 py-1 rounded-full self-start" style="background:${a.couleur}18;color:${a.couleur}">✨ ${a.score}</span>` : ''}
       </div>
 
-      ${analyse.observation ? `
-      <div class="mt-3">
-        <p class="field-label mb-1">Observation</p>
-        <p class="text-sm text-ink leading-relaxed italic">${analyse.observation}</p>
+      ${a.observation ? `
+      <div class="mt-4">
+        <p class="field-label mb-1">Ce que vous avez déposé</p>
+        <p class="text-sm text-ink leading-relaxed italic">${a.observation}</p>
       </div>` : ''}
 
-      <div class="mt-3">
-        <p class="field-label mb-1">Hypothèse</p>
-        <p class="text-sm text-ink leading-relaxed">${analyse.hypothese}</p>
+      ${insightsHtml}
+
+      <div class="mt-4 p-4 rounded-[14px] bg-surface border border-bdr">
+        <p class="field-label mb-1.5">Lecture contextuelle</p>
+        <p class="text-sm text-ink leading-relaxed">${a.hypothese}</p>
       </div>
 
-      <div class="mt-3 p-4 rounded-[14px] bg-surface border border-bdr">
+      <div class="mt-4 p-4 rounded-[14px] border-l-4" style="border-color:${a.couleur};background:${a.couleur}06;">
         <p class="field-label mb-1">Orientation pour demain</p>
-        <p class="text-sm text-ink leading-relaxed">${analyse.orientation}</p>
+        <p class="text-sm text-ink leading-relaxed">${a.orientation}</p>
       </div>
 
-      <p class="text-xs text-muted mt-4 text-center">Cette analyse sera visible dans votre calendrier. Votre praticien·ne y aura accès avant la prochaine séance.</p>
+      <p class="text-xs text-muted mt-5 text-center border-t border-bdr pt-4">
+        ${(a.insights||[]).length ? `Analyse basée sur votre journal. ` : ''}Votre praticien·ne accède à cette synthèse avant chaque séance.
+      </p>
     `;
   }
 
