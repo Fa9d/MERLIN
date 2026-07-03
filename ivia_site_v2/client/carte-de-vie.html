@@ -19,16 +19,21 @@
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1,h2{font-family:'Lora',Georgia,serif;}
-    .axe-dot{transition:r .3s ease, opacity .3s ease;}
+    .axe-dot{transition:r .25s ease, opacity .25s ease, stroke-width .25s ease;cursor:pointer;}
+    .axe-dot:hover{opacity:1;}
+    .axe-dot.sel{stroke:var(--forest-deep);stroke-width:3;opacity:1;}
+    text.axe-label{cursor:pointer;}
+    text.axe-label.sel{fill:var(--forest-deep) !important;font-weight:700;}
     @keyframes breathe { 0%,100%{opacity:.5} 50%{opacity:.9} }
     .breathe{animation:breathe 5s ease-in-out infinite;}
     /* SVG thématisé (le CSS prime sur les attributs inline) */
     #constellation text.axe-label{fill:var(--muted);}
-    #constellation .ring{stroke:var(--bdr);}
+    #constellation .grid-line{stroke:var(--bdr);}
     #constellation .hub{fill:var(--forest-deep);}
     .axis-row{background:var(--card-bg);border:1px solid var(--bdr);border-radius:14px;padding:10px 12px;}
+    .axis-row.sel{border-color:var(--forest-deep);box-shadow:0 0 0 1px var(--forest-deep) inset;}
     .axis-track{height:8px;background:var(--surface);border-radius:999px;overflow:hidden;border:1px solid var(--bdr);}
-    .axis-fill{height:100%;background:linear-gradient(90deg,#8FB99A,#2D6A4F);}
+    .axis-fill{height:100%;background:linear-gradient(90deg,#8FB99A,#2D6A4F);border-radius:999px;transition:width .8s ease;}
   </style>
 </head>
 <body class="antialiased">
@@ -40,8 +45,8 @@
     <div>
       <h1 class="font-heading text-2xl sm:text-3xl font-bold text-ink mb-2">Carte du vivant · onze axes</h1>
       <p class="text-muted text-sm leading-relaxed max-w-2xl">
-        Non, vous n'avez pas besoin d'ajouter du contenu pour faire apparaître la progression.
-        Elle est calculée automatiquement à partir de vos traces (séances, journal, repères).
+        Votre carte se dessine toute seule, à partir de vos traces — séances, journal, repères.
+        Plus vous vivez la démarche, plus elle gagne en relief.
       </p>
     </div>
     <span id="level-chip" class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-surface border border-bdr rounded-full px-3 py-1">Niveau initial</span>
@@ -61,17 +66,21 @@
     </section>
 
     <aside class="bg-card border border-bdr rounded-[24px] p-5">
-      <h2 class="font-heading text-lg font-bold text-ink">Concepts clés</h2>
-      <p class="text-xs text-muted mt-1 mb-4">Cliquez un axe dans la liste pour voir ce qu'il signifie.</p>
+      <h2 class="font-heading text-lg font-bold text-ink">Axe en lumière</h2>
+      <p class="text-xs text-muted mt-1 mb-4">Touchez un axe — sur la carte ou dans la liste — pour l'explorer.</p>
       <div id="concept-card" class="bg-surface border border-bdr rounded-[14px] p-4">
-        <p id="concept-title" class="text-sm font-semibold text-ink">Territoire</p>
+        <div class="flex items-center justify-between gap-2">
+          <p id="concept-title" class="text-sm font-semibold text-ink">Territoire</p>
+          <span id="concept-chip" class="text-[11px] font-semibold uppercase tracking-wider text-muted"></span>
+        </div>
+        <div class="axis-track mt-2 mb-2"><div id="concept-bar" class="axis-fill" style="width:0%"></div></div>
         <p id="concept-text" class="text-xs text-muted leading-relaxed mt-1">Le sol vécu : lieux, contexte, sécurité et appartenance.</p>
       </div>
       <div class="mt-4 text-xs text-muted leading-relaxed">
         <p><strong class="text-ink">Repère :</strong> cette visualisation n'est pas un diagnostic.</p>
         <p class="mt-1">Elle sert à observer des tendances, puis à en discuter en séance.</p>
       </div>
-      <a href="/client/carte-de-vie.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir les pôles d'équilibre →</a>
+      <a href="/client/ma-progression.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir la ligne de vie complète →</a>
     </aside>
   </div>
 
@@ -173,9 +182,25 @@
     return Math.max(-0.05, Math.min(0.06, sum / n));
   }
 
+  let AXES_CURRENT = [];
+  let SELECTED_KEY = 'territoire';
+
   function renderConcept(axis) {
+    SELECTED_KEY = axis.key;
     document.getElementById('concept-title').textContent = axis.label;
     document.getElementById('concept-text').textContent = axis.concept;
+    if (axis.v != null) {
+      const pct = Math.round(axis.v * 100);
+      document.getElementById('concept-chip').textContent = pct + '% · ' + scoreToLevel(axis.v);
+      document.getElementById('concept-bar').style.width = pct + '%';
+    }
+    // Synchroniser les surlignages (carte + liste)
+    document.querySelectorAll('#constellation .axe-dot').forEach(el =>
+      el.classList.toggle('sel', el.dataset.key === axis.key));
+    document.querySelectorAll('#constellation text.axe-label').forEach(el =>
+      el.classList.toggle('sel', el.dataset.key === axis.key));
+    document.querySelectorAll('#axes-list .axis-row').forEach(el =>
+      el.classList.toggle('sel', el.dataset.key === axis.key));
   }
 
   function renderBars(axes) {
@@ -186,6 +211,7 @@
       const level = scoreToLevel(a.v);
       const row = document.createElement('button');
       row.type = 'button';
+      row.dataset.key = a.key;
       row.className = 'axis-row text-left hover:border-forest transition-colors';
       row.innerHTML = `
         <div class="flex items-center justify-between gap-2">
@@ -201,33 +227,81 @@
 
   function drawConstellation(axes) {
     const svg = document.getElementById('constellation');
-    const CX = 220, CY = 220, R = 165;
+    const CX = 220, CY = 224, R = 158;
     const n = axes.length;
-    let liens = '', noeuds = '', labels = '';
-    axes.forEach((a, i) => {
-      const ang = (-Math.PI / 2) + (i * 2 * Math.PI / n); // départ en haut, sens horaire
-      const x = CX + R * Math.cos(ang);
-      const y = CY + R * Math.sin(ang);
-      const r = 7 + a.v * 13;                // rayon selon l'intensité
-      const col = a.v >= 0.7 ? '#2D6A4F' : a.v >= 0.5 ? '#4A7C59' : a.v >= 0.35 ? '#8FB99A' : '#CFE3D2';
-      liens += `<line x1="${CX}" y1="${CY}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#4A7C59" stroke-width="1.5" opacity="${(0.18 + a.v*0.4).toFixed(2)}"/>`;
-      noeuds += `<circle class="axe-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${col}" opacity="0.9"><title>${a.label}</title></circle>`;
-      // label : à l'extérieur, ancrage selon le côté
-      const lx = CX + (R + 26) * Math.cos(ang);
-      const ly = CY + (R + 26) * Math.sin(ang);
-      const anchor = Math.abs(Math.cos(ang)) < 0.3 ? 'middle' : (Math.cos(ang) > 0 ? 'start' : 'end');
-      labels += `<text class="axe-label" x="${lx.toFixed(1)}" y="${(ly+3).toFixed(1)}" text-anchor="${anchor}" font-size="11" font-weight="600">${a.label}</text>`;
+    const pt = (i, frac) => {
+      const ang = (-Math.PI / 2) + (i * 2 * Math.PI / n);
+      return [CX + R * frac * Math.cos(ang), CY + R * frac * Math.sin(ang), ang];
+    };
+
+    // Toile de fond : 4 anneaux polygonaux + rayons
+    let grid = '';
+    [0.25, 0.5, 0.75, 1].forEach(frac => {
+      const pts = axes.map((_, i) => { const [x, y] = pt(i, frac); return `${x.toFixed(1)},${y.toFixed(1)}`; }).join(' ');
+      grid += `<polygon class="grid-line" points="${pts}" fill="none" stroke-width="1" opacity="${frac === 1 ? 0.9 : 0.55}"${frac === 1 ? '' : ' stroke-dasharray="3 4"'}/>`;
     });
-    svg.innerHTML =
-      `<circle class="breathe ring" cx="${CX}" cy="${CY}" r="${R}" fill="none" stroke-dasharray="3 5"/>` +
-      liens +
-      `<circle class="hub" cx="${CX}" cy="${CY}" r="26"/><text x="${CX}" y="${CY+4}" text-anchor="middle" font-size="12" font-weight="700" fill="white">Vous</text>` +
+    axes.forEach((_, i) => {
+      const [x, y] = pt(i, 1);
+      grid += `<line class="grid-line" x1="${CX}" y1="${CY}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke-width="1" opacity="0.4"/>`;
+    });
+
+    // Zone remplie : polygone des valeurs
+    const valPts = axes.map((a, i) => { const [x, y] = pt(i, a.v); return `${x.toFixed(1)},${y.toFixed(1)}`; }).join(' ');
+    const area = `<polygon class="breathe" points="${valPts}" fill="#4A7C59" opacity="0.22" stroke="#2D6A4F" stroke-width="2" stroke-linejoin="round"/>`;
+
+    // Nœuds + labels cliquables
+    let noeuds = '', labels = '';
+    axes.forEach((a, i) => {
+      const [x, y, ang] = pt(i, a.v);
+      const col = a.v >= 0.7 ? '#2D6A4F' : a.v >= 0.5 ? '#4A7C59' : a.v >= 0.35 ? '#8FB99A' : '#CFE3D2';
+      noeuds += `<circle class="axe-dot" data-key="${a.key}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(6 + a.v * 6).toFixed(1)}" fill="${col}" opacity="0.92"><title>${a.label} · ${Math.round(a.v * 100)}%</title></circle>`;
+      const [lx0, ly0, la] = pt(i, 1);
+      const lx = CX + (R + 24) * Math.cos(la), ly = CY + (R + 24) * Math.sin(la);
+      const anchor = Math.abs(Math.cos(la)) < 0.3 ? 'middle' : (Math.cos(la) > 0 ? 'start' : 'end');
+      labels += `<text class="axe-label" data-key="${a.key}" x="${lx.toFixed(1)}" y="${(ly + 3).toFixed(1)}" text-anchor="${anchor}" font-size="11" font-weight="600">${a.label}</text>`;
+    });
+
+    svg.innerHTML = grid + area +
+      `<circle class="hub" cx="${CX}" cy="${CY}" r="4"/>` +
       noeuds + labels;
 
+    // Clic sur nœud ou label → sélection
+    svg.querySelectorAll('.axe-dot, text.axe-label').forEach(el => {
+      el.addEventListener('click', () => {
+        const a = AXES_CURRENT.find(x => x.key === el.dataset.key);
+        if (a) renderConcept(a);
+      });
+    });
+
     document.getElementById('legende').innerHTML =
-      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#2D6A4F;display:inline-block"></span>présent</span>' +
-      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#8FB99A;display:inline-block"></span>émergent</span>' +
-      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#CFE3D2;display:inline-block"></span>en attente</span>';
+      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#2D6A4F;display:inline-block"></span>présent (≥ 72 %)</span>' +
+      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#8FB99A;display:inline-block"></span>émergent (50-71 %)</span>' +
+      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#CFE3D2;display:inline-block"></span>en attente (&lt; 50 %)</span>';
+  }
+
+  function parseArchiEntries(entries) {
+    return (entries || []).map(e => {
+      const b = e.body_text || '';
+      if (!b.startsWith('ARCHI_INTERIEUR::')) return null;
+      try { return JSON.parse(b.slice('ARCHI_INTERIEUR::'.length)); } catch (err) { return null; }
+    }).filter(Boolean);
+  }
+
+  // Bonus par axe issu des journaux structurés (énergie → métabolisme/corps,
+  // humeur → émotions/mental, HeartMath → corps, stresseurs → société/relations)
+  function archiAxisBoosts(archis) {
+    const boosts = {};
+    if (!archis.length) return boosts;
+    const avgEnergie = archis.reduce((s, a) => s + Number(a.energie || 0), 0) / archis.length;
+    const goodMood = archis.filter(a => a.humeur === 'coherence' || a.humeur === 'flow').length / archis.length;
+    const hmRate = archis.filter(a => (a.heartmath || []).length > 0).length / archis.length;
+    const stressRate = archis.filter(a => (a.stressors || []).length > 0).length / archis.length;
+    boosts.metabolisme = (avgEnergie - 5) * 0.02;
+    boosts.corps = (avgEnergie - 5) * 0.012 + hmRate * 0.05;
+    boosts.emotions = goodMood * 0.08 - stressRate * 0.02;
+    boosts.mental = goodMood * 0.05;
+    boosts.societe = -stressRate * 0.03;
+    return boosts;
   }
 
   (async function initCarteVivant() {
@@ -245,8 +319,13 @@
     const repereCount = docs.length + recs.filter(r => !!r.transcript_ready).length;
     const toneBoost = averageToneBoost(entries);
     const volume = Math.min(1, (pastSessions * 0.12) + (journalCount * 0.04) + (repereCount * 0.06) + (upcomingSessions * 0.03));
+    const boosts = archiAxisBoosts(parseArchiEntries(entries));
 
-    const axes = AXES_META.map(a => ({ ...a, v: clamp(a.base + (volume * a.w * 0.35) + toneBoost) }));
+    const axes = AXES_META.map(a => ({
+      ...a,
+      v: clamp(a.base + (volume * a.w * 0.35) + toneBoost + (boosts[a.key] || 0)),
+    }));
+    AXES_CURRENT = axes;
     const mean = axes.reduce((s, a) => s + a.v, 0) / axes.length;
     const level = mean >= 0.7 ? 'Niveau ancré' : mean >= 0.52 ? 'Niveau émergent' : 'Niveau initial';
     document.getElementById('level-chip').textContent = level;
