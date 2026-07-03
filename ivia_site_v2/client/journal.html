@@ -48,6 +48,40 @@
     <p class="text-xs text-muted mt-5 border-t border-bdr pt-4">À demain — une nouvelle page s'ouvre chaque matin.</p>
   </section>
 
+  <!-- ── Où j'en suis — vue de progression ─────────────────────────────── -->
+  <section id="progress-card" class="card p-6 sm:p-7 hidden">
+    <div class="flex items-center justify-between gap-3 flex-wrap mb-4">
+      <h2 class="font-heading text-lg font-bold text-ink">Où j'en suis</h2>
+      <span id="prog-mood" class="chip"></span>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
+        <p class="field-label">Série d'écriture</p>
+        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-streak">0</span> <span class="text-sm font-normal text-muted">jour(s)</span></p>
+      </div>
+      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
+        <p class="field-label">Cette semaine</p>
+        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-week">0</span> <span class="text-sm font-normal text-muted">entrée(s)</span></p>
+      </div>
+      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
+        <p class="field-label">Énergie moyenne 7 j</p>
+        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-energy">–</span><span class="text-sm font-normal text-muted">/10</span></p>
+      </div>
+      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
+        <p class="field-label">Exercices validés</p>
+        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-exos">0</span></p>
+      </div>
+    </div>
+    <div class="mt-5">
+      <div class="flex items-center justify-between mb-2">
+        <p class="field-label">14 derniers jours — énergie</p>
+        <p class="text-xs text-muted" id="prog-trend"></p>
+      </div>
+      <div id="prog-spark" class="flex items-end gap-1.5 h-16" aria-hidden="true"></div>
+      <div class="flex justify-between text-[10px] text-muted mt-1"><span id="prog-spark-start"></span><span>aujourd'hui</span></div>
+    </div>
+  </section>
+
   <!-- ── Formulaire d'écriture (masqué si déjà rempli aujourd'hui) ────────── -->
   <section id="journal-form-card" class="card p-6 sm:p-7">
     <div class="flex items-start justify-between gap-4 flex-wrap">
@@ -362,10 +396,18 @@
     const exo = parseExo(body);
     if (exo) {
       el.innerHTML = `
-        <p class="text-xs text-muted mb-2">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
-        <p class="text-sm font-semibold text-ink">Exercice validé : ${exo.title || 'exercice'}</p>
-        <p class="text-xs text-muted mt-1">Avant ${exo.before || '-'} / Après ${exo.after || '-'} · format ${exo.format || '-'}</p>
-        ${exo.note ? '<p class="text-sm text-ink mt-2 whitespace-pre-wrap">' + exo.note + '</p>' : ''}
+        <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+          <p class="text-xs text-muted">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
+          <p class="text-[10px] font-bold uppercase tracking-wider text-forest-deep">Exercice validé</p>
+        </div>
+        <p class="text-sm font-semibold text-ink">🧘 ${safe(exo.title || 'Exercice')}</p>
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          <span class="chip">Avant ${safe(exo.before ?? '–')}/10</span>
+          <span class="chip">Après ${safe(exo.after ?? '–')}/10</span>
+          ${Number(exo.after) > Number(exo.before) ? '<span class="chip">📈 +' + (Number(exo.after) - Number(exo.before)) + '</span>' : ''}
+          ${exo.duration ? '<span class="chip">⏱ ' + safe(exo.duration) + '</span>' : ''}
+        </div>
+        ${exo.note ? '<p class="text-sm text-ink mt-2 whitespace-pre-wrap">' + safe(exo.note) + '</p>' : ''}
       `;
       return el;
     }
@@ -373,21 +415,25 @@
     if (body.startsWith('ARCHI_INTERIEUR::')) {
       try {
         const data = JSON.parse(body.slice('ARCHI_INTERIEUR::'.length));
-        const hm = (data.heartmath || []).join(', ') || 'non';
-        const stress = (data.stressors || []).join(', ') || 'aucun';
+        const hm = (data.heartmath || []).length ? (data.heartmath || []).join(' · ') : null;
+        const stress = (data.stressors || []).filter(Boolean);
+        const chips = [
+          `<span class="chip">${HUMEUR_LABELS[data.humeur] || safe(data.humeur)}</span>`,
+          `<span class="chip">⚡ Énergie ${safe(data.energie)}/10</span>`,
+          `<span class="chip">🌙 Sommeil ${safe(data.sommeil)}</span>`,
+          hm ? `<span class="chip">💗 HeartMath : ${safe(hm)}</span>` : '',
+          data.score != null ? `<span class="chip">✨ Score ${safe(data.score)}</span>` : '',
+        ].filter(Boolean).join('');
         el.innerHTML = `
-          <p class="text-xs text-muted mb-2">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
-          <div class="grid sm:grid-cols-2 gap-2 text-xs mb-3">
-            <p><strong>Humeur :</strong> ${HUMEUR_LABELS[data.humeur] || data.humeur}</p>
-            <p><strong>Énergie :</strong> ${data.energie}/10</p>
-            <p><strong>Sommeil :</strong> ${data.sommeil}</p>
-            <p><strong>HeartMath :</strong> ${hm}</p>
-            <p class="sm:col-span-2"><strong>Déclencheurs :</strong> ${stress}</p>
-            <p><strong>Score :</strong> ${data.score}</p>
+          <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
+            <p class="text-xs text-muted">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${d.toLocaleTimeString('fr-CA',{hour:'2-digit',minute:'2-digit'})}</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-forest-deep">État du jour</p>
           </div>
-          ${data.grace ? '<p class="text-sm text-ink"><strong>Moment de grâce :</strong> ' + data.grace + '</p>' : ''}
-          ${data.lecon ? '<p class="text-sm text-ink mt-1"><strong>Leçon :</strong> ' + data.lecon + '</p>' : ''}
-          ${data.note ? '<p class="text-sm text-ink mt-2 whitespace-pre-wrap">' + data.note + '</p>' : ''}
+          <div class="flex flex-wrap gap-1.5 mb-3">${chips}</div>
+          ${stress.length ? '<p class="text-xs text-muted mb-2"><strong>Déclencheurs :</strong> ' + stress.map(safe).join(' · ') + '</p>' : ''}
+          ${data.grace ? '<div class="border-l-2 border-sage pl-3 mb-1.5"><p class="text-xs font-semibold text-muted uppercase tracking-wider">Moment de grâce</p><p class="text-sm text-ink">' + safe(data.grace) + '</p></div>' : ''}
+          ${data.lecon ? '<div class="border-l-2 border-sage pl-3 mb-1.5"><p class="text-xs font-semibold text-muted uppercase tracking-wider">Leçon du jour</p><p class="text-sm text-ink">' + safe(data.lecon) + '</p></div>' : ''}
+          ${data.note ? '<p class="text-sm text-ink mt-2 whitespace-pre-wrap">' + safe(data.note) + '</p>' : ''}
         `;
         return el;
       } catch (e) {}
@@ -427,6 +473,75 @@
     return rec;
   }
 
+  // ── Vue « Où j'en suis » ───────────────────────────────────────────────
+  function renderProgress(entries) {
+    if (!entries || !entries.length) return;
+    const card = document.getElementById('progress-card');
+    card.classList.remove('hidden');
+    const now = new Date();
+    const dayKey = (x) => new Date(x).toISOString().slice(0, 10);
+    const daysSet = new Set(entries.map(e => dayKey(e.written_at)));
+
+    // Série : jours consécutifs avec au moins une entrée, en partant d'aujourd'hui (ou hier)
+    let streak = 0;
+    let cur = new Date();
+    if (!daysSet.has(dayKey(cur))) cur.setDate(cur.getDate() - 1);
+    while (daysSet.has(dayKey(cur))) { streak++; cur.setDate(cur.getDate() - 1); }
+
+    // Entrées cette semaine (7 derniers jours)
+    const week = entries.filter(e => (now - new Date(e.written_at)) / 86400000 <= 7).length;
+
+    // Archis + exos
+    const archis = entries
+      .map(e => { const a = parseArchi(e.body_text); return a ? { ...a, ts: e.written_at } : null; })
+      .filter(Boolean);
+    const exos = entries.map(e => parseExo(e.body_text)).filter(Boolean).length;
+    const arch7 = archis.filter(a => (now - new Date(a.ts)) / 86400000 <= 7);
+    const avgE = arch7.length ? (arch7.reduce((s, a) => s + Number(a.energie || 0), 0) / arch7.length) : null;
+
+    document.getElementById('prog-streak').textContent = streak;
+    document.getElementById('prog-week').textContent = week;
+    document.getElementById('prog-energy').textContent = avgE != null ? avgE.toFixed(1) : '–';
+    document.getElementById('prog-exos').textContent = exos;
+
+    const latest = archis.sort((a, b) => new Date(b.ts) - new Date(a.ts))[0];
+    const mood = document.getElementById('prog-mood');
+    if (latest) mood.textContent = 'Dernier état : ' + (HUMEUR_LABELS[latest.humeur] || latest.humeur);
+    else mood.classList.add('hidden');
+
+    // Sparkline 14 jours (barres énergie, jour par jour)
+    const spark = document.getElementById('prog-spark');
+    spark.innerHTML = '';
+    const byDay = {};
+    archis.forEach(a => { byDay[dayKey(a.ts)] = Number(a.energie || 0); });
+    const vals = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      vals.push({ k: dayKey(d), v: byDay[dayKey(d)] || 0 });
+    }
+    vals.forEach(({ v }) => {
+      const b = document.createElement('div');
+      b.className = 'flex-1 rounded-t-[4px]';
+      b.style.height = v ? Math.max(8, (v / 10) * 100) + '%' : '4px';
+      b.style.background = v ? 'var(--forest)' : 'var(--bdr)';
+      b.style.opacity = v ? '0.85' : '0.6';
+      spark.appendChild(b);
+    });
+    const start = new Date(); start.setDate(start.getDate() - 13);
+    document.getElementById('prog-spark-start').textContent = start.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' });
+
+    // Tendance : moyenne 7 derniers vs 7 précédents
+    const older = vals.slice(0, 7).filter(x => x.v).map(x => x.v);
+    const recent = vals.slice(7).filter(x => x.v).map(x => x.v);
+    const m = a => a.length ? a.reduce((s, x) => s + x, 0) / a.length : null;
+    const mo = m(older), mr = m(recent);
+    const trend = document.getElementById('prog-trend');
+    if (mo != null && mr != null) {
+      const diff = mr - mo;
+      trend.textContent = diff > 0.4 ? '📈 En hausse' : diff < -0.4 ? '📉 En baisse' : '➡️ Stable';
+    }
+  }
+
   async function chargerEntrees() {
     const zone = document.getElementById('entries');
     const repereZone = document.getElementById('session-reperes-list');
@@ -434,6 +549,7 @@
     try {
       const entries = await getMyJournal();
       entriesCache = entries;
+      renderProgress(entries);
 
       // Vérifier si aujourd'hui a déjà une entrée de fond (pas exercice)
       const todayEntries = getTodayEntries(entries);

@@ -206,14 +206,43 @@
     `${upcoming.length} séance(s) à venir · ${entries.length} entrée(s) au journal · ${reperes} repère(s) disponible(s).`;
 
   const jz = document.getElementById('journal-zone');
+  const HUMEURS = { stress:'🔴 Stress', neutre:'🟡 Neutre', coherence:'🟢 Cohérence', flow:'🔵 Flow' };
+  const SOMMEILS = { mauvais:'sommeil difficile', moyen:'sommeil moyen', excellent:'sommeil excellent' };
+  function humanize(en) {
+    const body = en.body_text || '';
+    if (body.startsWith('ARCHI_EXERCICE::')) {
+      try {
+        const d = JSON.parse(body.slice('ARCHI_EXERCICE::'.length));
+        return {
+          label: 'Exercice validé',
+          text: `${d.title || 'Exercice'} — état ${d.before ?? '–'} → ${d.after ?? '–'}${d.note ? ' · ' + d.note : ''}`,
+        };
+      } catch (e) { return { label: 'Exercice validé', text: 'Exercice du jour complété.' }; }
+    }
+    if (body.startsWith('ARCHI_INTERIEUR::')) {
+      try {
+        const d = JSON.parse(body.slice('ARCHI_INTERIEUR::'.length));
+        const bits = [HUMEURS[d.humeur] || d.humeur, `énergie ${d.energie}/10`, SOMMEILS[d.sommeil] || d.sommeil];
+        if (d.score != null) bits.push(`score ${d.score}`);
+        return {
+          label: 'État du jour',
+          text: bits.join(' · ') + (d.note ? ' — ' + d.note : (d.grace ? ' — ' + d.grace : '')),
+        };
+      } catch (e) { return { label: 'État du jour', text: 'Journal structuré du jour.' }; }
+    }
+    return { label: en.emotional_tone ? `Journal · ${en.emotional_tone}` : 'Journal', text: body };
+  }
   const feed = [
-    ...entries.map(en => ({
+    ...entries.map(en => {
+      const h = humanize(en);
+      return {
       kind: 'journal',
       ts: en.written_at,
       href: '/client/journal.html',
-      label: en.emotional_tone ? `Journal · ${en.emotional_tone}` : 'Journal',
-      text: en.body_text || '',
-    })),
+      label: h.label,
+      text: h.text,
+    };
+    }),
     ...docs.map(doc => ({
       kind: 'session',
       ts: doc.created_at,
