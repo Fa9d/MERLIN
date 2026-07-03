@@ -15,9 +15,11 @@
 const IVIA_NAV = [
   { id: 'aujourdhui', label: 'Mon espace',  href: '/client/dashboard.html' },
   { id: 'ecrire',     label: 'Journal',     href: '/client/journal.html' },
-  { id: 'voir',       label: 'Vie',         href: '/client/carte-de-vie.html' },
+  { id: 'voir',       label: 'Vie',         href: '/client/carte-de-vie.html', crumb: 'Carte de vie' },
   { id: 'agenda',     label: 'Agenda',      href: '/client/agenda.html' },
 ];
+
+const IVIA_ACCUEIL = 'https://ivia.quebec';
 
 const IVIA_FOOTER = {
   espace: [
@@ -67,18 +69,28 @@ function renderLayout(active, pageLabel) {
     const links = '';
 
     const section = IVIA_NAV.find(n => n.id === active);
-    const crumbs = ['<a href="/client/dashboard.html">Accueil</a>'];
-    if (section && section.id !== 'aujourdhui') {
-      crumbs.push(pageLabel
-        ? `<a href="${section.href}">${section.label}</a>`
-        : `<span class="here">${section.label}</span>`);
-    } else if (section && section.id === 'aujourdhui' && !pageLabel) {
-      crumbs[0] = '<span class="here">Accueil</span>';
+    // Breadcrumb: Accueil (site public) › Mon espace › [section] › [pageLabel]
+    const crumbs = [`<a href="${IVIA_ACCUEIL}">Accueil</a>`];
+    if (!section || section.id === 'aujourdhui') {
+      // On Mon espace or unknown section
+      if (!pageLabel) {
+        crumbs.push('<span class="here">Mon espace</span>');
+      } else {
+        crumbs.push('<a href="/client/dashboard.html">Mon espace</a>');
+        crumbs.push(`<span class="here">${pageLabel}</span>`);
+      }
+    } else {
+      // On a named section (Journal, Carte de vie, Agenda…)
+      crumbs.push('<a href="/client/dashboard.html">Mon espace</a>');
+      const sectionLabel = section.crumb || section.label;
+      if (pageLabel) {
+        crumbs.push(`<a href="${section.href}">${sectionLabel}</a>`);
+        crumbs.push(`<span class="here">${pageLabel}</span>`);
+      } else {
+        crumbs.push(`<span class="here">${sectionLabel}</span>`);
+      }
     }
-    if (pageLabel) crumbs.push(`<span class="here">${pageLabel}</span>`);
-    const fil = crumbs.length > 1
-      ? `<div class="ivia-fil"><div class="ivia-fil-row">${crumbs.join('<span class="sep">›</span>')}</div></div>`
-      : '';
+    const fil = `<div class="ivia-fil"><div class="ivia-fil-row">${crumbs.join('<span class="sep">›</span>')}</div></div>`;
 
     header.innerHTML = `
     <nav class="ivia-nav">
