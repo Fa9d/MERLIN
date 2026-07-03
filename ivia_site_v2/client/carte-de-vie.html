@@ -9,7 +9,9 @@
   <title>IVIA — Votre carte de vie</title>
   <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
   <script src="/shared/api.js?v=20260702b"></script>
+  <script src="/shared/mock.js"></script>
   <script src="/shared/layout.js?v=20260702a"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
@@ -69,7 +71,7 @@
         <p><strong class="text-ink">Repère :</strong> cette visualisation n'est pas un diagnostic.</p>
         <p class="mt-1">Elle sert à observer des tendances, puis à en discuter en séance.</p>
       </div>
-      <a href="/client/ma-progression.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir la ligne de vie →</a>
+      <a href="/client/carte-de-vie.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir les pôles d'équilibre →</a>
     </aside>
   </div>
 
@@ -81,6 +83,44 @@
     <div id="axes-list" class="grid md:grid-cols-2 gap-3">
       <p class="text-sm text-muted">Chargement des axes…</p>
     </div>
+  </section>
+
+  <!-- Ligne de vie intégrée -->
+  <section class="bg-card border border-bdr rounded-[24px] p-5 sm:p-6">
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-5">
+      <div>
+        <h2 class="font-heading text-lg font-bold text-ink">Ligne de vie</h2>
+        <p class="text-xs text-muted mt-1">Votre progression séance après séance depuis le premier ancrage.</p>
+      </div>
+      <span id="ldv-stade-chip" class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-surface border border-bdr rounded-full px-3 py-1">—</span>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-5 mb-5">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted">Registre Vivant</span>
+          <span class="text-sm font-semibold text-ink" id="ldv-vivant-score">—</span>
+        </div>
+        <div class="h-2.5 bg-surface border border-bdr rounded-full overflow-hidden">
+          <div id="ldv-vivant-bar" class="h-full rounded-full bg-[#4A7C59] transition-all duration-700" style="width:0%"></div>
+        </div>
+        <p class="text-[11px] text-muted mt-1" id="ldv-vivant-delta"></p>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-muted">Registre Société</span>
+          <span class="text-sm font-semibold text-ink" id="ldv-societe-score">—</span>
+        </div>
+        <div class="h-2.5 bg-surface border border-bdr rounded-full overflow-hidden">
+          <div id="ldv-societe-bar" class="h-full rounded-full bg-[#2D6A4F] transition-all duration-700" style="width:0%"></div>
+        </div>
+        <p class="text-[11px] text-muted mt-1" id="ldv-societe-delta"></p>
+      </div>
+    </div>
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-2" id="ldv-jalons-compte">Jalons atteints</p>
+      <div id="ldv-jalons" class="flex flex-wrap gap-2"></div>
+    </div>
+    <a href="/client/ma-progression.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir la progression complète →</a>
   </section>
 
   <div class="bg-surface border border-bdr rounded-[20px] p-6 text-center">
@@ -216,6 +256,67 @@
     drawConstellation(axes);
     renderBars(axes);
     renderConcept(axes[0]);
+  })();
+
+  // ── Ligne de vie ───────────────────────────────────────────────────────────
+  (async function initLigneDeVie() {
+    try {
+      const progression = await getMockProgression();
+      const jalons      = await getMockJalons();
+      if (!progression || !progression.length) return;
+      const now   = progression[progression.length - 1];
+      const debut = progression[0];
+      const d     = now.profil_dim;
+      const d0    = debut.profil_dim;
+
+      const STADES = [
+        { min:1, max:1, nom:'Accompagnement actif' },
+        { min:2, max:2, nom:'Conscience émergente' },
+        { min:3, max:3, nom:'Regard autonome' },
+      ];
+      const stade = STADES.find(s => d.reflexion >= s.min && d.reflexion <= s.max) || STADES[0];
+      const chipEl = document.getElementById('ldv-stade-chip');
+      if (chipEl) chipEl.textContent = stade.nom;
+
+      const vivantNow   = (d.presence||0) + (d.sol||0) + (d.vivant||0);
+      const societeNow  = (d.comprehension||0) + (d.choix||0) + (d.reflexion||0);
+      const vivantDebut = (d0.presence||0) + (d0.sol||0) + (d0.vivant||0);
+      const societeDebut= (d0.comprehension||0) + (d0.choix||0) + (d0.reflexion||0);
+
+      const vScore = document.getElementById('ldv-vivant-score');
+      const sScore = document.getElementById('ldv-societe-score');
+      if (vScore) vScore.innerHTML = `${vivantNow}<span class="text-xs text-muted font-normal">/9</span>`;
+      if (sScore) sScore.innerHTML = `${societeNow}<span class="text-xs text-muted font-normal">/9</span>`;
+
+      const vDelta = vivantNow - vivantDebut;
+      const sDelta = societeNow - societeDebut;
+      const vDeltaEl = document.getElementById('ldv-vivant-delta');
+      const sDeltaEl = document.getElementById('ldv-societe-delta');
+      if (vDeltaEl) vDeltaEl.textContent = vDelta > 0 ? `+${vDelta} depuis l'ancrage` : vDelta < 0 ? `${vDelta} depuis l'ancrage` : 'Stable';
+      if (sDeltaEl) sDeltaEl.textContent = sDelta > 0 ? `+${sDelta} depuis l'ancrage` : sDelta < 0 ? `${sDelta} depuis l'ancrage` : 'Stable';
+
+      setTimeout(() => {
+        const vBar = document.getElementById('ldv-vivant-bar');
+        const sBar = document.getElementById('ldv-societe-bar');
+        if (vBar) vBar.style.width = `${Math.round(vivantNow/9*100)}%`;
+        if (sBar) sBar.style.width = `${Math.round(societeNow/9*100)}%`;
+      }, 300);
+
+      const atteints = (jalons||[]).filter(j => j.atteint);
+      const jCompte = document.getElementById('ldv-jalons-compte');
+      if (jCompte) jCompte.textContent = `Jalons atteints · ${atteints.length}/${(jalons||[]).length}`;
+      const jList = document.getElementById('ldv-jalons');
+      if (jList && jalons) {
+        jalons.forEach(j => {
+          const chip = document.createElement('span');
+          chip.className = j.atteint
+            ? 'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border border-forest text-forest-deep bg-surface'
+            : 'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border border-bdr text-muted bg-surface opacity-60';
+          chip.textContent = (j.atteint ? '✓ ' : '') + (j.label||'');
+          jList.appendChild(chip);
+        });
+      }
+    } catch (e) { /* mock absent — skip silently */ }
   })();
 </script>
 </body>
