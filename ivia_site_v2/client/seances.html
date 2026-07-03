@@ -86,24 +86,6 @@
         </div>
       </section>
 
-      <!-- Prochaine séance -->
-      <section class="card mb-6" aria-labelledby="prochaine-title" id="prochaine-section">
-        <div class="flex items-center justify-between mb-4">
-          <h2 id="prochaine-title" class="font-heading text-base font-semibold text-ink">Prochaine séance</h2>
-          <span class="badge badge-upcoming">À venir</span>
-        </div>
-        <div id="prochaine-content" class="flex items-start gap-4">
-          <!-- rempli par JS -->
-        </div>
-      </section>
-
-      <!-- Séances passées -->
-      <section aria-labelledby="passees-title" id="liste-section">
-        <h2 id="passees-title" class="font-heading text-base font-semibold text-ink mb-4">Séances passées</h2>
-        <div class="space-y-3" id="passees-list">
-          <!-- rempli par JS -->
-        </div>
-      </section>
 
     </main>
 
@@ -244,108 +226,16 @@
 
     // ── Séances réelles — GET /bookings/my (hold + confirmées) ──────────
     async function chargerSeances() {
-      const pc   = document.getElementById('prochaine-content');
-      const list = document.getElementById('passees-list');
-      const prochaineSection = document.getElementById('prochaine-section');
-      const listeSection = document.getElementById('liste-section');
-      const listeTitle = document.getElementById('passees-title');
-      const vue = new URLSearchParams(location.search).get('vue');
-      const vueAVenir = vue === 'a-venir';
-      const vueVecues = vue === 'vecues';
       let slots = [];
       try {
         slots = await getMyBookings();
       } catch (e) {
-        if (list) list.innerHTML = '<p class="text-sm text-muted">Vos séances apparaîtront ici.</p>';
-        prochaineSection.classList.add('hidden');
         return;
       }
-
-      const aujourdhui = new Date().toISOString().slice(0, 10);
-      const a_venir = slots.filter(s => s.slot_date >= aujourdhui);
-      const passees = slots.filter(s => s.slot_date < aujourdhui).reverse();
       initCalendar(slots);
-
-      if (vueVecues) {
-        prochaineSection.classList.add('hidden');
-        listeTitle.textContent = 'Séances vécues';
-      } else if (vueAVenir) {
-        listeTitle.textContent = 'Autres séances à venir';
-      } else {
-        listeTitle.textContent = 'Séances passées';
-      }
-
-      // Prochaine séance
-      const prochaine = a_venir[0];
-      if (!vueVecues && prochaine && pc) {
-        const enAttente = prochaine.status === 'hold';
-        const badge = document.querySelector('#prochaine-section .badge');
-        if (badge) badge.textContent = enAttente ? 'À confirmer' : 'À venir';
-        pc.innerHTML = `
-          <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-            <span class="text-[10px] font-semibold text-forest uppercase">${moisAbrege(prochaine.slot_date)}</span>
-            <span class="text-xl font-bold text-ink leading-none">${jourNum(prochaine.slot_date)}</span>
-          </div>
-          <div class="flex-1">
-            <p class="font-semibold text-ink">${dateLongue(prochaine.slot_date)}</p>
-            <p class="text-sm text-muted mt-0.5">${formatHeure(prochaine.start_time)} – ${formatHeure(prochaine.end_time)}${enAttente ? ' · <strong class="text-amber-700">paiement à compléter</strong>' : ' · le lien arrive par courriel avant l\'heure'}</p>
-            <div class="flex gap-2 mt-3">
-              ${enAttente ? `<button onclick="payerSeance('${prochaine.id}')" class="text-sm font-semibold bg-forest-deep text-white rounded-[10px] px-5 py-2 hover:bg-forest transition-colors cursor-pointer">Payer maintenant →</button>` : ''}
-              <button onclick="annulerSeance('${prochaine.id}')"               class="text-xs font-medium text-muted hover:text-red-600 px-3 py-1.5 cursor-pointer">
-                Annuler
-              </button>
-            </div>
-          </div>`;
-      } else {
-        prochaineSection.classList.add('hidden');
-      }
-
-      // Liste secondaire selon la vue
-      if (list) {
-        const items = vueAVenir ? a_venir.slice(1) : passees;
-        if (!items.length) {
-          list.innerHTML = vueAVenir
-           ? `<p class="text-sm text-muted">Aucune autre séance à venir pour l'instant.</p>`
-           : `<p class="text-sm text-muted">Aucune séance passée pour l'instant.</p>`;
-          if (vueAVenir && !prochaine) {
-           listeSection.classList.add('hidden');
-          }
-          return;
-        }
-        list.innerHTML = items.map(s => renderSessionCard(
-          s,
-          vueAVenir ? (s.status === 'hold' ? 'À confirmer' : 'À venir') : 'Passée',
-          vueAVenir ? (s.status === 'hold' ? 'badge-pending' : 'badge-upcoming') : 'badge-past'
-        )).join('');
-      }
     }
     chargerSeances();
 
-    async function annulerSeance(id) {
-      if (!confirm('Annuler cette séance ?')) return;
-      try {
-        await cancelSlot(id);
-        location.reload();
-      } catch (e) {
-        alert("L'annulation n'a pas pu être enregistrée. Réessayez ou écrivez-nous.");
-      }
-    }
-
-    // Aller droit au paiement du créneau déjà retenu (page Stripe ou paiement simulé en test).
-    async function payerSeance(slotId) {
-      try {
-        const r = await bookingCheckout({
-          slot_id: slotId,
-          success_url: location.origin + '/checkout/success.html',
-          cancel_url:  location.origin + '/client/seances.html',
-        });
-        window.location.href = r.checkout_url;
-      } catch (e) {
-        alert("Ce créneau ne peut plus être réglé : " + (e.message || 'réessayez') +
-              ".\nIl a peut-être expiré (les places sont tenues 15 min). Reprenez une réservation.");
-        window.location.href = '/reserver.html';
-      }
-    }
   </script>
 
 </body>
