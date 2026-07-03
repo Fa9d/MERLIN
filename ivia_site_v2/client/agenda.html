@@ -50,27 +50,73 @@
       font-family: 'Raleway', system-ui, sans-serif;
     }
 
-    .fc .fc-button-primary {
-      background-color: #2D6A4F !important;
-      border-color: #2D6A4F !important;
+    .fc .fc-toolbar-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.8rem !important;
+      font-weight: 700;
+      color: #1A2E1D;
+      text-transform: capitalize;
     }
 
-    .fc .fc-button-primary:hover {
-      background-color: #1F5238 !important;
+    .fc .fc-button-primary,
+    .fc .fc-today-button {
+      background: #FFFFFF !important;
+      color: #1A2E1D !important;
+      border: 1.5px solid #D4E8D0 !important;
+      border-radius: 999px !important;
+      box-shadow: none !important;
+      font-weight: 600;
     }
 
-    .fc .fc-event {
-      background-color: #2D6A4F !important;
-      border-color: #2D6A4F !important;
-      cursor: pointer;
+    .fc .fc-button-primary:hover,
+    .fc .fc-today-button:hover {
+      background: #F0F7F2 !important;
+      border-color: #8FB99A !important;
     }
 
-    .fc .fc-event:hover {
-      background-color: #1F5238 !important;
+    .fc .fc-button-primary:disabled {
+      background: #F8FAF8 !important;
+      color: #9AAEA1 !important;
+    }
+
+    .fc .fc-toolbar.fc-header-toolbar {
+      margin-bottom: 0.75rem !important;
+    }
+
+    .fc .fc-daygrid-day-frame {
+      min-height: 108px;
     }
 
     .fc .fc-daygrid-day.fc-day-today {
-      background-color: #F0F7F2 !important;
+      background: #F7FBFF !important;
+    }
+
+    .fc .fc-daygrid-day-number {
+      font-weight: 600;
+      color: #1A2E1D;
+      padding: 8px !important;
+    }
+
+    .slot-event {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1A2E1D;
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: #FFF3E8;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .slot-event .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #FF6A00;
+      flex-shrink: 0;
     }
 
     .practitioner-card {
@@ -156,12 +202,13 @@
 
     .modal-content {
       background: white;
-      border-radius: 12px;
+      border-radius: 18px;
       padding: 2rem;
-      max-width: 500px;
+      max-width: 980px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
+      border: 1px solid #D4E8D0;
     }
 
     .modal-header {
@@ -188,6 +235,11 @@
 
     .btn-primary:hover {
       background: #1F5238;
+    }
+
+    .btn-primary:disabled {
+      background: #97B2A1;
+      cursor: not-allowed;
     }
 
     .btn-secondary {
@@ -235,6 +287,51 @@
       text-align: center;
       padding: 2rem;
       color: #4B6350;
+    }
+
+    .event-preview {
+      background: #ECEFF3;
+      border: 1px solid #D2D8E0;
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .event-preview.show {
+      display: block;
+    }
+
+    .event-preview-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1A2E1D;
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+
+    .event-preview-meta {
+      font-size: 14px;
+      color: #3D505C;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .event-preview-note {
+      font-size: 13px;
+      color: #5B6A73;
+      margin-top: 4px;
+    }
+
+    .event-preview-dot {
+      display: inline-flex;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #FF6A00;
+      margin-right: 8px;
+      transform: translateY(1px);
     }
   </style>
 </head>
@@ -305,7 +402,16 @@
         <!-- Praticien info will be inserted here -->
       </div>
 
-      <div id="modalCalendar" style="margin-bottom: 1.5rem;"></div>
+      <div id="modalCalendar" style="margin-bottom: 1rem;"></div>
+
+      <div id="eventPreview" class="event-preview" aria-live="polite">
+        <div class="event-preview-title" id="eventPreviewTitle">Créneau</div>
+        <div class="event-preview-meta" id="eventPreviewMeta"></div>
+        <button id="eventPreviewBookBtn" onclick="confirmBooking()" class="btn btn-primary">
+          Réserver ce créneau
+        </button>
+        <p class="event-preview-note">Le créneau sera réservé immédiatement.</p>
+      </div>
 
       <div class="flex gap-2 justify-end">
         <button onclick="closeBookingModal()" class="btn btn-secondary">Annuler</button>
@@ -419,17 +525,28 @@
       if (!modalCalendar) {
         const calEl = document.getElementById('modalCalendar');
         modalCalendar = new FullCalendar.Calendar(calEl, {
-          initialView: 'timeGridWeek',
+          initialView: 'dayGridMonth',
           headerToolbar: {
-            left: 'prev,next today',
+            left: 'today prev,next',
             center: 'title',
-            right: 'timeGridWeek,timeGridDay'
+            right: ''
           },
           locale: 'fr',
           height: 'auto',
-          slotDuration: '00:30:00',
-          slotLabelInterval: '00:30:00',
-          eventClick: (info) => selectSlot(info)
+          fixedWeekCount: false,
+          dayMaxEventRows: 3,
+          eventClick: (info) => {
+            info.jsEvent.preventDefault();
+            selectSlot(info);
+          },
+          eventContent: (arg) => {
+            const t = arg.event.start
+              ? arg.event.start.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit', hour12: false })
+              : '';
+            return {
+              html: `<div class="slot-event"><span class="dot"></span>${t}</div>`
+            };
+          }
         });
         modalCalendar.render();
       }
@@ -445,16 +562,17 @@
         const slots = await res.json() || [];
         const events = slots.map(s => ({
           id: s.id,
-          title: '✓ Disponible',
+          title: 'Disponible',
           start: s.start_time,
           end: s.end_time,
-          backgroundColor: '#2D6A4F',
-          borderColor: '#2D6A4F',
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
           extendedProps: { slotData: s, practitionerId }
         }));
 
         modalCalendar.removeAllEvents();
         modalCalendar.addEventSource(events);
+        hideEventPreview();
       } catch (err) {
         showToast('Erreur: ' + err.message);
       }
@@ -469,12 +587,32 @@
         title: info.event.title
       };
 
-      // Update visual feedback
-      document.querySelectorAll('.fc-event').forEach(el => el.style.opacity = '0.6');
-      info.el.style.opacity = '1';
-
-      // Enable confirm button
       document.getElementById('confirmBookingBtn').disabled = false;
+      renderEventPreview(selectedSlot);
+    }
+
+    function renderEventPreview(slot) {
+      const title = document.getElementById('eventPreviewTitle');
+      const meta = document.getElementById('eventPreviewMeta');
+      const panel = document.getElementById('eventPreview');
+      if (!title || !meta || !panel || !slot?.start || !slot?.end) return;
+
+      const dayLabel = slot.start.toLocaleDateString('fr-CA', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+      });
+      const startLabel = slot.start.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit', hour12: false });
+      const endLabel = slot.end.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+      title.innerHTML = `<span class="event-preview-dot"></span>Séance IVIA`;
+      meta.textContent = `${dayLabel} · De ${startLabel} à ${endLabel}`;
+      panel.classList.add('show');
+    }
+
+    function hideEventPreview() {
+      const panel = document.getElementById('eventPreview');
+      if (panel) panel.classList.remove('show');
     }
 
     async function confirmBooking() {
@@ -517,6 +655,7 @@
       document.getElementById('bookingModal').classList.remove('show');
       selectedSlot = null;
       document.getElementById('confirmBookingBtn').disabled = true;
+      hideEventPreview();
       if (modalCalendar) {
         modalCalendar.removeAllEvents();
       }
