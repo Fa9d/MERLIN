@@ -16,7 +16,7 @@ from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.client_journal_entry import ClientJournalEntry
-from app.models.enums import AuthoredByCode, RecordStatus
+from app.models.enums import RecordStatus
 from app.schemas.client_journal_entry import (
     ClientJournalEntryRead,
     ClientJournalEntryUpdate,
@@ -78,7 +78,6 @@ def create_my_journal_entry(
     data = payload.model_dump()
     data["client_id"] = client.id
     data["id"] = str(uuid4())
-    data["authored_by"] = AuthoredByCode.client
     now = datetime.now(timezone.utc)
     if data.get("written_at") is None:
         data["written_at"] = now
