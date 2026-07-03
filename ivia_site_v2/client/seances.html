@@ -96,6 +96,7 @@
     let calendarCursor = new Date();
     let calendarSelectedDate = null;
     let calendarSlotsByDate = {};
+    let journalByDate = {};   // iso → entry[]
 
     // ── Helpers d'affichage ────────────────────────────────────────────
     function moisAbrege(isoDate) {
@@ -149,20 +150,54 @@
       const title = document.getElementById('calendar-day-title');
       const list = document.getElementById('calendar-day-list');
       if (!title || !list) return;
-      title.textContent = `Séances du ${dateLongue(iso)}`;
-      if (!slotsForDay || !slotsForDay.length) {
-        list.innerHTML = '<p class="text-sm text-muted">Aucune séance ce jour-là.</p>';
-        return;
-      }
+      title.textContent = dateLongue(iso);
+      let html = '';
+
+      // ── Séances du jour ───────────────────────────────────────────────
       const aujourdhui = new Date().toISOString().slice(0, 10);
-      const sorted = [...slotsForDay].sort((a, b) => String(a.start_time).localeCompare(String(b.start_time)));
-      list.innerHTML = sorted.map(s => {
-        const isUpcoming = s.slot_date >= aujourdhui;
-        const pending = s.status === 'hold';
-        const badgeLabel = pending ? 'À confirmer' : (isUpcoming ? 'À venir' : 'Passée');
-        const badgeClass = pending ? 'badge-pending' : (isUpcoming ? 'badge-upcoming' : 'badge-past');
-        return renderSessionCard(s, badgeLabel, badgeClass);
-      }).join('');
+      if (slotsForDay && slotsForDay.length) {
+        const sorted = [...slotsForDay].sort((a, b) => String(a.start_time).localeCompare(String(b.start_time)));
+        html += sorted.map(s => {
+          const isUpcoming = s.slot_date >= aujourdhui;
+          const pending = s.status === 'hold';
+          const badgeLabel = pending ? 'À confirmer' : (isUpcoming ? 'À venir' : 'Passée');
+          const badgeClass = pending ? 'badge-pending' : (isUpcoming ? 'badge-upcoming' : 'badge-past');
+          return renderSessionCard(s, badgeLabel, badgeClass);
+        }).join('');
+      }
+
+      // ── Entrée de journal du jour ─────────────────────────────────────
+      const journalEntries = (journalByDate[iso] || []).filter(e => !e.body_text.startsWith('ARCHI_EXERCICE::'));
+      if (journalEntries.length) {
+        journalEntries.forEach(en => {
+          let bodyText = en.body_text || '';
+          // Dépaqueter ARCHI_INTERIEUR
+          if (bodyText.startsWith('ARCHI_INTERIEUR::')) {
+            try {
+              const d = JSON.parse(bodyText.slice('ARCHI_INTERIEUR::'.length));
+              const humeurMap = {stress:'🔴 Stress',neutre:'🟡 Neutre',coherence:'🟢 Cohérence',flow:'🔵 Flow'};
+              bodyText = [
+                humeurMap[d.humeur] || d.humeur,
+                d.energie ? `Énergie ${d.energie}/10` : '',
+                d.score ? `Score ✨${d.score}` : '',
+                d.note || '',
+              ].filter(Boolean).join(' · ');
+            } catch (e) {}
+          }
+          html += `<div class="card mt-2 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-[10px] bg-surface border border-bdr flex items-center justify-center shrink-0 text-base">📓</div>
+            <div class="flex-1">
+              <p class="text-xs font-semibold text-muted uppercase tracking-wider mb-0.5">Journal du jour</p>
+              <p class="text-sm text-ink leading-relaxed line-clamp-3">${bodyText.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+              <a href="/client/journal.html" class="text-xs text-forest-deep font-semibold hover:underline mt-1 inline-block">Voir le journal →</a>
+            </div>
+          </div>`;
+        });
+      } else if (!slotsForDay || !slotsForDay.length) {
+        html = '<p class="text-sm text-muted">Aucune séance ni entrée de journal ce jour-là.</p>';
+      }
+
+      list.innerHTML = html;
     }
     function renderCalendar(slots) {
       const grid = document.getElementById('calendar-grid');
@@ -194,13 +229,14 @@
         cell.className = 'cal-day';
         if (iso === todayIso) cell.classList.add('today');
         if (calendarSelectedDate === iso) cell.classList.add('selected');
-        if (daySlots.length) {
-          const t = dayType(daySlots, todayIso);
+        if (daySlots.length || journalByDate[iso]) {
+          const t = daySlots.length ? dayType(daySlots, todayIso) : 'past';
           cell.classList.add(t === 'upcoming' ? 'has-upcoming' : t === 'mixed' ? 'has-mixed' : 'has-past');
         }
+        const journalDot = journalByDate[iso] ? '<span title="Journal" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4A7C59;margin-left:3px;vertical-align:middle;"></span>' : '';
         const pill = daySlots.length
-          ? `<span class="cal-pill ${dayType(daySlots, todayIso) === 'upcoming' ? 'cal-pill-upcoming' : dayType(daySlots, todayIso) === 'mixed' ? 'cal-pill-mixed' : 'cal-pill-past'}">${daySlots.length} séance${daySlots.length > 1 ? 's' : ''}</span>`
-          : '<span class="text-[10px] text-muted">—</span>';
+          ? `<span class="cal-pill ${dayType(daySlots, todayIso) === 'upcoming' ? 'cal-pill-upcoming' : dayType(daySlots, todayIso) === 'mixed' ? 'cal-pill-mixed' : 'cal-pill-past'}">${daySlots.length} séance${daySlots.length > 1 ? 's' : ''}${journalDot}</span>`
+          : (journalByDate[iso] ? `<span class="cal-pill cal-pill-past">📓${journalDot}</span>` : '<span class="text-[10px] text-muted">—</span>');
         cell.innerHTML = `<span class="cal-day-num">${d}</span>${pill}`;
         cell.addEventListener('click', () => {
           calendarSelectedDate = iso;
@@ -229,9 +265,19 @@
       let slots = [];
       try {
         slots = await getMyBookings();
-      } catch (e) {
-        return;
-      }
+      } catch (e) { /* silence */ }
+
+      // Charger le journal en parallèle
+      try {
+        const entries = await getMyJournal();
+        journalByDate = {};
+        entries.forEach(en => {
+          const iso = new Date(en.written_at).toISOString().slice(0, 10);
+          if (!journalByDate[iso]) journalByDate[iso] = [];
+          journalByDate[iso].push(en);
+        });
+      } catch (e) { /* silence */ }
+
       initCalendar(slots);
     }
     chargerSeances();

@@ -34,11 +34,26 @@
 <script>renderLayout('ecrire');</script>
 
 <main class="max-w-5xl mx-auto px-4 py-8 sm:py-10 space-y-6">
-  <section class="card p-6 sm:p-7">
+
+  <!-- ── Résultat du jour (affiché après validation ou si déjà rempli) ─────── -->
+  <section id="today-result" class="hidden card p-6 sm:p-7">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-2xl">✅</span>
+      <div>
+        <h1 class="font-heading text-xl font-bold text-ink">Journal du jour complété</h1>
+        <p id="today-result-date" class="text-xs text-muted mt-0.5"></p>
+      </div>
+    </div>
+    <div id="today-result-body" class="space-y-3"></div>
+    <p class="text-xs text-muted mt-5">Le journal est une fois par jour. À demain.</p>
+  </section>
+
+  <!-- ── Formulaire d'écriture (masqué si déjà rempli aujourd'hui) ────────── -->
+  <section id="journal-form-card" class="card p-6 sm:p-7">
     <div class="flex items-start justify-between gap-4 flex-wrap">
       <div>
         <h1 class="font-heading text-2xl font-bold text-ink">Journal</h1>
-        <p class="text-sm text-muted mt-1">Écrivez directement votre état du jour. Les sections guidées restent disponibles en dessous.</p>
+        <p id="today-label" class="text-sm text-muted mt-1"></p>
       </div>
     </div>
     <div class="mt-4">
@@ -66,10 +81,6 @@
         <p class="text-xs text-muted">Formule : pratique + humeur + énergie.</p>
       </div>
       <div class="grid md:grid-cols-2 gap-4 mt-2">
-      <div>
-        <label class="field-label">Date</label>
-        <input id="entry-date" type="date" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
-      </div>
       <div>
         <label class="field-label">Humeur globale</label>
         <select id="humeur" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
@@ -423,19 +434,34 @@
     try {
       const entries = await getMyJournal();
       entriesCache = entries;
+
+      // Vérifier si aujourd'hui a déjà une entrée de fond (pas exercice)
+      const todayEntries = getTodayEntries(entries);
+      if (todayEntries.length > 0) {
+        showTodayResult(todayEntries);
+      } else {
+        setTodayLabel();
+      }
+
       zone.innerHTML = '';
-      if (!entries.length) {
-        zone.innerHTML = '<p class="text-sm text-muted">Aucune entrée pour l’instant.</p>';
+      // Entrées passées seulement (pas aujourd'hui)
+      const pastEntries = entries.filter(en => {
+        const d = new Date(en.written_at);
+        return d.toISOString().slice(0, 10) !== TODAY;
+      });
+      if (!pastEntries.length) {
+        zone.innerHTML = '<p class="text-sm text-muted">Aucune entrée passée pour l\'instant.</p>';
         refreshExercisePanel();
         return;
       }
-      entries
+      pastEntries
         .sort((a, b) => new Date(b.written_at) - new Date(a.written_at))
         .forEach(en => zone.appendChild(renderEntry(en)));
       refreshExercisePanel();
     } catch (err) {
       zone.innerHTML = '<p class="text-sm text-muted">Vos entrées apparaîtront ici après votre première écriture.</p>';
       entriesCache = [];
+      setTodayLabel();
       refreshExercisePanel();
     }
 
@@ -461,7 +487,6 @@
       });
   }
 
-  document.getElementById('entry-date').value = new Date().toISOString().slice(0,10);
   document.getElementById('energie').addEventListener('input', (e) => {
     document.getElementById('energie-val').textContent = e.target.value;
     calcScore();
@@ -470,27 +495,86 @@
   ['hm-matin','hm-midi','hm-soir'].forEach(id => document.getElementById(id).addEventListener('change', calcScore));
   calcScore();
 
+  const TODAY = new Date().toISOString().slice(0, 10);
+
+  // ── Bascule vers la vue résultat ─────────────────────────────────────────
+  function showTodayResult(todayEntries) {
+    document.getElementById('journal-form-card').classList.add('hidden');
+    document.getElementById('architecte-fold').classList.add('hidden');
+    document.getElementById('exercise-fold').classList.add('hidden');
+
+    const resultSection = document.getElementById('today-result');
+    resultSection.classList.remove('hidden');
+
+    const dateLabel = new Date(TODAY + 'T12:00:00').toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('today-result-date').textContent = dateLabel;
+
+    const body = document.getElementById('today-result-body');
+    body.innerHTML = '';
+
+    todayEntries.forEach(en => {
+      const archi = parseArchi(en.body_text);
+      const exo = parseExo(en.body_text);
+      const el = document.createElement('div');
+      el.className = 'bg-surface border border-bdr rounded-[14px] px-4 py-3';
+
+      if (exo) {
+        el.innerHTML = `<p class="text-xs text-muted font-semibold uppercase tracking-wider mb-1">Exercice validé</p>
+          <p class="text-sm font-semibold text-ink">${safe(exo.title || 'Exercice')}</p>
+          <p class="text-xs text-muted mt-1">Avant ${exo.before || '-'}/10 → Après ${exo.after || '-'}/10</p>`;
+      } else if (archi) {
+        const humeurLabel = {stress:'🔴 Stress',neutre:'🟡 Neutre',coherence:'🟢 Cohérence',flow:'🔵 Flow'}[archi.humeur] || archi.humeur;
+        el.innerHTML = `<p class="text-xs text-muted font-semibold uppercase tracking-wider mb-2">Bilan structuré</p>
+          <div class="grid sm:grid-cols-3 gap-2 text-sm">
+            <p><strong>Humeur :</strong> ${humeurLabel}</p>
+            <p><strong>Énergie :</strong> ${archi.energie}/10</p>
+            <p><strong>Score :</strong> ✨ ${archi.score}</p>
+          </div>
+          ${archi.note ? `<p class="text-sm text-ink mt-2 whitespace-pre-wrap">${safe(archi.note)}</p>` : ''}
+          ${archi.grace ? `<p class="text-sm text-muted mt-1"><em>Grâce :</em> ${safe(archi.grace)}</p>` : ''}
+          ${archi.lecon ? `<p class="text-sm text-muted mt-1"><em>Leçon :</em> ${safe(archi.lecon)}</p>` : ''}`;
+      } else {
+        el.innerHTML = `<p class="text-xs text-muted font-semibold uppercase tracking-wider mb-1">Note libre</p>
+          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap">${safe(en.body_text)}</p>`;
+      }
+      body.appendChild(el);
+    });
+  }
+
+  // ── Affiche le label de la date dans le formulaire ────────────────────────
+  function setTodayLabel() {
+    const label = new Date(TODAY + 'T12:00:00').toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long' });
+    const el = document.getElementById('today-label');
+    if (el) el.textContent = 'Entrée du ' + label + '. Une seule entrée par jour.';
+  }
+
+  // ── Vérifie si aujourd'hui est déjà rempli ────────────────────────────────
+  function getTodayEntries(entries) {
+    return entries.filter(en => {
+      const d = new Date(en.written_at);
+      return d.toISOString().slice(0, 10) === TODAY && !en.body_text.startsWith('ARCHI_EXERCICE::');
+    });
+  }
+
   document.getElementById('btn-quick-save').addEventListener('click', async () => {
     const errDiv = document.getElementById('quick-error');
     const btn = document.getElementById('btn-quick-save');
     const text = document.getElementById('entry-text').value.trim();
     errDiv.classList.add('hidden');
     if (!text) {
-      errDiv.textContent = 'Écrivez quelques lignes avant d’enregistrer.';
+      errDiv.textContent = 'Écrivez quelques lignes avant d\'enregistrer.';
       errDiv.classList.remove('hidden');
       return;
     }
-
     btn.disabled = true;
     btn.textContent = 'Enregistrement…';
     try {
-      await createMyJournalEntry({ body_text: text, emotional_tone: 'confus' });
-      document.getElementById('entry-text').value = '';
+      const entry = await createMyJournalEntry({ body_text: text, emotional_tone: 'confus' });
+      showTodayResult([entry]);
       await chargerEntrees();
     } catch (err) {
-      errDiv.textContent = err.message || 'Impossible d’enregistrer la note.';
+      errDiv.textContent = err.message || 'Impossible d\'enregistrer la note.';
       errDiv.classList.remove('hidden');
-    } finally {
       btn.disabled = false;
       btn.textContent = 'Enregistrer';
     }
@@ -508,26 +592,18 @@
       errDiv.classList.remove('hidden');
       return;
     }
-
     btn.disabled = true;
     btn.textContent = 'Enregistrement…';
     try {
       const humeur = document.getElementById('humeur').value;
-      await createMyJournalEntry({ body_text: buildBody(), emotional_tone: moodToTone(humeur) });
-      document.getElementById('grace').value = '';
-      document.getElementById('lecon').value = '';
-      document.getElementById('entry-text').value = '';
-      document.getElementById('stress-other').value = '';
-      document.querySelectorAll('.stress-item').forEach(i => { i.checked = false; });
-      ['hm-matin','hm-midi','hm-soir'].forEach(id => { document.getElementById(id).checked = false; });
-      calcScore();
+      const entry = await createMyJournalEntry({ body_text: buildBody(), emotional_tone: moodToTone(humeur) });
+      showTodayResult([entry]);
       await chargerEntrees();
     } catch (err) {
-      errDiv.textContent = err.message || 'Impossible d’enregistrer. Réessayez.';
+      errDiv.textContent = err.message || 'Impossible d\'enregistrer. Réessayez.';
       errDiv.classList.remove('hidden');
-    } finally {
       btn.disabled = false;
-      btn.textContent = 'Enregistrer l’entrée';
+      btn.textContent = 'Enregistrer l\'entrée';
     }
   });
 
@@ -537,7 +613,7 @@
     const rec = refreshExercisePanel();
     const payload = {
       version: 'architecte-exercice-v1',
-      date: new Date().toISOString().slice(0, 10),
+      date: TODAY,
       reco_id: rec.id,
       title: rec.title,
       duration: rec.duration,
@@ -558,7 +634,7 @@
       feedback.textContent = '✓ Exercice validé et enregistré.';
       await chargerEntrees();
     } catch (e) {
-      feedback.textContent = 'Impossible d’enregistrer l’exercice.';
+      feedback.textContent = 'Impossible d\'enregistrer l\'exercice.';
     } finally {
       btn.disabled = false;
       btn.textContent = 'Valider cet exercice';
