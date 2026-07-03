@@ -9,7 +9,7 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = settings.stripe_secret_key
 
 
 class StripePaymentService:
@@ -54,8 +54,8 @@ class StripePaymentService:
                     'quantity': 1
                 }],
                 mode='payment',
-                success_url=f"{settings.FRONTEND_URL}/client/seances.html?payment=success&appointment_id={appointment_id}",
-                cancel_url=f"{settings.FRONTEND_URL}/client/agenda.html?payment=cancelled",
+                success_url=f"{settings.frontend_url}/client/seances.html?payment=success&appointment_id={appointment_id}",
+                cancel_url=f"{settings.frontend_url}/client/agenda.html?payment=cancelled",
                 customer_email=client_email,
                 metadata={
                     'appointment_id': appointment_id,
@@ -153,7 +153,7 @@ class StripePaymentService:
             event = stripe.Webhook.construct_event(
                 payload,
                 sig_header,
-                settings.STRIPE_WEBHOOK_SECRET
+                settings.stripe_webhook_secret
             )
             logger.info(f"Verified Stripe webhook event: {event['type']}")
             return event
