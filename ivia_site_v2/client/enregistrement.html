@@ -5,333 +5,409 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>IVIA -- Enregistrer ma voix</title>
+  <title>IVIA &mdash; Enregistrer ma voix</title>
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260703b"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --forest:#4A7C59;
-      --forest-deep:#2D6A4F;
-      --bdr:#D4E8D0;
-      --ink:#1A2E1D;
-      --muted:#4B6350;
-      --cream:#FAFDF8;
-      --surface:#F0F7F2;
+    :root{ --pill-radius:16px; }
+    [data-theme="signature"]{
+      --bg: radial-gradient(120% 90% at 50% 0%, #20241c 0%, #12130d 55%, #0c0d08 100%);
+      --page-bg:#0e0f0a;
+      --text:#F3EFE2; --muted:#A9A693; --soft:#75735f;
+      --accent-2:#C8965A;
+      --ring:#3a3c2f; --ring-active:#C8965A;
+      --wave:#C8965A; --wave-2:#5e7d59;
+      --pill-bg: rgba(255,255,255,.06); --pill-border: rgba(255,255,255,.10); --pill-text:#E8E4D6;
+      --finish-bg: linear-gradient(180deg,#3f6f50,#2d5b42); --finish-text:#F3EFE2;
+      --card-border: rgba(196,176,128,.16);
+      --logo-fill:#5e7d59; --shadow:0 30px 80px -40px rgba(0,0,0,.8);
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
-    .page{max-width:1160px;margin:0 auto;padding:20px 16px 28px}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--bdr);border-radius:18px;background:#fff;position:sticky;top:12px;z-index:20;backdrop-filter:blur(10px)}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--forest-deep);text-decoration:none}
-    .brand svg{width:26px;height:26px;flex:0 0 auto}
-    .picker{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bdr);background:#fff;border-radius:999px;padding:4px}
-    .picker button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer}
-    .picker button.on{background:var(--forest-deep);color:#fff}
-    .hero{display:grid;grid-template-columns:1fr;gap:26px;align-items:center;padding-top:28px}
-    .copy h1{font-family:Georgia,serif;font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:0 0 12px}
-    .copy p{margin:0 0 14px;color:var(--muted);font-size:17px;line-height:1.7;max-width:56ch}
-    .hero-phone-wrap{width:100%;max-width:320px;margin:0 auto;perspective:1400px}
-    .phone-flip{position:relative;transform-style:preserve-3d;transition:transform 1100ms ease-in-out}
-    .phone-flip img{width:100%;height:auto;display:block;backface-visibility:hidden;filter:drop-shadow(0 30px 55px rgba(26,46,29,.28))}
-    .phone-flip img:last-child{position:absolute;inset:0;transform:rotateY(180deg);filter:drop-shadow(0 30px 55px rgba(120,80,95,.28))}
-    .phone-overlay{position:absolute;inset:0;pointer-events:none}
-    .overlay-center{position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);text-align:center;color:#6b4a49;pointer-events:none;min-width:120px}
-    .overlay-timer{font-family:Georgia,serif;font-size:40px;font-weight:600;letter-spacing:.02em;line-height:1}
-    .overlay-status{font-size:10px;line-height:1.2;margin-top:4px;opacity:.92}
-    .overlay-pulse{position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);width:152px;height:152px;border-radius:50%;border:1.5px solid rgba(197,143,128,.45);opacity:0;transition:opacity .2s, transform .2s}
-    .overlay-pulse.live{opacity:1;transform:translate(-50%,-50%) scale(1.01)}
-    .hotspot{position:absolute;border:0;background:transparent;cursor:pointer;pointer-events:auto}
-    .hotspot:focus-visible{outline:2px solid #2D6A4F;outline-offset:2px}
-    .hotspot.pause{left:12%;top:66.5%;width:27%;height:7.5%;border-radius:16px}
-    .hotspot.relisten{right:12%;top:66.5%;width:27%;height:7.5%;border-radius:16px}
-    .hotspot.finish{left:20%;top:77.6%;width:60%;height:8.5%;border-radius:18px}
-    .hotspot.record{left:36%;bottom:3.8%;width:28%;height:12%;border-radius:999px}
-    .hotspot.journal{left:4%;bottom:0;width:26%;height:14%;border-radius:18px}
-    .hotspot.space{right:4%;bottom:0;width:26%;height:14%;border-radius:18px}
-    .hotspot .sr{position:absolute;left:-9999px}
-    .phone-caption{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
-    .note{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
-    .frame{display:flex;flex-direction:column;align-items:center}
-    .state-line{margin-top:12px;text-align:center;color:var(--forest-deep);font-weight:700;font-size:13px;min-height:18px}
-    .review-card{margin:18px auto 0;max-width:420px;padding:14px;border:1px solid var(--bdr);border-radius:18px;background:#fff;display:none}
-    .review-card.show{display:block}
-    .review-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{border:0;border-radius:14px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}
-    .btn.primary{background:var(--forest-deep);color:#fff}
-    .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--bdr)}
-    .meter{height:4px;background:var(--bdr);border-radius:999px;overflow:hidden;margin-top:10px}
-    .meter > div{height:100%;width:0;background:var(--forest);border-radius:999px}
-    @media (min-width: 960px){.hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:44px}.frame{align-items:flex-start}.phone-caption,.state-line{text-align:left}}
+    [data-theme="doux"]{
+      --bg: radial-gradient(120% 95% at 50% 0%, #f7e7e9 0%, #efd7da 45%, #e4c9d2 100%);
+      --page-bg:#e7d3d8;
+      --text:#5b4750; --muted:#9a7f88; --soft:#b59aa3;
+      --accent-2:#c98b9b;
+      --ring:#e6cdd3; --ring-active:#c98b9b;
+      --wave:#c98b9b; --wave-2:#7fa07f;
+      --pill-bg: rgba(255,255,255,.55); --pill-border: rgba(180,140,150,.30); --pill-text:#6b5560;
+      --finish-bg: linear-gradient(180deg,#8aa583,#6f8c6c); --finish-text:#fbfaf6;
+      --card-border: rgba(180,140,150,.28);
+      --logo-fill:#8aa583; --shadow:0 30px 80px -42px rgba(120,80,95,.45);
+    }
+    *{box-sizing:border-box;margin:0;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--page-bg);color:var(--text);
+         min-height:100vh;display:flex;flex-direction:column;align-items:center;
+         padding:28px 16px 48px;gap:22px;transition:background .4s;}
+    .picker{display:flex;align-items:center;gap:10px;background:rgba(127,127,127,.14);
+            border:1px solid rgba(127,127,127,.22);border-radius:9999px;padding:5px;backdrop-filter:blur(6px);}
+    .picker .lbl{font-size:12px;font-weight:600;color:#9aa;letter-spacing:.04em;padding-left:8px;}
+    .picker button{border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:700;
+            padding:7px 16px;border-radius:9999px;background:transparent;color:#bbb;transition:.18s;}
+    .picker button.on{background:#fff;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.18);}
+    .screen{width:100%;max-width:380px;border-radius:34px;padding:26px 22px 18px;
+            background:var(--bg);box-shadow:var(--shadow);transition:background .4s;}
+    .brand{text-align:center;margin-top:6px;}
+    .logo-chip{width:38px;height:38px;border-radius:11px;background:rgba(127,127,127,.14);
+            display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;}
+    .logo-chip svg{width:22px;height:22px;}
+    .wordmark{font-family:'Lora',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:.14em;color:var(--text);}
+    .subtitle{font-size:13px;color:var(--accent-2);margin-top:6px;font-weight:600;min-height:18px;}
+    .hint{font-size:13px;color:var(--muted);margin-top:2px;}
+    .timer-wrap{position:relative;height:210px;display:flex;align-items:center;justify-content:center;margin:8px 0 4px;}
+    canvas#viz{position:absolute;inset:0;width:100%;height:100%;}
+    .timer-core{position:relative;text-align:center;pointer-events:none;}
+    .timer{font-family:'Lora',Georgia,serif;font-size:40px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;}
+    .status{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3;min-height:28px;}
+    .privacy{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;
+             color:var(--soft);margin:8px 0 16px;}
+    .privacy svg{width:13px;height:13px;}
+    .controls{display:flex;gap:12px;margin-bottom:12px;}
+    .pill{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+          background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--pill-text);
+          border-radius:var(--pill-radius);padding:13px;font:inherit;font-size:14px;font-weight:600;transition:.15s;}
+    .pill:hover{filter:brightness(1.08);}
+    .pill:disabled{opacity:.4;cursor:default;}
+    .pill svg{width:16px;height:16px;flex:0 0 auto;}
+    .finish{width:100%;cursor:pointer;border:0;border-radius:var(--pill-radius);
+            background:var(--finish-bg);color:var(--finish-text);padding:15px;
+            font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;transition:.15s;}
+    .finish:hover{filter:brightness(1.06);}
+    .finish svg{width:18px;height:18px;}
+    .player{display:flex;align-items:center;gap:12px;background:var(--pill-bg);
+            border:1px solid var(--pill-border);border-radius:16px;padding:12px;margin-bottom:12px;}
+    .play-btn{width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;flex-shrink:0;
+              background:var(--finish-bg);color:var(--finish-text);display:flex;align-items:center;justify-content:center;}
+    .play-btn svg{width:17px;height:17px;}
+    .pb-track{height:7px;background:var(--card-border);border-radius:9999px;overflow:hidden;cursor:pointer;}
+    .pb-fill{height:100%;background:var(--accent-2);border-radius:9999px;width:0;}
+    .alert{font-size:13px;border-radius:12px;padding:11px 14px;margin-top:10px;line-height:1.45;
+           background:rgba(190,70,60,.12);border:1px solid rgba(190,70,60,.28);color:var(--text);}
+    .bottomnav{display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;
+               border-top:1px solid var(--card-border);}
+    .bottomnav a,.bottomnav button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;
+                 font-weight:600;color:var(--muted);text-decoration:none;background:none;border:0;cursor:pointer;font-family:inherit;}
+    .bottomnav .on{color:var(--accent-2);}
+    .bottomnav svg{width:20px;height:20px;}
+    .hidden{display:none !important;}
   </style>
 </head>
-<body>
-  <div class="page">
-    <header class="topbar">
-      <a class="brand" href="/">
-        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
-          <rect width="28" height="28" rx="7" fill="#2D6A4F"/>
-          <rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/>
-          <rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/>
-          <rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/>
-        </svg>
-        IVIA
-      </a>
-      <div class="picker" role="tablist" aria-label="Ambiance d'enregistrement">
-        <button id="t-signature" class="on" type="button" role="tab" aria-selected="true">Signature</button>
-        <button id="t-doux" type="button" role="tab" aria-selected="false">Doux</button>
-      </div>
-    </header>
+<body data-theme="signature">
 
-    <main class="hero">
-      <section class="copy">
-        <h1>Enregistrer ma voix</h1>
-        <p>Le telephone ci-dessous est le vrai modele du home : meme moteur visuel, deux ambiances, memes boutons.</p>
-        <p>Pause, Re-listen et Finish sont conserves, avec la navigation Journal / Record / Space en bas.</p>
-        <div class="note">Le modele mobile doit rester identique a celui de l'accueil local.</div>
-      </section>
-
-      <section class="frame">
-        <div class="hero-phone-wrap">
-          <div id="phone-flip" class="phone-flip">
-            <img src="/assets/recorder-signature.png?v=20260621b" alt="L'enregistreur IVIA -- ambiance Signature" loading="lazy">
-            <img src="/assets/recorder-doux.png?v=20260621b" alt="L'enregistreur IVIA -- ambiance Doux" loading="lazy">
-            <div class="phone-overlay" aria-hidden="true">
-              <div class="overlay-pulse" id="pulse"></div>
-              <div class="overlay-center">
-                <div class="overlay-timer" id="timer">00:24</div>
-                <div class="overlay-status" id="status">Recording<br>in progress</div>
-              </div>
-              <button class="hotspot pause" id="hot-pause" type="button"><span class="sr">Pause</span></button>
-              <button class="hotspot relisten" id="hot-relisten" type="button"><span class="sr">Re-listen</span></button>
-              <button class="hotspot finish" id="hot-finish" type="button"><span class="sr">Finish</span></button>
-              <button class="hotspot record" id="hot-record" type="button"><span class="sr">Record</span></button>
-              <a class="hotspot journal" href="/client/journal.html" aria-label="Journal"></a>
-              <a class="hotspot space" href="/client/dashboard.html" aria-label="Space"></a>
-            </div>
-          </div>
-        </div>
-        <p class="phone-caption">Deux ambiances, un meme modele visuel.</p>
-                <div class="state-line" id="state-line">Tap Record to begin.</div>
-        <div class="action-dock" aria-label="Recorder actions">
-          <button class="dock-btn primary wide" id="dock-record" type="button">Enregistrer</button>
-          <button class="dock-btn" id="dock-pause" type="button">Pause</button>
-          <button class="dock-btn" id="dock-reset" type="button">Réinitialiser</button>
-          <button class="dock-btn" id="dock-journal" type="button">Journal</button>
-          <button class="dock-btn" id="dock-space" type="button">Espace</button>
-        </div>
-        <div class="review-card" id="review-card">
-          <div style="font-weight:700;color:var(--forest-deep)">Audio ready</div>
-          <div style="font-size:13px;color:var(--muted);margin-top:4px">You can re-listen, restart, or finish sending later.</div>
-          <div class="meter"><div id="level-bar"></div></div>
-          <div class="review-actions">
-            <button class="btn primary" id="btn-replay" type="button">Re-listen</button>
-            <button class="btn ghost" id="btn-reset" type="button">Restart</button>
-          </div>
-        </div>
-      </section>
-    </main>
+  <div class="picker" role="tablist" aria-label="Ambiance">
+    <span class="lbl">Ambiance</span>
+    <button id="t-signature" class="on" type="button">Signature</button>
+    <button id="t-doux" type="button">Doux</button>
   </div>
 
+  <section class="screen" id="recorder" aria-label="Enregistrement IVIA">
+    <div class="brand">
+      <span class="logo-chip">
+        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/>
+          <rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/>
+          <rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/>
+        </svg>
+      </span>
+      <div class="wordmark">IVIA</div>
+      <p class="subtitle" id="subtitle">Pr&ecirc;t &agrave; vous &eacute;couter</p>
+      <p class="hint">Parlez librement, &agrave; votre rythme.</p>
+    </div>
+
+    <div class="timer-wrap">
+      <canvas id="viz" aria-hidden="true"></canvas>
+      <div class="timer-core">
+        <div class="timer" id="timer">00:00</div>
+        <div class="status" id="status">Touchez Enregistrer</div>
+      </div>
+    </div>
+
+    <p class="privacy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v4m-6 6h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg>
+      Rien n&apos;est envoy&eacute; sans votre accord.
+    </p>
+
+    <!-- Lecteur de r&eacute;&eacute;coute (apr&egrave;s un enregistrement) -->
+    <div class="player hidden" id="player">
+      <button id="btn-play" class="play-btn" type="button" aria-label="Lire / pause">
+        <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      </button>
+      <div style="flex:1">
+        <div id="pb-track" class="pb-track"><div id="pb-fill" class="pb-fill"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums">
+          <span id="pb-time">00:00</span><span id="pb-dur">00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="pill" id="btn-pause" type="button" disabled>
+        <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <span id="pause-label">Pause</span>
+      </button>
+      <button class="pill" id="btn-reset" type="button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.5 9a7 7 0 0112.9-2M18.5 15a7 7 0 01-12.9 2"/></svg>
+        R&eacute;initialiser
+      </button>
+    </div>
+    <button class="finish" id="btn-main" type="button">
+      <svg id="main-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+      <span id="main-label">Enregistrer</span>
+    </button>
+    <div id="err" class="alert hidden"></div>
+
+    <nav class="bottomnav">
+      <a href="/client/journal.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 21h10a2 2 0 002-2V7l-5-4H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        Journal
+      </a>
+      <button type="button" class="on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+        Enregistrer
+      </button>
+      <a href="/client/dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Espace
+      </a>
+    </nav>
+  </section>
+
   <script>
-    const flip = document.getElementById('phone-flip');
-    const timerEl = document.getElementById('timer');
-    const statusEl = document.getElementById('status');
-    const pulseEl = document.getElementById('pulse');
-    const stateLine = document.getElementById('state-line');
-    const reviewCard = document.getElementById('review-card');
-    const levelBar = document.getElementById('level-bar');
-    const hotPause = document.getElementById('hot-pause');
-    const hotRelisten = document.getElementById('hot-relisten');
-    const hotFinish = document.getElementById('hot-finish');
-    const hotRecord = document.getElementById('hot-record');
-    const dockRecord = document.getElementById('dock-record');
-    const dockPause = document.getElementById('dock-pause');
-    const dockReset = document.getElementById('dock-reset');
-    const dockJournal = document.getElementById('dock-journal');
-    const dockSpace = document.getElementById('dock-space');
-
-    let mediaRecorder = null, mediaStream = null, audioChunks = [], audioBlob = null, audioEl = null, previewEl = null;
-    let audioCtx = null, analyser = null, raf = null, timer = null, seconds = 24, paused = false, recording = false, lastVibe = 0;
-    let theme = 'signature';
-
+    // ---- Th&egrave;me -------------------------------------------------------
     function setTheme(t){
-      theme = t;
-      document.getElementById('t-signature').classList.toggle('on', t === 'signature');
-      document.getElementById('t-doux').classList.toggle('on', t === 'doux');
-      document.getElementById('t-signature').setAttribute('aria-selected', t === 'signature');
-      document.getElementById('t-doux').setAttribute('aria-selected', t === 'doux');
-      flip.style.transform = (t === 'doux') ? 'rotateY(180deg)' : 'rotateY(0deg)';
-      try { localStorage.setItem('ivia_recorder_theme', t); } catch (e) {}
+      document.body.dataset.theme = t;
+      document.getElementById('t-signature').classList.toggle('on', t==='signature');
+      document.getElementById('t-doux').classList.toggle('on', t==='doux');
+      try{ localStorage.setItem('ivia_recorder_theme', t); }catch(e){}
+    }
+    document.getElementById('t-signature').addEventListener('click', ()=>setTheme('signature'));
+    document.getElementById('t-doux').addEventListener('click', ()=>setTheme('doux'));
+    try{ const s=localStorage.getItem('ivia_recorder_theme'); if(s) setTheme(s); }catch(e){}
+
+    // ---- Etat -------------------------------------------------------------
+    // idle -> recording <-> paused -> done (r&eacute;&eacute;coute) -> idle (reset)
+    let state='idle';
+    let mediaRecorder=null, mediaStream=null, chunks=[], blob=null, playbackEl=null;
+    let audioCtx=null, analyser=null, seconds=0, timerInt=null, lastVibe=0;
+
+    const timerEl=document.getElementById('timer'), statusEl=document.getElementById('status'),
+          subtitleEl=document.getElementById('subtitle'),
+          btnMain=document.getElementById('btn-main'), mainLabel=document.getElementById('main-label'), mainIcon=document.getElementById('main-icon'),
+          btnPause=document.getElementById('btn-pause'), pauseLabel=document.getElementById('pause-label'),
+          btnReset=document.getElementById('btn-reset'),
+          player=document.getElementById('player'), btnPlay=document.getElementById('btn-play'), playIcon=document.getElementById('play-icon'),
+          pbFill=document.getElementById('pb-fill'), pbTime=document.getElementById('pb-time'), pbDur=document.getElementById('pb-dur'),
+          errEl=document.getElementById('err');
+
+    const ICONS={
+      mic:'<path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/>',
+      stop:'<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>',
+      send:'<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>'
+    };
+
+    function fmt(s){ s=Math.max(0,Math.floor(s||0)); return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+    function showErr(m){ errEl.textContent=m; errEl.classList.remove('hidden'); }
+    function hideErr(){ errEl.classList.add('hidden'); }
+
+    function render(){
+      btnPause.disabled = !(state==='recording'||state==='paused');
+      btnReset.disabled = (state==='idle');
+      player.classList.toggle('hidden', state!=='done');
+      if(state==='idle'){
+        subtitleEl.innerHTML='Pr&ecirc;t &agrave; vous &eacute;couter';
+        statusEl.textContent='Touchez Enregistrer';
+        mainLabel.textContent='Enregistrer'; mainIcon.innerHTML=ICONS.mic;
+        pauseLabel.textContent='Pause';
+      }else if(state==='recording'){
+        subtitleEl.textContent='Enregistrement en cours';
+        statusEl.innerHTML='Enregistrement<br>en cours';
+        mainLabel.textContent='Terminer'; mainIcon.innerHTML=ICONS.stop;
+        pauseLabel.textContent='Pause';
+      }else if(state==='paused'){
+        subtitleEl.textContent='En pause';
+        statusEl.textContent='En pause';
+        mainLabel.textContent='Terminer'; mainIcon.innerHTML=ICONS.stop;
+        pauseLabel.textContent='Reprendre';
+      }else if(state==='done'){
+        subtitleEl.innerHTML='R&eacute;&eacute;coutez votre voix';
+        statusEl.innerHTML='Enregistrement termin&eacute;';
+        mainLabel.textContent='Envoyer &agrave; IVIA'; mainIcon.innerHTML=ICONS.send;
+      }
     }
 
-    function fmt(s){ s = Math.max(0, Math.floor(s || 0)); return String(Math.floor(s / 60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0'); }
-    function setState(text, detail){
-      stateLine.textContent = text;
-      statusEl.innerHTML = detail || text;
-    }
-    function setTimer(v){ timerEl.textContent = v; }
+    // ---- Minuterie ----------------------------------------------------------
+    function tickStart(){ clearInterval(timerInt); timerInt=setInterval(()=>{ seconds++; timerEl.textContent=fmt(seconds); },1000); }
+    function tickStop(){ clearInterval(timerInt); }
 
+    // ---- Micro / niveau ------------------------------------------------------
     function micLevel(){
-      if (!analyser) return 0;
-      const data = new Uint8Array(analyser.fftSize);
-      analyser.getByteTimeDomainData(data);
-      let sum = 0;
-      for (let i = 0; i < data.length; i++) {
-        const x = (data[i] - 128) / 128;
-        sum += x * x;
-      }
-      return Math.min(1, Math.sqrt(sum / data.length) * 3.2);
+      if(!analyser) return 0;
+      const d=new Uint8Array(analyser.fftSize);
+      analyser.getByteTimeDomainData(d);
+      let sum=0; for(let i=0;i<d.length;i++){ const v=(d[i]-128)/128; sum+=v*v; }
+      return Math.min(1, Math.sqrt(sum/d.length)*3.4);
+    }
+    function vibrate(level){
+      if(!navigator.vibrate) return;
+      const now=performance.now();
+      if(now-lastVibe<260) return;
+      if(level>0.18){ navigator.vibrate(12); lastVibe=now; }
     }
 
-    function vibe(level){
-      if (!navigator.vibrate) return;
-      const now = performance.now();
-      if (now - lastVibe < 220) return;
-      if (level > 0.22) {
-        navigator.vibrate([8, 18, 10]);
-        lastVibe = now;
+    // ---- Visualisation hypnotique : anneaux concentriques qui respirent -----
+    const cv=document.getElementById('viz'), ctx=cv.getContext('2d');
+    function resize(){ const r=cv.getBoundingClientRect(); cv.width=r.width*devicePixelRatio; cv.height=r.height*devicePixelRatio; }
+    window.addEventListener('resize', resize); resize();
+    let phase=0, amp=0.08, smooth=0;
+    function cssvar(n){ return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+    function draw(){
+      const w=cv.width,h=cv.height,cx=w/2,cy=h/2;
+      ctx.clearRect(0,0,w,h);
+      const live=(state==='recording');
+      const lvl=live?micLevel():0;
+      smooth += (lvl-smooth)*0.12;
+      const target=live?(0.25+0.75*smooth):(state==='paused'?0.14:0.08);
+      amp += (target-amp)*0.06;
+      if(live) vibrate(smooth);
+      const c1=cssvar('--wave')||'#C8965A', c2=cssvar('--wave-2')||'#5e7d59';
+      const base=64*devicePixelRatio;
+      // anneaux concentriques respirants
+      for(let i=0;i<5;i++){
+        const p=phase*(0.6+i*0.13)+i*1.4;
+        const r=base+(i*13*devicePixelRatio)+Math.sin(p)*10*devicePixelRatio*(0.4+amp);
+        ctx.beginPath();
+        ctx.arc(cx,cy,Math.max(6,r),0,Math.PI*2);
+        ctx.strokeStyle=i%2?c2:c1;
+        ctx.globalAlpha=(0.38-i*0.055)*(0.55+amp*0.8);
+        ctx.lineWidth=(1.4+amp*1.8)*devicePixelRatio;
+        ctx.stroke();
       }
-    }
-
-    function drawLive(){
-      if (recording && !paused) {
-        const lvl = micLevel();
-        const pct = Math.max(6, Math.min(100, Math.round(lvl * 100)));
-        levelBar.style.width = pct + '%';
-        pulseEl.classList.add('live');
-        vibe(lvl);
-      } else {
-        pulseEl.classList.remove('live');
-        levelBar.style.width = recording ? '24%' : '0%';
-      }
-      raf = requestAnimationFrame(drawLive);
-    }
-
-    function togglePause(){
-      if (!mediaRecorder) return;
-      if (mediaRecorder.state === 'recording') {
-        mediaRecorder.pause();
-        paused = true;
-        clearInterval(timer);
-        setState('Paused', 'Paused');
-      } else if (mediaRecorder.state === 'paused') {
-        mediaRecorder.resume();
-        paused = false;
-        startTimer();
-        setState('Recording in progress', 'Recording<br>in progress');
-      }
-    }
-
-    function startTimer(){
-      clearInterval(timer);
-      timer = setInterval(() => {
-        if (!paused) {
-          seconds++;
-          setTimer(fmt(seconds));
+      // onde horizontale douce derri&egrave;re les anneaux
+      const layers=[{c:c1,a:0.42,f:1.0,s:16},{c:c2,a:0.26,f:1.7,s:10}];
+      layers.forEach((L,i)=>{
+        ctx.beginPath();
+        for(let x=0;x<=w;x+=4){
+          const env=Math.sin((x/w)*Math.PI);
+          const y=cy+Math.sin(x*0.013*L.f+phase*(i?1.35:1))*L.s*devicePixelRatio*env*amp*2.2;
+          x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
         }
-      }, 1000);
+        ctx.strokeStyle=L.c; ctx.globalAlpha=L.a; ctx.lineWidth=1.6*devicePixelRatio; ctx.lineJoin='round'; ctx.stroke();
+      });
+      ctx.globalAlpha=1;
+      phase += live?0.045:0.015;
+      requestAnimationFrame(draw);
     }
+    draw();
 
-    async function startRecording(){
-      if (recording) return;
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        audioCtx = new AudioContext();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 2048;
+    // ---- Enregistrement ------------------------------------------------------
+    async function startRec(){
+      hideErr();
+      try{
+        mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});
+        audioCtx=new AudioContext();
+        analyser=audioCtx.createAnalyser(); analyser.fftSize=2048;
         audioCtx.createMediaStreamSource(mediaStream).connect(analyser);
-        audioChunks = [];
-        mediaRecorder = new MediaRecorder(mediaStream);
-        mediaRecorder.ondataavailable = (e) => { if (e.data.size) audioChunks.push(e.data); };
-        mediaRecorder.onstop = onStop;
+        chunks=[]; blob=null;
+        mediaRecorder=new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+        mediaRecorder.onstop=onStopped;
         mediaRecorder.start(1000);
-        recording = true;
-        paused = false;
-        seconds = 24;
-        setTimer('00:24');
-        setState('Recording in progress', 'Recording<br>in progress');
-        reviewCard.classList.remove('show');
-        startTimer();
-      } catch (e) {
-        setState('Microphone access needed', 'Microphone access needed');
+        seconds=0; timerEl.textContent='00:00';
+        state='recording'; render(); tickStart();
+      }catch(e){
+        showErr("Acc&egrave;s au micro refus&eacute;. Autorisez le micro dans votre navigateur puis rechargez.");
       }
     }
-
-    function stopRecording(){
-      if (!mediaRecorder) return;
-      clearInterval(timer);
-      recording = false;
-      paused = false;
-      if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    function togglePause(){
+      if(!mediaRecorder) return;
+      if(mediaRecorder.state==='recording'){ mediaRecorder.pause(); tickStop(); state='paused'; }
+      else if(mediaRecorder.state==='paused'){ mediaRecorder.resume(); tickStart(); state='recording'; }
+      render();
     }
-
-    function buildBlob(){
-      return new Blob(audioChunks, { type: 'audio/webm' });
+    function finishRec(){
+      tickStop();
+      if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop();
     }
-
-    function stopPreview(){
-      if (previewEl) { previewEl.pause(); previewEl = null; }
-    }
-
-    function playPreview(){
-      const blob = audioBlob || buildBlob();
-      if (!blob.size) return;
-      stopPreview();
-      previewEl = new Audio(URL.createObjectURL(blob));
-      previewEl.play();
-      setState('Listening', 'Listening');
-      previewEl.onended = () => setState('Ready', 'Ready');
-    }
-
-    function onStop(){
-      if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
-      if (audioCtx) { audioCtx.close(); audioCtx = null; analyser = null; }
-      audioBlob = buildBlob();
-      reviewCard.classList.add('show');
-      setState('Audio ready', 'Audio ready');
-    }
-
-    function resetRecording(){
-      stopPreview();
-      audioBlob = null;
-      audioChunks = [];
-      mediaRecorder = null;
-      seconds = 24;
-      recording = false;
-      paused = false;
-      clearInterval(timer);
-      setTimer('00:24');
-      reviewCard.classList.remove('show');
-      levelBar.style.width = '0%';
-      setState('Tap Record to begin.', 'Tap Record to begin.');
-    }
-
-    document.getElementById('t-signature').addEventListener('click', () => setTheme('signature'));
-    document.getElementById('t-doux').addEventListener('click', () => setTheme('doux'));
-    hotRecord.addEventListener('click', startRecording);
-    dockRecord.addEventListener('click', startRecording);
-    hotPause.addEventListener('click', () => { if (!recording) return; togglePause(); });
-    dockPause.addEventListener('click', () => { if (!recording) return; togglePause(); });
-    hotRelisten.addEventListener('click', () => { if (!recording && !audioBlob) return; if (recording && !paused) togglePause(); playPreview(); });
-    hotFinish.addEventListener('click', stopRecording);
-    document.getElementById('btn-replay').addEventListener('click', playPreview);
-    document.getElementById('btn-reset').addEventListener('click', resetRecording);
-    dockReset.addEventListener('click', resetRecording);
-    dockJournal.addEventListener('click', () => { location.href = '/client/journal.html'; });
-    dockSpace.addEventListener('click', () => { location.href = '/client/dashboard.html'; });
-    document.querySelectorAll('.hotspot.journal, .hotspot.space').forEach((el) => {
-      el.addEventListener('click', (e) => {
-        if (!el.getAttribute('href')) e.preventDefault();
+    function onStopped(){
+      if(mediaStream){ mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+      if(audioCtx){ audioCtx.close(); audioCtx=null; analyser=null; }
+      blob=new Blob(chunks,{type:'audio/webm'});
+      playbackEl=new Audio(URL.createObjectURL(blob));
+      pbDur.textContent=fmt(seconds);
+      playbackEl.addEventListener('timeupdate',()=>{
+        const d=isFinite(playbackEl.duration)&&playbackEl.duration>0?playbackEl.duration:seconds;
+        pbFill.style.width=((playbackEl.currentTime/d)*100)+'%';
+        pbTime.textContent=fmt(playbackEl.currentTime);
       });
+      playbackEl.addEventListener('ended',()=>setPlay(false));
+      state='done'; render();
+    }
+    function resetAll(){
+      if(playbackEl){ playbackEl.pause(); playbackEl=null; }
+      if(mediaRecorder && mediaRecorder.state!=='inactive'){ mediaRecorder.onstop=null; mediaRecorder.stop(); }
+      if(mediaStream){ mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+      if(audioCtx){ audioCtx.close(); audioCtx=null; analyser=null; }
+      tickStop();
+      chunks=[]; blob=null; mediaRecorder=null; seconds=0;
+      timerEl.textContent='00:00'; pbFill.style.width='0%'; pbTime.textContent='00:00';
+      setPlay(false); hideErr();
+      state='idle'; render();
+    }
+
+    // ---- R&eacute;&eacute;coute ------------------------------------------------
+    function setPlay(on){
+      playIcon.innerHTML=on
+        ? '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'
+        : '<path d="M5 3l14 9-14 9V3z"/>';
+    }
+    btnPlay.addEventListener('click',()=>{
+      if(!playbackEl) return;
+      if(playbackEl.paused){ playbackEl.play(); setPlay(true); } else { playbackEl.pause(); setPlay(false); }
+    });
+    document.getElementById('pb-track').addEventListener('click',(e)=>{
+      if(!playbackEl) return;
+      const r=e.currentTarget.getBoundingClientRect();
+      const d=isFinite(playbackEl.duration)&&playbackEl.duration>0?playbackEl.duration:seconds;
+      playbackEl.currentTime=Math.max(0,Math.min(d,((e.clientX-r.left)/r.width)*d));
     });
 
-    try {
-      const saved = localStorage.getItem('ivia_recorder_theme');
-      if (saved) setTheme(saved);
-    } catch (e) {}
+    // ---- Envoi --------------------------------------------------------------
+    async function submitRec(){
+      if(!blob){ return; }
+      hideErr();
+      mainLabel.textContent='Envoi en cours...';
+      btnMain.style.pointerEvents='none'; btnMain.style.opacity='.6';
+      try{
+        const fr=new FileReader();
+        const b64=await new Promise((res,rej)=>{ fr.onload=()=>res(String(fr.result).split(',')[1]); fr.onerror=rej; fr.readAsDataURL(blob); });
+        await uploadMyRecording({ audio_data:b64, filename:'enregistrement.webm', formule:'libre', duration_seconds:Math.max(1,seconds) });
+        subtitleEl.innerHTML='Re&ccedil;u &mdash; transcription en cours';
+        statusEl.innerHTML='Merci. Retrouvez vos mots<br>dans votre espace.';
+        mainLabel.textContent='Aller &agrave; mon espace';
+        btnMain.style.pointerEvents=''; btnMain.style.opacity='';
+        btnMain.onclick=()=>{ location.href='/client/mes-enregistrements.html'; };
+      }catch(e){
+        showErr("L&apos;envoi n&apos;a pas fonctionn&eacute;. V&eacute;rifiez votre connexion et r&eacute;essayez.");
+        mainLabel.textContent='Envoyer &agrave; IVIA';
+        btnMain.style.pointerEvents=''; btnMain.style.opacity='';
+      }
+    }
 
-    drawLive();
-    setState('Tap Record to begin.', 'Tap Record to begin.');
+    // ---- Bouton principal (contextuel) ---------------------------------------
+    btnMain.addEventListener('click',()=>{
+      if(state==='idle') startRec();
+      else if(state==='recording'||state==='paused') finishRec();
+      else if(state==='done') submitRec();
+    });
+    btnPause.addEventListener('click',togglePause);
+    btnReset.addEventListener('click',resetAll);
+
+    window.addEventListener('beforeunload',(e)=>{
+      if(state==='recording'||state==='paused'){ e.preventDefault(); e.returnValue=''; }
+    });
+
+    render();
   </script>
 </body>
 </html>
