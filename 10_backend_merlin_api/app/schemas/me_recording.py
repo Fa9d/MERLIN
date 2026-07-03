@@ -20,6 +20,7 @@ class MyRecordingCreate(MerlinSchema):
     filename: str = "enregistrement.webm"
     formule: str = "solo30"
     duration_seconds: int | None = Field(default=None, ge=1)
+    praticien_id: str | None = Field(default=None, description="UUID du praticien choisi par le client (optionnel — repli sur défaut serveur si absent).")
 
 
 class MyRecordingRead(MerlinSchema):
