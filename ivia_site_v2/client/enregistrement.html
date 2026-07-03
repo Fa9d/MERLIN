@@ -111,7 +111,14 @@
           </div>
         </div>
         <p class="phone-caption">Deux ambiances, un meme modele visuel.</p>
-        <div class="state-line" id="state-line">Tap Record to begin.</div>
+                <div class="state-line" id="state-line">Tap Record to begin.</div>
+        <div class="action-dock" aria-label="Recorder actions">
+          <button class="dock-btn primary wide" id="dock-record" type="button">Enregistrer</button>
+          <button class="dock-btn" id="dock-pause" type="button">Pause</button>
+          <button class="dock-btn" id="dock-reset" type="button">Réinitialiser</button>
+          <button class="dock-btn" id="dock-journal" type="button">Journal</button>
+          <button class="dock-btn" id="dock-space" type="button">Espace</button>
+        </div>
         <div class="review-card" id="review-card">
           <div style="font-weight:700;color:var(--forest-deep)">Audio ready</div>
           <div style="font-size:13px;color:var(--muted);margin-top:4px">You can re-listen, restart, or finish sending later.</div>
@@ -137,6 +144,11 @@
     const hotRelisten = document.getElementById('hot-relisten');
     const hotFinish = document.getElementById('hot-finish');
     const hotRecord = document.getElementById('hot-record');
+    const dockRecord = document.getElementById('dock-record');
+    const dockPause = document.getElementById('dock-pause');
+    const dockReset = document.getElementById('dock-reset');
+    const dockJournal = document.getElementById('dock-journal');
+    const dockSpace = document.getElementById('dock-space');
 
     let mediaRecorder = null, mediaStream = null, audioChunks = [], audioBlob = null, audioEl = null, previewEl = null;
     let audioCtx = null, analyser = null, raf = null, timer = null, seconds = 24, paused = false, recording = false, lastVibe = 0;
@@ -297,11 +309,16 @@
     document.getElementById('t-signature').addEventListener('click', () => setTheme('signature'));
     document.getElementById('t-doux').addEventListener('click', () => setTheme('doux'));
     hotRecord.addEventListener('click', startRecording);
+    dockRecord.addEventListener('click', startRecording);
     hotPause.addEventListener('click', () => { if (!recording) return; togglePause(); });
+    dockPause.addEventListener('click', () => { if (!recording) return; togglePause(); });
     hotRelisten.addEventListener('click', () => { if (!recording && !audioBlob) return; if (recording && !paused) togglePause(); playPreview(); });
     hotFinish.addEventListener('click', stopRecording);
     document.getElementById('btn-replay').addEventListener('click', playPreview);
     document.getElementById('btn-reset').addEventListener('click', resetRecording);
+    dockReset.addEventListener('click', resetRecording);
+    dockJournal.addEventListener('click', () => { location.href = '/client/journal.html'; });
+    dockSpace.addEventListener('click', () => { location.href = '/client/dashboard.html'; });
     document.querySelectorAll('.hotspot.journal, .hotspot.space').forEach((el) => {
       el.addEventListener('click', (e) => {
         if (!el.getAttribute('href')) e.preventDefault();
