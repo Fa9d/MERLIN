@@ -68,6 +68,38 @@
         </div>
       </a>
 
+      <!-- Statistiques d'appointment (Phase 5) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Séances cette semaine</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-week-appointments">…</p>
+          <p class="text-xs text-muted mt-1">rendez-vous</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Revenu ce mois</p>
+          <p class="font-heading text-3xl font-bold text-forest" id="stat-month-revenue">…</p>
+          <p class="text-xs text-muted mt-1">CAD</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">En attente</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-pending">…</p>
+          <p class="text-xs text-muted mt-1">à confirmer</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Complétées</p>
+          <p class="font-heading text-3xl font-bold text-forest-deep" id="stat-completed">…</p>
+          <p class="text-xs text-muted mt-1">avec notes</p>
+        </div>
+      </div>
+
+      <!-- Prochains rendez-vous (Phase 5) -->
+      <section class="card mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-heading text-base font-bold text-ink">📅 Prochains rendez-vous</h2>
+        </div>
+        <div id="upcoming-appointments" class="space-y-3"><p class="text-sm text-muted">Chargement…</p></div>
+      </section>
+
       <!-- Statistiques d'analyse (réelles) -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <a href="/praticien/livraisons.html" class="stat-card block hover:border-forest transition-colors cursor-pointer">
@@ -163,6 +195,45 @@
       let notes = [], sessions = [];
       try { notes = await getSessionNotes(); } catch (e) {}
       try { sessions = await listMySessions(); } catch (e) {}
+
+      // Phase 5: Charger stats de rendez-vous
+      try {
+        const statsResponse = await fetch('/api/v1/me/appointments/stats', {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
+        });
+        if (statsResponse.ok) {
+          const stats = await statsResponse.json();
+          document.getElementById('stat-week-appointments').textContent = stats.appointments_this_week || '0';
+          document.getElementById('stat-month-revenue').textContent = ((stats.total_revenue_cents || 0) / 100).toFixed(0);
+          document.getElementById('stat-pending').textContent = stats.pending_confirmations || '0';
+          document.getElementById('stat-completed').textContent = stats.completed_count || '0';
+
+          // Charger rendez-vous à venir
+          const upcomingContainer = document.getElementById('upcoming-appointments');
+          if (stats.upcoming_appointments && stats.upcoming_appointments.length > 0) {
+            upcomingContainer.innerHTML = stats.upcoming_appointments.map(apt => {
+              const date = new Date(apt.scheduled_at);
+              const dateStr = date.toLocaleDateString('fr-CA', { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+              const statusLabels = {
+                'scheduled': 'Planifiée',
+                'confirmed': 'Confirmée',
+                'paid': '✓ Payée',
+              };
+              return `<div class="border border-bdr rounded-[12px] px-4 py-3 flex justify-between items-start">
+                <div>
+                  <p class="text-sm font-semibold text-ink">${apt.practitioner_name}</p>
+                  <p class="text-xs text-muted mt-1">${dateStr} · ${apt.duration_minutes || 60} min</p>
+                </div>
+                <span class="text-xs font-semibold px-2 py-1 rounded bg-blue-50 text-blue-700">${statusLabels[apt.status] || apt.status}</span>
+              </div>`;
+            }).join('');
+          } else {
+            upcomingContainer.innerHTML = '<p class="text-sm text-muted">Aucun rendez-vous à venir</p>';
+          }
+        }
+      } catch (e) {
+        console.warn('Stats rendez-vous indisponibles:', e);
+      }
 
       const aValider = notes.filter(n => !n.validated_by_practitioner);
       const vig = notes.filter(n => vigilanceElevee(n.vigilance_level_code));

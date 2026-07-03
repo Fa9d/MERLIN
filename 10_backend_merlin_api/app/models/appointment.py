@@ -110,14 +110,20 @@ class Appointment(Base):
     noted_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    session_notes: Mapped[str | None] = mapped_column(
+       Text, nullable=True  # Client-facing notes from praticien
+    )
+    practitioner_notes: Mapped[str | None] = mapped_column(
+       Text, nullable=True  # Praticien-only internal notes
+    )
 
     # Relations
     client: Mapped["app.models.app_user.AppUser"] = relationship(
-        "AppUser", foreign_keys=[client_id]
+       "AppUser", foreign_keys=[client_id]
     )
     practitioner: Mapped["app.models.app_user.AppUser"] = relationship(
-        "AppUser", foreign_keys=[practitioner_id]
+       "AppUser", foreign_keys=[practitioner_id]
     )
     slot: Mapped["PractitionerSlot | None"] = relationship(
-        "PractitionerSlot", foreign_keys=[slot_id]
+       "PractitionerSlot", foreign_keys=[slot_id]
     )

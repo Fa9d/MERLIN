@@ -42,6 +42,7 @@ from app.api.routes.matching import router as matching_router
 from app.api.routes.payments import router as payments_router
 from app.api.routes.appointments import router as appointments_router
 from app.api.routes.calendar import router as calendar_router
+from app.api.routes.timeline import router as timeline_router
 from app.core.config import settings
 from app.db.base import init_models
 from app.db.session import SessionLocal
@@ -137,6 +138,7 @@ app.include_router(matching_router, prefix=settings.api_v1_prefix)
 app.include_router(payments_router, prefix=settings.api_v1_prefix)
 app.include_router(appointments_router, prefix=settings.api_v1_prefix)
 app.include_router(calendar_router, prefix=settings.api_v1_prefix)
+app.include_router(timeline_router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/")
