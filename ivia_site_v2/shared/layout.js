@@ -16,7 +16,7 @@ const IVIA_NAV = [
   { id: 'aujourdhui', label: 'Mon espace',  href: '/client/dashboard.html' },
   { id: 'ecrire',     label: 'Journal',     href: '/client/journal.html' },
   { id: 'voir',       label: 'Vie',         href: '/client/carte-de-vie.html', crumb: 'Carte de vie' },
-  { id: 'agenda',     label: 'Agenda',      href: '/client/agenda.html' },
+  { id: 'agenda',     label: 'Réserver',    href: '/reserver.html', crumb: 'Réserver' },
 ];
 
 const IVIA_ACCUEIL = 'https://ivia.quebec';
@@ -26,7 +26,7 @@ const IVIA_FOOTER = {
     { label: 'Mon espace',           href: '/client/dashboard.html' },
     { label: 'Journal',              href: '/client/journal.html' },
     { label: 'Vie',                  href: '/client/carte-de-vie.html' },
-    { label: 'Agenda',               href: '/client/agenda.html' },
+    { label: 'Réserver une séance',  href: '/reserver.html' },
     { label: 'Mes séances',          href: '/client/seances.html' },
     { label: 'Séance expresse',      href: '/client/enregistrement.html' },
     { label: 'Mon compte',           href: '/client/compte.html' },
@@ -131,14 +131,18 @@ function renderLayout(active, pageLabel) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="3"/></svg>
                 Vie
               </a>
-              <a href="/client/agenda.html" class="ivia-menu-item">
+              <a href="/reserver.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                Agenda
+                Réserver
               </a>
               <hr class="ivia-menu-sep">
-              <a href="/client/dashboard.html" class="ivia-menu-item">
+              <a href="/client/enregistrement.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
                 Séance expresse
+              </a>
+              <a href="/client/seances.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Mes séances
               </a>
               <a href="/client/compte.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
