@@ -4,227 +4,88 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IVIA — RecorderCard (Signature / Doux)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="robots" content="noindex">
+  <title>IVIA — Enregistrer ma voix</title>
+  <script src="/shared/session.js"></script>
+  <script>requireAuth();</script>
   <style>
-    /* ─────────────────────────────────────────────────────────────
-       UN SEUL composant. Deux habillages via [data-theme].
-       Tout est piloté par des variables CSS : couleurs, ombres,
-       fonds, rondeur, onde. La structure et le JS sont identiques.
-    ───────────────────────────────────────────────────────────── */
-    :root{
-      --ivia-green:#2D6A4F; --ivia-green-soft:#4A7C59;
-      --radius:26px; --pill-radius:16px;
-    }
-    /* ── Mode Signature : velours sombre, vert IVIA, cuivre doux, ivoire ── */
-    [data-theme="signature"]{
-      --bg: radial-gradient(120% 90% at 50% 0%, #20241c 0%, #12130d 55%, #0c0d08 100%);
-      --card: rgba(255,255,255,.02);
-      --card-border: rgba(196,176,128,.16);
-      --text:#F3EFE2; --muted:#A9A693; --soft:#75735f;
-      --accent: var(--ivia-green-soft);
-      --accent-2:#C8965A;                 /* cuivre */
-      --ring:#3a3c2f; --ring-active:#C8965A;
-      --wave:#C8965A; --wave-2:#5e7d59; --wave-alpha:.55;
-      --timer:#F3EFE2;
-      --pill-bg: rgba(255,255,255,.06); --pill-border: rgba(255,255,255,.10); --pill-text:#E8E4D6;
-      --finish-bg: linear-gradient(180deg,#3f6f50,#2d5b42); --finish-text:#F3EFE2;
-      --logo-fill:#5e7d59; --shadow:0 30px 80px -40px rgba(0,0,0,.8);
-    }
-    /* ── Mode Doux : prune/rosé satiné, vert IVIA en accent, plus tendre ── */
-    [data-theme="doux"]{
-      --bg: radial-gradient(120% 95% at 50% 0%, #f7e7e9 0%, #efd7da 45%, #e4c9d2 100%);
-      --card: rgba(255,255,255,.45);
-      --card-border: rgba(180,140,150,.28);
-      --text:#5b4750; --muted:#9a7f88; --soft:#b59aa3;
-      --accent: var(--ivia-green-soft);
-      --accent-2:#c98b9b;                 /* rosé */
-      --ring:#e6cdd3; --ring-active:#c98b9b;
-      --wave:#c98b9b; --wave-2:#7fa07f; --wave-alpha:.5;
-      --timer:#5b4750;
-      --pill-bg: rgba(255,255,255,.55); --pill-border: rgba(180,140,150,.30); --pill-text:#6b5560;
-      --finish-bg: linear-gradient(180deg,#8aa583,#6f8c6c); --finish-text:#fbfaf6;
-      --logo-fill:#8aa583; --shadow:0 30px 80px -42px rgba(120,80,95,.45);
-    }
-
-    *{box-sizing:border-box;margin:0;}
-    body{font-family:'Raleway',system-ui,sans-serif;background:#0e0f0a;color:#fff;
-         min-height:100vh;display:flex;flex-direction:column;align-items:center;
-         padding:28px 16px 48px;gap:24px;transition:background .4s;}
-    body[data-theme="doux"]{background:#e7d3d8;}
-
-    /* Sélecteur d'ambiance */
-    .picker{display:flex;align-items:center;gap:10px;background:rgba(127,127,127,.14);
-            border:1px solid rgba(127,127,127,.22);border-radius:9999px;padding:5px;backdrop-filter:blur(6px);}
-    .picker .lbl{font-size:12px;font-weight:600;color:#9aa;letter-spacing:.04em;padding-left:8px;}
-    .picker button{border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:700;
-            padding:7px 16px;border-radius:9999px;background:transparent;color:#bbb;transition:.18s;}
-    .picker button.on{background:#fff;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.18);}
-
-    /* L'écran (fond thématique) + la carte */
-    .screen{width:100%;max-width:380px;border-radius:34px;padding:26px 22px 18px;
-            background:var(--bg);box-shadow:var(--shadow);transition:background .4s;}
-    .brand{text-align:center;margin-top:6px;}
-    .logo-chip{width:38px;height:38px;border-radius:11px;background:rgba(127,127,127,.14);
-            display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;}
-    .logo-chip svg{width:22px;height:22px;}
-    .wordmark{font-family:'Lora',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:.14em;color:var(--text);}
-    .subtitle{font-size:13px;color:var(--accent-2);margin-top:6px;font-weight:600;}
-    .hint{font-size:13px;color:var(--muted);margin-top:2px;}
-
-    /* Timer + onde */
-    .timer-wrap{position:relative;height:200px;display:flex;align-items:center;justify-content:center;margin:8px 0 4px;}
-    canvas#wave{position:absolute;inset:0;width:100%;height:100%;}
-    .ring{position:absolute;width:150px;height:150px;border-radius:50%;
-          border:1.5px solid var(--ring);box-shadow:0 0 0 0 var(--ring-active);}
-    .ring.live{border-color:var(--ring-active);}
-    .timer-core{position:relative;text-align:center;}
-    .timer{font-family:'Lora',Georgia,serif;font-size:40px;font-weight:600;color:var(--timer);font-variant-numeric:tabular-nums;}
-    .status{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3;}
-
-    .privacy{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;
-             color:var(--soft);margin:10px 0 18px;}
-    .privacy svg{width:13px;height:13px;}
-
-    .controls{display:flex;gap:12px;margin-bottom:12px;}
-    .pill{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
-          background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--pill-text);
-          border-radius:var(--pill-radius);padding:13px;font:inherit;font-size:14px;font-weight:600;transition:.15s;}
-    .pill:hover{filter:brightness(1.06);}
-    .pill svg{width:16px;height:16px;}
-    .finish{width:100%;cursor:pointer;border:0;border-radius:var(--pill-radius);
-            background:var(--finish-bg);color:var(--finish-text);padding:15px;
-            font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;}
-    .finish:hover{filter:brightness(1.05);}
-
-    .bottomnav{display:flex;justify-content:space-around;margin-top:18px;padding-top:14px;
-               border-top:1px solid var(--card-border);}
-    .bottomnav a{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;
-                 font-weight:600;color:var(--muted);text-decoration:none;}
-    .bottomnav a.active{color:var(--accent);}
-    .bottomnav svg{width:20px;height:20px;}
-
-    .note{max-width:380px;font-size:12px;color:#8a8a8a;text-align:center;line-height:1.6;}
-    .note b{color:#bbb;}
+    :root{--forest:#4A7C59;--forest-deep:#2D6A4F;--bdr:#D4E8D0;--ink:#1A2E1D;--muted:#4B6350;--cream:#FAFDF8;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+    .page{max-width:1160px;margin:0 auto;padding:20px 16px 28px}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--bdr);border-radius:18px;background:#fff;position:sticky;top:12px;z-index:20;backdrop-filter:blur(10px)}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--forest-deep);text-decoration:none}
+    .brand svg{width:26px;height:26px;flex:0 0 auto}
+    .picker{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bdr);background:#fff;border-radius:999px;padding:4px}
+    .picker button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer}
+    .picker button.on{background:var(--forest-deep);color:#fff}
+    .hero{display:grid;grid-template-columns:1fr;gap:26px;align-items:center;padding-top:28px}
+    .copy h1{font-family:Georgia,serif;font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:0 0 12px}
+    .copy p{margin:0 0 14px;color:var(--muted);font-size:17px;line-height:1.7;max-width:56ch}
+    .hero-phone-wrap{width:100%;max-width:320px;margin:0 auto;perspective:1400px}
+    .phone-flip{position:relative;transform-style:preserve-3d;transition:transform 1100ms ease-in-out}
+    .phone-flip img{width:100%;height:auto;display:block;backface-visibility:hidden;filter:drop-shadow(0 30px 55px rgba(26,46,29,.28))}
+    .phone-flip img:last-child{position:absolute;inset:0;transform:rotateY(180deg);filter:drop-shadow(0 30px 55px rgba(120,80,95,.28))}
+    .phone-caption{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
+    .note{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+    .frame{display:flex;flex-direction:column;align-items:center}
+    @media (min-width: 960px){.hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:44px}.frame{align-items:flex-start}.phone-caption{text-align:left}}
   </style>
 </head>
-<body data-theme="signature">
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="7" fill="#2D6A4F"/>
+          <rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/>
+          <rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/>
+          <rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/>
+        </svg>
+        IVIA
+      </a>
+      <div class="picker" role="tablist" aria-label="Ambiance d'enregistrement">
+        <button id="t-signature" class="on" type="button" role="tab" aria-selected="true">Signature</button>
+        <button id="t-doux" type="button" role="tab" aria-selected="false">Doux</button>
+      </div>
+    </header>
 
-  <!-- Sélecteur d'ambiance (sera dans l'espace client) -->
-  <div class="picker" role="tablist" aria-label="Ambiance d'enregistrement">
-    <span class="lbl">Ambiance</span>
-    <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
-    <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
+    <main class="hero">
+      <section class="copy">
+        <h1>Enregistrer ma voix</h1>
+        <p>Le téléphone ci-dessous est le vrai modèle du home : même moteur visuel, deux ambiances, mêmes boutons.</p>
+        <p>Pause, Re-listen et Finish sont conservés, avec la navigation Journal / Record / Space en bas.</p>
+        <div class="note">Le modèle mobile doit rester identique à celui de l’accueil local.</div>
+      </section>
+
+      <section class="frame">
+        <div class="hero-phone-wrap">
+          <div id="phone-flip" class="phone-flip">
+            <img src="/assets/recorder-signature.png?v=20260621b" alt="L'enregistreur IVIA — ambiance Signature" loading="lazy">
+            <img src="/assets/recorder-doux.png?v=20260621b" alt="L'enregistreur IVIA — ambiance Doux" loading="lazy">
+          </div>
+        </div>
+        <p class="phone-caption">Deux ambiances, un même modèle visuel.</p>
+      </section>
+    </main>
   </div>
 
-  <!-- ── LE MODULE : structure unique ── -->
-  <section class="screen" id="recorder" data-theme="signature" aria-label="Enregistrement IVIA">
-    <div class="brand">
-      <span class="logo-chip">
-        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
-          <rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/>
-          <rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/>
-          <rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/>
-        </svg>
-      </span>
-      <div class="wordmark">IVIA</div>
-      <p class="subtitle">Enregistrement en cours</p>
-      <p class="hint">Parlez librement, à votre rythme.</p>
-    </div>
-
-    <div class="timer-wrap">
-      <canvas id="wave"></canvas>
-      <div class="ring live" id="ring"></div>
-      <div class="timer-core">
-        <div class="timer" id="timer">00:24</div>
-        <div class="status" id="status">Enregistrement<br>en cours</div>
-      </div>
-    </div>
-
-    <p class="privacy">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v4m-6 6h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg>
-      Rien n'est envoyé sans votre accord.
-    </p>
-
-    <div class="controls">
-      <button class="pill" id="btn-pause" onclick="togglePause()">
-        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-        <span id="pause-label">Pause</span>
-      </button>
-      <button class="pill" id="btn-replay">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M5 9a7 7 0 0111-3m3 9a7 7 0 01-11 3"/></svg>
-        Réécouter
-      </button>
-    </div>
-    <button class="finish">
-      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-      Terminer
-    </button>
-
-    <nav class="bottomnav">
-      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 21h10a2 2 0 002-2V7l-5-4H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Journal</a>
-      <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>Enregistrer</a>
-      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Espace</a>
-    </nav>
-  </section>
-
-  <p class="note">Un <b>seul module</b>, deux ambiances. Logique, minuterie, confidentialité et données <b>identiques</b> — seul l'habillage change. Le choix sera proposé dans l'espace client (défaut : <b>Signature</b>).</p>
-
   <script>
-    // ── Thème : même structure, deux jeux de tokens CSS ──
+    const flip = document.getElementById('phone-flip');
     function setTheme(t){
-      document.body.dataset.theme = t;
-      document.getElementById('recorder').dataset.theme = t;
-      document.getElementById('t-signature').classList.toggle('on', t==='signature');
-      document.getElementById('t-doux').classList.toggle('on', t==='doux');
-      document.getElementById('t-signature').setAttribute('aria-selected', t==='signature');
-      document.getElementById('t-doux').setAttribute('aria-selected', t==='doux');
-      try{ localStorage.setItem('ivia_recorder_theme', t); }catch(e){}
+      document.getElementById('t-signature').classList.toggle('on', t === 'signature');
+      document.getElementById('t-doux').classList.toggle('on', t === 'doux');
+      document.getElementById('t-signature').setAttribute('aria-selected', t === 'signature');
+      document.getElementById('t-doux').setAttribute('aria-selected', t === 'doux');
+      flip.style.transform = (t === 'doux') ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      try { localStorage.setItem('ivia_recorder_theme', t); } catch (e) {}
     }
-    try{ const saved=localStorage.getItem('ivia_recorder_theme'); if(saved) setTheme(saved); }catch(e){}
-
-    // ── Minuterie (démo) ──
-    let secs=24, paused=false;
-    const timerEl=document.getElementById('timer'), statusEl=document.getElementById('status'),
-          ringEl=document.getElementById('ring'), pauseLabel=document.getElementById('pause-label');
-    function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
-    setInterval(()=>{ if(!paused){ secs++; timerEl.textContent=fmt(secs);} }, 1000);
-    function togglePause(){
-      paused=!paused;
-      pauseLabel.textContent = paused ? 'Reprendre' : 'Pause';
-      statusEl.innerHTML = paused ? 'En pause' : 'Enregistrement<br>en cours';
-      ringEl.classList.toggle('live', !paused);
-    }
-
-    // ── Onde vocale douce (comportement identique, couleur via --wave) ──
-    const cv=document.getElementById('wave'), ctx=cv.getContext('2d');
-    function resize(){ const r=cv.getBoundingClientRect(); cv.width=r.width*devicePixelRatio; cv.height=r.height*devicePixelRatio; }
-    window.addEventListener('resize', resize); resize();
-    let phase=0, amp=0;
-    function cssvar(n){ return getComputedStyle(document.getElementById('recorder')).getPropertyValue(n).trim(); }
-    function draw(){
-      const w=cv.width, h=cv.height, mid=h/2;
-      ctx.clearRect(0,0,w,h);
-      const target = paused ? 0.18 : 1;
-      amp += (target-amp)*0.05;                       // transition douce
-      const wave=cssvar('--wave')||'#C8965A', wave2=cssvar('--wave-2')||'#5e7d59';
-      const layers=[{c:wave,a:0.55,f:1.0,s:18},{c:wave2,a:0.30,f:1.6,s:11}];
-      layers.forEach((L,i)=>{
-        ctx.beginPath();
-        for(let x=0;x<=w;x+=4){
-          const env=Math.sin((x/w)*Math.PI);          // enveloppe centrale (plus fort au milieu)
-          const y=mid + Math.sin(x*0.012*L.f + phase*(i?1.3:1))*L.s*devicePixelRatio*env*amp
-                      + Math.sin(x*0.03 + phase*2)*4*devicePixelRatio*env*amp;
-          x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-        }
-        ctx.strokeStyle=L.c; ctx.globalAlpha=L.a; ctx.lineWidth=2*devicePixelRatio;
-        ctx.lineJoin='round'; ctx.stroke();
-      });
-      ctx.globalAlpha=1;
-      phase += paused ? 0.012 : 0.04;                 // onde lente, plus lente en pause
-      requestAnimationFrame(draw);
-    }
-    draw();
+    document.getElementById('t-signature').addEventListener('click', () => setTheme('signature'));
+    document.getElementById('t-doux').addEventListener('click', () => setTheme('doux'));
+    try {
+      const saved = localStorage.getItem('ivia_recorder_theme');
+      if (saved) setTheme(saved);
+    } catch (e) {}
   </script>
 </body>
 </html>
