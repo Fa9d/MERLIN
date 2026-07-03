@@ -5,11 +5,19 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>IVIA — Enregistrer ma voix</title>
+  <title>IVIA -- Enregistrer ma voix</title>
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
   <style>
-    :root{--forest:#4A7C59;--forest-deep:#2D6A4F;--bdr:#D4E8D0;--ink:#1A2E1D;--muted:#4B6350;--cream:#FAFDF8;}
+    :root{
+      --forest:#4A7C59;
+      --forest-deep:#2D6A4F;
+      --bdr:#D4E8D0;
+      --ink:#1A2E1D;
+      --muted:#4B6350;
+      --cream:#FAFDF8;
+      --surface:#F0F7F2;
+    }
     *{box-sizing:border-box}
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
     .page{max-width:1160px;margin:0 auto;padding:20px 16px 28px}
@@ -26,10 +34,34 @@
     .phone-flip{position:relative;transform-style:preserve-3d;transition:transform 1100ms ease-in-out}
     .phone-flip img{width:100%;height:auto;display:block;backface-visibility:hidden;filter:drop-shadow(0 30px 55px rgba(26,46,29,.28))}
     .phone-flip img:last-child{position:absolute;inset:0;transform:rotateY(180deg);filter:drop-shadow(0 30px 55px rgba(120,80,95,.28))}
+    .phone-overlay{position:absolute;inset:0;pointer-events:none}
+    .overlay-center{position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);text-align:center;color:#6b4a49;pointer-events:none;min-width:120px}
+    .overlay-timer{font-family:Georgia,serif;font-size:40px;font-weight:600;letter-spacing:.02em;line-height:1}
+    .overlay-status{font-size:10px;line-height:1.2;margin-top:4px;opacity:.92}
+    .overlay-pulse{position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);width:152px;height:152px;border-radius:50%;border:1.5px solid rgba(197,143,128,.45);opacity:0;transition:opacity .2s, transform .2s}
+    .overlay-pulse.live{opacity:1;transform:translate(-50%,-50%) scale(1.01)}
+    .hotspot{position:absolute;border:0;background:transparent;cursor:pointer;pointer-events:auto}
+    .hotspot:focus-visible{outline:2px solid #2D6A4F;outline-offset:2px}
+    .hotspot.pause{left:12%;top:66.5%;width:27%;height:7.5%;border-radius:16px}
+    .hotspot.relisten{right:12%;top:66.5%;width:27%;height:7.5%;border-radius:16px}
+    .hotspot.finish{left:20%;top:77.6%;width:60%;height:8.5%;border-radius:18px}
+    .hotspot.record{left:36%;bottom:3.8%;width:28%;height:12%;border-radius:999px}
+    .hotspot.journal{left:4%;bottom:0;width:26%;height:14%;border-radius:18px}
+    .hotspot.space{right:4%;bottom:0;width:26%;height:14%;border-radius:18px}
+    .hotspot .sr{position:absolute;left:-9999px}
     .phone-caption{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
     .note{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
     .frame{display:flex;flex-direction:column;align-items:center}
-    @media (min-width: 960px){.hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:44px}.frame{align-items:flex-start}.phone-caption{text-align:left}}
+    .state-line{margin-top:12px;text-align:center;color:var(--forest-deep);font-weight:700;font-size:13px;min-height:18px}
+    .review-card{margin:18px auto 0;max-width:420px;padding:14px;border:1px solid var(--bdr);border-radius:18px;background:#fff;display:none}
+    .review-card.show{display:block}
+    .review-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{border:0;border-radius:14px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--forest-deep);color:#fff}
+    .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--bdr)}
+    .meter{height:4px;background:var(--bdr);border-radius:999px;overflow:hidden;margin-top:10px}
+    .meter > div{height:100%;width:0;background:var(--forest);border-radius:999px}
+    @media (min-width: 960px){.hero{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:44px}.frame{align-items:flex-start}.phone-caption,.state-line{text-align:left}}
   </style>
 </head>
 <body>
@@ -53,26 +85,65 @@
     <main class="hero">
       <section class="copy">
         <h1>Enregistrer ma voix</h1>
-        <p>Le téléphone ci-dessous est le vrai modèle du home : même moteur visuel, deux ambiances, mêmes boutons.</p>
-        <p>Pause, Re-listen et Finish sont conservés, avec la navigation Journal / Record / Space en bas.</p>
-        <div class="note">Le modèle mobile doit rester identique à celui de l’accueil local.</div>
+        <p>Le telephone ci-dessous est le vrai modele du home : meme moteur visuel, deux ambiances, memes boutons.</p>
+        <p>Pause, Re-listen et Finish sont conserves, avec la navigation Journal / Record / Space en bas.</p>
+        <div class="note">Le modele mobile doit rester identique a celui de l'accueil local.</div>
       </section>
 
       <section class="frame">
         <div class="hero-phone-wrap">
           <div id="phone-flip" class="phone-flip">
-            <img src="/assets/recorder-signature.png?v=20260621b" alt="L'enregistreur IVIA — ambiance Signature" loading="lazy">
-            <img src="/assets/recorder-doux.png?v=20260621b" alt="L'enregistreur IVIA — ambiance Doux" loading="lazy">
+            <img src="/assets/recorder-signature.png?v=20260621b" alt="L'enregistreur IVIA -- ambiance Signature" loading="lazy">
+            <img src="/assets/recorder-doux.png?v=20260621b" alt="L'enregistreur IVIA -- ambiance Doux" loading="lazy">
+            <div class="phone-overlay" aria-hidden="true">
+              <div class="overlay-pulse" id="pulse"></div>
+              <div class="overlay-center">
+                <div class="overlay-timer" id="timer">00:24</div>
+                <div class="overlay-status" id="status">Recording<br>in progress</div>
+              </div>
+              <button class="hotspot pause" id="hot-pause" type="button"><span class="sr">Pause</span></button>
+              <button class="hotspot relisten" id="hot-relisten" type="button"><span class="sr">Re-listen</span></button>
+              <button class="hotspot finish" id="hot-finish" type="button"><span class="sr">Finish</span></button>
+              <button class="hotspot record" id="hot-record" type="button"><span class="sr">Record</span></button>
+              <a class="hotspot journal" href="/client/journal.html" aria-label="Journal"></a>
+              <a class="hotspot space" href="/client/dashboard.html" aria-label="Space"></a>
+            </div>
           </div>
         </div>
-        <p class="phone-caption">Deux ambiances, un même modèle visuel.</p>
+        <p class="phone-caption">Deux ambiances, un meme modele visuel.</p>
+        <div class="state-line" id="state-line">Tap Record to begin.</div>
+        <div class="review-card" id="review-card">
+          <div style="font-weight:700;color:var(--forest-deep)">Audio ready</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px">You can re-listen, restart, or finish sending later.</div>
+          <div class="meter"><div id="level-bar"></div></div>
+          <div class="review-actions">
+            <button class="btn primary" id="btn-replay" type="button">Re-listen</button>
+            <button class="btn ghost" id="btn-reset" type="button">Restart</button>
+          </div>
+        </div>
       </section>
     </main>
   </div>
 
   <script>
     const flip = document.getElementById('phone-flip');
+    const timerEl = document.getElementById('timer');
+    const statusEl = document.getElementById('status');
+    const pulseEl = document.getElementById('pulse');
+    const stateLine = document.getElementById('state-line');
+    const reviewCard = document.getElementById('review-card');
+    const levelBar = document.getElementById('level-bar');
+    const hotPause = document.getElementById('hot-pause');
+    const hotRelisten = document.getElementById('hot-relisten');
+    const hotFinish = document.getElementById('hot-finish');
+    const hotRecord = document.getElementById('hot-record');
+
+    let mediaRecorder = null, mediaStream = null, audioChunks = [], audioBlob = null, audioEl = null, previewEl = null;
+    let audioCtx = null, analyser = null, raf = null, timer = null, seconds = 24, paused = false, recording = false, lastVibe = 0;
+    let theme = 'signature';
+
     function setTheme(t){
+      theme = t;
       document.getElementById('t-signature').classList.toggle('on', t === 'signature');
       document.getElementById('t-doux').classList.toggle('on', t === 'doux');
       document.getElementById('t-signature').setAttribute('aria-selected', t === 'signature');
@@ -80,12 +151,170 @@
       flip.style.transform = (t === 'doux') ? 'rotateY(180deg)' : 'rotateY(0deg)';
       try { localStorage.setItem('ivia_recorder_theme', t); } catch (e) {}
     }
+
+    function fmt(s){ s = Math.max(0, Math.floor(s || 0)); return String(Math.floor(s / 60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0'); }
+    function setState(text, detail){
+      stateLine.textContent = text;
+      statusEl.innerHTML = detail || text;
+    }
+    function setTimer(v){ timerEl.textContent = v; }
+
+    function micLevel(){
+      if (!analyser) return 0;
+      const data = new Uint8Array(analyser.fftSize);
+      analyser.getByteTimeDomainData(data);
+      let sum = 0;
+      for (let i = 0; i < data.length; i++) {
+        const x = (data[i] - 128) / 128;
+        sum += x * x;
+      }
+      return Math.min(1, Math.sqrt(sum / data.length) * 3.2);
+    }
+
+    function vibe(level){
+      if (!navigator.vibrate) return;
+      const now = performance.now();
+      if (now - lastVibe < 220) return;
+      if (level > 0.22) {
+        navigator.vibrate([8, 18, 10]);
+        lastVibe = now;
+      }
+    }
+
+    function drawLive(){
+      if (recording && !paused) {
+        const lvl = micLevel();
+        const pct = Math.max(6, Math.min(100, Math.round(lvl * 100)));
+        levelBar.style.width = pct + '%';
+        pulseEl.classList.add('live');
+        vibe(lvl);
+      } else {
+        pulseEl.classList.remove('live');
+        levelBar.style.width = recording ? '24%' : '0%';
+      }
+      raf = requestAnimationFrame(drawLive);
+    }
+
+    function togglePause(){
+      if (!mediaRecorder) return;
+      if (mediaRecorder.state === 'recording') {
+        mediaRecorder.pause();
+        paused = true;
+        clearInterval(timer);
+        setState('Paused', 'Paused');
+      } else if (mediaRecorder.state === 'paused') {
+        mediaRecorder.resume();
+        paused = false;
+        startTimer();
+        setState('Recording in progress', 'Recording<br>in progress');
+      }
+    }
+
+    function startTimer(){
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (!paused) {
+          seconds++;
+          setTimer(fmt(seconds));
+        }
+      }, 1000);
+    }
+
+    async function startRecording(){
+      if (recording) return;
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioCtx = new AudioContext();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        audioCtx.createMediaStreamSource(mediaStream).connect(analyser);
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable = (e) => { if (e.data.size) audioChunks.push(e.data); };
+        mediaRecorder.onstop = onStop;
+        mediaRecorder.start(1000);
+        recording = true;
+        paused = false;
+        seconds = 24;
+        setTimer('00:24');
+        setState('Recording in progress', 'Recording<br>in progress');
+        reviewCard.classList.remove('show');
+        startTimer();
+      } catch (e) {
+        setState('Microphone access needed', 'Microphone access needed');
+      }
+    }
+
+    function stopRecording(){
+      if (!mediaRecorder) return;
+      clearInterval(timer);
+      recording = false;
+      paused = false;
+      if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    }
+
+    function buildBlob(){
+      return new Blob(audioChunks, { type: 'audio/webm' });
+    }
+
+    function stopPreview(){
+      if (previewEl) { previewEl.pause(); previewEl = null; }
+    }
+
+    function playPreview(){
+      const blob = audioBlob || buildBlob();
+      if (!blob.size) return;
+      stopPreview();
+      previewEl = new Audio(URL.createObjectURL(blob));
+      previewEl.play();
+      setState('Listening', 'Listening');
+      previewEl.onended = () => setState('Ready', 'Ready');
+    }
+
+    function onStop(){
+      if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
+      if (audioCtx) { audioCtx.close(); audioCtx = null; analyser = null; }
+      audioBlob = buildBlob();
+      reviewCard.classList.add('show');
+      setState('Audio ready', 'Audio ready');
+    }
+
+    function resetRecording(){
+      stopPreview();
+      audioBlob = null;
+      audioChunks = [];
+      mediaRecorder = null;
+      seconds = 24;
+      recording = false;
+      paused = false;
+      clearInterval(timer);
+      setTimer('00:24');
+      reviewCard.classList.remove('show');
+      levelBar.style.width = '0%';
+      setState('Tap Record to begin.', 'Tap Record to begin.');
+    }
+
     document.getElementById('t-signature').addEventListener('click', () => setTheme('signature'));
     document.getElementById('t-doux').addEventListener('click', () => setTheme('doux'));
+    hotRecord.addEventListener('click', startRecording);
+    hotPause.addEventListener('click', () => { if (!recording) return; togglePause(); });
+    hotRelisten.addEventListener('click', () => { if (!recording && !audioBlob) return; if (recording && !paused) togglePause(); playPreview(); });
+    hotFinish.addEventListener('click', stopRecording);
+    document.getElementById('btn-replay').addEventListener('click', playPreview);
+    document.getElementById('btn-reset').addEventListener('click', resetRecording);
+    document.querySelectorAll('.hotspot.journal, .hotspot.space').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        if (!el.getAttribute('href')) e.preventDefault();
+      });
+    });
+
     try {
       const saved = localStorage.getItem('ivia_recorder_theme');
       if (saved) setTheme(saved);
     } catch (e) {}
+
+    drawLive();
+    setState('Tap Record to begin.', 'Tap Record to begin.');
   </script>
 </body>
 </html>
