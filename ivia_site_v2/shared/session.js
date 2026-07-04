@@ -21,8 +21,7 @@ function requireAuth() {
   if (!localStorage.getItem(SESSION_KEY)) {
     const retour = encodeURIComponent(location.pathname + location.search);
     // Les pages admin renvoient vers la porte admin dédiée ; le reste vers la connexion publique.
-    const adminPage = location.pathname.startsWith('/admin/')
-      || /\/praticien\/admin-/.test(location.pathname);
+    const adminPage = location.pathname.startsWith('/admin/');
     const porte = adminPage ? '/admin/connexion.html' : '/connexion.html';
     location.replace(porte + '?retour=' + retour);
   }
@@ -88,12 +87,13 @@ function applyAdminVisibility() {
  * Liens de la console admin (porte séparée). Source unique de la navigation admin.
  */
 const ADMIN_NAV = [
-  { href: '/praticien/admin-vue.html', label: 'Vue d\'ensemble' },
-  { href: '/praticien/admin-dossiers.html', label: 'Dossiers clients' },
-  { href: '/praticien/admin-comptes.html', label: 'Comptes & accès' },
-  { href: '/praticien/admin-demandes.html', label: 'Demandes d\'entrée' },
-  { href: '/praticien/admin-comptabilite.html', label: 'Comptabilité' },
-  { href: '/praticien/admin-facturation.html', label: 'Facturation' },
+  { href: '/admin/vue.html', label: 'Vue d\'ensemble' },
+  { href: '/admin/dossiers.html', label: 'Dossiers clients' },
+  { href: '/admin/comptes.html', label: 'Comptes & accès' },
+  { href: '/admin/demandes.html', label: 'Demandes d\'entrée' },
+  { href: '/admin/comptabilite.html', label: 'Comptabilité' },
+  { href: '/admin/facturation.html', label: 'Facturation' },
+  { href: '/admin/analyses.html', label: 'Analyses & droits' },
 ];
 
 /**

@@ -637,5 +637,27 @@ async function apiSetBillingFlags(flags) {
   return _req('/api/v1/admin/billing-flags', { method: 'PATCH', body: { flags } });
 }
 
+// ── Admin · moteur d'analyse : capacités (vannes) + credentials praticiens ───
+/** Matrice complète {profiles, capabilities, matrix} des interrupteurs d'analyse. */
+async function adminAnalysisCapabilities() {
+  return _req('/api/v1/admin/analysis/capabilities');
+}
+/** Active/désactive une capacité pour un profil (un clic). */
+async function adminSetAnalysisCapability(profile, capability, enabled) {
+  return _req('/api/v1/admin/analysis/capabilities', { method: 'PATCH', body: { profile, capability, enabled } });
+}
+/** Liste des reconnaissances professionnelles (credentials) des praticiens. */
+async function adminListCredentials() {
+  return _req('/api/v1/admin/analysis/credentials');
+}
+/** Enregistre une reconnaissance (ordre, permis) pour un praticien. */
+async function adminCreateCredential(payload) {
+  return _req('/api/v1/admin/analysis/credentials', { method: 'POST', body: payload });
+}
+/** Met à jour un credential (statut vérifié/révoqué, droit de transmission…). */
+async function adminUpdateCredential(id, payload) {
+  return _req('/api/v1/admin/analysis/credentials/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
+}
+
 // Export implicite — toutes les fonctions sont disponibles en global
 // dans les pages HTML qui incluent ce script.

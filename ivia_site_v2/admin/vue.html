@@ -5,9 +5,9 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vue d'ensemble — Admin IVIA</title>
-  <script src="/shared/session.js?v=20260617e"></script>
+  <script src="/shared/session.js?v=20260704b"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260617c"></script>
+  <script src="/shared/api.js?v=20260704b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -56,13 +56,13 @@
       catch(e){ document.getElementById('alertes').innerHTML='<p class="text-sm text-red-700 p-6">Accès refusé ou indisponible : '+(e.message||'erreur')+'</p>'; return; }
 
       document.getElementById('cards').innerHTML =
-        carte('Comptes', o.comptes_total, '/praticien/admin-comptes.html') +
-        carte('À vérifier', o.comptes_non_verifies, '/praticien/admin-comptes.html', o.comptes_non_verifies?'text-amber-700':'') +
-        carte('Demandes nouvelles', o.demandes_nouvelles, '/praticien/admin-demandes.html', o.demandes_nouvelles?'text-forest-deep':'') +
-        carte('Encaissé (mois)', fmt(o.encaisse_mois_cents), '/praticien/admin-comptabilite.html', 'text-forest-deep') +
-        carte('Vigilance · demandes', o.demandes_vigilance, '/praticien/admin-demandes.html', o.demandes_vigilance?'text-red-700':'') +
+        carte('Comptes', o.comptes_total, '/admin/comptes.html') +
+        carte('À vérifier', o.comptes_non_verifies, '/admin/comptes.html', o.comptes_non_verifies?'text-amber-700':'') +
+        carte('Demandes nouvelles', o.demandes_nouvelles, '/admin/demandes.html', o.demandes_nouvelles?'text-forest-deep':'') +
+        carte('Encaissé (mois)', fmt(o.encaisse_mois_cents), '/admin/comptabilite.html', 'text-forest-deep') +
+        carte('Vigilance · demandes', o.demandes_vigilance, '/admin/demandes.html', o.demandes_vigilance?'text-red-700':'') +
         carte('Vigilance · analyses', o.notes_vigilance, '/praticien/livraisons.html', o.notes_vigilance?'text-red-700':'') +
-        carte('Comptes récents (7j)', o.comptes_recents_7j, '/praticien/admin-comptes.html');
+        carte('Comptes récents (7j)', o.comptes_recents_7j, '/admin/comptes.html');
 
       const zone=document.getElementById('alertes');
       if(!o.alertes.length){ zone.innerHTML='<p class="text-sm text-muted p-6">Aucune vigilance en cours. 🌿</p>'; return; }
