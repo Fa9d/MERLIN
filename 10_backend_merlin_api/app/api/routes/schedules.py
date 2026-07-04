@@ -314,4 +314,13 @@ def get_available_slots(
                 ))
             cursor += step
 
-    return sorted(slots, key=lambda s: (s.slot_date, s.start_time))
+    # Dédupliquer (des blocs de gabarit qui se chevauchent produisent des doublons)
+    seen: set[tuple[date, time, time]] = set()
+    unique: list[AvailableSlotOut] = []
+    for s in sorted(slots, key=lambda s: (s.slot_date, s.start_time)):
+        k = (s.slot_date, s.start_time, s.end_time)
+        if k in seen:
+            continue
+        seen.add(k)
+        unique.append(s)
+    return unique
