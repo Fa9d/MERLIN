@@ -23,7 +23,7 @@ router = APIRouter(prefix="/calendar", tags=["calendar"])
 
 @router.get("/export.ics")
 async def export_calendar_ics(
-    current_user: AppUser = Depends(require_client),
+    current_user: AppUser = Depends(require_client()),
     db: Session = Depends(get_db)
 ) -> Response:
     """
@@ -69,7 +69,7 @@ async def export_calendar_ics(
 
 @router.get("/practitioner/export.ics")
 async def export_practitioner_calendar_ics(
-    current_user: AppUser = Depends(require_practitioner),
+    current_user: AppUser = Depends(require_practitioner()),
     db: Session = Depends(get_db)
 ) -> Response:
     """
@@ -163,7 +163,7 @@ async def get_export_format_info() -> dict:
 @router.post("/checkout", status_code=status.HTTP_200_OK)
 async def create_checkout_session(
     checkout_request: CheckoutRequest,
-    current_user: AppUser = Depends(require_client),
+    current_user: AppUser = Depends(require_client()),
     db: Session = Depends(get_db)
 ) -> dict:
     """
