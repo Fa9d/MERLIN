@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Ma progression</title>
   <script src="/shared/mock.js"></script>
+  <script src="/shared/api.js?v=20260703a"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,6 +31,11 @@
     .stade-step { display: flex; align-items: center; gap: 8px; }
     .stade-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
     .stade-line { flex: 1; height: 2px; background: var(--bdr); }
+    .ldv { position: relative; padding-left: 30px; }
+    .ldv::before { content:''; position:absolute; left:10px; top:8px; bottom:8px; width:2px; background:linear-gradient(180deg, var(--forest), var(--bdr)); border-radius:2px; }
+    .ldv-item { position: relative; padding-bottom: 18px; }
+    .ldv-item:last-child { padding-bottom: 0; }
+    .ldv-dot { position:absolute; left:-30px; top:0; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; background:var(--surface); border:2px solid var(--card-bg); box-shadow:0 0 0 1.5px var(--bdr); }
     @media (max-width: 1024px) { .chart-container { max-width: 100%; } }
   </style>
 </head>
@@ -169,6 +175,21 @@
         <!-- Injecté par JS -->
       </div>
       <p class="text-xs text-muted mt-4" id="jalons-prochains"></p>
+    </section>
+
+    <!-- Ligne de vie ─────────────────────────────────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="ldv-titre">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-1">
+        <h2 id="ldv-titre" class="font-heading text-base font-semibold text-ink">Ligne de vie</h2>
+        <div class="flex items-center gap-1.5" id="ldv-filtres">
+          <button data-f="tout" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-forest text-white bg-forest-deep">Tout</button>
+          <button data-f="seance" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-bdr text-muted bg-surface">Séances</button>
+          <button data-f="journal" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-bdr text-muted bg-surface">Journal</button>
+          <button data-f="repere" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-bdr text-muted bg-surface">Repères</button>
+        </div>
+      </div>
+      <p class="text-xs text-muted mb-5" id="ldv-resume">Chargement de votre parcours…</p>
+      <div id="ldv-timeline" class="ldv"></div>
     </section>
 
     <!-- Note de Mylène ─────────────────────────────────────────────────── -->
@@ -444,6 +465,102 @@
       `Prochain : « ${prochains[0]} »`;
   }
 
+})();
+</script>
+
+<script>
+(async function ligneDeVie() {
+  const zone = document.getElementById('ldv-timeline');
+  const resume = document.getElementById('ldv-resume');
+  let bookings = [], entries = [], docs = [], recs = [];
+  try { bookings = await getMyBookings(); } catch (e) {}
+  try { entries = await getMyJournal(); } catch (e) {}
+  try { docs = await getMyDocuments(); } catch (e) {}
+  try { recs = await getMyRecordings(); } catch (e) {}
+
+  function esc(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+
+  function journalSummary(en) {
+    const b = en.body_text || '';
+    if (b.startsWith('ARCHI_EXERCICE::')) {
+      try { const d = JSON.parse(b.slice(16)); return { t: 'Exercice — ' + (d.title || 'exercice'), s: 'État ' + (d.before ?? '–') + ' → ' + (d.after ?? '–') + (d.note ? ' · ' + d.note : '') }; }
+      catch (e) { return { t: 'Exercice validé', s: '' }; }
+    }
+    if (b.startsWith('ARCHI_INTERIEUR::')) {
+      try { const d = JSON.parse(b.slice(17)); const H = { stress:'🔴 stress', neutre:'🟡 neutre', coherence:'🟢 cohérence', flow:'🔵 flow' };
+        return { t: 'État du jour', s: (H[d.humeur] || d.humeur) + ' · énergie ' + d.energie + '/10' + (d.note ? ' — ' + d.note : d.grace ? ' — ' + d.grace : '') }; }
+      catch (e) { return { t: 'État du jour', s: '' }; }
+    }
+    return { t: en.emotional_tone ? 'Journal · ' + en.emotional_tone : 'Journal', s: b };
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const items = [];
+  bookings.filter(b => b.status === 'confirmed').forEach(b => {
+    const past = b.slot_date < today;
+    items.push({ ts: b.slot_date + 'T' + (b.start_time || '12:00'), type: 'seance', icon: past ? '🌿' : '📅',
+      title: past ? 'Séance vécue' : 'Séance à venir',
+      sub: (b.practitioner_name ? 'avec ' + b.practitioner_name : '') + (b.start_time ? ' · ' + b.start_time.slice(0,5) : ''), href: '/client/seances.html' });
+  });
+  entries.forEach(en => {
+    const j = journalSummary(en);
+    items.push({ ts: en.written_at, type: 'journal', icon: '✍️', title: j.t, sub: j.s, href: '/client/journal.html' });
+  });
+  docs.forEach(d => items.push({ ts: d.created_at, type: 'repere', icon: '⭐', title: d.title || 'Repère de séance', sub: (d.body_text || '').replace(/\s+/g, ' ').slice(0, 120), href: '/client/journal.html#session-reperes' }));
+  recs.filter(r => r.transcript_ready).forEach(r => items.push({ ts: r.created_at, type: 'repere', icon: '🎙️', title: 'Enregistrement transcrit', sub: 'Vos mots sont disponibles dans vos enregistrements.', href: '/client/mes-enregistrements.html' }));
+
+  items.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+
+  if (!items.length) {
+    resume.textContent = "Votre ligne de vie se dessinera à partir de vos séances, votre journal et vos repères.";
+    zone.innerHTML = '<p class="text-sm text-muted">Rien pour le moment — commencez par écrire dans le journal ou réserver une séance.</p>';
+    return;
+  }
+  const nS = items.filter(i => i.type === 'seance').length, nJ = items.filter(i => i.type === 'journal').length, nR = items.filter(i => i.type === 'repere').length;
+  const first = new Date(items[items.length - 1].ts);
+  resume.textContent = 'Depuis le ' + first.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) + ' : ' + nS + ' séance(s), ' + nJ + ' trace(s) de journal, ' + nR + ' repère(s).';
+
+  let filtre = 'tout';
+  function render() {
+    zone.innerHTML = '';
+    let lastMonth = '';
+    const list = items.filter(i => filtre === 'tout' || i.type === filtre).slice(0, 60);
+    if (!list.length) { zone.innerHTML = '<p class="text-sm text-muted">Aucun élément de ce type pour le moment.</p>'; return; }
+    list.forEach(it => {
+      const d = new Date(it.ts);
+      const mois = d.toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' });
+      if (mois !== lastMonth) {
+        lastMonth = mois;
+        const m = document.createElement('p');
+        m.className = 'text-[11px] font-bold uppercase tracking-wider text-muted mb-3 mt-1';
+        m.textContent = mois.charAt(0).toUpperCase() + mois.slice(1);
+        zone.appendChild(m);
+      }
+      const el = document.createElement('a');
+      el.href = it.href;
+      el.className = 'ldv-item block group';
+      el.innerHTML = '<span class="ldv-dot">' + it.icon + '</span>' +
+        '<div class="bg-surface border border-bdr rounded-[12px] px-4 py-2.5 group-hover:border-forest transition-colors">' +
+        '<div class="flex items-center justify-between gap-2 flex-wrap">' +
+        '<p class="text-sm font-semibold text-ink">' + esc(it.title) + '</p>' +
+        '<p class="text-[11px] text-muted">' + d.toLocaleDateString('fr-CA', { weekday: 'short', day: 'numeric', month: 'short' }) + '</p>' +
+        '</div>' +
+        (it.sub ? '<p class="text-xs text-muted mt-0.5 line-clamp-2">' + esc(it.sub) + '</p>' : '') +
+        '</div>';
+      zone.appendChild(el);
+    });
+  }
+  document.querySelectorAll('.ldv-f').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filtre = btn.dataset.f;
+      document.querySelectorAll('.ldv-f').forEach(b => {
+        const on = b === btn;
+        b.className = 'ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border ' + (on ? 'border-forest text-white bg-forest-deep' : 'border-bdr text-muted bg-surface');
+      });
+      render();
+    });
+  });
+  render();
 })();
 </script>
 
