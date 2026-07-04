@@ -393,6 +393,8 @@ app/
 │   ├── me_documents.py  # GET /me/documents — reformulations livrees au client connecte (derived_document visible + note validee)
 │   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
 │   ├── admin_settings.py # GET/PATCH /admin/billing-flags — interrupteurs payant/gratuit par offre (mode test)
+│   ├── admin_analysis.py # /admin/analysis — interrupteurs capacités (profil×capacité, un clic) + credentials praticiens [require_admin]
+│   ├── analysis.py      # /analysis — prosodie locale par séance, lecture filtrée par capability_gate, droits de transmission
 │   ├── admin_accounts.py # /admin/accounts — comptes & accès (resend-verification, verify, role, status) [require_admin]
 │   ├── admin_accounting.py # /admin/accounting (summary, ledger) — grand livre, exclut les paiements test [require_admin]
 │   ├── admin_overview.py # /admin/overview — vue d'ensemble + alertes vigilance [require_admin]
@@ -404,6 +406,12 @@ app/
                          #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee ·
                          #   0036 app_users.themes · 0037 app_users.is_platform_admin ·
                          #   0038 intake_requests.handling_* (rattrapage dérive : handling_status_code/notes, handled_by/at)
+                         #   … 0047 moteur d'analyse (analysis_capability_flags, practitioner_credentials,
+                         #   analysis_results, analysis_access_logs) — architecture « moteur plein / vannes par profil » :
+                         #   le moteur produit tout, l'exposition est filtrée par profil (ivia_quebec_client conforme
+                         #   Loi 25/21 ; praticien_certifie = accès complet si credential vérifié ; recherche_societale).
+                         #   Transmission au client des inférences cliniques : réservée aux praticiens recognized_by_order.
+                         #   Voir app/services/capability_gate.py + prosody.py (analyse locale, requirements-analysis.txt).
 ```
 
 ---

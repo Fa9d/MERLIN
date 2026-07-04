@@ -7,13 +7,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential curl \
+    && apt-get install -y --no-install-recommends build-essential curl ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt requirements-transcription.txt ./
+COPY requirements.txt requirements-transcription.txt requirements-analysis.txt ./
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt \
-    && pip install -r requirements-transcription.txt
+    && pip install -r requirements-transcription.txt \
+    && pip install -r requirements-analysis.txt
 
 COPY alembic.ini ./
 COPY alembic ./alembic

@@ -18,6 +18,8 @@ from app.api.routes.me_recordings import router as me_recordings_router
 from app.api.routes.me_documents import router as me_documents_router
 from app.api.routes.express import router as express_router
 from app.api.routes.admin_settings import router as admin_settings_router
+from app.api.routes.admin_analysis import router as admin_analysis_router
+from app.api.routes.analysis import router as analysis_router
 from app.api.routes.admin_accounts import router as admin_accounts_router
 from app.api.routes.admin_accounting import router as admin_accounting_router
 from app.api.routes.admin_overview import router as admin_overview_router
@@ -116,6 +118,8 @@ app.include_router(practitioner_audio_profiles_router, prefix=settings.api_v1_pr
 app.include_router(practitioner_audio_public_router, prefix=settings.api_v1_prefix)
 app.include_router(express_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_settings_router, prefix=settings.api_v1_prefix)
+app.include_router(admin_analysis_router, prefix=settings.api_v1_prefix)
+app.include_router(analysis_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_accounts_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_accounting_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_overview_router, prefix=settings.api_v1_prefix)
