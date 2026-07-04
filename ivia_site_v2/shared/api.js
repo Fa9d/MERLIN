@@ -454,6 +454,15 @@ async function deleteScheduleException(excId) {
   return _req(`/api/v1/schedules/my/exceptions/${excId}`, { method: 'DELETE' });
 }
 
+/**
+ * Agenda du praticien connecté : réservations (hold + confirmées) avec nom client.
+ * @returns {Promise<Array<BookingSlotRecord & { client_name: string|null }>>}
+ */
+async function getPractitionerAgenda(dateFrom, dateTo) {
+  const qs = new URLSearchParams({ date_from: dateFrom, date_to: dateTo });
+  return _req(`/api/v1/bookings/agenda?${qs}`);
+}
+
 // ── Réservations client ───────────────────────────────────────────────────────
 /**
  * Place un hold de 15 min sur un créneau.

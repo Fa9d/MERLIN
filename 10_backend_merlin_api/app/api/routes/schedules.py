@@ -285,4 +285,33 @@ def get_available_slots(
 
         current += timedelta(days=1)
 
+    # Plages EXTRA (exceptions type `extra`) : disponibilités ponctuelles hors gabarit.
+    default_len = duration_minutes or 60
+    for exc_date, exc_start, exc_end, exc_type in extra_ranges:
+        if exc_date < date_from or exc_date > date_to:
+            continue
+        booked_today = booked_ranges_by_date.get(exc_date, [])
+        step = timedelta(minutes=default_len)
+        cursor = datetime.combine(exc_date, exc_start)
+        end_dt = datetime.combine(exc_date, exc_end)
+        while cursor + timedelta(minutes=default_len) <= end_dt:
+            slot_start = cursor.time()
+            slot_end = (cursor + timedelta(minutes=default_len)).time()
+            booked = any(_overlaps(slot_start, slot_end, bs, be) for bs, be in booked_today)
+            already = any(
+                s.slot_date == exc_date and s.start_time == slot_start for s in slots
+            )
+            if not booked and not already:
+                slots.append(AvailableSlotOut(
+                    praticien_id=praticien_id,
+                    praticien_name=praticien.display_name,
+                    slot_date=exc_date,
+                    start_time=slot_start,
+                    end_time=slot_end,
+                    session_type=exc_type,
+                    session_type_label=SESSION_TYPE_LABELS.get(exc_type, exc_type),
+                    duration_minutes=default_len,
+                ))
+            cursor += step
+
     return sorted(slots, key=lambda s: (s.slot_date, s.start_time))

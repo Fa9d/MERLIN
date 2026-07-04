@@ -11,7 +11,7 @@ from app.core.config import settings
 from app.core.deps import get_db, require_client, require_practitioner
 from app.services.ics_service import IcsExportService
 from app.services.payment_service import StripePaymentService
-from app.services.email_service import EmailService
+from app.services.email import make_appointment_status_email, send_email
 from app.models.appointment import Appointment
 from app.models.app_user import AppUser
 from app.schemas.payment import CheckoutRequest
@@ -265,14 +265,18 @@ async def handle_stripe_webhook(
                     ).first()
                     
                     if client:
-                        email_service = EmailService(settings)
-                        email_service.send_payment_confirmation(
-                            client_email=client.email,
-                            client_name=client.first_name or "Client",
-                            amount_cents=appointment.amount_cents or 0,
-                            currency="CAD"
+                        made = make_appointment_status_email(
+                            display_name=client.display_name or "Client",
+                            status_code="paid",
                         )
-                        logger.info(f"Payment confirmation email sent to {client.email}")
+                        if made:
+                            html, text = made
+                            await send_email(
+                                to_email=client.email,
+                                subject="Paiement reçu — IVIA",
+                                html_body=html,
+                                text_body=text,
+                            )
                 except Exception as e:
                     logger.error(f"Failed to send payment email: {e}")
         

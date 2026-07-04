@@ -20,7 +20,11 @@ from app.schemas.appointment import (
     PractitionerSlotOut,
     PractitionerSlotUpdate,
 )
-from app.services.email_service import EmailService
+from app.services.email import (
+    make_appointment_status_email,
+    make_booking_confirmation_email,
+    send_email,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -175,7 +179,7 @@ def get_my_appointments(
 
 
 @router.post("/appointments", response_model=AppointmentOut, status_code=status.HTTP_201_CREATED)
-def create_appointment(
+async def create_appointment(
     appt_data: AppointmentCreate,
     current_user: AppUser = Depends(require_client()),
     db: Session = Depends(get_db),
@@ -198,8 +202,43 @@ def create_appointment(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Practitioner not found",
         )
+
+    # Si un créneau est référencé : le verrouiller (anti double-réservation)
+    slot = None
+    if appt_data.slot_id:
+        slot = db.execute(
+            select(PractitionerSlot)
+            .where(PractitionerSlot.id == appt_data.slot_id)
+            .where(PractitionerSlot.practitioner_id == appt_data.practitioner_id)
+            .with_for_update()
+        ).scalar()
+        if not slot:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Slot not found",
+            )
+        if not slot.is_available:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Slot is no longer available",
+            )
+
+    # Garde anti-chevauchement : pas de rendez-vous actif du praticien sur la plage
+    overlap = db.execute(
+        select(Appointment.id)
+        .where(Appointment.practitioner_id == appt_data.practitioner_id)
+        .where(Appointment.status != "cancelled")
+        .where(Appointment.start_time < appt_data.end_time)
+        .where(Appointment.end_time > appt_data.start_time)
+        .limit(1)
+    ).scalar()
+    if overlap:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Practitioner already has an appointment on this time range",
+        )
     
-    # Créer appointment
+    # Créer appointment (+ marquer le créneau réservé)
     appointment = Appointment(
         client_id=current_user.id,
         practitioner_id=appt_data.practitioner_id,
@@ -209,6 +248,9 @@ def create_appointment(
         duration_minutes=appt_data.duration_minutes,
         status="scheduled",
     )
+    if slot:
+        slot.is_available = False
+        db.add(slot)
     
     db.add(appointment)
     db.commit()
@@ -216,17 +258,22 @@ def create_appointment(
     
     logger.info(f"Created appointment {appointment.id} for client {current_user.id}")
     
-    # Send booking confirmation email (non-blocking)
+    # Courriel de confirmation (non bloquant)
     try:
-        email_service = EmailService(settings)
-        email_service.send_booking_confirmation(
-            client_email=current_user.email,
-            client_name=current_user.first_name or "Client",
-            practitioner_name=praticien.first_name or "Praticien",
-            appointment_date=appointment.start_time.strftime("%d-%m-%Y"),
-            appointment_time=appointment.start_time.strftime("%H:%M")
+        html, text = make_booking_confirmation_email(
+            display_name=current_user.display_name or "Client",
+            praticien_name=praticien.display_name or "Praticien·ne",
+            slot_date=appointment.start_time.strftime("%d-%m-%Y"),
+            slot_time=appointment.start_time.strftime("%H:%M"),
+            session_type_label=f"Séance ({appointment.duration_minutes} min)",
+            cancel_url="https://ivia.quebec/client/agenda.html",
         )
-        logger.info(f"Booking confirmation email sent to {current_user.email}")
+        await send_email(
+            to_email=current_user.email,
+            subject="Confirmation de votre réservation IVIA",
+            html_body=html,
+            text_body=text,
+        )
     except Exception as e:
         logger.error(f"Failed to send booking confirmation email: {e}")
         # Don't fail appointment creation if email fails
@@ -235,7 +282,7 @@ def create_appointment(
 
 
 @router.patch("/appointments/{appointment_id}", response_model=AppointmentOut)
-def update_appointment_status(
+async def update_appointment_status(
     appointment_id: str,
     status_data: AppointmentStatusUpdate,
     current_user: AppUser = Depends(require_practitioner()),
@@ -273,6 +320,12 @@ def update_appointment_status(
         appointment.paid_at = now
     elif status_data.status == "noted":
         appointment.noted_at = now
+    elif status_data.status == "cancelled" and appointment.slot_id:
+        # Libérer le créneau si le rendez-vous n'a pas encore eu lieu
+        slot = db.get(PractitionerSlot, appointment.slot_id)
+        if slot and slot.start_time > now:
+            slot.is_available = True
+            db.add(slot)
     
     appointment.updated_at = now
     db.add(appointment)
@@ -281,32 +334,25 @@ def update_appointment_status(
     
     logger.info(f"Updated appointment {appointment_id} status to {status_data.status}")
     
-    # Send status update email (non-blocking)
+    # Courriel de notification (non bloquant)
     try:
         client = db.execute(
             select(AppUser).where(AppUser.id == appointment.client_id)
         ).scalar()
-        
-        if client:
-            email_service = EmailService(settings)
-            
-            if appointment.status == "paid":
-                email_service.send_payment_confirmation(
-                    client_email=client.email,
-                    client_name=client.first_name or "Client",
-                    amount_cents=appointment.amount_cents or 0,
-                    currency="CAD"
+        if client and old_status != appointment.status:
+            made = make_appointment_status_email(
+                display_name=client.display_name or "Client",
+                status_code=appointment.status,
+                praticien_name=current_user.display_name,
+            )
+            if made:
+                html, text = made
+                await send_email(
+                    to_email=client.email,
+                    subject="Mise à jour de votre rendez-vous IVIA",
+                    html_body=html,
+                    text_body=text,
                 )
-                logger.info(f"Payment confirmation email sent to {client.email}")
-            
-            elif appointment.status == "noted":
-                email_service.send_status_update(
-                    client_email=client.email,
-                    client_name=client.first_name or "Client",
-                    status="noted",
-                    session_notes=getattr(status_data, 'notes', None)
-                )
-                logger.info(f"Status update email sent to {client.email}")
     except Exception as e:
         logger.error(f"Failed to send status email: {e}")
         # Don't fail status update if email fails
@@ -333,9 +379,15 @@ def cancel_appointment(
             detail="Appointment not found",
         )
     
-    # Soft-delete par changement de status
+    # Soft-delete par changement de status + libération du créneau
     appointment.status = "cancelled"
-    appointment.updated_at = datetime.now(timezone.utc)
+    now = datetime.now(timezone.utc)
+    appointment.updated_at = now
+    if appointment.slot_id:
+        slot = db.get(PractitionerSlot, appointment.slot_id)
+        if slot and slot.start_time > now:
+            slot.is_available = True
+            db.add(slot)
     db.add(appointment)
     db.commit()
     
