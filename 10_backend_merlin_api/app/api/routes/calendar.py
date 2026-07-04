@@ -18,7 +18,7 @@ from app.schemas.payment import CheckoutRequest
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/v1/calendar", tags=["calendar"])
+router = APIRouter(prefix="/calendar", tags=["calendar"])
 
 
 @router.get("/export.ics")

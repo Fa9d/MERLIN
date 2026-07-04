@@ -19,7 +19,7 @@ from app.schemas.timeline import (
 )
 
 
-router = APIRouter(prefix="/api/v1", tags=["timeline"])
+router = APIRouter(tags=["timeline"])
 
 
 @router.get(
