@@ -78,14 +78,10 @@ PROFILES: dict[str, dict] = {
     "ivia_quebec_client": {
         "label": "IVIA Québec — client (Loi 25/21, écoute enracinée)",
         "max_sensitivity": AnalysisSensitivity.hypothese,
-        "defaults": {
-            "prosody_local": True,
-            "emotion_saas": False,          # aucune donnée vers un tiers non encadré
-            "semantic_llm": True,
-            "semantic_embeddings": True,
-            "behavioral_profiling": True,
-            "societal_aggregation": False,
-        },
+        # Décision fondateur 2026-07-04 : tout actif par défaut en phase test —
+        # désactivation en un clic depuis /admin/analysis/capabilities au besoin
+        # (à réévaluer avant mise en marché pour les capacités data_leaves_server).
+        "defaults": {c: True for c in CAPABILITIES},
     },
     "praticien_certifie": {
         "label": "Praticien certifié — accès analytique complet",
