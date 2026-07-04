@@ -61,22 +61,16 @@ async def get_appointment_history(
     # Build response items
     items = []
     for apt in appointments:
-        # Get praticien audio URL (presigned)
-        audio_url = None
-        if apt.practitioner and apt.practitioner.audio_profile:
-            audio_url = apt.practitioner.audio_profile.presigned_url
-
         # Build audit trail
         audit_trail = _build_audit_trail(apt)
 
         item = AppointmentHistoryItem(
             id=apt.id,
             created_at=apt.created_at,
-            scheduled_at=apt.scheduled_at,
+            scheduled_at=apt.start_time,
             duration_minutes=apt.duration_minutes or 60,
             practitioner_id=apt.practitioner_id,
-            practitioner_name=apt.practitioner.full_name if apt.practitioner else "Unknown",
-            practitioner_audio_url=audio_url,
+            practitioner_name=apt.practitioner.display_name if apt.practitioner else "Inconnu",
             status=apt.status,
             confirmed_at=apt.confirmed_at,
             paid_at=apt.paid_at,
@@ -106,8 +100,11 @@ async def get_practitioner_stats(
     - Completed sessions
     - Pending confirmations
     """
-    # Ensure user is practitioner
-    if current_user.user_type not in ("practitioner", "admin"):
+    # Ensure user is practitioner (or admin)
+    from app.core.deps import is_admin
+    from app.models.enums import AppRole
+
+    if current_user.role != AppRole.practitioner and not is_admin(current_user):
         raise HTTPException(status_code=403, detail="Only practitioners can access this endpoint")
 
     from datetime import datetime, timedelta
@@ -159,10 +156,11 @@ async def get_practitioner_stats(
         .where(
             and_(
                 Appointment.practitioner_id == current_user.id,
-                Appointment.scheduled_at >= now,
+                Appointment.start_time >= now,
+                Appointment.status != "cancelled",
             )
         )
-        .order_by(Appointment.scheduled_at)
+        .order_by(Appointment.start_time)
         .limit(5)
     )
     upcoming = db.execute(upcoming_query).scalars().all()
@@ -173,10 +171,12 @@ async def get_practitioner_stats(
         item = AppointmentHistoryItem(
             id=apt.id,
             created_at=apt.created_at,
-            scheduled_at=apt.scheduled_at,
+            scheduled_at=apt.start_time,
             duration_minutes=apt.duration_minutes or 60,
             practitioner_id=apt.practitioner_id,
-            practitioner_name=apt.practitioner.full_name if apt.practitioner else "Unknown",
+            practitioner_name=apt.practitioner.display_name if apt.practitioner else "Inconnu",
+            client_id=apt.client_id,
+            client_name=apt.client.display_name if apt.client else "Inconnu",
             status=apt.status,
             confirmed_at=apt.confirmed_at,
             paid_at=apt.paid_at,
@@ -225,10 +225,10 @@ async def get_appointment_detail(
     return AppointmentDetailResponse(
         id=apt.id,
         created_at=apt.created_at,
-        scheduled_at=apt.scheduled_at,
+        scheduled_at=apt.start_time,
         duration_minutes=apt.duration_minutes or 60,
         practitioner_id=apt.practitioner_id,
-        practitioner_name=apt.practitioner.full_name if apt.practitioner else "Unknown",
+        practitioner_name=apt.practitioner.display_name if apt.practitioner else "Inconnu",
         status=apt.status,
         confirmed_at=apt.confirmed_at,
         paid_at=apt.paid_at,
@@ -283,10 +283,10 @@ async def add_session_notes(
     return AppointmentDetailResponse(
         id=apt.id,
         created_at=apt.created_at,
-        scheduled_at=apt.scheduled_at,
+        scheduled_at=apt.start_time,
         duration_minutes=apt.duration_minutes or 60,
         practitioner_id=apt.practitioner_id,
-        practitioner_name=apt.practitioner.full_name if apt.practitioner else "Unknown",
+        practitioner_name=apt.practitioner.display_name if apt.practitioner else "Inconnu",
         status=apt.status,
         confirmed_at=apt.confirmed_at,
         paid_at=apt.paid_at,

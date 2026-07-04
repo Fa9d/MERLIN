@@ -18,6 +18,10 @@ class AppointmentHistoryItem(BaseModel):
     practitioner_name: str
     practitioner_audio_url: Optional[str] = None  # Presigned URL
 
+    # Client (renseigné pour la vue praticien)
+    client_id: Optional[str] = None
+    client_name: Optional[str] = None
+
     # Status
     status: str  # scheduled | confirmed | paid | noted | cancelled
     confirmed_at: Optional[datetime] = None
