@@ -138,7 +138,7 @@ jamais de promesse de résultat · aucune donnée client réelle
 >
 > Tu connais quelqu'un qui n'irait jamais « voir un psy » — mais qui aurait besoin de parler ? Quelqu'un qui dit toujours « ça va aller » avec la voix de quelqu'un pour qui ça ne va pas ?
 >
-> Tu ne peux pas le forcer. Mais tu peux lui tendre une porte :
+> Tu ne peux pas le forcer. Mais tu peux lui ouvrir une porte :
 >
 > « Ce n'est pas une thérapie. C'est une écoute. 80 $, en ligne, confidentiel, quand tu veux. »
 >

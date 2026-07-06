@@ -58,7 +58,7 @@ quand le parcours convertit bien en organique (sinon on achète des fuites).
 | S1 — En attente de services publics | 6–24 mois d'attente | « Attendre ton rendez-vous, oui. Attendre seul·e, non. » | Réservation en 3 min, séance cette semaine |
 | S2 — Réfractaires à la « thérapie » | Stigmate, coût, identité | « Ce n'est pas une thérapie. C'est une écoute. » | Charte : pas de diagnostic, pas de dossier |
 | S3 — Travailleurs épuisés | Surcharge, PAE impersonnel | « Parler à quelqu'un, sans que ça devienne un dossier. » | 80 $, confidentialité Loi 25, soir/fin de semaine |
-| S4 — Proches aidants et relais | Impuissance devant un proche | « Tends-lui une porte. » | Partage simple, sans engagement |
+| S4 — Proches aidants et relais | Impuissance devant un proche | « Ouvre-lui une porte. » | Partage simple, sans engagement |
 | S5 — Employeurs (Loi 27) | Obligation légale risques psychosociaux | « Répondez à la Loi 27 autrement qu'avec une case à cocher. » | Offre 5–15 K$/an, données QC |
 
 ### 3.3 Interdits publicitaires (charte + conformité)
@@ -130,7 +130,7 @@ qui fait le tri (le message segmente à la place du ciblage). C'est contraignant
 | C1 « L'attente » | Meta | S1 | Visuel sobre : chaise vide + « 6 à 24 mois d'attente. Ou cette semaine. » | /attente | 300 $ |
 | C2 « Pas une thérapie » | Meta | S2 | Texte pur fond crème : « Tu n'as pas besoin d'un diagnostic pour avoir besoin de parler. » | /ecoute | 250 $ |
 | C3 « Recherche active » | Google | S1+S3 | Annonces texte sur 15–20 requêtes | /attente, /travail | 250 $ |
-| C4 « Le proche » | Meta | S4 | Carrousel « Comment tendre une porte » | /proche | remise M4 |
+| C4 « Le proche » | Meta | S4 | Carrousel « Comment ouvrir une porte » | /proche | remise M4 |
 
 **Budget d'apprentissage M2–M3 : 800 $/mois.** Objectif : identifier les 2 campagnes
 gagnantes (coût par demande le plus bas), couper le reste.
