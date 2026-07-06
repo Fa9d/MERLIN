@@ -431,3 +431,42 @@ def make_followup_reminder_email(
     )
     return html, text
 
+
+def make_reprise_lien_email(display_name: str, reserve_url: str) -> tuple[str, str]:
+    """Courriel de reprise de lien 48 h après une demande d'entrée restée sans suite.
+
+    Ton chaleureux, sans pression, non clinique (Loi 21). Une seule relance,
+    un seul geste proposé : réserver un moment d'écoute. Aucun contenu personnel
+    dans le courriel (Loi 25).
+    """
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Il y a deux jours, vous avez ouvert une porte chez IVIA. Elle est toujours ouverte.</p>
+    <p>Faire une place pour soi n'est pas toujours simple — il n'y a aucune presse.
+       Quand le moment sera bon pour vous, un moment d'écoute vous attend,
+       avec une personne qui écoute pour vrai.</p>
+    <a class="btn" href="{reserve_url}">Réserver mon moment d'écoute</a>
+    <p style="color:#888;font-size:13px;">Ce courriel est la seule relance que vous recevrez.
+       Si vous préférez ne pas donner suite, vous n'avez rien à faire.
+       En cas de détresse, appelez le 811 option 2, ou le 988 (24/7).</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Il y a deux jours, vous avez ouvert une porte chez IVIA. Elle est toujours ouverte.\n\n"
+        "Faire une place pour soi n'est pas toujours simple — il n'y a aucune presse. "
+        "Quand le moment sera bon pour vous, un moment d'écoute vous attend, "
+        "avec une personne qui écoute pour vrai.\n\n"
+        f"Réserver mon moment d'écoute : {reserve_url}\n\n"
+        "Ce courriel est la seule relance que vous recevrez. "
+        "Si vous préférez ne pas donner suite, vous n'avez rien à faire.\n"
+        "En cas de détresse : 811 option 2, ou 988 (24/7).\n\n— IVIA"
+    )
+    return html, text
+

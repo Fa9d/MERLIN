@@ -238,3 +238,89 @@ async def send_appointment_reminders(db: Session) -> int:
         db.commit()
 
     return sent
+
+
+# ---------------------------------------------------------------------------
+# Reprise de lien 48 h — demande d'entrée restée sans suite
+# ---------------------------------------------------------------------------
+
+_REPRISE_FLAG_PREFIX = "reprise_48h_sent:"
+
+
+async def send_intake_reprise_48h(db: Session) -> int:
+    """Relance unique 48 h après une demande d'entrée restée sans suite.
+
+    Cible : demandes actives au statut «new», créées il y a 48 h à 7 jours,
+    dont le client a un courriel et aucun créneau confirmé.
+    Déduplication via le préfixe «reprise_48h_sent:» dans handling_notes.
+    Une seule relance, jamais plus (plan de mise en marché §11).
+    """
+    from app.models.intake_request import IntakeRequest
+    from app.models.enums import IntakeHandlingStatusCode
+    from app.services.email import make_reprise_lien_email
+
+    now = datetime.now(timezone.utc)
+    window_start = now - timedelta(days=7)
+    window_end = now - timedelta(hours=48)
+
+    requests = (
+        db.query(IntakeRequest)
+        .filter(
+            IntakeRequest.record_status == RecordStatus.active,
+            IntakeRequest.handling_status_code == IntakeHandlingStatusCode.new,
+            IntakeRequest.created_at >= window_start,
+            IntakeRequest.created_at <= window_end,
+        )
+        .all()
+    )
+
+    sent = 0
+    for req in requests:
+        if req.handling_notes and _REPRISE_FLAG_PREFIX in req.handling_notes:
+            continue
+
+        client: Client | None = db.query(Client).filter(Client.id == req.client_id).first()
+        if client is None:
+            continue
+
+        # Courriel : fiche client, sinon compte lié
+        email = client.email
+        display_name = client.first_name_or_alias
+        if not email and client.app_user_id:
+            user = db.query(AppUser).filter(AppUser.id == client.app_user_id).first()
+            if user:
+                email = user.email
+                display_name = user.display_name or display_name
+        if not email:
+            continue
+
+        # Ne pas relancer si un créneau est déjà confirmé pour ce compte
+        if client.app_user_id:
+            has_booking = (
+                db.query(BookingSlot)
+                .filter(
+                    BookingSlot.client_id == client.app_user_id,
+                    BookingSlot.status == SlotStatus.confirmed,
+                )
+                .first()
+            )
+            if has_booking:
+                continue
+
+        html, text = make_reprise_lien_email(
+            display_name=display_name,
+            reserve_url=f"{settings.frontend_url}/reserver.html",
+        )
+        ok = await send_email(email, "La porte est toujours ouverte — IVIA", html, text)
+
+        if ok:
+            flag = f"{_REPRISE_FLAG_PREFIX}{now.isoformat()}"
+            req.handling_notes = f"{req.handling_notes}\n{flag}" if req.handling_notes else flag
+            db.add(req)
+            sent += 1
+            logger.info("Reprise 48h envoyée pour demande %s → %s", req.id, email)
+
+    if sent > 0:
+        db.commit()
+
+    return sent

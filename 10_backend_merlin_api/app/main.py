@@ -55,8 +55,8 @@ _REMINDER_INTERVAL_SECONDS = 1800  # toutes les 30 min
 
 
 async def _reminder_loop() -> None:
-    """Tâche de fond : rappels 24h — exécutée toutes les 30 min."""
-    from app.services.booking_flow import send_appointment_reminders
+    """Tâche de fond : rappels 24h + reprises de lien 48h — toutes les 30 min."""
+    from app.services.booking_flow import send_appointment_reminders, send_intake_reprise_48h
     await asyncio.sleep(60)  # délai initial au démarrage
     while True:
         try:
@@ -65,6 +65,9 @@ async def _reminder_loop() -> None:
                 n = await send_appointment_reminders(db)
                 if n > 0:
                     logger.info("Rappels 24h : %d envoyé(s)", n)
+                r = await send_intake_reprise_48h(db)
+                if r > 0:
+                    logger.info("Reprises 48h : %d envoyée(s)", r)
             finally:
                 db.close()
         except Exception as exc:  # pylint: disable=broad-except
