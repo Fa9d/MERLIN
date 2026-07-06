@@ -71,6 +71,7 @@ Frontend  : SITE PUBLIC = statique ivia_site_v2/ (HTML + Tailwind CDN), servi pa
             Next.js 16.2.4 (09_app_ivia_merlin/) = LEGACY, retiré de la prod le 2026-06-23
             (nginx ne routait jamais dessus) ; code conservé en repo pour référence.
 Media     : LiveKit v1.8.3 (sessions audio/vidéo)
+Mesure    : Matomo 5 auto-hébergé (stats.ivia.quebec, sans témoin — Loi 25) — voir docs/ops-matomo.md
 Infra     : Docker Compose — OVH VPS ubuntu@137.74.42.121:/opt/merlin
 Reverse   : Nginx 1.27 (TLS Let's Encrypt)
 Versioning: Git / GitHub — branche d'intégration master ; branche refonte courante refonte-ivia-site-unifie

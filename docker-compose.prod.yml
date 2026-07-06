@@ -227,11 +227,57 @@ services:
       - merlin_uptime_data:/app/data
     networks:
       - merlin_network
+
+  # ── Matomo — mesure d'audience souveraine (données Québec, Loi 25) ──────
+  # UI + suivi : https://stats.ivia.quebec (proxy nginx). Mode sans témoin
+  # (cookieless) configuré côté balise dans ivia_site_v2/shared/analytics.js.
+  matomo-db:
+    image: mariadb:11
+    restart: unless-stopped
+    command: --max-allowed-packet=64MB
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MATOMO_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: matomo
+      MYSQL_USER: matomo
+      MYSQL_PASSWORD: ${MATOMO_DB_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - merlin_matomo_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - merlin_network
+
+  matomo:
+    image: matomo:5-apache
+    restart: unless-stopped
+    depends_on:
+      matomo-db:
+        condition: service_healthy
+    environment:
+      MATOMO_DATABASE_HOST: matomo-db
+      MATOMO_DATABASE_ADAPTER: mysql
+      MATOMO_DATABASE_TABLES_PREFIX: matomo_
+      MATOMO_DATABASE_USERNAME: matomo
+      MATOMO_DATABASE_PASSWORD: ${MATOMO_DB_PASSWORD}
+      MATOMO_DATABASE_DBNAME: matomo
+      TZ: ${TZ}
+    volumes:
+      - merlin_matomo_data:/var/www/html
+    networks:
+      - merlin_network
+
 volumes:
   merlin_postgres_data:
   merlin_recordings:
   merlin_uptime_data:
   merlin_whisper_models:
+  merlin_matomo_db:
+  merlin_matomo_data:
 
 networks:
   merlin_network:
