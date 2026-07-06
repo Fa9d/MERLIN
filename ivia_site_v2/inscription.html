@@ -134,6 +134,20 @@
         </div>
 
         <div>
+          <label for="provenance" class="field-label">Comment avez-vous entendu parler d'IVIA ?</label>
+          <select id="provenance" name="provenance" class="field-input cursor-pointer">
+            <option value="">Choisir… (facultatif)</option>
+            <option value="bouche_a_oreille">Une personne de mon entourage</option>
+            <option value="reseaux_sociaux">Réseaux sociaux</option>
+            <option value="moteur_recherche">Moteur de recherche</option>
+            <option value="praticien">Un·e praticien·ne</option>
+            <option value="media">Article, balado ou média</option>
+            <option value="autre">Autre</option>
+          </select>
+          <p class="text-xs text-muted mt-1.5">Nous aide à savoir où être présents. Aucune obligation.</p>
+        </div>
+
+        <div>
           <label for="motdepasse" class="field-label">Mot de passe <span class="text-red-500" aria-hidden="true">*</span></label>
           <div class="relative">
             <input id="motdepasse" name="motdepasse" type="password" autocomplete="new-password"
@@ -440,11 +454,15 @@
       (async () => {
         try {
           const retour = params.get('retour');
+          // Provenance : choix explicite prioritaire, sinon balise de campagne (mtm_source)
+          const provenance = document.getElementById('provenance').value ||
+            (params.get('mtm_source') ? ('campagne_' + params.get('mtm_source')).slice(0, 64) : null);
           const res = await apiRegisterClient({
             email: courriel.toLowerCase(),
             password: mdp,
             display_name: `${prenom} ${nom}`.trim(),
             redirect_path: retour ? decodeURIComponent(retour) : '/reserver.html',
+            acquisition_source: provenance || null,
           });
 
           // Téléphone : pas encore dans le compte — gardé pour la fiche client à la 1re réservation.

@@ -46,6 +46,7 @@ class AdminAccountRead(MerlinSchema):
     profile_complete: bool
     subscription_status: str
     subscription_since: datetime | None
+    acquisition_source: str | None
     created_at: datetime
 
 
@@ -86,6 +87,7 @@ def _to_read(u: AppUser, profile_complete: bool) -> AdminAccountRead:
         profile_complete=profile_complete,
         subscription_status=u.subscription_status,
         subscription_since=u.subscription_since,
+        acquisition_source=u.acquisition_source,
         created_at=u.created_at,
     )
 
