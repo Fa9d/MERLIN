@@ -40,3 +40,10 @@ Prérequis : Node.js + un Chrome/Edge installé (utilisé par Marp pour le rendu
 Les notes sont dans le `.marp.md` sous forme de commentaires HTML (`<!-- ... -->`)
 après chaque slide. Elles apparaissent dans le mode présentateur HTML (touche `P`)
 et dans le PDF si on ajoute `--pdf-notes`.
+
+## Visuels une page (envoi courriel)
+
+- `IVIA_UNE_PAGE_FINANCEURS.pdf` — sommaire une page A4 (PME MTL, anges, fondations)
+- `IVIA_UNE_PAGE_PRATICIENS.pdf` — fiche offre pilote praticiens
+- Sources : `*.marp.md` + thème document `ivia-doc-theme.css` (A4 portrait)
+- Régénérer : `npx --yes @marp-team/marp-cli IVIA_UNE_PAGE_FINANCEURS.marp.md --theme-set ivia-doc-theme.css --html --allow-local-files --pdf -o IVIA_UNE_PAGE_FINANCEURS.pdf`
