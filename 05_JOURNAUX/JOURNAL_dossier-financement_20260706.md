@@ -32,3 +32,25 @@ est live, le Palier 1 (pilote) est construit en quasi-autofinancement.
   pilote commercial seront disponibles (aprÃ¨s premiers clients payants).
 - Conversion PowerPoint du deck (instructions de mise en forme incluses dans le .md).
 - Captures d'Ã©cran de la plateforme Ã  insÃ©rer dans le deck avant prÃ©sentation.
+
+---
+
+## Ajout (même jour) — Dossiers dissociés commercial / social
+
+Question fondateur : dissocier les demandes (PME/anges côté commercial ; fondations et
+économie sociale côté social) et cumuler investissements + subventions.
+
+**Réponse documentée** : c'est déjà l'architecture du BP v2.3 (SPA-mère + OBNL satellite).
+Séquence confirmée dans STRUCTURE_JURIDIQUE_RECOMMANDEE v2.0 §6 : **inc. d'abord**
+(palier 1, automne 2026, pivot = CA mensuel 5-8 K$ x2 mois OU subvention >=25 K$ OU
+partenariat), **OBNL ensuite** (palier 2, hiver 2026-2027). Pas de décision antérieure
+« OBNL avant inc. » retrouvée dans le corpus.
+
+**Livrables créés** :
+- IVIA_DOSSIER_VOLET_COMMERCIAL_v1.0.md — index opérationnel volet inc. (pièces, cibles,
+  pivot de bascule, plan 30-60-90 jours)
+- IVIA_DOSSIER_VOLET_SOCIAL_v1.0.md — récit délestage du réseau, étanchéité inc./OBNL,
+  cibles fondations, indicateurs de résultat, échéancier OBNL
+
+**Garde-fous rappelés** : pas de double financement de la même dépense ; OBNL réelle
+(CA indépendant, activités propres) ; crédibilité produit (pilote payant) avant dépôts fondations.
