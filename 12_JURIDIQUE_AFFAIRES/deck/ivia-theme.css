@@ -1,0 +1,196 @@
+/* @theme ivia */
+/* Thème Marp IVIA — épure « maison du vivant »
+   Palette du site ivia.quebec : forêt #2D6A4F / #4A7C59, crème #FAFDF8,
+   encre #1A2E1D, sourdine #4B6350, bordure #D4E8D0.
+   Typo : Lora (titres), Raleway (corps) — comme la plateforme. */
+
+@import 'default';
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap');
+
+:root {
+  --forest: #2D6A4F;
+  --forest-soft: #4A7C59;
+  --sage: #8FB99A;
+  --cream: #FAFDF8;
+  --ink: #1A2E1D;
+  --muted: #4B6350;
+  --bdr: #D4E8D0;
+}
+
+section {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Raleway', 'Segoe UI', sans-serif;
+  font-size: 26px;
+  line-height: 1.5;
+  padding: 70px 90px;
+  justify-content: flex-start;
+}
+
+h1, h2, h3 {
+  font-family: 'Lora', Georgia, serif;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+h1 { font-size: 1.55em; margin-bottom: 0.25em; }
+h2 { font-size: 1.15em; color: var(--forest); }
+h3 { font-size: 0.95em; color: var(--muted); font-weight: 600; }
+
+/* Filet vert discret sous le titre de slide */
+section > h1::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 3px;
+  background: var(--forest);
+  margin-top: 14px;
+  border-radius: 2px;
+}
+
+strong { color: var(--forest); font-weight: 700; }
+em { font-family: 'Lora', Georgia, serif; }
+
+ul, ol { margin: 0.5em 0; padding-left: 1.1em; }
+li { margin: 0.32em 0; }
+li::marker { color: var(--forest-soft); }
+
+blockquote {
+  border-left: 4px solid var(--sage);
+  padding: 0.25em 0 0.25em 0.9em;
+  margin: 0.7em 0;
+  color: var(--muted);
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78em;
+  margin: 0.6em 0;
+}
+th {
+  background: var(--forest);
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  padding: 9px 14px;
+}
+td {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--bdr);
+}
+tr:nth-child(even) td { background: #F0F7F2; }
+
+code {
+  font-size: 0.8em;
+  background: #EAF3EC;
+  color: var(--forest);
+  padding: 1px 7px;
+  border-radius: 6px;
+}
+pre {
+  background: #F0F7F2;
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 0.72em;
+  line-height: 1.45;
+}
+pre code { background: none; color: var(--ink); }
+
+/* Pagination + pied discret */
+section::after {
+  color: var(--muted);
+  font-size: 0.55em;
+  font-family: 'Raleway', sans-serif;
+}
+footer {
+  color: var(--muted);
+  font-size: 0.52em;
+  letter-spacing: 0.06em;
+}
+header {
+  color: var(--sage);
+  font-size: 0.52em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+
+/* ── Slide de couverture ─────────────────────────────── */
+section.cover {
+  background: linear-gradient(160deg, #13261A 0%, #1E3A28 55%, #2D6A4F 100%);
+  color: #F3FAF4;
+  justify-content: center;
+  text-align: left;
+  padding: 90px 110px;
+}
+section.cover h1 {
+  color: #fff;
+  font-size: 2.6em;
+  letter-spacing: 0.01em;
+}
+section.cover h1::after { background: var(--sage); width: 84px; }
+section.cover h2 {
+  color: var(--sage);
+  font-weight: 400;
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05em;
+}
+section.cover p, section.cover li { color: #CDE3D2; }
+section.cover strong { color: #fff; }
+section.cover::after { color: #6E8F79; }
+
+/* ── Slide de section / transition ───────────────────── */
+section.divider {
+  background: #F0F7F2;
+  justify-content: center;
+}
+section.divider h1 { font-size: 2em; color: var(--forest); }
+
+/* ── Mise en avant chiffres clés ─────────────────────── */
+section .kpi {
+  display: flex;
+  gap: 28px;
+  margin: 0.8em 0;
+}
+section .kpi div {
+  flex: 1;
+  background: #fff;
+  border: 1.5px solid var(--bdr);
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+section .kpi .v {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--forest);
+  display: block;
+}
+section .kpi .l {
+  font-size: 0.62em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Petites étiquettes */
+.tag {
+  display: inline-block;
+  font-size: 0.6em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: #EAF3EC;
+  color: var(--forest);
+  border-radius: 999px;
+  padding: 3px 14px;
+  margin-right: 6px;
+}
+.ok { color: var(--forest); font-weight: 700; }
