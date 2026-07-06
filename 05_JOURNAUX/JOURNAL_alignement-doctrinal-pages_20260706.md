@@ -23,6 +23,10 @@ explicite dans le lexique vivant, alors que la règle dure de `correspondances-v
    `formulations_autorisees` (contexte de restitution praticien/IA) — cette différence de
    contexte est assumée : le tutoiement vaut pour le **marketing public**, le vouvoiement
    reste la norme des **restitutions client dans l'app**.
+   **Mise à jour (même jour)** : le fondateur a statué que l'app passera **aussi au tutoiement**
+   ultérieurement. Chantier reporté (todo `tutoiement-app`) : lexique vivant
+   (`formulations_autorisees`, relecture humaine requise), prompts client de `11_PROMPTS/`
+   (bump de version), espace client, puis passage de la safety suite.
 2. **Ancrage lexique** — chaque page de destination cite 1 à 3 expressions du lexique vivant :
    - `/attente` → « ça va pas fort », « je pense trop », « j'ai besoin qu'on m'écoute »
    - `/ecoute` → « je fonctionne, mais… », « ça va, ça va très bien »
