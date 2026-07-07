@@ -20,7 +20,7 @@ jamais de promesse de résultat · aucune donnée client réelle
 >
 > Pourquoi je l'ai fait ? Parce qu'au Québec, des milliers de personnes attendent de 6 à 24 mois pour un premier rendez-vous. Et que pendant ce temps-là, elles portent tout, seules.
 >
-> 80 $ la séance. En ligne. On commence petit, avec une première cohorte.
+> 75 $ la séance. En ligne. On commence petit, avec une première cohorte.
 >
 > 👉 ivia.quebec
 >
@@ -46,7 +46,7 @@ jamais de promesse de résultat · aucune donnée client réelle
 
 > Cette semaine, il reste des places d'écoute sur IVIA.
 >
-> ✔ 80 $ la séance — en ligne, sans déplacement
+> ✔ 75 $ la séance — en ligne, sans déplacement
 > ✔ Confidentiel — données hébergées au Québec (Loi 25)
 > ✔ Pas de liste d'attente, pas de dossier médical créé
 > ✔ Pas de diagnostic, pas de jugement — de l'écoute
@@ -93,7 +93,7 @@ jamais de promesse de résultat · aucune donnée client réelle
 >
 > Attendre son rendez-vous, oui. Attendre seul·e, non.
 >
-> IVIA offre une écoute structurée, dès cette semaine, en ligne : **ivia.quebec/rendez-vous** — 80 $ la séance.
+> IVIA offre une écoute structurée, dès cette semaine, en ligne : **ivia.quebec/rendez-vous** — 75 $ la séance.
 >
 > Ce n'est pas un remplacement du suivi que tu attends. C'est un appui pour traverser l'attente.
 >
@@ -140,7 +140,7 @@ jamais de promesse de résultat · aucune donnée client réelle
 >
 > Tu ne peux pas le forcer. Mais tu peux lui ouvrir une porte :
 >
-> « Ce n'est pas une thérapie. C'est une écoute. 80 $, en ligne, confidentiel, quand tu veux. »
+> « Ce n'est pas une thérapie. C'est une écoute. 75 $, en ligne, confidentiel, quand tu veux. »
 >
 > **ivia.quebec/rendez-vous** — partage-lui. Parfois, c'est le message d'un proche qui débloque tout.
 
