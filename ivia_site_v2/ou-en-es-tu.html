@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Où en es-tu ? Quelques questions douces, dans tes mots à toi, pour trouver la porte qui te convient chez IVIA. Sans score, sans étiquette.">
+  <title>IVIA — Où en es-tu ?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif'],body:['"Raleway"','system-ui','sans-serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .choice{display:block;width:100%;text-align:left;border:1px solid #D4E8D0;background:#fff;border-radius:14px;padding:1rem 1.25rem;font-size:1rem;color:#1A2E1D;cursor:pointer;transition:border-color .15s, background .15s;}
+    .choice:hover{border-color:#4A7C59;background:#F0F7F2;}
+    .fade-in{animation:fadeIn .35s ease both;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  </style>
+  <script src="/shared/analytics.js" defer></script>
+</head>
+<body class="antialiased">
+
+  <!-- NAVBAR -->
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <a href="/reserver.html" class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-forest transition-colors">Prendre rendez-vous</a>
+    </div>
+  </nav>
+
+  <main class="max-w-xl mx-auto px-5 py-14 sm:py-20">
+
+    <!-- INTRO -->
+    <div id="intro" class="text-center fade-in">
+      <p class="text-xs font-semibold uppercase tracking-widest text-sage mb-4">Un moment pour toi</p>
+      <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-tight mb-6">Où en es-tu&nbsp;?</h1>
+      <p class="text-lg text-muted leading-relaxed mb-4">
+        Quelques questions douces, dans tes mots à toi. Pas de score, pas d'étiquette,
+        pas de bonne réponse. Juste une orientation — vers la porte qui te convient.
+      </p>
+      <p class="text-sm text-muted mb-8">Ce que tu réponds reste ici, dans ton navigateur. Rien n'est envoyé, rien n'est gardé.</p>
+      <button onclick="start()" class="inline-block bg-forest-deep text-white font-semibold px-8 py-4 rounded-[14px] hover:bg-forest transition-colors text-lg cursor-pointer">Commencer</button>
+      <p class="text-xs text-muted mt-4">2 minutes · aucune inscription</p>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="quiz" class="hidden">
+      <p id="q-step" class="text-xs font-semibold uppercase tracking-widest text-sage mb-3 text-center"></p>
+      <h2 id="q-title" class="font-heading text-2xl sm:text-3xl font-bold text-ink leading-tight mb-8 text-center"></h2>
+      <div id="q-choices" class="space-y-3"></div>
+      <p class="text-xs text-muted mt-8 text-center">Tu peux arrêter quand tu veux. <a href="/" class="underline">Retour à l'accueil</a></p>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result" class="hidden"></div>
+
+    <!-- URGENCE -->
+    <div id="urgence" class="hidden fade-in">
+      <div class="bg-white border-2 border-forest-deep rounded-[20px] p-8 text-center">
+        <h2 class="font-heading text-2xl font-bold text-ink mb-4">Merci de l'avoir nommé.</h2>
+        <p class="text-muted leading-relaxed mb-6">
+          Ce que tu traverses mérite une présence humaine, maintenant — pas un site web.
+          IVIA n'est pas un service d'urgence, et on préfère te le dire franchement.
+        </p>
+        <div class="space-y-3 mb-6">
+          <a href="tel:988" class="block bg-forest-deep text-white font-semibold px-6 py-4 rounded-[14px] hover:bg-forest transition-colors">Appeler ou texter le 988 — 24/7</a>
+          <a href="tel:811" class="block bg-white border border-forest-deep text-forest-deep font-semibold px-6 py-4 rounded-[14px] hover:bg-surface transition-colors">Info-Social : 811, option 2</a>
+        </div>
+        <p class="text-sm text-muted">Et quand la tempête sera passée, la porte d'IVIA restera ouverte. Sans jugement.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-bdr py-10 px-5 mt-10">
+    <div class="max-w-2xl mx-auto text-center text-sm text-muted">
+      <p class="mb-2"><strong class="text-ink">IVIA</strong> — la maison du vivant · <a href="/" class="underline">ivia.quebec</a></p>
+      <p>En cas de détresse : <strong>811 option 2</strong> ou <strong>988</strong> (24/7). IVIA n'est pas un service d'urgence.</p>
+    </div>
+  </footer>
+
+  <script>
+  // ── Questionnaire d'orientation — triade en acte ─────────────────────────
+  // Observation : les mots de la personne (lexique vivant, verbatim).
+  // Hypothèse : jamais d'étiquette — une lecture prudente, au pluriel.
+  // Orientation : une porte (page/formule) + toujours un humain.
+  // Aucun score. Aucune donnée envoyée ni stockée.
+
+  const answers = {};
+
+  const QUESTIONS = [
+    {
+      id: 'mots',
+      step: 'Question 1 sur 5',
+      title: 'Quels mots te ressemblent le plus, ces temps-ci ?',
+      choices: [
+        { label: '« Ça va pas fort. » « Je pense trop. »', value: 'ca-va-pas-fort' },
+        { label: '« Je suis vidé·e. » « Je suis sur les nerfs. »', value: 'vide' },
+        { label: '« Je fonctionne, mais… »', value: 'fonctionne' },
+        { label: '« Je veux aider quelqu\u2019un, mais j\u2019en peux plus. »', value: 'proche' },
+        { label: '« J\u2019ai des idées noires. »', value: 'urgence' },
+      ],
+    },
+    {
+      id: 'depuis',
+      step: 'Question 2 sur 5',
+      title: 'Depuis quand ça t\u2019accompagne ?',
+      choices: [
+        { label: 'C\u2019est récent — quelques jours, quelques semaines', value: 'recent' },
+        { label: 'Quelques mois', value: 'mois' },
+        { label: 'Longtemps. Peut-être trop longtemps.', value: 'longtemps' },
+      ],
+    },
+    {
+      id: 'ou',
+      step: 'Question 3 sur 5',
+      title: 'Et c\u2019est plutôt où, en toi ?',
+      choices: [
+        { label: 'Le corps — fatigue, tensions, sommeil', value: 'corps' },
+        { label: 'La tête — pensées qui tournent, brouillard', value: 'tete' },
+        { label: 'Les deux, honnêtement', value: 'les-deux' },
+      ],
+    },
+    {
+      id: 'entourage',
+      step: 'Question 4 sur 5',
+      title: 'Est-ce qu\u2019il y a quelqu\u2019un, autour de toi, à qui tu peux vraiment en parler ?',
+      choices: [
+        { label: 'Oui, mais je ne veux pas tout leur mettre sur les épaules', value: 'oui-mais' },
+        { label: 'Pas vraiment. Pas pour ça.', value: 'non' },
+        { label: 'J\u2019attends un suivi professionnel qui ne vient pas', value: 'attente' },
+      ],
+    },
+    {
+      id: 'geste',
+      step: 'Question 5 sur 5',
+      title: 'Là, maintenant, qu\u2019est-ce qui te conviendrait le mieux ?',
+      choices: [
+        { label: 'Parler à une vraie personne, en direct', value: 'parler' },
+        { label: 'Déposer ce que je porte, seul·e, à voix haute', value: 'deposer' },
+        { label: 'Juste regarder d\u2019abord, sans m\u2019engager', value: 'regarder' },
+      ],
+    },
+  ];
+
+  let current = 0;
+
+  function start() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    render();
+    if (window._paq) window._paq.push(['trackEvent', 'orientation', 'debut']);
+  }
+
+  function render() {
+    const q = QUESTIONS[current];
+    document.getElementById('q-step').textContent = q.step;
+    document.getElementById('q-title').textContent = q.title;
+    const box = document.getElementById('q-choices');
+    box.innerHTML = '';
+    q.choices.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'choice fade-in';
+      b.textContent = c.label;
+      b.onclick = () => answer(q.id, c.value);
+      box.appendChild(b);
+    });
+  }
+
+  function answer(id, value) {
+    if (value === 'urgence') {
+      document.getElementById('quiz').classList.add('hidden');
+      document.getElementById('urgence').classList.remove('hidden');
+      if (window._paq) window._paq.push(['trackEvent', 'orientation', 'urgence']);
+      return;
+    }
+    answers[id] = value;
+    current += 1;
+    if (current < QUESTIONS.length) { render(); } else { showResult(); }
+  }
+
+  // ── Orientation ────────────────────────────────────────────────────────
+  const OBSERVATIONS = {
+    'ca-va-pas-fort': 'Tu dis que ça ne va pas fort, que tu penses trop.',
+    'vide': 'Tu dis que tu es vidé·e, sur les nerfs.',
+    'fonctionne': 'Tu dis que tu fonctionnes, mais…',
+    'proche': 'Tu portes quelqu\u2019un d\u2019autre — et tu dis que tu n\u2019en peux plus.',
+  };
+
+  const HYPOTHESES = {
+    'recent': 'C\u2019est peut-être une vague récente — et les vagues récentes se traversent souvent mieux quand on ne les traverse pas seul·e.',
+    'mois': 'Quelques mois, c\u2019est assez long pour que ça s\u2019accumule sans qu\u2019on s\u2019en rende compte.',
+    'longtemps': 'Quand ça dure depuis longtemps, ce n\u2019est plus une passade — c\u2019est quelque chose qui demande de la place.',
+  };
+
+  function showResult() {
+    const mots = answers['mots'];
+    const geste = answers['geste'];
+    const entourage = answers['entourage'];
+
+    // Porte principale selon les mots + le contexte
+    let porte, porteLabel, porteHref;
+    if (mots === 'proche') {
+      porte = 'proche'; porteLabel = 'Voir la page pour les proches'; porteHref = '/proche.html';
+    } else if (entourage === 'attente') {
+      porte = 'attente'; porteLabel = 'Voir la page « pendant l\u2019attente »'; porteHref = '/attente.html';
+    } else if (mots === 'vide') {
+      porte = 'travail'; porteLabel = 'Voir la page « épuisement »'; porteHref = '/travail.html';
+    } else {
+      porte = 'ecoute'; porteLabel = 'Voir la page « une écoute »'; porteHref = '/ecoute.html';
+    }
+
+    // Geste concret selon la préférence
+    let geste1Label, geste1Href;
+    if (geste === 'deposer') {
+      geste1Label = 'Déposer un enregistrement libre — 35 $';
+      geste1Href = '/client/enregistrement.html?formule=solo30';
+    } else if (geste === 'parler') {
+      geste1Label = 'Réserver un moment d\u2019écoute';
+      geste1Href = '/reserver.html';
+    } else {
+      geste1Label = porteLabel;
+      geste1Href = porteHref;
+    }
+
+    const obs = OBSERVATIONS[mots] || 'Tu portes quelque chose, et tu as pris deux minutes pour le regarder.';
+    const hyp = HYPOTHESES[answers['depuis']] || '';
+
+    const html = `
+      <div class="fade-in">
+        <p class="text-xs font-semibold uppercase tracking-widest text-sage mb-3 text-center">Ton orientation</p>
+        <div class="bg-white border border-bdr rounded-[20px] p-8 mb-6">
+          <p class="text-sm font-semibold text-forest-deep mb-1">Ce qu\u2019on entend</p>
+          <p class="text-muted leading-relaxed mb-5">${obs}</p>
+          <p class="text-sm font-semibold text-forest-deep mb-1">Une lecture, prudente</p>
+          <p class="text-muted leading-relaxed mb-5">${hyp}
+            Ce n\u2019est pas une étiquette — c\u2019est une photographie d\u2019aujourd\u2019hui. Ça bouge, comme toi.</p>
+          <p class="text-sm font-semibold text-forest-deep mb-1">Une porte, si tu veux</p>
+          <p class="text-muted leading-relaxed">Chez IVIA, une vraie personne t\u2019écoute — sans diagnostic, sans dossier, sans jugement.
+            Voici ce qui semble te convenir le mieux&nbsp;:</p>
+        </div>
+        <div class="space-y-3 mb-8">
+          <a href="${geste1Href}" class="block text-center bg-forest-deep text-white font-semibold px-6 py-4 rounded-[14px] hover:bg-forest transition-colors">${geste1Label}</a>
+          ${geste1Href !== porteHref ? `<a href="${porteHref}" class="block text-center bg-white border border-forest-deep text-forest-deep font-semibold px-6 py-4 rounded-[14px] hover:bg-surface transition-colors">${porteLabel}</a>` : ''}
+        </div>
+        <p class="text-xs text-muted text-center">Rien de ce que tu as répondu n\u2019a été envoyé ni gardé. La suite t\u2019appartient.</p>
+      </div>`;
+
+    document.getElementById('quiz').classList.add('hidden');
+    const r = document.getElementById('result');
+    r.innerHTML = html;
+    r.classList.remove('hidden');
+    if (window._paq) window._paq.push(['trackEvent', 'orientation', 'complete', porte]);
+  }
+  </script>
+
+</body>
+</html>
