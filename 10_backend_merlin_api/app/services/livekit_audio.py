@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,8 +28,10 @@ from app.models.enums import (
     AudioSessionStatusCode,
     RiskLevelCode,
 )
+from app.models.analysis import AnalysisResult, AnalysisSensitivity
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
+from app.services import prosody
 from app.services.session_documents import ensure_session_derived_document
 from app.services.transcription import (
     resolve_provider as resolve_transcription_provider,
@@ -426,6 +429,54 @@ def _coerce_next_step_type(value: str | None) -> AnalysisNextStepCode | None:
         return None
 
 
+async def run_auto_session_analyses(session_id: str, audio_file_path: str) -> None:
+    """Analyses automatiques post-transcription (prosodie locale, Loi 25).
+
+    Le moteur produit toujours tout (architecture « moteur plein / vannes par
+    profil ») : la production est systématique, l'exposition reste filtrée à la
+    lecture par ``capability_gate``. Idempotent : une seule sortie prosodique
+    par séance. Dégradation propre si librosa absent.
+    """
+    if not prosody.prosody_disponible():
+        logger.info(
+            "Analyse prosodique ignoree pour %s : librosa non installe.", session_id
+        )
+        return
+    with SessionLocal() as db:
+        existing = db.scalar(
+            select(AnalysisResult).where(
+                AnalysisResult.session_id == session_id,
+                AnalysisResult.capability == "prosody_local",
+            )
+        )
+        if existing is not None:
+            return
+        record = db.get(SessionRecord, session_id)
+        if record is None:
+            return
+        try:
+            # librosa est CPU-bound : hors de la boucle événementielle.
+            features = await asyncio.to_thread(
+                prosody.analyse_fichier_audio, audio_file_path
+            )
+        except prosody.ProsodyError as exc:
+            logger.warning("Analyse prosodique impossible pour %s : %s", session_id, exc)
+            return
+        db.add(
+            AnalysisResult(
+                capability="prosody_local",
+                sensitivity=AnalysisSensitivity.observation,  # descripteurs bruts
+                client_id=record.client_id,
+                session_id=record.id,
+                engine_version=features.get("engine_version"),
+                payload_json=json.dumps(features, ensure_ascii=False),
+                created_by_user_id=None,  # pipeline automatique
+            )
+        )
+        db.commit()
+        logger.info("Analyse prosodique automatique produite (seance %s).", session_id)
+
+
 async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> None:
     import os
     import time
@@ -480,6 +531,13 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             session_record.actual_end_at = datetime.now(timezone.utc)
         db.add(session_record)
         db.commit()
+
+        # Analyses automatiques (prosodie locale) — indépendantes de la note :
+        # elles tournent même si une note existe déjà ou si Claude échoue.
+        try:
+            await run_auto_session_analyses(session_id, audio_file_path)
+        except Exception:  # noqa: BLE001 — ne jamais bloquer la note
+            logger.exception("Echec analyses automatiques pour %s.", session_id)
 
         existing_note = db.scalar(
             select(SessionNote).where(SessionNote.session_id == session_id).order_by(
