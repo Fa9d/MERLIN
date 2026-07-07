@@ -43,6 +43,7 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
     res = await fetch(`${base}${path}`, {
       method,
       headers,
+      cache: 'no-store', // toujours l'état frais du serveur (validations, listes)
       body: body != null ? JSON.stringify(body) : undefined,
     });
   } catch (err) {
