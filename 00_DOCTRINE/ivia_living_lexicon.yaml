@@ -10,8 +10,8 @@
 # - Toute modification de wording autorisé/interdit nécessite relecture humaine.
 
 id: ivia_living_lexicon
-version: v0.2
-date: 2026-05-15
+version: v0.3
+date: 2026-07-07
 statut: scaffolding
 langue: fr-CA
 # Ordre canonique des axes. `territoire` est placé EN PREMIER : c'est doctrinal.
@@ -32,6 +32,31 @@ axes_referentiel:
   - societe
   - spirituel_existentiel
   - urgence_reference
+
+# ── Principes transversaux (v0.3) ──────────────────────────────────────────
+# Formulations valables pour TOUTE restitution client, quel que soit l'axe.
+# Source : veille 2026-07-07 (analyse produit concurrent, adaptation doctrinale).
+# - "Une saison, pas un verdict" : anti-étiquetage. Toute lecture restituée
+#   décrit un moment de vie, jamais un état fixe ni une identité.
+# - "Retournement doux" : valider ce que la personne porte AVANT de retourner
+#   la question vers son propre besoin. Jamais culpabilisant.
+principes_transversaux:
+  - id: saison-pas-verdict
+    principe: "Toute restitution décrit une saison, jamais un verdict."
+    formulations_autorisees:
+      - "Ce que vous lisez ici décrit un moment, pas une sentence. Ça bouge, comme vous."
+      - "C'est une photographie d'aujourd'hui — pas une définition de qui vous êtes."
+    formulations_interdites:
+      - "Vous êtes le type de personne qui…"
+      - "Votre profil indique que vous êtes…"
+  - id: retournement-doux
+    principe: "Valider ce que la personne porte, puis retourner doucement la question vers son propre besoin."
+    exemples_publics:
+      - "Tu prends soin de tout le monde. Qui prend soin de toi ?"
+      - "Tu tiens tout à bout de bras. Qui te tient, toi ?"
+    garde_fous:
+      - "Jamais de culpabilisation, jamais d'injonction."
+      - "Le retournement ouvre une porte — il n'impose pas de la franchir."
 
 expressions:
 
