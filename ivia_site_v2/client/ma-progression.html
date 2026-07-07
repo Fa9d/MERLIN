@@ -85,6 +85,18 @@
 
     </div>
 
+    <!-- Équilibre — ce qui pèse vs ce qui recharge ─────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="equilibre-titre">
+      <div class="mb-4">
+        <h2 id="equilibre-titre" class="font-heading text-base font-semibold text-ink">Ce qui pèse, ce qui recharge</h2>
+        <p class="text-xs text-muted mt-0.5">Semaine par semaine, à partir de vos états du jour — une lecture, pas un verdict</p>
+      </div>
+      <div class="relative" style="height:200px;">
+        <canvas id="equilibreChart" aria-label="Équilibre entre ce qui pèse et ce qui recharge" role="img"></canvas>
+      </div>
+      <p class="text-xs text-muted mt-3 text-center" id="equilibre-caption">—</p>
+    </section>
+
     <!-- Jalons — calculés depuis vos traces ────────────────────────────────── -->
     <section class="card mb-5" aria-labelledby="jalons-titre">
       <div class="flex items-center justify-between mb-4">
@@ -260,6 +272,71 @@
       '<div class="h-full flex items-center justify-center text-center px-6"><p class="text-sm text-muted leading-relaxed">Notez votre état du jour dans le journal (humeur, énergie, sommeil) et cette courbe se dessinera toute seule.</p></div>';
     document.getElementById('etat-caption').textContent = '';
   }
+
+  // ── Équilibre — ce qui pèse vs ce qui recharge (hypothèse, pas un verdict) ─
+  (function () {
+    const NB_EQ = 8;
+    const weekStart = (d) => { const x = new Date(d); const day = (x.getDay() + 6) % 7; x.setDate(x.getDate() - day); x.setHours(0,0,0,0); return x; };
+    const weeks = [];
+    for (let i = NB_EQ - 1; i >= 0; i--) { const w = weekStart(new Date()); w.setDate(w.getDate() - i * 7); weeks.push(w); }
+    const wKey = (d) => weekStart(d).toISOString().slice(0, 10);
+    const charge = {}, recharge = {};
+    weeks.forEach(w => { const k = w.toISOString().slice(0,10); charge[k] = 0; recharge[k] = 0; });
+
+    let signaux = 0;
+    entries.forEach(e => {
+      const k = wKey(new Date(e.written_at));
+      if (!(k in charge)) return;
+      const s = journalStructured(e);
+      if (s.kind === 'checkin' && s.data) {
+        const d = s.data;
+        // Ce qui pèse : déclencheurs nommés, humeur sous tension, sommeil difficile
+        charge[k] += (d.stressors || []).filter(Boolean).length;
+        if (d.humeur === 'stress') charge[k] += 2;
+        if (d.sommeil === 'mauvais') charge[k] += 1;
+        // Ce qui recharge : moments de grâce, pratiques de cohérence, bon sommeil, états ressourcés
+        if (d.grace) recharge[k] += 1;
+        recharge[k] += (d.heartmath || []).length;
+        if (d.sommeil === 'excellent') recharge[k] += 1;
+        if (d.humeur === 'coherence' || d.humeur === 'flow') recharge[k] += 1;
+        signaux++;
+      }
+      if (s.kind === 'exercice') { recharge[k] += 1; signaux++; }
+    });
+
+    const cap = document.getElementById('equilibre-caption');
+    if (signaux < 3) {
+      document.getElementById('equilibreChart').closest('.relative').innerHTML =
+        '<div class="h-full flex items-center justify-center text-center px-6"><p class="text-sm text-muted leading-relaxed">Après quelques états du jour, cette vue montrera semaine par semaine ce qui semble peser et ce qui semble vous recharger.</p></div>';
+      cap.textContent = '';
+      return;
+    }
+    const labels = weeks.map(w => w.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' }));
+    const dCharge = weeks.map(w => charge[w.toISOString().slice(0,10)]);
+    const dRecharge = weeks.map(w => recharge[w.toISOString().slice(0,10)]);
+    new Chart(document.getElementById('equilibreChart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Ce qui pèse', data: dCharge, backgroundColor: '#C4826B', borderRadius: 6, maxBarThickness: 22 },
+          { label: 'Ce qui recharge', data: dRecharge, backgroundColor: C_FOREST, borderRadius: 6, maxBarThickness: 22 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
+          y: { beginAtZero: true, ticks: { precision: 0, font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
+        },
+        plugins: { legend: { labels: { font: { family: 'Raleway', size: 11 }, color: C_MUTED, boxWidth: 12 } } },
+      },
+    });
+    const totC = dCharge.reduce((a,b)=>a+b,0), totR = dRecharge.reduce((a,b)=>a+b,0);
+    cap.textContent = totR >= totC
+      ? 'Sur cette période, ce qui vous recharge semble suivre le rythme de ce qui pèse. À observer, pas à conclure.'
+      : 'Sur cette période, ce qui pèse semble prendre plus de place que ce qui recharge. Peut-être un signe qu\'un temps pour vous serait bienvenu.';
+  })();
 
   // ── Jalons calculés ────────────────────────────────────────────────────────
   const JALONS = [

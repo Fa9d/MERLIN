@@ -280,6 +280,18 @@ class SessionPhaseCode(str, Enum):
     entre = "entre"
 
 
+class IntentionKindCode(str, Enum):
+    """Nature d'un cap suivi entre les séances."""
+    intention = "intention"   # cap formulé (« nommer ce que je ressens »)
+    pratique  = "pratique"    # geste concret répétable (« marcher 20 min »)
+
+
+class IntentionStatusCode(str, Enum):
+    active     = "active"
+    realisee   = "realisee"
+    abandonnee = "abandonnee"
+
+
 class AuthoredByCode(str, Enum):
     client       = "client"
     practitioner = "practitioner"

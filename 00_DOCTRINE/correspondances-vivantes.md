@@ -74,6 +74,29 @@ Une expression active **typiquement plusieurs axes**. C'est attendu — c'est m�
 
 > **Note d'usage pour les entrées du lexique** : le fait que `territoire` soit l'axe fondateur **n'implique pas** qu'il soit mécaniquement présent dans le tableau `axes_merlin` de chaque entrée. On l'inscrit lorsqu'il est **sémantiquement actif** dans l'expression (déracinement, migration, lien au lieu, rupture avec l'environnement, climat, saison). L'ordre canonique ci-dessus régit la **taxonomie globale** et l'ordre de citation, pas un forçage entrée par entrée.
 
+### 3.1 Projection client — quatre lectures simplifiées
+
+Les 11 axes restent la **seule source de vérité** (praticiens, moteur d'analyse, lexique).
+Côté client, une **projection officielle en quatre lectures** est autorisée pour les surfaces
+grand public (vue d'équilibre, check-ins, vulgarisation). Ce n'est **pas** un second
+référentiel : chaque lecture est une agrégation d'axes canoniques, jamais un axe nouveau.
+
+| Lecture client | Axes canoniques agrégés | Mot client suggéré |
+|----------------|--------------------------|--------------------|
+| **Corps** | `corps`, `metabolisme` | « ton corps » |
+| **Émotions** | `emotions` | « ce que tu ressens » |
+| **Pensées** | `mental` | « ce qui tourne dans ta tête » |
+| **Environnement** | `territoire`, `relations`, `famille`, `transgenerationnel`, `societe` | « ce qui t'entoure » |
+
+Règles :
+
+- `spirituel_existentiel` n'est **pas projeté** par défaut (lecture praticien) ; il peut
+  apparaître côté client uniquement en formulation validée du lexique.
+- `urgence_reference` n'est **jamais** une lecture client : tout signal sur cet axe suit
+  la voie d'escalade (§8), pas la vulgarisation.
+- Toute donnée écrite en base utilise les **axes canoniques** ; la projection est un
+  calcul d'affichage, jamais un format de stockage.
+
 ---
 
 ## 4. Schéma de données (lexique vivant)

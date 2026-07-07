@@ -251,6 +251,25 @@ async function getMyRecordings() {
   return _req('/api/v1/me/recordings');
 }
 
+// ── Intentions (client connecté) ─────────────────────────────────────────────
+/** Intentions actives du compte connecté (include_closed=true pour l'historique). */
+async function getMyIntentions(includeClosed = false) {
+  return _req('/api/v1/me/intentions' + (includeClosed ? '?include_closed=true' : ''));
+}
+
+/**
+ * Crée une intention (cap suivi entre les séances). Max 5 actives.
+ * @param {{text, kind?, dimension?, session_id?}} payload
+ */
+async function createMyIntention(payload) {
+  return _req('/api/v1/me/intentions', { method: 'POST', body: payload });
+}
+
+/** Change le statut ou le texte d'une intention (status: active|realisee|abandonnee). */
+async function updateMyIntention(id, payload) {
+  return _req('/api/v1/me/intentions/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
+}
+
 /**
  * Indique si une formule exige un paiement et si un crédit est déjà détenu.
  * @param {string} formule  ex. 'solo30'

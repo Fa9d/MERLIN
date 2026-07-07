@@ -26,6 +26,7 @@ def load_models() -> None:
     import app.models.era_context  # noqa: F401
     import app.models.client_life_event  # noqa: F401
     import app.models.client_journal_entry  # noqa: F401
+    import app.models.client_intention  # noqa: F401
     import app.models.session_temporal_anchor  # noqa: F401
     import app.models.appointment  # noqa: F401
 

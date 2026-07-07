@@ -77,6 +77,24 @@
   </section>
 
   <section class="card p-6">
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-4">
+      <h2 class="font-heading text-lg font-bold text-ink">Mes intentions</h2>
+      <p class="text-xs text-muted">Un cap que vous vous donnez — vous choisissez, vous ajustez.</p>
+    </div>
+    <div id="intentions-list" class="flex flex-col gap-2 mb-4">
+      <p class="text-sm text-muted">Chargement…</p>
+    </div>
+    <div class="flex gap-2 items-start">
+      <input id="intention-input" type="text" maxlength="500"
+        placeholder="Ex. : marcher 20 minutes trois fois cette semaine"
+        class="flex-1 border border-bdr rounded-[12px] px-4 py-2.5 text-sm bg-surface focus:outline-none focus:border-forest" />
+      <button id="intention-add"
+        class="bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors shrink-0">Ajouter</button>
+    </div>
+    <p id="intention-error" class="text-xs text-red-600 mt-2 hidden"></p>
+  </section>
+
+  <section class="card p-6">
     <div class="flex items-center justify-between gap-2 flex-wrap mb-5">
       <h2 class="font-heading text-lg font-bold text-ink">Proposition du jour</h2>
       <a href="/client/journal.html" class="text-xs font-semibold text-forest-deep hover:underline">Journal →</a>
@@ -270,6 +288,67 @@
   document.getElementById('exo-title').textContent = rec.title;
   document.getElementById('exo-duration').textContent = 'Durée cible : ' + rec.duration;
   document.getElementById('exo-steps').textContent = rec.steps;
+
+  // ── Mes intentions ─────────────────────────────────────────────────────────
+  const intList = document.getElementById('intentions-list');
+  const intErr = document.getElementById('intention-error');
+
+  function renderIntentions(items) {
+    intList.innerHTML = '';
+    if (!items.length) {
+      intList.innerHTML = '<p class="text-sm text-muted">Aucune intention en cours. Donnez-vous un cap simple — une phrase suffit.</p>';
+      return;
+    }
+    items.forEach(it => {
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-3 border border-bdr rounded-[14px] px-4 py-3';
+      const txt = document.createElement('p');
+      txt.className = 'flex-1 text-sm text-ink';
+      txt.textContent = it.text;
+      const done = document.createElement('button');
+      done.className = 'text-xs font-semibold text-forest-deep hover:underline shrink-0';
+      done.textContent = 'Réalisée ✓';
+      done.addEventListener('click', async () => {
+        done.disabled = true;
+        try { await updateMyIntention(it.id, { status: 'realisee' }); await loadIntentions(); }
+        catch (e) { done.disabled = false; }
+      });
+      const drop = document.createElement('button');
+      drop.className = 'text-xs text-muted hover:underline shrink-0';
+      drop.textContent = 'Laisser aller';
+      drop.addEventListener('click', async () => {
+        drop.disabled = true;
+        try { await updateMyIntention(it.id, { status: 'abandonnee' }); await loadIntentions(); }
+        catch (e) { drop.disabled = false; }
+      });
+      row.appendChild(txt); row.appendChild(done); row.appendChild(drop);
+      intList.appendChild(row);
+    });
+  }
+
+  async function loadIntentions() {
+    try { renderIntentions(await getMyIntentions()); }
+    catch (e) { intList.innerHTML = '<p class="text-sm text-muted">Intentions indisponibles pour le moment.</p>'; }
+  }
+
+  document.getElementById('intention-add').addEventListener('click', async () => {
+    const input = document.getElementById('intention-input');
+    const text = input.value.trim();
+    intErr.classList.add('hidden');
+    if (!text) return;
+    try {
+      await createMyIntention({ text });
+      input.value = '';
+      await loadIntentions();
+    } catch (e) {
+      intErr.textContent = e.message || 'Impossible d\'ajouter l\'intention.';
+      intErr.classList.remove('hidden');
+    }
+  });
+  document.getElementById('intention-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('intention-add').click();
+  });
+  loadIntentions();
 })();
 </script>
 
