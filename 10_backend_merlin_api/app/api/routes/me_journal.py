@@ -17,6 +17,7 @@ from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.client_journal_entry import ClientJournalEntry
 from app.models.enums import RecordStatus
+from app.models.session import SessionRecord
 from app.schemas.client_journal_entry import (
     ClientJournalEntryRead,
     ClientJournalEntryUpdate,
@@ -34,6 +35,23 @@ def _get_my_client(current_user: AppUser, db: Session) -> Client:
             detail="Dossier client introuvable. Complétez votre inscription pour accéder au journal.",
         )
     return client
+
+
+def _verifier_session_du_client(session_id: str | None, client_id: str, db: Session) -> None:
+    """Une trace ne peut être rattachée qu'à une séance appartenant au client."""
+    if session_id is None:
+        return
+    owned = db.scalar(
+        select(SessionRecord.id).where(
+            SessionRecord.id == session_id,
+            SessionRecord.client_id == client_id,
+        )
+    )
+    if owned is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Séance introuvable.",
+        )
 
 
 @router.get("", response_model=list[ClientJournalEntryRead])
@@ -75,6 +93,7 @@ def create_my_journal_entry(
         )
         db.add(client)
         db.flush()
+    _verifier_session_du_client(payload.session_id, client.id, db)
     data = payload.model_dump()
     data["client_id"] = client.id
     data["id"] = str(uuid4())
@@ -107,6 +126,8 @@ def update_my_journal_entry(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Entrée introuvable.")
     updates = payload.model_dump(exclude_unset=True)
     updates.pop("authored_by", None)  # authored_by ne peut être modifié
+    if "session_id" in updates:
+        _verifier_session_du_client(updates["session_id"], client.id, db)
     for field, value in updates.items():
         setattr(entry, field, value)
     db.commit()

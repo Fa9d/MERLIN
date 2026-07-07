@@ -222,10 +222,9 @@
   // ── État du jour — énergie des journaux structurés ─────────────────────────
   const HUMEURS = { stress: '🔴 stress', neutre: '🟡 neutre', coherence: '🟢 cohérence', flow: '🔵 flow' };
   const archis = entries.map(e => {
-    const b = e.body_text || '';
-    if (!b.startsWith('ARCHI_INTERIEUR::')) return null;
-    try { const d = JSON.parse(b.slice(17)); return { ts: e.written_at, energie: Number(d.energie), humeur: d.humeur }; }
-    catch (err) { return null; }
+    const s = journalStructured(e);
+    if (s.kind !== 'checkin' || !s.data) return null;
+    return { ts: e.written_at, energie: Number(s.data.energie), humeur: s.data.humeur };
   }).filter(a => a && !isNaN(a.energie)).sort((a, b) => new Date(a.ts) - new Date(b.ts));
 
   if (archis.length) {
@@ -294,14 +293,14 @@
 
   function journalSummary(en) {
     const b = en.body_text || '';
-    if (b.startsWith('ARCHI_EXERCICE::')) {
-      try { const d = JSON.parse(b.slice(16)); return { t: 'Exercice — ' + (d.title || 'exercice'), s: 'État ' + (d.before ?? '–') + ' → ' + (d.after ?? '–') + (d.note ? ' · ' + d.note : '') }; }
-      catch (e) { return { t: 'Exercice validé', s: '' }; }
+    const s = journalStructured(en);
+    if (s.kind === 'exercice' && s.data) {
+      const d = s.data;
+      return { t: 'Exercice — ' + (d.title || 'exercice'), s: 'État ' + (d.before ?? '–') + ' → ' + (d.after ?? '–') + (d.note ? ' · ' + d.note : '') };
     }
-    if (b.startsWith('ARCHI_INTERIEUR::')) {
-      try { const d = JSON.parse(b.slice(17));
-        return { t: 'État du jour', s: (HUMEURS[d.humeur] || d.humeur) + ' · énergie ' + d.energie + '/10' + (d.note ? ' — ' + d.note : d.grace ? ' — ' + d.grace : '') }; }
-      catch (e) { return { t: 'État du jour', s: '' }; }
+    if (s.kind === 'checkin' && s.data) {
+      const d = s.data;
+      return { t: 'État du jour', s: (HUMEURS[d.humeur] || d.humeur) + ' · énergie ' + d.energie + '/10' + (d.note ? ' — ' + d.note : d.grace ? ' — ' + d.grace : '') };
     }
     return { t: en.emotional_tone ? 'Journal · ' + en.emotional_tone : 'Journal', s: b };
   }

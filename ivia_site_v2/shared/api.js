@@ -216,6 +216,27 @@ async function createMyJournalEntry(payload) {
   return _req('/api/v1/me/journal', { method: 'POST', body: payload });
 }
 
+/**
+ * Décode la partie structurée d'une entrée de journal.
+ * Privilégie les champs structurés du backend (entry_kind + structured_payload) ;
+ * repli sur les anciens préfixes ARCHI_*:: dans body_text (entrées historiques).
+ * @returns {{kind: 'libre'|'checkin'|'exercice'|'moment', data: object|null}}
+ */
+function journalStructured(entry) {
+  if (!entry) return { kind: 'libre', data: null };
+  if (entry.entry_kind && entry.entry_kind !== 'libre' && entry.structured_payload) {
+    return { kind: entry.entry_kind, data: entry.structured_payload };
+  }
+  const b = entry.body_text || '';
+  if (b.startsWith('ARCHI_INTERIEUR::')) {
+    try { return { kind: 'checkin', data: JSON.parse(b.slice('ARCHI_INTERIEUR::'.length)) }; } catch (e) {}
+  }
+  if (b.startsWith('ARCHI_EXERCICE::')) {
+    try { return { kind: 'exercice', data: JSON.parse(b.slice('ARCHI_EXERCICE::'.length)) }; } catch (e) {}
+  }
+  return { kind: entry.entry_kind || 'libre', data: null };
+}
+
 // ── Enregistrements solo (client connecté) ───────────────────────────────────
 /**
  * Envoie un enregistrement solo (base64) — transcription lancée en tâche de fond.

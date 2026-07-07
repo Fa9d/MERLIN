@@ -281,16 +281,14 @@
     return 'confus';
   }
 
-  function parseArchi(bodyText) {
-    if (!bodyText || typeof bodyText !== 'string') return null;
-    if (!bodyText.startsWith('ARCHI_INTERIEUR::')) return null;
-    try { return JSON.parse(bodyText.slice('ARCHI_INTERIEUR::'.length)); } catch (e) { return null; }
+  function parseArchi(entry) {
+    const s = journalStructured(entry);
+    return s.kind === 'checkin' ? s.data : null;
   }
 
-  function parseExo(bodyText) {
-    if (!bodyText || typeof bodyText !== 'string') return null;
-    if (!bodyText.startsWith('ARCHI_EXERCICE::')) return null;
-    try { return JSON.parse(bodyText.slice('ARCHI_EXERCICE::'.length)); } catch (e) { return null; }
+  function parseExo(entry) {
+    const s = journalStructured(entry);
+    return s.kind === 'exercice' ? s.data : null;
   }
   function safe(t) {
     const d = document.createElement('div');
@@ -359,7 +357,7 @@
     return selected;
   }
 
-  function buildBody() {
+  function buildPayload() {
     const date = document.getElementById('entry-date').value || new Date().toISOString().slice(0,10);
     const humeur = document.getElementById('humeur').value;
     const energie = Number(document.getElementById('energie').value || 1);
@@ -371,7 +369,7 @@
     const note = document.getElementById('entry-text').value.trim();
     const score = calcScore();
 
-    const payload = {
+    return {
       version: 'architecte-interieur-v1',
       date,
       humeur,
@@ -384,7 +382,6 @@
       score,
       note,
     };
-    return 'ARCHI_INTERIEUR::' + JSON.stringify(payload);
   }
 
   function renderEntry(en) {
@@ -393,7 +390,7 @@
     el.className = 'bg-card border border-bdr rounded-[16px] px-5 py-4';
 
     let body = en.body_text || '';
-    const exo = parseExo(body);
+    const exo = parseExo(en);
     if (exo) {
       el.innerHTML = `
         <div class="flex items-center justify-between gap-2 flex-wrap mb-2">
@@ -412,9 +409,10 @@
       return el;
     }
 
-    if (body.startsWith('ARCHI_INTERIEUR::')) {
+    const archiData = parseArchi(en);
+    if (archiData) {
       try {
-        const data = JSON.parse(body.slice('ARCHI_INTERIEUR::'.length));
+        const data = archiData;
         const hm = (data.heartmath || []).length ? (data.heartmath || []).join(' · ') : null;
         const stress = (data.stressors || []).filter(Boolean);
         const chips = [
@@ -451,11 +449,11 @@
 
   function refreshExercisePanel() {
     const latestArchi = entriesCache
-      .map(e => parseArchi(e.body_text))
+      .map(e => parseArchi(e))
       .find(Boolean);
     const rec = getExerciseRecommendation(latestArchi);
     const lastExo = entriesCache
-      .map(e => parseExo(e.body_text))
+      .map(e => parseExo(e))
       .find(Boolean);
 
     document.getElementById('exo-title').textContent = rec.title;
@@ -493,9 +491,9 @@
 
     // Archis + exos
     const archis = entries
-      .map(e => { const a = parseArchi(e.body_text); return a ? { ...a, ts: e.written_at } : null; })
+      .map(e => { const a = parseArchi(e); return a ? { ...a, ts: e.written_at } : null; })
       .filter(Boolean);
-    const exos = entries.map(e => parseExo(e.body_text)).filter(Boolean).length;
+    const exos = entries.map(e => parseExo(e)).filter(Boolean).length;
     const arch7 = archis.filter(a => (now - new Date(a.ts)) / 86400000 <= 7);
     const avgE = arch7.length ? (arch7.reduce((s, a) => s + Number(a.energie || 0), 0) / arch7.length) : null;
 
@@ -615,14 +613,14 @@
 
   // ── Moteur d'analyse contextuelle (utilise l'historique complet) ─────────
   function analyserJournee(todayEntries) {
-    const archi    = todayEntries.map(e => parseArchi(e.body_text)).find(Boolean);
-    const libreEn  = todayEntries.find(e => !e.body_text.startsWith('ARCHI_'));
+    const archi    = todayEntries.map(e => parseArchi(e)).find(Boolean);
+    const libreEn  = todayEntries.find(e => journalStructured(e).kind === 'libre');
     const texteLibre = libreEn ? libreEn.body_text : (archi ? archi.note : '');
 
     // ── Contexte historique depuis entriesCache ──────────────────────────
     const now = new Date(TODAY + 'T12:00:00');
     const historique = (entriesCache || [])
-      .map(e => { const a = parseArchi(e.body_text); return a ? { ...a, written_at: e.written_at } : null; })
+      .map(e => { const a = parseArchi(e); return a ? { ...a, written_at: e.written_at } : null; })
       .filter(Boolean)
       .filter(e => new Date(e.written_at).toISOString().slice(0,10) !== TODAY)
       .sort((a, b) => new Date(b.written_at) - new Date(a.written_at));
@@ -865,7 +863,7 @@
   function getTodayEntries(entries) {
     return entries.filter(en => {
       const d = new Date(en.written_at);
-      return d.toISOString().slice(0, 10) === TODAY && !en.body_text.startsWith('ARCHI_EXERCICE::');
+      return d.toISOString().slice(0, 10) === TODAY && journalStructured(en).kind !== 'exercice';
     });
   }
 
@@ -909,7 +907,14 @@
     btn.textContent = 'Enregistrement…';
     try {
       const humeur = document.getElementById('humeur').value;
-      const entry = await createMyJournalEntry({ body_text: buildBody(), emotional_tone: moodToTone(humeur) });
+      const payload = buildPayload();
+      const entry = await createMyJournalEntry({
+        body_text: payload.note || payload.grace || payload.lecon || 'État du jour',
+        emotional_tone: moodToTone(humeur),
+        entry_kind: 'checkin',
+        structured_payload: payload,
+        dimensions: ['corps', 'metabolisme', 'emotions', 'mental'],
+      });
       showTodayResult([entry]);
       await chargerEntrees();
     } catch (err) {
@@ -940,8 +945,11 @@
     btn.textContent = 'Validation…';
     try {
       await createMyJournalEntry({
-        body_text: 'ARCHI_EXERCICE::' + JSON.stringify(payload),
+        body_text: (payload.note || payload.title || 'Exercice complété'),
         emotional_tone: payload.after >= payload.before ? 'calme' : 'confus',
+        entry_kind: 'exercice',
+        structured_payload: payload,
+        dimensions: ['corps', 'emotions'],
       });
       document.getElementById('exo-note').value = '';
       feedback.textContent = '✓ Exercice validé et enregistré.';

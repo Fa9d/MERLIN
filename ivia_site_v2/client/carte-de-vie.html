@@ -244,9 +244,8 @@
 
   function parseArchiEntries(entries) {
     return (entries || []).map(e => {
-      const b = e.body_text || '';
-      if (!b.startsWith('ARCHI_INTERIEUR::')) return null;
-      try { return JSON.parse(b.slice('ARCHI_INTERIEUR::'.length)); } catch (err) { return null; }
+      const s = journalStructured(e);
+      return s.kind === 'checkin' ? s.data : null;
     }).filter(Boolean);
   }
 

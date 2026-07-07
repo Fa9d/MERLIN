@@ -167,22 +167,21 @@
       }
 
       // ── Entrée de journal du jour ─────────────────────────────────────
-      const journalEntries = (journalByDate[iso] || []).filter(e => !e.body_text.startsWith('ARCHI_EXERCICE::'));
+      const journalEntries = (journalByDate[iso] || []).filter(e => journalStructured(e).kind !== 'exercice');
       if (journalEntries.length) {
         journalEntries.forEach(en => {
           let bodyText = en.body_text || '';
-          // Dépaqueter ARCHI_INTERIEUR
-          if (bodyText.startsWith('ARCHI_INTERIEUR::')) {
-            try {
-              const d = JSON.parse(bodyText.slice('ARCHI_INTERIEUR::'.length));
-              const humeurMap = {stress:'🔴 Stress',neutre:'🟡 Neutre',coherence:'🟢 Cohérence',flow:'🔵 Flow'};
-              bodyText = [
-                humeurMap[d.humeur] || d.humeur,
-                d.energie ? `Énergie ${d.energie}/10` : '',
-                d.score ? `Score ✨${d.score}` : '',
-                d.note || '',
-              ].filter(Boolean).join(' · ');
-            } catch (e) {}
+          // Dépaqueter l'état du jour structuré
+          const s = journalStructured(en);
+          if (s.kind === 'checkin' && s.data) {
+            const d = s.data;
+            const humeurMap = {stress:'🔴 Stress',neutre:'🟡 Neutre',coherence:'🟢 Cohérence',flow:'🔵 Flow'};
+            bodyText = [
+              humeurMap[d.humeur] || d.humeur,
+              d.energie ? `Énergie ${d.energie}/10` : '',
+              d.score ? `Score ✨${d.score}` : '',
+              d.note || '',
+            ].filter(Boolean).join(' · ');
           }
           html += `<div class="card mt-2 flex items-start gap-3">
             <div class="w-8 h-8 rounded-[10px] bg-surface border border-bdr flex items-center justify-center shrink-0 text-base">📓</div>

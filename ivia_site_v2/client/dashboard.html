@@ -121,10 +121,9 @@
 
 <script>
 (async function () {
-  function parseArchi(bodyText) {
-    if (!bodyText || typeof bodyText !== 'string') return null;
-    if (!bodyText.startsWith('ARCHI_INTERIEUR::')) return null;
-    try { return JSON.parse(bodyText.slice('ARCHI_INTERIEUR::'.length)); } catch (e) { return null; }
+  function parseArchi(entry) {
+    const s = journalStructured(entry);
+    return s.kind === 'checkin' ? s.data : null;
   }
   function getExerciseRecommendation(latestArchi) {
     const humeur = latestArchi?.humeur || 'neutre';
@@ -210,25 +209,22 @@
   const SOMMEILS = { mauvais:'sommeil difficile', moyen:'sommeil moyen', excellent:'sommeil excellent' };
   function humanize(en) {
     const body = en.body_text || '';
-    if (body.startsWith('ARCHI_EXERCICE::')) {
-      try {
-        const d = JSON.parse(body.slice('ARCHI_EXERCICE::'.length));
-        return {
-          label: 'Exercice validé',
-          text: `${d.title || 'Exercice'} — état ${d.before ?? '–'} → ${d.after ?? '–'}${d.note ? ' · ' + d.note : ''}`,
-        };
-      } catch (e) { return { label: 'Exercice validé', text: 'Exercice du jour complété.' }; }
+    const s = journalStructured(en);
+    if (s.kind === 'exercice' && s.data) {
+      const d = s.data;
+      return {
+        label: 'Exercice validé',
+        text: `${d.title || 'Exercice'} — état ${d.before ?? '–'} → ${d.after ?? '–'}${d.note ? ' · ' + d.note : ''}`,
+      };
     }
-    if (body.startsWith('ARCHI_INTERIEUR::')) {
-      try {
-        const d = JSON.parse(body.slice('ARCHI_INTERIEUR::'.length));
-        const bits = [HUMEURS[d.humeur] || d.humeur, `énergie ${d.energie}/10`, SOMMEILS[d.sommeil] || d.sommeil];
-        if (d.score != null) bits.push(`score ${d.score}`);
-        return {
-          label: 'État du jour',
-          text: bits.join(' · ') + (d.note ? ' — ' + d.note : (d.grace ? ' — ' + d.grace : '')),
-        };
-      } catch (e) { return { label: 'État du jour', text: 'Journal structuré du jour.' }; }
+    if (s.kind === 'checkin' && s.data) {
+      const d = s.data;
+      const bits = [HUMEURS[d.humeur] || d.humeur, `énergie ${d.energie}/10`, SOMMEILS[d.sommeil] || d.sommeil];
+      if (d.score != null) bits.push(`score ${d.score}`);
+      return {
+        label: 'État du jour',
+        text: bits.join(' · ') + (d.note ? ' — ' + d.note : (d.grace ? ' — ' + d.grace : '')),
+      };
     }
     return { label: en.emotional_tone ? `Journal · ${en.emotional_tone}` : 'Journal', text: body };
   }
@@ -268,7 +264,7 @@
     });
   }
 
-  const latestArchi = entries.map(e => parseArchi(e.body_text)).find(Boolean);
+  const latestArchi = entries.map(e => parseArchi(e)).find(Boolean);
   const rec = getExerciseRecommendation(latestArchi);
   document.getElementById('exo-why').textContent = rec.why;
   document.getElementById('exo-title').textContent = rec.title;
