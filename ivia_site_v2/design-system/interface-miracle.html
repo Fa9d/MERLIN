@@ -335,15 +335,15 @@
       <div class="grid lg:grid-cols-5 gap-6 items-stretch">
         <div class="lg:col-span-3 bg-white border border-bdr rounded-[24px] p-7 flex flex-col">
           <div class="flex items-start justify-between gap-4 mb-2">
-            <h3 class="font-heading text-lg font-bold text-ink">Huit dimensions, un seul chemin</h3>
+            <h3 class="font-heading text-lg font-bold text-ink">Onze dimensions, un seul chemin</h3>
             <span class="text-[10px] font-semibold uppercase tracking-wider text-forest bg-surface border border-bdr rounded-full px-3 py-1 shrink-0">vivante</span>
           </div>
 
-          <svg id="carte-svg" viewBox="0 0 420 386" class="w-full flex-1 min-h-[280px]" preserveAspectRatio="xMidYMid meet" role="img"
-               aria-label="Carte de vie : huit dimensions dont l'intensité évolue de semaine en semaine">
+          <svg id="carte-svg" viewBox="-35 0 490 386" class="w-full flex-1 min-h-[280px]" preserveAspectRatio="xMidYMid meet" role="img"
+               aria-label="Carte de vie : onze dimensions dont l'intensité évolue de semaine en semaine">
             <g id="carte-liens"></g>
-            <circle cx="210" cy="180" r="26" fill="#2D6A4F"/>
-            <text x="210" y="184" text-anchor="middle" fill="white" font-size="11" font-weight="600">vous</text>
+            <circle cx="210" cy="193" r="26" fill="#2D6A4F"/>
+            <text x="210" y="197" text-anchor="middle" fill="white" font-size="11" font-weight="600">vous</text>
             <g id="carte-axes"></g>
           </svg>
 
@@ -543,19 +543,27 @@
       });
     }
 
-    // ══ Carte de vie — données fictives sur 6 semaines ═══════════════════════
-    const AXES = [
-      { id:'territoire', label:'territoire', x:210, y:48,  serie:[.35,.35,.4,.4,.45,.5] },
-      { id:'corps',      label:'corps',      x:330, y:90,  serie:[.85,.9,.8,.7,.6,.5] },
-      { id:'sommeil',    label:'sommeil',    x:368, y:200, serie:[.9,.85,.8,.65,.55,.45] },
-      { id:'travail',    label:'travail',    x:310, y:300, serie:[.8,.85,.9,.8,.7,.6] },
-      { id:'relations',  label:'relations',  x:210, y:330, serie:[.5,.55,.6,.65,.7,.7] },
-      { id:'famille',    label:'famille',    x:108, y:300, serie:[.4,.4,.45,.5,.5,.5] },
-      { id:'emotions',   label:'émotions',   x:55,  y:200, serie:[.7,.7,.65,.6,.55,.5] },
-      { id:'mental',     label:'mental',     x:92,  y:90,  serie:[.75,.7,.7,.6,.55,.5] },
+    // ══ Carte de vie — 11 axes MERLIN (ordre canonique), données fictives sur 6 semaines ══
+    const AXES_BRUTS = [
+      { id:'territoire',  label:'territoire',  serie:[.35,.35,.4,.4,.45,.5] },
+      { id:'corps',       label:'corps',       serie:[.85,.9,.8,.7,.6,.5] },
+      { id:'metabolisme', label:'métabolisme', serie:[.6,.6,.55,.5,.5,.45] },
+      { id:'emotions',    label:'émotions',    serie:[.7,.7,.65,.6,.55,.5] },
+      { id:'mental',      label:'mental',      serie:[.75,.7,.7,.6,.55,.5] },
+      { id:'relations',   label:'relations',   serie:[.5,.55,.6,.65,.7,.7] },
+      { id:'famille',     label:'famille',     serie:[.4,.4,.45,.5,.5,.5] },
+      { id:'transgen',    label:'transgén.',   serie:[.3,.3,.35,.35,.35,.4] },
+      { id:'societe',     label:'société',     serie:[.8,.85,.9,.8,.7,.6] },
+      { id:'spirituel',   label:'spirituel',   serie:[.35,.4,.4,.45,.5,.5] },
+      { id:'urgence',     label:'urgence',     serie:[.4,.35,.3,.25,.2,.2] },
     ];
-    const TENSIONS = { 1:['sommeil','travail'], 2:['sommeil','travail'], 3:['sommeil','travail'],
-                       4:['sommeil','travail'], 5:['relations','emotions'], 6:['relations','emotions'] };
+    // Positions sur un cercle, territoire en haut
+    const AXES = AXES_BRUTS.map((a, i) => {
+      const ang = -Math.PI / 2 + i * 2 * Math.PI / AXES_BRUTS.length;
+      return { ...a, x: Math.round(210 + 145 * Math.cos(ang)), y: Math.round(193 + 145 * Math.sin(ang)) };
+    });
+    const TENSIONS = { 1:['metabolisme','societe'], 2:['metabolisme','societe'], 3:['metabolisme','societe'],
+                       4:['metabolisme','societe'], 5:['relations','emotions'], 6:['relations','emotions'] };
     const LECTURES = {
       1: "Tout est serré : le corps encaisse, le sommeil casse, le travail prend la place.",
       2: "Même tension — mais la nommer, c'est déjà la tenir à distance d'un pas.",
@@ -571,7 +579,7 @@
 
     AXES.forEach(a => {
       const lien = document.createElementNS(NS, 'line');
-      lien.setAttribute('x1', 210); lien.setAttribute('y1', 180);
+      lien.setAttribute('x1', 210); lien.setAttribute('y1', 193);
       lien.setAttribute('x2', a.x); lien.setAttribute('y2', a.y);
       lien.setAttribute('stroke', '#D4E8D0'); lien.setAttribute('stroke-width', 1.5);
       lien.classList.add('axe-lien'); lien.dataset.axe = a.id;
@@ -583,8 +591,12 @@
       c.setAttribute('cx', a.x); c.setAttribute('cy', a.y);
       c.classList.add('axe-cercle'); c.dataset.axe = a.id;
       const t = document.createElementNS(NS, 'text');
-      t.setAttribute('x', a.x); t.setAttribute('y', a.y + (a.y < 180 ? -26 : 34));
-      t.setAttribute('text-anchor', 'middle'); t.setAttribute('font-size', 11);
+      const dx = a.x - 210, dy0 = a.y - 193;
+      const horiz = Math.abs(dx) > 95;
+      t.setAttribute('x', a.x + (horiz ? (dx > 0 ? 30 : -30) : 0));
+      t.setAttribute('y', a.y + (horiz ? 4 : (dy0 < 0 ? -30 : 38)));
+      t.setAttribute('text-anchor', horiz ? (dx > 0 ? 'start' : 'end') : 'middle');
+      t.setAttribute('font-size', 11);
       t.setAttribute('fill', '#4B6350'); t.setAttribute('font-weight', 600);
       t.textContent = a.label;
       grp.appendChild(c); grp.appendChild(t);
