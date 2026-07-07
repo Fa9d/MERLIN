@@ -28,6 +28,8 @@ const IVIA_FOOTER = {
     { label: 'Vie',                  href: '/client/carte-de-vie.html' },
     { label: 'Réserver une séance',  href: '/reserver.html' },
     { label: 'Mes séances',          href: '/client/seances.html' },
+    { label: 'Mes enregistrements',  href: '/client/mes-enregistrements.html' },
+    { label: 'Mes résumés',          href: '/client/mes-resumes.html' },
     { label: 'Séance expresse',      href: '/client/enregistrement.html' },
     { label: 'Mon compte',           href: '/client/compte.html' },
   ],
@@ -143,6 +145,14 @@ function renderLayout(active, pageLabel) {
               <a href="/client/seances.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Mes séances
+              </a>
+              <a href="/client/mes-enregistrements.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Mes enregistrements
+              </a>
+              <a href="/client/mes-resumes.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                Mes résumés
               </a>
               <a href="/client/compte.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
