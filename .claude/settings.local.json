@@ -41,7 +41,10 @@
       "Bash(mv .env.prod.backup-20260509-235513 .env.prod.bak .env.prod.bak- .env.prod.bak.2026-06-21 backups/env/)",
       "Bash(sed -i '/^JWT_SECRET=/d' .env.prod)",
       "Bash(gh run *)",
-      "Bash(gh api *)"
+      "Bash(gh api *)",
+      "Bash(tail -12 \"C:\\\\Users\\\\PC\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C---IVIA\\\\04a86d4c-57fe-4a38-bcfe-ba8fd25acae6\\\\tasks\\\\bu9byispn.output\")",
+      "Bash(tail -12 \"C:/Users/PC/AppData/Local/Temp/claude/C---IVIA/04a86d4c-57fe-4a38-bcfe-ba8fd25acae6/tasks/bu9byispn.output\")",
+      "Bash(bash -n deploy/pull-deploy.sh)"
     ]
   }
 }

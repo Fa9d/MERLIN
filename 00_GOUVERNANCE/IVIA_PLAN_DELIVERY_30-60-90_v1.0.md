@@ -38,10 +38,10 @@
 | M8 | CONTRIBUTING.md | P1 | S | **livré 2026-07-08** |
 | M9 | CODEOWNERS zones critiques | P1 | S | à faire (dép. M6) |
 | M10 | Zéro commit checkpoint sur branches partagées | P1 | S | à faire |
-| M11 | E2E happy path intake → activation → mon-espace | P1 | M | à faire |
+| M11 | E2E happy path intake → activation → mon-espace | P1 | M | **livré 2026-07-08** (`tests/test_public_intake_e2e.py`) |
 | M12 | Tests intégration paiement test + réservation | P1 | M | à faire |
 | M13 | Couverture ≥ 60 % sur `app/services` + `app/api/routes` (gate CI) | P1 | M | à faire (dép. M11) |
-| M14 | Smoke test post-déploiement dans `pull-deploy.sh` | P1 | S | à faire (dép. M0) |
+| M14 | Smoke test post-déploiement dans `pull-deploy.sh` | P1 | S | **livré 2026-07-08** (première exécution réelle = M0) |
 | M15 | Alertes Uptime Kuma (courriel) API/site/stats | P1 | S | à faire |
 | M16 | `ruff format` + pre-commit hooks | P2 | S | à faire |
 | M17 | Bump fastapi/starlette (ferme les 9 CVE acceptées) + Dependabot | P1 | M | à faire |

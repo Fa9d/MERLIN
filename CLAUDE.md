@@ -508,6 +508,8 @@ make config-check  # valider YAML + variables avant redémarrage
 #   cd /opt/merlin && bash deploy/pull-deploy.sh            # statique seul (git pull)
 #   cd /opt/merlin && bash deploy/pull-deploy.sh --build    # backend/compose/migrations
 # La prod correspond TOUJOURS à un commit. Le tar/scp manuel est DÉPRÉCIÉ.
+# Smoke test intégré (2026-07-08) : health API + accueil + head Alembic vérifiés en fin
+# de script ; un déploiement cassé sort en code non nul avec la commande de rollback.
 
 # Déploiement complet en une commande (rebuild + migrations)
 bash deploy/prod-up.sh
