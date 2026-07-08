@@ -72,9 +72,45 @@ gpg --batch --passphrase "$MERLIN_BACKUP_PASSPHRASE" -d recordings_AAAAMMJJ_HHMM
     tar -xzf - -C /app/storage/recordings
 ```
 
+### 6.1 Test de restauration SANS toucher la prod (procédure prouvée 2026-07-08)
+
+Restaurer dans une base jetable, comparer, détruire — à refaire chaque trimestre :
+
+```bash
+cd /opt/merlin
+DC="docker compose --env-file .env.prod -f docker-compose.prod.yml"
+PASS="$(sed -n 's/^MERLIN_BACKUP_PASSPHRASE=//p' .env.prod | head -1)"
+
+# 1. Déchiffrer le dump le plus récent
+gpg --batch --quiet --passphrase "$PASS" -d backups/db_<TS>.sql.gz.gpg | gunzip > /tmp/restore_test.sql
+
+# 2. Base jetable + restauration (ON_ERROR_STOP : la moindre erreur fait échouer)
+$DC exec -T db psql -U merlin -d postgres -c "CREATE DATABASE merlin_restore_test;" < /dev/null
+$DC exec -T db psql -U merlin -d merlin_restore_test -v ON_ERROR_STOP=1 < /tmp/restore_test.sql
+
+# 3. Vérifier : head Alembic + comptes des tables clés vs prod
+$DC exec -T db psql -U merlin -d merlin_restore_test -tAc "SELECT version_num FROM alembic_version" < /dev/null
+$DC exec -T db psql -U merlin -d merlin_restore_test -tAc "SELECT count(*) FROM clients" < /dev/null
+
+# 4. Intégrité de l'archive audios (liste sans extraire)
+gpg --batch --quiet --passphrase "$PASS" -d backups/recordings_<TS>.tar.gz.gpg | tar -tzf - | wc -l
+
+# 5. Nettoyer
+$DC exec -T db psql -U merlin -d postgres -c "DROP DATABASE merlin_restore_test;" < /dev/null
+rm -f /tmp/restore_test.sql
+```
+
+> Piège connu : dans un script envoyé par `ssh 'bash -s' <<EOF`, tout `docker compose exec -T`
+> sans `< /dev/null` **avale le reste du script** via stdin. Toujours rediriger stdin.
+
 ## 7. Rétention & vérification
 
 - **Locale** : 7 dernières (paramétrable `MERLIN_BACKUP_LOCAL_KEEP`).
 - **Hors-site** : cycle de vie du conteneur OVH (recommandé 7 quotidiennes effectives via
   conservation ≥ rotation ; ajuster selon la politique de `IVIA_COUTS_CONFORMITE_DONNEES`).
 - **Test de restauration trimestriel** à journaliser dans `05_JOURNAUX/`.
+  Dernier test réussi : **2026-07-08** (dump de la nuit → base jetable, head Alembic et
+  comptes conformes, archive audios intacte, < 2 min). Voir
+  `05_JOURNAUX/JOURNAL_test_restauration_20260708.md`.
+- ⚠ **État 2026-07-08 : hors-site NON configuré** (variables OVH vides dans `.env.prod`) —
+  les sauvegardes chiffrées vivent sur le même disque que la prod. Item M23 du plan delivery.

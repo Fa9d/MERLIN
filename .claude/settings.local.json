@@ -44,7 +44,10 @@
       "Bash(gh api *)",
       "Bash(tail -12 \"C:\\\\Users\\\\PC\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C---IVIA\\\\04a86d4c-57fe-4a38-bcfe-ba8fd25acae6\\\\tasks\\\\bu9byispn.output\")",
       "Bash(tail -12 \"C:/Users/PC/AppData/Local/Temp/claude/C---IVIA/04a86d4c-57fe-4a38-bcfe-ba8fd25acae6/tasks/bu9byispn.output\")",
-      "Bash(bash -n deploy/pull-deploy.sh)"
+      "Bash(bash -n deploy/pull-deploy.sh)",
+      "Bash(ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_merlin -N '' -C 'claude-code@poste-david-merlin' -q)",
+      "Read(//c/Users/PC/.ssh/**)",
+      "Bash(ssh *)"
     ]
   }
 }

@@ -32,7 +32,7 @@
 | M2 | Désactiver emotion_saas profil client | — | — | **REFUSÉ fondateur 2026-07-08** |
 | M3 | gitleaks bloquant en CI (+ allowlist `_archives/`) | P0 | S | **livré 2026-07-08** |
 | M4 | pip-audit bloquant nouvelles CVE (9 existantes = risque accepté, cf. ci.yml) | P0 | S | **livré 2026-07-08** |
-| M5 | Test de restauration de sauvegarde (chrono + doc + journal) | P0 | M | à faire (dép. M1) |
+| M5 | Test de restauration de sauvegarde (chrono + doc + journal) | P0 | M | **livré 2026-07-08** (< 2 min, zéro erreur — `JOURNAL_test_restauration_20260708.md`) |
 | M6 | GitHub Pro + protection de branche (require PR + CI verte) | P1 | S | **en attente David (facturation)** |
 | M7 | Template PR + issue | P1 | S | **livré 2026-07-08** |
 | M8 | CONTRIBUTING.md | P1 | S | **livré 2026-07-08** |
@@ -50,6 +50,7 @@
 | M20 | Runbook incident/rollback répété à blanc (< 10 min) | P1 | M | à faire (dép. M0, M1) |
 | M21 | README onboarding < 10 min | P2 | S | à faire |
 | M22 | Safety evals bloquantes en CI si `11_PROMPTS/**` touché | P1 | L | à faire (secret ANTHROPIC_API_KEY requis) |
+| M23 | **Hors-site OVH S3 : NON configuré** (découvert au test M5 — sauvegardes sur le même disque que la prod) | P0 | S | **en attente David** (bucket OVH BHS + 5 variables `.env.prod`, vérifier l'upload au cron suivant) |
 
 **Ordre strict restant** : M0 → M1 → M6 → M14 → M5 → M15 → M11 → M12 → M13 → M20 →
 M9 → M10 → M17 → M16 → M22 → M18 → M21 → M19.
