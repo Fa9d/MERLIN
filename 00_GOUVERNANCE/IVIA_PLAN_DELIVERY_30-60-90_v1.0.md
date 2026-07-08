@@ -27,7 +27,7 @@
 
 | ID | Titre | Prio | Effort | Statut |
 |----|-------|------|--------|--------|
-| M0 | Redéployer prod sur branche d'intégration | P0 | S | **en attente David (VPS)** |
+| M0 | Redéployer prod sur branche d'intégration | P0 | S | **livré 2026-07-08** (vérifié : 301 https, Matomo/API/site 200) |
 | M1 | Rétablir SSH poste → VPS | P0 | S | **en attente David** |
 | M2 | Désactiver emotion_saas profil client | — | — | **REFUSÉ fondateur 2026-07-08** |
 | M3 | gitleaks bloquant en CI (+ allowlist `_archives/`) | P0 | S | **livré 2026-07-08** |
