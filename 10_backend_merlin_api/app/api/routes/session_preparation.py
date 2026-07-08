@@ -31,10 +31,8 @@ from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.client_intention import ClientIntention
 from app.models.client_journal_entry import ClientJournalEntry
-from app.models.consent import Consent
 from app.models.enums import (
     AppRole,
-    ConsentTypeCode,
     IntentionStatusCode,
     RecordStatus,
 )
@@ -117,22 +115,6 @@ class SessionPreparationRead(MerlinSchema):
 # ── Endpoint ──────────────────────────────────────────────────────────────────
 
 
-def _journal_consent_active(db: Session, client_id: str) -> bool:
-    """Vrai si le client a un consent_history actif, positif et non révoqué."""
-    consent = db.scalar(
-        select(Consent)
-        .where(
-            Consent.client_id == client_id,
-            Consent.consent_type_code == ConsentTypeCode.consent_history,
-            Consent.consent_value.is_(True),
-            Consent.revoked_at.is_(None),
-            Consent.record_status == RecordStatus.active,
-        )
-        .order_by(Consent.granted_at.desc())
-    )
-    return consent is not None
-
-
 @router.get("/{session_id}/preparation", response_model=SessionPreparationRead)
 def get_session_preparation(
     session_id: str,
@@ -188,7 +170,10 @@ def get_session_preparation(
     )
 
     # Journal depuis la dernière séance — consentement explicite requis
-    journal_ok = _journal_consent_active(db, record.client_id)
+    # (verrou partagé avec la capacité journal_semantic — source unique)
+    from app.services.journal_semantic import journal_consent_active
+
+    journal_ok = journal_consent_active(db, record.client_id)
     journal_entries: list[ClientJournalEntry] = []
     if journal_ok:
         stmt = (

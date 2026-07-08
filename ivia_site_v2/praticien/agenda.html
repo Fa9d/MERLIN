@@ -200,6 +200,7 @@
           const key = `${r.slot_date}_${t}`;
           slotStates[key] = 'reserve';
           slotStates[key + '_client'] = r.client_name || (r.status === 'hold' ? 'En attente' : 'Réservé');
+          if (r.session_id) slotStates[key + '_session'] = r.session_id;
         });
 
         // 3) Blocages (exceptions `blocked`) — visibles et cliquables pour rouvrir
@@ -299,6 +300,15 @@
               label.className = 'cal-label';
               label.textContent = slotStates[key + '_client'] || 'Réservé';
               cell.appendChild(label);
+              // Clic sur un créneau réservé → dossier de préparation d'entretien
+              const sid = slotStates[key + '_session'];
+              if (sid) {
+                cell.style.cursor = 'pointer';
+                cell.title = 'Préparer l\'entretien';
+                cell.addEventListener('click', () => {
+                  location.href = '/praticien/preparation.html?session=' + encodeURIComponent(sid);
+                });
+              }
             }
 
             if (state !== 'reserve') {

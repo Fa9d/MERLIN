@@ -58,6 +58,12 @@ CAPABILITIES: dict[str, dict] = {
         "max_sensitivity": AnalysisSensitivity.hypothese,
         "data_leaves_server": False,
     },
+    "journal_semantic": {
+        "label": "Synthèse sémantique du journal entre séances (LLM, triade O/H/O)",
+        "category": "semantic",
+        "max_sensitivity": AnalysisSensitivity.hypothese,
+        "data_leaves_server": True,
+    },
     "behavioral_profiling": {
         "label": "Profilage comportemental 5 couches",
         "category": "profiling",

@@ -1,7 +1,7 @@
 # IVIA — Cadrage du chantier « Analyses · Journal · Restitutions »
 
-**Version** : v1.2 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6 ;
-v1.2 : étape 1 livrée)
+**Version** : v1.3 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6 ;
+v1.2 : étape 1 livrée ; v1.3 : étape 2 livrée — exposition praticien seulement)
 **Statut** : canon (cadrage validé à faire vivre ; toute évolution bumpe la version)
 **Auteur** : Claude Code (Fable 5), sous directive de David Phaneuf (2026-07-07)
 **Références** : `05_JOURNAUX/JOURNAL_reunification_depot_20260708.md`,
@@ -88,6 +88,14 @@ l'existant → livrable rapide, valeur immédiate. C'est la première réponse �
 « fournir l'analyse du praticien lorsqu'il procède à des entretiens ».
 
 ### Étape 2 — Analyse du journal (capacité `journal_semantic`)
+
+> **LIVRÉE 2026-07-08 (exposition praticien SEULEMENT)** : capacité au catalogue
+> (`hypothese`, `data_leaves_server=True`), prompt `PROD-ANA-001` v1.0
+> (`11_PROMPTS/07_analyses/`), service `app/services/journal_semantic.py`
+> (consentement + fenêtre inter-séances + post-filtre Loi 21 + vigilance),
+> route `POST /analysis/sessions/{id}/journal-synthese`, 5 tests mockés,
+> suite `journal_semantic_safety_suite_v1` scaffoldée au registre.
+> **Gate d'exposition client** : suite safety ≥ 0.90 requise avant toute surface client.
 Nouvelle capacité au catalogue (max `hypothese`), service LLM interne
 (Anthropic), prompt versionné dans `11_PROMPTS/` : synthèse des entrées
 entre deux séances, axes MERLIN touchés, mouvements d'intention, signaux de

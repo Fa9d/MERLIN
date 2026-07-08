@@ -287,8 +287,10 @@ def my_bookings(
 # ---------------------------------------------------------------------------
 
 class PractitionerAgendaSlotOut(BookingSlotOut):
-    """BookingSlotOut enrichi du nom d'affichage du client (vue praticien)."""
+    """BookingSlotOut enrichi du nom d'affichage du client (vue praticien)
+    et de la séance liée (lien « préparer l'entretien »)."""
     client_name: str | None = None
+    session_id: str | None = None
 
 
 @router.get(
@@ -318,13 +320,44 @@ def practitioner_agenda(
     # Résoudre les noms clients en une requête
     client_ids = {s.client_id for s in slots if s.client_id}
     names: dict[str, str] = {}
+    client_by_user: dict[str, str] = {}
     if client_ids:
         rows = db.query(AppUser.id, AppUser.display_name).filter(AppUser.id.in_(client_ids)).all()
         names = {r[0]: r[1] for r in rows}
+        # AppUser.id (créneau) → Client.id (fiche) pour retrouver la séance liée
+        client_rows = (
+            db.query(Client.id, Client.app_user_id)
+            .filter(Client.app_user_id.in_(client_ids))
+            .all()
+        )
+        client_by_user = {r[1]: r[0] for r in client_rows}
+
+    # Séances planifiées du praticien sur la plage — indexées (client, date)
+    # pour alimenter le lien « préparer l'entretien » depuis l'agenda.
+    sessions_by_client_date: dict[tuple[str, date], str] = {}
+    if client_by_user:
+        session_rows = (
+            db.query(SessionRecord)
+            .filter(
+                SessionRecord.praticien_id == current_user.id,
+                SessionRecord.client_id.in_(set(client_by_user.values())),
+                SessionRecord.scheduled_start_at.isnot(None),
+            )
+            .all()
+        )
+        for sr in session_rows:
+            key = (sr.client_id, sr.scheduled_start_at.date())
+            if date_from <= key[1] <= date_to:
+                sessions_by_client_date.setdefault(key, sr.id)
+
     out = []
     for s in slots:
         item = PractitionerAgendaSlotOut.model_validate(s)
         item.client_name = names.get(s.client_id) if s.client_id else None
+        if s.client_id and s.client_id in client_by_user:
+            item.session_id = sessions_by_client_date.get(
+                (client_by_user[s.client_id], s.slot_date)
+            )
         out.append(item)
     return out
 

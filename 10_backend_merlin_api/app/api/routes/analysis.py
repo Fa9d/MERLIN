@@ -20,14 +20,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.deps import require_practitioner_or_operator
+from app.core.config import settings
+from app.core.deps import is_admin, require_practitioner_or_operator
 from app.db.session import get_db
 from app.models.analysis import AnalysisResult, AnalysisSensitivity
 from app.models.app_user import AppUser
 from app.models.client import Client
+from app.models.enums import AppRole
 from app.models.session import SessionRecord
 from app.schemas.common import MerlinSchema
-from app.services import capability_gate, prosody
+from app.services import capability_gate, journal_semantic, prosody
 
 logger = logging.getLogger("merlin.analysis")
 
@@ -94,6 +96,80 @@ def run_prosody(
     db.commit()
     db.refresh(result)
     logger.info("Analyse prosodique produite (séance %s, par %s).", session_id, current_user.id)
+    return _to_read(result)
+
+
+@router.post("/sessions/{session_id}/journal-synthese", response_model=AnalysisResultRead)
+async def run_journal_synthesis(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_practitioner_or_operator()),
+) -> AnalysisResultRead:
+    """Synthèse sémantique du journal écrit depuis la séance précédente (étape 2).
+
+    Gardes : capacité `journal_semantic` active pour le profil, praticien ASSIGNÉ
+    à la séance, `consent_history` actif du client, interrupteur LLM
+    (`MERLIN_INSIGHTS_ENABLED`). Sortie stockée en sensibilité `hypothese`.
+    """
+    if not settings.insights_enabled:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Analyses LLM désactivées (MERLIN_INSIGHTS_ENABLED).",
+        )
+    profile = capability_gate.profile_for_user(db, current_user)
+    if not capability_gate.is_capability_enabled(db, profile, "journal_semantic"):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Capacité journal_semantic désactivée pour votre profil.",
+        )
+    record = db.get(SessionRecord, session_id)
+    if record is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
+    if (
+        current_user.role == AppRole.practitioner
+        and not is_admin(current_user)
+        and record.praticien_id != current_user.id
+    ):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Cette séance n'est pas assignée à ce praticien.",
+        )
+    if not journal_semantic.journal_consent_active(db, record.client_id):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Le client n'a pas consenti au partage de son historique (consent_history).",
+        )
+
+    try:
+        payload, n_entries = await journal_semantic.synthesize_journal(db, record)
+    except journal_semantic.JournalSemanticError as exc:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(exc)) from exc
+    except journal_semantic.Loi21ViolationError as exc:
+        # Formulation interdite dans la sortie LLM : rien n'est stocké.
+        logger.warning("journal_semantic bloqué par le filtre Loi 21 (séance %s).", session_id)
+        raise HTTPException(
+            status.HTTP_502_BAD_GATEWAY,
+            "Synthèse refusée par le filtre de vocabulaire (Loi 21) — réessayer.",
+        ) from exc
+    except journal_semantic.BehavioralInsightsError as exc:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
+
+    result = AnalysisResult(
+        capability="journal_semantic",
+        sensitivity=AnalysisSensitivity.hypothese,
+        client_id=record.client_id,
+        session_id=record.id,
+        engine_version=journal_semantic.ENGINE_VERSION,
+        payload_json=json.dumps({"n_entrees": n_entries, **payload}, ensure_ascii=False),
+        created_by_user_id=current_user.id,
+    )
+    db.add(result)
+    db.commit()
+    db.refresh(result)
+    logger.info(
+        "Synthèse journal produite (séance %s, par %s, %s entrées).",
+        session_id, current_user.id, n_entries,
+    )
     return _to_read(result)
 
 

@@ -448,6 +448,20 @@ app/
 > Modèle + schéma + enum + migration `20260701_0040` en place et **appliquée en prod**
 > (head courant ≥ 0050) ; **non exposée client**, security-review requise avant toute exposition.
 > Cadre : `00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md`.
+>
+> **Chantier Analyses · Journal · Restitutions** (cadrage `00_GOUVERNANCE/IVIA_CADRAGE_
+> ANALYSES_JOURNAL_RESTITUTIONS`, livraisons 2026-07-08) :
+> - **Étape 1** — dossier de préparation d'entretien : `GET /sessions/{id}/preparation`
+>   (`app/api/routes/session_preparation.py`) + page `praticien/preparation.html?session=<id>`
+>   (lien depuis l'agenda, créneaux réservés). Journal exposé UNIQUEMENT sous `consent_history`.
+> - **Étape 2** — capacité **`journal_semantic`** (catalogue `capability_gate`, sensibilité
+>   `hypothese`, `data_leaves_server=True`) : prompt **`PROD-ANA-001`**
+>   (`11_PROMPTS/07_analyses/PROMPT_synthese_journal_v1.md`), service
+>   `app/services/journal_semantic.py` (patron httpx + plafond `MERLIN_INSIGHTS_*`,
+>   post-filtre Loi 21, vigilance urgence journalisée), route
+>   `POST /analysis/sessions/{id}/journal-synthese` (praticien assigné + consentement).
+>   **Exposition STRICTEMENT praticien** tant que `journal_semantic_safety_suite_v1`
+>   (registre evals, scaffolding) n'a pas passé ≥ 0.90 sur ses 10 catégories.
 
 ---
 
