@@ -462,6 +462,13 @@ app/
 >   `POST /analysis/sessions/{id}/journal-synthese` (praticien assigné + consentement).
 >   **Exposition STRICTEMENT praticien** tant que `journal_semantic_safety_suite_v1`
 >   (registre evals, scaffolding) n'a pas passé ≥ 0.90 sur ses 10 catégories.
+> - **Étape 3a** — capacité **`semantic_llm`** implémentée (relecture du transcript de
+>   séance) : prompt **`PROD-ANA-002`**, service `app/services/session_semantic.py`,
+>   route `POST /analysis/sessions/{id}/semantique`. Mêmes gardes que l'étape 2 ;
+>   verbatims fidèles exigés ; gate client = `session_semantic_safety_suite_v1` ≥ 0.90.
+>   Restant (3b) : croisement prosodie/sémantique (`inference_clinique`) + embeddings locaux.
+> - **Activation prod** : `MERLIN_INSIGHTS_ENABLED=true` actif depuis le 2026-07-08
+>   (modèle `MERLIN_INSIGHTS_MODEL`, plafond quotidien `MERLIN_INSIGHTS_DAILY_CAP`).
 
 ---
 

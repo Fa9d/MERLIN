@@ -29,7 +29,7 @@ from app.models.client import Client
 from app.models.enums import AppRole
 from app.models.session import SessionRecord
 from app.schemas.common import MerlinSchema
-from app.services import capability_gate, journal_semantic, prosody
+from app.services import capability_gate, journal_semantic, prosody, session_semantic
 
 logger = logging.getLogger("merlin.analysis")
 
@@ -170,6 +170,70 @@ async def run_journal_synthesis(
         "Synthèse journal produite (séance %s, par %s, %s entrées).",
         session_id, current_user.id, n_entries,
     )
+    return _to_read(result)
+
+
+@router.post("/sessions/{session_id}/semantique", response_model=AnalysisResultRead)
+async def run_session_semantic(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_practitioner_or_operator()),
+) -> AnalysisResultRead:
+    """Synthèse sémantique du transcript de la séance (étape 3a).
+
+    Gardes : capacité `semantic_llm` active pour le profil, praticien ASSIGNÉ,
+    transcript présent, interrupteur LLM. Sortie stockée en `hypothese`.
+    """
+    if not settings.insights_enabled:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Analyses LLM désactivées (MERLIN_INSIGHTS_ENABLED).",
+        )
+    profile = capability_gate.profile_for_user(db, current_user)
+    if not capability_gate.is_capability_enabled(db, profile, "semantic_llm"):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Capacité semantic_llm désactivée pour votre profil.",
+        )
+    record = db.get(SessionRecord, session_id)
+    if record is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
+    if (
+        current_user.role == AppRole.practitioner
+        and not is_admin(current_user)
+        and record.praticien_id != current_user.id
+    ):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Cette séance n'est pas assignée à ce praticien.",
+        )
+
+    try:
+        payload = await session_semantic.synthesize_session(db, record)
+    except session_semantic.SessionSemanticError as exc:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(exc)) from exc
+    except session_semantic.Loi21ViolationError as exc:
+        logger.warning("session_semantic bloqué par le filtre Loi 21 (séance %s).", session_id)
+        raise HTTPException(
+            status.HTTP_502_BAD_GATEWAY,
+            "Synthèse refusée par le filtre de vocabulaire (Loi 21) — réessayer.",
+        ) from exc
+    except session_semantic.BehavioralInsightsError as exc:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
+
+    result = AnalysisResult(
+        capability="semantic_llm",
+        sensitivity=AnalysisSensitivity.hypothese,
+        client_id=record.client_id,
+        session_id=record.id,
+        engine_version=session_semantic.ENGINE_VERSION,
+        payload_json=json.dumps(payload, ensure_ascii=False),
+        created_by_user_id=current_user.id,
+    )
+    db.add(result)
+    db.commit()
+    db.refresh(result)
+    logger.info("Synthèse sémantique produite (séance %s, par %s).", session_id, current_user.id)
     return _to_read(result)
 
 

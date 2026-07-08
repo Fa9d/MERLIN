@@ -32,6 +32,7 @@ _PROMPT_PATHS: dict[str, str] = {
     "PROD-PROF-001": "06_profilage/PROMPT_quiz_amour_narratif_v1.md",
     "PROD-PROF-002": "06_profilage/PROMPT_insights_comportementaux_v1.md",
     "PROD-ANA-001": "07_analyses/PROMPT_synthese_journal_v1.md",
+    "PROD-ANA-002": "07_analyses/PROMPT_synthese_seance_v1.md",
 }
 
 _PROMPT_CACHE: dict[str, str] = {}

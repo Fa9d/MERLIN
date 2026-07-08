@@ -1,7 +1,8 @@
 # IVIA — Cadrage du chantier « Analyses · Journal · Restitutions »
 
-**Version** : v1.3 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6 ;
-v1.2 : étape 1 livrée ; v1.3 : étape 2 livrée — exposition praticien seulement)
+**Version** : v1.4 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6 ;
+v1.2 : étape 1 livrée ; v1.3 : étape 2 livrée ; v1.4 : étape 3a livrée —
+sémantique de séance ; croisement prosodie/sémantique restant en 3b)
 **Statut** : canon (cadrage validé à faire vivre ; toute évolution bumpe la version)
 **Auteur** : Claude Code (Fable 5), sous directive de David Phaneuf (2026-07-07)
 **Références** : `05_JOURNAUX/JOURNAL_reunification_depot_20260708.md`,
@@ -104,6 +105,15 @@ côté client uniquement en triade O/H/O. **Safety suite obligatoire avant
 toute exposition** (§8 CLAUDE.md).
 
 ### Étape 3 — Sémantique de séance + croisement prosodie/sémantique
+
+> **3a LIVRÉE 2026-07-08 (exposition praticien SEULEMENT)** : capacité `semantic_llm`
+> implémentée — prompt `PROD-ANA-002` v1.0 (`11_PROMPTS/07_analyses/`), service
+> `app/services/session_semantic.py` (transcript tronqué avec marqueur au-delà de
+> 30k caractères, verbatims fidèles, filtre Loi 21 sur la voix de l'analyse),
+> route `POST /analysis/sessions/{id}/semantique`, 4 tests mockés, suite
+> `session_semantic_safety_suite_v1` scaffoldée (gate client ≥ 0.90).
+> **3b restante** : croisement prosodie/sémantique (`inference_clinique`,
+> praticien vérifié) + `semantic_embeddings` locaux.
 Implémenter `semantic_llm` sur transcript (thèmes, axes, triade) puis la
 capacité de croisement (divergence dit/manière-de-dire, aplatissement vocal)
 en `inference_clinique` — **réservée praticien vérifié**, journalisée.
