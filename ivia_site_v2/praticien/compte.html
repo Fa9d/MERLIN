@@ -5,7 +5,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <script src="/shared/session.js?v=20260617e"></script>
   <script>requireAuth();</script>
-  <script src="/shared/mock_praticien.js"></script>
+  <script src="/shared/api.js?v=20260707b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -77,25 +77,17 @@
       <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
         <h2 class="font-heading text-base font-semibold text-ink mb-5">Informations personnelles</h2>
         <div class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="field-label" for="cp-prenom">Prénom</label>
-              <input id="cp-prenom" type="text" class="field-input" value="Marie">
-            </div>
-            <div>
-              <label class="field-label" for="cp-nom">Nom</label>
-              <input id="cp-nom" type="text" class="field-input" value="Fontaine">
-            </div>
+          <div>
+            <label class="field-label" for="cp-nom-affiche">Nom affiché</label>
+            <input id="cp-nom-affiche" type="text" class="field-input" placeholder="Chargement…">
+            <p class="text-xs text-muted mt-1.5">C'est le nom que voient vos clients et l'équipe IVIA.</p>
           </div>
           <div>
             <label class="field-label" for="cp-courriel">Courriel</label>
-            <input id="cp-courriel" type="email" class="field-input" value="marie.fontaine@ivia.ca">
+            <input id="cp-courriel" type="email" class="field-input bg-surface" disabled>
+            <p class="text-xs text-muted mt-1.5">Le courriel est votre identifiant de connexion. Pour le changer, écrivez-nous à <a href="mailto:info@ivia.quebec" class="underline text-forest-deep">info@ivia.quebec</a>.</p>
           </div>
-          <div>
-            <label class="field-label" for="cp-tel">Téléphone <span class="font-normal text-muted">(optionnel)</span></label>
-            <input id="cp-tel" type="tel" class="field-input" placeholder="514 000-0000">
-          </div>
-          <button onclick="saveToast('Informations enregistrées')"
+          <button id="btn-save-infos" onclick="saveInfos(this)"
                   class="border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
             Enregistrer
           </button>
@@ -118,7 +110,7 @@
             <label class="field-label" for="cp-mdp-confirm">Confirmer le nouveau mot de passe</label>
             <input id="cp-mdp-confirm" type="password" class="field-input" placeholder="••••••••">
           </div>
-          <button onclick="saveToast('Mot de passe mis à jour')"
+          <button id="btn-save-mdp" onclick="changerMotDePasse(this)"
                   class="border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
             Modifier le mot de passe
           </button>
@@ -128,30 +120,10 @@
       <!-- Coordonnées bancaires (facturation) -->
       <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
         <h2 class="font-heading text-base font-semibold text-ink mb-1">Coordonnées de virement</h2>
-        <p class="text-xs text-muted mb-5">Vos revenus sont versés automatiquement tous les 15 jours via virement bancaire sécurisé.</p>
-        <div class="space-y-4">
-          <div>
-            <label class="field-label" for="cp-institution">Institution financière</label>
-            <input id="cp-institution" type="text" class="field-input" placeholder="ex. Desjardins, RBC, BMO…">
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="field-label" for="cp-transit">Numéro de transit</label>
-              <input id="cp-transit" type="text" class="field-input" placeholder="5 chiffres">
-            </div>
-            <div>
-              <label class="field-label" for="cp-compte-bq">Numéro de compte</label>
-              <input id="cp-compte-bq" type="text" class="field-input" placeholder="7–12 chiffres">
-            </div>
-          </div>
-          <div class="flex items-start gap-2 text-xs text-muted bg-surface rounded-[12px] px-4 py-3">
-            <svg class="w-4 h-4 text-forest-deep shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            <span>Ces informations sont chiffrées et ne sont jamais accessibles à d'autres utilisateurs.</span>
-          </div>
-          <button onclick="saveToast('Coordonnées bancaires enregistrées')"
-                  class="border border-bdr text-sm font-medium text-ink px-6 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
-            Enregistrer
-          </button>
+        <p class="text-xs text-muted mb-5">Vos revenus vous sont versés par virement bancaire.</p>
+        <div class="flex items-start gap-2 text-sm text-muted bg-surface rounded-[12px] px-4 py-3.5">
+          <svg class="w-4 h-4 text-forest-deep shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>Les versements sont configurés directement avec l'équipe IVIA pour l'instant. Écrivez à <a href="mailto:info@ivia.quebec" class="underline text-forest-deep">info@ivia.quebec</a> pour transmettre ou modifier vos coordonnées bancaires. La saisie en ligne sécurisée arrive avec le module de versements automatisés.</span>
         </div>
       </section>
 
@@ -204,7 +176,7 @@
       <!-- Zone de danger -->
       <section class="border border-red-200 rounded-[24px] p-7 bg-red-50">
         <h2 class="font-heading text-base font-semibold text-red-800 mb-1">Zone critique</h2>
-        <p class="text-xs text-red-700 mb-5">Ces actions sont irréversibles. Vos données et vos livraisons en attente seront définitivement supprimées.</p>
+        <p class="text-xs text-red-700 mb-5">La fermeture d'un compte praticien·ne est traitée par un humain — vos livraisons en attente et vos données sont vérifiées avec vous avant toute suppression.</p>
         <button onclick="confirmFermer()"
                 class="border border-red-300 bg-white text-sm font-medium text-red-700 px-6 py-2.5 rounded-[12px] hover:bg-red-100 transition-colors cursor-pointer">
           Fermer mon compte praticien·ne
@@ -238,34 +210,70 @@
   <div id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ── Pre-remplissage ───────────────────────────────────────────────────────
-    (function () {
-      const u = (typeof getCurrentUser === 'function' && getCurrentUser()) ||
-                (typeof getMockPratUser === 'function' && getMockPratUser()) || {};
-      if (u.prenom && document.getElementById('cp-prenom')) document.getElementById('cp-prenom').value = u.prenom;
-      if (u.nom    && document.getElementById('cp-nom'))    document.getElementById('cp-nom').value    = u.nom;
-      if ((u.email || u.courriel) && document.getElementById('cp-courriel'))
-        document.getElementById('cp-courriel').value = u.email || u.courriel;
+    // ── Pré-remplissage réel (auth/me + profil praticien) ────────────────────
+    (async function () {
+      try {
+        const me = await apiMe();
+        if (me.email) document.getElementById('cp-courriel').value = me.email;
+        if (me.display_name) document.getElementById('cp-nom-affiche').value = me.display_name;
+      } catch (e) { /* session expirée : requireAuth aura déjà redirigé */ }
+      try {
+        const p = await getMyProfil();
+        if (p.display_name) document.getElementById('cp-nom-affiche').value = p.display_name;
+      } catch (e) { /* profil praticien indisponible */ }
+      // Consentements : préférences locales
+      ['n2', 'n3'].forEach(k => {
+        const saved = localStorage.getItem('ivia_consent_' + k);
+        if (saved !== null) {
+          document.getElementById('toggle-' + k).classList.toggle('on', saved === '1');
+        }
+      });
     })();
 
     function saveToast(msg) {
       const t = document.getElementById('toast');
-      t.textContent = msg + ' ✓';
+      t.textContent = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    async function saveInfos(btn) {
+      const nom = document.getElementById('cp-nom-affiche').value.trim();
+      if (!nom) { saveToast('Le nom affiché ne peut pas être vide.'); return; }
+      btn.disabled = true;
+      try {
+        await updateMyProfil({ display_name: nom });
+        saveToast('Informations enregistrées ✓');
+      } catch (e) {
+        saveToast(e.message || "L'enregistrement a échoué.");
+      } finally { btn.disabled = false; }
+    }
+
+    async function changerMotDePasse(btn) {
+      const actuel = document.getElementById('cp-mdp-actuel').value;
+      const nouveau = document.getElementById('cp-mdp-new').value;
+      const confirme = document.getElementById('cp-mdp-confirm').value;
+      if (nouveau.length < 8) { saveToast('Le nouveau mot de passe doit avoir au moins 8 caractères.'); return; }
+      if (nouveau !== confirme) { saveToast('Les deux mots de passe ne correspondent pas.'); return; }
+      btn.disabled = true;
+      try {
+        await apiSetPassword(nouveau, actuel || null);
+        saveToast('Mot de passe mis à jour ✓');
+        ['cp-mdp-actuel', 'cp-mdp-new', 'cp-mdp-confirm'].forEach(id => document.getElementById(id).value = '');
+      } catch (e) {
+        saveToast(e.message || 'Le changement de mot de passe a échoué.');
+      } finally { btn.disabled = false; }
     }
 
     function toggleConsent(btn, key) {
       btn.classList.toggle('on');
       const on = btn.classList.contains('on');
-      saveToast(on ? 'Consentement activé' : 'Consentement retiré');
+      localStorage.setItem('ivia_consent_' + key, on ? '1' : '0');
+      saveToast(on ? 'Consentement activé (préférence enregistrée sur cet appareil)' : 'Consentement retiré (préférence enregistrée sur cet appareil)');
     }
 
     function confirmFermer() {
-      const ok = window.confirm('Êtes-vous certain·e de vouloir fermer votre compte praticien·ne ?\n\nCette action est irréversible.');
-      if (ok) {
-        window.location.href = '/';
-      }
+      window.alert("Pour fermer votre compte praticien·ne, écrivez-nous à info@ivia.quebec.\n\nUn humain traite chaque fermeture : nous confirmons avec vous le sort de vos livraisons en attente et la suppression de vos données (Loi 25).");
     }
   </script>
 </body>
