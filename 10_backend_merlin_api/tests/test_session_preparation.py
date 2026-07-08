@@ -58,11 +58,18 @@ def _mk_user(db, email: str, role: AppRole) -> AppUser:
 
 @pytest.fixture()
 def ctx() -> dict:
-    """Client + praticien assigné + 2 séances + intention + entrée de journal."""
+    """Client + praticien assigné + 2 séances + intention + entrée de journal.
+
+    Emails uniques par test : en CI (Postgres), la fixture ``reset_app_users`` ne
+    peut pas purger app_users (FK depuis sessions) — on évite toute collision.
+    """
+    from uuid import uuid4
+
+    tag = uuid4().hex[:8]
     db = SessionLocal()
-    praticien = _mk_user(db, "prep-praticien@example.com", AppRole.practitioner)
-    autre = _mk_user(db, "prep-autre-praticien@example.com", AppRole.practitioner)
-    client_user = _mk_user(db, "prep-client@example.com", AppRole.public_client)
+    praticien = _mk_user(db, f"prep-praticien-{tag}@example.com", AppRole.practitioner)
+    autre = _mk_user(db, f"prep-autre-{tag}@example.com", AppRole.practitioner)
+    client_user = _mk_user(db, f"prep-client-{tag}@example.com", AppRole.public_client)
 
     client = Client(first_name_or_alias="Client Préparation")
     db.add(client)
