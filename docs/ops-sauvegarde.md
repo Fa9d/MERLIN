@@ -112,5 +112,8 @@ rm -f /tmp/restore_test.sql
   Dernier test réussi : **2026-07-08** (dump de la nuit → base jetable, head Alembic et
   comptes conformes, archive audios intacte, < 2 min). Voir
   `05_JOURNAUX/JOURNAL_test_restauration_20260708.md`.
-- ⚠ **État 2026-07-08 : hors-site NON configuré** (variables OVH vides dans `.env.prod`) —
-  les sauvegardes chiffrées vivent sur le même disque que la prod. Item M23 du plan delivery.
+- **Hors-site ACTIF depuis le 2026-07-08** : bucket S3 `merlin-backups`, OVH Object
+  Storage région **BHS (Beauharnois, Québec)**, utilisateur OVH `user-4gsxAcgywHpv`.
+  Premier envoi vérifié le jour même (db + recordings chiffrés). Le bucket accumule
+  sans limite pour l'instant — prévoir une règle de cycle de vie (~90 jours) quand
+  le volume le justifiera.

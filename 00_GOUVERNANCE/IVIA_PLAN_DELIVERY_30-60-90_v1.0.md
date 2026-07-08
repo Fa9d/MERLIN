@@ -50,7 +50,7 @@
 | M20 | Runbook incident/rollback répété à blanc (< 10 min) | P1 | M | à faire (dép. M0, M1) |
 | M21 | README onboarding < 10 min | P2 | S | à faire |
 | M22 | Safety evals bloquantes en CI si `11_PROMPTS/**` touché | P1 | L | à faire (secret ANTHROPIC_API_KEY requis) |
-| M23 | **Hors-site OVH S3 : NON configuré** (découvert au test M5 — sauvegardes sur le même disque que la prod) | P0 | S | **en attente David** (bucket OVH BHS + 5 variables `.env.prod`, vérifier l'upload au cron suivant) |
+| M23 | Hors-site OVH S3 (découvert au test M5) | P0 | S | **livré 2026-07-08** — bucket `merlin-backups` BHS (Québec), premier envoi chiffré vérifié (db 66 Ko + audios 27 Mo) |
 
 **Ordre strict restant** : M0 → M1 → M6 → M14 → M5 → M15 → M11 → M12 → M13 → M20 →
 M9 → M10 → M17 → M16 → M22 → M18 → M21 → M19.
