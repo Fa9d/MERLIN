@@ -30,6 +30,8 @@ def load_models() -> None:
     import app.models.session_temporal_anchor  # noqa: F401
     import app.models.behavioral_profile  # noqa: F401
     import app.models.appointment  # noqa: F401
+    import app.models.session_type  # noqa: F401
+    import app.models.exercise  # noqa: F401
 
 
 def init_models() -> None:

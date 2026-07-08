@@ -430,13 +430,21 @@ def _coerce_next_step_type(value: str | None) -> AnalysisNextStepCode | None:
 
 
 async def run_auto_session_analyses(session_id: str, audio_file_path: str) -> None:
-    """Analyses automatiques post-transcription (prosodie locale, Loi 25).
+    """Analyses automatiques post-transcription.
 
-    Le moteur produit toujours tout (architecture « moteur plein / vannes par
-    profil ») : la production est systématique, l'exposition reste filtrée à la
-    lecture par ``capability_gate``. Idempotent : une seule sortie prosodique
-    par séance. Dégradation propre si librosa absent.
+    1) Prosodie locale : systématique (gratuite, Loi 25 — l'audio ne sort pas).
+    2) Synthèse sémantique : seulement si le TYPE de séance le demande
+       (``auto_run`` dans l'Atelier des lectures) et si l'interrupteur LLM est actif.
+
+    Le moteur produit, l'exposition reste filtrée à la lecture par
+    ``capability_gate``. Idempotent par capacité ; chaque étage se dégrade
+    proprement sans bloquer l'autre.
     """
+    await _auto_prosody(session_id, audio_file_path)
+    await _auto_session_semantic(session_id)
+
+
+async def _auto_prosody(session_id: str, audio_file_path: str) -> None:
     if not prosody.prosody_disponible():
         logger.info(
             "Analyse prosodique ignoree pour %s : librosa non installe.", session_id
@@ -475,6 +483,51 @@ async def run_auto_session_analyses(session_id: str, audio_file_path: str) -> No
         )
         db.commit()
         logger.info("Analyse prosodique automatique produite (seance %s).", session_id)
+
+
+async def _auto_session_semantic(session_id: str) -> None:
+    """Synthèse sémantique auto — gouvernée par la matrice type×capacité."""
+    if not settings.insights_enabled:
+        return
+    from app.services import capability_gate, session_semantic
+
+    with SessionLocal() as db:
+        record = db.get(SessionRecord, session_id)
+        if record is None or not (record.transcript_text or "").strip():
+            return
+        autos = capability_gate.auto_run_capabilities_for_session_type(
+            db, record.session_type_code
+        )
+        if "semantic_llm" not in autos:
+            return
+        existing = db.scalar(
+            select(AnalysisResult).where(
+                AnalysisResult.session_id == session_id,
+                AnalysisResult.capability == "semantic_llm",
+            )
+        )
+        if existing is not None:
+            return
+        try:
+            payload = await session_semantic.synthesize_session(db, record)
+        except Exception as exc:  # pipeline auto : ne bloque jamais le reste
+            logger.warning(
+                "Synthese semantique auto impossible pour %s : %s", session_id, exc
+            )
+            return
+        db.add(
+            AnalysisResult(
+                capability="semantic_llm",
+                sensitivity=AnalysisSensitivity.hypothese,
+                client_id=record.client_id,
+                session_id=record.id,
+                engine_version=session_semantic.ENGINE_VERSION,
+                payload_json=json.dumps(payload, ensure_ascii=False),
+                created_by_user_id=None,  # pipeline automatique
+            )
+        )
+        db.commit()
+        logger.info("Synthese semantique automatique produite (seance %s).", session_id)
 
 
 async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> None:

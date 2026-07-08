@@ -741,3 +741,43 @@ async function adminUpdateCredential(id, payload) {
 async function apiSessionPreparation(sessionId) {
   return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/preparation');
 }
+
+/** Atelier des lectures — types de séance × capacités d'analyse (admin). */
+async function adminListSessionTypes() {
+  return _req('/api/v1/admin/analysis/session-types');
+}
+async function adminCreateSessionType(payload) {
+  return _req('/api/v1/admin/analysis/session-types', { method: 'POST', body: payload });
+}
+async function adminPatchSessionType(code, payload) {
+  return _req('/api/v1/admin/analysis/session-types/' + encodeURIComponent(code), { method: 'PATCH', body: payload });
+}
+async function adminPatchSessionTypeCapability(code, payload) {
+  return _req('/api/v1/admin/analysis/session-types/' + encodeURIComponent(code) + '/capabilities', { method: 'PATCH', body: payload });
+}
+
+/** Exercices — catalogue (admin), proposition (praticien), cheminement (client). */
+async function adminListExercises() {
+  return _req('/api/v1/admin/exercises');
+}
+async function adminCreateExercise(payload) {
+  return _req('/api/v1/admin/exercises', { method: 'POST', body: payload });
+}
+async function adminPatchExercise(id, payload) {
+  return _req('/api/v1/admin/exercises/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
+}
+async function listActiveExercises() {
+  return _req('/api/v1/exercises');
+}
+async function proposeExercise(payload) {
+  return _req('/api/v1/exercises/propose', { method: 'POST', body: payload });
+}
+async function listSessionExercises(sessionId) {
+  return _req('/api/v1/exercises/session/' + encodeURIComponent(sessionId));
+}
+async function listMyExercises() {
+  return _req('/api/v1/me/exercises');
+}
+async function updateMyExercise(id, payload) {
+  return _req('/api/v1/me/exercises/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
+}

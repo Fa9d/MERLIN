@@ -75,6 +75,10 @@ def run_prosody(
     record = db.get(SessionRecord, session_id)
     if record is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
+    if not capability_gate.is_enabled_for_session_type(db, record.session_type_code, "prosody_local"):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN, "Capacité prosody_local désactivée pour ce type de séance."
+        )
     if not record.audio_file_path or not os.path.exists(record.audio_file_path):
         raise HTTPException(status.HTTP_409_CONFLICT, "Aucun fichier audio pour cette séance.")
 
@@ -133,6 +137,11 @@ async def run_journal_synthesis(
         raise HTTPException(
             status.HTTP_403_FORBIDDEN,
             "Cette séance n'est pas assignée à ce praticien.",
+        )
+    if not capability_gate.is_enabled_for_session_type(db, record.session_type_code, "journal_semantic"):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Capacité journal_semantic désactivée pour ce type de séance.",
         )
     if not journal_semantic.journal_consent_active(db, record.client_id):
         raise HTTPException(
@@ -206,6 +215,11 @@ async def run_session_semantic(
         raise HTTPException(
             status.HTTP_403_FORBIDDEN,
             "Cette séance n'est pas assignée à ce praticien.",
+        )
+    if not capability_gate.is_enabled_for_session_type(db, record.session_type_code, "semantic_llm"):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Capacité semantic_llm désactivée pour ce type de séance.",
         )
 
     try:

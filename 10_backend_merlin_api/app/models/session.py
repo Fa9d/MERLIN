@@ -62,6 +62,11 @@ class SessionRecord(Base):
     praticien_id: Mapped[str | None] = mapped_column(
         ForeignKey("app_users.id"), nullable=True, index=True
     )
+    # Type de séance (Atelier des lectures) — gouverne les capacités d'analyse
+    # applicables. NULL = pas de restriction par type (défaut permissif).
+    session_type_code: Mapped[str | None] = mapped_column(
+        ForeignKey("session_types.code", ondelete="SET NULL"), nullable=True
+    )
     session_status_code: Mapped[SessionStatusCode] = mapped_column(
         Enum(SessionStatusCode, native_enum=False),
         nullable=False,

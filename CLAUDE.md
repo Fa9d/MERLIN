@@ -469,6 +469,23 @@ app/
 >   Restant (3b) : croisement prosodie/sémantique (`inference_clinique`) + embeddings locaux.
 > - **Activation prod** : `MERLIN_INSIGHTS_ENABLED=true` actif depuis le 2026-07-08
 >   (modèle `MERLIN_INSIGHTS_MODEL`, plafond quotidien `MERLIN_INSIGHTS_DAILY_CAP`).
+> - **Atelier des lectures** (migration `20260708_0051`) — 3e dimension de la vanne :
+>   **types de séance** administrables (`session_types`, 3 semés : ecoute/suivi/express)
+>   × capacités (`session_type_capabilities` : `enabled` permet, `auto_run` déclenche
+>   automatiquement après transcription — hook `livekit_audio.run_auto_session_analyses`).
+>   `sessions.session_type_code` nullable, **défaut permissif** (sans type/ligne = permis,
+>   pas d'auto). Le type RAFFINE la vanne profil×capacité, ne la contourne jamais.
+>   Console : `admin/lectures.html` + `/admin/analysis/session-types` [require_admin].
+>   Toute nouvelle technique d'analyse entre par la voie gouvernée : catalogue +
+>   prompt versionné + safety suite ≥ 0.90 + security-review (voir la page elle-même).
+> - **Exercices** (migration `20260708_0052`) — catalogue administrable (`exercises`,
+>   3 semés, consignes humaines filtrées Loi 21 à l'écriture) + propositions
+>   praticien→client (`client_exercises` : propose→en_cours→termine/abandonne,
+>   note de vécu). **Invitation, jamais prescription** — « abandonné » est un choix.
+>   Routes `app/api/routes/exercises.py` : `/admin/exercises` [require_admin],
+>   `/exercises*` [praticien assigné], `/me/exercises*` [client, son dossier seul].
+>   UI : Atelier des lectures (admin), bloc Exercices dans `praticien/preparation.html`,
+>   page client `client/mes-exercices.html` (menu + footer).
 
 ---
 

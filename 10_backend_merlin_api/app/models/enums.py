@@ -292,6 +292,14 @@ class IntentionStatusCode(str, Enum):
     abandonnee = "abandonnee"
 
 
+class ExerciseStatusCode(str, Enum):
+    """Cheminement d'un exercice proposé au client (jamais une prescription)."""
+    propose   = "propose"    # proposé par le praticien, en attente
+    en_cours  = "en_cours"   # le client l'a commencé
+    termine   = "termine"    # complété (le journal peut porter le vécu)
+    abandonne = "abandonne"  # écarté — un choix du client, pas un échec
+
+
 class AuthoredByCode(str, Enum):
     client       = "client"
     practitioner = "practitioner"

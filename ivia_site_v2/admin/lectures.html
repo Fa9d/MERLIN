@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier des lectures — Admin IVIA</title>
+  <script src="/shared/session.js?v=20260708a"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260708a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .badge{font-size:10px;font-weight:700;text-transform:uppercase;border-radius:9999px;padding:2px 8px;display:inline-block;}
+    .fld{border:1.5px solid #D4E8D0;border-radius:10px;padding:8px 12px;font-size:13px;background:#fff;outline:none;width:100%;}
+    .sw{position:relative;display:inline-block;width:38px;height:22px;flex-shrink:0;}
+    .sw input{opacity:0;width:0;height:0;}
+    .sw .tr{position:absolute;cursor:pointer;inset:0;background:#CBD5D1;border-radius:9999px;transition:.15s;}
+    .sw .tr:before{content:"";position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s;}
+    .sw input:checked + .tr{background:#2D6A4F;}
+    .sw input:checked + .tr:before{transform:translateX(16px);}
+    .sw input:disabled + .tr{opacity:.4;cursor:wait;}
+    .sw.mini{width:30px;height:18px;}
+    .sw.mini .tr:before{height:12px;width:12px;}
+    .sw.mini input:checked + .tr:before{transform:translateX(12px);}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside id="admin-sidebar" class="hidden lg:flex"></aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1100px] space-y-8">
+      <div>
+        <h1 class="font-heading text-2xl font-bold text-ink">L'Atelier des lectures</h1>
+        <p class="text-sm text-muted mt-1">
+          Chaque <strong>type de séance</strong> définit quelles lectures s'appliquent à la rencontre :
+          <strong>permise</strong> (le praticien peut la demander) et <strong>auto</strong> (elle se déclenche
+          d'elle-même après transcription). Le type <em>raffine</em> la vanne par profil — il ne la contourne jamais.
+          Une séance sans type n'est pas restreinte.
+        </p>
+      </div>
+
+      <div id="err" class="hidden bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl p-4"></div>
+
+      <!-- ── Types de séance ─────────────────────────────────────────────── -->
+      <section id="types-wrap" class="space-y-5">
+        <p class="text-sm text-muted">Chargement…</p>
+      </section>
+
+      <!-- ── Nouveau type ────────────────────────────────────────────────── -->
+      <section class="bg-white border border-bdr rounded-[20px] p-5 max-w-xl">
+        <h2 class="font-heading text-lg font-bold text-ink mb-3">Nouveau type de séance</h2>
+        <div class="space-y-3">
+          <input id="nt-code" class="fld" placeholder="code (slug, ex. suivi_long)">
+          <input id="nt-label" class="fld" placeholder="Nom affiché (ex. Suivi long format)">
+          <input id="nt-desc" class="fld" placeholder="Description courte (optionnel)">
+          <button id="nt-btn" class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[10px] hover:bg-forest transition-colors">Créer le type</button>
+          <p id="nt-msg" class="text-xs text-muted"></p>
+        </div>
+      </section>
+
+      <!-- ── Exercices ───────────────────────────────────────────────────── -->
+      <section>
+        <h2 class="font-heading text-lg font-bold text-ink mb-1">Exercices</h2>
+        <p class="text-sm text-muted mb-3">
+          Pratiques sobres que le praticien peut <strong>proposer</strong> à un client en fin de séance —
+          une invitation, jamais une prescription. Les consignes sont rédigées ici, dans le vocabulaire
+          autorisé (le filtre Loi 21 refuse tout terme interdit).
+        </p>
+        <div id="ex-list" class="space-y-3"><p class="text-sm text-muted">Chargement…</p></div>
+
+        <div class="bg-white border border-bdr rounded-[20px] p-5 mt-4 max-w-xl">
+          <h3 class="font-heading text-base font-bold text-ink mb-3">Nouvel exercice</h3>
+          <div class="space-y-3">
+            <input id="ex-code" class="fld" placeholder="code (slug, ex. respiration_ancrage)">
+            <input id="ex-title" class="fld" placeholder="Titre (ex. Respiration d'ancrage — 3 minutes)">
+            <textarea id="ex-instr" class="fld" rows="4" placeholder="Consignes pour le client (10 à 2000 caractères, ton d'invitation)"></textarea>
+            <input id="ex-dim" class="fld" placeholder="Axe MERLIN (optionnel : territoire, corps, emotions…)">
+            <button id="ex-btn" class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[10px] hover:bg-forest transition-colors">Ajouter au catalogue</button>
+            <p id="ex-msg" class="text-xs text-muted"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Proposer une technique ──────────────────────────────────────── -->
+      <section class="bg-surface border border-bdr rounded-[20px] p-5">
+        <h2 class="font-heading text-lg font-bold text-ink mb-2">Proposer une nouvelle technique d'analyse</h2>
+        <p class="text-sm text-muted leading-relaxed">
+          Toute nouvelle lecture (sémantique, prosodique, comportementale, psychologique…) entre par la
+          <strong>voie gouvernée</strong> — jamais par un simple bouton :
+          ① une entrée au catalogue (<code class="text-xs">capability_gate.py</code>, sensibilité + sortie-serveur déclarées) ·
+          ② un prompt versionné dans <code class="text-xs">11_PROMPTS/07_analyses/</code> (triade O/H/O, vocabulaire Loi 21, escalade) ·
+          ③ une <strong>safety suite</strong> au registre (≥ 0.90 exigé avant toute exposition client) ·
+          ④ une security-review avant fusion.
+          C'est ce qui distingue un outil d'écoute d'un gadget de lecture de l'autre.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (async function () {
+      renderAdminSidebar();
+      if (typeof enforceAdminPage === 'function') enforceAdminPage();
+
+      const err = document.getElementById('err');
+      const wrap = document.getElementById('types-wrap');
+      const esc = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+      let CAPS = null;   // catalogue (labels, data_leaves_server) via matrice profils
+
+      function capLabel(code) {
+        const c = CAPS && CAPS.capabilities && CAPS.capabilities[code];
+        return c ? c.label : code;
+      }
+      function capLeaves(code) {
+        const c = CAPS && CAPS.capabilities && CAPS.capabilities[code];
+        return !!(c && c.data_leaves_server);
+      }
+
+      function renderType(t) {
+        const rows = Object.entries(t.capabilities).map(([code, st]) => `
+          <tr class="border-t border-bdr">
+            <td class="py-2 pr-3 text-sm">
+              ${esc(capLabel(code))}
+              ${capLeaves(code) ? '<span class="badge bg-amber-50 text-amber-700 border border-amber-200 ml-1">sort du serveur</span>' : ''}
+            </td>
+            <td class="py-2 px-3 text-center">
+              <label class="sw mini"><input type="checkbox" data-t="${esc(t.code)}" data-c="${esc(code)}" data-k="enabled" ${st.enabled ? 'checked' : ''}><span class="tr"></span></label>
+            </td>
+            <td class="py-2 px-3 text-center">
+              <label class="sw mini"><input type="checkbox" data-t="${esc(t.code)}" data-c="${esc(code)}" data-k="auto_run" ${st.auto_run ? 'checked' : ''} ${st.enabled ? '' : 'disabled'}><span class="tr"></span></label>
+            </td>
+          </tr>`).join('');
+        return `
+          <div class="bg-white border border-bdr rounded-[20px] p-5">
+            <div class="flex items-start justify-between gap-3 flex-wrap">
+              <div>
+                <h3 class="font-heading text-base font-bold text-ink">${esc(t.label)}
+                  <span class="badge bg-surface text-muted border border-bdr ml-1">${esc(t.code)}</span>
+                  ${t.active ? '' : '<span class="badge bg-red-50 text-red-600 border border-red-200 ml-1">inactif</span>'}
+                </h3>
+                <p class="text-xs text-muted mt-1">${esc(t.description || '')}</p>
+              </div>
+            </div>
+            <table class="w-full mt-3">
+              <thead><tr class="text-[11px] uppercase tracking-wide text-muted">
+                <th class="text-left pb-1">Lecture</th><th class="pb-1 px-3">Permise</th><th class="pb-1 px-3">Auto</th>
+              </tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>`;
+      }
+
+      async function refresh() {
+        try {
+          const [caps, types] = await Promise.all([
+            adminAnalysisCapabilities(),
+            adminListSessionTypes(),
+          ]);
+          CAPS = caps;
+          wrap.innerHTML = types.map(renderType).join('')
+            || '<p class="text-sm text-muted">Aucun type défini.</p>';
+        } catch (e) {
+          err.textContent = 'Chargement impossible — ' + (e.message || 'erreur inconnue');
+          err.classList.remove('hidden');
+        }
+      }
+
+      wrap.addEventListener('change', async (ev) => {
+        const input = ev.target;
+        if (!input.dataset || !input.dataset.t) return;
+        input.disabled = true;
+        try {
+          const body = { capability: input.dataset.c };
+          body[input.dataset.k] = input.checked;
+          await adminPatchSessionTypeCapability(input.dataset.t, body);
+        } catch (e) {
+          input.checked = !input.checked;  // rollback visuel
+          alert('Refusé : ' + (e.message || 'erreur'));
+        }
+        await refresh();
+      });
+
+      // ── Exercices ────────────────────────────────────────────────────────
+      const exList = document.getElementById('ex-list');
+
+      function renderExercise(x) {
+        return `
+          <div class="bg-white border border-bdr rounded-[16px] p-4 flex items-start justify-between gap-4">
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-ink">${esc(x.title)}
+                <span class="badge bg-surface text-muted border border-bdr ml-1">${esc(x.code)}</span>
+                ${x.dimension ? '<span class="badge bg-surface text-forest border border-bdr ml-1">' + esc(x.dimension) + '</span>' : ''}
+              </p>
+              <p class="text-xs text-muted mt-1 leading-relaxed">${esc(x.instructions)}</p>
+            </div>
+            <label class="sw" title="Actif (proposable par les praticiens)">
+              <input type="checkbox" data-ex="${esc(x.id)}" ${x.active ? 'checked' : ''}><span class="tr"></span>
+            </label>
+          </div>`;
+      }
+
+      async function refreshExercises() {
+        try {
+          const xs = await adminListExercises();
+          exList.innerHTML = xs.map(renderExercise).join('')
+            || '<p class="text-sm text-muted">Catalogue vide.</p>';
+        } catch (e) {
+          exList.innerHTML = '<p class="text-sm text-red-600">Chargement impossible — ' + esc(e.message || 'erreur') + '</p>';
+        }
+      }
+
+      exList.addEventListener('change', async (ev) => {
+        const input = ev.target;
+        if (!input.dataset || !input.dataset.ex) return;
+        input.disabled = true;
+        try { await adminPatchExercise(input.dataset.ex, { active: input.checked }); }
+        catch (e) { input.checked = !input.checked; alert('Refusé : ' + (e.message || 'erreur')); }
+        input.disabled = false;
+      });
+
+      document.getElementById('ex-btn').addEventListener('click', async () => {
+        const msg = document.getElementById('ex-msg');
+        try {
+          await adminCreateExercise({
+            code: document.getElementById('ex-code').value.trim(),
+            title: document.getElementById('ex-title').value.trim(),
+            instructions: document.getElementById('ex-instr').value.trim(),
+            dimension: document.getElementById('ex-dim').value.trim() || null,
+          });
+          msg.textContent = 'Exercice ajouté au catalogue.';
+          ['ex-code', 'ex-title', 'ex-instr', 'ex-dim'].forEach(id => document.getElementById(id).value = '');
+          await refreshExercises();
+        } catch (e) {
+          msg.textContent = 'Refusé : ' + (e.message || 'erreur');
+        }
+      });
+
+      await refreshExercises();
+
+      document.getElementById('nt-btn').addEventListener('click', async () => {
+        const msg = document.getElementById('nt-msg');
+        try {
+          await adminCreateSessionType({
+            code: document.getElementById('nt-code').value.trim(),
+            label: document.getElementById('nt-label').value.trim(),
+            description: document.getElementById('nt-desc').value.trim() || null,
+          });
+          msg.textContent = 'Type créé.';
+          document.getElementById('nt-code').value = '';
+          document.getElementById('nt-label').value = '';
+          document.getElementById('nt-desc').value = '';
+          await refresh();
+        } catch (e) {
+          msg.textContent = 'Refusé : ' + (e.message || 'erreur');
+        }
+      });
+
+      await refresh();
+    })();
+  </script>
+</body>
+</html>

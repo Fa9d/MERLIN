@@ -94,6 +94,7 @@ const ADMIN_NAV = [
   { href: '/admin/comptabilite.html', label: 'Comptabilité' },
   { href: '/admin/facturation.html', label: 'Facturation' },
   { href: '/admin/analyses.html', label: 'Analyses & droits' },
+  { href: '/admin/lectures.html', label: 'Atelier des lectures' },
 ];
 
 /**

@@ -153,6 +153,47 @@ def capability_matrix(db: Session) -> dict[str, dict[str, bool]]:
     }
 
 
+# ── 3e dimension : type de séance (Atelier des lectures) ─────────────────────
+# Défaut PERMISSIF : une séance sans type, ou un couple (type, capacité) sans
+# ligne, n'est pas restreint. Le type RAFFINE la vanne profil×capacité, il ne
+# la contourne jamais (les deux vérifications s'additionnent côté routes).
+
+
+def is_enabled_for_session_type(
+    db: Session, session_type_code: str | None, capability: str
+) -> bool:
+    """Vrai si la capacité est permise pour ce type de séance (défaut : oui)."""
+    if not session_type_code:
+        return True
+    from app.models.session_type import SessionTypeCapability
+
+    row = db.scalar(
+        select(SessionTypeCapability).where(
+            SessionTypeCapability.session_type_code == session_type_code,
+            SessionTypeCapability.capability == capability,
+        )
+    )
+    return True if row is None else bool(row.enabled)
+
+
+def auto_run_capabilities_for_session_type(
+    db: Session, session_type_code: str | None
+) -> list[str]:
+    """Capacités à déclencher automatiquement après transcription pour ce type."""
+    if not session_type_code:
+        return []
+    from app.models.session_type import SessionTypeCapability
+
+    rows = db.execute(
+        select(SessionTypeCapability).where(
+            SessionTypeCapability.session_type_code == session_type_code,
+            SessionTypeCapability.enabled.is_(True),
+            SessionTypeCapability.auto_run.is_(True),
+        )
+    ).scalars()
+    return [r.capability for r in rows if r.capability in CAPABILITIES]
+
+
 # ── Credentials praticiens ────────────────────────────────────────────────────
 def active_credential(db: Session, practitioner_user_id: str) -> PractitionerCredential | None:
     """Credential vérifié et non expiré du praticien, s'il existe."""
