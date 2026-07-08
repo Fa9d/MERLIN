@@ -1,6 +1,6 @@
 # IVIA — Cadrage du chantier « Analyses · Journal · Restitutions »
 
-**Version** : v1.0 — 2026-07-08
+**Version** : v1.1 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6)
 **Statut** : canon (cadrage validé à faire vivre ; toute évolution bumpe la version)
 **Auteur** : Claude Code (Fable 5), sous directive de David Phaneuf (2026-07-07)
 **Références** : `05_JOURNAUX/JOURNAL_reunification_depot_20260708.md`,
@@ -120,9 +120,12 @@ Chaque étape : prompt versionné + evals safety ≥ 0.85 sur les 10 catégories
 Le profil `ivia_quebec_client` a **toutes les capacités actives par défaut en
 phase test**, y compris `emotion_saas` (`data_leaves_server=True`,
 sensibilité `recherche`). Le code le note lui-même : « à réévaluer avant mise
-en marché ». À trancher explicitement avant tout client réel hors pilote —
-recommandation : désactiver `emotion_saas` par défaut pour ce profil dès
-maintenant, un clic dans `/admin/analysis` suffit à la réactiver au besoin.
+en marché ».
+
+**Décision fondateur (2026-07-08)** : recommandation de désactivation
+**refusée** — `emotion_saas` reste active par défaut en phase test. Le point
+de contrôle demeure : réévaluation explicite des capacités
+`data_leaves_server` avant mise en marché / premiers clients hors pilote.
 
 ## 7. Destination et circulation
 

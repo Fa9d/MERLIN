@@ -1,0 +1,17 @@
+# Config gitleaks — filet anti-secrets MERLIN (CI bloquante depuis 2026-07-08).
+# Règles par défaut de gitleaks + liste blanche ci-dessous.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Faux positifs connus"
+paths = [
+  # Corpus historiques archivés (textes du 19e siècle, bibliographies) :
+  # des suites de caractères y ressemblent à des clés par hasard.
+  '''_archives/''',
+  # Gabarits d'environnement : valeurs placeholder, jamais de secrets réels.
+  '''\.env\.example$''',
+  '''\.env\.prod\.example$''',
+]
+regexTarget = "match"

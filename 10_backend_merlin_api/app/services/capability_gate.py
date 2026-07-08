@@ -87,6 +87,7 @@ PROFILES: dict[str, dict] = {
         # Décision fondateur 2026-07-04 : tout actif par défaut en phase test —
         # désactivation en un clic depuis /admin/analysis/capabilities au besoin
         # (à réévaluer avant mise en marché pour les capacités data_leaves_server).
+        # Reconfirmée le 2026-07-08 (emotion_saas reste active par défaut).
         "defaults": {c: True for c in CAPABILITIES},
     },
     "praticien_certifie": {

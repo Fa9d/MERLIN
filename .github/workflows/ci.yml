@@ -1,7 +1,8 @@
 name: CI
 
-# Filet CI MERLIN — lint + tests. Gates BLOQUANTS : ruff (lint) + tests sans DB (unit) +
-# suite complète avec Postgres (full-suite, bloquant depuis le 22 juin 2026).
+# Filet CI MERLIN — lint + tests + sécurité. Gates BLOQUANTS : ruff (lint) + tests sans
+# DB (unit) + suite complète avec Postgres (full-suite, bloquant depuis le 22 juin 2026)
+# + gitleaks (secrets) + pip-audit (CVE dépendances) depuis le 8 juillet 2026.
 # Les safety evals restent scaffolées (job commenté) tant que le secret ANTHROPIC_API_KEY
 # n'est pas fourni — à activer pour faire de la safety suite un gate dur (CLAUDE.md §8.3).
 
@@ -74,6 +75,41 @@ jobs:
         run: alembic upgrade head
       - name: pytest (tout sauf real_api)
         run: python -m pytest -m "not real_api" -o addopts="" -q
+
+  # ── Secrets (BLOQUANT) : gitleaks sur tout l'historique, allowlist .gitleaks.toml ──
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── CVE dépendances (BLOQUANT pour toute NOUVELLE vulnérabilité) ──
+  # Les vulnérabilités listées en --ignore-vuln sont un risque ACCEPTÉ le 2026-07-08
+  # (correctif = bump fastapi/starlette, chantier dédié M17). Retirer les ignores
+  # après le bump. Toute nouvelle CVE non listée casse le build.
+  pip-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pip-audit
+      - name: pip-audit (requirements épinglés)
+        run: >-
+          python -m pip_audit -r requirements.txt --no-deps
+          --ignore-vuln PYSEC-2026-1845
+          --ignore-vuln CVE-2026-53533
+          --ignore-vuln PYSEC-2026-161
+          --ignore-vuln PYSEC-2026-249
+          --ignore-vuln PYSEC-2026-248
+          --ignore-vuln PYSEC-2026-1942
+          --ignore-vuln CVE-2026-48818
+          --ignore-vuln CVE-2026-48817
 
   # ── Safety evals (informatif) : nécessite le secret ANTHROPIC_API_KEY ──
   # Décommenter et fournir le secret pour faire de la safety suite un gate dur
