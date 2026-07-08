@@ -36,6 +36,7 @@ from app.api.routes.practitioner_audio_profiles import router as practitioner_au
 from app.api.routes.referentiels import router as referentiels_router
 from app.api.routes.public_intake import router as public_intake_router
 from app.api.routes.sessions import router as sessions_router
+from app.api.routes.session_preparation import router as session_preparation_router
 from app.api.routes.session_notes import router as session_notes_router
 from app.api.routes.session_temporal_anchors import router as session_temporal_anchors_router
 from app.api.routes.schedules import router as schedules_router
@@ -139,6 +140,7 @@ app.include_router(praticiens_router, prefix=settings.api_v1_prefix)
 app.include_router(referentiels_router, prefix=settings.api_v1_prefix)
 app.include_router(public_intake_router, prefix=settings.api_v1_prefix)
 app.include_router(sessions_router, prefix=settings.api_v1_prefix)
+app.include_router(session_preparation_router, prefix=settings.api_v1_prefix)
 app.include_router(session_notes_router, prefix=settings.api_v1_prefix)
 app.include_router(session_temporal_anchors_router, prefix=settings.api_v1_prefix)
 app.include_router(schedules_router, prefix=settings.api_v1_prefix)

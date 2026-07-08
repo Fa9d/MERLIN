@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/shared/session.js?v=20260617e"></script>
+  <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Préparer l'entretien</title>
+  <script src="/shared/api.js?v=20260708a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
+    .chip{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600;color:#4B6350;}
+  </style>
+</head>
+<body class="antialiased">
+
+  <main class="max-w-3xl mx-auto px-4 py-8">
+
+    <a href="/praticien/agenda.html" class="text-sm text-forest font-semibold hover:underline">← Agenda</a>
+
+    <header class="mt-3 mb-6">
+      <h1 class="text-2xl font-bold text-ink">Préparer l'entretien</h1>
+      <p id="head-sub" class="text-sm text-muted mt-1">Chargement du dossier…</p>
+    </header>
+
+    <div id="err" class="hidden card border-red-200 bg-red-50 text-sm text-red-700 mb-6"></div>
+
+    <div id="dossier" class="hidden space-y-5">
+
+      <!-- Fil à reprendre (dernière note validée) -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-3">Le fil à reprendre</h2>
+        <div id="note-vide" class="hidden text-sm text-muted">Aucune note validée pour l'instant — première rencontre ou notes en attente de validation.</div>
+        <div id="note" class="hidden space-y-3">
+          <p id="note-resume" class="text-sm leading-relaxed"></p>
+          <div id="note-focus-wrap" class="hidden bg-surface border border-bdr rounded-xl p-3">
+            <p class="text-xs font-bold uppercase tracking-wide text-forest mb-1">Focus proposé pour cette séance</p>
+            <p id="note-focus" class="text-sm"></p>
+          </div>
+          <div id="note-suivis-wrap" class="hidden">
+            <p class="text-xs font-bold uppercase tracking-wide text-muted mb-1">Suivis convenus</p>
+            <p id="note-suivis" class="text-sm"></p>
+          </div>
+          <p id="note-vigilance" class="hidden text-xs font-bold text-red-700"></p>
+        </div>
+      </section>
+
+      <!-- Intentions actives -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-3">Intentions actives du client</h2>
+        <div id="intentions-vide" class="hidden text-sm text-muted">Aucune intention active déclarée.</div>
+        <ul id="intentions" class="space-y-2"></ul>
+      </section>
+
+      <!-- Journal depuis la dernière séance -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-1">Journal depuis la dernière séance</h2>
+        <p id="journal-borne" class="text-xs text-muted mb-3"></p>
+        <div id="journal-refus" class="hidden bg-surface border border-bdr rounded-xl p-3 text-sm text-muted">
+          🔒 Le client n'a pas consenti au partage de son historique — le contenu du journal
+          n'est pas accessible. Ce choix lui appartient et peut évoluer.
+        </div>
+        <div id="journal-vide" class="hidden text-sm text-muted">Aucune entrée depuis la dernière séance.</div>
+        <ul id="journal" class="space-y-3"></ul>
+      </section>
+
+      <!-- Ancrages biographiques -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-3">Ancrages évoqués en séance</h2>
+        <div id="ancrages-vide" class="hidden text-sm text-muted">Aucun ancrage temporel enregistré.</div>
+        <ul id="ancrages" class="space-y-2"></ul>
+      </section>
+
+      <!-- Analyses (sous vanne) -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-1">Lectures &amp; analyses</h2>
+        <p class="text-xs text-muted mb-3">Filtrées selon votre profil d'accès — chaque consultation sensible est journalisée.</p>
+        <div id="analyses-vide" class="hidden text-sm text-muted">Aucune analyse disponible.</div>
+        <ul id="analyses" class="space-y-2"></ul>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    (async function () {
+      const sessionId = new URLSearchParams(location.search).get('session');
+      const err = document.getElementById('err');
+      if (!sessionId) {
+        err.textContent = 'Aucune séance indiquée (paramètre ?session= manquant).';
+        err.classList.remove('hidden');
+        document.getElementById('head-sub').textContent = '';
+        return;
+      }
+
+      const fmtDate = (iso) => iso ? new Date(iso).toLocaleString('fr-CA', { dateStyle: 'long', timeStyle: 'short' }) : null;
+      const esc = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+      const show = (id) => document.getElementById(id).classList.remove('hidden');
+
+      let p;
+      try {
+        p = await apiSessionPreparation(sessionId);
+      } catch (e) {
+        err.textContent = 'Dossier inaccessible — ' + (e.message || 'erreur inconnue');
+        err.classList.remove('hidden');
+        document.getElementById('head-sub').textContent = '';
+        return;
+      }
+
+      document.getElementById('head-sub').innerHTML =
+        '<span class="font-semibold text-ink">' + esc(p.client.first_name_or_alias) + '</span>' +
+        ' <span class="chip ml-1">' + esc(p.client.public_client_code) + '</span>' +
+        ' · séance n°' + p.session_sequence_number +
+        (p.scheduled_start_at ? ' · ' + fmtDate(p.scheduled_start_at) : '');
+      show('dossier');
+
+      // Fil à reprendre
+      const n = p.last_validated_note;
+      if (!n) { show('note-vide'); } else {
+        show('note');
+        document.getElementById('note-resume').textContent = n.summary_text;
+        if (n.next_session_focus_text) { show('note-focus-wrap'); document.getElementById('note-focus').textContent = n.next_session_focus_text; }
+        if (n.follow_up_actions_text) { show('note-suivis-wrap'); document.getElementById('note-suivis').textContent = n.follow_up_actions_text; }
+        if (n.vigilance_level_code && n.vigilance_level_code !== 'non_urgent') {
+          const v = document.getElementById('note-vigilance');
+          v.textContent = '⚠ Vigilance : ' + n.vigilance_level_code;
+          v.classList.remove('hidden');
+        }
+      }
+
+      // Intentions
+      if (!p.intentions.length) { show('intentions-vide'); }
+      document.getElementById('intentions').innerHTML = p.intentions.map(i =>
+        '<li class="bg-surface border border-bdr rounded-xl p-3 text-sm">' + esc(i.text) +
+        (i.dimension ? ' <span class="chip ml-2">' + esc(i.dimension) + '</span>' : '') + '</li>'
+      ).join('');
+
+      // Journal
+      if (p.previous_session) {
+        const d = fmtDate(p.previous_session.actual_end_at || p.previous_session.actual_start_at);
+        if (d) document.getElementById('journal-borne').textContent = 'Depuis la séance n°' + p.previous_session.session_sequence_number + ' (' + d + ')';
+      }
+      if (!p.journal_access_granted) { show('journal-refus'); }
+      else if (!p.journal_entries.length) { show('journal-vide'); }
+      document.getElementById('journal').innerHTML = p.journal_entries.map(e =>
+        '<li class="border border-bdr rounded-xl p-3">' +
+        '<p class="text-xs text-muted mb-1">' + fmtDate(e.created_at) +
+        (e.emotional_tone ? ' · <span class="chip">' + esc(e.emotional_tone) + '</span>' : '') +
+        (e.entry_kind && e.entry_kind !== 'libre' ? ' · ' + esc(e.entry_kind) : '') + '</p>' +
+        '<p class="text-sm leading-relaxed">' + esc(e.body_text) + '</p></li>'
+      ).join('');
+
+      // Ancrages
+      if (!p.anchors.length) { show('ancrages-vide'); }
+      document.getElementById('ancrages').innerHTML = p.anchors.map(a =>
+        '<li class="text-sm bg-surface border border-bdr rounded-xl p-3">' +
+        (a.verbatim_fragment ? '« ' + esc(a.verbatim_fragment) + ' »' : 'Ancrage') +
+        (a.event_year_approx ? ' <span class="chip ml-2">' + a.event_year_approx + '</span>' : '') +
+        (a.client_age_ref != null ? ' <span class="chip">' + a.client_age_ref + ' ans</span>' : '') + '</li>'
+      ).join('');
+
+      // Analyses
+      if (!p.analyses.length) { show('analyses-vide'); }
+      document.getElementById('analyses').innerHTML = p.analyses.map(a =>
+        '<li class="text-sm border border-bdr rounded-xl p-3 flex items-center justify-between gap-3">' +
+        '<span>' + esc(a.capability) + '</span>' +
+        '<span class="chip">' + esc(a.sensitivity) + ' · ' + fmtDate(a.created_at) + '</span></li>'
+      ).join('');
+    })();
+  </script>
+</body>
+</html>

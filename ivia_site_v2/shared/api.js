@@ -734,3 +734,10 @@ async function adminUpdateCredential(id, payload) {
 
 // Export implicite — toutes les fonctions sont disponibles en global
 // dans les pages HTML qui incluent ce script.
+
+/** Dossier de préparation d'entretien (étape 1 chantier Analyses) —
+ *  agrégation lecture seule : intentions, journal (si consentement),
+ *  dernière note validée, ancrages, analyses sous vanne. */
+async function apiSessionPreparation(sessionId) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/preparation');
+}

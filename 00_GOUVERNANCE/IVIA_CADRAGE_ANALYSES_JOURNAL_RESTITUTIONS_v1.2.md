@@ -1,6 +1,7 @@
 # IVIA — Cadrage du chantier « Analyses · Journal · Restitutions »
 
-**Version** : v1.1 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6)
+**Version** : v1.2 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6 ;
+v1.2 : étape 1 livrée)
 **Statut** : canon (cadrage validé à faire vivre ; toute évolution bumpe la version)
 **Auteur** : Claude Code (Fable 5), sous directive de David Phaneuf (2026-07-07)
 **Références** : `05_JOURNAUX/JOURNAL_reunification_depot_20260708.md`,
@@ -74,6 +75,11 @@ restitutions coordonnées — lecture client (triade O/H/O) et lecture praticien
 ## 4. Découpage en étapes livrables
 
 ### Étape 1 — Dossier de préparation d'entretien (praticien) — *agrégation pure*
+
+> **LIVRÉE 2026-07-08** : `GET /sessions/{id}/preparation`
+> (`app/api/routes/session_preparation.py`) + page `praticien/preparation.html?session=<id>`
+> + 4 tests de gardes (`tests/test_session_preparation.py`) + security-review passée sans
+> trouvaille. Journal exposé UNIQUEMENT sous `consent_history` actif, quel que soit le rôle.
 Nouveau `GET /sessions/{id}/preparation` : intentions actives, entrées de
 journal depuis la dernière séance (**si consentement explicite**), dernières
 analyses (filtrées vanne), dernière note validée, ancrages temporels.

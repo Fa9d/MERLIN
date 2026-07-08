@@ -47,7 +47,9 @@
       "Bash(bash -n deploy/pull-deploy.sh)",
       "Bash(ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_merlin -N '' -C 'claude-code@poste-david-merlin' -q)",
       "Read(//c/Users/PC/.ssh/**)",
-      "Bash(ssh *)"
+      "Bash(ssh *)",
+      "Bash(awk '{print $6, $7, $8}')",
+      "Bash(wsl -e sh -c 'test -f /tmp/ovh_s3.env && sed \"s/=.*/=***/\" /tmp/ovh_s3.env || echo absent')"
     ]
   }
 }
