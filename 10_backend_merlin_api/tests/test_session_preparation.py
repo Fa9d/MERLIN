@@ -109,7 +109,22 @@ def ctx() -> dict:
     }
     db.commit()
     db.close()
-    return ids
+
+    yield ids
+
+    # Nettoyage complet (ordre FK) : reset_app_users ne peut pas supprimer des
+    # utilisateurs référencés par des séances — on efface tout ce qu'on a créé.
+    db = SessionLocal()
+    db.query(SessionRecord).filter_by(client_id=ids["client"]).delete()
+    db.query(ClientJournalEntry).filter_by(client_id=ids["client"]).delete()
+    db.query(ClientIntention).filter_by(client_id=ids["client"]).delete()
+    db.query(Consent).filter_by(client_id=ids["client"]).delete()
+    db.query(Client).filter_by(id=ids["client"]).delete()
+    db.query(AppUser).filter(
+        AppUser.id.in_([ids["praticien"], ids["autre"], ids["client_user"]])
+    ).delete(synchronize_session=False)
+    db.commit()
+    db.close()
 
 
 def _auth(user_id: str, role: str) -> dict:

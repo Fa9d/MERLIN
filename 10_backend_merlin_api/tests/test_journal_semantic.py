@@ -104,7 +104,34 @@ def ctx() -> dict:
     ids = {"praticien": praticien.id, "autre": autre.id, "client": client.id, "s2": s2.id}
     db.commit()
     db.close()
-    return ids
+
+    yield ids
+
+    # Nettoyage complet (ordre FK) : la fixture autouse reset_app_users ne peut pas
+    # supprimer des utilisateurs encore référencés par des séances — on efface donc
+    # tout ce qu'on a créé, sinon les tests suivants (bootstrap) trouvent une base sale.
+    from app.models.analysis import AnalysisAccessLog, AnalysisResult
+
+    db = SessionLocal()
+    res_ids = [
+        r.id for r in db.query(AnalysisResult).filter_by(client_id=ids["client"])
+    ]
+    if res_ids:
+        db.query(AnalysisAccessLog).filter(
+            AnalysisAccessLog.analysis_result_id.in_(res_ids)
+        ).delete(synchronize_session=False)
+        db.query(AnalysisResult).filter(AnalysisResult.id.in_(res_ids)).delete(
+            synchronize_session=False
+        )
+    db.query(SessionRecord).filter_by(client_id=ids["client"]).delete()
+    db.query(ClientJournalEntry).filter_by(client_id=ids["client"]).delete()
+    db.query(Consent).filter_by(client_id=ids["client"]).delete()
+    db.query(Client).filter_by(id=ids["client"]).delete()
+    db.query(AppUser).filter(
+        AppUser.id.in_([ids["praticien"], ids["autre"]])
+    ).delete(synchronize_session=False)
+    db.commit()
+    db.close()
 
 
 def _grant_consent(client_id: str) -> None:
