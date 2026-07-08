@@ -65,12 +65,16 @@ SORTIE_VALIDE = {
 
 
 @pytest.fixture(autouse=True)
-def _enable_llm(monkeypatch):
+def _enable_llm():
     """Active l'interrupteur LLM sur le singleton settings (l'env var posée en tête
-    de module est sans effet en CI : settings est déjà construit par un import antérieur)."""
+    de module est sans effet en CI : settings est déjà construit par un import
+    antérieur). Le dataclass est gelé → object.__setattr__ + restauration."""
     from app.core.config import settings
 
-    monkeypatch.setattr(settings, "insights_enabled", True)
+    original = settings.insights_enabled
+    object.__setattr__(settings, "insights_enabled", True)
+    yield
+    object.__setattr__(settings, "insights_enabled", original)
 
 
 def _mk_user(db, email: str, role: AppRole) -> AppUser:
