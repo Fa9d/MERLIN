@@ -193,12 +193,16 @@ def test_type_bloque_la_capacite(ctx, monkeypatch) -> None:
 
     code = f"t{ctx['tag']}b"
     db = SessionLocal()
+    # Commit du type AVANT le rattachement : sans relationship() entre les
+    # modèles, SQLAlchemy ne garantit pas INSERT avant UPDATE dans un même
+    # flush — Postgres (CI) rejette alors la FK (sqlite local ne vérifie pas).
     db.add(SessionType(code=code, label="Écoute stricte"))
     db.add(
         SessionTypeCapability(
             session_type_code=code, capability="semantic_llm", enabled=False
         )
     )
+    db.commit()
     seance = db.get(SessionRecord, ctx["seance"])
     seance.session_type_code = code
     db.add(seance)
