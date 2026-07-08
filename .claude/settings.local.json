@@ -24,7 +24,22 @@
       "Bash(.venv/Scripts/python.exe -m pytest tests/test_referentiels_registry.py tests/test_referentiels_route.py -o addopts=\"\" -p no:cacheprovider -q)",
       "Bash(10_backend_merlin_api/.venv/Scripts/python.exe *)",
       "Bash(Get-ChildItem -Recurse -Name)",
-      "Bash(ruff check *)"
+      "Bash(ruff check *)",
+      "Bash(grep -E '^[A-Z_]+=$' .env.prod)",
+      "Bash(ssh -o ConnectTimeout=8 -o BatchMode=yes ubuntu@137.74.42.121 'cd /opt/merlin && git log -1 --format=\"%h %s \\(%ci\\)\" && git branch --show-current && echo \"--- conteneurs ---\" && docker ps --format \"{{.Names}}\\\\t{{.Status}}\" && echo \"--- matomo sur le vps? ---\" && \\(docker ps -a --format \"{{.Names}}\" | grep -i matomo; systemctl is-active apache2 2>/dev/null; ls /var/www 2>/dev/null\\)'22)",
+      "Bash(ls .venv)",
+      "Bash(which python *)",
+      "Bash(python --version)",
+      "Bash(py --version)",
+      "Bash(grep -ohE '\\\\$\\\\{[A-Z_0-9]+[}:-]' docker-compose.prod.yml)",
+      "Bash(grep -ohE '\\\\$\\\\{?\\(MERLIN_BACKUP|OVH_S3|AWS_\\)[A-Z_]*' deploy/backup.sh)",
+      "Bash(ls docs/ops-matomo.md)",
+      "Bash(grep -n 'Dev/IVIA/MERLIN' .claude/rules/*.md CLAUDE.md)",
+      "Bash(mkdir -p _archives/intrants/2026-07 backups/env)",
+      "Bash(git mv *)",
+      "Bash(mv matomo_system_check.txt _archives/intrants/2026-07/matomo_system_check_20260706.txt)",
+      "Bash(mv .env.prod.backup-20260509-235513 .env.prod.bak .env.prod.bak- .env.prod.bak.2026-06-21 backups/env/)",
+      "Bash(sed -i '/^JWT_SECRET=/d' .env.prod)"
     ]
   }
 }

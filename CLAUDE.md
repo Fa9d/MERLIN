@@ -6,6 +6,9 @@
 > **Mise à jour 2026-05-15** — Ajout de la trinité MÉSANGES · MERLIN · IVIA, glossaire,
 > section Agents & IA Anthropic, politique laboratoire Ruvnet, évaluations & traçabilité,
 > règle de journalisation, règle de maintenance documentaire.
+> **Mise à jour 2026-07-08** — Réunification : `agents/cleanup-production-workflow` fusionnée
+> dans `refonte-ivia-site-unifie` (migrations 0043-0050, Matomo, moteur d'analyse, journal
+> structuré). **Dépôt canonique local : `C:\_IVIA`** (voir `.claude/rules/hygiene-sources.md`).
 > **Branche active courante** : `refonte-ivia-site-unifie` (refonte stratégique « maison du vivant »).
 > La branche `master` reste la branche d'intégration ; `main` héberge un autre lignage technique — ne pas confondre.
 
@@ -64,7 +67,7 @@ Modules   →  exécutent des fonctions assistées sous validation humaine
 
 ```
 Backend   : Python / FastAPI / SQLAlchemy / Alembic
-DB        : PostgreSQL 15 (migrations via Alembic — HEAD = 20260504_0017)
+DB        : PostgreSQL 15 (migrations via Alembic — HEAD = 20260707_0050)
 IA        : API Anthropic (Claude) — haiku ou sonnet selon la tâche
 Frontend  : SITE PUBLIC = statique ivia_site_v2/ (HTML + Tailwind CDN), servi par nginx
             (nginx/default.conf → root /opt/merlin/ivia_site_v2). C'est la version LIVE.
@@ -442,9 +445,9 @@ app/
 >
 > **6ᵉ couche — types jungiens** (ajout 2026-07-01) : `profile_types_jungian` (attitude `introversion`
 > + 4 fonctions pensée/sentiment/sensation/intuition + `dominant_function` enum `JungianFunction`).
-> Modèle + schéma + enum + **migration `20260701_0040`** en place ; **à tester (`alembic upgrade head`)
-> + appliquer** ; **non exposée client**, security-review requise. Cadre :
-> `00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md`.
+> Modèle + schéma + enum + migration `20260701_0040` en place et **appliquée en prod**
+> (head courant ≥ 0050) ; **non exposée client**, security-review requise avant toute exposition.
+> Cadre : `00_DOCTRINE/INDIVIDUATION_cadre_jungien_v0.1.md`.
 
 ---
 

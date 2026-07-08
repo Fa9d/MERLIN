@@ -16,7 +16,9 @@
 2. **Git est l'historique.** Zéro `_v2`, `_final`, `_old`, `.bak`, zéro fichier daté orphelin.
 3. **Aucun orphelin.** Tout artefact produit a une destination déclarée (`11_PROMPTS/06_CSUITE/_circulation.md`).
 4. **Intrants gelés.** Toute matière brute consommée part dans `_archives/intrants/`.
-5. **Une source de travail.** Le dépôt canonique est `C:/Dev/IVIA/MERLIN` ; branche `refonte-ivia-site-unifie`.
+5. **Une source de travail.** Le dépôt canonique est `C:\_IVIA` (basculement acté le
+   2026-07-08, voir `05_JOURNAUX/JOURNAL_reunification_depot_20260708.md`) ; branche
+   `refonte-ivia-site-unifie`. L'ancienne copie `C:/Dev/IVIA/MERLIN` est gelée (lecture seule).
 
 ## Réflexe avant de créer un fichier
 Demander : est-ce intrant, canon, ou dérivé ? Existe-t-il déjà une source canonique sur ce
