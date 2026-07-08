@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demandes d'entrée — Admin IVIA</title>
+  <script src="/shared/session.js?v=20260704b"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260707c"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    #toast{position:fixed;bottom:24px;right:24px;background:#1A2E1D;color:#fff;font-size:14px;font-weight:500;padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:100;}
+    #toast.show{opacity:1;}#toast.err{background:#991B1B;}
+    .badge{font-size:10px;font-weight:700;text-transform:uppercase;border-radius:9999px;padding:2px 8px;}
+    .fld{border:1.5px solid #D4E8D0;border-radius:10px;padding:6px 10px;font-size:13px;background:#fff;outline:none;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside id="admin-sidebar" class="hidden lg:flex flex-col w-60 bg-[#13261A] border-r border-[#22432F] px-4 py-6 fixed top-0 left-0 h-screen z-10"></aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1000px] space-y-5">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <h1 class="font-heading text-2xl font-bold text-ink">Demandes d'entrée</h1>
+          <p class="text-sm text-muted mt-1">Les personnes arrivées par le seuil public. Triez, prenez contact, planifiez — escaladez toute vigilance.</p>
+        </div>
+        <button id="btn-refresh" class="fld cursor-pointer hover:bg-surface font-semibold">Rafraîchir</button>
+      </div>
+
+      <div id="zone" class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
+        <p id="loading" class="text-sm text-muted p-6">Chargement…</p>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STATUTS = {new:'Nouvelle', a_rappeler:'À rappeler', contacte:'Contactée', planifie:'Planifiée', vigilance:'Vigilance', hors_cadre:'Hors cadre'};
+    function toast(m,err){const t=document.getElementById('toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+    function dateCourte(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{day:'numeric',month:'short',year:'numeric'}):'';}
+    function urgent(u){u=(u||'').toLowerCase();return u.includes('urgent')&&!u.includes('non');}
+
+    let PRATICIENS = [];
+    function pratOptions(sel){
+      return `<option value="" ${!sel?'selected':''}>— Non assigné —</option>` +
+        PRATICIENS.map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${(p.display_name||'').replace(/[<>&]/g,'')}</option>`).join('');
+    }
+
+    function render(list){
+      const zone=document.getElementById('zone');
+      if(!list.length){zone.innerHTML='<p class="text-sm text-muted p-6">Aucune demande pour l\'instant.</p>';return;}
+      const rows=list.map(d=>{
+        const vig=urgent(d.perceived_urgency_code)||d.handling_status_code==='vigilance';
+        const opts=Object.entries(STATUTS).map(([k,l])=>`<option value="${k}" ${k===d.handling_status_code?'selected':''}>${l}</option>`).join('');
+        return `<tr class="border-t border-bdr align-top ${vig?'bg-red-50/40':''}">
+          <td class="p-3 whitespace-nowrap text-xs text-muted">${dateCourte(d.created_at)}</td>
+          <td class="p-3">
+            <p class="text-sm font-semibold text-ink">${(d.primary_need_code||'').replace(/[<>&]/g,'')}
+              ${vig?'<span class="badge bg-red-100 text-red-700">vigilance</span>':''}</p>
+            <p class="text-xs text-muted">urgence : ${(d.perceived_urgency_code||'').replace(/[<>&]/g,'')} · canal : ${(d.request_channel_code||'').replace(/[<>&]/g,'')}</p>
+            ${d.entry_summary_text?`<p class="text-xs text-ink mt-1 bg-surface/60 border border-bdr rounded-[10px] px-3 py-2">${d.entry_summary_text.replace(/[<>&]/g,'')}</p>`:''}
+          </td>
+          <td class="p-3"><select class="fld" data-status="${d.id}">${opts}</select></td>
+          <td class="p-3"><select class="fld" data-prat="${d.id}">${pratOptions(d.assigned_practitioner_id||'')}</select></td>
+          <td class="p-3"><input class="fld w-40" placeholder="Note de suivi…" data-note="${d.id}" value="${(d.handling_notes||'').replace(/"/g,'&quot;')}"></td>
+          <td class="p-3"><button class="fld cursor-pointer hover:bg-surface font-semibold" data-save="${d.id}">Enregistrer</button></td>
+        </tr>`;
+      }).join('');
+      zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
+        <th class="p-3 font-semibold">Date</th><th class="p-3 font-semibold">Demande</th><th class="p-3 font-semibold">Statut</th><th class="p-3 font-semibold">Praticien·ne</th><th class="p-3 font-semibold">Note</th><th class="p-3"></th>
+      </tr></thead><tbody>${rows}</tbody></table>`;
+      document.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{
+        const id=b.dataset.save;
+        const st=document.querySelector(`[data-status="${id}"]`).value;
+        const note=document.querySelector(`[data-note="${id}"]`).value.trim();
+        const prat=document.querySelector(`[data-prat="${id}"]`).value;
+        try{await adminUpdateIntakeHandling(id, st, note, prat);toast('Demande mise à jour ✓');}catch(e){toast(e.message,true);}
+      });
+    }
+
+    async function charger(){
+      try{
+        PRATICIENS = await listPraticiens().catch(()=>[]);
+        render(await adminListIntake());
+      }
+      catch(e){ document.getElementById('zone').innerHTML='<p class="text-sm text-red-700 p-6">Accès refusé ou indisponible : '+(e.message||'erreur')+'</p>'; }
+    }
+    document.getElementById('btn-refresh').onclick=charger;
+    charger();
+  </script>
+</body>
+</html>

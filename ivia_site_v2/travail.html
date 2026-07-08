@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Épuisé·e au travail ? Parle à quelqu'un sans que ça devienne un dossier. IVIA : écoute structurée, confidentielle, soir et fin de semaine. 75 $ la séance.">
+  <title>IVIA — Souffler, sans dossier</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif'],body:['"Raleway"','system-ui','sans-serif']}}}}</script>
+  <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1,h2,h3{font-family:'Lora',Georgia,serif;}</style>
+  <script src="/shared/analytics.js" defer></script>
+</head>
+<body class="antialiased">
+
+  <!-- NAVBAR -->
+  <nav class="border-b border-bdr bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+      <a href="/" class="font-heading text-xl font-semibold text-forest-deep">IVIA</a>
+      <a href="/reserver.html" class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-forest transition-colors">Prendre rendez-vous</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="max-w-2xl mx-auto px-5 py-16 sm:py-20 text-center">
+    <p class="text-xs font-semibold uppercase tracking-widest text-sage mb-4">Quand le travail pèse</p>
+    <h1 class="font-heading text-4xl sm:text-5xl font-bold text-ink leading-tight mb-6">
+      Parler à quelqu'un,<br>sans que ça devienne un dossier.
+    </h1>
+    <p class="text-lg text-muted leading-relaxed mb-8">
+      La surcharge, les tensions, la boule dans le ventre le dimanche soir.
+      Tu n'es pas obligé·e de passer par le programme d'aide de ton employeur, ni d'attendre que ça déborde.
+      <strong class="text-ink">IVIA est indépendant, confidentiel, et disponible le soir et la fin de semaine.</strong>
+    </p>
+    <div class="mb-8">
+      <p class="font-heading italic text-forest-deep text-lg leading-relaxed">
+        «&nbsp;Je suis vidé·e.&nbsp;» «&nbsp;Je suis sur les nerfs.&nbsp;» «&nbsp;J'ai peur de craquer.&nbsp;»
+      </p>
+      <p class="text-sm text-muted mt-2">Si ces mots te ressemblent, c'est déjà assez. Pas besoin d'un nom savant pour ce que tu vis.</p>
+      <p class="font-heading text-forest-deep mt-3">Tu tiens tout à bout de bras. Qui te tient, toi&nbsp;?</p>
+    </div>
+    <a href="/reserver.html" class="inline-block bg-forest-deep text-white font-semibold px-8 py-4 rounded-[14px] hover:bg-forest transition-colors text-lg">Réserver une séance — 75&nbsp;$</a>
+    <p class="text-xs text-muted mt-4">Réservation en 3 minutes · aucun engagement</p>
+    <p class="text-sm mt-3"><a href="/ou-en-es-tu.html" class="text-forest-deep font-semibold hover:underline underline-offset-4">Pas sûr·e ? Fais le point en 2 minutes →</a></p>
+  </section>
+
+  <!-- 3 PREUVES -->
+  <section class="bg-surface border-y border-bdr py-14 px-5">
+    <div class="max-w-4xl mx-auto grid sm:grid-cols-3 gap-8 text-center">
+      <div>
+        <p class="font-heading text-3xl font-bold text-forest-deep mb-2">Indépendant</p>
+        <p class="text-sm text-muted">Aucun lien avec ton employeur, ton assureur ou ton PAE. Personne n'est informé.</p>
+      </div>
+      <div>
+        <p class="font-heading text-3xl font-bold text-forest-deep mb-2">Soir et week-end</p>
+        <p class="text-sm text-muted">Des créneaux en dehors des heures de bureau. Depuis chez toi, sans déplacement.</p>
+      </div>
+      <div>
+        <p class="font-heading text-3xl font-bold text-forest-deep mb-2">Sans trace</p>
+        <p class="text-sm text-muted">Aucun dossier médical, aucune réclamation d'assurance. Données au Québec, Loi 25.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="max-w-2xl mx-auto px-5 py-16">
+    <h2 class="font-heading text-2xl font-bold text-ink mb-8 text-center">Comment ça marche</h2>
+    <ol class="space-y-6">
+      <li class="flex gap-4"><span class="shrink-0 w-9 h-9 rounded-full bg-forest-deep text-white flex items-center justify-center font-bold">1</span><div><p class="font-semibold text-ink">Tu réserves un créneau qui te convient</p><p class="text-sm text-muted">Y compris tôt le matin, le soir ou la fin de semaine.</p></div></li>
+      <li class="flex gap-4"><span class="shrink-0 w-9 h-9 rounded-full bg-forest-deep text-white flex items-center justify-center font-bold">2</span><div><p class="font-semibold text-ink">Tu te connectes depuis n'importe où</p><p class="text-sm text-muted">Salle privée dans ton navigateur. Rien à installer, rien à expliquer à personne.</p></div></li>
+      <li class="flex gap-4"><span class="shrink-0 w-9 h-9 rounded-full bg-forest-deep text-white flex items-center justify-center font-bold">3</span><div><p class="font-semibold text-ink">Tu déposes la charge</p><p class="text-sm text-muted">Une personne formée t'écoute — la pression, les conflits, la fatigue, ce que tu n'oses pas dire au bureau. Et si ce que tu portes demande plus que l'écoute, on te le dit et on t'oriente.</p></div></li>
+    </ol>
+    <div class="text-center mt-10">
+      <a href="/reserver.html" class="inline-block bg-forest-deep text-white font-semibold px-8 py-4 rounded-[14px] hover:bg-forest transition-colors">Prendre rendez-vous</a>
+    </div>
+  </section>
+
+  <!-- IMPORTANT -->
+  <section class="bg-surface border-y border-bdr py-10 px-5">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-sm text-muted leading-relaxed">
+        <strong class="text-ink">Important :</strong> IVIA n'est pas un service de psychothérapie ni un service d'urgence,
+        et ne remplace pas une consultation médicale en cas d'épuisement sévère.
+        <strong class="text-ink">En crise : <a href="tel:8111" class="underline">811 option 2</a> ·
+        <a href="tel:18662773553" class="underline">1 866 APPELLE</a> · 911.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="max-w-2xl mx-auto px-5 py-16">
+    <h2 class="font-heading text-2xl font-bold text-ink mb-8 text-center">Questions fréquentes</h2>
+    <div class="space-y-4">
+      <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Mon employeur peut-il savoir que je consulte ?</summary><p class="text-sm text-muted mt-2">Non. IVIA est totalement indépendant de ton employeur. Aucune information n'est transmise à qui que ce soit — ni employeur, ni assureur, ni PAE.</p></details>
+      <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Quelle différence avec le PAE de ma compagnie ?</summary><p class="text-sm text-muted mt-2">Le PAE est un service payé par ton employeur, souvent limité en nombre de séances et impersonnel. IVIA t'appartient : tu choisis ton praticien, ton rythme, et rien ne transite par ton milieu de travail.</p></details>
+      <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Est-ce que ça crée un dossier quelque part ?</summary><p class="text-sm text-muted mt-2">Aucun dossier médical n'est créé. Tes données restent au Québec, protégées par la Loi 25, et ne sont jamais partagées ni vendues.</p></details>
+      <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Je n'ai pas le temps. C'est long ?</summary><p class="text-sm text-muted mt-2">Une séance dure le temps que tu choisis à la réservation, en ligne, sans déplacement. La réservation elle-même prend 3 minutes.</p></details>
+      <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Et si c'est plus gros que de la fatigue ?</summary><p class="text-sm text-muted mt-2">Si ta situation dépasse le cadre de l'écoute, ton praticien te le dira honnêtement et t'orientera vers la ressource appropriée — médecin, psychologue, ou autre. C'est notre charte.</p></details>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-bdr py-10 px-5">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-5">
+      <p class="font-heading text-lg font-semibold text-forest-deep">IVIA</p>
+      <nav class="flex flex-wrap gap-5 text-sm text-muted">
+        <a href="/pourquoi.html" class="hover:text-ink transition-colors">Pourquoi IVIA</a>
+        <a href="/employeurs.html" class="hover:text-ink transition-colors">Employeurs</a>
+        <a href="/cgu.html" class="hover:text-ink transition-colors">CGU</a>
+        <a href="/confidentialite.html" class="hover:text-ink transition-colors">Confidentialité</a>
+      </nav>
+      <p class="text-xs text-muted w-full sm:w-auto text-center">
+        En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

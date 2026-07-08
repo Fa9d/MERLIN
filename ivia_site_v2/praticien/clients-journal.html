@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
-  <script src="/shared/mock_praticien.js"></script>
+  <script src="/shared/api.js?v=20260707c"></script>
   <style>body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}h1,h2{font-family:'Lora',Georgia,serif;}.tag{display:inline-block;background:#F0F7F2;border:1px solid #D4E8D0;border-radius:6px;padding:2px 8px;font-size:11px;color:#4B6350;font-weight:500;}</style>
 </head>
 <body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
@@ -55,72 +55,8 @@
                class="border border-bdr rounded-[10px] px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-forest bg-white w-full sm:w-56">
       </div>
 
-      <div class="space-y-4 max-w-3xl">
-
-        <!-- Client 1 -->
-        <div class="bg-white border border-bdr rounded-[20px] p-6 shadow-sm" data-name="camille b.">
-          <div class="flex items-start justify-between gap-4 mb-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-sm shrink-0">CB</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Camille B.</p>
-                <p class="text-xs text-muted">Dernière séance : 27 mai 2026 · Prochaine : 3 juin</p>
-              </div>
-            </div>
-            <span class="text-xs bg-green-50 text-green-700 border border-green-200 font-semibold px-2.5 py-1 rounded-full shrink-0">3 entrées cette semaine</span>
-          </div>
-          <div class="space-y-2.5">
-            <div class="border-l-2 border-sage pl-4 py-0.5">
-              <p class="text-xs text-muted mb-1">28 mai · <span class="tag">Émotionnel</span> <span class="tag">Relationnel</span></p>
-              <p class="text-sm text-ink">«&nbsp;La conversation d'hier a mis en lumière quelque chose que je ne savais pas nommer…&nbsp;»</p>
-            </div>
-            <div class="border-l-2 border-sage pl-4 py-0.5">
-              <p class="text-xs text-muted mb-1">26 mai · <span class="tag">Corporel</span></p>
-              <p class="text-sm text-ink">«&nbsp;Tension entre les épaules depuis plusieurs jours. Lien possible avec la situation au travail.&nbsp;»</p>
-            </div>
-          </div>
-          <div class="mt-4 flex gap-2">
-            <button onclick="openFiche('cb')" class="text-xs font-semibold text-forest border border-bdr px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">Voir fiche complète</button>
-            <button onclick="openPrep('cb')" class="text-xs font-semibold text-ink border border-bdr px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">Préparer la séance</button>
-          </div>
-        </div>
-
-        <!-- Client 2 -->
-        <div class="bg-white border border-bdr rounded-[20px] p-6 shadow-sm" data-name="théo m.">
-          <div class="flex items-start justify-between gap-4 mb-4">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-sm shrink-0">TM</div>
-              <div>
-                <p class="font-semibold text-sm text-ink">Théo M.</p>
-                <p class="text-xs text-muted">Dernière séance : 22 mai 2026 · Prochaine : 5 juin</p>
-              </div>
-            </div>
-            <span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 font-semibold px-2.5 py-1 rounded-full shrink-0">1 entrée cette semaine</span>
-          </div>
-          <div class="space-y-2.5">
-            <div class="border-l-2 border-sage pl-4 py-0.5">
-              <p class="text-xs text-muted mb-1">27 mai · <span class="tag">Spirituel</span> <span class="tag">Mental</span></p>
-              <p class="text-sm text-ink">«&nbsp;Quelque chose se dépose. Je ne sais pas encore quoi, mais c'est différent.&nbsp;»</p>
-            </div>
-          </div>
-          <div class="mt-4 flex gap-2">
-            <button onclick="openFiche('tm')" class="text-xs font-semibold text-forest border border-bdr px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">Voir fiche complète</button>
-            <button onclick="openPrep('tm')" class="text-xs font-semibold text-ink border border-bdr px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">Préparer la séance</button>
-          </div>
-        </div>
-
-        <!-- Client 3 -->
-        <div class="bg-white border border-bdr rounded-[20px] p-6 shadow-sm opacity-60" data-name="sophie r.">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-sm shrink-0">SR</div>
-            <div>
-              <p class="font-semibold text-sm text-ink">Sophie R.</p>
-              <p class="text-xs text-muted">Dernière séance : 15 mai 2026 · Aucune séance à venir</p>
-            </div>
-          </div>
-          <p class="text-sm text-muted italic">Aucune entrée récente.</p>
-        </div>
-
+      <div id="clients-zone" class="space-y-4 max-w-3xl">
+        <p class="text-sm text-muted">Chargement des clients…</p>
       </div>
     </main>
   </div>
@@ -157,66 +93,110 @@
     </div>
   </div>
 
-  <!-- MODAL : Préparer la séance -->
-  <div id="modal-prep" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200" onclick="if(event.target===this)closeModal('prep')" aria-modal="true" role="dialog">
-    <div class="bg-white rounded-t-[24px] sm:rounded-[24px] w-full sm:max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
-      <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-bdr sticky top-0 bg-white">
-        <h2 id="prep-title" class="font-heading text-lg font-bold text-ink">Préparer la séance</h2>
-        <button onclick="closeModal('prep')" class="text-muted hover:text-ink p-1 rounded-full cursor-pointer" aria-label="Fermer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="px-6 py-5 space-y-5">
-        <div class="bg-surface rounded-[14px] px-4 py-3 flex items-center justify-between">
-          <div><p class="text-sm font-semibold text-ink" id="prep-seance-info"></p><p class="text-xs text-muted">Prochaine séance</p></div>
-          <div id="prep-registres" class="flex gap-1 flex-wrap justify-end"></div>
-        </div>
-        <div>
-          <p class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Ce que le client a écrit récemment</p>
-          <div id="prep-journal" class="space-y-2.5"></div>
-        </div>
-        <div class="bg-amber-50 border border-amber-200 rounded-[14px] px-4 py-3">
-          <p class="text-xs font-semibold text-amber-800 mb-1">Fil conducteur suggéré</p>
-          <p id="prep-suggestion" class="text-sm text-amber-900"></p>
-        </div>
-        <div>
-          <p class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Mes notes de préparation</p>
-          <textarea id="prep-notes" rows="4" placeholder="Intentions pour cette séance, questions à explorer…" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest resize-none"></textarea>
-          <button onclick="savePrepNotes()" class="mt-2 text-xs font-semibold bg-forest-deep text-white px-4 py-2 rounded-[10px] hover:bg-forest transition-colors cursor-pointer">Sauvegarder</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- MODAL : Préparer la séance — retirée (contenu maquette). -->
 
   <!-- Toast -->
   <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
 
   <script>
-    const CLIENTS = {
-      cb: {
-        name: 'Camille B.', initials: 'CB',
-        meta: 'Depuis le 1er mars 2026 \u00b7 Prochaine s\u00e9ance\u00a0: 3 juin',
-        seances: 9, entrees: 14, registre: '\u00c9motionnel',
-        nextDate: '3 juin 2026 \u00b7 15h00', registres: ['\u00c9motionnel','Relationnel'],
-        suggestion: 'La tension entre ce que Camille ressent et ce qu\u2019elle attend des autres est un fil r\u00e9current. La s\u00e9ance pourrait explorer la diff\u00e9rence entre besoin et exigence.',
-        journal: [
-          { date: '28 mai', tags: ['\u00c9motionnel','Relationnel'], text: '\u00ab\u00a0La conversation d\u2019hier a mis en lumi\u00e8re quelque chose que je ne savais pas nommer\u2026\u00a0\u00bb' },
-          { date: '26 mai', tags: ['Corporel'], text: '\u00ab\u00a0Tension entre les \u00e9paules depuis plusieurs jours. Lien possible avec la situation au travail.\u00a0\u00bb' },
-          { date: '22 mai', tags: ['\u00c9motionnel'], text: '\u00ab\u00a0Je me sens \u00e0 la fois soulage\u0301e et inqui\u00e8te. Bizarre comme m\u00e9lange.\u00a0\u00bb' }
-        ]
-      },
-      tm: {
-        name: 'Th\u00e9o M.', initials: 'TM',
-        meta: 'Depuis le 15 avril 2026 \u00b7 Prochaine s\u00e9ance\u00a0: 5 juin',
-        seances: 6, entrees: 8, registre: 'Spirituel',
-        nextDate: '5 juin 2026 \u00b7 10h30', registres: ['Spirituel','Mental'],
-        suggestion: 'Th\u00e9o traverse une phase de d\u00e9p\u00f4t \u2014 quelque chose se stabilise sans qu\u2019il puisse encore le nommer. Laisser de l\u2019espace au silence et \u00e0 l\u2019\u00e9mergence plut\u00f4t que de chercher \u00e0 r\u00e9soudre.',
-        journal: [
-          { date: '27 mai', tags: ['Spirituel','Mental'], text: '\u00ab\u00a0Quelque chose se d\u00e9pose. Je ne sais pas encore quoi, mais c\u2019est diff\u00e9rent.\u00a0\u00bb' },
-          { date: '20 mai', tags: ['Mental'], text: '\u00ab\u00a0Moins de pens\u00e9es parasites cette semaine. Pas s\u00fbr si c\u2019est la fatigue ou un vrai changement.\u00a0\u00bb' }
-        ]
+    // ── Données réelles — clients + journal + séances ──────────────────────
+    const FICHES = {}; // client_id → { client, entries, seances }
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g,
+        c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function dateLisible(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long' });
+    }
+    function initiales(nom) {
+      return nom.split(/\s+/).map(m => m[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
+    }
+    const KIND_LABELS = { checkin: 'État du jour', exercice: 'Exercice', moment: 'Moment', libre: 'Journal' };
+
+    function ligneEntree(e) {
+      const s = (typeof journalStructured === 'function') ? journalStructured(e) : { kind: 'libre', data: null };
+      const tags = [];
+      if (s.kind && s.kind !== 'libre') tags.push(KIND_LABELS[s.kind] || s.kind);
+      (e.dimensions || []).slice(0, 3).forEach(d => tags.push(d));
+      let texte = (e.body_text || '').replace(/^ARCHI_[A-Z_]+::/, '').trim();
+      if (texte.length > 180) texte = texte.slice(0, 177) + '…';
+      return `<div class="border-l-2 border-sage pl-4 py-0.5">
+          <p class="text-xs text-muted mb-1">${dateLisible(e.written_at || e.created_at)}${tags.length ? ' · ' + tags.map(t => `<span class="tag">${esc(t)}</span>`).join(' ') : ''}</p>
+          <p class="text-sm text-ink">${esc(texte) || '<span class="italic text-muted">Entrée structurée sans texte.</span>'}</p>
+        </div>`;
+    }
+
+    function carteClient(client, entries, nbSeances) {
+      const nom = [client.first_name_or_alias, client.last_name].filter(Boolean).join(' ').trim()
+        || client.email || client.public_client_code || 'Client';
+      const semaine = entries.filter(e => {
+        const d = new Date(e.written_at || e.created_at);
+        return (Date.now() - d.getTime()) < 7 * 86400000;
+      }).length;
+      const badge = semaine
+        ? `<span class="text-xs bg-green-50 text-green-700 border border-green-200 font-semibold px-2.5 py-1 rounded-full shrink-0">${semaine} entrée${semaine > 1 ? 's' : ''} cette semaine</span>`
+        : '<span class="text-xs bg-surface text-muted border border-bdr font-semibold px-2.5 py-1 rounded-full shrink-0">rien cette semaine</span>';
+      const div = document.createElement('div');
+      div.className = 'bg-white border border-bdr rounded-[20px] p-6 shadow-sm' + (entries.length ? '' : ' opacity-70');
+      div.dataset.name = nom.toLowerCase();
+      div.innerHTML = `
+        <div class="flex items-start justify-between gap-4 mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-surface border border-bdr flex items-center justify-center font-heading font-bold text-forest-deep text-sm shrink-0">${esc(initiales(nom))}</div>
+            <div>
+              <p class="font-semibold text-sm text-ink">${esc(nom)}</p>
+              <p class="text-xs text-muted">${nbSeances} séance${nbSeances > 1 ? 's' : ''} · ${entries.length} entrée${entries.length > 1 ? 's' : ''} au journal</p>
+            </div>
+          </div>
+          ${badge}
+        </div>
+        <div class="space-y-2.5">${entries.slice(0, 3).map(ligneEntree).join('') || '<p class="text-sm text-muted italic">Aucune entrée au journal pour l\'instant.</p>'}</div>
+        <div class="mt-4 flex gap-2">
+          <button onclick="openFiche('${esc(client.id)}')" class="text-xs font-semibold text-forest border border-bdr px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors cursor-pointer">Voir fiche complète</button>
+          <a href="/praticien/carte-de-vie.html?client=${esc(client.id)}" class="text-xs font-semibold text-forest-deep border border-bdr px-4 py-1.5 rounded-[8px] hover:bg-surface transition-colors">Carte de Vie</a>
+        </div>`;
+      return div;
+    }
+
+    async function charger() {
+      const zone = document.getElementById('clients-zone');
+      let clients = [], sessions = [];
+      try {
+        clients = await _req('/api/v1/clients?limit=200');
+      } catch (e) {
+        zone.innerHTML = `<p class="text-sm text-muted">Impossible de charger les clients (${esc(e.message)}).</p>`;
+        return;
       }
-    };
+      try { sessions = await listMySessions(); } catch (e) {}
+      const seancesParClient = {};
+      sessions.forEach(s => { if (s.client_id) seancesParClient[s.client_id] = (seancesParClient[s.client_id] || 0) + 1; });
+
+      if (!clients.length) {
+        zone.innerHTML = '<div class="bg-white border border-bdr rounded-[20px] p-8 text-center"><p class="text-sm text-muted">Aucun client pour l\'instant.</p></div>';
+        return;
+      }
+
+      // Journal de chaque client (en parallèle, tolérant aux erreurs).
+      const journaux = await Promise.all(clients.map(c =>
+        _req('/api/v1/clients/' + encodeURIComponent(c.id) + '/journal?limit=50').catch(() => [])
+      ));
+
+      zone.innerHTML = '';
+      // Clients avec entrées récentes d'abord.
+      const items = clients.map((c, i) => ({ c, entries: journaux[i] || [] }));
+      items.sort((a, b) => {
+        const da = a.entries[0] ? new Date(a.entries[0].written_at || a.entries[0].created_at).getTime() : 0;
+        const db2 = b.entries[0] ? new Date(b.entries[0].written_at || b.entries[0].created_at).getTime() : 0;
+        return db2 - da;
+      });
+      items.forEach(({ c, entries }) => {
+        FICHES[c.id] = { client: c, entries, seances: seancesParClient[c.id] || 0 };
+        zone.appendChild(carteClient(c, entries, seancesParClient[c.id] || 0));
+      });
+    }
+    charger();
 
     function filterClients(q) {
       const v = q.toLowerCase();
@@ -235,43 +215,30 @@
       m.classList.add('opacity-0','pointer-events-none');
       document.body.style.overflow = '';
     }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal('fiche'); closeModal('prep'); }});
-
-    function renderJournalEntries(entries, containerId) {
-      const c = document.getElementById(containerId);
-      c.innerHTML = entries.map(e =>
-        `<div class="border-l-2 border-sage pl-4 py-0.5">
-          <p class="text-xs text-muted mb-1">${e.date} · ${e.tags.map(t=>`<span class="tag">${t}</span>`).join(' ')}</p>
-          <p class="text-sm text-ink">${e.text}</p>
-        </div>`
-      ).join('');
-    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal('fiche'); }});
 
     function openFiche(id) {
-      const c = CLIENTS[id];
-      document.getElementById('fiche-title').textContent = 'Fiche — ' + c.name;
-      document.getElementById('fiche-avatar').textContent = c.initials;
-      document.getElementById('fiche-name').textContent = c.name;
-      document.getElementById('fiche-meta').textContent = c.meta;
-      document.getElementById('fiche-seances').textContent = c.seances;
-      document.getElementById('fiche-entrees').textContent = c.entrees;
-      document.getElementById('fiche-registre').textContent = c.registre;
-      renderJournalEntries(c.journal, 'fiche-journal');
+      const f = FICHES[id];
+      if (!f) return;
+      const nom = [f.client.first_name_or_alias, f.client.last_name].filter(Boolean).join(' ').trim()
+        || f.client.email || 'Client';
+      document.getElementById('fiche-title').textContent = 'Fiche — ' + nom;
+      document.getElementById('fiche-avatar').textContent = initiales(nom);
+      document.getElementById('fiche-name').textContent = nom;
+      document.getElementById('fiche-meta').textContent = f.client.email || '';
+      document.getElementById('fiche-seances').textContent = f.seances;
+      document.getElementById('fiche-entrees').textContent = f.entries.length;
+      // Dimension la plus fréquente dans les entrées structurées.
+      const freq = {};
+      f.entries.forEach(e => (e.dimensions || []).forEach(d => { freq[d] = (freq[d] || 0) + 1; }));
+      const top = Object.entries(freq).sort((a, b) => b[1] - a[1])[0];
+      document.getElementById('fiche-registre').textContent = top ? top[0] : '—';
+      document.getElementById('fiche-journal').innerHTML =
+        f.entries.slice(0, 8).map(ligneEntree).join('') || '<p class="text-sm text-muted italic">Aucune entrée.</p>';
       openModal('fiche');
     }
 
-    function openPrep(id) {
-      const c = CLIENTS[id];
-      document.getElementById('prep-title').textContent = 'Séance — ' + c.name;
-      document.getElementById('prep-seance-info').textContent = c.nextDate;
-      document.getElementById('prep-registres').innerHTML = c.registres.map(r => `<span class="tag">${r}</span>`).join('');
-      renderJournalEntries(c.journal.slice(0,2), 'prep-journal');
-      document.getElementById('prep-suggestion').textContent = c.suggestion;
-      openModal('prep');
-    }
-
     function saveFicheNotes() { showToast('Notes sauvegardées'); }
-    function savePrepNotes() { showToast('Notes de préparation sauvegardées'); }
 
     function showToast(msg) {
       const t = document.getElementById('toast');

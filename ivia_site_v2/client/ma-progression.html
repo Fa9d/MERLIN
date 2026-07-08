@@ -3,447 +3,451 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <script src="/shared/session.js"></script>
+  <script src="/shared/session.js?v=20260617e"></script>
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Ma progression</title>
-  <script src="/shared/mock.js"></script>
+  <script src="/shared/api.js?v=20260707c"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)',trust:'#2563EB',amber:'#D97706'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body { font-family: 'Raleway', system-ui, sans-serif; background-color: var(--surface); color: var(--ink); }
     h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
-    .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: var(--muted); transition: all .15s; cursor: pointer; }
-    .sidebar-link:hover, .sidebar-link.active { background: var(--bdr); color: var(--ink); }
-    .sidebar-link.active { font-weight: 700; }
     .card { background: var(--card-bg); border: 1.5px solid var(--bdr); border-radius: 20px; padding: 24px; }
     .dim-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
-    .progress-track { height: 10px; border-radius: 999px; background: var(--bdr); overflow: hidden; }
-    .progress-fill  { height: 100%; border-radius: 999px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
     .jalon-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; border: 1.5px solid; }
     .jalon-atteint { background: var(--surface); border-color: var(--forest); color: var(--forest-deep); }
     .jalon-futur   { background: var(--surface); border-color: var(--bdr); color: var(--sage); }
-    .stade-step { display: flex; align-items: center; gap: 8px; }
-    .stade-dot  { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-    .stade-line { flex: 1; height: 2px; background: var(--bdr); }
-    @media (max-width: 1024px) { .chart-container { max-width: 100%; } }
+    .kpi { background: var(--surface); border: 1px solid var(--bdr); border-radius: 16px; padding: 14px 16px; }
+    .kpi-val { font-family:'Lora',Georgia,serif; font-size: 1.6rem; line-height: 1; font-weight: 700; color: var(--ink); }
+    .ldv { position: relative; padding-left: 30px; }
+    .ldv::before { content:''; position:absolute; left:10px; top:8px; bottom:8px; width:2px; background:linear-gradient(180deg, var(--forest), var(--bdr)); border-radius:2px; }
+    .ldv-item { position: relative; padding-bottom: 18px; }
+    .ldv-item:last-child { padding-bottom: 0; }
+    .ldv-dot { position:absolute; left:-30px; top:0; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; background:var(--surface); border:2px solid var(--card-bg); box-shadow:0 0 0 1.5px var(--bdr); }
   </style>
 </head>
 <body class="antialiased">
 
 <div id="ivia-header"></div>
-<script src="/shared/layout.js?v=20260624b"></script>
-<script>renderLayout('voir');</script>
+<script src="/shared/layout.js?v=20260707a"></script>
+<script>renderLayout('voir', 'Ma progression');</script>
 
-  <!-- CONTENU principal -->
   <main class="mx-auto px-4 sm:px-8 py-8 max-w-[1100px]">
 
     <!-- En-tête -->
     <div class="mb-7">
       <h1 class="font-heading text-2xl font-bold text-ink">Ma progression</h1>
-      <p class="text-muted text-sm mt-1">Comment vous évoluez séance après séance — depuis votre premier ancrage.</p>
+      <p class="text-muted text-sm mt-1">Ce que vos traces réelles dessinent — séances, journal, repères. Rien d'inventé, rien d'interprété à votre place.</p>
     </div>
 
-    <!-- Stade métacognitif actuel ─────────────────────────────────────────── -->
-    <section id="stade-section" class="card mb-5" aria-labelledby="stade-titre">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <p class="dim-label mb-1">Stade actuel</p>
-          <h2 id="stade-titre" class="font-heading text-xl font-semibold text-ink" id="stade-nom">—</h2>
-          <p class="text-sm text-muted mt-1 max-w-md" id="stade-desc">—</p>
-        </div>
-        <!-- Indicateur 3 étapes -->
-        <div class="flex items-center gap-1 shrink-0" id="stade-indicateur" role="img" aria-label="Progression en 3 stades">
-          <!-- Injecté par JS -->
-        </div>
+    <!-- Repères de pratique — données réelles ─────────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="pratique-titre">
+      <h2 id="pratique-titre" class="font-heading text-base font-semibold text-ink mb-4">Vos repères de pratique</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="kpi"><p class="dim-label">Séances vécues</p><p class="kpi-val mt-2" id="kpi-seances">—</p></div>
+        <div class="kpi"><p class="dim-label">Entrées journal</p><p class="kpi-val mt-2" id="kpi-journal">—</p></div>
+        <div class="kpi"><p class="dim-label">Repères disponibles</p><p class="kpi-val mt-2" id="kpi-reperes">—</p></div>
+        <div class="kpi"><p class="dim-label">Semaines actives</p><p class="kpi-val mt-2" id="kpi-semaines">—</p></div>
       </div>
+      <p class="text-xs text-muted mt-3" id="pratique-depuis"></p>
     </section>
 
     <div class="grid lg:grid-cols-2 gap-5 mb-5">
 
-      <!-- Arc de transfert métacognitif ──────────────────────────────────── -->
-      <section class="card" aria-labelledby="arc-titre">
-        <div class="flex items-start justify-between mb-4">
-          <div>
-            <h2 id="arc-titre" class="font-heading text-base font-semibold text-ink">Arc de transfert</h2>
-            <p class="text-xs text-muted mt-0.5">Qui porte le regard sur votre parcours</p>
-          </div>
-          <div class="flex items-center gap-4 text-xs text-muted shrink-0">
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#4A7C59] inline-block"></span>Ton regard</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#C2DDCA] inline-block"></span>Soutien Mylène</span>
-          </div>
+      <!-- Activité par semaine ────────────────────────────────────────────── -->
+      <section class="card" aria-labelledby="activite-titre">
+        <div class="mb-4">
+          <h2 id="activite-titre" class="font-heading text-base font-semibold text-ink">Votre activité, semaine par semaine</h2>
+          <p class="text-xs text-muted mt-0.5">Séances, journal et repères des 10 dernières semaines</p>
         </div>
-        <div class="relative" style="height:170px;">
-          <canvas id="arcChart" aria-label="Arc de transfert métacognitif" role="img"></canvas>
+        <div class="relative" style="height:200px;">
+          <canvas id="activiteChart" aria-label="Activité par semaine" role="img"></canvas>
         </div>
-        <p class="text-xs text-muted mt-3 text-center" id="arc-caption">—</p>
+        <p class="text-xs text-muted mt-3 text-center" id="activite-caption">—</p>
       </section>
 
-      <!-- Toile évolutive ─────────────────────────────────────────────────── -->
-      <section class="card" aria-labelledby="toile-titre">
-        <div class="flex items-start justify-between mb-2">
-          <div>
-            <h2 id="toile-titre" class="font-heading text-base font-semibold text-ink">Toile dimensionnelle</h2>
-            <p class="text-xs text-muted mt-0.5">Évolution de votre équilibre</p>
-          </div>
-          <div class="flex flex-col items-end gap-1 text-xs text-muted">
-            <span class="flex items-center gap-1.5"><span class="w-8 h-0.5 border-t-2 border-dashed border-[#C2DDCA] inline-block"></span>Ancrage</span>
-            <span class="flex items-center gap-1.5"><span class="w-8 h-0.5 bg-[#4A7C59] inline-block rounded"></span>Aujourd'hui</span>
-          </div>
+      <!-- État du jour — énergie ──────────────────────────────────────────── -->
+      <section class="card" aria-labelledby="etat-titre">
+        <div class="mb-4">
+          <h2 id="etat-titre" class="font-heading text-base font-semibold text-ink">Votre état du jour</h2>
+          <p class="text-xs text-muted mt-0.5">Énergie notée dans vos journaux structurés (sur 10)</p>
         </div>
-        <div class="relative" style="height:240px;">
-          <canvas id="toileChart" aria-label="Toile dimensionnelle comparative" role="img"></canvas>
+        <div class="relative" style="height:200px;">
+          <canvas id="etatChart" aria-label="Évolution de l'énergie déclarée" role="img"></canvas>
         </div>
+        <p class="text-xs text-muted mt-3 text-center" id="etat-caption">—</p>
       </section>
 
     </div>
 
-    <!-- Vivant / Société ─────────────────────────────────────────────────── -->
-    <section class="card mb-5" aria-labelledby="balance-titre">
-      <h2 id="balance-titre" class="font-heading text-base font-semibold text-ink mb-4">Équilibre Vivant · Société</h2>
-      <div class="grid sm:grid-cols-2 gap-6">
-
-        <!-- Vivant -->
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <div>
-              <span class="dim-label">Registre Vivant</span>
-              <p class="text-xs text-muted mt-0.5">Présence · Sol · Vivant·e</p>
-            </div>
-            <div class="text-right">
-              <span class="text-lg font-semibold text-ink" id="vivant-score">—</span>
-              <span class="text-xs text-muted">/9</span>
-              <p class="text-xs text-[#4A7C59] font-medium" id="vivant-delta">—</p>
-            </div>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill bg-[#4A7C59]" id="vivant-bar" style="width:0%"></div>
-          </div>
-          <div class="flex justify-between mt-1 text-xs text-muted">
-            <span id="vivant-debut-label">Ancrage</span>
-            <span id="vivant-debut-val">—</span>
-          </div>
-        </div>
-
-        <!-- Société -->
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <div>
-              <span class="dim-label">Registre Société</span>
-              <p class="text-xs text-muted mt-0.5">Compréhension · Choix · Réflexion</p>
-            </div>
-            <div class="text-right">
-              <span class="text-lg font-semibold text-ink" id="societe-score">—</span>
-              <span class="text-xs text-muted">/9</span>
-              <p class="text-xs text-[#4A7C59] font-medium" id="societe-delta">—</p>
-            </div>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill bg-[#2D6A4F]" id="societe-bar" style="width:0%"></div>
-          </div>
-          <div class="flex justify-between mt-1 text-xs text-muted">
-            <span id="societe-debut-label">Ancrage</span>
-            <span id="societe-debut-val">—</span>
-          </div>
-        </div>
-
+    <!-- Équilibre — ce qui pèse vs ce qui recharge ─────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="equilibre-titre">
+      <div class="mb-4">
+        <h2 id="equilibre-titre" class="font-heading text-base font-semibold text-ink">Ce qui pèse, ce qui recharge</h2>
+        <p class="text-xs text-muted mt-0.5">Semaine par semaine, à partir de vos états du jour — une lecture, pas un verdict</p>
       </div>
-
-      <!-- Interprétation de l'équilibre -->
-      <div id="balance-interpretation" class="mt-5 bg-surface border border-bdr rounded-[12px] px-4 py-3 text-sm text-muted hidden">
-        <!-- Injecté par JS -->
+      <div class="relative" style="height:200px;">
+        <canvas id="equilibreChart" aria-label="Équilibre entre ce qui pèse et ce qui recharge" role="img"></canvas>
       </div>
+      <p class="text-xs text-muted mt-3 text-center" id="equilibre-caption">—</p>
     </section>
 
-    <!-- Jalons narratifs ────────────────────────────────────────────────── -->
+    <!-- Jalons — calculés depuis vos traces ────────────────────────────────── -->
     <section class="card mb-5" aria-labelledby="jalons-titre">
       <div class="flex items-center justify-between mb-4">
-        <h2 id="jalons-titre" class="font-heading text-base font-semibold text-ink">Jalons atteints</h2>
+        <h2 id="jalons-titre" class="font-heading text-base font-semibold text-ink">Jalons de votre parcours</h2>
         <span class="text-xs text-muted" id="jalons-compte">—</span>
       </div>
-      <div id="jalons-list" class="flex flex-wrap gap-2">
-        <!-- Injecté par JS -->
-      </div>
+      <div id="jalons-list" class="flex flex-wrap gap-2"></div>
       <p class="text-xs text-muted mt-4" id="jalons-prochains"></p>
     </section>
 
-    <!-- Note de Mylène ─────────────────────────────────────────────────── -->
-    <section class="card bg-surface" aria-labelledby="note-titre">
-      <div class="flex items-start gap-3">
-        <div class="w-9 h-9 rounded-full bg-forest-deep/10 flex items-center justify-center shrink-0 mt-0.5">
-          <span class="text-sm font-semibold text-forest-deep">MP</span>
-        </div>
-        <div>
-          <p class="dim-label mb-1" id="note-praticien-nom">Mylène Pelletier</p>
-          <h2 id="note-titre" class="font-heading text-sm font-semibold text-ink sr-only">Note du praticien</h2>
-          <p class="text-sm text-ink leading-relaxed" id="note-texte">
-            «&nbsp;Ce moment marque une étape réelle. Tu commences à nommer ce que tu observes en toi,
-            sans avoir besoin que je le nomme en premier. C'est la capacité qui compte le plus — et elle s'installe.&nbsp;»
-          </p>
-          <p class="text-xs text-muted mt-2" id="note-date">Après la séance du 27 mai</p>
+    <!-- Ligne de vie ─────────────────────────────────────────────────────── -->
+    <section class="card mb-5" aria-labelledby="ldv-titre">
+      <div class="flex items-center justify-between gap-2 flex-wrap mb-1">
+        <h2 id="ldv-titre" class="font-heading text-base font-semibold text-ink">Ligne de vie</h2>
+        <div class="flex items-center gap-1.5" id="ldv-filtres">
+          <button data-f="tout" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-forest text-white bg-forest-deep">Tout</button>
+          <button data-f="seance" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-bdr text-muted bg-surface">Séances</button>
+          <button data-f="journal" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-bdr text-muted bg-surface">Journal</button>
+          <button data-f="repere" class="ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border border-bdr text-muted bg-surface">Repères</button>
         </div>
       </div>
+      <p class="text-xs text-muted mb-5" id="ldv-resume">Chargement de votre parcours…</p>
+      <div id="ldv-timeline" class="ldv"></div>
+    </section>
+
+    <!-- Repère de lecture ──────────────────────────────────────────────────── -->
+    <section class="card bg-surface">
+      <p class="text-sm text-muted leading-relaxed">
+        <strong class="text-ink">Repère :</strong> cette page se construit uniquement à partir de vos traces réelles.
+        Elle observe, elle ne juge pas — et elle n'est pas un diagnostic. Ce qu'elle montre gagne à être
+        déposé en séance, si vous le souhaitez.
+      </p>
     </section>
 
   </main>
 
 <div id="ivia-footer"></div>
-<script>renderLayout('voir');</script>
+<script>renderLayout('voir', 'Ma progression');</script>
 
-<!-- ── Script principal ─────────────────────────────────────────────────── -->
 <script>
 (async function () {
+  let bookings = [], entries = [], docs = [], recs = [];
+  try { bookings = await getMyBookings(); } catch (e) {}
+  try { entries = await getMyJournal(); } catch (e) {}
+  try { docs = await getMyDocuments(); } catch (e) {}
+  try { recs = await getMyRecordings(); } catch (e) {}
 
-  // ── Données ──────────────────────────────────────────────────────────────
-  const progression = await getMockProgression();
-  const jalons      = await getMockJalons();
-  const now         = progression[progression.length - 1];
-  const debut       = progression[0];
-  const d           = now.profil_dim;
-  const d0          = debut.profil_dim;
+  const css = getComputedStyle(document.documentElement);
+  const C_FOREST = (css.getPropertyValue('--forest') || '#4A7C59').trim();
+  const C_DEEP   = (css.getPropertyValue('--forest-deep') || '#2D6A4F').trim();
+  const C_SAGE   = (css.getPropertyValue('--sage') || '#8FB99A').trim();
+  const C_MUTED  = (css.getPropertyValue('--muted') || '#4B6350').trim();
 
-  // ── Stade métacognitif ───────────────────────────────────────────────────
-  const STADES = [
-    {
-      min: 1, max: 1,
-      nom:  'L\'accompagnement vous éclaire',
-      desc: 'Mylène porte le regard sur votre parcours. Chaque séance crée de l\'espace pour que quelque chose émerge.',
-      couleur: '#8FB99A',
-    },
-    {
-      min: 2, max: 2,
-      nom:  'La conscience s\'éveille',
-      desc: 'Vous commencez à nommer ce que vous observez en vous. La capacité d\'observation de soi s\'installe.',
-      couleur: '#4A7C59',
-    },
-    {
-      min: 3, max: 3,
-      nom:  'Vous portez votre propre regard',
-      desc: 'La métacognition est internalisée. Vous continuez le travail au-delà des séances, avec vos propres mots.',
-      couleur: '#2D6A4F',
-    },
-  ];
-  const stade = STADES.find(s => d.reflexion >= s.min && d.reflexion <= s.max) || STADES[0];
+  const today = new Date().toISOString().slice(0, 10);
+  const confirmed = bookings.filter(b => b.status === 'confirmed');
+  const past = confirmed.filter(b => b.slot_date < today);
+  const recsReady = recs.filter(r => !!r.transcript_ready);
+  const reperes = docs.length + recsReady.length;
 
-  document.getElementById('stade-nom').textContent  = stade.nom;
-  document.getElementById('stade-desc').textContent = stade.desc;
+  // ── Repères de pratique ────────────────────────────────────────────────────
+  document.getElementById('kpi-seances').textContent = past.length;
+  document.getElementById('kpi-journal').textContent = entries.length;
+  document.getElementById('kpi-reperes').textContent = reperes;
 
-  // Indicateur 3 étapes
-  const indicateur = document.getElementById('stade-indicateur');
-  STADES.forEach((s, i) => {
-    const actif = d.reflexion >= s.min;
-    const courant = stade === s;
-    const dot = document.createElement('span');
-    dot.className = 'stade-dot';
-    dot.style.background = actif ? s.couleur : '#D4E8D0';
-    if (courant) { dot.style.width = '14px'; dot.style.height = '14px'; dot.style.boxShadow = `0 0 0 3px ${s.couleur}33`; }
-    indicateur.appendChild(dot);
-    if (i < STADES.length - 1) {
-      const line = document.createElement('span');
-      line.className = 'stade-line';
-      line.style.width = '48px';
-      line.style.background = actif && d.reflexion > s.max ? s.couleur : '#D4E8D0';
-      indicateur.appendChild(line);
-    }
-    const label = document.createElement('span');
-    label.className = `text-xs font-medium ml-1 mr-2 hidden lg:inline ${courant ? 'text-ink' : 'text-muted'}`;
-    label.textContent = i === 0 ? 'Soutenu·e' : i === 1 ? 'En éveil' : 'Autonome';
-    indicateur.insertBefore(label, dot);
-  });
+  // Toutes les traces datées, pour semaines actives + première date
+  const traces = [
+    ...past.map(b => b.slot_date + 'T12:00'),
+    ...entries.map(e => e.written_at),
+    ...docs.map(d => d.created_at),
+    ...recs.map(r => r.created_at),
+  ].filter(Boolean).sort();
 
-  // ── Arc de transfert (Chart.js horizontal stacked bar) ───────────────────
-  const arcLabels  = progression.map(p => p.label);
-  const clientData = progression.map(p => Math.round(p.profil_dim.reflexion / 3 * 100));
-  const pratData   = progression.map(p => Math.round((3 - p.profil_dim.reflexion) / 3 * 100));
+  function weekKey(iso) {
+    const d = new Date(iso);
+    const jan = new Date(d.getFullYear(), 0, 1);
+    const w = Math.floor(((d - jan) / 86400000 + jan.getDay()) / 7);
+    return d.getFullYear() + '-' + String(w).padStart(2, '0');
+  }
+  const activeWeeks = new Set(traces.map(weekKey));
+  document.getElementById('kpi-semaines').textContent = activeWeeks.size;
 
-  new Chart(document.getElementById('arcChart'), {
+  if (traces.length) {
+    const first = new Date(traces[0]);
+    document.getElementById('pratique-depuis').textContent =
+      'Depuis le ' + first.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) + '.';
+  } else {
+    document.getElementById('pratique-depuis').textContent =
+      'Votre parcours commencera à se dessiner dès votre première trace — journal, séance ou enregistrement.';
+  }
+
+  // ── Activité par semaine (10 dernières semaines) ───────────────────────────
+  const NB_W = 10;
+  const weeks = [];
+  const now = new Date();
+  for (let i = NB_W - 1; i >= 0; i--) {
+    const start = new Date(now); start.setDate(now.getDate() - now.getDay() - i * 7); start.setHours(0, 0, 0, 0);
+    const end = new Date(start); end.setDate(start.getDate() + 7);
+    weeks.push({ start, end, label: start.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' }), s: 0, j: 0, r: 0 });
+  }
+  function bump(iso, k) {
+    if (!iso) return;
+    const d = new Date(iso);
+    const w = weeks.find(w => d >= w.start && d < w.end);
+    if (w) w[k] += 1;
+  }
+  past.forEach(b => bump(b.slot_date + 'T12:00', 's'));
+  entries.forEach(e => bump(e.written_at, 'j'));
+  docs.forEach(d => bump(d.created_at, 'r'));
+  recsReady.forEach(r => bump(r.created_at, 'r'));
+
+  new Chart(document.getElementById('activiteChart'), {
     type: 'bar',
     data: {
-      labels: arcLabels,
+      labels: weeks.map(w => w.label),
       datasets: [
-        {
-          label: 'Ton regard',
-          data:  clientData,
-          backgroundColor: '#4A7C59',
-          borderRadius: 4,
-        },
-        {
-          label: 'Soutien Mylène',
-          data:  pratData,
-          backgroundColor: '#C2DDCA',
-          borderRadius: 4,
-        },
+        { label: 'Séances', data: weeks.map(w => w.s), backgroundColor: C_DEEP, borderRadius: 3 },
+        { label: 'Journal', data: weeks.map(w => w.j), backgroundColor: C_FOREST, borderRadius: 3 },
+        { label: 'Repères', data: weeks.map(w => w.r), backgroundColor: C_SAGE, borderRadius: 3 },
       ],
     },
     options: {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       scales: {
-        x: {
-          stacked: true,
-          display: false,
-          min: 0,
-          max: 100,
-        },
-        y: {
-          stacked: true,
-          grid: { display: false },
-          ticks: {
-            font: { family: 'Raleway', size: 12 },
-            color: '#4B6350',
-          },
-          border: { display: false },
-        },
+        x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
+        y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => `${ctx.dataset.label} : ${ctx.raw} %`,
-          },
-        },
-      },
-      barThickness: 28,
+      plugins: { legend: { position: 'bottom', labels: { font: { family: 'Raleway', size: 11 }, color: C_MUTED, boxWidth: 10 } } },
     },
   });
+  const totRecent = weeks.reduce((s, w) => s + w.s + w.j + w.r, 0);
+  document.getElementById('activite-caption').textContent = totRecent
+    ? totRecent + ' trace(s) sur les ' + NB_W + ' dernières semaines.'
+    : 'Aucune trace sur les ' + NB_W + ' dernières semaines — le journal est un bon point de départ.';
 
-  // Caption arc
-  const dernierClient = clientData[clientData.length - 1];
-  document.getElementById('arc-caption').textContent =
-    dernierClient >= 67
-      ? 'Vous portez maintenant plus de la moitié de votre propre observation.'
-      : dernierClient >= 34
-        ? 'Votre capacité d\'observation propre représente ' + dernierClient + ' % — elle progresse.'
-        : 'L\'accompagnement soutient encore fortement ce processus. C\'est normal à ce stade.';
+  // ── État du jour — énergie des journaux structurés ─────────────────────────
+  const HUMEURS = { stress: '🔴 stress', neutre: '🟡 neutre', coherence: '🟢 cohérence', flow: '🔵 flow' };
+  const archis = entries.map(e => {
+    const s = journalStructured(e);
+    if (s.kind !== 'checkin' || !s.data) return null;
+    return { ts: e.written_at, energie: Number(s.data.energie), humeur: s.data.humeur };
+  }).filter(a => a && !isNaN(a.energie)).sort((a, b) => new Date(a.ts) - new Date(b.ts));
 
-  // ── Toile comparative (Chart.js radar) ───────────────────────────────────
-  const DIMS_LABELS = ['Présence', 'Sol', 'Vivant·e', 'Réflexion', 'Choix', 'Compréhension'];
-  const getDimValues = (pd) => [pd.presence, pd.sol, pd.vivant, pd.reflexion, pd.choix, pd.comprehension];
-
-  new Chart(document.getElementById('toileChart'), {
-    type: 'radar',
-    data: {
-      labels: DIMS_LABELS,
-      datasets: [
-        {
-          label:           'Ancrage initial',
-          data:            getDimValues(d0),
-          borderColor:     '#C2DDCA',
-          borderWidth:     1.5,
-          borderDash:      [5, 3],
-          pointBackgroundColor: '#C2DDCA',
-          pointRadius:     3,
-          backgroundColor: 'rgba(194,221,202,0.12)',
+  if (archis.length) {
+    new Chart(document.getElementById('etatChart'), {
+      type: 'line',
+      data: {
+        labels: archis.map(a => new Date(a.ts).toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' })),
+        datasets: [{
+          label: 'Énergie',
+          data: archis.map(a => a.energie),
+          borderColor: C_FOREST, borderWidth: 2.5, tension: 0.35,
+          pointBackgroundColor: archis.map(a => a.humeur === 'stress' ? '#DC2626' : a.humeur === 'coherence' ? C_DEEP : a.humeur === 'flow' ? '#2563EB' : C_SAGE),
+          pointRadius: 5, fill: false,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
+          y: { min: 0, max: 10, ticks: { stepSize: 2, font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
         },
-        {
-          label:           'Aujourd\'hui',
-          data:            getDimValues(d),
-          borderColor:     '#4A7C59',
-          borderWidth:     2.5,
-          pointBackgroundColor: '#2D6A4F',
-          pointRadius:     4,
-          backgroundColor: 'rgba(74,124,89,0.15)',
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        r: {
-          min: 0,
-          max: 3,
-          ticks: {
-            stepSize: 1,
-            display: false,
-          },
-          pointLabels: {
-            font: { family: 'Raleway', size: 11, weight: '600' },
-            color: '#4B6350',
-          },
-          grid:      { color: 'rgba(212,232,208,0.8)' },
-          angleLines: { color: 'rgba(212,232,208,0.6)' },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => 'Énergie ' + ctx.raw + '/10 · ' + (HUMEURS[archis[ctx.dataIndex].humeur] || archis[ctx.dataIndex].humeur || '') } },
         },
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => {
-              const vals = ['Rare', 'Parfois', 'Souvent'];
-              return `${ctx.dataset.label} : ${vals[ctx.raw - 1] || ctx.raw}`;
-            },
-          },
-        },
-      },
-    },
-  });
-
-  // ── Vivant / Société ──────────────────────────────────────────────────────
-  const vivantNow    = d.presence + d.sol + d.vivant;
-  const societeNow   = d.comprehension + d.choix + d.reflexion;
-  const vivantDebut  = d0.presence + d0.sol + d0.vivant;
-  const societeDebut = d0.comprehension + d0.choix + d0.reflexion;
-
-  document.getElementById('vivant-score').textContent   = vivantNow;
-  document.getElementById('societe-score').textContent  = societeNow;
-  document.getElementById('vivant-debut-val').textContent  = vivantDebut + '/9 à l\'ancrage';
-  document.getElementById('societe-debut-val').textContent = societeDebut + '/9 à l\'ancrage';
-
-  const vivantDelta  = vivantNow  - vivantDebut;
-  const societeDelta = societeNow - societeDebut;
-  document.getElementById('vivant-delta').textContent  = vivantDelta  > 0 ? `+${vivantDelta} depuis l'ancrage`  : vivantDelta  < 0 ? `${vivantDelta} depuis l'ancrage`  : 'Stable';
-  document.getElementById('societe-delta').textContent = societeDelta > 0 ? `+${societeDelta} depuis l'ancrage` : societeDelta < 0 ? `${societeDelta} depuis l'ancrage` : 'Stable';
-
-  // Animer les barres
-  setTimeout(() => {
-    document.getElementById('vivant-bar').style.width   = (vivantNow / 9 * 100) + '%';
-    document.getElementById('societe-bar').style.width  = (societeNow / 9 * 100) + '%';
-  }, 100);
-
-  // Interprétation
-  const diff = vivantNow - societeNow;
-  let interpretation = '';
-  if (Math.abs(diff) <= 1) {
-    interpretation = 'Votre équilibre Vivant · Société est harmonieux. Les deux registres progressent de pair.';
-  } else if (diff > 1) {
-    interpretation = 'Votre registre Vivant est plus fort. L\'accompagnement peut travailler à renforcer l\'agentivité et la réflexivité (registre Société).';
+    });
+    const last = archis[archis.length - 1];
+    document.getElementById('etat-caption').textContent =
+      'Dernier état noté : énergie ' + last.energie + '/10' + (HUMEURS[last.humeur] ? ' · ' + HUMEURS[last.humeur] : '') + '.';
   } else {
-    interpretation = 'Votre registre Société est plus développé. L\'ancrage corporel, la présence et le vivant offrent encore de l\'espace à explorer.';
+    document.getElementById('etatChart').closest('.relative').innerHTML =
+      '<div class="h-full flex items-center justify-center text-center px-6"><p class="text-sm text-muted leading-relaxed">Notez votre état du jour dans le journal (humeur, énergie, sommeil) et cette courbe se dessinera toute seule.</p></div>';
+    document.getElementById('etat-caption').textContent = '';
   }
-  const interp = document.getElementById('balance-interpretation');
-  interp.textContent = interpretation;
-  interp.classList.remove('hidden');
 
-  // ── Jalons narratifs ──────────────────────────────────────────────────────
+  // ── Équilibre — ce qui pèse vs ce qui recharge (hypothèse, pas un verdict) ─
+  (function () {
+    const NB_EQ = 8;
+    const weekStart = (d) => { const x = new Date(d); const day = (x.getDay() + 6) % 7; x.setDate(x.getDate() - day); x.setHours(0,0,0,0); return x; };
+    const weeks = [];
+    for (let i = NB_EQ - 1; i >= 0; i--) { const w = weekStart(new Date()); w.setDate(w.getDate() - i * 7); weeks.push(w); }
+    const wKey = (d) => weekStart(d).toISOString().slice(0, 10);
+    const charge = {}, recharge = {};
+    weeks.forEach(w => { const k = w.toISOString().slice(0,10); charge[k] = 0; recharge[k] = 0; });
+
+    let signaux = 0;
+    entries.forEach(e => {
+      const k = wKey(new Date(e.written_at));
+      if (!(k in charge)) return;
+      const s = journalStructured(e);
+      if (s.kind === 'checkin' && s.data) {
+        const d = s.data;
+        // Ce qui pèse : déclencheurs nommés, humeur sous tension, sommeil difficile
+        charge[k] += (d.stressors || []).filter(Boolean).length;
+        if (d.humeur === 'stress') charge[k] += 2;
+        if (d.sommeil === 'mauvais') charge[k] += 1;
+        // Ce qui recharge : moments de grâce, pratiques de cohérence, bon sommeil, états ressourcés
+        if (d.grace) recharge[k] += 1;
+        recharge[k] += (d.heartmath || []).length;
+        if (d.sommeil === 'excellent') recharge[k] += 1;
+        if (d.humeur === 'coherence' || d.humeur === 'flow') recharge[k] += 1;
+        signaux++;
+      }
+      if (s.kind === 'exercice') { recharge[k] += 1; signaux++; }
+    });
+
+    const cap = document.getElementById('equilibre-caption');
+    if (signaux < 3) {
+      document.getElementById('equilibreChart').closest('.relative').innerHTML =
+        '<div class="h-full flex items-center justify-center text-center px-6"><p class="text-sm text-muted leading-relaxed">Après quelques états du jour, cette vue montrera semaine par semaine ce qui semble peser et ce qui semble vous recharger.</p></div>';
+      cap.textContent = '';
+      return;
+    }
+    const labels = weeks.map(w => w.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' }));
+    const dCharge = weeks.map(w => charge[w.toISOString().slice(0,10)]);
+    const dRecharge = weeks.map(w => recharge[w.toISOString().slice(0,10)]);
+    new Chart(document.getElementById('equilibreChart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Ce qui pèse', data: dCharge, backgroundColor: '#C4826B', borderRadius: 6, maxBarThickness: 22 },
+          { label: 'Ce qui recharge', data: dRecharge, backgroundColor: C_FOREST, borderRadius: 6, maxBarThickness: 22 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
+          y: { beginAtZero: true, ticks: { precision: 0, font: { family: 'Raleway', size: 10 }, color: C_MUTED } },
+        },
+        plugins: { legend: { labels: { font: { family: 'Raleway', size: 11 }, color: C_MUTED, boxWidth: 12 } } },
+      },
+    });
+    const totC = dCharge.reduce((a,b)=>a+b,0), totR = dRecharge.reduce((a,b)=>a+b,0);
+    cap.textContent = totR >= totC
+      ? 'Sur cette période, ce qui vous recharge semble suivre le rythme de ce qui pèse. À observer, pas à conclure.'
+      : 'Sur cette période, ce qui pèse semble prendre plus de place que ce qui recharge. Peut-être un signe qu\'un temps pour vous serait bienvenu.';
+  })();
+
+  // ── Jalons calculés ────────────────────────────────────────────────────────
+  const JALONS = [
+    { texte: 'Première entrée au journal', ok: entries.length >= 1 },
+    { texte: 'Premier état du jour structuré', ok: archis.length >= 1 },
+    { texte: 'Première séance vécue', ok: past.length >= 1 },
+    { texte: 'Premier repère disponible', ok: reperes >= 1 },
+    { texte: '5 entrées au journal', ok: entries.length >= 5 },
+    { texte: '3 semaines actives', ok: activeWeeks.size >= 3 },
+    { texte: '3 séances vécues', ok: past.length >= 3 },
+    { texte: '10 entrées au journal', ok: entries.length >= 10 },
+  ];
   const list = document.getElementById('jalons-list');
-  let atteints = 0;
-  const prochains = [];
-
-  jalons.forEach(j => {
-    const atteint = d[j.dim] >= j.seuil;
-    if (atteint) atteints++;
-    else prochains.push(j.texte);
-
+  let atteints = 0; const prochains = [];
+  JALONS.forEach(j => {
+    if (j.ok) atteints++; else prochains.push(j.texte);
     const chip = document.createElement('span');
-    chip.className = `jalon-chip ${atteint ? 'jalon-atteint' : 'jalon-futur'}`;
-    chip.innerHTML = atteint
-      ? `<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>${j.texte}`
-      : `<svg class="w-3.5 h-3.5 shrink-0 opacity-40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span class="opacity-50">${j.texte}</span>`;
+    chip.className = 'jalon-chip ' + (j.ok ? 'jalon-atteint' : 'jalon-futur');
+    chip.innerHTML = j.ok
+      ? '<svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>' + j.texte
+      : '<svg class="w-3.5 h-3.5 shrink-0 opacity-40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span class="opacity-50">' + j.texte + '</span>';
     list.appendChild(chip);
   });
+  document.getElementById('jalons-compte').textContent = atteints + ' / ' + JALONS.length + ' jalons';
+  if (prochains.length) document.getElementById('jalons-prochains').textContent = 'Prochain : « ' + prochains[0] + ' »';
 
-  document.getElementById('jalons-compte').textContent = `${atteints} / ${jalons.length} jalons`;
-  if (prochains.length) {
-    document.getElementById('jalons-prochains').textContent =
-      `Prochain : « ${prochains[0]} »`;
+  // ── Ligne de vie ───────────────────────────────────────────────────────────
+  const zone = document.getElementById('ldv-timeline');
+  const resume = document.getElementById('ldv-resume');
+  function esc(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+
+  function journalSummary(en) {
+    const b = en.body_text || '';
+    const s = journalStructured(en);
+    if (s.kind === 'exercice' && s.data) {
+      const d = s.data;
+      return { t: 'Exercice — ' + (d.title || 'exercice'), s: 'État ' + (d.before ?? '–') + ' → ' + (d.after ?? '–') + (d.note ? ' · ' + d.note : '') };
+    }
+    if (s.kind === 'checkin' && s.data) {
+      const d = s.data;
+      return { t: 'État du jour', s: (HUMEURS[d.humeur] || d.humeur) + ' · énergie ' + d.energie + '/10' + (d.note ? ' — ' + d.note : d.grace ? ' — ' + d.grace : '') };
+    }
+    return { t: en.emotional_tone ? 'Journal · ' + en.emotional_tone : 'Journal', s: b };
   }
 
+  const items = [];
+  confirmed.forEach(b => {
+    const isPast = b.slot_date < today;
+    items.push({ ts: b.slot_date + 'T' + (b.start_time || '12:00'), type: 'seance', icon: isPast ? '🌿' : '📅',
+      title: isPast ? 'Séance vécue' : 'Séance à venir',
+      sub: (b.practitioner_name ? 'avec ' + b.practitioner_name : '') + (b.start_time ? ' · ' + b.start_time.slice(0, 5) : ''), href: '/client/seances.html' });
+  });
+  entries.forEach(en => {
+    const j = journalSummary(en);
+    items.push({ ts: en.written_at, type: 'journal', icon: '✍️', title: j.t, sub: j.s, href: '/client/journal.html' });
+  });
+  docs.forEach(d => items.push({ ts: d.created_at, type: 'repere', icon: '⭐', title: d.title || 'Repère de séance', sub: (d.body_text || '').replace(/\s+/g, ' ').slice(0, 120), href: '/client/journal.html#session-reperes' }));
+  recsReady.forEach(r => items.push({ ts: r.created_at, type: 'repere', icon: '🎙️', title: 'Enregistrement transcrit', sub: 'Vos mots sont disponibles dans vos enregistrements.', href: '/client/mes-enregistrements.html' }));
+
+  items.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+
+  if (!items.length) {
+    resume.textContent = 'Votre ligne de vie se dessinera à partir de vos séances, votre journal et vos repères.';
+    zone.innerHTML = '<p class="text-sm text-muted">Rien pour le moment — commencez par écrire dans le journal ou réserver une séance.</p>';
+    return;
+  }
+  const nS = items.filter(i => i.type === 'seance').length, nJ = items.filter(i => i.type === 'journal').length, nR = items.filter(i => i.type === 'repere').length;
+  const firstItem = new Date(items[items.length - 1].ts);
+  resume.textContent = 'Depuis le ' + firstItem.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) + ' : ' + nS + ' séance(s), ' + nJ + ' trace(s) de journal, ' + nR + ' repère(s).';
+
+  let filtre = 'tout';
+  function render() {
+    zone.innerHTML = '';
+    let lastMonth = '';
+    const l = items.filter(i => filtre === 'tout' || i.type === filtre).slice(0, 60);
+    if (!l.length) { zone.innerHTML = '<p class="text-sm text-muted">Aucun élément de ce type pour le moment.</p>'; return; }
+    l.forEach(it => {
+      const d = new Date(it.ts);
+      const mois = d.toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' });
+      if (mois !== lastMonth) {
+        lastMonth = mois;
+        const m = document.createElement('p');
+        m.className = 'text-[11px] font-bold uppercase tracking-wider text-muted mb-3 mt-1';
+        m.textContent = mois.charAt(0).toUpperCase() + mois.slice(1);
+        zone.appendChild(m);
+      }
+      const el = document.createElement('a');
+      el.href = it.href;
+      el.className = 'ldv-item block group';
+      el.innerHTML = '<span class="ldv-dot">' + it.icon + '</span>' +
+        '<div class="bg-surface border border-bdr rounded-[12px] px-4 py-2.5 group-hover:border-forest transition-colors">' +
+        '<div class="flex items-center justify-between gap-2 flex-wrap">' +
+        '<p class="text-sm font-semibold text-ink">' + esc(it.title) + '</p>' +
+        '<p class="text-[11px] text-muted">' + d.toLocaleDateString('fr-CA', { weekday: 'short', day: 'numeric', month: 'short' }) + '</p>' +
+        '</div>' +
+        (it.sub ? '<p class="text-xs text-muted mt-0.5 line-clamp-2">' + esc(it.sub) + '</p>' : '') +
+        '</div>';
+      zone.appendChild(el);
+    });
+  }
+  document.querySelectorAll('.ldv-f').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filtre = btn.dataset.f;
+      document.querySelectorAll('.ldv-f').forEach(b => {
+        const on = b === btn;
+        b.className = 'ldv-f text-[11px] font-semibold px-3 py-1 rounded-full border ' + (on ? 'border-forest text-white bg-forest-deep' : 'border-bdr text-muted bg-surface');
+      });
+      render();
+    });
+  });
+  render();
 })();
 </script>
 

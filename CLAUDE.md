@@ -71,6 +71,7 @@ Frontend  : SITE PUBLIC = statique ivia_site_v2/ (HTML + Tailwind CDN), servi pa
             Next.js 16.2.4 (09_app_ivia_merlin/) = LEGACY **ARCHIVÉ** (ADR-0006) — gelé,
             conservé pour référence, NON servi, NON développé. Ne rien y ajouter.
 Media     : LiveKit v1.8.3 (sessions audio/vidéo)
+Mesure    : Matomo 5 auto-hébergé (stats.ivia.quebec, sans témoin — Loi 25) — voir docs/ops-matomo.md
 Infra     : Docker Compose — OVH VPS ubuntu@137.74.42.121:/opt/merlin
 Reverse   : Nginx 1.27 (TLS Let's Encrypt)
 Versioning: Git / GitHub — branche d'intégration master ; branche refonte courante refonte-ivia-site-unifie
@@ -397,20 +398,36 @@ app/
 │   ├── me_documents.py  # GET /me/documents — reformulations livrees au client connecte (derived_document visible + note validee)
 │   ├── express.py       # POST /sessions/express (praticien) + GET/POST /public/express/{token}[/recording]
 │   ├── admin_settings.py # GET/PATCH /admin/billing-flags — interrupteurs payant/gratuit par offre (mode test)
+│   ├── admin_analysis.py # /admin/analysis — interrupteurs capacités (profil×capacité, un clic) + credentials praticiens [require_admin]
+│   ├── analysis.py      # /analysis — prosodie locale par séance, lecture filtrée par capability_gate, droits de transmission
 │   ├── admin_accounts.py # /admin/accounts — comptes & accès (resend-verification, verify, role, status) [require_admin]
 │   ├── admin_accounting.py # /admin/accounting (summary, ledger) — grand livre, exclut les paiements test [require_admin]
 │   ├── admin_overview.py # /admin/overview — vue d'ensemble + alertes vigilance [require_admin]
 │   ├── intake_requests.py # GET + PATCH /{id}/handling — file des demandes d'entrée (tri/vigilance)
 │   ├── payments.py      # checkout Stripe ; offre décochée → gratuit ; mode test (MERLIN_PAYMENTS_TEST_MODE ou pas de clé Stripe) → page simulée + POST /payments/test/confirm/{id}
 │   └── ...
-└── alembic/versions/    # Migrations — head courant = 20260701_0040 (profilage comportemental 6 couches)
+└── alembic/versions/    # Migrations — head courant = 20260707_0050 (intentions client)
                          #   0030 app_settings · 0031 clients.birthplace · 0032 intake.assigned_practitioner ·
                          #   0033 app_users.subscription · 0034 app_users.session_prices · 0035 payment_orders.platform_fee ·
                          #   0036 app_users.themes · 0037 app_users.is_platform_admin ·
                          #   0038 intake_requests.handling_* (rattrapage dérive : handling_status_code/notes, handled_by/at) ·
                          #   0039 profilage comportemental 5 couches (behavioral_profile : OCEAN, Schwartz,
                          #        Amour×8, Bartholomew, VAD ; append-only versionné, sujet polymorphe client/praticien,
-                         #        statut 'hypothese' non-diagnostic, lien consentement Loi 25, index de matching)
+                         #        statut 'hypothese' non-diagnostic, lien consentement Loi 25, index de matching) ·
+                         #   0040 profile_types_jungian (6e couche) · 0041 insight_depth · 0042 archivage profils orphelins ·
+                         #   0043 practitioner_audio_profiles · 0044 slots & appointments (rendez-vous) ·
+                         #   0045 ancrages temporels de séance · 0046 session_notes ·
+                         #   0047 moteur d'analyse (analysis_capability_flags, practitioner_credentials,
+                         #        analysis_results, analysis_access_logs) — architecture « moteur plein / vannes par profil » :
+                         #        le moteur produit tout, l'exposition est filtrée par profil (ivia_quebec_client conforme
+                         #        Loi 25/21 ; praticien_certifie = accès complet si credential vérifié ; recherche_societale).
+                         #        Transmission au client des inférences cliniques : réservée aux praticiens recognized_by_order.
+                         #        Voir app/services/capability_gate.py + prosody.py (analyse locale, requirements-analysis.txt) ·
+                         #   0048 app_users.acquisition_source (provenance déclarée à l'inscription) ·
+                         #   0049 journal structuré (client_journal_entries.entry_kind libre|checkin|exercice|moment,
+                         #        dimensions = axes MERLIN, structured_payload JSON, session_id/session_phase
+                         #        avant|apres|entre — fin des blobs ARCHI_*::, rétro-migration non destructive) ·
+                         #   0050 client_intentions (intentions client + vue équilibre, projection doctrine 11→4)
 ```
 
 > **Profilage comportemental (6 couches)** — modèle `app/models/behavioral_profile.py` + schémas

@@ -3,600 +3,411 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>IVIA &mdash; Enregistrer ma voix</title>
   <script src="/shared/session.js"></script>
   <script>requireAuth();</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IVIA — Enregistrer ma voix</title>
-  <script src="/shared/api.js?v=20260624a"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <script src="/shared/api.js?v=20260707c"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ─────────────────────────────────────────────────────────────────────
-       Module d'enregistrement — UN composant, deux ambiances ([data-theme]).
-       Repris fidèlement de design-system/recorder-card.html (le mockup du
-       site). Tout est piloté par des variables CSS ; seul l'habillage change.
-    ───────────────────────────────────────────────────────────────────── */
-    :root{ --ivia-green:#2D6A4F; --ivia-green-soft:#4A7C59; --radius:26px; --pill-radius:16px; }
-
-    /* Mode Signature : velours sombre, vert IVIA, cuivre doux, ivoire */
+    :root{ --pill-radius:16px; }
     [data-theme="signature"]{
       --bg: radial-gradient(120% 90% at 50% 0%, #20241c 0%, #12130d 55%, #0c0d08 100%);
-      --card: rgba(255,255,255,.03); --card-border: rgba(196,176,128,.16);
+      --page-bg:#0e0f0a;
       --text:#F3EFE2; --muted:#A9A693; --soft:#75735f;
-      --accent: var(--ivia-green-soft); --accent-2:#C8965A;
+      --accent-2:#C8965A;
       --ring:#3a3c2f; --ring-active:#C8965A;
       --wave:#C8965A; --wave-2:#5e7d59;
-      --timer:#F3EFE2;
       --pill-bg: rgba(255,255,255,.06); --pill-border: rgba(255,255,255,.10); --pill-text:#E8E4D6;
       --finish-bg: linear-gradient(180deg,#3f6f50,#2d5b42); --finish-text:#F3EFE2;
-      --stop-text:#e8a59a; --stop-border: rgba(220,120,100,.32);
-      --field-bg: rgba(255,255,255,.05); --field-border: rgba(255,255,255,.12);
+      --card-border: rgba(196,176,128,.16);
       --logo-fill:#5e7d59; --shadow:0 30px 80px -40px rgba(0,0,0,.8);
     }
-    /* Mode Doux : prune/rosé satiné, vert IVIA en accent, plus tendre */
     [data-theme="doux"]{
       --bg: radial-gradient(120% 95% at 50% 0%, #f7e7e9 0%, #efd7da 45%, #e4c9d2 100%);
-      --card: rgba(255,255,255,.5); --card-border: rgba(180,140,150,.28);
+      --page-bg:#e7d3d8;
       --text:#5b4750; --muted:#9a7f88; --soft:#b59aa3;
-      --accent: var(--ivia-green-soft); --accent-2:#c98b9b;
+      --accent-2:#c98b9b;
       --ring:#e6cdd3; --ring-active:#c98b9b;
       --wave:#c98b9b; --wave-2:#7fa07f;
-      --timer:#5b4750;
-      --pill-bg: rgba(255,255,255,.6); --pill-border: rgba(180,140,150,.30); --pill-text:#6b5560;
+      --pill-bg: rgba(255,255,255,.55); --pill-border: rgba(180,140,150,.30); --pill-text:#6b5560;
       --finish-bg: linear-gradient(180deg,#8aa583,#6f8c6c); --finish-text:#fbfaf6;
-      --stop-text:#b5566a; --stop-border: rgba(180,90,110,.3);
-      --field-bg: rgba(255,255,255,.55); --field-border: rgba(180,140,150,.3);
+      --card-border: rgba(180,140,150,.28);
       --logo-fill:#8aa583; --shadow:0 30px 80px -42px rgba(120,80,95,.45);
     }
-
-    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
-    h1,h2{font-family:'Lora',Georgia,serif;}
-
-    /* Sélecteur d'ambiance */
-    .picker{display:inline-flex;align-items:center;gap:8px;background:#F0F7F2;
-            border:1px solid #D4E8D0;border-radius:9999px;padding:5px;}
-    .picker .lbl{font-size:12px;font-weight:600;color:#4B6350;letter-spacing:.04em;padding-left:8px;}
+    *{box-sizing:border-box;margin:0;}
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--page-bg);color:var(--text);
+         min-height:100vh;display:flex;flex-direction:column;align-items:center;
+         padding:28px 16px 48px;gap:22px;transition:background .4s;}
+    .picker{display:flex;align-items:center;gap:10px;background:rgba(127,127,127,.14);
+            border:1px solid rgba(127,127,127,.22);border-radius:9999px;padding:5px;backdrop-filter:blur(6px);}
+    .picker .lbl{font-size:12px;font-weight:600;color:#9aa;letter-spacing:.04em;padding-left:8px;}
     .picker button{border:0;cursor:pointer;font:inherit;font-size:13px;font-weight:700;
-            padding:6px 16px;border-radius:9999px;background:transparent;color:#4B6350;transition:.18s;}
-    .picker button.on{background:#2D6A4F;color:#fff;box-shadow:0 2px 8px rgba(45,106,79,.22);}
-
-    /* L'écran themé (fond + carte) */
-    .screen{width:100%;max-width:420px;margin:0 auto;border-radius:34px;padding:30px 26px 22px;
-            background:var(--bg);box-shadow:var(--shadow);transition:background .4s;color:var(--text);}
-    .brand{text-align:center;margin-top:4px;}
+            padding:7px 16px;border-radius:9999px;background:transparent;color:#bbb;transition:.18s;}
+    .picker button.on{background:#fff;color:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,.18);}
+    .screen{width:100%;max-width:380px;border-radius:34px;padding:26px 22px 18px;
+            background:var(--bg);box-shadow:var(--shadow);transition:background .4s;}
+    .brand{text-align:center;margin-top:6px;}
     .logo-chip{width:38px;height:38px;border-radius:11px;background:rgba(127,127,127,.14);
-            display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;}
+            display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;}
     .logo-chip svg{width:22px;height:22px;}
-    .wordmark{font-family:'Lora',Georgia,serif;font-size:28px;font-weight:600;letter-spacing:.14em;color:var(--text);}
-    .subtitle{font-size:13px;color:var(--accent-2);margin-top:6px;font-weight:600;}
+    .wordmark{font-family:'Lora',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:.14em;color:var(--text);}
+    .subtitle{font-size:13px;color:var(--accent-2);margin-top:6px;font-weight:600;min-height:18px;}
     .hint{font-size:13px;color:var(--muted);margin-top:2px;}
-
-    /* Timer + onde */
-    .timer-wrap{position:relative;height:200px;display:flex;align-items:center;justify-content:center;margin:10px 0 2px;}
-    canvas#wave{position:absolute;inset:0;width:100%;height:100%;}
-    .ring{position:absolute;width:152px;height:152px;border-radius:50%;
-          border:1.5px solid var(--ring);transition:border-color .3s;}
-    .ring.live{border-color:var(--ring-active);}
-    .timer-core{position:relative;text-align:center;}
-    .timer{font-family:'Lora',Georgia,serif;font-size:42px;font-weight:600;color:var(--timer);font-variant-numeric:tabular-nums;letter-spacing:.02em;}
-    .status{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3;min-height:14px;}
-
-    /* Jauge de durée (vers le maximum de la formule) */
-    .duree-track{height:4px;background:var(--card-border);border-radius:9999px;overflow:hidden;margin:6px auto 0;max-width:200px;}
-    .duree-fill{height:100%;background:var(--accent-2);border-radius:9999px;width:0;transition:width .7s;}
-
+    .timer-wrap{position:relative;height:210px;display:flex;align-items:center;justify-content:center;margin:8px 0 4px;}
+    canvas#viz{position:absolute;inset:0;width:100%;height:100%;}
+    .timer-core{position:relative;text-align:center;pointer-events:none;}
+    .timer{font-family:'Lora',Georgia,serif;font-size:40px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;}
+    .status{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3;min-height:28px;}
     .privacy{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;
-             color:var(--soft);margin:14px 0 18px;}
+             color:var(--soft);margin:8px 0 16px;}
     .privacy svg{width:13px;height:13px;}
-
-    /* Contrôles */
     .controls{display:flex;gap:12px;margin-bottom:12px;}
     .pill{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
           background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--pill-text);
           border-radius:var(--pill-radius);padding:13px;font:inherit;font-size:14px;font-weight:600;transition:.15s;}
     .pill:hover{filter:brightness(1.08);}
-    .pill svg{width:16px;height:16px;}
-    .pill.stop{color:var(--stop-text);border-color:var(--stop-border);}
+    .pill:disabled{opacity:.4;cursor:default;}
+    .pill svg{width:16px;height:16px;flex:0 0 auto;}
     .finish{width:100%;cursor:pointer;border:0;border-radius:var(--pill-radius);
             background:var(--finish-bg);color:var(--finish-text);padding:15px;
             font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;transition:.15s;}
     .finish:hover{filter:brightness(1.06);}
     .finish svg{width:18px;height:18px;}
-    .duree-info{font-size:11px;color:var(--soft);text-align:center;margin-top:8px;}
-
-    /* Réécoute + consentement (mêmes tokens) */
-    .panel-title{font-family:'Lora',Georgia,serif;font-size:18px;font-weight:600;color:var(--text);}
-    .panel-sub{font-size:12px;color:var(--muted);margin-top:2px;}
-    .player{display:flex;align-items:center;gap:14px;background:var(--field-bg);
-            border:1px solid var(--field-border);border-radius:16px;padding:14px;margin:14px 0;}
-    .play-btn{width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;flex-shrink:0;
+    .player{display:flex;align-items:center;gap:12px;background:var(--pill-bg);
+            border:1px solid var(--pill-border);border-radius:16px;padding:12px;margin-bottom:12px;}
+    .play-btn{width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;flex-shrink:0;
               background:var(--finish-bg);color:var(--finish-text);display:flex;align-items:center;justify-content:center;}
-    .play-btn svg{width:18px;height:18px;}
-    .pb-track{height:8px;background:var(--card-border);border-radius:9999px;overflow:hidden;cursor:pointer;}
+    .play-btn svg{width:17px;height:17px;}
+    .pb-track{height:7px;background:var(--card-border);border-radius:9999px;overflow:hidden;cursor:pointer;}
     .pb-fill{height:100%;background:var(--accent-2);border-radius:9999px;width:0;}
-    .consent{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted);line-height:1.5;cursor:pointer;margin-bottom:16px;}
-    .consent input{margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:var(--accent);}
-    .consent a{color:var(--accent-2);text-decoration:underline;}
-
-    .alert{font-size:13px;border-radius:12px;padding:11px 14px;margin-top:14px;line-height:1.45;
+    .alert{font-size:13px;border-radius:12px;padding:11px 14px;margin-top:10px;line-height:1.45;
            background:rgba(190,70,60,.12);border:1px solid rgba(190,70,60,.28);color:var(--text);}
-
-    /* Confirmation */
-    .ok-badge{width:58px;height:58px;border-radius:50%;background:var(--finish-bg);color:var(--finish-text);
-              display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
-    .ok-badge svg{width:28px;height:28px;}
-    .ghost-link{display:inline-block;border:1px solid var(--field-border);color:var(--text);
-                border-radius:14px;padding:11px 22px;font-size:14px;font-weight:600;text-decoration:none;transition:.15s;}
-    .ghost-link:hover{filter:brightness(1.08);}
-    .solid-link{display:inline-block;background:var(--finish-bg);color:var(--finish-text);
-                border-radius:14px;padding:11px 22px;font-size:14px;font-weight:700;text-decoration:none;transition:.15s;}
-    .solid-link:hover{filter:brightness(1.06);}
-
-    .badge-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;
-                border-radius:9999px;padding:5px 12px;}
+    .bottomnav{display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;
+               border-top:1px solid var(--card-border);}
+    .bottomnav a,.bottomnav button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;
+                 font-weight:600;color:var(--muted);text-decoration:none;background:none;border:0;cursor:pointer;font-family:inherit;}
+    .bottomnav .on{color:var(--accent-2);}
+    .bottomnav svg{width:20px;height:20px;}
+    .hidden{display:none !important;}
   </style>
 </head>
-<body class="antialiased min-h-screen bg-cream">
+<body data-theme="signature">
 
-<div id="ivia-header"></div>
-<script src="/shared/layout.js?v=20260624b"></script>
-<script>renderLayout('parler');</script>
-
-  <div class="max-w-2xl mx-auto px-4 py-10">
-
-    <a href="/rendez-vous.html" class="inline-block text-sm text-muted hover:text-ink transition-colors cursor-pointer mb-5">
-      ← Retour aux formules
-    </a>
-
-    <!-- Badges formule + confidentialité -->
-    <div class="flex flex-wrap items-center gap-2 mb-5">
-      <span id="badge-formule" class="bg-surface border border-bdr text-xs font-semibold text-muted px-3 py-1 rounded-full">Enregistrement libre</span>
-      <span class="bg-blue-50 border border-blue-100 text-xs font-semibold text-trust px-3 py-1 rounded-full">Loi 25 · Voix effacée à J+30</span>
-    </div>
-
-    <!-- Sélecteur d'ambiance -->
-    <div class="flex items-center justify-between gap-3 mb-5 flex-wrap">
-      <div>
-        <h1 class="font-heading text-2xl font-bold text-ink leading-tight">Votre espace d'écoute</h1>
-        <p class="text-muted text-sm mt-1">Parlez librement, à votre rythme. Rien n'est envoyé tant que vous ne le décidez pas.</p>
-      </div>
-      <div class="picker" role="tablist" aria-label="Ambiance d'enregistrement">
-        <span class="lbl">Ambiance</span>
-        <button id="t-signature" class="on" onclick="setTheme('signature')" role="tab" aria-selected="true">Signature</button>
-        <button id="t-doux" onclick="setTheme('doux')" role="tab" aria-selected="false">Doux</button>
-      </div>
-    </div>
-
-    <!-- ════════════════ Paiement requis (formule payante) ════════════════ -->
-    <section id="pay-gate" class="screen hidden" data-theme="signature">
-      <div class="brand" style="margin-bottom:6px">
-        <div class="wordmark">IVIA</div>
-        <p class="subtitle">Cette formule est payante</p>
-      </div>
-      <p class="text-center" style="color:var(--muted);font-size:14px;line-height:1.6;margin:6px 0 18px">
-        L'enregistrement solo de 30 minutes coûte <strong style="color:var(--text)" id="pay-amount">35 $</strong>
-        (taxe incluse). Le règlement débloque votre espace d'enregistrement.
-      </p>
-      <div id="pay-error" class="alert hidden"></div>
-      <button id="btn-pay" class="finish" style="margin-top:6px">
-        Payer <span id="pay-btn-amount">35 $</span> et commencer →
-      </button>
-    </section>
-
-    <!-- ════════════════ LE MODULE (record → réécoute → confirmation) ════════════════ -->
-    <section id="recorder" class="screen" data-theme="signature" aria-label="Enregistrement IVIA">
-
-      <!-- ÉTAPE 1 — Enregistrement -->
-      <div id="step-record">
-        <div class="brand">
-          <span class="logo-chip">
-            <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
-              <rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/>
-              <rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/>
-              <rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/>
-            </svg>
-          </span>
-          <div class="wordmark">IVIA</div>
-          <p class="subtitle" id="rec-subtitle">Prêt à vous écouter</p>
-          <p class="hint">Parlez librement, à votre rythme.</p>
-        </div>
-
-        <div class="timer-wrap">
-          <canvas id="wave" aria-hidden="true"></canvas>
-          <div class="ring" id="ring"></div>
-          <div class="timer-core">
-            <div class="timer" id="timer">00:00</div>
-            <div class="status" id="rec-status">Appuyez pour commencer</div>
-          </div>
-        </div>
-        <div class="duree-track"><div class="duree-fill" id="rec-progress"></div></div>
-
-        <p class="privacy">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v4m-6 6h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg>
-          Rien n'est envoyé sans votre accord.
-        </p>
-
-        <!-- INACTIF -->
-        <div id="controls-idle">
-          <button id="btn-start" class="finish" aria-label="Commencer l'enregistrement">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
-            Commencer l'enregistrement
-          </button>
-        </div>
-
-        <!-- EN COURS -->
-        <div id="controls-live" class="hidden">
-          <div class="controls">
-            <button id="btn-pause" class="pill" aria-label="Mettre en pause">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-              Pause
-            </button>
-          </div>
-          <button id="btn-stop" class="finish" aria-label="Terminer l'enregistrement">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-            Terminer
-          </button>
-        </div>
-
-        <!-- EN PAUSE -->
-        <div id="controls-paused" class="hidden">
-          <div class="controls">
-            <button id="btn-preview" class="pill" aria-label="Écouter ce que j'ai dit jusqu'ici">
-              <svg id="preview-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
-              <span id="preview-label">M'écouter</span>
-            </button>
-            <button id="btn-resume" class="pill" aria-label="Reprendre l'enregistrement">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg>
-              Reprendre
-            </button>
-          </div>
-          <button id="btn-stop2" class="finish" aria-label="Terminer l'enregistrement">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
-            Terminer
-          </button>
-          <p class="duree-info" style="margin-top:10px">En pause — réécoutez-vous, puis reprenez ou terminez.</p>
-        </div>
-
-        <p id="duree-info" class="duree-info" style="margin-top:14px">Durée recommandée : 5 à 20 minutes · Maximum : 40 minutes</p>
-        <div id="mic-error" class="alert hidden">
-          L'accès au microphone a été refusé. Autorisez-le dans les paramètres du navigateur et rechargez la page.
-        </div>
-      </div>
-
-      <!-- ÉTAPE 2 — Réécoute + envoi -->
-      <div id="step-playback" class="hidden">
-        <div class="brand" style="margin-bottom:4px">
-          <div class="wordmark" style="font-size:24px">IVIA</div>
-          <p class="subtitle">Réécoutez avant d'envoyer</p>
-        </div>
-        <p class="panel-sub" style="text-align:center;margin-bottom:6px">Prenez le temps. Vous pouvez tout recommencer si ça ne vous convient pas.</p>
-
-        <div class="player">
-          <button id="btn-play" class="play-btn" aria-label="Lire / mettre en pause">
-            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
-          </button>
-          <div style="flex:1">
-            <div id="playback-bar" class="pb-track"><div id="playback-progress" class="pb-fill"></div></div>
-            <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums">
-              <span id="playback-time">00:00</span><span id="playback-duration">00:00</span>
-            </div>
-          </div>
-        </div>
-
-        <label class="consent">
-          <input type="checkbox" id="consent-rec">
-          <span>Je consens à l'enregistrement de ma voix et à sa transcription, pour mon usage dans mon espace.
-            La voix est effacée après 30 jours ; la transcription m'appartient.
-            <a href="/confidentialite.html">Détails (Loi 25)</a>.</span>
-        </label>
-
-        <div class="controls" style="margin-bottom:0">
-          <button id="btn-retry" class="pill" aria-label="Recommencer un nouvel enregistrement">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.5 9a7 7 0 0112.9-2M18.5 15a7 7 0 01-12.9 2"/></svg>
-            Recommencer
-          </button>
-          <button id="btn-submit" class="finish" style="flex:2" aria-label="Soumettre l'enregistrement">Soumettre à IVIA →</button>
-        </div>
-        <div id="submit-error" class="alert hidden"></div>
-      </div>
-
-      <!-- ÉTAPE 3 — Confirmation -->
-      <div id="step-confirm" class="hidden" style="text-align:center;padding:8px 0 6px">
-        <div class="ok-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-        </div>
-        <h2 class="panel-title">Enregistrement reçu — transcription en cours.</h2>
-        <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:10px auto 20px;max-width:330px">
-          Votre voix est sécurisée et la transcription se prépare (quelques minutes).
-          Vous pourrez relire vos mots dans votre espace — et les partager avec un·e praticien·ne seulement si vous le décidez.
-        </p>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-          <a href="/client/mes-enregistrements.html" class="solid-link">Voir mes enregistrements</a>
-          <a href="/client/dashboard.html" class="ghost-link">Retour à mon espace</a>
-        </div>
-      </div>
-
-    </section>
-
+  <div class="picker" role="tablist" aria-label="Ambiance">
+    <span class="lbl">Ambiance</span>
+    <button id="t-signature" class="on" type="button">Signature</button>
+    <button id="t-doux" type="button">Doux</button>
   </div>
 
-  <footer class="py-6 px-4 text-center">
-    <p class="text-xs text-muted">IVIA n'est pas un service d'urgence · En crise : <strong><a href="tel:18662773553" class="underline">1 866 APPELLE (277-3553)</a></strong></p>
-  </footer>
+  <section class="screen" id="recorder" aria-label="Enregistrement IVIA">
+    <div class="brand">
+      <span class="logo-chip">
+        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect x="6" y="11" width="3.6" height="6" rx="1.8" fill="var(--logo-fill)"/>
+          <rect x="12.2" y="6" width="3.6" height="16" rx="1.8" fill="var(--logo-fill)"/>
+          <rect x="18.4" y="9" width="3.6" height="10" rx="1.8" fill="var(--logo-fill)"/>
+        </svg>
+      </span>
+      <div class="wordmark">IVIA</div>
+      <p class="subtitle" id="subtitle">Pr&ecirc;t &agrave; vous &eacute;couter</p>
+      <p class="hint">Parlez librement, &agrave; votre rythme.</p>
+    </div>
+
+    <div class="timer-wrap">
+      <canvas id="viz" aria-hidden="true"></canvas>
+      <div class="timer-core">
+        <div class="timer" id="timer">00:00</div>
+        <div class="status" id="status">Touchez Enregistrer</div>
+      </div>
+    </div>
+
+    <p class="privacy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v4m-6 6h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg>
+      Rien n&apos;est envoy&eacute; sans votre accord.
+    </p>
+
+    <!-- Lecteur de r&eacute;&eacute;coute (apr&egrave;s un enregistrement) -->
+    <div class="player hidden" id="player">
+      <button id="btn-play" class="play-btn" type="button" aria-label="Lire / pause">
+        <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+      </button>
+      <div style="flex:1">
+        <div id="pb-track" class="pb-track"><div id="pb-fill" class="pb-fill"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums">
+          <span id="pb-time">00:00</span><span id="pb-dur">00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="pill" id="btn-pause" type="button" disabled>
+        <svg id="pause-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <span id="pause-label">Pause</span>
+      </button>
+      <button class="pill" id="btn-reset" type="button" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v6h6M20 20v-6h-6M5.5 9a7 7 0 0112.9-2M18.5 15a7 7 0 01-12.9 2"/></svg>
+        R&eacute;initialiser
+      </button>
+    </div>
+    <button class="finish" id="btn-main" type="button">
+      <svg id="main-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+      <span id="main-label">Enregistrer</span>
+    </button>
+    <div id="err" class="alert hidden"></div>
+
+    <nav class="bottomnav">
+      <a href="/client/journal.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 21h10a2 2 0 002-2V7l-5-4H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        Journal
+      </a>
+      <button type="button" class="on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+        Enregistrer
+      </button>
+      <a href="/client/dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Espace
+      </a>
+    </nav>
+  </section>
 
   <script>
-    // ═══════════════ Thème : même structure, deux jeux de tokens ═══════════════
+    // ---- Th&egrave;me -------------------------------------------------------
     function setTheme(t){
-      document.getElementById('recorder').dataset.theme = t;
-      document.getElementById('pay-gate').dataset.theme = t;
+      document.body.dataset.theme = t;
       document.getElementById('t-signature').classList.toggle('on', t==='signature');
       document.getElementById('t-doux').classList.toggle('on', t==='doux');
-      document.getElementById('t-signature').setAttribute('aria-selected', t==='signature');
-      document.getElementById('t-doux').setAttribute('aria-selected', t==='doux');
       try{ localStorage.setItem('ivia_recorder_theme', t); }catch(e){}
     }
-    try{ const saved=localStorage.getItem('ivia_recorder_theme'); if(saved) setTheme(saved); }catch(e){}
+    document.getElementById('t-signature').addEventListener('click', ()=>setTheme('signature'));
+    document.getElementById('t-doux').addEventListener('click', ()=>setTheme('doux'));
+    try{ const s=localStorage.getItem('ivia_recorder_theme'); if(s) setTheme(s); }catch(e){}
 
-    // ═══════════════ ENREGISTREMENT AUDIO — machine à états ═══════════════
-    // États : 'idle' → 'recording' ⇄ 'paused' → 'review'. Une seule prise
-    // continue (pause/reprise sur le même MediaRecorder) : fiable pour la
-    // transcription côté serveur. L'écoute en pause se fait sur les segments
-    // déjà capturés, sans interrompre la prise.
-    let mediaRecorder = null, mediaStream = null, audioChunks = [], audioBlob = null;
-    let audioEl = null, previewEl = null, timerInterval = null, secondsElapsed = 0;
+    // ---- Etat -------------------------------------------------------------
+    // idle -> recording <-> paused -> done (r&eacute;&eacute;coute) -> idle (reset)
+    let state='idle';
+    let mediaRecorder=null, mediaStream=null, chunks=[], blob=null, playbackEl=null;
+    let audioCtx=null, analyser=null, seconds=0, timerInt=null, lastVibe=0;
 
-    // ── Formules — mêmes clés que le backend (/me/recordings FORMULES) ──
-    const FORMULES = {
-      libre:  { label: 'Enregistrement libre',     max_min: 40, reco: '5 à 20 minutes' },
-      solo30: { label: 'Séance solo · 30 minutes', max_min: 30, reco: '20 à 30 minutes' },
-      solo60: { label: 'Séance solo · 1 heure',    max_min: 60, reco: '40 à 60 minutes' },
+    const timerEl=document.getElementById('timer'), statusEl=document.getElementById('status'),
+          subtitleEl=document.getElementById('subtitle'),
+          btnMain=document.getElementById('btn-main'), mainLabel=document.getElementById('main-label'), mainIcon=document.getElementById('main-icon'),
+          btnPause=document.getElementById('btn-pause'), pauseLabel=document.getElementById('pause-label'),
+          btnReset=document.getElementById('btn-reset'),
+          player=document.getElementById('player'), btnPlay=document.getElementById('btn-play'), playIcon=document.getElementById('play-icon'),
+          pbFill=document.getElementById('pb-fill'), pbTime=document.getElementById('pb-time'), pbDur=document.getElementById('pb-dur'),
+          errEl=document.getElementById('err');
+
+    const ICONS={
+      mic:'<path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/>',
+      stop:'<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>',
+      send:'<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>'
     };
-    const formuleId = new URLSearchParams(location.search).get('formule') || 'libre';
-    const FORMULE = FORMULES[formuleId] || FORMULES.libre;
-    const MAX_SECONDS = FORMULE.max_min * 60;
-    document.getElementById('badge-formule').textContent = FORMULE.label;
-    document.getElementById('duree-info').textContent =
-      `Durée recommandée : ${FORMULE.reco} · Maximum : ${FORMULE.max_min} minutes`;
 
-    // ── Garde de paiement (formule payante) ──────────────────────────────
-    function fmtAmount(cents) { return (cents / 100).toFixed(2).replace('.00', '').replace('.', ',') + ' $'; }
-    (async function paymentGate() {
-      if (typeof requireCompleteProfile === 'function' && !(await requireCompleteProfile())) return;
-      try {
-        const access = await getSoloAccess(formuleId);
-        if (!access || !access.needs_payment) return; // gratuit ou crédit déjà détenu
-        const amount = fmtAmount(access.amount_cents || 3500);
-        document.getElementById('pay-amount').textContent = amount;
-        document.getElementById('pay-btn-amount').textContent = amount;
-        document.getElementById('recorder').classList.add('hidden');
-        document.getElementById('pay-gate').classList.remove('hidden');
-        document.getElementById('btn-pay').addEventListener('click', async (ev) => {
-          const btn = ev.currentTarget, perr = document.getElementById('pay-error');
-          perr.classList.add('hidden'); btn.style.pointerEvents = 'none'; btn.style.opacity = '.6';
-          const retour = location.origin + location.pathname + '?formule=' + encodeURIComponent(formuleId) + '&paye=1';
-          try {
-            const res = await soloRecordingCheckout({ success_url: retour, cancel_url: retour });
-            window.location.href = res.checkout_url;
-          } catch (e) {
-            perr.textContent = e.message || "Le paiement n'a pas pu démarrer. Réessayez.";
-            perr.classList.remove('hidden'); btn.style.pointerEvents = ''; btn.style.opacity = '';
-          }
-        });
-      } catch (_) { /* en cas d'échec de la vérif, on laisse l'enregistreur — le serveur tranche au POST */ }
-    })();
+    function fmt(s){ s=Math.max(0,Math.floor(s||0)); return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+    function showErr(m){ errEl.textContent=m; errEl.classList.remove('hidden'); }
+    function hideErr(){ errEl.classList.add('hidden'); }
 
-    // ── Visualiseur (onde douce thématique, réactive au micro) ───────────
-    const canvas = document.getElementById('wave'), ctx2d = canvas.getContext('2d');
-    let analyser = null, audioCtx = null, animFrame = null;
-    let recording = false, paused = false, phase = 0, amp = 0.10;
-    function resizeCanvas(){ const r = canvas.getBoundingClientRect(); canvas.width = r.width * devicePixelRatio; canvas.height = r.height * devicePixelRatio; }
-    window.addEventListener('resize', resizeCanvas);
-    function cssvar(n){ return getComputedStyle(document.getElementById('recorder')).getPropertyValue(n).trim(); }
+    function render(){
+      btnPause.disabled = !(state==='recording'||state==='paused');
+      btnReset.disabled = (state==='idle');
+      player.classList.toggle('hidden', state!=='done');
+      if(state==='idle'){
+        subtitleEl.innerHTML='Pr&ecirc;t &agrave; vous &eacute;couter';
+        statusEl.textContent='Touchez Enregistrer';
+        mainLabel.textContent='Enregistrer'; mainIcon.innerHTML=ICONS.mic;
+        pauseLabel.textContent='Pause';
+      }else if(state==='recording'){
+        subtitleEl.textContent='Enregistrement en cours';
+        statusEl.innerHTML='Enregistrement<br>en cours';
+        mainLabel.textContent='Terminer'; mainIcon.innerHTML=ICONS.stop;
+        pauseLabel.textContent='Pause';
+      }else if(state==='paused'){
+        subtitleEl.textContent='En pause';
+        statusEl.textContent='En pause';
+        mainLabel.textContent='Terminer'; mainIcon.innerHTML=ICONS.stop;
+        pauseLabel.textContent='Reprendre';
+      }else if(state==='done'){
+        subtitleEl.innerHTML='R&eacute;&eacute;coutez votre voix';
+        statusEl.innerHTML='Enregistrement termin&eacute;';
+        mainLabel.textContent='Envoyer &agrave; IVIA'; mainIcon.innerHTML=ICONS.send;
+      }
+    }
+
+    // ---- Minuterie ----------------------------------------------------------
+    function tickStart(){ clearInterval(timerInt); timerInt=setInterval(()=>{ seconds++; timerEl.textContent=fmt(seconds); },1000); }
+    function tickStop(){ clearInterval(timerInt); }
+
+    // ---- Micro / niveau ------------------------------------------------------
     function micLevel(){
-      if (!analyser) return 0.5;
-      const data = new Uint8Array(analyser.fftSize);
-      analyser.getByteTimeDomainData(data);
-      let sum = 0; for (let i=0;i<data.length;i++){ const v = (data[i]-128)/128; sum += v*v; }
-      return Math.min(1, Math.sqrt(sum/data.length) * 3.2);
+      if(!analyser) return 0;
+      const d=new Uint8Array(analyser.fftSize);
+      analyser.getByteTimeDomainData(d);
+      let sum=0; for(let i=0;i<d.length;i++){ const v=(d[i]-128)/128; sum+=v*v; }
+      return Math.min(1, Math.sqrt(sum/d.length)*3.4);
     }
+    function vibrate(level){
+      if(!navigator.vibrate) return;
+      const now=performance.now();
+      if(now-lastVibe<260) return;
+      if(level>0.18){ navigator.vibrate(12); lastVibe=now; }
+    }
+
+    // ---- Visualisation hypnotique : anneaux concentriques qui respirent -----
+    const cv=document.getElementById('viz'), ctx=cv.getContext('2d');
+    function resize(){ const r=cv.getBoundingClientRect(); cv.width=r.width*devicePixelRatio; cv.height=r.height*devicePixelRatio; }
+    window.addEventListener('resize', resize); resize();
+    let phase=0, amp=0.08, smooth=0;
+    function cssvar(n){ return getComputedStyle(document.body).getPropertyValue(n).trim(); }
     function draw(){
-      const w = canvas.width, h = canvas.height, mid = h/2;
-      ctx2d.clearRect(0,0,w,h);
-      const target = recording && !paused ? (0.30 + 0.70*micLevel()) : (paused ? 0.18 : 0.10);
-      amp += (target-amp)*0.08;
-      const wave = cssvar('--wave')||'#C8965A', wave2 = cssvar('--wave-2')||'#5e7d59';
-      const layers = [{c:wave,a:0.55,f:1.0,s:18},{c:wave2,a:0.30,f:1.6,s:11}];
+      const w=cv.width,h=cv.height,cx=w/2,cy=h/2;
+      ctx.clearRect(0,0,w,h);
+      const live=(state==='recording');
+      const lvl=live?micLevel():0;
+      smooth += (lvl-smooth)*0.12;
+      const target=live?(0.25+0.75*smooth):(state==='paused'?0.14:0.08);
+      amp += (target-amp)*0.06;
+      if(live) vibrate(smooth);
+      const c1=cssvar('--wave')||'#C8965A', c2=cssvar('--wave-2')||'#5e7d59';
+      const base=64*devicePixelRatio;
+      // anneaux concentriques respirants
+      for(let i=0;i<5;i++){
+        const p=phase*(0.6+i*0.13)+i*1.4;
+        const r=base+(i*13*devicePixelRatio)+Math.sin(p)*10*devicePixelRatio*(0.4+amp);
+        ctx.beginPath();
+        ctx.arc(cx,cy,Math.max(6,r),0,Math.PI*2);
+        ctx.strokeStyle=i%2?c2:c1;
+        ctx.globalAlpha=(0.38-i*0.055)*(0.55+amp*0.8);
+        ctx.lineWidth=(1.4+amp*1.8)*devicePixelRatio;
+        ctx.stroke();
+      }
+      // onde horizontale douce derri&egrave;re les anneaux
+      const layers=[{c:c1,a:0.42,f:1.0,s:16},{c:c2,a:0.26,f:1.7,s:10}];
       layers.forEach((L,i)=>{
-        ctx2d.beginPath();
+        ctx.beginPath();
         for(let x=0;x<=w;x+=4){
-          const env = Math.sin((x/w)*Math.PI);
-          const y = mid + Math.sin(x*0.012*L.f + phase*(i?1.3:1))*L.s*devicePixelRatio*env*amp
-                        + Math.sin(x*0.03 + phase*2)*4*devicePixelRatio*env*amp;
-          x===0?ctx2d.moveTo(x,y):ctx2d.lineTo(x,y);
+          const env=Math.sin((x/w)*Math.PI);
+          const y=cy+Math.sin(x*0.013*L.f+phase*(i?1.35:1))*L.s*devicePixelRatio*env*amp*2.2;
+          x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
         }
-        ctx2d.strokeStyle = L.c; ctx2d.globalAlpha = L.a; ctx2d.lineWidth = 2*devicePixelRatio;
-        ctx2d.lineJoin = 'round'; ctx2d.stroke();
+        ctx.strokeStyle=L.c; ctx.globalAlpha=L.a; ctx.lineWidth=1.6*devicePixelRatio; ctx.lineJoin='round'; ctx.stroke();
       });
-      ctx2d.globalAlpha = 1;
-      phase += (recording && !paused) ? 0.05 : 0.014;
-      animFrame = requestAnimationFrame(draw);
+      ctx.globalAlpha=1;
+      phase += live?0.045:0.015;
+      requestAnimationFrame(draw);
     }
-    resizeCanvas(); draw(); // l'onde respire dès l'ouverture
+    draw();
 
-    function formatTime(s){ s = Math.max(0, Math.floor(s||0)); return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
-
-    // ── Bascule d'état d'interface ───────────────────────────────────────
-    function showControls(state){
-      document.getElementById('controls-idle').classList.toggle('hidden', state !== 'idle');
-      document.getElementById('controls-live').classList.toggle('hidden', state !== 'recording');
-      document.getElementById('controls-paused').classList.toggle('hidden', state !== 'paused');
-      document.getElementById('ring').classList.toggle('live', state === 'recording');
-      const st = document.getElementById('rec-status'), sub = document.getElementById('rec-subtitle');
-      if (state === 'recording'){ st.innerHTML = 'Enregistrement<br>en cours'; sub.textContent = 'Enregistrement en cours'; }
-      else if (state === 'paused'){ st.textContent = 'En pause'; sub.textContent = 'En pause'; }
-      else { st.textContent = 'Appuyez pour commencer'; sub.textContent = 'Prêt à vous écouter'; }
-    }
-
-    function tickStart(){
-      timerInterval = setInterval(() => {
-        secondsElapsed++;
-        document.getElementById('timer').textContent = formatTime(secondsElapsed);
-        document.getElementById('rec-progress').style.width = `${Math.min((secondsElapsed/MAX_SECONDS)*100,100)}%`;
-        if (secondsElapsed >= MAX_SECONDS) terminer();
-      }, 1000);
-    }
-    function tickStop(){ clearInterval(timerInterval); }
-
-    // ── Démarrer ─────────────────────────────────────────────────────────
-    document.getElementById('btn-start').addEventListener('click', commencer);
-    async function commencer(){
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        audioCtx = new AudioContext();
-        analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048;
+    // ---- Enregistrement ------------------------------------------------------
+    async function startRec(){
+      hideErr();
+      try{
+        mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});
+        audioCtx=new AudioContext();
+        analyser=audioCtx.createAnalyser(); analyser.fftSize=2048;
         audioCtx.createMediaStreamSource(mediaStream).connect(analyser);
-        audioChunks = [];
-        mediaRecorder = new MediaRecorder(mediaStream);
-        mediaRecorder.ondataavailable = e => { if (e.data.size) audioChunks.push(e.data); };
-        mediaRecorder.onstop = onRecordStop;
+        chunks=[]; blob=null;
+        mediaRecorder=new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+        mediaRecorder.onstop=onStopped;
         mediaRecorder.start(1000);
-        secondsElapsed = 0;
-        document.getElementById('timer').textContent = '00:00';
-        document.getElementById('rec-progress').style.width = '0%';
-        recording = true; paused = false;
-        tickStart(); showControls('recording');
-      } catch (err) { document.getElementById('mic-error').classList.remove('hidden'); }
+        seconds=0; timerEl.textContent='00:00';
+        state='recording'; render(); tickStart();
+      }catch(e){
+        showErr("Acc&egrave;s au micro refus&eacute;. Autorisez le micro dans votre navigateur puis rechargez.");
+      }
     }
-
-    // ── Pause ────────────────────────────────────────────────────────────
-    document.getElementById('btn-pause').addEventListener('click', () => {
-      if (!mediaRecorder || mediaRecorder.state !== 'recording') return;
-      mediaRecorder.pause(); tickStop(); paused = true; showControls('paused');
-    });
-    // ── Reprendre ────────────────────────────────────────────────────────
-    document.getElementById('btn-resume').addEventListener('click', () => {
-      stopPreview();
-      if (!mediaRecorder || mediaRecorder.state !== 'paused') return;
-      mediaRecorder.resume(); tickStart(); paused = false; showControls('recording');
-    });
-
-    // ── M'écouter pendant la pause (sur les segments déjà captés) ─────────
-    document.getElementById('btn-preview').addEventListener('click', () => {
-      if (previewEl && !previewEl.paused) { stopPreview(); return; }
-      try {
-        const blob = new Blob(audioChunks, { type: 'audio/webm' });
-        if (!blob.size) return;
-        previewEl = new Audio(URL.createObjectURL(blob));
-        previewEl.onended = stopPreview; previewEl.play(); setPreviewIcon(true);
-      } catch (e) { /* écoute partielle non supportée — sans incidence sur la prise */ }
-    });
-    function stopPreview(){ if (previewEl){ previewEl.pause(); previewEl = null; } setPreviewIcon(false); }
-    function setPreviewIcon(playing){
-      document.getElementById('preview-icon').innerHTML = playing
-        ? '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'
-        : '<path d="M5 3l14 9-14 9V3z"/>';
-      document.getElementById('preview-label').textContent = playing ? 'Pause' : "M'écouter";
+    function togglePause(){
+      if(!mediaRecorder) return;
+      if(mediaRecorder.state==='recording'){ mediaRecorder.pause(); tickStop(); state='paused'; }
+      else if(mediaRecorder.state==='paused'){ mediaRecorder.resume(); tickStart(); state='recording'; }
+      render();
     }
-
-    // ── Terminer (depuis recording ou paused) ────────────────────────────
-    document.getElementById('btn-stop').addEventListener('click', terminer);
-    document.getElementById('btn-stop2').addEventListener('click', terminer);
-    function terminer(){
-      stopPreview(); tickStop(); recording = false; paused = false;
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+    function finishRec(){
+      tickStop();
+      if(mediaRecorder && mediaRecorder.state!=='inactive') mediaRecorder.stop();
     }
-
-    function onRecordStop(){
-      if (mediaStream){ mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
-      if (audioCtx){ audioCtx.close(); audioCtx = null; analyser = null; }
-      audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-      audioEl = new Audio(URL.createObjectURL(audioBlob));
-      document.getElementById('step-record').classList.add('hidden');
-      document.getElementById('step-playback').classList.remove('hidden');
-      document.getElementById('playback-duration').textContent = formatTime(secondsElapsed);
-      document.getElementById('recorder').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      audioEl.addEventListener('timeupdate', () => {
-        const dur = isFinite(audioEl.duration) && audioEl.duration > 0 ? audioEl.duration : secondsElapsed;
-        document.getElementById('playback-progress').style.width = `${(audioEl.currentTime/dur)*100}%`;
-        document.getElementById('playback-time').textContent = formatTime(audioEl.currentTime);
+    function onStopped(){
+      if(mediaStream){ mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+      if(audioCtx){ audioCtx.close(); audioCtx=null; analyser=null; }
+      blob=new Blob(chunks,{type:'audio/webm'});
+      playbackEl=new Audio(URL.createObjectURL(blob));
+      pbDur.textContent=fmt(seconds);
+      playbackEl.addEventListener('timeupdate',()=>{
+        const d=isFinite(playbackEl.duration)&&playbackEl.duration>0?playbackEl.duration:seconds;
+        pbFill.style.width=((playbackEl.currentTime/d)*100)+'%';
+        pbTime.textContent=fmt(playbackEl.currentTime);
       });
-      audioEl.addEventListener('ended', () => setPlayIcon(false));
+      playbackEl.addEventListener('ended',()=>setPlay(false));
+      state='done'; render();
+    }
+    function resetAll(){
+      if(playbackEl){ playbackEl.pause(); playbackEl=null; }
+      if(mediaRecorder && mediaRecorder.state!=='inactive'){ mediaRecorder.onstop=null; mediaRecorder.stop(); }
+      if(mediaStream){ mediaStream.getTracks().forEach(t=>t.stop()); mediaStream=null; }
+      if(audioCtx){ audioCtx.close(); audioCtx=null; analyser=null; }
+      tickStop();
+      chunks=[]; blob=null; mediaRecorder=null; seconds=0;
+      timerEl.textContent='00:00'; pbFill.style.width='0%'; pbTime.textContent='00:00';
+      setPlay(false); hideErr();
+      state='idle'; render();
     }
 
-    // ── Lecture de la réécoute finale ────────────────────────────────────
-    function setPlayIcon(playing){
-      document.getElementById('play-icon').innerHTML = playing
+    // ---- R&eacute;&eacute;coute ------------------------------------------------
+    function setPlay(on){
+      playIcon.innerHTML=on
         ? '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'
         : '<path d="M5 3l14 9-14 9V3z"/>';
     }
-    document.getElementById('btn-play').addEventListener('click', () => {
-      if (!audioEl) return;
-      if (audioEl.paused){ audioEl.play(); setPlayIcon(true); } else { audioEl.pause(); setPlayIcon(false); }
+    btnPlay.addEventListener('click',()=>{
+      if(!playbackEl) return;
+      if(playbackEl.paused){ playbackEl.play(); setPlay(true); } else { playbackEl.pause(); setPlay(false); }
     });
-    document.getElementById('playback-bar').addEventListener('click', (e) => {
-      if (!audioEl) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const ratio = (e.clientX - rect.left) / rect.width;
-      const dur = isFinite(audioEl.duration) && audioEl.duration > 0 ? audioEl.duration : secondsElapsed;
-      audioEl.currentTime = Math.max(0, Math.min(dur, ratio * dur));
-    });
-
-    // ── Recommencer (nouvel enregistrement depuis zéro) ──────────────────
-    document.getElementById('btn-retry').addEventListener('click', () => {
-      if (audioEl){ audioEl.pause(); audioEl = null; }
-      audioBlob = null; audioChunks = []; mediaRecorder = null; secondsElapsed = 0;
-      document.getElementById('timer').textContent = '00:00';
-      document.getElementById('rec-progress').style.width = '0%';
-      document.getElementById('playback-progress').style.width = '0%';
-      document.getElementById('playback-time').textContent = '00:00';
-      document.getElementById('consent-rec').checked = false;
-      setPlayIcon(false);
-      document.getElementById('step-playback').classList.add('hidden');
-      document.getElementById('step-record').classList.remove('hidden');
-      showControls('idle');
-      document.getElementById('recorder').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('pb-track').addEventListener('click',(e)=>{
+      if(!playbackEl) return;
+      const r=e.currentTarget.getBoundingClientRect();
+      const d=isFinite(playbackEl.duration)&&playbackEl.duration>0?playbackEl.duration:seconds;
+      playbackEl.currentTime=Math.max(0,Math.min(d,((e.clientX-r.left)/r.width)*d));
     });
 
-    // ── Soumettre — POST /api/v1/me/recordings (transcription en fond) ───
-    document.getElementById('btn-submit').addEventListener('click', async () => {
-      const btn = document.getElementById('btn-submit'), err = document.getElementById('submit-error');
-      err.classList.add('hidden');
-      if (!audioBlob) return;
-      if (!document.getElementById('consent-rec').checked) {
-        err.textContent = "Veuillez consentir à l'enregistrement et à la transcription avant d'envoyer.";
-        err.classList.remove('hidden'); return;
+    // ---- Envoi --------------------------------------------------------------
+    async function submitRec(){
+      if(!blob){ return; }
+      hideErr();
+      mainLabel.textContent='Envoi en cours...';
+      btnMain.style.pointerEvents='none'; btnMain.style.opacity='.6';
+      try{
+        const fr=new FileReader();
+        const b64=await new Promise((res,rej)=>{ fr.onload=()=>res(String(fr.result).split(',')[1]); fr.onerror=rej; fr.readAsDataURL(blob); });
+        await uploadMyRecording({ audio_data:b64, filename:'enregistrement.webm', formule:'libre', duration_seconds:Math.max(1,seconds) });
+        subtitleEl.innerHTML='Re&ccedil;u &mdash; transcription en cours';
+        statusEl.innerHTML='Merci. Retrouvez vos mots<br>dans votre espace.';
+        mainLabel.textContent='Aller &agrave; mon espace';
+        btnMain.style.pointerEvents=''; btnMain.style.opacity='';
+        btnMain.onclick=()=>{ location.href='/client/mes-enregistrements.html'; };
+      }catch(e){
+        showErr("L&apos;envoi n&apos;a pas fonctionn&eacute;. V&eacute;rifiez votre connexion et r&eacute;essayez.");
+        mainLabel.textContent='Envoyer &agrave; IVIA';
+        btnMain.style.pointerEvents=''; btnMain.style.opacity='';
       }
-      btn.textContent = 'Envoi en cours…'; btn.style.pointerEvents = 'none'; btn.style.opacity = '.6';
-      try {
-        const audio_data = await blobToBase64(audioBlob);
-        await uploadMyRecording({
-          audio_data, filename: 'enregistrement.webm',
-          formule: formuleId in FORMULES ? formuleId : 'libre',
-          duration_seconds: Math.max(1, secondsElapsed),
-        });
-        document.getElementById('step-playback').classList.add('hidden');
-        document.getElementById('step-confirm').classList.remove('hidden');
-        document.getElementById('recorder').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } catch (e) {
-        if (/[Pp]aiement requis/.test(e.message || '')) {
-          err.textContent = "Cette formule est devenue payante. Rechargez la page pour régler — votre enregistrement est encore là.";
-        } else {
-          err.textContent = "L'envoi n'a pas fonctionné. Vérifiez votre connexion et réessayez — votre enregistrement est encore là.";
-        }
-        err.classList.remove('hidden');
-        btn.textContent = 'Soumettre à IVIA →'; btn.style.pointerEvents = ''; btn.style.opacity = '';
-      }
+    }
+
+    // ---- Bouton principal (contextuel) ---------------------------------------
+    btnMain.addEventListener('click',()=>{
+      if(state==='idle') startRec();
+      else if(state==='recording'||state==='paused') finishRec();
+      else if(state==='done') submitRec();
+    });
+    btnPause.addEventListener('click',togglePause);
+    btnReset.addEventListener('click',resetAll);
+
+    window.addEventListener('beforeunload',(e)=>{
+      if(state==='recording'||state==='paused'){ e.preventDefault(); e.returnValue=''; }
     });
 
-    // Prévenir la perte accidentelle d'un enregistrement capturé mais non soumis
-    window.addEventListener('beforeunload', (e) => {
-      const confirme = !document.getElementById('step-confirm').classList.contains('hidden');
-      const enCours = mediaRecorder && mediaRecorder.state !== 'inactive';
-      if ((audioBlob || enCours) && !confirme) { e.preventDefault(); e.returnValue = ''; }
-    });
-
-    showControls('idle');
+    render();
   </script>
 </body>
 </html>

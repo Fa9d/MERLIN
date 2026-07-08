@@ -5,9 +5,8 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <script src="/shared/session.js?v=20260617e"></script>
   <script>requireAuth();</script>
-  <script src="/shared/api.js?v=20260617c"></script>
+  <script src="/shared/api.js?v=20260707c"></script>
   <script src="/shared/avatar.js?v=20260617a"></script>
-  <script src="/shared/mock_praticien.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -189,6 +188,43 @@
         <button id="btn-tarifs" class="mt-4 bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
           Enregistrer mes tarifs
         </button>
+      </section>
+
+      <!-- Profil audio (réel — POST/GET/DELETE /api/v1/me/audio-profile) -->
+      <section class="bg-white border border-bdr rounded-[24px] p-7 shadow-sm">
+        <h2 class="font-heading text-base font-semibold text-ink mb-1">Profil audio</h2>
+        <p class="text-xs text-muted mb-5">Enregistrez votre présentation vocale (30-60s). Vos clients pourront vous écouter avant de réserver.</p>
+
+        <!-- État profil -->
+        <div id="audio-status" class="mb-5 p-4 bg-surface rounded-[12px] text-sm">
+          <p class="text-muted">Chargement…</p>
+        </div>
+
+        <!-- Enregistrement -->
+        <div id="audio-recorder" class="space-y-4 mb-5">
+          <canvas id="waveform" style="width: 100%; height: 80px; border: 1.5px solid #D4E8D0; border-radius: 12px; background: white;"></canvas>
+          <div class="flex items-center justify-center">
+            <span class="timer font-semibold text-sm text-muted" id="audio-timer">00:00</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <button id="btn-rec-start" type="button" onclick="audioStartRecording()"
+                    class="bg-forest-deep text-white text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-forest transition-colors cursor-pointer">
+              ▶ Enregistrer
+            </button>
+            <button id="btn-rec-stop" type="button" onclick="audioStopRecording()" disabled
+                    class="bg-surface text-ink border border-bdr text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-bdr transition-colors cursor-pointer disabled:opacity-50">
+              ⏹ Arrêter
+            </button>
+            <button id="btn-rec-play" type="button" onclick="audioPlayRecording()" disabled
+                    class="bg-surface text-ink border border-bdr text-sm font-semibold px-4 py-2 rounded-[10px] hover:bg-bdr transition-colors cursor-pointer disabled:opacity-50">
+              🔊 Écouter
+            </button>
+          </div>
+          <button id="btn-rec-upload" type="button" onclick="audioUploadRecording()" disabled
+                  class="w-full bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer disabled:opacity-50">
+            Envoyer mon profil audio
+          </button>
+        </div>
       </section>
 
       <!-- Disponibilités (réel — GET/POST/DELETE /api/v1/schedules/my) -->
@@ -506,6 +542,143 @@
       t.style.opacity = '1';
       setTimeout(() => { t.style.opacity = '0'; }, 2500);
     }
+
+    // ── Audio profile recording ──────────────────────────────────────────
+    let audioMediaRecorder = null;
+    let audioContext = null;
+    let audioAnalyser = null;
+    let audioRecordedChunks = [];
+    let audioRecordingStartTime = null;
+    let audioTimerInterval = null;
+
+    async function audioLoadStatus() {
+      try {
+        const res = await fetch('/api/v1/me/audio-profile', {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('ivia_auth_token')}` }
+        });
+        const statusDiv = document.getElementById('audio-status');
+        if (res.ok) {
+          const profile = await res.json();
+          const date = new Date(profile.created_at).toLocaleDateString('fr-CA');
+          statusDiv.innerHTML = `<span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">✓ Enregistré</span><p class="mt-2 text-xs">Mis à jour : ${date}</p>`;
+        } else if (res.status === 404) {
+          statusDiv.innerHTML = `<span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full">Aucun profil</span><p class="mt-2 text-xs">Enregistrez votre présentation vocale ci-dessous.</p>`;
+        }
+      } catch (err) {
+        console.error('Error loading audio profile:', err);
+      }
+    }
+
+    async function audioStartRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioAnalyser = audioContext.createAnalyser();
+        const source = audioContext.createMediaStreamSource(stream);
+        source.connect(audioAnalyser);
+
+        audioMediaRecorder = new MediaRecorder(stream);
+        audioRecordedChunks = [];
+        audioRecordingStartTime = Date.now();
+
+        audioMediaRecorder.ondataavailable = (e) => audioRecordedChunks.push(e.data);
+        audioMediaRecorder.start();
+
+        document.getElementById('btn-rec-start').disabled = true;
+        document.getElementById('btn-rec-stop').disabled = false;
+        document.getElementById('btn-rec-play').disabled = true;
+        document.getElementById('btn-rec-upload').disabled = true;
+
+        audioTimerInterval = setInterval(() => {
+          const elapsed = Math.floor((Date.now() - audioRecordingStartTime) / 1000);
+          document.getElementById('audio-timer').textContent = 
+            `${String(Math.floor(elapsed / 60)).padStart(2, '0')}:${String(elapsed % 60).padStart(2, '0')}`;
+        }, 100);
+
+        (function animate() {
+          const canvas = document.getElementById('waveform');
+          const ctx = canvas.getContext('2d');
+          const dataArray = new Uint8Array(audioAnalyser.frequencyBinCount);
+          audioAnalyser.getByteTimeDomainData(dataArray);
+
+          ctx.fillStyle = '#F0F7F2';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = '#2D6A4F';
+          ctx.beginPath();
+          const sliceWidth = (canvas.width * 1.0) / dataArray.length;
+          let x = 0;
+          for (let i = 0; i < dataArray.length; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = (v * canvas.height) / 2;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+            x += sliceWidth;
+          }
+          ctx.lineTo(canvas.width, canvas.height / 2);
+          ctx.stroke();
+
+          if (audioMediaRecorder && audioMediaRecorder.state === 'recording') {
+            requestAnimationFrame(animate);
+          }
+        })();
+      } catch (err) {
+        alert('Erreur microphone : ' + err.message);
+      }
+    }
+
+    function audioStopRecording() {
+      if (!audioMediaRecorder) return;
+      audioMediaRecorder.stop();
+      clearInterval(audioTimerInterval);
+      audioMediaRecorder.onstop = () => {
+        audioContext.close();
+        document.getElementById('btn-rec-start').disabled = false;
+        document.getElementById('btn-rec-stop').disabled = true;
+        document.getElementById('btn-rec-play').disabled = false;
+        document.getElementById('btn-rec-upload').disabled = false;
+      };
+    }
+
+    function audioPlayRecording() {
+      if (audioRecordedChunks.length === 0) return;
+      const blob = new Blob(audioRecordedChunks, { type: 'audio/webm' });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.play();
+    }
+
+    async function audioUploadRecording() {
+      if (audioRecordedChunks.length === 0) {
+        alert('Aucun enregistrement. Veuillez d\'abord enregistrer.');
+        return;
+      }
+
+      const blob = new Blob(audioRecordedChunks, { type: 'audio/webm' });
+      const formData = new FormData();
+      formData.append('file', blob, 'profile-audio.webm');
+
+      try {
+        const res = await fetch('/api/v1/me/audio-profile', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('ivia_auth_token')}` },
+          body: formData,
+        });
+
+        if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
+        saveToast('✓ Profil audio enregistré !');
+        audioRecordedChunks = [];
+        document.getElementById('audio-timer').textContent = '00:00';
+        document.getElementById('btn-rec-upload').disabled = true;
+        document.getElementById('btn-rec-play').disabled = true;
+        audioLoadStatus();
+      } catch (err) {
+        alert('Erreur envoi : ' + err.message);
+      }
+    }
+
+    // Init audio on page load
+    audioLoadStatus();
   </script>
 
 </body>

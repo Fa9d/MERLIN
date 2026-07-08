@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Mes séances</title>
   <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
-  <script src="/shared/api.js?v=20260615d"></script>
+  <script src="/shared/api.js?v=20260707c"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
@@ -24,13 +24,29 @@
     .badge-upcoming{background:#E8F5EE;color:#2D6A4F;}
     .badge-past{background:#F0F7F2;color:#4B6350;}
     .badge-pending{background:#FEF3C7;color:#92400E;}
+    .calendar-shell{background:var(--card-bg);border:1.5px solid var(--bdr);border-radius:16px;padding:16px;}
+    .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;}
+    .cal-weekday{font-size:11px;color:var(--muted);text-transform:uppercase;text-align:center;font-weight:700;}
+    .cal-day{min-height:68px;border:1px solid var(--bdr);border-radius:12px;background:#fff;padding:8px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:all .15s;}
+    .cal-day:hover{border-color:var(--forest);}
+    .cal-day.empty{cursor:default;opacity:.35;background:var(--surface);}
+    .cal-day.today{box-shadow:0 0 0 2px rgba(45,106,79,.22) inset;}
+    .cal-day.selected{border-color:var(--forest-deep);box-shadow:0 0 0 2px rgba(26,61,46,.18) inset;}
+    .cal-day.has-upcoming{background:#E8F5EE;}
+    .cal-day.has-past{background:#F7FAF8;}
+    .cal-day.has-mixed{background:#EDF3FF;}
+    .cal-day-num{font-size:14px;font-weight:700;color:var(--ink);}
+    .cal-pill{font-size:10px;font-weight:700;border-radius:999px;padding:2px 8px;display:inline-flex;align-self:flex-start;}
+    .cal-pill-upcoming{background:#D6F0E0;color:#1F5138;}
+    .cal-pill-past{background:#E7EFEA;color:#4B6350;}
+    .cal-pill-mixed{background:#DEE8FF;color:#21458A;}
   </style>
 </head>
 <body class="antialiased min-h-screen bg-cream">
 
 <div id="ivia-header"></div>
-<script src="/shared/layout.js?v=20260624b"></script>
-<script>renderLayout('parler');</script>
+<script src="/shared/layout.js?v=20260707a"></script>
+<script>renderLayout('aujourdhui', 'Mes séances');</script>
 
     <!-- MAIN -->
     <main class="max-w-5xl mx-auto px-4 sm:px-8 py-8">
@@ -49,31 +65,39 @@
         </a>
       </div>
 
-      <!-- Prochaine séance -->
-      <section class="card mb-6" aria-labelledby="prochaine-title" id="prochaine-section">
+      <!-- Calendrier mensuel -->
+      <section class="calendar-shell mb-6" aria-labelledby="calendar-title">
         <div class="flex items-center justify-between mb-4">
-          <h2 id="prochaine-title" class="font-heading text-base font-semibold text-ink">Prochaine séance</h2>
-          <span class="badge badge-upcoming">À venir</span>
+          <h2 id="calendar-title" class="font-heading text-base font-semibold text-ink">Calendrier des séances</h2>
+          <div class="inline-flex items-center gap-2">
+            <button id="cal-prev" class="text-sm px-3 py-1.5 rounded-[10px] border border-bdr hover:bg-surface cursor-pointer" aria-label="Mois précédent">←</button>
+            <p id="cal-month-label" class="text-sm font-semibold text-ink min-w-[170px] text-center">—</p>
+            <button id="cal-next" class="text-sm px-3 py-1.5 rounded-[10px] border border-bdr hover:bg-surface cursor-pointer" aria-label="Mois suivant">→</button>
+          </div>
         </div>
-        <div id="prochaine-content" class="flex items-start gap-4">
-          <!-- rempli par JS -->
+        <div class="calendar-grid mb-2">
+          <div class="cal-weekday">Lun</div><div class="cal-weekday">Mar</div><div class="cal-weekday">Mer</div>
+          <div class="cal-weekday">Jeu</div><div class="cal-weekday">Ven</div><div class="cal-weekday">Sam</div><div class="cal-weekday">Dim</div>
+        </div>
+        <div id="calendar-grid" class="calendar-grid mb-4"></div>
+        <p id="calendar-day-title" class="text-sm font-semibold text-ink mb-2">Sélectionnez un jour</p>
+        <div id="calendar-day-list" class="space-y-2">
+          <p class="text-sm text-muted">Cliquez sur une date pour voir les séances de cette journée.</p>
         </div>
       </section>
 
-      <!-- Séances passées -->
-      <section aria-labelledby="passees-title">
-        <h2 id="passees-title" class="font-heading text-base font-semibold text-ink mb-4">Séances passées</h2>
-        <div class="space-y-3" id="passees-list">
-          <!-- rempli par JS -->
-        </div>
-      </section>
 
     </main>
 
 <div id="ivia-footer"></div>
-<script>renderLayout('parler');</script>
+<script>renderLayout('aujourdhui', 'Mes séances');</script>
 
   <script>
+    let calendarCursor = new Date();
+    let calendarSelectedDate = null;
+    let calendarSlotsByDate = {};
+    let journalByDate = {};   // iso → entry[]
+
     // ── Helpers d'affichage ────────────────────────────────────────────
     function moisAbrege(isoDate) {
       return new Date(isoDate + 'T12:00:00').toLocaleDateString('fr-CA', { month: 'short' }).replace('.', '');
@@ -84,102 +108,179 @@
     function dateLongue(isoDate) {
       return new Date(isoDate + 'T12:00:00').toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     }
+    function renderSessionCard(s, badgeLabel, badgeClass) {
+      return `
+        <div class="card flex items-start gap-4">
+          <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
+            <span class="text-[10px] font-semibold text-muted uppercase">${moisAbrege(s.slot_date)}</span>
+            <span class="text-xl font-bold text-ink leading-none">${jourNum(s.slot_date)}</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-0.5">
+              <p class="font-semibold text-ink text-sm">${dateLongue(s.slot_date)}</p>
+              <span class="badge ${badgeClass}">${badgeLabel}</span>
+            </div>
+            <p class="text-xs text-muted">${formatHeure(s.start_time)} – ${formatHeure(s.end_time)}</p>
+          </div>
+        </div>`;
+    }
+    function formatMoisAnnee(dateObj) {
+      return dateObj.toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' });
+    }
+    function indexLundiPremier(dateObj) {
+      const d = dateObj.getDay(); // 0=dimanche
+      return d === 0 ? 6 : d - 1; // 0=lundi
+    }
+    function buildSlotsByDate(slots) {
+      const map = {};
+      slots.forEach(s => {
+        if (!map[s.slot_date]) map[s.slot_date] = [];
+        map[s.slot_date].push(s);
+      });
+      return map;
+    }
+    function dayType(slotsForDay, todayIso) {
+      const hasUpcoming = slotsForDay.some(s => s.slot_date >= todayIso);
+      const hasPast = slotsForDay.some(s => s.slot_date < todayIso);
+      if (hasUpcoming && hasPast) return 'mixed';
+      if (hasUpcoming) return 'upcoming';
+      return 'past';
+    }
+    function renderDayDetails(iso, slotsForDay) {
+      const title = document.getElementById('calendar-day-title');
+      const list = document.getElementById('calendar-day-list');
+      if (!title || !list) return;
+      title.textContent = dateLongue(iso);
+      let html = '';
+
+      // ── Séances du jour ───────────────────────────────────────────────
+      const aujourdhui = new Date().toISOString().slice(0, 10);
+      if (slotsForDay && slotsForDay.length) {
+        const sorted = [...slotsForDay].sort((a, b) => String(a.start_time).localeCompare(String(b.start_time)));
+        html += sorted.map(s => {
+          const isUpcoming = s.slot_date >= aujourdhui;
+          const pending = s.status === 'hold';
+          const badgeLabel = pending ? 'À confirmer' : (isUpcoming ? 'À venir' : 'Passée');
+          const badgeClass = pending ? 'badge-pending' : (isUpcoming ? 'badge-upcoming' : 'badge-past');
+          return renderSessionCard(s, badgeLabel, badgeClass);
+        }).join('');
+      }
+
+      // ── Entrée de journal du jour ─────────────────────────────────────
+      const journalEntries = (journalByDate[iso] || []).filter(e => journalStructured(e).kind !== 'exercice');
+      if (journalEntries.length) {
+        journalEntries.forEach(en => {
+          let bodyText = en.body_text || '';
+          // Dépaqueter l'état du jour structuré
+          const s = journalStructured(en);
+          if (s.kind === 'checkin' && s.data) {
+            const d = s.data;
+            const humeurMap = {stress:'🔴 Stress',neutre:'🟡 Neutre',coherence:'🟢 Cohérence',flow:'🔵 Flow'};
+            bodyText = [
+              humeurMap[d.humeur] || d.humeur,
+              d.energie ? `Énergie ${d.energie}/10` : '',
+              d.score ? `Score ✨${d.score}` : '',
+              d.note || '',
+            ].filter(Boolean).join(' · ');
+          }
+          html += `<div class="card mt-2 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-[10px] bg-surface border border-bdr flex items-center justify-center shrink-0 text-base">📓</div>
+            <div class="flex-1">
+              <p class="text-xs font-semibold text-muted uppercase tracking-wider mb-0.5">Journal du jour</p>
+              <p class="text-sm text-ink leading-relaxed line-clamp-3">${bodyText.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+              <a href="/client/journal.html" class="text-xs text-forest-deep font-semibold hover:underline mt-1 inline-block">Voir le journal →</a>
+            </div>
+          </div>`;
+        });
+      } else if (!slotsForDay || !slotsForDay.length) {
+        html = '<p class="text-sm text-muted">Aucune séance ni entrée de journal ce jour-là.</p>';
+      }
+
+      list.innerHTML = html;
+    }
+    function renderCalendar(slots) {
+      const grid = document.getElementById('calendar-grid');
+      const monthLabel = document.getElementById('cal-month-label');
+      if (!grid || !monthLabel) return;
+      const year = calendarCursor.getFullYear();
+      const month = calendarCursor.getMonth();
+      const first = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const todayIso = new Date().toISOString().slice(0, 10);
+      calendarSlotsByDate = buildSlotsByDate(slots);
+
+      monthLabel.textContent = formatMoisAnnee(first);
+      grid.innerHTML = '';
+
+      const lead = indexLundiPremier(first);
+      for (let i = 0; i < lead; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'cal-day empty';
+        grid.appendChild(empty);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dt = new Date(year, month, d);
+        const iso = dt.toISOString().slice(0, 10);
+        const daySlots = calendarSlotsByDate[iso] || [];
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cal-day';
+        if (iso === todayIso) cell.classList.add('today');
+        if (calendarSelectedDate === iso) cell.classList.add('selected');
+        if (daySlots.length || journalByDate[iso]) {
+          const t = daySlots.length ? dayType(daySlots, todayIso) : 'past';
+          cell.classList.add(t === 'upcoming' ? 'has-upcoming' : t === 'mixed' ? 'has-mixed' : 'has-past');
+        }
+        const journalDot = journalByDate[iso] ? '<span title="Journal" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4A7C59;margin-left:3px;vertical-align:middle;"></span>' : '';
+        const pill = daySlots.length
+          ? `<span class="cal-pill ${dayType(daySlots, todayIso) === 'upcoming' ? 'cal-pill-upcoming' : dayType(daySlots, todayIso) === 'mixed' ? 'cal-pill-mixed' : 'cal-pill-past'}">${daySlots.length} séance${daySlots.length > 1 ? 's' : ''}${journalDot}</span>`
+          : (journalByDate[iso] ? `<span class="cal-pill cal-pill-past">📓${journalDot}</span>` : '<span class="text-[10px] text-muted">—</span>');
+        cell.innerHTML = `<span class="cal-day-num">${d}</span>${pill}`;
+        cell.addEventListener('click', () => {
+          calendarSelectedDate = iso;
+          renderCalendar(slots);
+          renderDayDetails(iso, daySlots);
+        });
+        grid.appendChild(cell);
+      }
+    }
+    function initCalendar(slots) {
+      renderCalendar(slots);
+      const prev = document.getElementById('cal-prev');
+      const next = document.getElementById('cal-next');
+      if (prev) prev.onclick = () => {
+        calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() - 1, 1);
+        renderCalendar(slots);
+      };
+      if (next) next.onclick = () => {
+        calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + 1, 1);
+        renderCalendar(slots);
+      };
+    }
 
     // ── Séances réelles — GET /bookings/my (hold + confirmées) ──────────
     async function chargerSeances() {
-      const pc   = document.getElementById('prochaine-content');
-      const list = document.getElementById('passees-list');
       let slots = [];
       try {
         slots = await getMyBookings();
-      } catch (e) {
-        if (list) list.innerHTML = '<p class="text-sm text-muted">Vos séances apparaîtront ici.</p>';
-        document.getElementById('prochaine-section').classList.add('hidden');
-        return;
-      }
+      } catch (e) { /* silence */ }
 
-      const aujourdhui = new Date().toISOString().slice(0, 10);
-      const a_venir = slots.filter(s => s.slot_date >= aujourdhui);
-      const passees = slots.filter(s => s.slot_date < aujourdhui).reverse();
+      // Charger le journal en parallèle
+      try {
+        const entries = await getMyJournal();
+        journalByDate = {};
+        entries.forEach(en => {
+          const iso = new Date(en.written_at).toISOString().slice(0, 10);
+          if (!journalByDate[iso]) journalByDate[iso] = [];
+          journalByDate[iso].push(en);
+        });
+      } catch (e) { /* silence */ }
 
-      // Prochaine séance
-      const prochaine = a_venir[0];
-      if (prochaine && pc) {
-        const enAttente = prochaine.status === 'hold';
-        const badge = document.querySelector('#prochaine-section .badge');
-        if (badge) badge.textContent = enAttente ? 'À confirmer' : 'À venir';
-        pc.innerHTML = `
-          <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-            <span class="text-[10px] font-semibold text-forest uppercase">${moisAbrege(prochaine.slot_date)}</span>
-            <span class="text-xl font-bold text-ink leading-none">${jourNum(prochaine.slot_date)}</span>
-          </div>
-          <div class="flex-1">
-            <p class="font-semibold text-ink">${dateLongue(prochaine.slot_date)}</p>
-            <p class="text-sm text-muted mt-0.5">${formatHeure(prochaine.start_time)} – ${formatHeure(prochaine.end_time)}${enAttente ? ' · <strong class="text-amber-700">paiement à compléter</strong>' : ' · le lien arrive par courriel avant l\'heure'}</p>
-            <div class="flex gap-2 mt-3">
-              ${enAttente ? `<button onclick="payerSeance('${prochaine.id}')" class="text-sm font-semibold bg-forest-deep text-white rounded-[10px] px-5 py-2 hover:bg-forest transition-colors cursor-pointer">Payer maintenant →</button>` : ''}
-              <button onclick="annulerSeance('${prochaine.id}')" class="text-xs font-medium text-muted hover:text-red-600 px-3 py-1.5 cursor-pointer">
-                Annuler
-              </button>
-            </div>
-          </div>`;
-        if (a_venir.length > 1) {
-          pc.insertAdjacentHTML('afterend',
-            `<p class="text-xs text-muted mt-3">${a_venir.length - 1} autre(s) séance(s) à venir.</p>`);
-        }
-      } else {
-        document.getElementById('prochaine-section').classList.add('hidden');
-      }
-
-      // Séances passées
-      if (list) {
-        if (!passees.length) {
-          list.innerHTML = `<p class="text-sm text-muted">Aucune séance passée pour l'instant.</p>`;
-          return;
-        }
-        list.innerHTML = passees.map(s => `
-          <div class="card flex items-start gap-4">
-            <div class="w-12 h-12 rounded-[12px] bg-surface border border-bdr flex flex-col items-center justify-center shrink-0">
-              <span class="text-[10px] font-semibold text-muted uppercase">${moisAbrege(s.slot_date)}</span>
-              <span class="text-xl font-bold text-ink leading-none">${jourNum(s.slot_date)}</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-0.5">
-                <p class="font-semibold text-ink text-sm">${dateLongue(s.slot_date)}</p>
-                <span class="badge badge-past">Passée</span>
-              </div>
-              <p class="text-xs text-muted">${formatHeure(s.start_time)} – ${formatHeure(s.end_time)}</p>
-            </div>
-          </div>`).join('');
-      }
+      initCalendar(slots);
     }
     chargerSeances();
 
-    async function annulerSeance(id) {
-      if (!confirm('Annuler cette séance ?')) return;
-      try {
-        await cancelSlot(id);
-        location.reload();
-      } catch (e) {
-        alert("L'annulation n'a pas pu être enregistrée. Réessayez ou écrivez-nous.");
-      }
-    }
-
-    // Aller droit au paiement du créneau déjà retenu (page Stripe ou paiement simulé en test).
-    async function payerSeance(slotId) {
-      try {
-        const r = await bookingCheckout({
-          slot_id: slotId,
-          success_url: location.origin + '/checkout/success.html',
-          cancel_url:  location.origin + '/client/seances.html',
-        });
-        window.location.href = r.checkout_url;
-      } catch (e) {
-        alert("Ce créneau ne peut plus être réglé : " + (e.message || 'réessayez') +
-              ".\nIl a peut-être expiré (les places sont tenues 15 min). Reprenez une réservation.");
-        window.location.href = '/reserver.html';
-      }
-    }
   </script>
 
 </body>

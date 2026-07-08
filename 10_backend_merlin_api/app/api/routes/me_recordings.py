@@ -124,6 +124,20 @@ def _default_practitioner(db: Session) -> AppUser | None:
     return prats[0] if len(prats) == 1 else None
 
 
+def _resolve_practitioner(praticien_id: str | None, db: Session) -> AppUser | None:
+    """Résout un praticien_id fourni par le client.
+
+    Valide que la cible est bien un·e praticien·ne actif·ve — refuse silencieusement
+    si l'id est inconnu ou n'est pas un praticien (repli sur défaut serveur).
+    """
+    if not praticien_id:
+        return None
+    user = db.get(AppUser, praticien_id)
+    if user and user.role == AppRole.practitioner and user.record_status == RecordStatus.active:
+        return user
+    return None
+
+
 def _to_read(record: SessionRecord) -> MyRecordingRead:
     return MyRecordingRead(
         id=record.id,
@@ -133,7 +147,6 @@ def _to_read(record: SessionRecord) -> MyRecordingRead:
         duration_minutes=record.duration_minutes,
         status=record.session_status_code.value,
         transcript_ready=bool(record.transcript_text),
-        transcript_text=record.transcript_text,
     )
 
 
@@ -209,10 +222,12 @@ async def upload_my_recording(
         actual_start_at=now,
         duration_minutes=duration_minutes,
         room_name=f"{_ROOM_PREFIX}:{payload.formule}",
-        # Attribution par défaut au·à la praticien·ne (unique pour l'instant) afin que
-        # la séance arrive dans son espace ; repli sur le client si aucun/plusieurs.
-        # Le client garde l'accès via client_id (list_my_recordings).
-        operator_user_id=(_default_practitioner(db) or current_user).id,
+        # Attribution : praticien choisi par le client > défaut serveur > client lui-même.
+        operator_user_id=(
+            _resolve_practitioner(payload.praticien_id, db)
+            or _default_practitioner(db)
+            or current_user
+        ).id,
         session_status_code=SessionStatusCode.in_progress,
     )
     db.add(record)

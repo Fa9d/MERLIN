@@ -61,6 +61,10 @@ class AppUser(Base):
     # Droit admin accordé depuis l'interface (cumul sur le rôle, sans le remplacer).
     # is_admin = rôle admin_tech OU liste blanche MERLIN_ADMIN_EMAILS OU ce drapeau.
     is_platform_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # Provenance déclarée à l'inscription : « Comment as-tu entendu parler d'IVIA ? »
+    # Valeurs libres côté client (bouche_a_oreille, reseaux_sociaux, moteur_recherche,
+    # praticien, media, autre). Facultatif — mesure des canaux du plan de mise en marché.
+    acquisition_source: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     # Profondeur des insights recommandés pour ce praticien (ne s'applique que si role=practitioner)
     insight_depth: Mapped[str] = mapped_column(
         Enum(InsightDepth, native_enum=False),

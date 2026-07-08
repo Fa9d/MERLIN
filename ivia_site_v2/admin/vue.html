@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vue d'ensemble — Admin IVIA</title>
+  <script src="/shared/session.js?v=20260704b"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260707c"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    .stat{background:#fff;border:1px solid #D4E8D0;border-radius:16px;padding:16px 18px;text-decoration:none;display:block;}
+    .stat:hover{border-color:#4A7C59;}
+    .stat .v{font-family:'Lora',Georgia,serif;font-size:26px;font-weight:700;color:#1A2E1D;}
+    .stat .l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#4B6350;margin-bottom:4px;}
+    .badge{font-size:10px;font-weight:700;text-transform:uppercase;border-radius:9999px;padding:2px 8px;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside id="admin-sidebar" class="hidden lg:flex flex-col w-60 bg-[#13261A] border-r border-[#22432F] px-4 py-6 fixed top-0 left-0 h-screen z-10"></aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1000px] space-y-6">
+      <div>
+        <h1 class="font-heading text-2xl font-bold text-ink">Vue d'ensemble</h1>
+        <p class="text-sm text-muted mt-1">L'état de la maison en un coup d'œil. Les vigilances appellent une attention humaine.</p>
+      </div>
+
+      <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+
+      <section>
+        <h2 class="font-heading text-base font-bold text-ink mb-2">Alertes de vigilance</h2>
+        <div id="alertes" class="bg-white border border-bdr rounded-[20px] divide-y divide-bdr">
+          <p id="loading" class="text-sm text-muted p-6">Chargement…</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function fmt(c){return (c/100).toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';}
+    function dateCourte(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{day:'numeric',month:'short'}):'';}
+    function carte(label,val,dest,accent){return `<div class="stat cursor-pointer" onclick="location.assign('${dest}')"><p class="l">${label}</p><p class="v ${accent||''}">${val}</p></div>`;}
+
+    (async function(){
+      let o;
+      try{ o=await adminOverview(); }
+      catch(e){ document.getElementById('alertes').innerHTML='<p class="text-sm text-red-700 p-6">Accès refusé ou indisponible : '+(e.message||'erreur')+'</p>'; return; }
+
+      document.getElementById('cards').innerHTML =
+        carte('Comptes', o.comptes_total, '/admin/comptes.html') +
+        carte('À vérifier', o.comptes_non_verifies, '/admin/comptes.html', o.comptes_non_verifies?'text-amber-700':'') +
+        carte('Demandes nouvelles', o.demandes_nouvelles, '/admin/demandes.html', o.demandes_nouvelles?'text-forest-deep':'') +
+        carte('Encaissé (mois)', fmt(o.encaisse_mois_cents), '/admin/comptabilite.html', 'text-forest-deep') +
+        carte('Vigilance · demandes', o.demandes_vigilance, '/admin/demandes.html', o.demandes_vigilance?'text-red-700':'') +
+        carte('Vigilance · analyses', o.notes_vigilance, '/praticien/livraisons.html', o.notes_vigilance?'text-red-700':'') +
+        carte('Comptes récents (7j)', o.comptes_recents_7j, '/admin/comptes.html');
+
+      const zone=document.getElementById('alertes');
+      if(!o.alertes.length){ zone.innerHTML='<p class="text-sm text-muted p-6">Aucune vigilance en cours. 🌿</p>'; return; }
+      zone.innerHTML=o.alertes.map(a=>{
+        const urgent=(a.niveau||'').includes('urgent');
+        return `<div class="p-4 flex items-start gap-3">
+          <span class="badge ${urgent?'bg-red-100 text-red-700':'bg-amber-50 text-amber-700 border border-amber-200'} shrink-0 mt-0.5">${a.type==='demande'?'Demande':'Analyse'} · ${(a.niveau||'').replace(/[<>&]/g,'')}</span>
+          <div class="min-w-0">
+            <p class="text-sm text-ink">${(a.label||'').replace(/[<>&]/g,'')}</p>
+            <p class="text-xs text-muted mt-0.5">${dateCourte(a.date)}</p>
+          </div>
+        </div>`;
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

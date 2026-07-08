@@ -1,0 +1,110 @@
+/* @theme ivia-doc */
+/* @size a4 794px 1123px */
+/* Thème document A4 portrait — une page IVIA (courriel, dépôt) */
+
+@import 'default';
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@400;500;600;700&display=swap');
+
+:root {
+  --forest: #2D6A4F;
+  --forest-soft: #4A7C59;
+  --sage: #8FB99A;
+  --cream: #FAFDF8;
+  --ink: #1A2E1D;
+  --muted: #4B6350;
+  --bdr: #D4E8D0;
+}
+
+section {
+  width: 794px;
+  height: 1123px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Raleway', 'Segoe UI', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.4;
+  padding: 40px 54px 52px 54px;
+  justify-content: flex-start;
+}
+
+h1, h2, h3 { font-family: 'Lora', Georgia, serif; color: var(--ink); font-weight: 700; }
+
+h1 { font-size: 1.9em; margin: 0 0 2px 0; }
+h1 + p em { color: var(--muted); }
+
+h2 {
+  font-size: 1.05em;
+  color: var(--forest);
+  margin: 11px 0 3px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+}
+h2::after {
+  content: '';
+  display: block;
+  width: 44px; height: 2.5px;
+  background: var(--sage);
+  margin-top: 3px;
+  border-radius: 2px;
+}
+
+strong { color: var(--forest); }
+em { font-family: 'Lora', Georgia, serif; }
+
+ul { margin: 4px 0; padding-left: 1.05em; }
+li { margin: 2px 0; }
+li::marker { color: var(--forest-soft); }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.85em; margin: 6px 0; }
+th { background: var(--forest); color: #fff; font-weight: 600; text-align: left; padding: 5px 10px; }
+td { padding: 4.5px 10px; border-bottom: 1px solid var(--bdr); }
+tr:nth-child(even) td { background: #F0F7F2; }
+
+blockquote {
+  border-left: 3.5px solid var(--sage);
+  padding: 2px 0 2px 12px;
+  margin: 8px 0;
+  color: var(--muted);
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+}
+
+/* Bandeau d'en-tête */
+header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 10px;
+  background: linear-gradient(90deg, #1E3A28, #2D6A4F 60%, #8FB99A);
+}
+footer {
+  color: var(--muted);
+  font-size: 0.68em;
+  letter-spacing: 0.04em;
+  bottom: 18px;
+}
+section::after { display: none; }
+
+.kpi { display: flex; gap: 14px; margin: 8px 0; }
+.kpi div {
+  flex: 1;
+  background: #fff;
+  border: 1.5px solid var(--bdr);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.kpi .v { font-family: 'Lora', serif; font-size: 1.35em; font-weight: 700; color: var(--forest); display: block; }
+.kpi .l { font-size: 0.62em; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 600; }
+
+.contact {
+  margin-top: 10px;
+  background: #1E3A28;
+  color: #E9F5EC;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 0.9em;
+}
+.contact strong { color: #fff; }
+.cols { display: flex; gap: 22px; }
+.cols > div { flex: 1; }

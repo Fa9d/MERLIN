@@ -6,8 +6,8 @@
   <script src="/shared/session.js?v=20260617e"></script>
   <script>requireAuth();</script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="/shared/mock_praticien.js"></script>
-  <script src="/shared/api.js?v=20260617c"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/shared/api.js?v=20260707c"></script>
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background-color:#F0F7F2;color:#1A2E1D;}
@@ -24,7 +24,8 @@
     .cal-cell.disponible{background:#E8F5EE;cursor:pointer;}
     .cal-cell.disponible:hover{background:#C8E6D4;}
     .cal-cell.reserve{background:#2D6A4F;cursor:default;}
-    .cal-cell.bloque{background:#EEE;cursor:not-allowed;}
+    .cal-cell.bloque{background:#EEE;cursor:pointer;}
+    .cal-cell.bloque:hover{background:#DDD;}
     /* Étiquette sur créneau réservé */
     .cal-label{position:absolute;inset:2px 3px;border-radius:5px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;pointer-events:none;}
     /* Légende */
@@ -118,7 +119,7 @@
         </div>
       </div>
 
-      <p class="text-xs text-muted mt-3">Cliquez sur un créneau disponible pour le bloquer · Cliquez sur un créneau libre pour l'ouvrir.</p>
+      <p class="text-xs text-muted mt-3">Cliquez sur un créneau <strong>disponible</strong> pour le bloquer · Cliquez sur un créneau <strong>bloqué</strong> pour le rouvrir · Vos plages hebdomadaires se règlent dans <a href="/praticien/profil.html" class="underline text-forest-deep">Mon profil public</a>.</p>
 
       <!-- Modal confirmation simple -->
       <div id="modal-creneau" class="hidden fixed inset-0 bg-black/30 flex items-center justify-center z-50 px-4">
@@ -160,12 +161,14 @@
     const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
     // Données créneaux (clé = "AAAA-MM-JJ_HH:MM", valeur = état)
-    // Source : GET /api/v1/schedules/available (API réelle) avec fallback mock
+    // Sources réelles : /schedules/available (dispos), /bookings/agenda (réservations),
+    // /schedules/my/exceptions (blocages). Aucun mock.
     let slotStates = {};
+    let exceptionByKey = {};   // clé cellule → exception id (pour rouvrir)
 
-    // Données réelles uniquement — aucun mock ne masque les vraies disponibilités.
     async function chargerCreneaux() {
       slotStates = {};
+      exceptionByKey = {};
       const { from, to } = getWeekBounds(currentWeekOffset);
       const user = getCurrentUser();
       const praticienId = user?.id;
@@ -179,15 +182,41 @@
       }
 
       try {
-        const slots = await getAvailableSlots(praticienId, from, to);
-        slots.forEach(s => {
-          const t = (s.start_time || '').slice(0, 5); // "HH:MM:SS" → "HH:MM"
-          const key = `${s.slot_date}_${t}`;
-          if (s.status === 'confirmed' || s.status === 'hold') {
-            slotStates[key] = 'reserve';
-            slotStates[key + '_client'] = s.praticien_name || 'Réservé';
-          } else if (s.status === 'available') {
-            slotStates[key] = 'disponible';
+        const [dispos, resas, exceptions] = await Promise.all([
+          getAvailableSlots(praticienId, from, to),
+          getPractitionerAgenda(from, to),
+          getMyExceptions(),
+        ]);
+
+        // 1) Disponibilités calculées (gabarit + extra − blocages − réservations)
+        dispos.forEach(s => {
+          const t = String(s.start_time || '').slice(0, 5);
+          slotStates[`${s.slot_date}_${t}`] = 'disponible';
+        });
+
+        // 2) Réservations réelles (hold + confirmées) avec nom client
+        resas.forEach(r => {
+          const t = String(r.start_time || '').slice(0, 5);
+          const key = `${r.slot_date}_${t}`;
+          slotStates[key] = 'reserve';
+          slotStates[key + '_client'] = r.client_name || (r.status === 'hold' ? 'En attente' : 'Réservé');
+        });
+
+        // 3) Blocages (exceptions `blocked`) — visibles et cliquables pour rouvrir
+        exceptions.filter(e => e.exception_type === 'blocked').forEach(e => {
+          if (e.exception_date < from || e.exception_date > to) return;
+          const startH = e.start_time ? String(e.start_time).slice(0, 5) : `${String(HOURS_START).padStart(2,'0')}:00`;
+          const endH = e.end_time ? String(e.end_time).slice(0, 5) : `${String(HOURS_END).padStart(2,'0')}:00`;
+          let [h, m] = startH.split(':').map(Number);
+          const [eh, em] = endH.split(':').map(Number);
+          while (h < eh || (h === eh && m < em)) {
+            const t = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            const key = `${e.exception_date}_${t}`;
+            if (slotStates[key] !== 'reserve') {
+              slotStates[key] = 'bloque';
+              exceptionByKey[key] = e.id;
+            }
+            m += 30; if (m >= 60) { m = 0; h++; }
           }
         });
       } catch (err) {
@@ -299,13 +328,57 @@
       if (currentState === 'disponible') {
         document.getElementById('modal-desc').textContent = 'Ce créneau est ouvert aux réservations. Voulez-vous le bloquer ?';
         btn.textContent = 'Bloquer ce créneau';
-        btn.onclick = () => { slotStates[activeCell.dataset.key] = 'bloque'; buildCalendar(); fermerModal(); };
+        btn.onclick = () => bloquerCreneau(date, time);
+      } else if (currentState === 'bloque') {
+        document.getElementById('modal-desc').textContent = 'Ce créneau est bloqué. Voulez-vous le rouvrir aux réservations ? (Si le blocage couvre une plage plus large, toute la plage sera rouverte.)';
+        btn.textContent = 'Rouvrir aux réservations';
+        btn.onclick = () => debloquerCreneau(cell.dataset.key);
       } else {
-        document.getElementById('modal-desc').textContent = 'Ce créneau est libre. Voulez-vous l'ouvrir aux réservations ?';
-        btn.textContent = 'Ouvrir aux réservations';
-        btn.onclick = () => { slotStates[activeCell.dataset.key] = 'disponible'; buildCalendar(); fermerModal(); };
+        document.getElementById('modal-desc').textContent = "Ce créneau est hors de vos plages hebdomadaires. Voulez-vous l'ouvrir ponctuellement aux réservations ?";
+        btn.textContent = 'Ouvrir ce créneau';
+        btn.onclick = () => ouvrirCreneauExtra(date, time);
       }
       modal.classList.remove('hidden');
+    }
+
+    function finHM(time, minutes) {
+      let [h, m] = time.split(':').map(Number);
+      m += minutes; h += Math.floor(m / 60); m %= 60;
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    }
+
+    async function bloquerCreneau(date, time) {
+      try {
+        await createScheduleException({
+          exception_date: date, exception_type: 'blocked',
+          start_time: time + ':00', end_time: finHM(time, 30) + ':00',
+          reason: 'Bloqué depuis l\u2019agenda',
+        });
+        fermerModal();
+        await chargerCreneaux(); buildCalendar();
+      } catch (err) { alert('Impossible de bloquer ce créneau : ' + err.message); }
+    }
+
+    async function debloquerCreneau(key) {
+      const excId = exceptionByKey[key];
+      if (!excId) { fermerModal(); return; }
+      try {
+        await deleteScheduleException(excId);
+        fermerModal();
+        await chargerCreneaux(); buildCalendar();
+      } catch (err) { alert('Impossible de rouvrir ce créneau : ' + err.message); }
+    }
+
+    async function ouvrirCreneauExtra(date, time) {
+      try {
+        await createScheduleException({
+          exception_date: date, exception_type: 'extra',
+          start_time: time + ':00', end_time: finHM(time, 60) + ':00',
+          reason: 'Ouvert depuis l\u2019agenda',
+        });
+        fermerModal();
+        await chargerCreneaux(); buildCalendar();
+      } catch (err) { alert('Impossible d\u2019ouvrir ce créneau : ' + err.message); }
     }
 
     function fermerModal() { document.getElementById('modal-creneau').classList.add('hidden'); }

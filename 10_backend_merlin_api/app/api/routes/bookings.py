@@ -7,7 +7,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user, require_verified_email_user
+from app.core.deps import (
+    get_current_user,
+    require_practitioner,
+    require_verified_email_user,
+)
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
@@ -276,6 +280,53 @@ def my_bookings(
         .all()
     )
     return [BookingSlotOut.model_validate(s) for s in slots]
+
+
+# ---------------------------------------------------------------------------
+# GET /bookings/agenda — réservations du praticien connecté (avec nom client)
+# ---------------------------------------------------------------------------
+
+class PractitionerAgendaSlotOut(BookingSlotOut):
+    """BookingSlotOut enrichi du nom d'affichage du client (vue praticien)."""
+    client_name: str | None = None
+
+
+@router.get(
+    "/agenda",
+    response_model=list[PractitionerAgendaSlotOut],
+    summary="Réservations du praticien connecté sur une plage de dates",
+)
+def practitioner_agenda(
+    date_from: date,
+    date_to: date,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_practitioner()),
+) -> list[PractitionerAgendaSlotOut]:
+    if (date_to - date_from).days > 90:
+        raise HTTPException(status_code=400, detail="Plage maximale : 90 jours.")
+    slots = (
+        db.query(BookingSlot)
+        .filter(
+            BookingSlot.praticien_id == current_user.id,
+            BookingSlot.slot_date >= date_from,
+            BookingSlot.slot_date <= date_to,
+            BookingSlot.status.in_([SlotStatus.hold, SlotStatus.confirmed]),
+        )
+        .order_by(BookingSlot.slot_date, BookingSlot.start_time)
+        .all()
+    )
+    # Résoudre les noms clients en une requête
+    client_ids = {s.client_id for s in slots if s.client_id}
+    names: dict[str, str] = {}
+    if client_ids:
+        rows = db.query(AppUser.id, AppUser.display_name).filter(AppUser.id.in_(client_ids)).all()
+        names = {r[0]: r[1] for r in rows}
+    out = []
+    for s in slots:
+        item = PractitionerAgendaSlotOut.model_validate(s)
+        item.client_name = names.get(s.client_id) if s.client_id else None
+        out.append(item)
+    return out
 
 
 # ---------------------------------------------------------------------------

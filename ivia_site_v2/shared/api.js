@@ -18,8 +18,8 @@
 function _apiBase() {
   if (typeof window !== 'undefined' && window.IVIA_API_BASE) return window.IVIA_API_BASE.replace(/\/$/, '');
   if (typeof window !== 'undefined') {
-    // Prod : le site statique est servi sur ivia.quebec, l'API sur api.ivia.quebec (443).
-    if (/(^|\.)ivia\.quebec$/.test(location.hostname)) return 'https://api.ivia.quebec';
+    // Prod : nginx sur ivia.quebec proxifie /api/ vers le backend — même origine, sans CORS.
+    if (/(^|\.)ivia\.quebec$/.test(location.hostname)) return '';
     const proto = location.protocol;
     return `${proto}//${location.hostname}:8000`;
   }
@@ -43,10 +43,12 @@ async function _req(path, { method = 'GET', body, token, publicEndpoint = false 
     res = await fetch(`${base}${path}`, {
       method,
       headers,
+      cache: 'no-store', // toujours l'état frais du serveur (validations, listes)
       body: body != null ? JSON.stringify(body) : undefined,
     });
   } catch (err) {
-    throw new Error(`API inaccessible sur ${base}. Vérifiez que le backend tourne. (${err.message})`);
+    const loc = base || location.origin;
+    throw new Error(`Impossible de joindre le serveur (${err.message}). Vérifiez votre connexion ou rechargez la page.`);
   }
 
   if (res.status === 204) return null;
@@ -161,6 +163,38 @@ async function confirmTestPayment(orderId) {
   return _req('/api/v1/payments/test/confirm/' + encodeURIComponent(orderId), { method: 'POST' });
 }
 
+// ── Carte de Vie (praticien) ─────────────────────────────────────────────────
+/** Fiche d'un client (praticien/opérateur). */
+async function getClient(clientId) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId));
+}
+
+/** Journal d'un client (praticien/opérateur). */
+async function getClientJournal(clientId, limit = 50) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId) + '/journal?limit=' + limit);
+}
+
+/** Événements de vie d'un client (ligne de vie). */
+async function getClientLifeEvents(clientId) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId) + '/life-events');
+}
+
+/** Crée un événement de vie. */
+async function createClientLifeEvent(clientId, payload) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId) + '/life-events', { method: 'POST', body: payload });
+}
+
+/** Analyses rattachées à un client (filtrées par la vanne de capacités). */
+async function getClientAnalyses(clientId, capability = null) {
+  const q = capability ? '?capability=' + encodeURIComponent(capability) : '';
+  return _req('/api/v1/analysis/clients/' + encodeURIComponent(clientId) + q);
+}
+
+/** Enregistre/actualise la lecture Carte de Vie du client. */
+async function saveCarteDeVie(clientId, payload) {
+  return _req('/api/v1/analysis/clients/' + encodeURIComponent(clientId) + '/carte-de-vie', { method: 'PUT', body: { payload } });
+}
+
 /**
  * Garde « profil complété » : redirige vers /client/mon-profil.html si le profil
  * obligatoire (tranche d'âge, genre, lieu de naissance, territoire) n'est pas rempli.
@@ -215,6 +249,27 @@ async function createMyJournalEntry(payload) {
   return _req('/api/v1/me/journal', { method: 'POST', body: payload });
 }
 
+/**
+ * Décode la partie structurée d'une entrée de journal.
+ * Privilégie les champs structurés du backend (entry_kind + structured_payload) ;
+ * repli sur les anciens préfixes ARCHI_*:: dans body_text (entrées historiques).
+ * @returns {{kind: 'libre'|'checkin'|'exercice'|'moment', data: object|null}}
+ */
+function journalStructured(entry) {
+  if (!entry) return { kind: 'libre', data: null };
+  if (entry.entry_kind && entry.entry_kind !== 'libre' && entry.structured_payload) {
+    return { kind: entry.entry_kind, data: entry.structured_payload };
+  }
+  const b = entry.body_text || '';
+  if (b.startsWith('ARCHI_INTERIEUR::')) {
+    try { return { kind: 'checkin', data: JSON.parse(b.slice('ARCHI_INTERIEUR::'.length)) }; } catch (e) {}
+  }
+  if (b.startsWith('ARCHI_EXERCICE::')) {
+    try { return { kind: 'exercice', data: JSON.parse(b.slice('ARCHI_EXERCICE::'.length)) }; } catch (e) {}
+  }
+  return { kind: entry.entry_kind || 'libre', data: null };
+}
+
 // ── Enregistrements solo (client connecté) ───────────────────────────────────
 /**
  * Envoie un enregistrement solo (base64) — transcription lancée en tâche de fond.
@@ -227,6 +282,25 @@ async function uploadMyRecording(payload) {
 /** Enregistrements solo du compte connecté, avec transcription quand prête. */
 async function getMyRecordings() {
   return _req('/api/v1/me/recordings');
+}
+
+// ── Intentions (client connecté) ─────────────────────────────────────────────
+/** Intentions actives du compte connecté (include_closed=true pour l'historique). */
+async function getMyIntentions(includeClosed = false) {
+  return _req('/api/v1/me/intentions' + (includeClosed ? '?include_closed=true' : ''));
+}
+
+/**
+ * Crée une intention (cap suivi entre les séances). Max 5 actives.
+ * @param {{text, kind?, dimension?, session_id?}} payload
+ */
+async function createMyIntention(payload) {
+  return _req('/api/v1/me/intentions', { method: 'POST', body: payload });
+}
+
+/** Change le statut ou le texte d'une intention (status: active|realisee|abandonnee). */
+async function updateMyIntention(id, payload) {
+  return _req('/api/v1/me/intentions/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
 }
 
 /**
@@ -315,6 +389,11 @@ async function validateSessionNote(id, { validated = true, corrections = null } 
 /** Archive (soft-delete) une séance sans valeur. Accessible au praticien ou admin. */
 async function archiveSession(sessionId) {
   return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/archive', { method: 'PATCH' });
+}
+
+/** Supprime definitivement une seance et ses artefacts relies. */
+async function deleteSession(sessionId) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId), { method: 'DELETE' });
 }
 
 /**
@@ -446,6 +525,15 @@ async function createScheduleException(payload) {
  */
 async function deleteScheduleException(excId) {
   return _req(`/api/v1/schedules/my/exceptions/${excId}`, { method: 'DELETE' });
+}
+
+/**
+ * Agenda du praticien connecté : réservations (hold + confirmées) avec nom client.
+ * @returns {Promise<Array<BookingSlotRecord & { client_name: string|null }>>}
+ */
+async function getPractitionerAgenda(dateFrom, dateTo) {
+  const qs = new URLSearchParams({ date_from: dateFrom, date_to: dateTo });
+  return _req(`/api/v1/bookings/agenda?${qs}`);
 }
 
 // ── Réservations client ───────────────────────────────────────────────────────
@@ -620,6 +708,28 @@ async function apiGetBillingFlags() {
  */
 async function apiSetBillingFlags(flags) {
   return _req('/api/v1/admin/billing-flags', { method: 'PATCH', body: { flags } });
+}
+
+// ── Admin · moteur d'analyse : capacités (vannes) + credentials praticiens ───
+/** Matrice complète {profiles, capabilities, matrix} des interrupteurs d'analyse. */
+async function adminAnalysisCapabilities() {
+  return _req('/api/v1/admin/analysis/capabilities');
+}
+/** Active/désactive une capacité pour un profil (un clic). */
+async function adminSetAnalysisCapability(profile, capability, enabled) {
+  return _req('/api/v1/admin/analysis/capabilities', { method: 'PATCH', body: { profile, capability, enabled } });
+}
+/** Liste des reconnaissances professionnelles (credentials) des praticiens. */
+async function adminListCredentials() {
+  return _req('/api/v1/admin/analysis/credentials');
+}
+/** Enregistre une reconnaissance (ordre, permis) pour un praticien. */
+async function adminCreateCredential(payload) {
+  return _req('/api/v1/admin/analysis/credentials', { method: 'POST', body: payload });
+}
+/** Met à jour un credential (statut vérifié/révoqué, droit de transmission…). */
+async function adminUpdateCredential(id, payload) {
+  return _req('/api/v1/admin/analysis/credentials/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
 }
 
 // Export implicite — toutes les fonctions sont disponibles en global

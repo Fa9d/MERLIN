@@ -7,7 +7,7 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Tableau de bord praticien</title>
-  <script src="/shared/api.js?v=20260617c"></script>
+  <script src="/shared/api.js?v=20260707c"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -33,6 +33,7 @@
         <a href="/praticien/dashboard.html" class="sidebar-link active"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Tableau de bord</a>
         <a href="/praticien/agenda.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
         <a href="/praticien/seance-express.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Séance express</a>
+        <a href="/admin/dossiers.html" class="sidebar-link" data-admin-only><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M7 16h6"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Dossiers clients</a>
         <a href="/praticien/livraisons.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
         <a href="/praticien/guide.html" class="sidebar-link"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Guide</a>
         <div class="flex-1"></div>
@@ -67,6 +68,38 @@
         </div>
       </a>
 
+      <!-- Statistiques d'appointment (Phase 5) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Séances cette semaine</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-week-appointments">…</p>
+          <p class="text-xs text-muted mt-1">rendez-vous</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Revenu ce mois</p>
+          <p class="font-heading text-3xl font-bold text-forest" id="stat-month-revenue">…</p>
+          <p class="text-xs text-muted mt-1">CAD</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">En attente</p>
+          <p class="font-heading text-3xl font-bold text-ink" id="stat-pending">…</p>
+          <p class="text-xs text-muted mt-1">à confirmer</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-xs text-muted mb-1">Complétées</p>
+          <p class="font-heading text-3xl font-bold text-forest-deep" id="stat-completed">…</p>
+          <p class="text-xs text-muted mt-1">avec notes</p>
+        </div>
+      </div>
+
+      <!-- Prochains rendez-vous (Phase 5) -->
+      <section class="card mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-heading text-base font-bold text-ink">📅 Prochains rendez-vous</h2>
+        </div>
+        <div id="upcoming-appointments" class="space-y-3"><p class="text-sm text-muted">Chargement…</p></div>
+      </section>
+
       <!-- Statistiques d'analyse (réelles) -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <a href="/praticien/livraisons.html" class="stat-card block hover:border-forest transition-colors cursor-pointer">
@@ -96,7 +129,7 @@
         <section class="card">
           <div class="flex items-center justify-between mb-4">
             <h2 class="font-heading text-base font-bold text-ink">À valider en priorité</h2>
-            <a href="/praticien/livraisons.html" class="text-xs font-semibold text-forest-deep hover:underline">Tout voir →</a>
+            <a href="/praticien/livraisons.html?filtre=a-valider" class="text-xs font-semibold text-forest-deep hover:underline">Tout voir →</a>
           </div>
           <div id="zone-valider" class="space-y-3"><p class="text-sm text-muted">Chargement…</p></div>
         </section>
@@ -122,6 +155,7 @@
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
     <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Bord</a>
     <a href="/praticien/seance-express.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Express</a>
+    <a href="/admin/dossiers.html" data-admin-only class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h10M7 16h6"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>Dossiers</a>
     <a href="/praticien/livraisons.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Analyses</a>
     <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted px-3 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Agenda</a>
   </nav>
@@ -162,6 +196,42 @@
       try { notes = await getSessionNotes(); } catch (e) {}
       try { sessions = await listMySessions(); } catch (e) {}
 
+      // Phase 5: Charger stats de rendez-vous
+      try {
+        const stats = await _req('/api/v1/me/appointments/stats');
+        if (stats) {
+          document.getElementById('stat-week-appointments').textContent = stats.appointments_this_week || '0';
+          document.getElementById('stat-month-revenue').textContent = ((stats.total_revenue_cents || 0) / 100).toFixed(0);
+          document.getElementById('stat-pending').textContent = stats.pending_confirmations || '0';
+          document.getElementById('stat-completed').textContent = stats.completed_count || '0';
+
+          // Charger rendez-vous à venir
+          const upcomingContainer = document.getElementById('upcoming-appointments');
+          if (stats.upcoming_appointments && stats.upcoming_appointments.length > 0) {
+            upcomingContainer.innerHTML = stats.upcoming_appointments.map(apt => {
+              const date = new Date(apt.scheduled_at);
+              const dateStr = date.toLocaleDateString('fr-CA', { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+              const statusLabels = {
+                'scheduled': 'Planifiée',
+                'confirmed': 'Confirmée',
+                'paid': '✓ Payée',
+              };
+              return `<div class="border border-bdr rounded-[12px] px-4 py-3 flex justify-between items-start">
+                <div>
+                  <p class="text-sm font-semibold text-ink">${esc(apt.client_name || 'Client')}</p>
+                  <p class="text-xs text-muted mt-1">${dateStr} · ${apt.duration_minutes || 60} min</p>
+                </div>
+                <span class="text-xs font-semibold px-2 py-1 rounded bg-blue-50 text-blue-700">${statusLabels[apt.status] || esc(apt.status)}</span>
+              </div>`;
+            }).join('');
+          } else {
+            upcomingContainer.innerHTML = '<p class="text-sm text-muted">Aucun rendez-vous à venir</p>';
+          }
+        }
+      } catch (e) {
+        console.warn('Stats rendez-vous indisponibles:', e);
+      }
+
       const aValider = notes.filter(n => !n.validated_by_practitioner);
       const vig = notes.filter(n => vigilanceElevee(n.vigilance_level_code));
       document.getElementById('stat-analyses').textContent = notes.length;
@@ -172,13 +242,8 @@
       document.getElementById('stat-seances-sub').textContent =
         (transcrites ? transcrites + ' transcrites' : 'enregistrées') + ' →';
 
-      // Carte « Séances » : un admin accède aux dossiers (enregistrements + transcriptions).
-      try {
-        if (typeof isAdminUser === 'function' && isAdminUser()) {
-          const cs = document.getElementById('card-seances');
-          if (cs) cs.href = '/praticien/admin-dossiers.html';
-        }
-      } catch (e) {}
+      // Carte « Séances » : toujours l'interface praticien (les dossiers admin
+      // restent accessibles via le lien latéral réservé aux admins).
 
       // Praticien·ne sans aucune séance ni analyse → état vide « premiers pas ».
       if (!notes.length && !sessions.length) {

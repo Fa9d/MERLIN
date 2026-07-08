@@ -9,6 +9,7 @@ class PraticienPublic(MerlinSchema):
     display_name: str
     title_line: str | None
     intro_text: str | None
+    presentation_audio_url: str | None = None
     spoken_languages: str | None  # JSON array string
     available_channels: str | None  # JSON array string
     themes: str | None  # JSON array string (thèmes d'accompagnement)

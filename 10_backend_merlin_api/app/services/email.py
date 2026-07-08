@@ -263,6 +263,51 @@ def make_appointment_reminder_email(
     return html, text
 
 
+def make_appointment_status_email(
+    display_name: str,
+    status_code: str,
+    praticien_name: str | None = None,
+) -> tuple[str, str] | None:
+    """Notification de changement de statut d'un rendez-vous.
+
+    Retourne None si le statut ne mérite pas de courriel (ex. scheduled).
+    Vocabulaire non clinique (Loi 21) — jamais de contenu par courriel.
+    """
+    messages = {
+        "confirmed": ("Rendez-vous confirmé", "Votre praticien·ne a confirmé votre rendez-vous."),
+        "paid": ("Paiement reçu", "Votre paiement a bien été reçu — votre séance est réservée."),
+        "noted": ("Un écho vous attend", "Un nouvel écho de votre séance est disponible dans votre espace."),
+        "cancelled": ("Rendez-vous annulé", "Votre rendez-vous a été annulé. Vous pouvez en réserver un autre depuis votre espace."),
+    }
+    if status_code not in messages:
+        return None
+    title, msg = messages[status_code]
+    praticien_line = (
+        f'<p style="color:#888;">Praticien·ne : <strong>{praticien_name}</strong></p>'
+        if praticien_name else ""
+    )
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>{msg}</p>
+    {praticien_line}
+    <a class="btn" href="https://ivia.quebec/client/agenda.html">Ouvrir mon espace</a>
+    <p style="color:#888;font-size:13px;">Pour votre confidentialité, aucun contenu n'est transmis
+       par courriel — tout reste dans votre espace sécurisé, hébergé au Québec.</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+    text = (
+        f"Bonjour {display_name},\n\n{title} — {msg}\n"
+        + (f"Praticien·ne : {praticien_name}\n" if praticien_name else "")
+        + "\nOuvrir mon espace : https://ivia.quebec/client/agenda.html\n\n— IVIA"
+    )
+    return html, text
+
+
 def make_practitioner_reply_email(
     display_name: str,
     login_url: str,
@@ -383,6 +428,45 @@ def make_followup_reminder_email(
         f"{custom_text_block}\n\n"
         f"Reprendre mon chemin : {login_url}\n\n"
         "Pour votre confidentialité, aucun contenu n'est transmis par courriel.\n\n— IVIA"
+    )
+    return html, text
+
+
+def make_reprise_lien_email(display_name: str, reserve_url: str) -> tuple[str, str]:
+    """Courriel de reprise de lien 48 h après une demande d'entrée restée sans suite.
+
+    Ton chaleureux, sans pression, non clinique (Loi 21). Une seule relance,
+    un seul geste proposé : réserver un moment d'écoute. Aucun contenu personnel
+    dans le courriel (Loi 25).
+    """
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{display_name}</strong>,</p>
+    <p>Il y a deux jours, vous avez ouvert une porte chez IVIA. Elle est toujours ouverte.</p>
+    <p>Faire une place pour soi n'est pas toujours simple — il n'y a aucune presse.
+       Quand le moment sera bon pour vous, un moment d'écoute vous attend,
+       avec une personne qui écoute pour vrai.</p>
+    <a class="btn" href="{reserve_url}">Réserver mon moment d'écoute</a>
+    <p style="color:#888;font-size:13px;">Ce courriel est la seule relance que vous recevrez.
+       Si vous préférez ne pas donner suite, vous n'avez rien à faire.
+       En cas de détresse, appelez le 811 option 2, ou le 988 (24/7).</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        "Il y a deux jours, vous avez ouvert une porte chez IVIA. Elle est toujours ouverte.\n\n"
+        "Faire une place pour soi n'est pas toujours simple — il n'y a aucune presse. "
+        "Quand le moment sera bon pour vous, un moment d'écoute vous attend, "
+        "avec une personne qui écoute pour vrai.\n\n"
+        f"Réserver mon moment d'écoute : {reserve_url}\n\n"
+        "Ce courriel est la seule relance que vous recevrez. "
+        "Si vous préférez ne pas donner suite, vous n'avez rien à faire.\n"
+        "En cas de détresse : 811 option 2, ou 988 (24/7).\n\n— IVIA"
     )
     return html, text
 

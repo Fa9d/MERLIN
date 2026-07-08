@@ -265,6 +265,33 @@ class JournalEntryTypeCode(str, Enum):
     reflexion   = "reflexion"     # introspection sans ancrage précis
 
 
+class JournalEntryKindCode(str, Enum):
+    """Nature structurelle de l'entrée — remplace les préfixes ARCHI_*:: dans body_text."""
+    libre    = "libre"      # narration libre (défaut)
+    checkin  = "checkin"    # état du jour structuré (humeur, énergie, sommeil, déclencheurs…)
+    exercice = "exercice"   # exercice/pratique complété (avant/après)
+    moment   = "moment"     # moment marquant déposé entre les séances
+
+
+class SessionPhaseCode(str, Enum):
+    """Position d'une trace par rapport à une séance (boucle de suivi continu)."""
+    avant = "avant"
+    apres = "apres"
+    entre = "entre"
+
+
+class IntentionKindCode(str, Enum):
+    """Nature d'un cap suivi entre les séances."""
+    intention = "intention"   # cap formulé (« nommer ce que je ressens »)
+    pratique  = "pratique"    # geste concret répétable (« marcher 20 min »)
+
+
+class IntentionStatusCode(str, Enum):
+    active     = "active"
+    realisee   = "realisee"
+    abandonnee = "abandonnee"
+
+
 class AuthoredByCode(str, Enum):
     client       = "client"
     practitioner = "practitioner"

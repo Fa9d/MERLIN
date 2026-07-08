@@ -1,0 +1,7 @@
+# Analyse prosodique locale (Loi 25 : l'audio ne quitte pas le serveur).
+# Hors requirements.txt car dépendances lourdes (numba/llvmlite via librosa).
+# Installées dans l'image prod (Dockerfile) — voir app/services/prosody.py.
+librosa>=0.10,<0.11
+soundfile>=0.12
+audioread>=3.0   # décodage webm/opus via ffmpeg (installé dans l'image)
+numpy>=1.26

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comptabilité — Admin IVIA</title>
+  <script src="/shared/session.js?v=20260704b"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260707c"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .sidebar-link{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:10px;font-size:14px;font-weight:500;color:#4B6350;transition:all .15s;cursor:pointer;text-decoration:none;}
+    .sidebar-link:hover,.sidebar-link.active{background:#D4E8D0;color:#1A2E1D;}
+    .sidebar-link.active{font-weight:700;}
+    .stat{background:#fff;border:1px solid #D4E8D0;border-radius:16px;padding:16px 18px;}
+    .stat .v{font-family:'Lora',Georgia,serif;font-size:22px;font-weight:700;color:#1A2E1D;}
+    .stat .l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#4B6350;margin-bottom:4px;}
+    .badge{font-size:10px;font-weight:700;text-transform:uppercase;border-radius:9999px;padding:2px 8px;}
+    .fld{border:1.5px solid #D4E8D0;border-radius:10px;padding:6px 10px;font-size:13px;background:#fff;outline:none;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside id="admin-sidebar" class="hidden lg:flex flex-col w-60 bg-[#13261A] border-r border-[#22432F] px-4 py-6 fixed top-0 left-0 h-screen z-10"></aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1000px] space-y-5">
+      <div class="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h1 class="font-heading text-2xl font-bold text-ink">Comptabilité</h1>
+          <p class="text-sm text-muted mt-1">Encaissements ventilés (HT, taxes, frais, marge). Les paiements de test sont exclus des totaux réels.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="mois" type="month" class="fld">
+          <button id="btn-go" class="fld cursor-pointer hover:bg-surface font-semibold">Voir</button>
+        </div>
+      </div>
+
+      <div id="tax-note" class="hidden text-xs bg-amber-50 border border-amber-200 rounded-[12px] px-4 py-2 text-amber-800"></div>
+
+      <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+
+      <div id="zone" class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
+        <p id="loading" class="text-sm text-muted p-6">Chargement…</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function fmt(c){return (c/100).toLocaleString('fr-CA',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';}
+    function dateCourte(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{day:'numeric',month:'short'}):'';}
+    function bornesMois(val){ // "YYYY-MM" -> {from,to}
+      const [y,m]=val.split('-').map(Number);
+      const from=`${y}-${String(m).padStart(2,'0')}-01`;
+      const last=new Date(y,m,0).getDate();
+      const to=`${y}-${String(m).padStart(2,'0')}-${String(last).padStart(2,'0')}`;
+      return {from,to};
+    }
+
+    function carte(label,val,accent){return `<div class="stat"><p class="l">${label}</p><p class="v ${accent||''}">${val}</p></div>`;}
+
+    function renderSummary(s){
+      document.getElementById('cards').innerHTML =
+        carte('Encaissé (réel)', fmt(s.ttc), 'text-forest-deep') +
+        carte('Revenu HT', fmt(s.ht)) +
+        carte('TPS à remettre', fmt(s.tps)) +
+        carte('TVQ à remettre', fmt(s.tvq)) +
+        carte('Frais Stripe', fmt(s.frais_stripe)) +
+        carte('Coût IA', fmt(s.cout_ia)) +
+        carte('Part praticien', fmt(s.part_praticien)) +
+        carte('Marge IVIA', fmt(s.marge_ivia), 'text-forest-deep');
+      const note=document.getElementById('tax-note');
+      const bits=[`${s.nb_reel} encaissement(s) réel(s)`];
+      if(s.nb_test) bits.push(`${s.nb_test} paiement(s) de test exclus (${fmt(s.ttc_test)})`);
+      if(!s.tax_registered) bits.push('Non assujetti aux taxes : TPS/TVQ à 0 (HT = TTC) jusqu’à l’inscription.');
+      note.textContent=bits.join(' · '); note.classList.remove('hidden');
+    }
+
+    function renderLedger(rows){
+      const zone=document.getElementById('zone');
+      if(!rows.length){zone.innerHTML='<p class="text-sm text-muted p-6">Aucun encaissement sur la période.</p>';return;}
+      const body=rows.map(r=>`<tr class="border-t border-bdr">
+        <td class="p-3 whitespace-nowrap text-xs text-muted">${dateCourte(r.date)}</td>
+        <td class="p-3 text-sm text-ink">${(r.product_label||'').replace(/[<>&]/g,'')}${r.is_test?' <span class="badge bg-amber-50 text-amber-700 border border-amber-200">test</span>':''}</td>
+        <td class="p-3 text-right text-sm">${fmt(r.ttc)}</td>
+        <td class="p-3 text-right text-xs text-muted">${fmt(r.ht)}</td>
+        <td class="p-3 text-right text-xs text-muted">${fmt(r.tps)}</td>
+        <td class="p-3 text-right text-xs text-muted">${fmt(r.tvq)}</td>
+        <td class="p-3 text-right text-xs text-muted">${fmt(r.frais_stripe)}</td>
+        <td class="p-3 text-right text-sm font-semibold ${r.is_test?'text-muted':'text-forest-deep'}">${fmt(r.marge_ivia)}</td>
+      </tr>`).join('');
+      zone.innerHTML=`<table class="w-full text-left"><thead><tr class="text-[11px] uppercase tracking-wider text-muted">
+        <th class="p-3 font-semibold">Date</th><th class="p-3 font-semibold">Offre</th>
+        <th class="p-3 font-semibold text-right">TTC</th><th class="p-3 font-semibold text-right">HT</th>
+        <th class="p-3 font-semibold text-right">TPS</th><th class="p-3 font-semibold text-right">TVQ</th>
+        <th class="p-3 font-semibold text-right">Stripe</th><th class="p-3 font-semibold text-right">Marge</th>
+      </tr></thead><tbody>${body}</tbody></table>`;
+    }
+
+    async function charger(){
+      const {from,to}=bornesMois(document.getElementById('mois').value);
+      try{
+        const [s,l]=await Promise.all([adminAccountingSummary(from,to), adminAccountingLedger(from,to)]);
+        renderSummary(s); renderLedger(l);
+      }catch(e){
+        document.getElementById('zone').innerHTML='<p class="text-sm text-red-700 p-6">Accès refusé ou indisponible : '+(e.message||'erreur')+'</p>';
+      }
+    }
+    // Mois courant par défaut
+    const now=new Date();
+    document.getElementById('mois').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    document.getElementById('btn-go').onclick=charger;
+    charger();
+  </script>
+</body>
+</html>

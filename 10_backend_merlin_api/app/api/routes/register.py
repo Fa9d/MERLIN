@@ -26,6 +26,8 @@ class ClientRegisterIn(BaseModel):
     password: str
     display_name: str
     redirect_path: str | None = None
+    # Provenance déclarée (facultatif) — mesure des canaux d'acquisition
+    acquisition_source: str | None = None
 
     @field_validator("password")
     @classmethod
@@ -42,6 +44,14 @@ class ClientRegisterIn(BaseModel):
         if not v.startswith("/"):
             raise ValueError("Le chemin de redirection doit être relatif.")
         return v
+
+    @field_validator("acquisition_source")
+    @classmethod
+    def source_normalized(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
+        v = v.strip()[:64]
+        return v or None
 
 
 class ClientRegisterOut(BaseModel):
@@ -81,6 +91,7 @@ async def register_client(
         email_verified=False,
         email_verification_token=token,
         token_expires_at=expires,
+        acquisition_source=body.acquisition_source,
     )
     db.add(user)
     db.commit()

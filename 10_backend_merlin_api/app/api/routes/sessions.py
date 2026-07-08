@@ -5,7 +5,7 @@ import base64
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 
 logger = logging.getLogger(__name__)
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.orm import Session
 
 from app.ai.anthropic_session_note_pipeline import (
@@ -20,6 +20,8 @@ from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
 from app.models.client import Client
+from app.models.consent import Consent
+from app.models.derived_document import DerivedDocument
 from app.models.enums import (
     AnalysisNextStepCode,
     AudioSessionStatusCode,
@@ -31,6 +33,7 @@ from app.models.enums import (
 from app.models.intake_request import IntakeRequest
 from app.models.session import SessionRecord
 from app.models.session_note import SessionNote
+from app.models.session_temporal_anchor import SessionTemporalAnchor
 from app.services.livekit_audio import (
     LiveKitAudioError,
     run_post_recording_pipeline,
@@ -637,6 +640,49 @@ def archive_session(
     db.commit()
     db.refresh(session_record)
     return session_record
+
+
+@router.delete("/{session_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_session(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> None:
+    """Supprime definitivement une seance et ses artefacts relies."""
+    session_record = db.get(SessionRecord, session_id)
+    if session_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+
+    from app.core.deps import is_admin
+
+    owns = session_record.operator_user_id == current_user.id or session_record.praticien_id == current_user.id
+    if not owns and not is_admin(current_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+
+    note_ids = list(
+        db.scalars(select(SessionNote.id).where(SessionNote.session_id == session_id)).all()
+    )
+    audio_session_ids = list(
+        db.scalars(select(AudioSession.id).where(AudioSession.session_id == session_id)).all()
+    )
+
+    if audio_session_ids:
+        db.execute(delete(AudioRecording).where(AudioRecording.audio_session_id.in_(audio_session_ids)))
+        db.execute(delete(AudioSession).where(AudioSession.id.in_(audio_session_ids)))
+
+    if note_ids:
+        db.execute(
+            update(SessionTemporalAnchor)
+            .where(SessionTemporalAnchor.session_note_id.in_(note_ids))
+            .values(session_note_id=None)
+        )
+
+    db.execute(delete(SessionTemporalAnchor).where(SessionTemporalAnchor.session_id == session_id))
+    db.execute(delete(DerivedDocument).where(DerivedDocument.session_id == session_id))
+    db.execute(update(Consent).where(Consent.session_id == session_id).values(session_id=None))
+    db.execute(delete(SessionNote).where(SessionNote.session_id == session_id))
+    db.execute(delete(SessionRecord).where(SessionRecord.id == session_id))
+    db.commit()
 
 
 class FollowupPayload(_PydanticBaseModel):
