@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Carte de Vie (lecture praticien)</title>
+  <!--
+    Carte de Vie — lecture praticien RÉELLE (00_DOCTRINE/CARTE_DE_VIE_modele_v0.1.md).
+    Données : GET /clients/{id} + /clients/{id}/life-events + /analysis/clients/{id}?capability=carte_de_vie
+    Taxonomies vivantes : GET /api/v1/referentiels/{axes,tensions}.
+    Posture : Observation / Hypothèse / Orientation. Aucun vocabulaire de diagnostic (Loi 21).
+  -->
+  <script src="/shared/session.js?v=20260617e"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260707c"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body { font-family: 'Raleway', system-ui, sans-serif; background: #0f1a12; color: #e8f5eb; min-height: 100vh; }
+    h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
+    .card-dark { background: #162119; border: 1.5px solid #2a4031; border-radius: 16px; }
+    .pill { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 99px; display: inline-flex; align-items: center; gap: 5px; }
+    .axis-node { cursor: pointer; transition: opacity .2s; }
+    .axis-node:hover { opacity: .85; }
+    .legend-dot { width: 11px; height: 11px; border-radius: 99px; display: inline-block; }
+    .triade-card { border-left: 3px solid; border-radius: 10px; padding: 12px 14px; background: #0f1a12; }
+    #tooltip { position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s; background: #0a1510; border: 1px solid #2a4031; color: #e8f5eb; font-size: 12px; padding: 8px 11px; border-radius: 9px; max-width: 260px; z-index: 200; line-height: 1.45; }
+  </style>
+</head>
+<body class="antialiased pb-24">
+
+<!-- Navbar -->
+<div class="flex items-center justify-between px-5 py-3 border-b border-[#2a4031] bg-[#0f1a12] sticky top-0 z-10">
+  <div class="flex items-center gap-3">
+    <a href="/praticien/clients-journal.html" class="text-[#4B6350] hover:text-[#8FB99A] transition-colors" aria-label="Retour">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </a>
+    <span class="font-heading font-semibold text-[#8FB99A] text-sm">IVIA</span>
+    <span class="text-[#2a4031]">·</span>
+    <span class="text-sm text-[#8FB99A]">Carte de Vie — lecture praticien</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <span id="ref-source" class="pill" style="background:#1f3325;color:#6f8c78" title="Source des taxonomies axes / tensions">référentiels : chargement…</span>
+    <span id="lecture-date" class="pill" style="background:#1f3325;color:#8FB99A"></span>
+  </div>
+</div>
+
+<div class="max-w-[1180px] mx-auto px-4 sm:px-8 py-8 space-y-8">
+
+  <!-- État vide / erreur -->
+  <div id="etat" class="card-dark p-8 text-center text-[#9bb7a3] hidden"></div>
+
+  <div id="contenu" class="space-y-8 hidden">
+
+    <!-- En-tête personne + Strate 0 : le Sol -->
+    <section class="card-dark p-6">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-wider text-[#4B6350] mb-1">Personne accompagnée</p>
+          <h1 id="p-nom" class="text-2xl font-bold text-[#e8f5eb]">—</h1>
+          <p id="p-meta" class="text-sm text-[#4B6350] mt-1"></p>
+          <p id="p-fil" class="text-base text-[#cfe6d4] italic mt-3 max-w-xl leading-relaxed"></p>
+        </div>
+        <div class="flex flex-col items-end gap-2">
+          <span id="p-vigilance" class="pill" style="background:#1f3325;color:#8FB99A">Vigilance · habituelle</span>
+          <span class="text-xs text-[#4B6350]">lecture praticien — vue complète</span>
+        </div>
+      </div>
+      <div id="sol-grid" class="mt-5 grid sm:grid-cols-2 gap-3"></div>
+    </section>
+
+    <!-- Strate 1 + 3 : Constellation + champs de tension -->
+    <section class="card-dark p-6">
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="text-lg font-bold text-[#e8f5eb]">Constellation des onze axes</h2>
+        <span class="text-xs text-[#4B6350]">le territoire est le sol central — les axes en rayonnent</span>
+      </div>
+      <p id="constellation-resume" class="text-sm text-[#9bb7a3] mb-1 max-w-2xl leading-relaxed"></p>
+      <p class="text-xs text-[#4B6350] mb-4">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
+      <div class="grid lg:grid-cols-[1.4fr_1fr] gap-6 items-start">
+        <div>
+          <svg id="constellation" class="w-full" viewBox="0 0 560 520" role="img" aria-label="Constellation des onze axes de la personne"></svg>
+          <div class="flex flex-wrap gap-4 mt-2 text-xs text-[#9bb7a3]">
+            <span class="flex items-center gap-1.5"><span class="legend-dot" style="background:#2a4031"></span>en sourdine</span>
+            <span class="flex items-center gap-1.5"><span class="legend-dot" style="background:#4A7C59"></span>présent</span>
+            <span class="flex items-center gap-1.5"><span class="legend-dot" style="background:#8FB99A"></span>actif</span>
+            <span class="flex items-center gap-1.5"><span class="legend-dot" style="background:#D97706"></span>en tension</span>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-[#8FB99A] mb-1 uppercase tracking-wider">Champs de tension</h3>
+          <p class="text-xs text-[#4B6350] mb-3">Là où ça tire — deux axes qui se tendent l'un l'autre, pas deux problèmes séparés.</p>
+          <div id="tensions-list" class="space-y-3"></div>
+          <div id="fil-a-tirer" class="mt-4 rounded-[12px] border border-[#D97706]/40 bg-[#D97706]/10 px-4 py-3 hidden">
+            <p class="text-[11px] uppercase tracking-wider text-[#e0a458] font-semibold mb-1">Le fil à tirer</p>
+            <p id="fil-a-tirer-texte" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strate 2 : Ligne de vie -->
+    <section class="card-dark p-6">
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="text-lg font-bold text-[#e8f5eb]">Ligne de vie</h2>
+        <span class="text-xs text-[#4B6350]">taille = charge émotionnelle · trait pointillé = lien transgénérationnel ou narration</span>
+      </div>
+      <p class="text-xs text-[#4B6350] mb-4">Double narration (Ricœur) — <span class="text-[#9bb7a3]">comme c'était vécu</span> alors vs <span class="text-[#9bb7a3]">comme c'est raconté</span> aujourd'hui.</p>
+      <svg id="lifeline" class="w-full" viewBox="0 0 1100 300" role="img" aria-label="Ligne de vie de la personne"></svg>
+      <p id="lifeline-vide" class="text-sm text-[#4B6350] italic hidden">Aucun événement de vie enregistré pour cette personne.</p>
+    </section>
+
+    <!-- Strate 4 : Horizon — triade -->
+    <section class="card-dark p-6">
+      <h2 class="text-lg font-bold text-[#e8f5eb] mb-1">Horizon — orientation, pas destination</h2>
+      <p class="text-xs text-[#4B6350] mb-5">Vers quelle autonomie vitale, quel alignement — jamais un objectif imposé.</p>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="triade-card" style="border-color:#8FB99A">
+          <p class="text-xs uppercase tracking-wider text-[#8FB99A] font-semibold mb-1">Observation</p>
+          <p id="t-observation" class="text-sm text-[#cfe6d4]">—</p>
+        </div>
+        <div class="triade-card" style="border-color:#4A7C59">
+          <p class="text-xs uppercase tracking-wider text-[#9bb7a3] font-semibold mb-1">Hypothèse</p>
+          <p id="t-hypothese" class="text-sm text-[#cfe6d4]">—</p>
+        </div>
+        <div class="triade-card" style="border-color:#D97706">
+          <p class="text-xs uppercase tracking-wider text-[#e0a458] font-semibold mb-1">Orientation</p>
+          <p id="t-orientation" class="text-sm text-[#cfe6d4]">—</p>
+        </div>
+      </div>
+      <p class="text-[11px] text-[#4B6350] mt-4">Aucune sortie de cette carte n'est diffusée au client sans reformulation et validation humaine. Tout signal d'urgence → escalade immédiate (811 / 911 / Info‑Social).</p>
+    </section>
+
+  </div>
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+/* Carte de Vie — données réelles.
+   URL : /praticien/carte-de-vie.html?client={id} */
+
+const RES = {
+  sourdine: { fill:'#2a4031', r:11, stroke:'#2a4031', text:'#5a7563' },
+  present:  { fill:'#4A7C59', r:15, stroke:'#5e9670', text:'#cfe6d4' },
+  actif:    { fill:'#8FB99A', r:19, stroke:'#b6d8bf', text:'#0f1a12' },
+  tension:  { fill:'#2a4031', r:17, stroke:'#D97706', text:'#e0a458' },
+};
+const INTENS_W = { faible:1.5, moderee:3, marquee:5 };
+const CHARGE_R = { faible:6, moyen:9, eleve:13 };
+
+const tip = document.getElementById('tooltip');
+function showTip(html, ev){ tip.innerHTML = html; tip.style.opacity = 1; moveTip(ev); }
+function moveTip(ev){ tip.style.left = (ev.clientX + 14) + 'px'; tip.style.top = (ev.clientY + 14) + 'px'; }
+function hideTip(){ tip.style.opacity = 0; }
+function esc(s){ const d=document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+function wrapLabel(l){ return l.replace(' / ', ' /\n'); }
+
+async function fetchReferentiel(name){
+  const r = await fetch('https://api.ivia.quebec/api/v1/referentiels/' + name);
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+/* ── Constellation ── */
+function drawConstellation(AXES, TENSIONS){
+  const svg = d3.select('#constellation');
+  svg.selectAll('*').remove();
+  const W = 560, H = 520, cx = W/2, cy = H/2 + 6, R = 175;
+  const ring = AXES.filter(a => !a.fondateur);
+  const center = AXES.find(a => a.fondateur) || AXES[0];
+  const pos = {};
+  ring.forEach((a, i) => {
+    const ang = (-Math.PI/2) + i * (2*Math.PI/ring.length);
+    pos[a.code] = { x: cx + R*Math.cos(ang), y: cy + R*Math.sin(ang), ang };
+  });
+  pos[center.code] = { x: cx, y: cy };
+
+  svg.append('g').selectAll('line').data(ring).join('line')
+    .attr('x1', cx).attr('y1', cy)
+    .attr('x2', d => pos[d.code].x).attr('y2', d => pos[d.code].y)
+    .attr('stroke', '#22372a').attr('stroke-width', 1);
+
+  const arcs = svg.append('g');
+  TENSIONS.forEach(t => {
+    const [a,b] = (t.entre || []).map(c => pos[c]);
+    if(!a||!b) return;
+    const mx = (a.x+b.x)/2, my = (a.y+b.y)/2;
+    const dx = mx - cx, dy = my - cy, k = 0.22;
+    arcs.append('path')
+      .attr('d', `M${a.x},${a.y} Q${mx+dx*k},${my+dy*k} ${b.x},${b.y}`)
+      .attr('fill','none').attr('stroke','#D97706')
+      .attr('stroke-width', INTENS_W[t.intensite] || 3).attr('stroke-opacity',0.55)
+      .attr('stroke-dasharray','2 4')
+      .style('cursor','pointer')
+      .on('mousemove', ev => showTip(`<b style="color:#e0a458">${esc(t.label)}</b> · ${esc(t.intensite||'')}<br>${esc(t.desc||'')}`, ev))
+      .on('mouseleave', hideTip);
+  });
+
+  svg.append('circle').attr('cx',cx).attr('cy',cy).attr('r',46)
+    .attr('fill','#1f3325').attr('stroke','#3a5743').attr('stroke-width',1).attr('opacity',0.6);
+
+  const node = svg.append('g').selectAll('g.axis-node').data(AXES).join('g')
+    .attr('class','axis-node')
+    .attr('transform', d => `translate(${pos[d.code].x},${pos[d.code].y})`)
+    .on('mousemove', (ev,d) => showTip(`<b>${esc(d.label.replace('\n',' '))}</b> · ${esc(d.resonance)}<br>${esc(d.note||'')}`, ev))
+    .on('mouseleave', hideTip);
+
+  node.append('circle')
+    .attr('r', d => d.fondateur ? 30 : (RES[d.resonance]||RES.sourdine).r)
+    .attr('fill', d => d.fondateur ? (d.resonance==='tension' ? '#2a4031' : '#4A7C59') : (RES[d.resonance]||RES.sourdine).fill)
+    .attr('stroke', d => d.fondateur ? (d.resonance==='tension' ? '#D97706' : '#8FB99A') : (RES[d.resonance]||RES.sourdine).stroke)
+    .attr('stroke-width', d => d.resonance==='tension' ? 2.5 : 1.5);
+
+  node.each(function(d){
+    const g = d3.select(this);
+    const lines = d.label.split('\n');
+    if(d.fondateur){
+      g.append('text').attr('text-anchor','middle').attr('dy','-1').attr('fill', d.resonance==='tension' ? '#e0a458' : '#0f1a12')
+        .attr('font-weight','700').attr('font-size','12').attr('font-family','Lora, serif').text(lines[0]);
+      g.append('text').attr('text-anchor','middle').attr('dy','13').attr('fill', d.resonance==='tension' ? '#9bb7a3' : '#1f3325')
+        .attr('font-size','9').text('le sol');
+      return;
+    }
+    const p = pos[d.code];
+    const anchor = Math.abs(Math.cos(p.ang)) < 0.34 ? 'middle' : (Math.cos(p.ang) > 0 ? 'start' : 'end');
+    const rr = (RES[d.resonance]||RES.sourdine).r;
+    const ox = anchor==='start' ? rr+6 : anchor==='end' ? -(rr+6) : 0;
+    const oyBase = anchor==='middle' ? (Math.sin(p.ang)>0 ? rr+14 : -(rr+8)) : 0;
+    lines.forEach((ln,i) => {
+      g.append('text').attr('text-anchor',anchor)
+        .attr('x',ox).attr('y', oyBase + i*12 + (anchor!=='middle' ? (i*12 - (lines.length-1)*6) : 0))
+        .attr('fill', d.resonance==='tension' ? '#e0a458' : '#9bb7a3')
+        .attr('font-size','11').attr('font-weight','600').text(ln);
+    });
+  });
+}
+
+/* ── Tensions ── */
+function renderTensions(AXES, TENSIONS){
+  const wrap = d3.select('#tensions-list');
+  wrap.selectAll('*').remove();
+  if(!TENSIONS.length){
+    wrap.append('p').attr('class','text-sm text-[#4B6350] italic').text('Aucune tension active relevée dans la lecture.');
+    return;
+  }
+  const labelAxe = c => ((AXES.find(a=>a.code===c)||{}).label||c).replace('\n',' ');
+  TENSIONS.forEach(t => {
+    const el = wrap.append('div').attr('class','rounded-[11px] border border-[#2a4031] bg-[#0f1a12] px-3 py-2.5');
+    el.html(`
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-semibold text-[#e0a458]">${esc(t.label)}</span>
+        <span class="pill" style="background:#2a1f12;color:#e0a458">${esc(t.intensite||'')}</span>
+      </div>
+      <p class="text-xs text-[#9bb7a3] mt-1">${esc(t.desc||'')}</p>
+      <p class="text-[11px] text-[#4B6350] mt-1.5">entre <span class="text-[#8FB99A]">${esc(labelAxe((t.entre||[])[0]))}</span> &amp; <span class="text-[#8FB99A]">${esc(labelAxe((t.entre||[])[1]))}</span>${t.confiance ? ' · confiance ' + esc(t.confiance) : ''}</p>
+    `);
+  });
+}
+
+/* ── Ligne de vie ── */
+function drawLifeline(events, annotations){
+  if(!events.length){
+    document.getElementById('lifeline').classList.add('hidden');
+    document.getElementById('lifeline-vide').classList.remove('hidden');
+    return;
+  }
+  const items = events.map(e => {
+    const a = annotations[e.id] || {};
+    return {
+      id: e.id,
+      year: e.event_year_approx || new Date(e.created_at).getFullYear(),
+      label: e.title,
+      charge: a.charge || 'moyen',
+      ancestral: !!e.is_intergenerational,
+      parentId: e.parent_event_id || a.ref_event || null,
+      narratedNow: !!a.narrated_now,
+      then: e.narrative_then, now: e.narrative_now,
+    };
+  }).filter(e => e.year);
+
+  const svg = d3.select('#lifeline');
+  svg.selectAll('*').remove();
+  const W = 1100, H = 300, m = { l:28, r:28, t:30, b:46 };
+  const years = items.map(e=>e.year);
+  const y0 = Math.min(...years), y1 = Math.max(...years);
+  const pad = Math.max(4, Math.round((y1-y0)*0.08));
+  const x = d3.scaleLinear().domain([y0-pad, y1+pad]).range([m.l, W-m.r]);
+  const baseY = H - m.b - 44;
+
+  svg.append('line').attr('x1',m.l).attr('y1',baseY).attr('x2',W-m.r).attr('y2',baseY)
+    .attr('stroke','#2a4031').attr('stroke-width',1.5);
+  const ticks = x.ticks(Math.min(8, y1-y0)).filter(Number.isInteger);
+  ticks.forEach(yr => {
+    svg.append('text').attr('x',x(yr)).attr('y',baseY+22).attr('text-anchor','middle')
+      .attr('fill','#4B6350').attr('font-size','10').text(yr);
+  });
+
+  const byId = Object.fromEntries(items.map(e=>[e.id,e]));
+  const linkG = svg.append('g');
+  items.forEach(e => {
+    const target = e.parentId ? byId[e.parentId] : null;
+    if(!target) return;
+    linkG.append('path')
+      .attr('d', `M${x(e.year)},${baseY} C${x(e.year)},${baseY-80} ${x(target.year)},${baseY-80} ${x(target.year)},${baseY}`)
+      .attr('fill','none').attr('stroke', e.narratedNow ? '#8FB99A' : '#6f8c78')
+      .attr('stroke-width',1.3).attr('stroke-dasharray','3 3').attr('opacity',0.7);
+    if(e.narratedNow){
+      svg.append('text').attr('x', (x(e.year)+x(target.year))/2).attr('y', baseY-88)
+        .attr('text-anchor','middle').attr('fill','#8FB99A').attr('font-size','11').attr('font-style','italic')
+        .text(`gap Y→Z ≈ ${Math.abs(e.year - target.year)} ans`);
+    }
+  });
+
+  const node = svg.append('g').selectAll('g').data(items).join('g')
+    .attr('transform', e => `translate(${x(e.year)},${baseY})`)
+    .style('cursor','pointer')
+    .on('mousemove',(ev,e)=> showTip(
+      `<b>${e.year}</b> — ${esc(e.label)}<br>charge : ${esc(e.charge)}` +
+      (e.ancestral?'<br><i>strate transgénérationnelle</i>':'') +
+      (e.narratedNow?'<br><i>raconté au présent</i>':'') +
+      (e.now?`<br><span style="color:#8FB99A">« ${esc(e.now.slice(0,120))}${e.now.length>120?'…':''} »</span>`:''), ev))
+    .on('mouseleave', hideTip);
+
+  node.append('circle')
+    .attr('r', e => CHARGE_R[e.charge] || 9)
+    .attr('fill', e => e.ancestral ? '#0f1a12' : '#4A7C59')
+    .attr('stroke', e => e.narratedNow ? '#8FB99A' : (e.ancestral ? '#6f8c78' : '#5e9670'))
+    .attr('stroke-width', e => (e.narratedNow||e.ancestral) ? 2 : 1)
+    .attr('stroke-dasharray', e => e.ancestral ? '2 2' : null);
+
+  node.append('text')
+    .attr('y', (e,i) => (i % 2 === 0) ? -(CHARGE_R[e.charge]||9)-8 : (CHARGE_R[e.charge]||9)+16)
+    .attr('text-anchor','middle').attr('fill','#9bb7a3').attr('font-size','10.5')
+    .text(e => e.label.length > 30 ? e.label.slice(0,30)+'…' : e.label);
+}
+
+/* ── Init ── */
+(async function init(){
+  const etat = document.getElementById('etat');
+  const clientId = new URLSearchParams(location.search).get('client');
+  if(!clientId){
+    etat.innerHTML = 'Aucun client sélectionné. Ouvrez la Carte de Vie depuis la fiche d\'un client dans <a href="/praticien/clients-journal.html" class="underline text-[#8FB99A]">Journal des clients</a>.';
+    etat.classList.remove('hidden');
+    return;
+  }
+  etat.textContent = 'Chargement de la carte…';
+  etat.classList.remove('hidden');
+
+  let client, lifeEvents = [], analyses = [], axesRef = null, tensionsRef = null;
+  try {
+    [client, lifeEvents, analyses] = await Promise.all([
+      getClient(clientId),
+      getClientLifeEvents(clientId).catch(() => []),
+      getClientAnalyses(clientId, 'carte_de_vie').catch(() => []),
+    ]);
+  } catch(e){
+    etat.textContent = 'Impossible de charger ce client : ' + (e.message || e);
+    return;
+  }
+  try {
+    [axesRef, tensionsRef] = await Promise.all([fetchReferentiel('axes'), fetchReferentiel('tensions')]);
+    const b = document.getElementById('ref-source');
+    b.textContent = 'référentiels : vivants (v' + axesRef.version + ')';
+    b.style.color = '#8FB99A';
+  } catch(e){
+    document.getElementById('ref-source').textContent = 'référentiels : indisponibles';
+  }
+
+  const carte = analyses.length ? analyses[0] : null;
+  const P = carte ? carte.payload : {};
+
+  // En-tête
+  const nom = [client.first_name_or_alias, client.last_name].filter(Boolean).join(' ');
+  const now = new Date().getFullYear();
+  const age = client.birth_year ? (now - client.birth_year) : null;
+  document.getElementById('p-nom').innerHTML = esc(nom) + (age ? ' · <span class="text-[#8FB99A]">' + age + ' ans</span>' : '');
+  document.getElementById('p-meta').textContent = [
+    client.birthplace ? 'Origine : ' + client.birthplace : null,
+    client.territory_code || null,
+  ].filter(Boolean).join(' · ');
+  if(P.fil) document.getElementById('p-fil').textContent = P.fil;
+  if(P.vigilance) document.getElementById('p-vigilance').textContent = 'Vigilance · ' + P.vigilance;
+  if(carte){
+    document.getElementById('lecture-date').textContent =
+      'lecture du ' + new Date(carte.created_at).toLocaleDateString('fr-CA', {year:'numeric',month:'long',day:'numeric'});
+  } else {
+    document.getElementById('lecture-date').textContent = 'aucune lecture enregistrée';
+  }
+
+  // Sol
+  const solGrid = document.getElementById('sol-grid');
+  (P.sol || []).forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'rounded-[12px] border border-[#2a4031] bg-[#0f1a12] px-4 py-3';
+    d.innerHTML = '<p class="text-[11px] uppercase tracking-wider text-[#4B6350]">' + esc(s.titre) + '</p>' +
+                  '<p class="text-sm text-[#cfe6d4] mt-1">' + esc(s.texte) + '</p>';
+    solGrid.appendChild(d);
+  });
+
+  // Axes : taxonomie vivante + lectures du payload
+  const lectures = P.axes || {};
+  let AXES;
+  if(axesRef){
+    AXES = [...axesRef.entrees].sort((a,b)=>a.ordre-b.ordre).map(e => ({
+      code: e.code, label: wrapLabel(e.libelle), fondateur: !!e.fondateur,
+      resonance: (lectures[e.code]||{}).resonance || 'sourdine',
+      note: (lectures[e.code]||{}).note || 'Axe non encore lu pour cette personne.',
+    }));
+  } else {
+    AXES = Object.entries(lectures).map(([code,l],i) => ({
+      code, label: code, fondateur: code==='territoire', resonance: l.resonance||'sourdine', note: l.note||'',
+    }));
+  }
+
+  // Tensions : payload + libellés vivants
+  const libTensions = tensionsRef ? Object.fromEntries(tensionsRef.entrees.map(e=>[e.code,e.libelle])) : {};
+  const TENSIONS = (P.tensions || []).map(t => ({ ...t, label: libTensions[t.code] || t.label || t.code }));
+
+  if(P.constellation_resume) document.getElementById('constellation-resume').innerHTML = esc(P.constellation_resume);
+  if(P.fil_a_tirer){
+    document.getElementById('fil-a-tirer').classList.remove('hidden');
+    document.getElementById('fil-a-tirer-texte').textContent = P.fil_a_tirer;
+  }
+
+  // Triade
+  const tri = P.triade || {};
+  document.getElementById('t-observation').textContent = tri.observation || '— pas encore formulée.';
+  document.getElementById('t-hypothese').textContent = tri.hypothese || '— pas encore formulée.';
+  document.getElementById('t-orientation').textContent = tri.orientation || '— pas encore formulée.';
+
+  etat.classList.add('hidden');
+  document.getElementById('contenu').classList.remove('hidden');
+
+  drawConstellation(AXES, TENSIONS);
+  renderTensions(AXES, TENSIONS);
+  drawLifeline(lifeEvents, P.evenements || {});
+})();
+</script>
+</body>
+</html>

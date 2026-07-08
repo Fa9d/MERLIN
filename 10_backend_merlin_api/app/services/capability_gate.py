@@ -70,6 +70,12 @@ CAPABILITIES: dict[str, dict] = {
         "max_sensitivity": AnalysisSensitivity.recherche,
         "data_leaves_server": False,
     },
+    "carte_de_vie": {
+        "label": "Carte de Vie — lecture multidimensionnelle (axes, tensions, triade O/H/O)",
+        "category": "lecture",
+        "max_sensitivity": AnalysisSensitivity.hypothese,
+        "data_leaves_server": False,
+    },
 }
 
 # ── Profils de déploiement et défauts ────────────────────────────────────────

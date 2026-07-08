@@ -163,6 +163,38 @@ async function confirmTestPayment(orderId) {
   return _req('/api/v1/payments/test/confirm/' + encodeURIComponent(orderId), { method: 'POST' });
 }
 
+// ── Carte de Vie (praticien) ─────────────────────────────────────────────────
+/** Fiche d'un client (praticien/opérateur). */
+async function getClient(clientId) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId));
+}
+
+/** Journal d'un client (praticien/opérateur). */
+async function getClientJournal(clientId, limit = 50) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId) + '/journal?limit=' + limit);
+}
+
+/** Événements de vie d'un client (ligne de vie). */
+async function getClientLifeEvents(clientId) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId) + '/life-events');
+}
+
+/** Crée un événement de vie. */
+async function createClientLifeEvent(clientId, payload) {
+  return _req('/api/v1/clients/' + encodeURIComponent(clientId) + '/life-events', { method: 'POST', body: payload });
+}
+
+/** Analyses rattachées à un client (filtrées par la vanne de capacités). */
+async function getClientAnalyses(clientId, capability = null) {
+  const q = capability ? '?capability=' + encodeURIComponent(capability) : '';
+  return _req('/api/v1/analysis/clients/' + encodeURIComponent(clientId) + q);
+}
+
+/** Enregistre/actualise la lecture Carte de Vie du client. */
+async function saveCarteDeVie(clientId, payload) {
+  return _req('/api/v1/analysis/clients/' + encodeURIComponent(clientId) + '/carte-de-vie', { method: 'PUT', body: { payload } });
+}
+
 /**
  * Garde « profil complété » : redirige vers /client/mon-profil.html si le profil
  * obligatoire (tranche d'âge, genre, lieu de naissance, territoire) n'est pas rempli.
