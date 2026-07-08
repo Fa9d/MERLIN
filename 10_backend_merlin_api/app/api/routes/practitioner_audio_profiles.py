@@ -1,6 +1,5 @@
 """Routes pour profils audio praticiens."""
 import logging
-import os
 from datetime import datetime, timezone
 from uuid import uuid4
 
@@ -8,7 +7,6 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.config import settings
 from app.core.deps import require_practitioner
 from app.db.session import get_db
 from app.models.app_user import AppUser
@@ -16,7 +14,6 @@ from app.models.practitioner_audio_profile import PractitionerAudioProfile
 from app.schemas.practitioner_audio_profile import (
     PractitionerAudioProfileOut,
 )
-from app.services.s3_service import S3AudioService
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/me/audio-profile", tags=["audio_profiles"])

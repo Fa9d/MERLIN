@@ -78,6 +78,7 @@ async def get_appointment_history(
             amount_cents=apt.amount_cents,
             session_notes=apt.session_notes,
             practitioner_notes=apt.practitioner_notes if current_user.id == apt.practitioner_id else None,  # Only praticien sees internal notes
+            audit_trail=audit_trail,
         )
         items.append(item)
 
@@ -108,7 +109,7 @@ async def get_practitioner_stats(
         raise HTTPException(status_code=403, detail="Only practitioners can access this endpoint")
 
     from datetime import datetime, timedelta
-    from sqlalchemy import extract, func
+    from sqlalchemy import func
 
     now = datetime.now(datetime.now().astimezone().tzinfo)
     week_start = now - timedelta(days=now.weekday())

@@ -114,7 +114,11 @@ def record_layer(
         raise ValueError(f"Couche inconnue : {layer}")
     if consent_id is None:
         raise ConsentRequiredError("Écriture de profil refusée : consentement (consent_id) requis.")
-    
+
+    # Validations d'entrée sans I/O d'abord, accès DB ensuite
+    if (client_id is None) == (practitioner_user_id is None):
+        raise ValueError("Exactement un sujet attendu (client_id XOR practitioner_user_id).")
+
     # P1-3: Valider consent existe, est actif, et cohérent
     consent = db.get(Consent, consent_id)
     if consent is None:
@@ -123,9 +127,6 @@ def record_layer(
         raise ValueError(f"Consentement {consent_id} n'est pas actif (status={consent.record_status.value}).")
     if consent.revoked_at is not None:
         raise ValueError(f"Consentement {consent_id} a été révoqué.")
-    
-    if (client_id is None) == (practitioner_user_id is None):
-        raise ValueError("Exactement un sujet attendu (client_id XOR practitioner_user_id).")
 
     model = LAYER_MODELS[layer]
     prev = db.scalar(

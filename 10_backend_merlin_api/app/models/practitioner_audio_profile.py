@@ -40,6 +40,4 @@ class PractitionerAudioProfile(Base):
     )
 
     # Relations
-    practitioner: Mapped["app.models.app_user.AppUser"] = relationship(  # type: ignore[name-defined]
-        "AppUser", foreign_keys=[practitioner_id]
-    )
+    practitioner = relationship("AppUser", foreign_keys=[practitioner_id])

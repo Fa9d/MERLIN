@@ -1,10 +1,8 @@
 """Calendar export routes (ICS format) + Stripe payment integration."""
 
-import json
 import logging
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 from datetime import datetime, timezone
 
 from app.core.config import settings

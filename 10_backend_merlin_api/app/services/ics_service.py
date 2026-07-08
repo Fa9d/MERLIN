@@ -1,7 +1,7 @@
 """ICS calendar export service for Apple/Google Calendar compatibility."""
 
 from ics import Calendar, Event
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import List, Optional
 import logging
 

@@ -39,7 +39,8 @@
       "Bash(git mv *)",
       "Bash(mv matomo_system_check.txt _archives/intrants/2026-07/matomo_system_check_20260706.txt)",
       "Bash(mv .env.prod.backup-20260509-235513 .env.prod.bak .env.prod.bak- .env.prod.bak.2026-06-21 backups/env/)",
-      "Bash(sed -i '/^JWT_SECRET=/d' .env.prod)"
+      "Bash(sed -i '/^JWT_SECRET=/d' .env.prod)",
+      "Bash(gh run *)"
     ]
   }
 }

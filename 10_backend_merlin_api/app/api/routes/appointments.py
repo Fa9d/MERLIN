@@ -3,10 +3,9 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import and_, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.config import settings
 from app.core.deps import require_client, require_practitioner
 from app.db.session import get_db
 from app.models.app_user import AppUser
@@ -15,7 +14,6 @@ from app.schemas.appointment import (
     AppointmentCreate,
     AppointmentOut,
     AppointmentStatusUpdate,
-    AppointmentUpdate,
     PractitionerSlotCreate,
     PractitionerSlotOut,
     PractitionerSlotUpdate,

@@ -41,9 +41,7 @@ class PractitionerSlot(Base):
     )
 
     # Relations
-    practitioner: Mapped["app.models.app_user.AppUser"] = relationship(
-        "AppUser", foreign_keys=[practitioner_id]
-    )
+    practitioner = relationship("AppUser", foreign_keys=[practitioner_id])
 
 
 class Appointment(Base):
@@ -118,12 +116,8 @@ class Appointment(Base):
     )
 
     # Relations
-    client: Mapped["app.models.app_user.AppUser"] = relationship(
-       "AppUser", foreign_keys=[client_id]
-    )
-    practitioner: Mapped["app.models.app_user.AppUser"] = relationship(
-       "AppUser", foreign_keys=[practitioner_id]
-    )
+    client = relationship("AppUser", foreign_keys=[client_id])
+    practitioner = relationship("AppUser", foreign_keys=[practitioner_id])
     slot: Mapped["PractitionerSlot | None"] = relationship(
        "PractitionerSlot", foreign_keys=[slot_id]
     )
