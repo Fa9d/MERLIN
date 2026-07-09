@@ -17,7 +17,7 @@
 
 <div id="ivia-header"></div>
 <script src="/shared/layout.js?v=20260707a"></script>
-<script>renderLayout('compte');</script>
+<script>renderLayout('aujourdhui', 'Mon compte');</script>
 
     <main class="mx-auto px-4 sm:px-8 py-8 max-w-[720px] space-y-6">
 
@@ -129,7 +129,7 @@
     </main>
 
 <div id="ivia-footer"></div>
-<script>renderLayout('compte');</script>
+<script>renderLayout('aujourdhui', 'Mon compte');</script>
 
   <!-- Toast -->
   <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-forest-deep text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
@@ -147,7 +147,7 @@
       if (!me.email_verified) {
         document.getElementById('badge-verif').classList.remove('hidden');
       }
-      renderLayout('compte'); // header avec le prénom frais
+      renderLayout('aujourdhui', 'Mon compte'); // header avec le prénom frais
     }).catch(() => { /* le 401 est géré globalement par api.js */ });
 
     // ── Mot de passe réel — POST /auth/set-password ───────────────────────────

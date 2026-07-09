@@ -54,7 +54,7 @@ const IVIA_FOOTER = {
   if (!document.querySelector('link[data-ivia-espace]')) {
     const l = document.createElement('link');
     l.rel = 'stylesheet';
-    l.href = '/shared/ivia-espace.css?v=20260624a';
+    l.href = '/shared/ivia-espace.css?v=20260709b';
     l.setAttribute('data-ivia-espace', '1');
     document.head.appendChild(l);
   }
@@ -66,9 +66,26 @@ const IVIA_ICON = {
   parler:     _ic('<path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/>'),
   ecrire:     _ic('<path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/>'),
   voir:       _ic('<path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>'),
+  agenda:     _ic('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),
 };
 
+function renderClientMobileNav(active) {
+  if (document.getElementById('ivia-mobile-nav')) return;
+  const items = IVIA_NAV.map(n => {
+    const on = n.id === active;
+    return `<a href="${n.href}" class="ivia-mob-link${on ? ' active' : ''}">${IVIA_ICON[n.id] || ''}<span>${n.label}</span></a>`;
+  }).join('');
+  const nav = document.createElement('nav');
+  nav.id = 'ivia-mobile-nav';
+  nav.className = 'ivia-mobile-nav';
+  nav.setAttribute('aria-label', 'Navigation principale');
+  nav.innerHTML = items;
+  document.body.appendChild(nav);
+  document.body.classList.add('has-ivia-mobile-nav');
+}
+
 function renderLayout(active, pageLabel) {
+  renderClientMobileNav(active);
   const header = document.getElementById('ivia-header');
   if (header) {
     const links = '';
