@@ -7,7 +7,7 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/session_semantic.py
 auteur: fondateur
 date: 2026-07-08
-version: 1.0
+version: 1.1
 dépend_de: [safety_suite_v1, session_semantic_safety_suite_v1]
 remplace: []
 arbitrage_requis: non
@@ -15,7 +15,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_synthese_seance_v1.md
 ---
 
 # PROMPT — Synthèse sémantique d'une séance (transcript)
-**Version**: v1.0 — 2026-07-08
+**Version**: v1.1 — 2026-07-08 (v1.1 : durcissements issus du run safety du 2026-07-08 — tiers et praticien invisibles, lexique en description)
 **Surface**: praticien uniquement (sensibilité `hypothese`, sous vanne de capacités —
 JAMAIS exposé au client tant que la safety suite dédiée n'a pas été passée)
 **Déclencheur**: une séance transcrite existe (faster-whisper local) ; le praticien
@@ -75,6 +75,17 @@ Uniquement un objet JSON :
 ```
 
 ## Règles absolues
+
+- **Tiers — interdiction totale de lecture** : les personnes nommées (conjoint,
+  chef, parent…) n'ont NI hypothèse psychologique, NI rôle interprété dans la
+  dynamique du client (pas de « regard extérieur qui autorise », pas de « source
+  de pression »). Tu rapportes ce que LE CLIENT dit d'eux, rien de plus, et
+  l'orientation ne propose jamais d'explorer ce que les tiers perçoivent.
+- **Praticien — invisible dans ta lecture** : aucune mention de sa conduite,
+  même factuelle (hésitations, notes perdues, relances, silences). Si un moment
+  de séance implique le praticien, tu ne gardes que ce que le client y dépose.
+- **Lexique interdit MÊME EN DESCRIPTION** : paraphrase sans jamais écrire un
+  mot interdit, y compris pour rapporter les mots du client hors verbatim.
 
 - **Triade Observation / Hypothèse / Orientation** — jamais de diagnostic, pronostic,
   prescription, étiquette clinique ou score. Hypothèses au conditionnel.

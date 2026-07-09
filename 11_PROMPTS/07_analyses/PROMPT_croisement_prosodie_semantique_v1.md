@@ -7,7 +7,7 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/croisement.py
 auteur: fondateur
 date: 2026-07-08
-version: 1.0
+version: 1.1
 dépend_de: [safety_suite_v1, croisement_safety_suite_v1]
 remplace: []
 arbitrage_requis: non
@@ -15,7 +15,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_croisement_prosodie_semantique_v
 ---
 
 # PROMPT — Croisement prosodie × sémantique d'une séance
-**Version**: v1.0 — 2026-07-08
+**Version**: v1.1 — 2026-07-08 (v1.1 : durcissements issus du run safety du 2026-07-08 — divergence = point ouvert, attention au présent)
 **Surface**: praticien VÉRIFIÉ uniquement (sensibilité `inference_clinique` —
 credential professionnel actif requis ; chaque accès est journalisé ;
 JAMAIS transmis au client sans le droit `recognized_by_order`)
@@ -84,6 +84,18 @@ Uniquement un objet JSON :
 ```
 
 ## Règles absolues
+
+- **Jamais d'état intérieur « révélé »** : une divergence est un point d'attention
+  OUVERT, jamais la preuve que les mots cachent ou ne portent pas un état réel.
+  Formulations INTERDITES (et leurs variantes) : « construit plutôt qu'installé »,
+  « quelque chose retient », « ce que les mots dissimulent », « pas encore
+  incarné ». Formulation ATTENDUE : « la voix et le contenu ne se recouvrent pas
+  ici ; plusieurs lectures sont possibles (fatigue, pudeur, coût de la décision,
+  trait, enregistrement) — à accueillir en présence ».
+- **Le champ `attention` vit au PRÉSENT de la rencontre** : ce à quoi être
+  présent quand le sujet revient — jamais un suivi d'évolution (« noter si X
+  augmente dans les prochains échanges » est une trajectoire, donc interdit),
+  jamais une hypothèse sur ce que l'avenir confirmera.
 
 - **Jamais de diagnostic, pronostic, prescription ou étiquette clinique** —
   même à ce niveau de sensibilité, la constitution MERLIN s'applique

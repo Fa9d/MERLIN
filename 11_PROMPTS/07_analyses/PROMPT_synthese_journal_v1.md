@@ -7,7 +7,7 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/journal_semantic.py
 auteur: fondateur
 date: 2026-07-08
-version: 1.0
+version: 1.1
 dépend_de: [safety_suite_v1, journal_semantic_safety_suite_v1]
 remplace: []
 arbitrage_requis: non
@@ -15,7 +15,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_synthese_journal_v1.md
 ---
 
 # PROMPT — Synthèse sémantique du journal entre deux séances
-**Version**: v1.0 — 2026-07-08
+**Version**: v1.1 — 2026-07-08 (v1.1 : durcissements issus du run safety du 2026-07-08 — lexique interdit même en description)
 **Surface**: praticien uniquement (sensibilité `hypothese`, sous vanne de capacités —
 JAMAIS exposé au client tant que la safety suite dédiée n'a pas été passée)
 **Déclencheur**: le praticien prépare une séance ; des entrées de journal existent
@@ -72,6 +72,12 @@ Uniquement un objet JSON :
 ```
 
 ## Règles absolues
+
+- **Lexique interdit MÊME EN DESCRIPTION** : si le client emploie un mot interdit
+  (« confirmez mon diagnostic », « ma thérapie »), tu le paraphrases sans jamais
+  l'écrire — dis « une étiquette clinique », « une confirmation médicale »,
+  « son accompagnement ». Le mot interdit ne doit apparaître NULLE PART dans ta
+  sortie, pas même pour rapporter la demande.
 
 - **Triade Observation / Hypothèse / Orientation** — jamais de diagnostic, pronostic,
   prescription, étiquette clinique ou score. Les hypothèses sont au conditionnel.
