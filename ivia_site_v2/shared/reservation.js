@@ -1,0 +1,401 @@
+/**
+ * Flux de réservation IVIA — composant partagé (source canonique).
+ * Monté par /reserver.html (entrée publique depuis l'accueil) ET par
+ * /client/agenda.html (agenda intégré à l'espace client). Un seul code,
+ * zéro variante : praticien → calendrier mensuel → créneau (hold 10 min)
+ * → confirmation/paiement → succès.
+ *
+ * Usage : <div id="reservation-flow"></div> puis renderReservationFlow('reservation-flow').
+ * Prérequis page : session.js (requireAuth/requireCompleteProfile), api.js, Tailwind + ivia-espace.css.
+ */
+
+const RESERVATION_CSS = '/* ── Calendrier mensuel ── */\n    .cal-month { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }\n    .cal-dow   { font-size: 11px; font-weight: 700; text-align: center; color: var(--muted); padding: 6px 0; text-transform: uppercase; letter-spacing: .04em; }\n    .cal-day   { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: default; position: relative; }\n    .cal-day.other-month { opacity: .3; }\n    .cal-day.today       { background: var(--surface); font-weight: 700; color: var(--ink); }\n    .cal-day.has-slots   { background: #E8F5EE; color: var(--forest-deep); font-weight: 700; cursor: pointer; }\n    .cal-day.has-slots:hover { background: #C8E6D4; }\n    .cal-day.selected    { background: #2D6A4F !important; color: #fff !important; }\n    .cal-day.past        { opacity: .35; cursor: not-allowed; }\n    .slot-dot { width: 5px; height: 5px; border-radius: 50%; background: #4A7C59; margin-top: 2px; }\n\n    /* ── Créneaux horaires ── */\n    .slot-pill { display: flex; align-items: center; justify-content: space-between; gap: 3; padding: 10px 14px; border: 1.5px solid var(--bdr); border-radius: 12px; cursor: pointer; transition: all .15s; background: var(--card-bg); }\n    .slot-pill:hover  { border-color: var(--forest); background: var(--surface); }\n    .slot-pill.active { border-color: var(--forest-deep); background: #E8F5EE; }\n    .slot-pill.held   { border-color: #D97706; background: #FFFBEB; }\n\n    /* ── Étapes ── */\n    .step-indicator { display: flex; align-items: center; gap: 8px; }\n    .step-dot { width: 8px; height: 8px; border-radius: 50%; }\n\n    /* ── Hold timer ── */\n    #hold-countdown { font-variant-numeric: tabular-nums; }';
+
+const RESERVATION_HTML = '\n\n  <!-- Étapes -->\n  <div class="flex items-center gap-3 mb-8 text-xs font-semibold">\n    <span class="step-dot bg-forest-deep" id="dot-1"></span>\n    <span class="text-ink" id="lbl-1">Praticien·ne</span>\n    <span class="w-8 h-px bg-bdr"></span>\n    <span class="step-dot bg-bdr" id="dot-2"></span>\n    <span class="text-muted" id="lbl-2">Créneau</span>\n    <span class="w-8 h-px bg-bdr"></span>\n    <span class="step-dot bg-bdr" id="dot-3"></span>\n    <span class="text-muted" id="lbl-3">Confirmer</span>\n  </div>\n\n  <!-- ═══ ÉTAPE 1 — Choisir le praticien ═══ -->\n  <div id="step-prat">\n    <h1 class="font-heading text-2xl font-bold text-ink mb-1">Choisir un·e praticien·ne</h1>\n    <p class="text-muted text-sm mb-6">Toutes les praticien·nes IVIA sont formé·es à la même approche — votre choix est intuitif.</p>\n\n    <div id="prat-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">\n      <!-- Injecté par JS -->\n      <div class="col-span-full text-sm text-muted text-center py-8" id="prat-loading">Chargement des praticien·nes…</div>\n    </div>\n  </div>\n\n  <!-- ═══ ÉTAPE 2 — Choisir le créneau ═══ -->\n  <div id="step-creneau" class="hidden">\n    <button id="btn-back-prat" class="flex items-center gap-1 text-sm text-muted hover:text-ink mb-6 cursor-pointer">\n      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>\n      Votre praticien·ne\n    </button>\n\n    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">\n      <div class="flex items-start gap-3">\n        <div class="w-12 h-12 shrink-0" id="sel-prat-avatar"></div>\n        <div>\n          <h2 class="font-heading text-xl font-bold text-ink" id="sel-prat-nom">—</h2>\n          <p class="text-xs text-muted mt-0.5" id="sel-prat-titre">—</p>\n        </div>\n      </div>\n      <!-- Séance choisie — lecture seule (déterminée à l\'accueil, non modifiable ici) -->\n      <div class="bg-[#E8F5EE] border border-[#bfe3cd] rounded-[14px] px-4 py-2.5">\n        <p class="text-[10px] uppercase tracking-wider text-forest-deep font-bold mb-0.5">Votre séance</p>\n        <p class="text-sm font-semibold text-ink" id="sel-offre-label">—</p>\n      </div>\n    </div>\n\n    <div class="grid lg:grid-cols-5 gap-6">\n\n      <!-- Calendrier mensuel -->\n      <div class="lg:col-span-3">\n        <div class="bg-white border border-bdr rounded-[20px] p-5">\n          <div class="flex items-center justify-between mb-4">\n            <button id="btn-mois-prev" class="w-8 h-8 flex items-center justify-center rounded-[8px] border border-bdr hover:bg-surface cursor-pointer" aria-label="Mois précédent">\n              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>\n            </button>\n            <h3 class="font-heading font-semibold text-ink" id="mois-label">—</h3>\n            <button id="btn-mois-next" class="w-8 h-8 flex items-center justify-center rounded-[8px] border border-bdr hover:bg-surface cursor-pointer" aria-label="Mois suivant">\n              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>\n            </button>\n          </div>\n\n          <div id="cal-month-grid" class="cal-month">\n            <!-- Injecté par JS -->\n          </div>\n\n          <div class="flex items-center gap-4 mt-4 text-xs text-muted">\n            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#E8F5EE] border border-[#4A7C59] inline-block"></span>Disponible</span>\n            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#2D6A4F] inline-block"></span>Sélectionné</span>\n          </div>\n        </div>\n      </div>\n\n      <!-- Créneaux du jour sélectionné -->\n      <div class="lg:col-span-2">\n        <div class="bg-white border border-bdr rounded-[20px] p-5 min-h-[200px]">\n          <h3 class="font-heading text-sm font-semibold text-ink mb-3" id="slots-day-label">Sélectionnez un jour</h3>\n          <div id="slots-list" class="space-y-2">\n            <p class="text-sm text-muted" id="slots-empty">Cliquez sur un jour avec des créneaux disponibles.</p>\n          </div>\n          <div id="slots-loading" class="hidden text-sm text-muted py-4 text-center">Chargement…</div>\n        </div>\n      </div>\n\n    </div>\n  </div>\n\n  <!-- ═══ ÉTAPE 3 — Confirmer ═══ -->\n  <div id="step-confirm" class="hidden max-w-md mx-auto">\n\n    <!-- Hold actif -->\n    <div id="hold-banner" class="mb-5 bg-amber-50 border border-amber-200 rounded-[14px] px-5 py-3 flex items-center justify-between gap-3">\n      <p class="text-sm text-amber-800">\n        <span class="font-semibold">Créneau réservé pour vous</span> pendant\n        <span id="hold-countdown" class="font-bold">15:00</span>\n      </p>\n      <svg class="w-5 h-5 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>\n    </div>\n\n    <div class="bg-white border border-bdr rounded-[24px] p-7">\n      <h2 class="font-heading text-xl font-bold text-ink mb-5">Confirmer la séance</h2>\n\n      <!-- Récapitulatif -->\n      <div class="bg-surface border border-bdr rounded-[14px] px-5 py-4 mb-5 space-y-2 text-sm">\n        <div class="flex justify-between"><span class="text-muted">Praticien·ne</span><span class="font-semibold text-ink" id="conf-prat">—</span></div>\n        <div class="flex justify-between"><span class="text-muted">Date</span><span class="font-semibold text-ink" id="conf-date">—</span></div>\n        <div class="flex justify-between"><span class="text-muted">Heure</span><span class="font-semibold text-ink" id="conf-heure">—</span></div>\n        <div class="flex justify-between"><span class="text-muted">Durée</span><span class="font-semibold text-ink" id="conf-duree">—</span></div>\n        <div class="flex justify-between"><span class="text-muted">Format</span><span class="font-semibold text-ink">Audio en direct</span></div>\n      </div>\n\n      <!-- Note libre -->\n      <label class="block mb-4">\n        <span class="text-xs font-semibold uppercase tracking-wide text-muted block mb-1.5">Note pour le praticien (facultatif)</span>\n        <textarea id="conf-note" rows="3" placeholder="Ce que vous souhaitez aborder, ou tout ce qui vous semble utile…"\n          class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm text-ink bg-surface focus:outline-none focus:ring-2 focus:ring-forest resize-none"></textarea>\n      </label>\n\n      <!-- Message d\'erreur API -->\n      <div id="conf-error" class="hidden mb-4 bg-red-50 border border-red-200 rounded-[10px] px-4 py-3 text-sm text-red-700"></div>\n\n      <p id="paiement-note" class="text-xs text-muted mb-4 flex items-center gap-1.5">\n        <svg class="w-3.5 h-3.5 text-forest shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">\n          <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/>\n        </svg>\n        Paiement sécurisé par Stripe — le montant s\'affiche à l\'étape suivante.\n      </p>\n\n      <button id="btn-confirmer"\n        class="w-full bg-forest-deep text-white font-semibold py-3.5 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">\n        Confirmer et payer →\n      </button>\n\n      <button id="btn-annuler-hold"\n        class="w-full mt-3 border border-bdr text-sm font-medium text-muted py-2.5 rounded-[14px] hover:bg-surface transition-colors cursor-pointer">\n        Choisir un autre créneau\n      </button>\n    </div>\n  </div>\n\n  <!-- ═══ ÉTAPE 4 — Succès ═══ -->\n  <div id="step-success" class="hidden max-w-md mx-auto text-center py-8">\n    <div class="w-16 h-16 rounded-full bg-forest/15 flex items-center justify-center mx-auto mb-5">\n      <svg class="w-8 h-8 text-forest-deep" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">\n        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>\n      </svg>\n    </div>\n    <h2 class="font-heading text-2xl font-bold text-ink mb-2">Séance confirmée.</h2>\n    <p class="text-muted text-sm mb-7" id="success-desc">—</p>\n    <div class="flex flex-col sm:flex-row gap-3 justify-center">\n      <a href="/client/seances.html" class="bg-forest-deep text-white font-semibold px-6 py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">\n        Voir mes séances\n      </a>\n      <a href="/client/dashboard.html" class="border border-bdr text-ink font-medium px-6 py-3 rounded-[14px] hover:bg-surface transition-colors cursor-pointer">\n        Mon espace\n      </a>\n    </div>\n  </div>';
+
+async function renderReservationFlow(mountId) {
+  if (!document.getElementById('ivia-reservation-css')) {
+    const st = document.createElement('style');
+    st.id = 'ivia-reservation-css';
+    st.textContent = RESERVATION_CSS;
+    document.head.appendChild(st);
+  }
+  const mount = document.getElementById(mountId);
+  if (!mount) return;
+  mount.innerHTML = RESERVATION_HTML;
+  await _reservationLogic();
+}
+
+async function _reservationLogic() {
+
+
+  // Profil obligatoire avant toute réservation/paiement (redirige si incomplet).
+  if (typeof requireCompleteProfile === 'function' && !(await requireCompleteProfile())) return;
+
+  // ── Offre choisie → durée des créneaux (30 min = 49 $, 1 h = 75 $) ──────────
+  const DUREES = { '30min': 30, '1h': 60 };
+  const PRIX   = { 30: '49 $', 60: '75 $' };
+  const OFFRE_LABEL = { 30: 'Séance live · 30 min — 49 $', 60: 'Séance live · 1 h — 75 $' };
+  const formuleParam = new URLSearchParams(location.search).get('formule');
+  let selectedDuration = DUREES[formuleParam] || 60; // défaut : séance 1 h
+
+  // ── État ──────────────────────────────────────────────────────────────────
+  let selectedPraticien = null;
+  let currentMonth      = new Date(); // premier jour du mois courant
+  let monthSlots        = [];         // AvailableSlotRecord[] pour le mois
+  let selectedDate      = null;       // "YYYY-MM-DD"
+  let selectedSlot      = null;       // AvailableSlotRecord
+  let heldSlot          = null;       // BookingSlotRecord
+  let holdTimer         = null;       // setInterval
+  let holdSecondsLeft   = 0;
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function show(id)  { document.getElementById(id).classList.remove('hidden'); }
+  function hide(id)  { document.getElementById(id).classList.add('hidden'); }
+
+  function setStep(step) {
+    ['step-prat','step-creneau','step-confirm','step-success'].forEach(s => hide(s));
+    show('step-' + step);
+    // Indicateurs
+    const css = getComputedStyle(document.documentElement);
+    const activeBg = (css.getPropertyValue('--forest-deep') || '#2D6A4F').trim();
+    const inactiveBg = (css.getPropertyValue('--bdr') || '#D4E8D0').trim();
+    const activeText = (css.getPropertyValue('--ink') || '#1A2E1D').trim();
+    const inactiveText = (css.getPropertyValue('--muted') || '#4B6350').trim();
+    const dots   = ['dot-1','dot-2','dot-3'];
+    const labels = ['lbl-1','lbl-2','lbl-3'];
+    const activeIdx = { prat: 0, creneau: 1, confirm: 2, success: 2 }[step] ?? 0;
+    dots.forEach((d, i) => {
+      document.getElementById(d).style.background = i <= activeIdx ? activeBg : inactiveBg;
+    });
+    labels.forEach((l, i) => {
+      document.getElementById(l).style.color = i <= activeIdx ? activeText : inactiveText;
+    });
+  }
+
+  // ── ÉTAPE 1 : Praticiens ─────────────────────────────────────────────────
+  let praticiens = [];
+  try {
+    praticiens = await listPraticiens();
+  } catch (err) {
+    document.getElementById('prat-loading').textContent = 'Impossible de charger les praticien·nes. Vérifiez votre connexion.';
+  }
+
+  const pratList = document.getElementById('prat-list');
+  pratList.innerHTML = '';
+
+  if (!praticiens.length) {
+    pratList.innerHTML = '<p class="col-span-full text-sm text-muted text-center py-8">Aucun·e praticien·ne disponible pour le moment.</p>';
+  }
+
+  praticiens.forEach(p => {
+    const av = (typeof iviaConstellation === 'function') ? iviaConstellation(p.display_name) : '';
+    const card = document.createElement('button');
+    card.className = 'text-left w-full bg-card border-2 border-bdr rounded-[20px] p-5 hover:border-forest-deep hover:shadow-sm transition-all cursor-pointer';
+    const audioBtn = p.presentation_audio_url ? `
+        <span class="audio-play-btn w-8 h-8 flex items-center justify-center text-forest-deep hover:bg-surface rounded-[8px] cursor-pointer" role="button" title="Écouter la présentation">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </span>` : '';
+    card.innerHTML = `
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 shrink-0">${av}</div>
+        <div class="flex-1">
+          <p class="font-semibold text-ink text-sm">${p.display_name}</p>
+          <p class="text-xs text-muted">${p.title_line || ''}</p>
+        </div>
+        ${audioBtn}
+      </div>
+      <p class="text-xs text-muted leading-relaxed line-clamp-3">${p.intro_text || 'Praticien·ne IVIA certifié·e.'}</p>
+      <p class="mt-3 text-xs text-forest-deep font-semibold">Voir les disponibilités →</p>`;
+    
+    // Handler audio (présent seulement si le praticien a un audio de présentation)
+    const playBtn = card.querySelector('.audio-play-btn');
+    if (playBtn) {
+      playBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        playPraticienAudio(p, playBtn);
+      });
+    }
+    
+    card.addEventListener('click', () => choisirPraticien(p));
+    pratList.appendChild(card);
+  });
+
+  let currentAudio = null;
+  function playPraticienAudio(p, btn) {
+    try {
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      currentAudio = new Audio(p.presentation_audio_url);
+      btn.classList.add('animate-pulse');
+      currentAudio.addEventListener('ended', () => btn.classList.remove('animate-pulse'));
+      currentAudio.addEventListener('error', () => { btn.classList.remove('animate-pulse'); });
+      currentAudio.play();
+    } catch (err) {
+      console.error('Erreur lecture audio praticien :', err);
+    }
+  }
+
+  async function choisirPraticien(p) {
+    selectedPraticien = p;
+    const _av = document.getElementById('sel-prat-avatar');
+    if (_av && typeof iviaConstellation === 'function') _av.innerHTML = iviaConstellation(p.display_name);
+    document.getElementById('sel-prat-nom').textContent       = p.display_name;
+    document.getElementById('sel-prat-titre').textContent     = p.title_line || '';
+    document.getElementById('sel-offre-label').textContent    = OFFRE_LABEL[selectedDuration] || '';
+    setStep('creneau');
+    currentMonth = new Date();
+    currentMonth.setDate(1);
+    await chargerMois();
+  }
+
+  document.getElementById('btn-back-prat').addEventListener('click', () => {
+    selectedPraticien = null; selectedDate = null; selectedSlot = null;
+    setStep('prat');
+  });
+
+  // ── ÉTAPE 2 : Calendrier mensuel ─────────────────────────────────────────
+  const JOURS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const MOIS  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+  async function chargerMois() {
+    const { from, to } = getMonthBounds(currentMonth);
+    document.getElementById('mois-label').textContent = `${MOIS[currentMonth.getMonth()]} ${currentMonth.getFullYear()}`;
+    try {
+      monthSlots = await getAvailableSlots(selectedPraticien.id, from, to, selectedDuration);
+    } catch (err) {
+      monthSlots = [];
+      document.getElementById('slots-day-label').textContent = 'Créneaux indisponibles';
+      document.getElementById('slots-list').innerHTML =
+        '<p class="text-sm text-red-700">' + (err.message || 'Impossible de joindre le serveur.') + '</p>';
+    }
+    buildMonthCalendar();
+
+    // Auto-sélection du premier jour à venir avec des créneaux — zéro clic mort.
+    const t = new Date(); t.setHours(0, 0, 0, 0);
+    const futurs = monthSlots.filter(s => s.status === 'available' && new Date(s.slot_date + 'T12:00:00') >= t);
+    if (futurs.length && !futurs.some(s => s.slot_date === selectedDate)) {
+      const premierJour = futurs.map(s => s.slot_date).sort()[0];
+      selectionnerJour(premierJour, futurs.filter(s => s.slot_date === premierJour));
+    }
+  }
+
+  // (Sélecteur d'offre retiré : la durée est fixée à l'accueil et affichée en lecture seule.)
+
+  function buildMonthCalendar() {
+    const grid = document.getElementById('cal-month-grid');
+    grid.innerHTML = '';
+
+    // En-têtes jours
+    JOURS.forEach(j => {
+      const el = document.createElement('div');
+      el.className = 'cal-dow';
+      el.textContent = j;
+      grid.appendChild(el);
+    });
+
+    const year  = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const first = new Date(year, month, 1);
+    const last  = new Date(year, month + 1, 0);
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    // Jours du mois précédent pour compléter la première semaine
+    let startDow = first.getDay() === 0 ? 6 : first.getDay() - 1;
+    for (let i = startDow - 1; i >= 0; i--) {
+      const d = new Date(year, month, -i);
+      const el = document.createElement('div');
+      el.className = 'cal-day other-month';
+      el.textContent = d.getDate();
+      grid.appendChild(el);
+    }
+
+    // Grouper les slots par date
+    const slotsByDate = {};
+    monthSlots.forEach(s => {
+      if (!slotsByDate[s.slot_date]) slotsByDate[s.slot_date] = [];
+      slotsByDate[s.slot_date].push(s);
+    });
+
+    // Jours du mois
+    for (let d = 1; d <= last.getDate(); d++) {
+      const date = new Date(year, month, d);
+      const iso  = date.toISOString().slice(0, 10);
+      const isPast   = date < today;
+      const isToday  = date.getTime() === today.getTime();
+      const hasSlots = !isPast && slotsByDate[iso]?.length > 0;
+      const isSel    = iso === selectedDate;
+
+      const el = document.createElement('div');
+      el.className = [
+        'cal-day',
+        isPast      ? 'past' : '',
+        isToday     ? 'today' : '',
+        hasSlots    ? 'has-slots' : '',
+        isSel       ? 'selected' : '',
+      ].filter(Boolean).join(' ');
+      el.textContent = d;
+
+      if (hasSlots) {
+        const dot = document.createElement('div');
+        dot.className = 'slot-dot';
+        el.appendChild(dot);
+        el.title = `${slotsByDate[iso].length} créneau${slotsByDate[iso].length > 1 ? 'x' : ''} disponible${slotsByDate[iso].length > 1 ? 's' : ''}`;
+        el.addEventListener('click', () => selectionnerJour(iso, slotsByDate[iso]));
+      }
+      grid.appendChild(el);
+    }
+
+    // Jours du mois suivant
+    const totalCells = startDow + last.getDate();
+    const remainder  = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+    for (let i = 1; i <= remainder; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day other-month';
+      el.textContent = i;
+      grid.appendChild(el);
+    }
+  }
+
+  document.getElementById('btn-mois-prev').addEventListener('click', async () => {
+    currentMonth.setMonth(currentMonth.getMonth() - 1);
+    await chargerMois();
+  });
+  document.getElementById('btn-mois-next').addEventListener('click', async () => {
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+    await chargerMois();
+  });
+
+  function selectionnerJour(iso, slots) {
+    selectedDate = iso;
+    buildMonthCalendar(); // re-rendre pour highlight
+
+    const label = document.getElementById('slots-day-label');
+    const list  = document.getElementById('slots-list');
+    label.textContent = formatDateCourteLocale(iso);
+    list.innerHTML = '';
+    // #slots-empty vit dans la liste : il disparaît au premier rendu — garde nulle obligatoire.
+    const emptyMsg = document.getElementById('slots-empty');
+    if (emptyMsg) emptyMsg.classList.add('hidden');
+
+    slots.filter(s => s.status === 'available').forEach(s => {
+      const t = (s.start_time || '').slice(0, 5);
+      const te = (s.end_time  || '').slice(0, 5);
+      const pill = document.createElement('button');
+      pill.className = 'slot-pill w-full text-left';
+      pill.innerHTML = `
+        <div>
+          <p class="text-sm font-semibold text-ink">${formatHeure(s.start_time)} — ${formatHeure(s.end_time)}</p>
+          <p class="text-xs text-muted">${s.session_type_label || 'Séance standard'} · ${s.duration_minutes} min</p>
+        </div>
+        <svg class="w-4 h-4 text-forest shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>`;
+      pill.addEventListener('click', () => choisirCreneau(s));
+      list.appendChild(pill);
+    });
+
+    if (!list.children.length) {
+      list.innerHTML = '<p class="text-sm text-muted">Aucun créneau disponible ce jour.</p>';
+    }
+  }
+
+  // ── ÉTAPE 3 : Hold + paiement ────────────────────────────────────────────
+  // Le paiement précède toujours la séance (page Stripe, ou paiement simulé en mode test).
+
+  // Courriel non vérifié → l'API répond 403 : on guide vers la vérification.
+  function redirigerSiNonVerifie(err) {
+    if (/vérifi/i.test(err.message || '')) {
+      location.href = '/connexion.html?verif=1&retour=' + encodeURIComponent(location.pathname + location.search);
+      return true;
+    }
+    return false;
+  }
+
+  async function choisirCreneau(slot) {
+    selectedSlot = slot;
+    // Placer un hold — pas de repli simulé : une erreur réelle est montrée.
+    try {
+      heldSlot = await holdSlot({
+        slot_id:      slot.slot_id || undefined,
+        praticien_id: slot.praticien_id,
+        slot_date:    slot.slot_date,
+        start_time:   slot.start_time,
+        end_time:     slot.end_time,
+        session_type: slot.session_type,
+      });
+    } catch (err) {
+      if (redirigerSiNonVerifie(err)) return;
+      alert('Ce créneau ne peut pas être réservé : ' + err.message);
+      await chargerMois();
+      return;
+    }
+
+    // Remplir le récapitulatif
+    document.getElementById('conf-prat').textContent  = selectedPraticien.display_name;
+    document.getElementById('conf-date').textContent  = formatDateCourteLocale(slot.slot_date);
+    document.getElementById('conf-heure').textContent = `${formatHeure(slot.start_time)} — ${formatHeure(slot.end_time)}`;
+    document.getElementById('conf-duree').textContent = `${slot.duration_minutes} min`;
+
+    // Démarrer le compteur 15 min
+    clearInterval(holdTimer);
+    holdSecondsLeft = 15 * 60;
+    updateHoldTimer();
+    holdTimer = setInterval(() => {
+      holdSecondsLeft--;
+      updateHoldTimer();
+      if (holdSecondsLeft <= 0) {
+        clearInterval(holdTimer);
+        document.getElementById('hold-banner').innerHTML = '<p class="text-sm text-red-700 font-semibold">Hold expiré — choisissez un autre créneau.</p>';
+        document.getElementById('btn-confirmer').disabled = true;
+        document.getElementById('btn-confirmer').classList.add('opacity-40', 'cursor-not-allowed');
+      }
+    }, 1000);
+
+    setStep('confirm');
+  }
+
+  function updateHoldTimer() {
+    const m = Math.floor(holdSecondsLeft / 60).toString().padStart(2, '0');
+    const s = (holdSecondsLeft % 60).toString().padStart(2, '0');
+    document.getElementById('hold-countdown').textContent = `${m}:${s}`;
+  }
+
+  document.getElementById('btn-annuler-hold').addEventListener('click', () => {
+    clearInterval(holdTimer);
+    heldSlot = null; selectedSlot = null;
+    setStep('creneau');
+  });
+
+  document.getElementById('btn-confirmer').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-confirmer');
+    const errDiv = document.getElementById('conf-error');
+    btn.disabled = true;
+    btn.textContent = 'Préparation du paiement…';
+    errDiv.classList.add('hidden');
+    const notes = document.getElementById('conf-note').value || null;
+
+    try {
+      // Flux payant : le serveur fixe le prix ; page Stripe ou paiement simulé (mode test).
+      const checkout = await bookingCheckout({
+        slot_id: heldSlot.id,
+        notes,
+        success_url: location.origin + '/checkout/success.html',
+        cancel_url:  location.origin + '/checkout/cancel.html',
+      });
+      clearInterval(holdTimer);
+      // Mesure de conversion (Matomo, sans témoin) — demande envoyée
+      if (window.iviaTrackDemande) window.iviaTrackDemande('reservation_checkout');
+      window.location.href = checkout.checkout_url;
+    } catch (err) {
+      if (redirigerSiNonVerifie(err)) return;
+      errDiv.textContent = err.message || 'Impossible de finaliser. Réessayez.';
+      errDiv.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = 'Confirmer et payer →';
+    }
+  });
+
+  // Init
+  setStep('prat');
+
+
+}

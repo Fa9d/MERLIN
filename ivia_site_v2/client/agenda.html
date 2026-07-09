@@ -2,9 +2,36 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0;url=/reserver.html">
-  <script>location.replace('/reserver.html');</script>
-  <title>IVIA &mdash; Redirection</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Réserver une séance</title>
+  <script src="/shared/session.js?v=20260709b"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260709b"></script>
+  <script src="/shared/avatar.js?v=20260617a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',trust:'#2563EB',card:'var(--card-bg)'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .bg-white{background:var(--card-bg) !important;}
+  </style>
 </head>
-<body><p>Redirection&hellip; <a href="/reserver.html">Continuer</a></p></body>
+<body class="antialiased">
+<div id="ivia-header"></div>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+  <div id="reservation-flow"><p class="text-sm text-muted text-center py-8">Chargement…</p></div>
+</main>
+
+<div id="ivia-footer"></div>
+
+<script src="/shared/layout.js?v=20260709c"></script>
+<script src="/shared/reservation.js?v=20260709c"></script>
+<script>
+  renderLayout('agenda');
+  renderReservationFlow('reservation-flow');
+</script>
+</body>
 </html>
