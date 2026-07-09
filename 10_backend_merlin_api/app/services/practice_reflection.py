@@ -39,6 +39,7 @@ from app.services.behavioral_insights import (
     _call_claude,
     _check_daily_cap,
 )
+from app.services import llm_ledger
 
 logger = logging.getLogger("merlin.practice_reflection")
 
@@ -145,6 +146,8 @@ async def generate_practice_reflet(db: Session, praticien_id: str) -> dict[str, 
 
     raw, usage = await _call_claude(prompt)
     _bump_daily()
+    llm_ledger.record(db, purpose="praticien_reflet", usage=usage,
+                      praticien_user_id=praticien_id, created_by_user_id=praticien_id)
     payload = _apply_detresse_protocol(_validate(_extract_json_payload(raw)))
 
     niveau = payload["vigilance"]["niveau"]

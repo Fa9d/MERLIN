@@ -16,6 +16,7 @@ from app.core.deps import is_operator_user, require_admin, require_internal_clin
 from app.services.email import make_followup_reminder_email, send_email
 from pydantic import BaseModel as _PydanticBaseModel
 from app.db.session import get_db
+from app.services import llm_ledger
 from app.models.app_user import AppUser
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
@@ -328,6 +329,11 @@ async def close_session(
     if payload.transcript_text:
         try:
             ai_payload = await _build_ai_note_payload(session_record, payload)
+            llm_ledger.record(db, purpose="session_note",
+                              usage=(ai_payload.get("metadata") or {}).get("usage"),
+                              model=(ai_payload.get("metadata") or {}).get("model_used"),
+                              session_id=session_record.id, client_id=session_record.client_id,
+                              praticien_user_id=session_record.praticien_id)
         except AnthropicSessionNoteError as exc:
             raise HTTPException(
                 status_code=status.HTTP_502_BAD_GATEWAY,
@@ -459,6 +465,11 @@ async def deliver_audio_async_session(
             detail=f"Generation IA de la note impossible: {exc}",
         ) from exc
 
+    llm_ledger.record(db, purpose="session_note",
+                      usage=(ai_payload.get("metadata") or {}).get("usage") if ai_payload else None,
+                      model=(ai_payload.get("metadata") or {}).get("model_used") if ai_payload else None,
+                      session_id=session_record.id, client_id=session_record.client_id,
+                      praticien_user_id=session_record.praticien_id)
     production_note = ai_payload.get("production_note", {}) if ai_payload else {}
     supervision_block = ai_payload.get("supervision", {}) if ai_payload else {}
     research_block = ai_payload.get("research", {}) if ai_payload else {}

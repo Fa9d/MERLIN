@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Économie IA — Admin IVIA</title>
+  <script src="/shared/session.js?v=20260709b"></script>
+  <script>requireAuth();</script>
+  <script src="/shared/api.js?v=20260709b"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2{font-family:'Lora',Georgia,serif;}
+    .stat{background:#fff;border:1px solid #D4E8D0;border-radius:16px;padding:16px 18px;}
+    .stat .v{font-family:'Lora',Georgia,serif;font-size:22px;font-weight:700;color:#1A2E1D;}
+    .stat .l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#4B6350;margin-bottom:4px;}
+    .fld{border:1.5px solid #D4E8D0;border-radius:10px;padding:6px 10px;font-size:13px;background:#fff;outline:none;}
+    th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#4B6350;text-align:left;padding:10px 12px;border-bottom:1px solid #D4E8D0;}
+    td{font-size:13px;padding:9px 12px;border-bottom:1px solid #F0F7F2;white-space:nowrap;}
+    .neg{color:#B91C1C;font-weight:600;} .pos{color:#2D6A4F;font-weight:600;}
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-cream pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside id="admin-sidebar" class="hidden lg:flex flex-col w-60 bg-[#13261A] border-r border-[#22432F] px-4 py-6 fixed top-0 left-0 h-screen z-10"></aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[1080px] space-y-5">
+      <div class="flex items-end justify-between gap-3 flex-wrap">
+        <div>
+          <h1 class="font-heading text-2xl font-bold text-ink">Économie IA</h1>
+          <p class="text-sm text-muted mt-1">
+            Coûts LLM réels (tokens mesurés à chaque appel) croisés avec les revenus.
+            Conversion CAD au taux configuré — le réel vient du relevé Anthropic.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="mois" type="month" class="fld">
+          <button id="btn-go" class="fld cursor-pointer hover:bg-surface font-semibold">Voir</button>
+        </div>
+      </div>
+
+      <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+
+      <section class="bg-white border border-bdr rounded-[20px] p-5">
+        <h2 class="text-base font-bold mb-3">Coûts par finalité d'analyse</h2>
+        <div class="overflow-x-auto"><table class="w-full" id="t-finalite"></table></div>
+      </section>
+
+      <section class="bg-white border border-bdr rounded-[20px] p-5">
+        <h2 class="text-base font-bold mb-3">Économie par séance</h2>
+        <p class="text-xs text-muted mb-3">Séances récentes ayant généré au moins un appel IA. Revenu = commande payée rattachée au rendez-vous ; bénéfice = revenu IVIA − coût IA de la séance.</p>
+        <div class="overflow-x-auto"><table class="w-full" id="t-sessions"></table></div>
+      </section>
+
+      <p id="loading" class="text-sm text-muted">Chargement…</p>
+    </main>
+  </div>
+
+  <script>
+    renderAdminSidebar();
+    (async function () {
+      const esc = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+      const cad = (c) => (c / 100).toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+      const usd = (u) => u.toLocaleString('fr-CA', { minimumFractionDigits: 4, maximumFractionDigits: 4 }) + ' $US';
+      const dateCourte = (iso) => iso ? new Date(iso).toLocaleDateString('fr-CA', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+
+      function bornesMois(val) {
+        const [y, m] = val.split('-').map(Number);
+        const last = new Date(y, m, 0).getDate();
+        return {
+          from: `${y}-${String(m).padStart(2, '0')}-01`,
+          to: `${y}-${String(m).padStart(2, '0')}-${String(last).padStart(2, '0')}`,
+        };
+      }
+
+      async function charger() {
+        const loading = document.getElementById('loading');
+        loading.classList.remove('hidden');
+        try {
+          const { from, to } = bornesMois(document.getElementById('mois').value);
+          const [sum, sessions] = await Promise.all([
+            adminEconomicsSummary(from, to),
+            adminEconomicsSessions(80),
+          ]);
+
+          const net = sum.benefice_net_cad_cents;
+          document.getElementById('cards').innerHTML = `
+            <div class="stat"><div class="l">Revenus réels (TTC)</div><div class="v">${cad(sum.revenus_ttc)}</div></div>
+            <div class="stat"><div class="l">Marge IVIA avant IA</div><div class="v">${cad(sum.marge_ivia_avant_ia)}</div></div>
+            <div class="stat"><div class="l">Coût IA réel (${sum.couts.nb_appels} appels)</div><div class="v">${cad(sum.couts.cost_cad_cents)}</div></div>
+            <div class="stat"><div class="l">Bénéfice net</div><div class="v ${net < 0 ? 'neg' : 'pos'}">${cad(net)}</div></div>`;
+
+          const fin = Object.entries(sum.par_finalite);
+          document.getElementById('t-finalite').innerHTML =
+            '<thead><tr><th>Finalité</th><th>Appels</th><th>Tokens in</th><th>Tokens out</th><th>Coût USD</th><th>Coût CAD</th></tr></thead><tbody>' +
+            (fin.length ? fin.map(([k, b]) =>
+              `<tr><td class="font-semibold">${esc(k)}</td><td>${b.nb_appels}</td><td>${b.input_tokens.toLocaleString('fr-CA')}</td><td>${b.output_tokens.toLocaleString('fr-CA')}</td><td>${usd(b.cost_usd)}</td><td>${cad(b.cost_cad_cents)}</td></tr>`
+            ).join('') : '<tr><td colspan="6" class="text-muted">Aucun appel IA sur la période.</td></tr>') +
+            '</tbody>';
+
+          document.getElementById('t-sessions').innerHTML =
+            '<thead><tr><th>Date</th><th>Praticien</th><th>Type</th><th>Appels IA</th><th>Coût IA</th><th>Revenu TTC</th><th>Revenu IVIA</th><th>Bénéfice</th></tr></thead><tbody>' +
+            (sessions.length ? sessions.map(s => {
+              const ben = s.benefice_cad_cents;
+              const benTxt = ben === null ? '<span class="text-muted">—</span>'
+                : `<span class="${ben < 0 ? 'neg' : 'pos'}">${cad(ben)}</span>${s.is_test ? ' <span class="text-muted text-[10px]">(test)</span>' : ''}`;
+              return `<tr><td>${dateCourte(s.date)}</td><td>${esc(s.praticien || '—')}</td><td>${esc(s.session_type_code || '—')}</td><td>${s.nb_appels_ia}</td><td>${cad(s.cout_ia_cad_cents)}</td><td>${s.revenu_ttc_cents === null ? '—' : cad(s.revenu_ttc_cents)}</td><td>${s.revenu_ivia_cents === null ? '—' : cad(s.revenu_ivia_cents)}</td><td>${benTxt}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="text-muted">Aucune séance avec appel IA.</td></tr>') +
+            '</tbody>';
+        } catch (e) {
+          document.getElementById('cards').innerHTML =
+            `<p class="text-sm text-red-700 col-span-4">${esc(e.message || 'Chargement impossible.')}</p>`;
+        }
+        loading.classList.add('hidden');
+      }
+
+      const now = new Date();
+      document.getElementById('mois').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      document.getElementById('btn-go').addEventListener('click', charger);
+      await charger();
+    })();
+  </script>
+</body>
+</html>

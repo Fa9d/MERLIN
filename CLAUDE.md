@@ -347,6 +347,7 @@ ANTHROPIC_API_KEY=
 ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
 MERLIN_ADMIN_EMAILS=         # liste blanche admin (courriels, séparés par virgule) — droits admin sans changer de rôle
 MERLIN_PAYMENTS_TEST_MODE=   # true = page de paiement simulée (aucun débit) ; auto-actif si pas de clé Stripe. false au lancement.
+MERLIN_USD_CAD_RATE=         # taux USD→CAD pour l'affichage des coûts LLM (console Économie IA) — défaut 1.40
 # Sauvegarde chiffrée hors-site (Loi 25) — voir docs/ops-sauvegarde.md & deploy/backup.sh
 MERLIN_BACKUP_PASSPHRASE=    # secret de chiffrement AES-256 des sauvegardes (à conserver HORS VPS)
 OVH_S3_ENDPOINT=             # ex. https://s3.bhs.io.cloud.ovh.net (OVH Object Storage, région Québec BHS)
@@ -518,6 +519,20 @@ app/
 >   = archivage (jamais d'effacement). Routes `app/api/routes/analysis_deliveries.py` ;
 >   UI : bloc « Restituer au client » dans la préparation d'entretien (triade
 >   préremplie depuis l'analyse, éditable) + page client `client/mes-reperes.html`.
+> - **ÉCONOMIE DES ANALYSES** (directive fondateur 2026-07-09, migration
+>   `20260709_0056`) : grand livre des coûts LLM RÉELS — chaque appel Anthropic
+>   écrit un `LlmUsageEvent` (modèle, tokens mesurés, coût USD au tarif du
+>   moment, rattachements séance/client/praticien ; AUCUN contenu). Service
+>   `app/services/llm_ledger.py` (tarifs par préfixe de modèle, conversion CAD
+>   via `MERLIN_USD_CAD_RATE`, best effort — ne casse jamais l'analyse) ;
+>   7 points instrumentés (note de séance ×3 sites, journal_semantic,
+>   semantic_llm, croisement, reflets client/praticien, behavioral_insights).
+>   Console : `admin/economie.html` + routes `/admin/economics/summary` et
+>   `/admin/economics/sessions` [require_admin] — revenus réels (hors test,
+>   ventilation comptable partagée), coûts par finalité/modèle, bénéfice par
+>   séance (lien `appointments.session_id → payment_order_id`) et net global.
+>   Le forfait `cout_ia` estimé de la comptabilité reste (héritage) ; la vérité
+>   des coûts est ici.
 > - **Activation prod** : `MERLIN_INSIGHTS_ENABLED=true` actif depuis le 2026-07-08
 >   (modèle `MERLIN_INSIGHTS_MODEL`, plafond quotidien `MERLIN_INSIGHTS_DAILY_CAP`).
 > - **Atelier des lectures** (migration `20260708_0051`) — 3e dimension de la vanne :

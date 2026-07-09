@@ -37,6 +37,7 @@ from app.services.behavioral_insights import (
     _call_claude,
     _check_daily_cap,
 )
+from app.services import llm_ledger
 from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
 
 logger = logging.getLogger("merlin.session_semantic")
@@ -158,6 +159,9 @@ async def synthesize_session(db: Session, record: SessionRecord) -> dict[str, An
 
     raw, usage = await _call_claude(prompt)
     _bump_daily()
+    llm_ledger.record(db, purpose="semantic_llm", usage=usage,
+                      session_id=record.id, client_id=record.client_id,
+                      praticien_user_id=record.praticien_id)
     result = _post_filter(_validate(_extract_json_payload(raw)))
     result["transcript_tronque"] = truncated
 

@@ -38,6 +38,7 @@ from app.services.behavioral_insights import (
     _call_claude,
     _check_daily_cap,
 )
+from app.services import llm_ledger
 from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
 
 logger = logging.getLogger("merlin.journal_semantic")
@@ -200,6 +201,9 @@ async def synthesize_journal(
 
     raw, usage = await _call_claude(prompt)
     _bump_daily()
+    llm_ledger.record(db, purpose="journal_semantic", usage=usage,
+                      session_id=record.id, client_id=record.client_id,
+                      praticien_user_id=record.praticien_id)
     result = _post_filter(_validate(_extract_json_payload(raw)))
 
     niveau = result["vigilance"]["niveau"]

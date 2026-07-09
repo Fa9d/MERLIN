@@ -90,6 +90,8 @@ class Settings:
     # Activation contrôlée des insights (Prompt 5) — paramètres de coût / modèle / quota.
     insights_model: str = os.getenv("MERLIN_INSIGHTS_MODEL", "claude-sonnet-4-6")
     insights_max_tokens: int = int(os.getenv("MERLIN_INSIGHTS_MAX_TOKENS", "1100"))
+    # Conversion affichage des coûts LLM (USD facturés par Anthropic → CAD console admin)
+    usd_cad_rate: float = float(os.getenv("MERLIN_USD_CAD_RATE", "1.40"))
     # Plafond souple d'appels/jour (0 = désactivé). Garde-fou de coût en mémoire process.
     insights_daily_cap: int = int(os.getenv("MERLIN_INSIGHTS_DAILY_CAP", "200"))
     stripe_secret_key: str | None = os.getenv("MERLIN_STRIPE_SECRET_KEY")

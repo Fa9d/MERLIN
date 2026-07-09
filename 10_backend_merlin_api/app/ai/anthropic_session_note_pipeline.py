@@ -150,6 +150,7 @@ async def generate_session_note_from_transcript(
     parsed = _extract_json_payload("\n".join(text_parts))
     parsed.setdefault("metadata", {})
     parsed["metadata"]["model_used"] = CLAUDE_SONNET_4_MODEL
+    parsed["metadata"]["usage"] = payload.get("usage") or {}
     parsed["metadata"]["prompt_version"] = SESSION_NOTE_CERCLE_PROMPT_VERSION
     parsed["metadata"]["complexity_score"] = None
     parsed["metadata"]["validated_by_practitioner"] = False

@@ -658,6 +658,16 @@ async function adminAccountingLedger(dateFrom, dateTo) {
   return _req(`/api/v1/admin/accounting/ledger?date_from=${dateFrom}&date_to=${dateTo}`);
 }
 
+// ── Admin · économie des analyses (coûts LLM réels, bénéfices) ──────────────
+/** Sommaire économique : revenus réels, coûts IA mesurés, bénéfice net. */
+async function adminEconomicsSummary(dateFrom, dateTo) {
+  return _req(`/api/v1/admin/economics/summary?date_from=${dateFrom}&date_to=${dateTo}`);
+}
+/** Ventilation par séance : coût IA, revenu rattaché, bénéfice. */
+async function adminEconomicsSessions(limit = 50) {
+  return _req(`/api/v1/admin/economics/sessions?limit=${limit}`);
+}
+
 // ── Admin · comptes & accès ───────────────────────────────────────────────────
 /** Liste des comptes (filtre courriel/nom optionnel). */
 async function adminListAccounts(q) {

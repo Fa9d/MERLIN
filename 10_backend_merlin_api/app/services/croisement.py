@@ -40,6 +40,7 @@ from app.services.behavioral_insights import (
     _call_claude,
     _check_daily_cap,
 )
+from app.services import llm_ledger
 
 logger = logging.getLogger("merlin.croisement")
 
@@ -116,6 +117,9 @@ async def croiser(db: Session, record: SessionRecord) -> dict[str, Any]:
 
     raw, usage = await _call_claude(prompt)
     _bump_daily()
+    llm_ledger.record(db, purpose="croisement", usage=usage,
+                      session_id=record.id, client_id=record.client_id,
+                      praticien_user_id=record.praticien_id)
     result = _validate(_extract_json_payload(raw))
 
     logger.info(

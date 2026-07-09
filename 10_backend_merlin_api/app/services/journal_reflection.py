@@ -38,6 +38,7 @@ from app.services.behavioral_insights import (
     _call_claude,
     _check_daily_cap,
 )
+from app.services import llm_ledger
 from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
 
 logger = logging.getLogger("merlin.journal_reflection")
@@ -183,6 +184,7 @@ async def generate_reflet(db: Session, client: Client) -> dict[str, Any]:
 
     raw, usage = await _call_claude(prompt)
     _bump_daily()
+    llm_ledger.record(db, purpose="journal_reflet_client", usage=usage, client_id=client.id)
     payload = _apply_urgence_protocol(_post_filter(_validate(_extract_json_payload(raw))))
 
     niveau = payload["vigilance"]["niveau"]

@@ -32,9 +32,11 @@ def load_models() -> None:
     import app.models.appointment  # noqa: F401
     import app.models.session_type  # noqa: F401
     import app.models.exercise  # noqa: F401
+    import app.models.analysis  # noqa: F401
     import app.models.analysis_delivery  # noqa: F401
     import app.models.client_transfer  # noqa: F401
     import app.models.practitioner_journal  # noqa: F401
+    import app.models.llm_usage  # noqa: F401
 
 
 def init_models() -> None:

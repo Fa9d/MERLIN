@@ -147,12 +147,17 @@ async def _call_claude(prompt: str) -> tuple[str, dict]:
 
 
 # ── Pipelines ─────────────────────────────────────────────────────────────────
-async def generate_behavioral_insights(profile: dict[str, dict], *, fiabilite: str = "bonne") -> dict[str, Any]:
+async def generate_behavioral_insights(
+    profile: dict[str, dict], *, fiabilite: str = "bonne", db=None, client_id: str | None = None
+) -> dict[str, Any]:
     """Pipeline strict : peut lever. Pour la route, préférer `generate_with_fallback`."""
     _check_daily_cap()
     prompt = render_insights_prompt(build_insights_input(profile, fiabilite=fiabilite))
     raw, usage = await _call_claude(prompt)
     _bump_daily()
+    if db is not None:
+        from app.services import llm_ledger  # import local (cycle)
+        llm_ledger.record(db, purpose="behavioral_insights", usage=usage, client_id=client_id)
     result = _post_filter(_validate(_extract_json_payload(raw)))
     cost = _estimate_cost_cents(settings.insights_model, usage)
     # Journalisation : usage + coût, JAMAIS le contenu ni le profil.
@@ -175,10 +180,12 @@ _FALLBACK = {
 }
 
 
-async def generate_with_fallback(profile: dict[str, dict], *, fiabilite: str = "bonne") -> dict[str, Any]:
+async def generate_with_fallback(
+    profile: dict[str, dict], *, fiabilite: str = "bonne", db=None, client_id: str | None = None
+) -> dict[str, Any]:
     """Pour la route : ne lève jamais. En cas d'échec/dérive → dégradation sûre."""
     try:
-        insights = await generate_behavioral_insights(profile, fiabilite=fiabilite)
+        insights = await generate_behavioral_insights(profile, fiabilite=fiabilite, db=db, client_id=client_id)
         return {"ok": True, "degraded": False, "insights": insights}
     except InsightsCapExceededError as exc:
         logger.warning("insights dégradés (plafond) : %s", exc)

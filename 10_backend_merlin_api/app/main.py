@@ -24,6 +24,7 @@ from app.api.routes.admin_analysis import router as admin_analysis_router
 from app.api.routes.analysis import router as analysis_router
 from app.api.routes.admin_accounts import router as admin_accounts_router
 from app.api.routes.admin_accounting import router as admin_accounting_router
+from app.api.routes.admin_economics import router as admin_economics_router
 from app.api.routes.admin_overview import router as admin_overview_router
 from app.api.routes.admin_clients import router as admin_clients_router
 from app.api.routes.consents import router as consents_router
@@ -134,6 +135,7 @@ app.include_router(admin_analysis_router, prefix=settings.api_v1_prefix)
 app.include_router(analysis_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_accounts_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_accounting_router, prefix=settings.api_v1_prefix)
+app.include_router(admin_economics_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_overview_router, prefix=settings.api_v1_prefix)
 app.include_router(admin_clients_router, prefix=settings.api_v1_prefix)
 app.include_router(era_contexts_router, prefix=settings.api_v1_prefix)

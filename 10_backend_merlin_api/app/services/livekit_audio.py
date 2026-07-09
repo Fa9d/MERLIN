@@ -16,6 +16,7 @@ from app.ai.anthropic_session_note_pipeline import (
     generate_session_note_from_transcript,
 )
 from app.core.config import settings
+from app.services import llm_ledger
 from app.db.session import SessionLocal
 from app.models.audio_recording import AudioRecording
 from app.models.audio_session import AudioSession
@@ -629,6 +630,11 @@ async def run_post_recording_pipeline(session_id: str, audio_file_path: str) -> 
             return
         note_ms = int((time.perf_counter() - t_note) * 1000)
 
+        llm_ledger.record(db, purpose="session_note",
+                          usage=(ai_payload.get("metadata") or {}).get("usage"),
+                          model=(ai_payload.get("metadata") or {}).get("model_used"),
+                          session_id=session_record.id, client_id=session_record.client_id,
+                          praticien_user_id=session_record.praticien_id)
         production_note = ai_payload.get("production_note", {})
         client_delivery = ai_payload.get("client_delivery", {})
         supervision_block = ai_payload.get("supervision", {})

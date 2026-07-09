@@ -158,7 +158,7 @@ async def generate_insights(
         }
 
     from app.services.behavioral_insights import generate_with_fallback
-    result = await generate_with_fallback(profile)
+    result = await generate_with_fallback(profile, db=db, client_id=payload.client_id)
     logger.info("insights LLM client=%s ok=%s degraded=%s",
                 payload.client_id, result.get("ok"), result.get("degraded"))
     return {"enabled": True, **result}
