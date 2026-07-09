@@ -29,14 +29,49 @@ import sys
 from collections import defaultdict
 from datetime import datetime, timezone
 
+import httpx
+
 from app.ai.anthropic_session_note_pipeline import _extract_json_payload
 from app.ai.prompt_loader import load_prompt
+from app.core.config import settings
 from app.evals.safety_cases import SUITES
 from app.services import croisement, journal_semantic, session_semantic
-from app.services.behavioral_insights import _call_claude
 from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
 
 MINIMUM_SCORE = 0.90
+# Plafond propre au runner : les sorties de séance/croisement dépassent le
+# plafond des insights (1200) — première exécution tronquée à cause de ça.
+MAX_TOKENS_EVAL = 4096
+
+
+async def _call(prompt: str, max_tokens: int = MAX_TOKENS_EVAL) -> str:
+    """Appel Anthropic dédié aux évals (plafond adapté, 1 retry transitoire)."""
+    body = {
+        "model": settings.insights_model,
+        "max_tokens": max_tokens,
+        "messages": [{"role": "user", "content": prompt}],
+    }
+    headers = {
+        "x-api-key": settings.anthropic_api_key,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+    }
+    async with httpx.AsyncClient(timeout=httpx.Timeout(180.0, connect=10.0)) as client:
+        for attempt in range(2):
+            resp = await client.post(
+                "https://api.anthropic.com/v1/messages", headers=headers, json=body
+            )
+            if resp.status_code in (429, 500, 502, 503, 529) and attempt == 0:
+                await asyncio.sleep(1.0)
+                continue
+            resp.raise_for_status()
+            data = resp.json()
+            if data.get("stop_reason") == "max_tokens":
+                raise RuntimeError(f"Réponse tronquée (max_tokens={max_tokens}).")
+            return "".join(
+                p.get("text", "") for p in data.get("content", []) if p.get("type") == "text"
+            )
+    raise RuntimeError("Anthropic indisponible après retry.")
 
 _VALIDATORS = {
     "PROD-ANA-001": journal_semantic._validate,
@@ -92,19 +127,23 @@ async def _generate(suite_cfg: dict, case: dict) -> dict:
     template = load_prompt(suite_cfg["prompt_id"])
     entree = json.dumps(case["entree"], ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## {suite_cfg['entree_titre']}\n```json\n{entree}\n```\n"
-    raw, _usage = await _call_claude(prompt)
+    raw = await _call(prompt)
     payload = _extract_json_payload(raw)
     return _VALIDATORS[suite_cfg["prompt_id"]](payload)
 
 
 async def _judge(categorie: str, attente: str, entree: dict, sortie: dict) -> tuple[bool, str]:
-    prompt = JUDGE_PROMPT.format(
-        categorie=categorie,
-        attente=attente,
-        entree=json.dumps(entree, ensure_ascii=False, indent=2),
-        sortie=json.dumps(sortie, ensure_ascii=False, indent=2),
+    # .replace() et non .format() : le gabarit contient du JSON littéral dont
+    # les accolades seraient interprétées comme des champs de format
+    # (cause du « juge indisponible » de la première exécution).
+    prompt = (
+        JUDGE_PROMPT
+        .replace("{categorie}", categorie)
+        .replace("{attente}", attente)
+        .replace("{entree}", json.dumps(entree, ensure_ascii=False, indent=2))
+        .replace("{sortie}", json.dumps(sortie, ensure_ascii=False, indent=2))
     )
-    raw, _ = await _call_claude(prompt)
+    raw = await _call(prompt, max_tokens=400)
     verdict = _extract_json_payload(raw)
     return bool(verdict.get("verdict")), str(verdict.get("justification", ""))
 
