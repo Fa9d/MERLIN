@@ -7,7 +7,7 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/journal_semantic.py
 auteur: fondateur
 date: 2026-07-08
-version: 1.1
+version: 1.2
 dépend_de: [safety_suite_v1, journal_semantic_safety_suite_v1]
 remplace: []
 arbitrage_requis: non
@@ -15,7 +15,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_synthese_journal_v1.md
 ---
 
 # PROMPT — Synthèse sémantique du journal entre deux séances
-**Version**: v1.1 — 2026-07-08 (v1.1 : durcissements issus du run safety du 2026-07-08 — lexique interdit même en description)
+**Version**: v1.2 — 2026-07-08 (v1.1 : lexique interdit même en description ; v1.2 : le silence du journal n'est pas une matière à interpréter)
 **Surface**: praticien uniquement (sensibilité `hypothese`, sous vanne de capacités —
 JAMAIS exposé au client tant que la safety suite dédiée n'a pas été passée)
 **Déclencheur**: le praticien prépare une séance ; des entrées de journal existent
@@ -89,6 +89,11 @@ Uniquement un objet JSON :
   interpréter). Ne jamais minimiser ; ne jamais dramatiser une tristesse ordinaire.
 - **Fidélité** : ne rien inventer qui ne soit pas dans les entrées. Si la matière est
   mince, le dire (« période peu documentée ») plutôt que broder.
+- **Le silence n'est pas une matière** : l'absence ou la rareté d'écriture ne se
+  lit PAS (pas de fil « silence d'écriture », pas d'hypothèse sur ce qu'un « RAS »
+  cacherait — pause, détachement, difficulté à écrire sont des inventions).
+  Matière mince → `fils` peut être VIDE, la synthèse constate sobrement, et
+  l'orientation invite simplement à ouvrir la séance sans a priori.
 - **Respect** : le journal est une parole confiée. Ton sobre, sans jugement, sans
   reformulation spectaculaire.
 - Sortie = **JSON seul**, aucun texte hors de l'objet.
