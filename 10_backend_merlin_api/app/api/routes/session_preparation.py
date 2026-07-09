@@ -12,8 +12,7 @@ praticien s'apprête à recevoir :
 - ancrages temporels (fragments biographiques évoqués en séance).
 
 Aucune IA nouvelle, aucune écriture métier (seule la journalisation des accès
-aux analyses persiste). Accès : praticien ASSIGNÉ à la séance, ou rôle interne
-(opérateur/superviseur), ou admin.
+aux analyses persiste). Accès : praticien ASSIGNÉ à la séance, ou admin.
 """
 from __future__ import annotations
 
@@ -32,7 +31,6 @@ from app.models.client import Client
 from app.models.client_intention import ClientIntention
 from app.models.client_journal_entry import ClientJournalEntry
 from app.models.enums import (
-    AppRole,
     IntentionStatusCode,
     RecordStatus,
 )
@@ -125,12 +123,9 @@ def get_session_preparation(
     if record is None or record.record_status != RecordStatus.active:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
 
-    # Un praticien ne prépare que SES séances ; opérateur/superviseur/admin passent.
-    if (
-        current_user.role == AppRole.practitioner
-        and not is_admin(current_user)
-        and record.praticien_id != current_user.id
-    ):
+    # Modele IVIA reel : clients + praticiens choisis + admin. Aucun role
+    # intermediaire (operateur = vestige) ne contourne l'assignation.
+    if not is_admin(current_user) and record.praticien_id != current_user.id:
         raise HTTPException(
             status.HTTP_403_FORBIDDEN,
             "Cette séance n'est pas assignée à ce praticien.",

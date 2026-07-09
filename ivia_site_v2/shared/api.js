@@ -781,3 +781,17 @@ async function listMyExercises() {
 async function updateMyExercise(id, payload) {
   return _req('/api/v1/me/exercises/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
 }
+
+/** Restitutions — triade validée par le praticien, livrée au client (étape 4). */
+async function deliverAnalysis(payload) {
+  return _req('/api/v1/analysis/deliveries', { method: 'POST', body: payload });
+}
+async function listSessionDeliveries(sessionId) {
+  return _req('/api/v1/analysis/deliveries/session/' + encodeURIComponent(sessionId));
+}
+async function withdrawDelivery(id) {
+  return _req('/api/v1/analysis/deliveries/' + encodeURIComponent(id), { method: 'DELETE' });
+}
+async function listMyReperes() {
+  return _req('/api/v1/me/reperes');
+}

@@ -99,6 +99,29 @@
         <ul id="analyses" class="space-y-2"></ul>
       </section>
 
+      <!-- Restitutions au client -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-1">Restituer au client</h2>
+        <p class="text-xs text-muted mb-3">
+          Rien ne part automatiquement : vous relisez, vous éditez dans vos mots, vous livrez.
+          Le client retrouvera la triade dans « Mes repères ».
+        </p>
+        <div id="rest-aucune" class="hidden text-sm text-muted mb-2">Aucune lecture livrable pour l'instant (synthèse du journal ou de séance requise).</div>
+        <div id="rest-form" class="hidden space-y-2">
+          <select id="rest-source" class="w-full text-sm border border-bdr rounded-[10px] px-3 py-2 bg-white"></select>
+          <textarea id="rest-obs" rows="2" class="w-full text-sm border border-bdr rounded-[10px] px-3 py-2" placeholder="Observation — ce que la période/séance montre"></textarea>
+          <textarea id="rest-hyp" rows="2" class="w-full text-sm border border-bdr rounded-[10px] px-3 py-2" placeholder="Hypothèse — toujours au conditionnel"></textarea>
+          <textarea id="rest-ori" rows="2" class="w-full text-sm border border-bdr rounded-[10px] px-3 py-2" placeholder="Orientation — une piste, jamais une consigne"></textarea>
+          <button id="rest-livrer" class="text-sm font-semibold bg-forest-deep text-white px-4 py-2 rounded-[10px] hover:bg-forest transition-colors">Livrer au client</button>
+          <p id="rest-status" class="text-xs text-muted"></p>
+        </div>
+        <div class="mt-4">
+          <p class="text-xs font-bold uppercase tracking-wide text-muted mb-2">Déjà livrées</p>
+          <div id="rest-livrees-vide" class="hidden text-xs text-muted">Aucune restitution livrée.</div>
+          <ul id="rest-livrees" class="space-y-2"></ul>
+        </div>
+      </section>
+
     </div>
   </main>
 
@@ -225,6 +248,59 @@
         '<span>' + esc(a.capability) + '</span>' +
         '<span class="chip">' + esc(a.sensitivity) + ' · ' + fmtDate(a.created_at) + '</span></li>'
       ).join('');
+
+      // Restitutions : sources livrables (suites safety passées) + livraison
+      const LIVRABLES = { journal_semantic: 'Synthèse du journal', semantic_llm: 'Synthèse de la séance', croisement_prosodie_semantique: 'Croisement (droit de transmission requis)' };
+      const sources = p.analyses.filter(a => LIVRABLES[a.capability]);
+      if (!sources.length) { show('rest-aucune'); } else {
+        show('rest-form');
+        const sel = document.getElementById('rest-source');
+        sel.innerHTML = sources.map(a =>
+          '<option value="' + esc(a.id) + '">' + esc(LIVRABLES[a.capability]) + ' — ' + fmtDate(a.created_at) + '</option>'
+        ).join('');
+        function prefill() {
+          const a = sources.find(s => s.id === sel.value) || sources[0];
+          const t = (a.payload || {}).triade || {};
+          document.getElementById('rest-obs').value = t.observation || '';
+          document.getElementById('rest-hyp').value = t.hypothese || '';
+          document.getElementById('rest-ori').value = t.orientation || '';
+        }
+        sel.addEventListener('change', prefill);
+        prefill();
+        document.getElementById('rest-livrer').addEventListener('click', async () => {
+          const st = document.getElementById('rest-status');
+          try {
+            await deliverAnalysis({
+              analysis_result_id: sel.value,
+              observation: document.getElementById('rest-obs').value.trim(),
+              hypothese: document.getElementById('rest-hyp').value.trim(),
+              orientation: document.getElementById('rest-ori').value.trim(),
+            });
+            st.textContent = 'Livré — le client le verra dans « Mes repères ».';
+            await refreshLivrees();
+          } catch (e) { st.textContent = 'Refusé : ' + (e.message || 'erreur'); }
+        });
+      }
+      async function refreshLivrees() {
+        try {
+          const ds = await listSessionDeliveries(sessionId);
+          document.getElementById('rest-livrees-vide').classList.toggle('hidden', ds.length > 0);
+          document.getElementById('rest-livrees').innerHTML = ds.map(d =>
+            '<li class="text-xs border border-bdr rounded-xl p-3">' +
+            '<p><strong>Observation :</strong> ' + esc(d.observation) + '</p>' +
+            '<p class="mt-1"><strong>Hypothèse :</strong> ' + esc(d.hypothese) + '</p>' +
+            '<p class="mt-1"><strong>Orientation :</strong> ' + esc(d.orientation) + '</p>' +
+            '<button class="text-red-600 font-semibold mt-2 hover:underline" data-retirer="' + esc(d.id) + '">Retirer</button></li>'
+          ).join('');
+        } catch (e) { /* silencieux : section facultative */ }
+      }
+      document.getElementById('rest-livrees').addEventListener('click', async (ev) => {
+        const btn = ev.target.closest('button[data-retirer]');
+        if (!btn) return;
+        try { await withdrawDelivery(btn.dataset.retirer); await refreshLivrees(); }
+        catch (e) { alert('Impossible — ' + (e.message || 'erreur')); }
+      });
+      await refreshLivrees();
     })();
   </script>
 </body>

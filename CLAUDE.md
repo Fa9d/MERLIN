@@ -477,6 +477,19 @@ app/
 >   `croisement_safety_suite_v1` scaffoldée. Transmission client = `recognized_by_order`
 >   + suite ≥ 0.90. **Restant (3c)** : `semantic_embeddings` locaux (dépendance lourde
 >   type sentence-transformers via requirements-analysis.txt — chantier infra séparé).
+> - **Safety suites EXÉCUTÉES (2026-07-08)** : les 3 suites analyses **PASSED toutes
+>   catégories à 1.00** (runner `app/evals/safety_runner.py`, 13 cas fictifs pièges,
+>   double notation programmatique + juge LLM). Prompts durcis en conséquence :
+>   PROD-ANA-001 **v1.2**, 002 **v1.1**, 003 **v1.1**. Re-run OBLIGATOIRE à chaque
+>   bump de prompt (§8.3). Voir `05_JOURNAUX/JOURNAL_safety_suites_analyses_20260708.md`.
+> - **Étape 4 — Restitutions client** (migration `20260708_0053`) : le praticien
+>   assigné RELIT, ÉDITE et LIVRE la triade au client (`analysis_deliveries`) —
+>   validation humaine constitutionnelle, rien d'automatique. Capacités livrables =
+>   suites passées (`journal_semantic`, `semantic_llm`) ; croisement = en plus
+>   `recognized_by_order`. Triade bornée + filtre Loi 21 à la livraison ; retrait
+>   = archivage (jamais d'effacement). Routes `app/api/routes/analysis_deliveries.py` ;
+>   UI : bloc « Restituer au client » dans la préparation d'entretien (triade
+>   préremplie depuis l'analyse, éditable) + page client `client/mes-reperes.html`.
 > - **Activation prod** : `MERLIN_INSIGHTS_ENABLED=true` actif depuis le 2026-07-08
 >   (modèle `MERLIN_INSIGHTS_MODEL`, plafond quotidien `MERLIN_INSIGHTS_DAILY_CAP`).
 > - **Atelier des lectures** (migration `20260708_0051`) — 3e dimension de la vanne :

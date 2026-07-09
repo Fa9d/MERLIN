@@ -1,8 +1,8 @@
 # IVIA — Cadrage du chantier « Analyses · Journal · Restitutions »
 
-**Version** : v1.4 — 2026-07-08 (v1.0 : cadrage initial ; v1.1 : décision fondateur §6 ;
-v1.2 : étape 1 livrée ; v1.3 : étape 2 livrée ; v1.4 : étape 3a livrée —
-sémantique de séance ; croisement prosodie/sémantique restant en 3b)
+**Version** : v1.5 — 2026-07-09 (v1.0 : cadrage ; v1.1 : décision fondateur §6 ;
+v1.2-1.4 : étapes 1, 2, 3a livrées ; v1.5 : 3b livrée + safety suites PASSED +
+étape 4 livrée — LE CYCLE COMPLET DU CADRAGE EST EN PLACE ; reste 3c embeddings)
 **Statut** : canon (cadrage validé à faire vivre ; toute évolution bumpe la version)
 **Auteur** : Claude Code (Fable 5), sous directive de David Phaneuf (2026-07-07)
 **Références** : `05_JOURNAUX/JOURNAL_reunification_depot_20260708.md`,
@@ -120,6 +120,13 @@ en `inference_clinique` — **réservée praticien vérifié**, journalisée.
 `semantic_embeddings` locaux pour la recherche inter-séances (Loi 25).
 
 ### Étape 4 — Restitutions coordonnées (une source, deux lectures)
+
+> **LIVRÉE 2026-07-09** : table `analysis_deliveries` (0053) — le praticien relit,
+> ÉDITE et livre la triade O/H/O au client (validation humaine constitutionnelle).
+> Gate §8.3 respecté : capacités livrables = suites PASSED (journal, séance) ;
+> croisement = `recognized_by_order` en plus. Filtre Loi 21 à la livraison.
+> UI : bloc restitution dans la préparation (triade préremplie éditable) +
+> page client « Mes repères ». 4 tests de gardes.
 Un même `AnalysisResult` alimente : vue client (O/H/O, langage des
 correspondances vivantes, jamais de scores bruts) et vue praticien
 (analytique, tendances, timeline séances × journal). Dataviz sobres

@@ -29,7 +29,7 @@ from app.core.deps import (
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
-from app.models.enums import AppRole, ExerciseStatusCode, RecordStatus
+from app.models.enums import ExerciseStatusCode, RecordStatus
 from app.models.exercise import ClientExercise, Exercise
 from app.models.session import SessionRecord
 from app.schemas.common import MerlinSchema
@@ -220,11 +220,9 @@ def propose_exercise(
     record = db.get(SessionRecord, payload.session_id)
     if record is None or record.record_status != RecordStatus.active:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
-    if (
-        current_user.role == AppRole.practitioner
-        and not is_admin(current_user)
-        and record.praticien_id != current_user.id
-    ):
+    # Modele IVIA reel : clients + praticiens choisis + admin. Aucun role
+    # intermediaire (operateur = vestige) ne contourne l'assignation.
+    if not is_admin(current_user) and record.praticien_id != current_user.id:
         raise HTTPException(
             status.HTTP_403_FORBIDDEN, "Cette séance n'est pas assignée à ce praticien."
         )
@@ -258,11 +256,9 @@ def list_session_exercises(
     record = db.get(SessionRecord, session_id)
     if record is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
-    if (
-        current_user.role == AppRole.practitioner
-        and not is_admin(current_user)
-        and record.praticien_id != current_user.id
-    ):
+    # Modele IVIA reel : clients + praticiens choisis + admin. Aucun role
+    # intermediaire (operateur = vestige) ne contourne l'assignation.
+    if not is_admin(current_user) and record.praticien_id != current_user.id:
         raise HTTPException(
             status.HTTP_403_FORBIDDEN, "Cette séance n'est pas assignée à ce praticien."
         )

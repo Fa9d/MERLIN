@@ -52,7 +52,9 @@
       "Bash(wsl -e sh -c 'test -f /tmp/ovh_s3.env && sed \"s/=.*/=***/\" /tmp/ovh_s3.env || echo absent')",
       "Skill(claude-api)",
       "Bash(node --check ../ivia_site_v2/shared/api.js)",
-      "Bash(node --check shared/session.js)"
+      "Bash(node --check shared/session.js)",
+      "Bash(node --check shared/layout.js)",
+      "Bash(node --check shared/api.js)"
     ]
   }
 }

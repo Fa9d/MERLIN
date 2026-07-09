@@ -38,6 +38,7 @@ from app.api.routes.public_intake import router as public_intake_router
 from app.api.routes.sessions import router as sessions_router
 from app.api.routes.session_preparation import router as session_preparation_router
 from app.api.routes.exercises import router as exercises_router
+from app.api.routes.analysis_deliveries import router as analysis_deliveries_router
 from app.api.routes.session_notes import router as session_notes_router
 from app.api.routes.session_temporal_anchors import router as session_temporal_anchors_router
 from app.api.routes.schedules import router as schedules_router
@@ -143,6 +144,7 @@ app.include_router(public_intake_router, prefix=settings.api_v1_prefix)
 app.include_router(sessions_router, prefix=settings.api_v1_prefix)
 app.include_router(session_preparation_router, prefix=settings.api_v1_prefix)
 app.include_router(exercises_router, prefix=settings.api_v1_prefix)
+app.include_router(analysis_deliveries_router, prefix=settings.api_v1_prefix)
 app.include_router(session_notes_router, prefix=settings.api_v1_prefix)
 app.include_router(session_temporal_anchors_router, prefix=settings.api_v1_prefix)
 app.include_router(schedules_router, prefix=settings.api_v1_prefix)
