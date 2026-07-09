@@ -795,3 +795,25 @@ async function withdrawDelivery(id) {
 async function listMyReperes() {
   return _req('/api/v1/me/reperes');
 }
+
+/** Mode autonome — reflet de journal (client seul, avec ou sans praticien). */
+async function requestMyReflet() {
+  return _req('/api/v1/me/journal/reflet', { method: 'POST', body: {} });
+}
+async function listMyReflets() {
+  return _req('/api/v1/me/reflets');
+}
+
+/** Journal de pratique — l'espace personnel du praticien (ADN IVIA). */
+async function createRetourPratique(payload) {
+  return _req('/api/v1/pratique/retours', { method: 'POST', body: payload });
+}
+async function listMesRetours() {
+  return _req('/api/v1/pratique/retours');
+}
+async function requestRefletPratique() {
+  return _req('/api/v1/pratique/reflet', { method: 'POST', body: {} });
+}
+async function listMesRefletsPratique() {
+  return _req('/api/v1/pratique/reflets');
+}

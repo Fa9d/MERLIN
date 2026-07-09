@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/shared/session.js?v=20260709a"></script>
+  <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Ma pratique</title>
+  <script src="/shared/api.js?v=20260709a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body{font-family:'Raleway',system-ui,sans-serif;background:#FAFDF8;color:#1A2E1D;}
+    h1,h2,h3{font-family:'Lora',Georgia,serif;}
+    .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
+    .etiquette{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2D6A4F;}
+    .urgence{background:#FFF7ED;border:2px solid #FB923C;border-radius:16px;padding:18px;}
+  </style>
+</head>
+<body class="antialiased pb-20 lg:pb-0">
+  <div class="flex min-h-screen">
+    <aside id="praticien-sidebar" class="hidden lg:flex"></aside>
+
+    <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[760px]">
+      <header class="mb-6">
+        <h1 class="font-heading text-2xl font-bold text-ink">Ma pratique</h1>
+        <p class="text-sm text-muted mt-1">
+          Ton espace à toi — invisible aux clients, aux collègues et à l'administration.
+          Dépose ce qui s'est passé <em>en toi</em> pendant tes séances : ce que tu as fait,
+          évité, précipité. L'analyse te répond <strong>franc jeu</strong> : constats directs
+          ancrés sur tes propres mots, pistes de travail concrètes. Optionnel, toujours —
+          mais c'est l'ADN d'IVIA : comprendre comment on agit pour mieux accompagner.
+        </p>
+      </header>
+
+      <!-- Déposer un retour -->
+      <section class="card mb-6">
+        <h2 class="text-base font-bold mb-2">Déposer un retour de pratique</h2>
+        <textarea id="retour-texte" rows="3" class="w-full text-sm border border-bdr rounded-[10px] px-3 py-2"
+          placeholder="Deux ou trois lignes suffisent. Ce qui s'est passé en toi, pas dans le dossier."></textarea>
+        <button id="retour-btn" class="mt-2 text-sm font-semibold bg-forest-deep text-white px-4 py-2 rounded-[10px] hover:bg-forest transition-colors">Déposer</button>
+        <p id="retour-status" class="text-xs text-muted mt-1"></p>
+      </section>
+
+      <!-- Reflet -->
+      <section class="card mb-6">
+        <h2 class="text-base font-bold mb-2">Mon analyse de pratique</h2>
+        <p class="text-xs text-muted mb-3">IVIA analyse tes retours du dernier mois : patterns nommés sans détour, appuyés sur tes mots, pistes concrètes. Sans fioriture — entre professionnels. (Un fil lourd relève de la supervision : elle sera nommée, pas remplacée.)</p>
+        <button id="reflet-btn" class="text-sm font-semibold bg-forest-deep text-white px-4 py-2 rounded-[10px] hover:bg-forest transition-colors">Recevoir mon analyse</button>
+        <p id="reflet-status" class="text-xs text-muted mt-1"></p>
+        <div id="reflets" class="space-y-4 mt-4"></div>
+      </section>
+
+      <!-- Retours passés -->
+      <section class="card">
+        <h2 class="text-base font-bold mb-3">Mes retours récents</h2>
+        <div id="retours-vide" class="hidden text-sm text-muted">Aucun retour pour l'instant.</div>
+        <ul id="retours" class="space-y-2"></ul>
+      </section>
+    </main>
+  </div>
+
+  <nav id="praticien-mobile-nav" class="lg:hidden"></nav>
+
+  <script>
+    renderPraticienChrome();
+    (async function () {
+      const esc = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+      const fmt = (iso) => new Date(iso).toLocaleDateString('fr-CA', { dateStyle: 'long' });
+
+      function renderReflet(r) {
+        const urgence = r.vigilance && r.vigilance.niveau === 'urgence';
+        return `
+          <div class="border border-bdr rounded-[16px] p-4">
+            <p class="text-xs text-muted mb-2">${fmt(r.created_at)}</p>
+            ${urgence && r.ressources ? '<div class="urgence mb-3"><p class="text-sm font-semibold leading-relaxed">' + esc(r.ressources) + '</p></div>' : ''}
+            <p class="text-sm leading-relaxed mb-2">${esc(r.reflet)}</p>
+            ${(r.constats || []).map(c => '<div class="mt-3"><p class="etiquette">' + esc(c.titre) + '</p><p class="text-xs text-muted mt-0.5">' + esc(c.appui) + '</p><p class="text-sm mt-1">' + esc(c.lecture) + '</p></div>').join('')}
+            ${(r.pistes || []).length ? '<p class="etiquette mt-3">Pistes de travail</p>' + r.pistes.map(x => '<p class="text-sm mt-1">→ ' + esc(x) + '</p>').join('') : ''}
+          </div>`;
+      }
+
+      async function refresh() {
+        try {
+          const [retours, reflets] = await Promise.all([listMesRetours(), listMesRefletsPratique()]);
+          document.getElementById('retours-vide').classList.toggle('hidden', retours.length > 0);
+          document.getElementById('retours').innerHTML = retours.map(x =>
+            '<li class="bg-surface border border-bdr rounded-xl p-3"><p class="text-xs text-muted mb-1">' +
+            fmt(x.created_at) + '</p><p class="text-sm leading-relaxed">' + esc(x.body_text) + '</p></li>'
+          ).join('');
+          document.getElementById('reflets').innerHTML = reflets.map(renderReflet).join('');
+        } catch (e) { /* section personnelle : silencieux */ }
+      }
+
+      document.getElementById('retour-btn').addEventListener('click', async () => {
+        const st = document.getElementById('retour-status');
+        const ta = document.getElementById('retour-texte');
+        try {
+          await createRetourPratique({ body_text: ta.value });
+          ta.value = '';
+          st.textContent = 'Déposé — pour toi seul·e.';
+          await refresh();
+        } catch (e) { st.textContent = e.message || 'Impossible pour l\'instant.'; }
+      });
+
+      document.getElementById('reflet-btn').addEventListener('click', async () => {
+        const st = document.getElementById('reflet-status');
+        const btn = document.getElementById('reflet-btn');
+        btn.disabled = true;
+        st.textContent = 'IVIA analyse tes retours…';
+        try {
+          await requestRefletPratique();
+          st.textContent = 'Ton analyse est arrivée.';
+          await refresh();
+        } catch (e) { st.textContent = e.message || 'Impossible pour l\'instant.'; }
+        btn.disabled = false;
+      });
+
+      await refresh();
+    })();
+  </script>
+</body>
+</html>

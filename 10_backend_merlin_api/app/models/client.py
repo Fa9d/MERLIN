@@ -36,6 +36,15 @@ class Client(Base):
         unique=True,
         index=True,
     )
+    # Relation d'accompagnement DURABLE (décision fondateur 2026-07-09) :
+    # le praticien choisi par le client. NULL = client AUTONOME (journal seul,
+    # sans praticien) — un état normal, pas une anomalie. Les séances gardent
+    # leur praticien historique ; ce lien porte la relation courante.
+    praticien_id: Mapped[str | None] = mapped_column(
+        ForeignKey("app_users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
     language_code: Mapped[str] = mapped_column(String(16), nullable=False, default="fr-CA")
     timezone: Mapped[str] = mapped_column(String(64), nullable=False, default="America/Toronto")
     territory_code: Mapped[str] = mapped_column(String(16), nullable=False, default="QC")

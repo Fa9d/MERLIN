@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/shared/session.js?v=20260708b"></script>
+  <script>requireAuth();</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IVIA — Mon reflet</title>
+  <script src="/shared/api.js?v=20260709a"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
+  <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260624a" data-ivia-espace="1">
+  <script>tailwind.config={theme:{extend:{colors:{forest:'var(--forest)',sage:'var(--sage)','forest-deep':'var(--forest-deep)',cream:'var(--cream)',surface:'var(--surface)',ink:'var(--ink)',muted:'var(--muted)',bdr:'var(--bdr)',card:'var(--card-bg)'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
+  <style>
+    body { font-family: 'Raleway', system-ui, sans-serif; background-color: var(--surface); color: var(--ink); }
+    h1, h2, h3 { font-family: 'Lora', Georgia, serif; }
+    .card { background: var(--card-bg); border: 1.5px solid var(--bdr); border-radius: 20px; padding: 24px; }
+    .etiquette { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--forest-deep); }
+    .urgence { background: #FFF7ED; border: 2px solid #FB923C; border-radius: 16px; padding: 18px; }
+    .btn-reflet { background: var(--forest-deep); color: #fff; font-weight: 600; font-size: 14px; padding: 12px 22px; border-radius: 14px; transition: background .15s; }
+    .btn-reflet:hover { background: var(--forest); }
+    .btn-reflet:disabled { opacity: .5; cursor: wait; }
+  </style>
+</head>
+<body class="antialiased min-h-screen">
+<script src="/shared/layout.js?v=20260709a"></script>
+<script>renderLayout('ecrire', 'Mon reflet');</script>
+
+<main class="max-w-2xl mx-auto px-4 py-8">
+  <header class="mb-6">
+    <h1 class="text-2xl font-bold">Mon reflet</h1>
+    <p class="text-sm text-muted mt-1">
+      Un miroir doux de ta période d'écriture — pour toi seul·e, que tu aies un
+      praticien ou non. IVIA lit ce que tu as déposé et te le reflète :
+      ce qui revient, une question ouverte, une piste libre.
+    </p>
+  </header>
+
+  <div class="card mb-6">
+    <button id="demander" class="btn-reflet">Recevoir un reflet de ma période</button>
+    <p id="statut" class="text-xs text-muted mt-2"></p>
+  </div>
+
+  <div id="vide" class="hidden card text-sm text-muted">
+    Aucun reflet pour l'instant. Écris quelques lignes dans ton
+    <a href="/client/journal.html" class="underline text-forest-deep">journal</a>,
+    puis reviens demander ton premier reflet.
+  </div>
+  <div id="liste" class="space-y-4"></div>
+</main>
+
+<script>
+  (async function () {
+    const esc = (s) => { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; };
+    const fmt = (iso) => new Date(iso).toLocaleDateString('fr-CA', { dateStyle: 'long' });
+    const liste = document.getElementById('liste');
+
+    function render(r) {
+      const urgence = r.vigilance && r.vigilance.niveau === 'urgence';
+      return `
+        <div class="card">
+          <p class="text-xs text-muted mb-3">${fmt(r.created_at)}</p>
+          ${urgence && r.ressources ? '<div class="urgence mb-4"><p class="text-sm font-semibold leading-relaxed">' + esc(r.ressources) + '</p><p class="text-xs mt-2"><a class="underline font-bold" href="tel:988">Appeler le 9-8-8</a> · <a class="underline font-bold" href="tel:811">8-1-1 option 2</a></p></div>' : ''}
+          <p class="text-sm leading-relaxed mb-3">${esc(r.reflet)}</p>
+          ${(r.fils || []).map(f => '<p class="etiquette mt-2">' + esc(f.titre) + '</p><p class="text-sm leading-relaxed mt-1">' + esc(f.echo) + '</p>').join('')}
+          ${r.question_ouverte ? '<p class="etiquette mt-3">Une question, si tu veux la prendre</p><p class="text-sm italic leading-relaxed mt-1">' + esc(r.question_ouverte) + '</p>' : ''}
+          ${r.piste ? '<p class="etiquette mt-3">Une piste, libre</p><p class="text-sm leading-relaxed mt-1">' + esc(r.piste) + '</p>' : ''}
+        </div>`;
+    }
+
+    async function refresh() {
+      try {
+        const xs = await listMyReflets();
+        document.getElementById('vide').classList.toggle('hidden', xs.length > 0);
+        liste.innerHTML = xs.map(render).join('');
+      } catch (e) {
+        liste.innerHTML = '<div class="card text-sm text-red-600">Chargement impossible — ' + esc(e.message || 'erreur') + '</div>';
+      }
+    }
+
+    document.getElementById('demander').addEventListener('click', async () => {
+      const btn = document.getElementById('demander');
+      const st = document.getElementById('statut');
+      btn.disabled = true;
+      st.textContent = 'IVIA relit ta période… (moins d\'une minute)';
+      try {
+        await requestMyReflet();
+        st.textContent = 'Ton reflet est arrivé.';
+        await refresh();
+      } catch (e) {
+        st.textContent = e.message || 'Impossible pour l\'instant.';
+      }
+      btn.disabled = false;
+    });
+
+    await refresh();
+  })();
+</script>
+</body>
+</html>

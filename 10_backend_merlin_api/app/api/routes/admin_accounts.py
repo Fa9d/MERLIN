@@ -340,3 +340,69 @@ def delete_account(
         "Compte supprimé par admin %s : %s (%d séances effacées)", admin.email, email, len(sess_ids)
     )
     return {"status": "account_deleted", "id": user_id}
+
+
+# ── Transfert de praticien (relation d'accompagnement durable) ────────────────
+# Décision fondateur 2026-07-09 : mode 'resume' par défaut (le nouveau
+# praticien repart du fil visible) ; 'integral' exige le consentement client.
+from app.models.client import Client as _Client
+from app.models.client_transfer import ClientPractitionerTransfer as _Transfer
+
+
+class ClientTransferIn(MerlinSchema):
+    praticien_id: str | None  # None = le client devient AUTONOME (journal seul)
+    mode: str = "resume"
+    client_consent_obtained: bool = False
+    note: str | None = None
+
+
+class ClientTransferRead(MerlinSchema):
+    client_id: str
+    from_praticien_id: str | None
+    to_praticien_id: str | None
+    mode: str
+
+
+@router.post("/clients/{client_id}/praticien", response_model=ClientTransferRead)
+def transfer_client_practitioner(
+    client_id: str,
+    payload: ClientTransferIn,
+    db: Session = Depends(get_db),
+    admin: AppUser = Depends(require_admin()),
+) -> ClientTransferRead:
+    client = db.get(_Client, client_id)
+    if client is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Client introuvable.")
+    if payload.mode not in ("resume", "integral"):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Mode invalide (resume|integral).")
+    if payload.mode == "integral" and not payload.client_consent_obtained:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            "Le mode integral exige le consentement explicite du client "
+            "(client_consent_obtained=true) — sa parole ne voyage pas sans lui.",
+        )
+    if payload.praticien_id is not None:
+        nouveau = db.get(AppUser, payload.praticien_id)
+        if nouveau is None or getattr(nouveau.role, "value", nouveau.role) != "practitioner":
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Praticien cible introuvable.")
+    if payload.note and len(payload.note) > 1000:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Note trop longue (max 1000).")
+
+    transfer = _Transfer(
+        client_id=client.id,
+        from_praticien_id=client.praticien_id,
+        to_praticien_id=payload.praticien_id,
+        mode=payload.mode,
+        client_consent_obtained=payload.client_consent_obtained,
+        note=payload.note,
+        transferred_by_user_id=admin.id,
+    )
+    client.praticien_id = payload.praticien_id
+    db.add_all([transfer, client])
+    db.commit()
+    return ClientTransferRead(
+        client_id=client.id,
+        from_praticien_id=transfer.from_praticien_id,
+        to_praticien_id=transfer.to_praticien_id,
+        mode=transfer.mode,
+    )

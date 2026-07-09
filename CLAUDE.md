@@ -482,6 +482,34 @@ app/
 >   double notation programmatique + juge LLM). Prompts durcis en conséquence :
 >   PROD-ANA-001 **v1.2**, 002 **v1.1**, 003 **v1.1**. Re-run OBLIGATOIRE à chaque
 >   bump de prompt (§8.3). Voir `05_JOURNAUX/JOURNAL_safety_suites_analyses_20260708.md`.
+> - **MODE AUTONOME + relation durable** (décision fondateur 2026-07-09, migration
+>   `20260709_0054` — voir `00_GOUVERNANCE/IVIA_DECISION_MODE_AUTONOME_JOURNAL_v1.0.md`) :
+>   `clients.praticien_id` nullable (NULL = client autonome, journal seul — état normal) ;
+>   transferts audités (`client_practitioner_transfers`, mode `resume` défaut /
+>   `integral` sous consentement client, endpoint `/admin/accounts/clients/{id}/praticien`).
+>   **Reflet de journal** = SEULE sortie IA→client sans praticien : prompt
+>   **`PROD-ANA-004`**, capacité `journal_reflet_client`, service
+>   `app/services/journal_reflection.py`, routes `POST /me/journal/reflet` +
+>   `GET /me/reflets`, page `client/mon-reflet.html`. Triple verrou : suite
+>   `journal_client_safety_suite_v1` ≥ 0.90 + filtre Loi 21 EN CODE + **protocole
+>   d'urgence EN CODE** (ressources 9-8-8/8-1-1 injectées serveur, analyse
+>   neutralisée). Cooldown 20 h, fenêtre 21 jours.
+> - **JOURNAL DE PRATIQUE praticien** (décision fondateur 2026-07-09, migration
+>   `20260709_0055`) : le praticien dépose ses retours de pratique
+>   (`practitioner_journal_entries`, optionnel — ADN IVIA) et demande une
+>   **analyse de pratique FRANC JEU** (directive fondateur : clair, objectif,
+>   sans fioriture, pas de protection — entre professionnels) : prompt
+>   **`PROD-ANA-005`**, capacité `praticien_reflet`, service
+>   `app/services/practice_reflection.py`, routes `/pratique/*`
+>   (`app/api/routes/praticien_pratique.py`), page `praticien/ma-pratique.html`.
+>   **Strictement personnel** : chaque praticien ne voit que SA matière —
+>   **pas d'exception admin**. Sortie = constats ANCRÉS (`{titre, appui,
+>   lecture}`) + pistes concrètes ; garde-fous structurels : clients protégés
+>   à travers ses notes (aucun profilage indirect), pas d'étiquette clinique
+>   sur le praticien, supervision nommée (jamais remplacée), **protocole de
+>   détresse EN CODE** (9-8-8/8-1-1/pair injectés serveur, analyse neutralisée).
+>   Pas de filtre Loi 21 (surface praticien-sur-soi, choix documenté). Gate =
+>   `praticien_reflet_safety_suite_v1` ≥ 0.90. Cooldown 20 h, fenêtre 30 jours.
 > - **Étape 4 — Restitutions client** (migration `20260708_0053`) : le praticien
 >   assigné RELIT, ÉDITE et LIVRE la triade au client (`analysis_deliveries`) —
 >   validation humaine constitutionnelle, rien d'automatique. Capacités livrables =

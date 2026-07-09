@@ -64,6 +64,18 @@ CAPABILITIES: dict[str, dict] = {
         "max_sensitivity": AnalysisSensitivity.hypothese,
         "data_leaves_server": True,
     },
+    "journal_reflet_client": {
+        "label": "Reflet de journal — restitution directe au client (mode autonome)",
+        "category": "semantic",
+        "max_sensitivity": AnalysisSensitivity.hypothese,
+        "data_leaves_server": True,
+    },
+    "praticien_reflet": {
+        "label": "Reflet de pratique — miroir du praticien sur sa propre pratique",
+        "category": "semantic",
+        "max_sensitivity": AnalysisSensitivity.hypothese,
+        "data_leaves_server": True,
+    },
     "croisement_prosodie_semantique": {
         "label": "Croisement prosodie × sémantique (divergences dit / manière de dire)",
         "category": "croisement",
