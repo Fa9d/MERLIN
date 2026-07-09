@@ -466,7 +466,17 @@ app/
 >   séance) : prompt **`PROD-ANA-002`**, service `app/services/session_semantic.py`,
 >   route `POST /analysis/sessions/{id}/semantique`. Mêmes gardes que l'étape 2 ;
 >   verbatims fidèles exigés ; gate client = `session_semantic_safety_suite_v1` ≥ 0.90.
->   Restant (3b) : croisement prosodie/sémantique (`inference_clinique`) + embeddings locaux.
+> - **Étape 3b** — capacité **`croisement_prosodie_semantique`** (première
+>   `inference_clinique`) : prompt **`PROD-ANA-003`**, service `app/services/croisement.py`,
+>   route `POST /analysis/sessions/{id}/croisement` — **praticien VÉRIFIÉ seulement**
+>   (credential actif requis en plus des gardes habituelles). Confronte les deux
+>   AnalysisResult existants (prosody_local + semantic_llm) ; **double ancrage validé
+>   en code** (chaque inférence cite ses deux sources) ; bloc `limites` obligatoire
+>   (« la prosodie n'est pas un détecteur ») ; PAS de filtre lexical Loi 21 (surface
+>   ni client ni publique — choix documenté dans le service) ; suite
+>   `croisement_safety_suite_v1` scaffoldée. Transmission client = `recognized_by_order`
+>   + suite ≥ 0.90. **Restant (3c)** : `semantic_embeddings` locaux (dépendance lourde
+>   type sentence-transformers via requirements-analysis.txt — chantier infra séparé).
 > - **Activation prod** : `MERLIN_INSIGHTS_ENABLED=true` actif depuis le 2026-07-08
 >   (modèle `MERLIN_INSIGHTS_MODEL`, plafond quotidien `MERLIN_INSIGHTS_DAILY_CAP`).
 > - **Atelier des lectures** (migration `20260708_0051`) — 3e dimension de la vanne :

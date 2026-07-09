@@ -29,7 +29,7 @@ from app.models.client import Client
 from app.models.enums import AppRole
 from app.models.session import SessionRecord
 from app.schemas.common import MerlinSchema
-from app.services import capability_gate, journal_semantic, prosody, session_semantic
+from app.services import capability_gate, croisement, journal_semantic, prosody, session_semantic
 
 logger = logging.getLogger("merlin.analysis")
 
@@ -248,6 +248,83 @@ async def run_session_semantic(
     db.commit()
     db.refresh(result)
     logger.info("Synthèse sémantique produite (séance %s, par %s).", session_id, current_user.id)
+    return _to_read(result)
+
+
+@router.post("/sessions/{session_id}/croisement", response_model=AnalysisResultRead)
+async def run_croisement(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_practitioner_or_operator()),
+) -> AnalysisResultRead:
+    """Croisement prosodie × sémantique (étape 3b) — praticien VÉRIFIÉ seulement.
+
+    Première capacité `inference_clinique` : exige un credential professionnel
+    actif (profil praticien_certifie), en plus des gardes habituelles.
+    Confronte les deux AnalysisResult existants de la séance.
+    """
+    if not settings.insights_enabled:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Analyses LLM désactivées (MERLIN_INSIGHTS_ENABLED).",
+        )
+    # Verrou credential : la sensibilité produite (inference_clinique) doit être
+    # lisible par l'appelant, sinon il produirait un résultat qui lui serait
+    # invisible — et le niveau exige la reconnaissance professionnelle.
+    user_max = capability_gate.max_sensitivity_for_user(db, current_user)
+    if capability_gate.sensitivity_rank(user_max) < capability_gate.sensitivity_rank(
+        AnalysisSensitivity.inference_clinique
+    ):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Le croisement exige une reconnaissance professionnelle vérifiée (credential actif).",
+        )
+    profile = capability_gate.profile_for_user(db, current_user)
+    if not capability_gate.is_capability_enabled(db, profile, "croisement_prosodie_semantique"):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Capacité croisement_prosodie_semantique désactivée pour votre profil.",
+        )
+    record = db.get(SessionRecord, session_id)
+    if record is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Séance introuvable.")
+    if (
+        current_user.role == AppRole.practitioner
+        and not is_admin(current_user)
+        and record.praticien_id != current_user.id
+    ):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Cette séance n'est pas assignée à ce praticien.",
+        )
+    if not capability_gate.is_enabled_for_session_type(
+        db, record.session_type_code, "croisement_prosodie_semantique"
+    ):
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "Capacité croisement désactivée pour ce type de séance.",
+        )
+
+    try:
+        payload = await croisement.croiser(db, record)
+    except croisement.CroisementError as exc:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(exc)) from exc
+    except croisement.BehavioralInsightsError as exc:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, str(exc)) from exc
+
+    result = AnalysisResult(
+        capability="croisement_prosodie_semantique",
+        sensitivity=AnalysisSensitivity.inference_clinique,
+        client_id=record.client_id,
+        session_id=record.id,
+        engine_version=croisement.ENGINE_VERSION,
+        payload_json=json.dumps(payload, ensure_ascii=False),
+        created_by_user_id=current_user.id,
+    )
+    db.add(result)
+    db.commit()
+    db.refresh(result)
+    logger.info("Croisement produit (séance %s, par %s).", session_id, current_user.id)
     return _to_read(result)
 
 

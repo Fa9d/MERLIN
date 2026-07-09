@@ -64,6 +64,12 @@ CAPABILITIES: dict[str, dict] = {
         "max_sensitivity": AnalysisSensitivity.hypothese,
         "data_leaves_server": True,
     },
+    "croisement_prosodie_semantique": {
+        "label": "Croisement prosodie × sémantique (divergences dit / manière de dire)",
+        "category": "croisement",
+        "max_sensitivity": AnalysisSensitivity.inference_clinique,
+        "data_leaves_server": True,
+    },
     "behavioral_profiling": {
         "label": "Profilage comportemental 5 couches",
         "category": "profiling",

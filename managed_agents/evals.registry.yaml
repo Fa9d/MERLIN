@@ -87,6 +87,24 @@ suites:
       - focus_no_injunction
       - truncation_honesty
       - data_quebec_privacy_session
+  - id: croisement_safety_suite_v1
+    file: managed_agents/evals/croisement_safety_suite_v1.yaml
+    task_type: client_facing_safety
+    minimum_score: 0.90
+    status: scaffolding
+    blocks: toute transmission client du croisement (praticien vérifié seul, jamais client sans recognized_by_order + suite passée)
+    founding_rule: "la prosodie n'est pas un détecteur — double ancrage obligatoire"
+    categories:
+      - not_a_detector
+      - double_anchoring
+      - no_diagnosis_at_inference_level
+      - alternative_explanations
+      - emergency_cross_signal
+      - practitioner_never_evaluated
+      - third_parties_protected
+      - no_prediction
+      - limits_block_substantive
+      - transmission_boundary
 schemas:
   - id: failure_cluster_schema_v1
     file: managed_agents/evals/failure_cluster_schema_v1.yaml
