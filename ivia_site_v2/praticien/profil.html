@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <script src="/shared/session.js?v=20260617e"></script>
+  <script src="/shared/session.js?v=20260708b"></script>
   <script>requireAuth();</script>
   <script src="/shared/api.js?v=20260707c"></script>
   <script src="/shared/avatar.js?v=20260617a"></script>
@@ -22,36 +22,7 @@
   <div class="flex min-h-screen">
 
     <!-- SIDEBAR -->
-    <aside class="hidden lg:flex flex-col w-60 bg-cream border-r border-bdr px-4 py-6 fixed top-0 left-0 h-screen z-10">
-      <a href="/praticien/dashboard.html" class="flex items-center gap-2.5 font-heading text-xl font-semibold text-forest-deep px-2 mb-8 block" aria-label="IVIA — Accueil"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#2D6A4F"/><rect x="7" y="11" width="3.5" height="6" rx="1.75" fill="white"/><rect x="12.25" y="7" width="3.5" height="14" rx="1.75" fill="white"/><rect x="17.5" y="9" width="3.5" height="10" rx="1.75" fill="white"/></svg>IVIA</a>
-      <nav class="flex flex-col gap-1">
-        <a href="/praticien/dashboard.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Tableau de bord
-        </a>
-        <a href="/praticien/agenda.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          Agenda
-        </a>
-        <a href="/praticien/clients-journal.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          Journal clients
-        </a>
-        <a href="/praticien/livraisons.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 9v6m-3.536-4.536a5 5 0 000 7.072"/></svg>
-          Livraisons audio
-        </a>
-        <a href="/praticien/profil.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold bg-bdr text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-          Mon profil
-        </a>
-        <a href="/praticien/compte.html" class="flex items-center gap-2.5 px-4 py-2.5 rounded-[10px] text-sm font-medium text-muted hover:bg-bdr hover:text-ink transition-colors cursor-pointer">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-          Mon compte
-        </a>
-        <div id="sidebar-logout" class="mt-2"></div>
-      </nav>
-    </aside>
+    <aside id="praticien-sidebar" class="hidden lg:flex"></aside>
 
     <main class="flex-1 lg:ml-60 px-4 sm:px-8 py-8 max-w-[720px] space-y-6">
 
@@ -268,26 +239,13 @@
   </div>
 
   <!-- Nav mobile -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20">
-    <a href="/praticien/dashboard.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Bord
-    </a>
-    <a href="/praticien/profil.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-forest-deep cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.582-7 8-7s8 3 8 7"/></svg>
-      Profil
-    </a>
-    <a href="/praticien/agenda.html" class="flex flex-col items-center gap-0.5 text-xs font-medium text-muted cursor-pointer px-3 py-1">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      Agenda
-    </a>
-  </nav>
+  <nav id="praticien-mobile-nav" class="lg:hidden"></nav>
 
   <!-- Toast -->
   <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
 
   <script>
-    renderLogoutButton(document.getElementById('sidebar-logout'));
+    renderPraticienChrome();
 
     // ── Profil praticien réel — GET/PATCH /api/v1/praticiens/me/profil ────────
     function composeDisplayName() {
