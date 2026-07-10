@@ -62,6 +62,48 @@ logger = logging.getLogger(__name__)
 _REMINDER_INTERVAL_SECONDS = 1800  # toutes les 30 min
 
 
+async def _requeue_orphan_transcriptions() -> None:
+    """Reprise au démarrage : transcriptions tuées par un redémarrage du conteneur.
+
+    Un enregistrement avec fichier audio mais sans transcript, plus vieux que
+    5 minutes, est un orphelin (la tâche de fond est morte avec le processus).
+    Trou révélé par le test fondateur du 2026-07-10 (séance express de 17 min
+    perdue par un deploy --build pendant la transcription).
+    """
+    from datetime import datetime, timedelta, timezone
+
+    from sqlalchemy import select
+
+    from app.models.session import SessionRecord
+    from app.services.livekit_audio import run_post_recording_pipeline
+
+    await asyncio.sleep(30)  # laisser l'app finir de démarrer
+    db = SessionLocal()
+    try:
+        cutoff = datetime.now(timezone.utc) - timedelta(minutes=5)
+        orphans = list(
+            db.execute(
+                select(SessionRecord).where(
+                    SessionRecord.audio_file_path.is_not(None),
+                    SessionRecord.transcript_text.is_(None),
+                    SessionRecord.created_at < cutoff,
+                    SessionRecord.created_at > cutoff - timedelta(days=2),
+                )
+            ).scalars()
+        )
+    finally:
+        db.close()
+    for record in orphans:
+        logger.warning(
+            "Reprise transcription orpheline session=%s (fichier=%s)",
+            record.id, record.audio_file_path,
+        )
+        try:
+            await run_post_recording_pipeline(record.id, record.audio_file_path)
+        except Exception as exc:  # pylint: disable=broad-except
+            logger.error("Reprise transcription %s échouée : %s", record.id, exc)
+
+
 async def _reminder_loop() -> None:
     """Tâche de fond : rappels 24h + reprises de lien 48h — toutes les 30 min."""
     from app.services.booking_flow import send_appointment_reminders, send_intake_reprise_48h
@@ -91,6 +133,7 @@ async def lifespan(_: FastAPI):
         except SQLAlchemyError as exc:
             logger.warning("Initialisation BDD ignoree au demarrage: %s", exc)
     task = asyncio.create_task(_reminder_loop())
+    asyncio.create_task(_requeue_orphan_transcriptions())
     logger.info("Tâche rappels 24h démarrée (intervalle %ds)", _REMINDER_INTERVAL_SECONDS)
     yield
     task.cancel()
