@@ -22,7 +22,7 @@ description: >
   diagnostic, urgence = présence + ressources, manière de parler jamais
   interprétée, tiers protégés — et jamais un compte rendu clinique déguisé.
 date: 2026-07-10
-status: scaffolding
+status: passed  # run reel 2026-07-10, PROD-ANA-006 v1.3 + verrou verbatims EN CODE (retry informe) — 13 categories a 1.00, 5 iterations
 applies_to:
   - prompt PROD-ANA-006 (reflet de séance, surface client directe)
   - service session_reflection (filtre Loi 21 + protocole d'urgence EN CODE)

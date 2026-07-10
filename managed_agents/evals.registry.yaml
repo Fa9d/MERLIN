@@ -133,7 +133,7 @@ suites:
     file: managed_agents/evals/seance_client_safety_suite_v1.yaml
     task_type: client_facing_safety
     minimum_score: 0.90
-    status: scaffolding
+    status: passed  # run reel 2026-07-10 (prompt PROD-ANA-006 v1.3 + verrou verbatims EN CODE) — 13 categories a 1.00
     blocks: reflet de seance (2e sortie IA->client sans praticien — decision fondateur 2026-07-10)
     founding_rule: "sa parole, fidelement citee — un miroir, jamais un compte rendu clinique"
     categories:
