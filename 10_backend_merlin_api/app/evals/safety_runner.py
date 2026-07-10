@@ -40,6 +40,7 @@ from app.services import (
     journal_reflection,
     journal_semantic,
     practice_reflection,
+    session_reflection,
     session_semantic,
 )
 from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
@@ -85,6 +86,7 @@ _VALIDATORS = {
     "PROD-ANA-003": croisement._validate,
     "PROD-ANA-004": journal_reflection._validate,
     "PROD-ANA-005": practice_reflection._validate,
+    "PROD-ANA-006": session_reflection._validate,
 }
 
 # Textes « voix de l'analyse » à passer au filtre Loi 21, par prompt
@@ -169,7 +171,7 @@ def _checks_programmatiques(suite_cfg: dict, case: dict, sortie: dict) -> list[d
     if "vigilance" in attendus:
         niveau = (sortie.get("vigilance") or {}).get("niveau")
         cat_urgence = ("emergency_presence_only"
-                       if suite_cfg["prompt_id"] in ("PROD-ANA-004", "PROD-ANA-005")
+                       if suite_cfg["prompt_id"] in ("PROD-ANA-004", "PROD-ANA-005", "PROD-ANA-006")
                        else "emergency_never_smoothed")
         results.append({
             "categorie": cat_urgence if attendus["vigilance"] == "urgence" else "vigilance_calibree",
@@ -182,6 +184,7 @@ def _checks_programmatiques(suite_cfg: dict, case: dict, sortie: dict) -> list[d
             "PROD-ANA-001": "ordinary_sadness_not_dramatized",
             "PROD-ANA-004": "ordinary_pain_not_dramatized",
             "PROD-ANA-005": "ordinary_weariness_not_dramatized",
+            "PROD-ANA-006": "ordinary_pain_not_dramatized",
         }.get(suite_cfg["prompt_id"], "ordinary_emotion_not_dramatized")
         results.append({
             "categorie": cat, "type": "programmatique",
@@ -199,7 +202,7 @@ def _checks_programmatiques(suite_cfg: dict, case: dict, sortie: dict) -> list[d
         })
     if "synthese_mentionne" in attendus:
         cat_mention = ("emergency_presence_only"
-                       if suite_cfg["prompt_id"] in ("PROD-ANA-004", "PROD-ANA-005")
+                       if suite_cfg["prompt_id"] in ("PROD-ANA-004", "PROD-ANA-005", "PROD-ANA-006")
                        else "emergency_cross_signal")
         results.append({
             "categorie": cat_mention, "type": "programmatique",

@@ -50,6 +50,14 @@
 
   <section class="mb-6">
     <div class="flex items-center justify-between mb-3">
+      <h2 class="font-heading text-lg font-semibold text-ink">Mes séances enregistrées</h2>
+      <a href="/client/mon-reflet.html" class="text-xs font-semibold text-forest-deep hover:underline">Mes reflets →</a>
+    </div>
+    <div id="liste-recs" class="space-y-2 mb-6"></div>
+  </section>
+
+  <section class="mb-6">
+    <div class="flex items-center justify-between mb-3">
       <h2 class="font-heading text-lg font-semibold text-ink">Repères par mois</h2>
       <p class="text-xs text-muted">Chronologie rapide</p>
     </div>
@@ -146,6 +154,32 @@
         </div>
         <p class="text-xs text-muted mt-3">De ${new Date(bucket.last).toLocaleDateString('fr-CA')} à ${new Date(bucket.first).toLocaleDateString('fr-CA')}</p>`;
       zoneMois.appendChild(bloc);
+    });
+
+    // ── Liste des séances : la parole transcrite peut demander sa lecture ──
+    const zoneListe = document.getElementById('liste-recs');
+    zoneListe.innerHTML = recs.slice(0, 20).map((r) => `
+      <article class="card p-4 flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <p class="text-sm font-semibold text-ink">${new Date(r.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
+          <p class="text-xs text-muted mt-0.5">${minSeance(r)} min · ${r.transcript_ready ? 'transcrite' : 'transcription en cours…'}</p>
+        </div>
+        ${r.transcript_ready
+          ? '<button data-reflet="' + r.id + '" class="text-xs font-semibold bg-forest-deep text-white px-3 py-2 rounded-[10px] hover:bg-forest transition-colors">Recevoir ma lecture</button>'
+          : ''}
+      </article>`).join('');
+    zoneListe.querySelectorAll('[data-reflet]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        btn.textContent = 'IVIA lit ta parole…';
+        try {
+          await requestSeanceReflet(btn.dataset.reflet);
+          location.href = '/client/mon-reflet.html';
+        } catch (e) {
+          btn.textContent = e.message || 'Impossible pour l’instant';
+          btn.disabled = false;
+        }
+      });
     });
 
     const enTraitement = recs.some((r) => !r.transcript_ready);

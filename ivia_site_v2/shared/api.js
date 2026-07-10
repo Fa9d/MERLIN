@@ -807,6 +807,11 @@ async function listMyReperes() {
 }
 
 /** Mode autonome — reflet de journal (client seul, avec ou sans praticien). */
+/** Reflet de séance (mode autonome) : sa parole enregistrée, sa lecture. */
+async function requestSeanceReflet(recordingId) {
+  return _req('/api/v1/me/recordings/' + encodeURIComponent(recordingId) + '/reflet', { method: 'POST', body: {} });
+}
+
 async function requestMyReflet() {
   return _req('/api/v1/me/journal/reflet', { method: 'POST', body: {} });
 }

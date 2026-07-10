@@ -70,6 +70,12 @@ CAPABILITIES: dict[str, dict] = {
         "max_sensitivity": AnalysisSensitivity.hypothese,
         "data_leaves_server": True,
     },
+    "seance_reflet_client": {
+        "label": "Reflet de séance — sa parole enregistrée, rendue au client (mode autonome)",
+        "category": "semantic",
+        "max_sensitivity": AnalysisSensitivity.hypothese,
+        "data_leaves_server": True,
+    },
     "praticien_reflet": {
         "label": "Reflet de pratique — miroir du praticien sur sa propre pratique",
         "category": "semantic",

@@ -495,6 +495,17 @@ app/
 >   `journal_client_safety_suite_v1` ≥ 0.90 + filtre Loi 21 EN CODE + **protocole
 >   d'urgence EN CODE** (ressources 9-8-8/8-1-1 injectées serveur, analyse
 >   neutralisée). Cooldown 20 h, fenêtre 21 jours.
+>   **Extension SÉANCE** (décision fondateur 2026-07-10, `00_GOUVERNANCE/
+>   IVIA_DECISION_MODE_AUTONOME_SEANCE_v1.0.md`) : le client autonome qui
+>   enregistre sa voix (solo/express transcrite) reçoit un **reflet de séance**
+>   directement — prompt **`PROD-ANA-006`**, capacité `seance_reflet_client`,
+>   service `app/services/session_reflection.py`, route
+>   `POST /me/recordings/{id}/reflet` (un reflet par enregistrement,
+>   idempotent), bouton dans `client/mes-enregistrements.html`. MÊME triple
+>   verrou (suite `seance_client_safety_suite_v1` ≥ 0.90 + Loi 21 EN CODE +
+>   urgence EN CODE) + verbatims fidèles exigés + la MANIÈRE de parler n'est
+>   jamais lue (la prosodie a sa voie gouvernée). Ce n'est PAS le compte rendu
+>   praticien — la lecture professionnelle reste sur la voie validée (étape 4).
 > - **JOURNAL DE PRATIQUE praticien** (décision fondateur 2026-07-09, migration
 >   `20260709_0055`) : le praticien dépose ses retours de pratique
 >   (`practitioner_journal_entries`, optionnel — ADN IVIA) et demande une
