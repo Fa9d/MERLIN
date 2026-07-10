@@ -124,20 +124,41 @@ def _normalize(t: str) -> str:
     return " ".join(t.split())
 
 
+def unfaithful_quotes(payload: dict[str, Any], transcript: str) -> list[str]:
+    """Citations « … » qui ne sont PAS des sous-chaînes contiguës du transcript."""
+    import re
+
+    haystack = _normalize(transcript)
+    bad: list[str] = []
+    for text in _texts_of(payload):
+        for quote in re.findall(r"«\s*(.*?)\s*»", str(text)):
+            if quote and _normalize(quote) not in haystack:
+                bad.append(quote)
+    return bad
+
+
 def assert_verbatims_fideles(payload: dict[str, Any], transcript: str) -> dict[str, Any]:
     """Verrou EN CODE : toute citation « … » doit être une sous-chaîne contiguë
     du transcript (espaces normalisés). Le prompt l'exige ; le code le GARANTIT —
     une citation lissée ou reconstruite ne sort jamais vers le client."""
-    import re
-
-    haystack = _normalize(transcript)
-    for text in _texts_of(payload):
-        for quote in re.findall(r"«\s*(.*?)\s*»", str(text)):
-            if quote and _normalize(quote) not in haystack:
-                raise SeanceRefletError(
-                    "Citation non fidèle au transcript — reflet rejeté (réessaie)."
-                )
+    if unfaithful_quotes(payload, transcript):
+        raise SeanceRefletError(
+            "Citation non fidèle au transcript — reflet rejeté (réessaie)."
+        )
     return payload
+
+
+def feedback_verbatims(bad: list[str]) -> str:
+    """Consigne de correction injectée au retry — nomme les citations fautives."""
+    lignes = "\n".join(f"- « {q} »" for q in bad)
+    return (
+        "\n\n## CORRECTION REQUISE (verrou de fidélité)\n"
+        "Ta sortie précédente contenait des citations qui ne sont PAS des "
+        "sous-chaînes exactes du transcript :\n" + lignes + "\n"
+        "Reprends ta sortie : pour chaque citation, RECOPIE un passage contigu "
+        "du transcript (ponctuation incluse, coupe aux extrémités seulement) "
+        "ou choisis un autre passage. Ne modifie rien d'autre.\n"
+    )
 
 
 def _apply_urgence_protocol(payload: dict[str, Any]) -> dict[str, Any]:
@@ -162,14 +183,24 @@ async def generate_seance_reflet(db: Session, record: SessionRecord) -> dict[str
     entree = json.dumps(entree_dict, ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## Entrée (ta parole enregistrée)\n```json\n{entree}\n```\n"
 
-    raw, usage = await _call_claude(prompt)
-    _bump_daily()
-    llm_ledger.record(
-        db, purpose="seance_reflet_client", usage=usage,
-        session_id=record.id, client_id=record.client_id,
-    )
-    payload = _validate(_extract_json_payload(raw))
-    assert_verbatims_fideles(payload, entree_dict["transcript"])
+    payload = None
+    for _attempt in range(2):  # 1 essai + 1 retry INFORMÉ si citations infidèles
+        raw, usage = await _call_claude(prompt)
+        _bump_daily()
+        llm_ledger.record(
+            db, purpose="seance_reflet_client", usage=usage,
+            session_id=record.id, client_id=record.client_id,
+        )
+        payload = _validate(_extract_json_payload(raw))
+        bad = unfaithful_quotes(payload, entree_dict["transcript"])
+        if not bad:
+            break
+        logger.info("seance_reflet retry citations infidèles (%d)", len(bad))
+        prompt = prompt + feedback_verbatims(bad)
+    else:
+        raise SeanceRefletError(
+            "Citation non fidèle au transcript — reflet rejeté (réessaie)."
+        )
     payload = _apply_urgence_protocol(_post_filter(payload))
 
     niveau = payload["vigilance"]["niveau"]
@@ -194,6 +225,8 @@ __all__ = [
     "Loi21ViolationError",
     "SeanceRefletError",
     "assert_verbatims_fideles",
+    "feedback_verbatims",
+    "unfaithful_quotes",
     "existing_reflet",
     "generate_seance_reflet",
 ]

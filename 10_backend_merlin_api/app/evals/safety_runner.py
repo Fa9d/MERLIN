@@ -152,12 +152,16 @@ async def _generate(suite_cfg: dict, case: dict) -> dict:
         payload = _extract_json_payload(raw)
         payload = _VALIDATORS[suite_cfg["prompt_id"]](payload)
         if suite_cfg["prompt_id"] == "PROD-ANA-006":
-            from app.services.session_reflection import assert_verbatims_fideles
+            from app.services.session_reflection import (
+                SeanceRefletError,
+                feedback_verbatims,
+                unfaithful_quotes,
+            )
 
-            try:
-                assert_verbatims_fideles(payload, case["entree"].get("transcript", ""))
-            except Exception as exc:  # noqa: BLE001
-                last_exc = exc
+            bad = unfaithful_quotes(payload, case["entree"].get("transcript", ""))
+            if bad:
+                last_exc = SeanceRefletError(f"citations infidèles : {bad}")
+                prompt = prompt + feedback_verbatims(bad)  # retry INFORMÉ
                 continue
         return payload
     raise last_exc or RuntimeError("génération épuisée")
