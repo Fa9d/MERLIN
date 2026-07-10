@@ -287,6 +287,9 @@
   // ── Barre de progression : d'analyse en analyse ─────────────────────────────
   const slider = document.getElementById('progression');
   const fmtDate = (iso) => new Date(iso).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' });
+  // La barre est TOUJOURS visible (décision fondateur : même présentation que
+  // l'interface praticien, pour tous les clients) — inactive tant qu'il n'y a
+  // pas au moins deux lectures.
   if (cartes.length) {
     slider.max = cartes.length - 1;
     slider.value = cartes.length - 1;
@@ -297,13 +300,16 @@
         (i + 1) + ' / ' + cartes.length + ' — ' + fmtDate(cartes[i].created_at);
     };
     document.getElementById('progression-note').textContent = cartes.length === 1
-      ? 'Une seule analyse pour l’instant — la barre prendra vie avec les prochaines séances.'
-      : '';
+      ? 'Une seule lecture pour l’instant — la barre prendra vie avec les prochaines analyses.'
+      : 'Chaque cran est une lecture datée — déplacez le curseur, la carte se redessine à ce moment-là.';
     slider.addEventListener('input', () => { majDate(); chargerSnapshot(cartes[Number(slider.value)]); });
     majDate();
     chargerSnapshot(cartes[cartes.length - 1]);
   } else {
-    document.getElementById('progression-bloc').classList.add('hidden');
+    slider.disabled = true;
+    document.getElementById('progression-date').textContent = '0 lecture';
+    document.getElementById('progression-note').textContent =
+      'Aucune lecture encore — votre carte et sa progression se dessineront au fil des séances.';
     chargerSnapshot(null);
   }
 
