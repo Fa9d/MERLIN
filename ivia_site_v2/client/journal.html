@@ -30,7 +30,7 @@
 <body class="antialiased">
 
 <div id="ivia-header"></div>
-<script src="/shared/layout.js?v=20260709c"></script>
+<script src="/shared/layout.js?v=20260710b"></script>
 <script>renderLayout('ecrire');</script>
 
 <main class="max-w-5xl mx-auto px-4 py-8 sm:py-10 space-y-6">
@@ -162,7 +162,7 @@
         <h2 class="font-heading text-xl font-bold text-ink">Mon journal</h2>
         <p class="text-xs text-muted mt-0.5">Jour après jour — vos mots, vos comptes rendus, vos lectures. Choisissez une date.</p>
       </div>
-      <a href="/client/mon-reflet.html" class="text-xs font-semibold bg-forest-deep text-white px-3 py-1.5 rounded-[10px] hover:bg-forest transition-colors">Mon miroir →</a>
+      <a href="/client/mon-reflet.html" class="text-xs font-semibold bg-forest-deep text-white px-3 py-1.5 rounded-[10px] hover:bg-forest transition-colors">Miroir →</a>
     </div>
 
     <div class="md:grid md:grid-cols-[210px_1fr]">
@@ -405,7 +405,7 @@
         if (btn) btn.addEventListener('click', () => { el.querySelector('div').classList.remove('line-clamp-6'); btn.remove(); });
       } else if (item.type === 'miroir') {
         el.className = 'border border-bdr rounded-[16px] px-5 py-4';
-        el.innerHTML = '<p class="text-[10px] font-bold uppercase tracking-wider text-forest-deep mb-1">Mon miroir</p>'
+        el.innerHTML = '<p class="text-[10px] font-bold uppercase tracking-wider text-forest-deep mb-1">Miroir</p>'
           + '<p class="text-sm text-ink leading-relaxed">' + safe(item.data.reflet || '') + '</p>'
           + ((item.data.fils || []).map(f => '<p class="text-xs text-muted mt-2"><strong>' + safe(f.titre) + '</strong> — ' + safe(f.echo) + '</p>').join(''));
       } else if (item.type === 'voix') {

@@ -15,8 +15,8 @@
 const IVIA_NAV = [
   { id: 'aujourdhui', label: "Aujourd'hui",  href: '/client/dashboard.html' },
   { id: 'ecrire',     label: 'Journal',      href: '/client/journal.html' },
+  { id: 'miroir',     label: 'Miroir',       href: '/client/mon-reflet.html', crumb: 'Miroir' },
   { id: 'voir',       label: 'Carte de vie', href: '/client/carte-de-vie.html', crumb: 'Carte de vie' },
-  { id: 'miroir',     label: 'Mon miroir',   href: '/client/mon-reflet.html', crumb: 'Mon miroir' },
 ];
 
 const IVIA_ACCUEIL = 'https://ivia.quebec';
@@ -150,13 +150,13 @@ function renderLayout(active, pageLabel) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>
                 Journal
               </a>
+              <a href="/client/mon-reflet.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="10" rx="6" ry="8"/><path stroke-linecap="round" d="M9 20h6M12 18v3"/></svg>
+                Miroir
+              </a>
               <a href="/client/carte-de-vie.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><circle cx="5" cy="6" r="1.4"/><circle cx="19" cy="5" r="1.4"/><circle cx="20" cy="15" r="1.4"/><circle cx="7" cy="19" r="1.4"/><path stroke-linecap="round" d="M6.2 7l4.2 3.6M13.8 10.5L18 6M13.9 13.2l4.8 1.4M10.3 13.6L8 17.6"/></svg>
                 Carte de vie
-              </a>
-              <a href="/client/mon-reflet.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="10" rx="6" ry="8"/><path stroke-linecap="round" d="M9 20h6M12 18v3"/></svg>
-                Mon miroir
               </a>
               <hr class="ivia-menu-sep">
               <a href="/client/enregistrement.html" class="ivia-menu-item">
