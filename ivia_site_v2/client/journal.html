@@ -49,38 +49,6 @@
   </section>
 
   <!-- ── Où j'en suis — vue de progression ─────────────────────────────── -->
-  <section id="progress-card" class="card p-6 sm:p-7 hidden">
-    <div class="flex items-center justify-between gap-3 flex-wrap mb-4">
-      <h2 class="font-heading text-lg font-bold text-ink">Où j'en suis</h2>
-      <span id="prog-mood" class="chip"></span>
-    </div>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
-        <p class="field-label">Série d'écriture</p>
-        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-streak">0</span> <span class="text-sm font-normal text-muted">jour(s)</span></p>
-      </div>
-      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
-        <p class="field-label">Cette semaine</p>
-        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-week">0</span> <span class="text-sm font-normal text-muted">entrée(s)</span></p>
-      </div>
-      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
-        <p class="field-label">Énergie moyenne 7 j</p>
-        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-energy">–</span><span class="text-sm font-normal text-muted">/10</span></p>
-      </div>
-      <div class="border border-bdr rounded-[14px] px-4 py-3 bg-surface">
-        <p class="field-label">Exercices validés</p>
-        <p class="font-heading text-2xl font-bold text-ink mt-1"><span id="prog-exos">0</span></p>
-      </div>
-    </div>
-    <div class="mt-5">
-      <div class="flex items-center justify-between mb-2">
-        <p class="field-label">14 derniers jours — énergie</p>
-        <p class="text-xs text-muted" id="prog-trend"></p>
-      </div>
-      <div id="prog-spark" class="flex items-end gap-1.5 h-16" aria-hidden="true"></div>
-      <div class="flex justify-between text-[10px] text-muted mt-1"><span id="prog-spark-start"></span><span>aujourd'hui</span></div>
-    </div>
-  </section>
 
   <!-- ── Formulaire d'écriture (masqué si déjà rempli aujourd'hui) ────────── -->
   <section id="journal-form-card" class="card p-6 sm:p-7">
@@ -186,81 +154,26 @@
     </div>
   </details>
 
-  <details class="fold" id="exercise-fold">
-    <summary>
+  
+  <!-- ═══ MON JOURNAL — l'objet intime, daté, consultable ═══ -->
+  <section class="card p-0 overflow-hidden" id="diary">
+    <div class="px-6 pt-6 pb-4 border-b border-bdr flex items-center justify-between gap-3 flex-wrap">
       <div>
-        <h2 class="font-heading text-lg font-bold text-ink">Exercice du jour</h2>
-        <p id="exo-why">Chargement de la recommandation…</p>
+        <h2 class="font-heading text-xl font-bold text-ink">Mon journal</h2>
+        <p class="text-xs text-muted mt-0.5">Jour après jour — vos mots, vos comptes rendus, vos lectures. Choisissez une date.</p>
       </div>
-      <div class="flex items-center gap-2">
-        <span id="exo-tag" class="chip">Recommandation adaptative</span>
-        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </div>
-    </summary>
-    <div class="px-4 pb-4 sm:px-6 sm:pb-6">
-      <div class="bg-surface border border-bdr rounded-[14px] p-4">
-        <p id="exo-title" class="text-sm font-semibold text-ink">—</p>
-        <p id="exo-duration" class="text-xs text-muted mt-1">—</p>
-        <p id="exo-steps" class="text-sm text-ink leading-relaxed mt-2 whitespace-pre-wrap">—</p>
-      </div>
+      <a href="/client/mon-reflet.html" class="text-xs font-semibold bg-forest-deep text-white px-3 py-1.5 rounded-[10px] hover:bg-forest transition-colors">Mon miroir →</a>
+    </div>
 
-      <div class="grid md:grid-cols-2 gap-3 mt-4">
-      <div>
-        <label class="field-label">État avant exercice (1-10)</label>
-        <input id="exo-before" type="range" min="1" max="10" value="5" class="mt-1 w-full">
-      </div>
-      <div>
-        <label class="field-label">Disponibilité</label>
-        <select id="exo-time" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
-          <option value="3min">3 minutes</option>
-          <option value="5-10min">5 à 10 minutes</option>
-          <option value="15min+">15 minutes et plus</option>
-        </select>
-      </div>
-      <div>
-        <label class="field-label">Format préféré</label>
-        <select id="exo-format" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm">
-          <option value="respiration">Respiration</option>
-          <option value="mouvement">Mouvement doux</option>
-          <option value="ecriture">Écriture guidée</option>
-        </select>
-      </div>
-      <div>
-        <label class="field-label">Effet ressenti après (1-10)</label>
-        <input id="exo-after" type="range" min="1" max="10" value="6" class="mt-1 w-full">
-      </div>
-    </div>
-      <div class="mt-3">
-        <label class="field-label">Commentaire rapide</label>
-        <textarea id="exo-note" rows="2" placeholder="Ce qui a changé après l'exercice…" class="mt-1 w-full border border-bdr rounded-[12px] px-3 py-2 bg-surface text-sm resize-none"></textarea>
-      </div>
-      <div class="mt-4 flex flex-col sm:flex-row sm:items-center items-start gap-2">
-        <button id="btn-validate-exo" class="bg-forest-deep text-white font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Valider cet exercice</button>
-        <span id="exo-feedback" class="text-xs text-muted sm:ml-2"></span>
-      </div>
-    </div>
-  </details>
+    <div class="md:grid md:grid-cols-[210px_1fr]">
+      <!-- La tranche du journal : les dates -->
+      <nav id="diary-dates" aria-label="Dates du journal"
+           class="flex md:flex-col gap-1.5 overflow-x-auto md:overflow-y-auto md:max-h-[560px] px-4 py-3 md:py-4 md:border-r border-b md:border-b-0 border-bdr bg-surface/60"></nav>
 
-  <section class="card p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-heading text-lg font-bold text-ink">Journal quotidien</h2>
-      <div class="flex items-center gap-3">
-        <a href="/client/mon-reflet.html" class="text-xs font-semibold bg-forest-deep text-white px-3 py-1.5 rounded-[10px] hover:bg-forest transition-colors">Mon reflet →</a>
-        <a href="/client/dashboard.html" class="text-xs font-semibold text-forest-deep hover:underline">Mon espace →</a>
+      <!-- La page du jour -->
+      <div id="diary-page" class="px-5 sm:px-7 py-6 min-h-[300px]">
+        <p class="text-sm text-muted">Chargement de votre journal…</p>
       </div>
-    </div>
-    <div id="entries" class="space-y-3">
-      <p class="text-sm text-muted">Chargement…</p>
-    </div>
-  </section>
-
-  <section class="card p-6" id="session-reperes">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-heading text-lg font-bold text-ink">Repères de séances validées</h2>
-      <span class="text-xs text-muted">Depuis vos séances confirmées</span>
-    </div>
-    <div id="session-reperes-list" class="space-y-3">
-      <p class="text-sm text-muted">Chargement…</p>
     </div>
   </section>
 </main>
@@ -299,46 +212,6 @@
     return d.innerHTML;
   }
 
-  function getExerciseRecommendation(latestArchi) {
-    const humeur = latestArchi?.humeur || 'neutre';
-    const energie = Number(latestArchi?.energie || 5);
-    const sommeil = latestArchi?.sommeil || 'moyen';
-
-    if (humeur === 'stress' || energie <= 4) {
-      return {
-        id: 'resp-478',
-        title: 'Cohérence cardiaque 4-7-8',
-        duration: '5 minutes',
-        why: 'Votre état suggère de stabiliser rapidement le système nerveux.',
-        steps: '1. Inspirez 4 secondes.\n2. Retenez 7 secondes.\n3. Expirez 8 secondes.\n4. Répétez 6 cycles en posture assise.',
-      };
-    }
-    if (sommeil === 'mauvais') {
-      return {
-        id: 'grounding-5senses',
-        title: 'Ancrage 5 sens + respiration lente',
-        duration: '7 à 10 minutes',
-        why: 'Après un sommeil fragilisé, l’objectif est de retrouver un ancrage corporel.',
-        steps: '1. Nommez 5 choses que vous voyez.\n2. Nommez 4 choses que vous sentez au toucher.\n3. Respirez lentement 2 minutes.\n4. Terminez par une marche douce de 5 minutes.',
-      };
-    }
-    if (humeur === 'flow' || humeur === 'coherence') {
-      return {
-        id: 'consolidation-journal',
-        title: 'Consolidation : gratitude + intention',
-        duration: '8 minutes',
-        why: 'Votre état est favorable à renforcer les acquis plutôt qu’à corriger.',
-        steps: '1. Écrivez 3 éléments qui soutiennent votre équilibre.\n2. Formulez 1 intention concrète pour demain.\n3. Relisez à voix basse.',
-      };
-    }
-    return {
-      id: 'breath-box',
-      title: 'Respiration carrée 4-4-4-4',
-      duration: '4 minutes',
-      why: 'Exercice neutre pour clarifier l’état du jour.',
-      steps: '1. Inspirez 4 secondes.\n2. Retenez 4 secondes.\n3. Expirez 4 secondes.\n4. Retenez 4 secondes.\n5. Répétez 8 cycles.',
-    };
-  }
 
   function calcScore() {
     const humeur = document.getElementById('humeur').value;
@@ -450,159 +323,126 @@
 
   let entriesCache = [];
 
-  function refreshExercisePanel() {
-    const latestArchi = entriesCache
-      .map(e => parseArchi(e))
-      .find(Boolean);
-    const rec = getExerciseRecommendation(latestArchi);
-    const lastExo = entriesCache
-      .map(e => parseExo(e))
-      .find(Boolean);
 
-    document.getElementById('exo-title').textContent = rec.title;
-    document.getElementById('exo-duration').textContent = 'Durée cible : ' + rec.duration;
-    document.getElementById('exo-steps').textContent = rec.steps;
-    document.getElementById('exo-why').textContent = rec.why;
-    const tag = document.getElementById('exo-tag');
-    if (lastExo && lastExo.reco_id === rec.id && lastExo.date === new Date().toISOString().slice(0, 10)) {
-      tag.textContent = 'Déjà validé aujourd’hui';
-      document.getElementById('exo-feedback').textContent = '✓ Exercice déjà validé pour aujourd’hui.';
-    } else {
-      tag.textContent = 'Recommandation adaptative';
-      document.getElementById('exo-feedback').textContent = '';
-    }
-    return rec;
+  // ═══ MON JOURNAL — l'objet intime : index par date, tranche + page ═══
+  let diaryIndex = {};   // 'YYYY-MM-DD' -> [{type, ts, data}]
+  let diarySelected = null;
+
+  function diaryKey(iso) { return new Date(iso).toISOString().slice(0, 10); }
+
+  function buildDiaryIndex(entries, docs, reflets, recs) {
+    diaryIndex = {};
+    const add = (iso, item) => {
+      const k = diaryKey(iso);
+      (diaryIndex[k] = diaryIndex[k] || []).push({ ...item, ts: iso });
+    };
+    (entries || []).forEach(en => add(en.written_at, { type: 'entree', data: en }));
+    (docs || []).forEach(d => add(d.created_at, { type: 'compte', data: d }));
+    (reflets || []).forEach(r => add(r.created_at, { type: 'miroir', data: r }));
+    (recs || []).forEach(r => add(r.created_at, { type: 'voix', data: r }));
+    Object.values(diaryIndex).forEach(items => items.sort((a, b) => new Date(a.ts) - new Date(b.ts)));
   }
 
-  // ── Vue « Où j'en suis » ───────────────────────────────────────────────
-  function renderProgress(entries) {
-    if (!entries || !entries.length) return;
-    const card = document.getElementById('progress-card');
-    card.classList.remove('hidden');
-    const now = new Date();
-    const dayKey = (x) => new Date(x).toISOString().slice(0, 10);
-    const daysSet = new Set(entries.map(e => dayKey(e.written_at)));
-
-    // Série : jours consécutifs avec au moins une entrée, en partant d'aujourd'hui (ou hier)
-    let streak = 0;
-    let cur = new Date();
-    if (!daysSet.has(dayKey(cur))) cur.setDate(cur.getDate() - 1);
-    while (daysSet.has(dayKey(cur))) { streak++; cur.setDate(cur.getDate() - 1); }
-
-    // Entrées cette semaine (7 derniers jours)
-    const week = entries.filter(e => (now - new Date(e.written_at)) / 86400000 <= 7).length;
-
-    // Archis + exos
-    const archis = entries
-      .map(e => { const a = parseArchi(e); return a ? { ...a, ts: e.written_at } : null; })
-      .filter(Boolean);
-    const exos = entries.map(e => parseExo(e)).filter(Boolean).length;
-    const arch7 = archis.filter(a => (now - new Date(a.ts)) / 86400000 <= 7);
-    const avgE = arch7.length ? (arch7.reduce((s, a) => s + Number(a.energie || 0), 0) / arch7.length) : null;
-
-    document.getElementById('prog-streak').textContent = streak;
-    document.getElementById('prog-week').textContent = week;
-    document.getElementById('prog-energy').textContent = avgE != null ? avgE.toFixed(1) : '–';
-    document.getElementById('prog-exos').textContent = exos;
-
-    const latest = archis.sort((a, b) => new Date(b.ts) - new Date(a.ts))[0];
-    const mood = document.getElementById('prog-mood');
-    if (latest) mood.textContent = 'Dernier état : ' + (HUMEUR_LABELS[latest.humeur] || latest.humeur);
-    else mood.classList.add('hidden');
-
-    // Sparkline 14 jours (barres énergie, jour par jour)
-    const spark = document.getElementById('prog-spark');
-    spark.innerHTML = '';
-    const byDay = {};
-    archis.forEach(a => { byDay[dayKey(a.ts)] = Number(a.energie || 0); });
-    const vals = [];
-    for (let i = 13; i >= 0; i--) {
-      const d = new Date(); d.setDate(d.getDate() - i);
-      vals.push({ k: dayKey(d), v: byDay[dayKey(d)] || 0 });
+  function renderDiaryDates() {
+    const nav = document.getElementById('diary-dates');
+    const keys = Object.keys(diaryIndex).sort().reverse();
+    if (!keys.length) {
+      nav.innerHTML = '<p class="text-xs text-muted px-2 py-1">Votre première page s\'écrira aujourd\'hui.</p>';
+      return;
     }
-    vals.forEach(({ v }) => {
-      const b = document.createElement('div');
-      b.className = 'flex-1 rounded-t-[4px]';
-      b.style.height = v ? Math.max(8, (v / 10) * 100) + '%' : '4px';
-      b.style.background = v ? 'var(--forest)' : 'var(--bdr)';
-      b.style.opacity = v ? '0.85' : '0.6';
-      spark.appendChild(b);
+    if (!diarySelected || !diaryIndex[diarySelected]) diarySelected = keys[0];
+    const moisCourt = (k) => new Date(k + 'T12:00').toLocaleDateString('fr-CA', { month: 'short' });
+    let lastMonth = '';
+    nav.innerHTML = keys.map(k => {
+      const d = new Date(k + 'T12:00');
+      const m = k.slice(0, 7);
+      const head = (m !== lastMonth)
+        ? '<p class="hidden md:block text-[10px] font-bold uppercase tracking-wider text-muted mt-2 mb-0.5 px-2">'
+          + d.toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' }) + '</p>'
+        : '';
+      lastMonth = m;
+      const n = diaryIndex[k].length;
+      const types = new Set(diaryIndex[k].map(i => i.type));
+      const dots = ['compte', 'miroir', 'voix'].filter(t => types.has(t)).length;
+      const sel = k === diarySelected;
+      return head + '<button data-jour="' + k + '" class="diary-date shrink-0 md:w-full text-left px-3 py-2 rounded-[10px] text-sm transition-colors '
+        + (sel ? 'bg-forest-deep text-white font-semibold' : 'bg-card border border-bdr text-ink hover:bg-surface') + '">'
+        + '<span class="font-semibold">' + d.getDate() + ' ' + moisCourt(k) + '</span>'
+        + '<span class="block text-[10px] ' + (sel ? 'text-white/70' : 'text-muted') + '">'
+        + n + ' trace' + (n > 1 ? 's' : '') + (dots ? ' ·' + ' ●'.repeat(dots) : '') + '</span>'
+        + '</button>';
+    }).join('');
+    nav.querySelectorAll('.diary-date').forEach(btn => btn.addEventListener('click', () => {
+      diarySelected = btn.dataset.jour;
+      renderDiaryDates();
+      renderDiaryPage();
+    }));
+  }
+
+  function renderDiaryPage() {
+    const page = document.getElementById('diary-page');
+    const items = diaryIndex[diarySelected] || [];
+    if (!items.length) {
+      page.innerHTML = '<p class="text-sm text-muted">Rien à cette date.</p>';
+      return;
+    }
+    const d = new Date(diarySelected + 'T12:00');
+    page.innerHTML = '<p class="font-heading text-lg font-bold text-ink capitalize mb-4">'
+      + d.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) + '</p>';
+    const wrap = document.createElement('div');
+    wrap.className = 'space-y-3';
+    items.forEach(item => {
+      if (item.type === 'entree') { wrap.appendChild(renderEntry(item.data)); return; }
+      const el = document.createElement('article');
+      if (item.type === 'compte') {
+        el.className = 'border border-forest/40 bg-surface rounded-[16px] px-5 py-4';
+        const long = (item.data.body_text || '').length > 420;
+        el.innerHTML = '<p class="text-[10px] font-bold uppercase tracking-wider text-forest-deep mb-1">Compte rendu de séance</p>'
+          + '<p class="text-sm font-semibold text-ink">' + safe(item.data.title || 'Séance') + '</p>'
+          + '<div class="text-sm text-ink leading-relaxed mt-2 whitespace-pre-wrap' + (long ? ' line-clamp-6' : '') + '">' + safe(item.data.body_text || '') + '</div>'
+          + (long ? '<button class="voir-plus text-xs font-semibold text-forest-deep mt-2 hover:underline">Lire en entier</button>' : '');
+        const btn = el.querySelector('.voir-plus');
+        if (btn) btn.addEventListener('click', () => { el.querySelector('div').classList.remove('line-clamp-6'); btn.remove(); });
+      } else if (item.type === 'miroir') {
+        el.className = 'border border-bdr rounded-[16px] px-5 py-4';
+        el.innerHTML = '<p class="text-[10px] font-bold uppercase tracking-wider text-forest-deep mb-1">Mon miroir</p>'
+          + '<p class="text-sm text-ink leading-relaxed">' + safe(item.data.reflet || '') + '</p>'
+          + ((item.data.fils || []).map(f => '<p class="text-xs text-muted mt-2"><strong>' + safe(f.titre) + '</strong> — ' + safe(f.echo) + '</p>').join(''));
+      } else if (item.type === 'voix') {
+        el.className = 'border border-bdr bg-surface/60 rounded-[16px] px-5 py-3 flex items-center justify-between gap-3 flex-wrap';
+        el.innerHTML = '<div><p class="text-[10px] font-bold uppercase tracking-wider text-muted">Ma voix</p>'
+          + '<p class="text-sm text-ink mt-0.5">' + (item.data.duration_minutes || '–') + ' min · '
+          + (item.data.transcript_ready ? 'transcrite ✓' : 'transcription en cours…') + '</p></div>'
+          + (item.data.transcript_ready
+            ? '<a href="/client/mes-enregistrements.html" class="text-xs font-semibold text-forest-deep hover:underline">Recevoir ma lecture →</a>'
+            : '');
+      }
+      wrap.appendChild(el);
     });
-    const start = new Date(); start.setDate(start.getDate() - 13);
-    document.getElementById('prog-spark-start').textContent = start.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' });
-
-    // Tendance : moyenne 7 derniers vs 7 précédents
-    const older = vals.slice(0, 7).filter(x => x.v).map(x => x.v);
-    const recent = vals.slice(7).filter(x => x.v).map(x => x.v);
-    const m = a => a.length ? a.reduce((s, x) => s + x, 0) / a.length : null;
-    const mo = m(older), mr = m(recent);
-    const trend = document.getElementById('prog-trend');
-    if (mo != null && mr != null) {
-      const diff = mr - mo;
-      trend.textContent = diff > 0.4 ? '📈 En hausse' : diff < -0.4 ? '📉 En baisse' : '➡️ Stable';
-    }
+    page.appendChild(wrap);
   }
 
   async function chargerEntrees() {
-    const zone = document.getElementById('entries');
-    const repereZone = document.getElementById('session-reperes-list');
-    let docs = [];
+    let docs = [], reflets = [], recs = [];
     try {
       const entries = await getMyJournal();
       entriesCache = entries;
-      renderProgress(entries);
-
-      // Vérifier si aujourd'hui a déjà une entrée de fond (pas exercice)
       const todayEntries = getTodayEntries(entries);
-      if (todayEntries.length > 0) {
-        showTodayResult(todayEntries);
-      } else {
-        setTodayLabel();
-      }
-
-      zone.innerHTML = '';
-      // Entrées passées seulement (pas aujourd'hui)
-      const pastEntries = entries.filter(en => {
-        const d = new Date(en.written_at);
-        return d.toISOString().slice(0, 10) !== TODAY;
-      });
-      if (!pastEntries.length) {
-        zone.innerHTML = '<p class="text-sm text-muted">Aucune entrée passée pour l\'instant.</p>';
-        refreshExercisePanel();
-        return;
-      }
-      pastEntries
-        .sort((a, b) => new Date(b.written_at) - new Date(a.written_at))
-        .forEach(en => zone.appendChild(renderEntry(en)));
-      refreshExercisePanel();
+      if (todayEntries.length > 0) showTodayResult(todayEntries);
+      else setTodayLabel();
     } catch (err) {
-      zone.innerHTML = '<p class="text-sm text-muted">Vos entrées apparaîtront ici après votre première écriture.</p>';
       entriesCache = [];
       setTodayLabel();
-      refreshExercisePanel();
     }
+    try { docs = await getMyDocuments(); } catch (e) {}
+    try { reflets = await listMyReflets(); } catch (e) {}
+    try { recs = await getMyRecordings(); } catch (e) {}
 
-    try {
-      docs = await getMyDocuments();
-    } catch (err) {
-      docs = [];
-    }
-    repereZone.innerHTML = '';
-    if (!docs.length) {
-      repereZone.innerHTML = '<p class="text-sm text-muted">Aucune séance validée visible pour le moment.</p>';
-      return;
-    }
-    docs
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      .forEach((doc) => {
-        const el = document.createElement('article');
-        el.className = 'border border-bdr rounded-[14px] px-4 py-3 bg-surface';
-        el.innerHTML = `<p class="text-xs text-muted mb-1">${new Date(doc.created_at).toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
-          <p class="text-sm font-semibold text-ink">${safe(doc.title || 'Repère de séance')}</p>
-          <p class="text-sm text-ink mt-1 line-clamp-3">${safe((doc.body_text || '').replace(/\s+/g, ' ').trim())}</p>`;
-        repereZone.appendChild(el);
-      });
+    buildDiaryIndex(entriesCache, docs, reflets, recs);
+    renderDiaryDates();
+    renderDiaryPage();
   }
+
 
   document.getElementById('energie').addEventListener('input', (e) => {
     document.getElementById('energie-val').textContent = e.target.value;
@@ -928,42 +768,6 @@
     }
   });
 
-  document.getElementById('btn-validate-exo').addEventListener('click', async () => {
-    const btn = document.getElementById('btn-validate-exo');
-    const feedback = document.getElementById('exo-feedback');
-    const rec = refreshExercisePanel();
-    const payload = {
-      version: 'architecte-exercice-v1',
-      date: TODAY,
-      reco_id: rec.id,
-      title: rec.title,
-      duration: rec.duration,
-      before: Number(document.getElementById('exo-before').value || 5),
-      after: Number(document.getElementById('exo-after').value || 6),
-      time_slot: document.getElementById('exo-time').value,
-      format: document.getElementById('exo-format').value,
-      note: document.getElementById('exo-note').value.trim(),
-    };
-    btn.disabled = true;
-    btn.textContent = 'Validation…';
-    try {
-      await createMyJournalEntry({
-        body_text: (payload.note || payload.title || 'Exercice complété'),
-        emotional_tone: payload.after >= payload.before ? 'calme' : 'confus',
-        entry_kind: 'exercice',
-        structured_payload: payload,
-        dimensions: ['corps', 'emotions'],
-      });
-      document.getElementById('exo-note').value = '';
-      feedback.textContent = '✓ Exercice validé et enregistré.';
-      await chargerEntrees();
-    } catch (e) {
-      feedback.textContent = 'Impossible d\'enregistrer l\'exercice.';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Valider cet exercice';
-    }
-  });
 
   chargerEntrees();
 })();
