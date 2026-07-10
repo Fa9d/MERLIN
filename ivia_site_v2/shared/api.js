@@ -807,6 +807,11 @@ async function listMyReperes() {
 }
 
 /** Mode autonome — reflet de journal (client seul, avec ou sans praticien). */
+/** Ma carte de vie (Horizon) : constellation + champs de tension, filtrée Loi 21. */
+async function getMyCarteDeVie() {
+  return _req('/api/v1/me/carte-de-vie');
+}
+
 /** Reflet de séance (mode autonome) : sa parole enregistrée, sa lecture. */
 async function requestSeanceReflet(recordingId) {
   return _req('/api/v1/me/recordings/' + encodeURIComponent(recordingId) + '/reflet', { method: 'POST', body: {} });

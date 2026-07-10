@@ -6,11 +6,10 @@
   <script>if(!localStorage.getItem('ivia_session')){location.replace('/connexion.html?retour='+encodeURIComponent(location.pathname));}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <title>IVIA — Votre carte de vie</title>
-  <script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('ivia_recorder_theme')||'signature';}catch(e){document.documentElement.dataset.theme='signature';}})();</script>
-  <script src="/shared/api.js?v=20260709b"></script>
+  <title>IVIA — Horizon</title>
+  <script src="/shared/api.js?v=20260710a"></script>
   <script src="/shared/layout.js?v=20260709c"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/ivia-espace.css?v=20260709b" data-ivia-espace="1">
@@ -18,304 +17,294 @@
   <style>
     body{font-family:'Raleway',system-ui,sans-serif;background:var(--cream);color:var(--ink);}
     h1,h2{font-family:'Lora',Georgia,serif;}
-    .axe-dot{transition:r .25s ease, opacity .25s ease, stroke-width .25s ease;cursor:pointer;}
-    .axe-dot:hover{opacity:1;}
-    .axe-dot.sel{stroke:var(--forest-deep);stroke-width:3;opacity:1;}
-    text.axe-label{cursor:pointer;}
-    text.axe-label.sel{fill:var(--forest-deep) !important;font-weight:700;}
-    @keyframes breathe { 0%,100%{opacity:.5} 50%{opacity:.9} }
-    .breathe{animation:breathe 5s ease-in-out infinite;}
-    /* SVG thématisé (le CSS prime sur les attributs inline) */
-    #constellation text.axe-label{fill:var(--muted);}
-    #constellation .grid-line{stroke:var(--bdr);}
-    #constellation .hub{fill:var(--forest-deep);}
-    .axis-row{background:var(--card-bg);border:1px solid var(--bdr);border-radius:14px;padding:10px 12px;}
-    .axis-row.sel{border-color:var(--forest-deep);box-shadow:0 0 0 1px var(--forest-deep) inset;}
-    .axis-track{height:8px;background:var(--surface);border-radius:999px;overflow:hidden;border:1px solid var(--bdr);}
-    .axis-fill{height:100%;background:linear-gradient(90deg,#8FB99A,#2D6A4F);border-radius:999px;transition:width .8s ease;}
+    .card{background:var(--card-bg);border:1px solid var(--bdr);border-radius:20px;}
+    /* Panneau cosmos — la constellation vit sur fond sombre, comme chez le praticien */
+    .cosmos{background:radial-gradient(120% 100% at 50% 0%, #1b2b20 0%, #14231a 55%, #0f1a13 100%);
+      border:1px solid #2a4031;border-radius:20px;}
+    #tooltip{position:fixed;z-index:60;background:#0f1a13;border:1px solid #3a5743;border-radius:10px;
+      padding:8px 12px;font-size:12px;color:#cfe6d4;pointer-events:none;opacity:0;transition:opacity .15s;max-width:280px;}
+    .tension-card{background:#16281c;border:1px solid #3a5743;border-left:3px solid #D97706;border-radius:12px;padding:12px 14px;}
+    .heat-cell{width:100%;aspect-ratio:1;border-radius:4px;}
+    .ldv-item{position:relative;padding-left:22px;}
+    .ldv-item::before{content:'';position:absolute;left:6px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--forest);}
+    .ldv-item::after{content:'';position:absolute;left:9.5px;top:20px;bottom:-8px;width:1.5px;background:var(--bdr);}
+    .ldv-item:last-child::after{display:none;}
   </style>
 </head>
 <body class="antialiased">
 <div id="ivia-header"></div>
 <script>renderLayout('voir');</script>
 
-<div class="max-w-6xl mx-auto px-4 py-8 sm:py-10 space-y-6">
-  <div class="flex items-start justify-between gap-4 flex-wrap">
-    <div>
-      <h1 class="font-heading text-2xl sm:text-3xl font-bold text-ink mb-2">Carte du vivant · onze axes</h1>
-      <p class="text-muted text-sm leading-relaxed max-w-2xl">
-        Votre carte se dessine toute seule, à partir de vos traces — séances, journal, repères.
-        Plus vous vivez la démarche, plus elle gagne en relief.
-      </p>
+<div class="max-w-5xl mx-auto px-4 py-8 sm:py-10 space-y-6">
+
+  <header>
+    <h1 class="font-heading text-3xl sm:text-4xl font-bold text-ink">Horizon — Orientation</h1>
+    <p class="text-sm text-muted mt-1.5">Une orientation, pas une destination. Vos onze axes, nourris par ce que vous déposez — journal, séances, lectures.</p>
+  </header>
+
+  <!-- Constellation des onze axes -->
+  <section class="cosmos p-5 sm:p-7">
+    <div class="flex items-center justify-between gap-3 flex-wrap mb-1">
+      <h2 class="text-lg font-bold text-[#e8f5eb]">Constellation des onze axes</h2>
+      <span class="text-xs text-[#6f8c78]">le territoire est le sol central — les axes en rayonnent</span>
     </div>
-    <span id="level-chip" class="text-[11px] font-semibold uppercase tracking-wider text-muted bg-surface border border-bdr rounded-full px-3 py-1">Niveau initial</span>
-  </div>
-
-  <div class="grid lg:grid-cols-[minmax(0,460px)_1fr] gap-5 items-start">
-    <section class="bg-card border border-bdr rounded-[24px] p-4 sm:p-6 shadow-sm lg:sticky lg:top-6">
-      <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
-        <h2 class="font-heading text-lg font-bold text-ink">Onze dimensions, un seul chemin</h2>
-      </div>
-      <p class="text-xs text-muted mb-3">Territoire en premier : le sol vivant qui précède et conditionne les autres axes.</p>
-      <div class="w-full overflow-hidden rounded-[16px] border border-bdr bg-surface p-1 sm:p-2">
-        <svg id="constellation" class="w-full h-auto block" viewBox="0 0 560 540" role="img" aria-label="Carte de vie : onze dimensions reliées à vous, dont l'intensité évolue"></svg>
-      </div>
-      <div id="legende" class="flex flex-wrap gap-x-4 gap-y-1.5 mt-3 text-[11px] text-muted"></div>
-      <div class="mt-4 text-xs text-muted leading-relaxed border-t border-bdr pt-3">
-        <p><strong class="text-ink">Repère :</strong> cette visualisation n'est pas un diagnostic. Elle sert à observer des tendances, puis à en discuter en séance.</p>
-      </div>
-    </section>
-
-    <div class="space-y-5 min-w-0">
-      <aside class="bg-card border border-bdr rounded-[24px] p-5">
-        <h2 class="font-heading text-lg font-bold text-ink">Axe en lumière</h2>
-        <p class="text-xs text-muted mt-1 mb-4">Touchez un axe — sur la carte ou dans la liste — pour l'explorer.</p>
-        <div id="concept-card" class="bg-surface border border-bdr rounded-[14px] p-4">
-          <div class="flex items-center justify-between gap-2">
-            <p id="concept-title" class="text-sm font-semibold text-ink">Territoire</p>
-            <span id="concept-chip" class="text-[11px] font-semibold uppercase tracking-wider text-muted"></span>
-          </div>
-          <div class="axis-track mt-2 mb-2"><div id="concept-bar" class="axis-fill" style="width:0%"></div></div>
-          <p id="concept-text" class="text-xs text-muted leading-relaxed mt-1">Le sol vécu : lieux, contexte, sécurité et appartenance.</p>
-        </div>
-        <a href="/client/ma-progression.html" class="inline-block mt-3 text-xs font-semibold text-forest-deep hover:underline">Voir la ligne de vie complète →</a>
-      </aside>
-
-      <section class="bg-card border border-bdr rounded-[24px] p-5 sm:p-6">
-        <div class="flex items-center justify-between gap-2 flex-wrap mb-4">
-          <h2 class="font-heading text-lg font-bold text-ink">Progression par axe</h2>
-          <span id="source-line" class="text-[11px] text-muted">Sources : séances, journal, repères</span>
-        </div>
-        <div id="axes-list" class="grid sm:grid-cols-2 gap-3">
-          <p class="text-sm text-muted">Chargement des axes…</p>
-        </div>
-      </section>
+    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mb-1 max-w-2xl leading-relaxed"></p>
+    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
+    <svg id="constellation" class="w-full" viewBox="0 0 560 520" role="img" aria-label="Constellation de vos onze axes"></svg>
+    <div class="flex items-center gap-4 text-[11px] text-[#6f8c78] mt-2 flex-wrap">
+      <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#8FB99A"></span>actif</span>
+      <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#4A7C59"></span>présent</span>
+      <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#2a4031"></span>en sourdine</span>
+      <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full border-2" style="background:#2a4031;border-color:#D97706"></span>en tension</span>
     </div>
-  </div>
 
-  <!-- Ligne de vie intégrée -->
-  <section class="bg-card border border-bdr rounded-[24px] p-5 sm:p-6">
-    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
-      <div>
-        <h2 class="font-heading text-lg font-bold text-ink">Ligne de vie</h2>
-        <p class="text-xs text-muted mt-1">Votre parcours réel — séances, journal, repères.</p>
-      </div>
+    <!-- Champs de tension -->
+    <div id="tensions-bloc" class="hidden mt-6">
+      <h3 class="text-base font-bold text-[#e8f5eb] mb-1">Champs de tension</h3>
+      <p class="text-xs text-[#6f8c78] mb-3">Là où ça tire — deux axes qui se tendent l'un l'autre, pas deux problèmes séparés.</p>
+      <div id="tensions-list" class="grid sm:grid-cols-2 gap-3"></div>
     </div>
-    <p class="text-sm text-muted" id="ldv-resume-carte">Chargement…</p>
-    <a href="/client/ma-progression.html" class="inline-block mt-4 text-xs font-semibold text-forest-deep hover:underline">Voir la progression complète →</a>
   </section>
 
-  <div class="bg-surface border border-bdr rounded-[20px] p-6 text-center">
-    <p class="text-sm text-muted leading-relaxed max-w-xl mx-auto mb-4">
-      Chaque rencontre et chaque saison enrichissent la carte. Votre journal reste central : c'est lui qui donne la matière la plus fine.
-    </p>
-    <div class="flex items-center justify-center gap-2 flex-wrap">
-      <a href="/client/journal.html" class="inline-block border border-bdr text-ink font-semibold px-5 py-2.5 rounded-[12px] hover:bg-white transition-colors">Écrire dans le journal</a>
-      <a href="/reserver.html" class="inline-block bg-forest-deep text-white font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Réserver une séance</a>
-    </div>
-  </div>
+  <!-- Progression : de séance en séance -->
+  <section class="card p-5 sm:p-7">
+    <h2 class="text-lg font-bold text-ink mb-1">Votre progression</h2>
+    <p class="text-xs text-muted mb-4">Semaine par semaine : les axes que vos traces ont touchés, et les moments d'analyse (● séance ou lecture reçue).</p>
+    <div class="overflow-x-auto"><div id="heat" class="min-w-[520px]"></div></div>
+    <p id="heat-vide" class="hidden text-sm text-muted">Votre progression se dessinera à mesure que vous écrivez et vivez des séances.</p>
+  </section>
+
+  <!-- Ligne de vie -->
+  <section class="card p-5 sm:p-7">
+    <h2 class="text-lg font-bold text-ink mb-1">Ligne de vie</h2>
+    <p class="text-xs text-muted mb-5">Votre parcours, du plus récent au plus ancien — séances, lectures reçues, moments d'écriture.</p>
+    <div id="ldv" class="space-y-4"></div>
+    <p id="ldv-vide" class="hidden text-sm text-muted">Votre ligne de vie commence avec votre première trace.</p>
+  </section>
 </div>
 
 <div id="ivia-footer"></div>
-<script>renderLayout('voir');</script>
+<div id="tooltip"></div>
 
 <script>
-  const AXES_META = [
-    { key:'territoire', label:'Territoire', short:'Territoire', base:0.46, w:1.15, concept:'Le sol vécu : lieux, contexte, sécurité et appartenance.' },
-    { key:'corps', label:'Corps', short:'Corps', base:0.44, w:1.0, concept:'Rythmes corporels, sensations et signaux du quotidien.' },
-    { key:'metabolisme', label:'Métabolisme', short:'Métabolisme', base:0.4, w:0.92, concept:'Énergie, récupération, sommeil et régulation de base.' },
-    { key:'emotions', label:'Émotions', short:'Émotions', base:0.43, w:1.05, concept:'Capacité à reconnaître, nommer et traverser les états émotionnels.' },
-    { key:'mental', label:'Mental', short:'Mental', base:0.45, w:1.0, concept:'Clarté de pensée, attention, prise de recul et compréhension.' },
-    { key:'relations', label:'Relations', short:'Relations', base:0.42, w:0.95, concept:'Qualité des liens, frontières et soutien relationnel.' },
-    { key:'famille', label:'Famille', short:'Famille', base:0.39, w:0.88, concept:'Dynamiques familiales présentes et héritées.' },
-    { key:'transgenerationnel', label:'Transgénérationnel', short:'Transgén.', base:0.34, w:0.82, concept:'Traces, loyautés invisibles, transmissions intergénérationnelles.' },
-    { key:'societe', label:'Société', short:'Société', base:0.38, w:0.86, concept:'Contexte social, travail, collectifs, pression et appuis.' },
-    { key:'spirituel', label:'Spirituel / existentiel', short:'Spirituel', base:0.4, w:0.84, concept:'Sens, direction, valeurs, lien à plus grand que soi.' },
-    { key:'urgence', label:'Repère / urgence', short:'Urgence', base:0.33, w:0.78, concept:'Signal d’alerte, besoins immédiats, orientation de sécurité.' },
-  ];
+(async function () {
+  const esc = (s) => { const d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; };
+  const tip = document.getElementById('tooltip');
+  const moveTip = (ev) => { tip.style.left = (ev.clientX + 14) + 'px'; tip.style.top = (ev.clientY + 14) + 'px'; };
+  const showTip = (html, ev) => { tip.innerHTML = html; tip.style.opacity = 1; moveTip(ev); };
+  const hideTip = () => { tip.style.opacity = 0; };
 
-  function clamp(v) { return Math.max(0.1, Math.min(0.98, v)); }
-  function scoreToLevel(v) {
-    if (v >= 0.72) return 'présent';
-    if (v >= 0.5) return 'émergent';
-    return 'en attente';
+  // ── Données : référentiel des axes + SA carte (analyse réelle) + traces ────
+  let axesRef = [], carte = null, entries = [], docs = [], reflets = [], bookings = [];
+  try {
+    const r = await fetch('https://api.ivia.quebec/api/v1/referentiels/axes');
+    if (r.ok) axesRef = await r.json();
+  } catch (e) {}
+  try { carte = await getMyCarteDeVie(); } catch (e) { carte = null; }
+  try { entries = await getMyJournal(); } catch (e) {}
+  try { docs = await getMyDocuments(); } catch (e) {}
+  try { reflets = await listMyReflets(); } catch (e) {}
+  try { bookings = await getMyBookings(); } catch (e) {}
+
+  if (!Array.isArray(axesRef) || !axesRef.length) {
+    axesRef = [
+      { code: 'territoire', label: 'Territoire', fondateur: true },
+      { code: 'corps', label: 'Corps' }, { code: 'metabolisme', label: 'Métabolisme' },
+      { code: 'emotions', label: 'Émotions' }, { code: 'mental', label: 'Mental' },
+      { code: 'relations', label: 'Relations' }, { code: 'famille', label: 'Famille' },
+      { code: 'transgenerationnel', label: 'Transgénér.' }, { code: 'societe', label: 'Société' },
+      { code: 'spirituel', label: 'Spirituel /\nexistentiel' }, { code: 'urgence', label: 'Repère /\nurgence' },
+    ];
   }
 
-  function averageToneBoost(entries) {
-    if (!entries || !entries.length) return 0;
-    const table = { calme:0.06, leger:0.05, charge:0.02, fatigue:-0.02, confus:-0.02, triste:-0.03, en_colere:-0.04 };
-    let sum = 0, n = 0;
+  // ── Résonances : la CARTE d'analyse si elle existe, sinon le journal (repli) ─
+  let AXES, TENSIONS = [];
+  if (carte && carte.axes && Object.keys(carte.axes).length) {
+    AXES = axesRef.map(a => ({
+      ...a,
+      resonance: (carte.axes[a.code] || {}).resonance || 'sourdine',
+      note: (carte.axes[a.code] || {}).note || '',
+    }));
+    TENSIONS = (carte.tensions || []).map(t => ({ ...t, label: t.label || 'Champ de tension' }));
+    if (carte.constellation_resume) document.getElementById('constellation-resume').textContent = carte.constellation_resume;
+    if (carte.fil) document.getElementById('constellation-mode').textContent = carte.fil;
+  } else {
+    const cutoff = Date.now() - 30 * 864e5;
+    const compte = {};
     entries.forEach(e => {
-      if (e && e.emotional_tone && table[e.emotional_tone] != null) {
-        sum += table[e.emotional_tone];
-        n += 1;
+      if (new Date(e.written_at).getTime() < cutoff) return;
+      (e.dimensions || []).forEach(a => { compte[a] = (compte[a] || 0) + 1; });
+    });
+    AXES = axesRef.map(a => ({
+      ...a,
+      resonance: (compte[a.code] || 0) >= 3 ? 'actif' : (compte[a.code] ? 'present' : 'sourdine'),
+      note: compte[a.code] ? `${compte[a.code]} trace(s) ce mois-ci` : 'aucune trace récente — et c’est correct',
+    }));
+    document.getElementById('constellation-mode').textContent =
+      'Votre carte se dessinera au fil des séances — en attendant, la constellation reflète vos traces de journal.';
+  }
+
+  // ── Constellation — représentation praticien intégrale ──────────────────────
+  const RES = {
+    sourdine: { fill: '#2a4031', r: 11, stroke: '#3a5743', text: '#5a7563' },
+    present:  { fill: '#4A7C59', r: 15, stroke: '#5e9670', text: '#cfe6d4' },
+    actif:    { fill: '#8FB99A', r: 19, stroke: '#b6d8bf', text: '#0f1a12' },
+    tension:  { fill: '#2a4031', r: 17, stroke: '#D97706', text: '#e0a458' },
+  };
+  const INTENS_W = { faible: 1.5, moderee: 3, marquee: 5 };
+
+  function drawConstellation() {
+    const svg = d3.select('#constellation');
+    svg.selectAll('*').remove();
+    const W = 560, H = 520, cx = W / 2, cy = H / 2 + 6, R = 175;
+    const ring = AXES.filter(a => !a.fondateur);
+    const center = AXES.find(a => a.fondateur) || AXES[0];
+    const pos = {};
+    ring.forEach((a, i) => {
+      const ang = (-Math.PI / 2) + i * (2 * Math.PI / ring.length);
+      pos[a.code] = { x: cx + R * Math.cos(ang), y: cy + R * Math.sin(ang), ang };
+    });
+    pos[center.code] = { x: cx, y: cy };
+
+    svg.append('g').selectAll('line').data(ring).join('line')
+      .attr('x1', cx).attr('y1', cy)
+      .attr('x2', d => pos[d.code].x).attr('y2', d => pos[d.code].y)
+      .attr('stroke', '#22372a').attr('stroke-width', 1);
+
+    const arcs = svg.append('g');
+    TENSIONS.forEach(t => {
+      const [a, b] = (t.entre || []).map(c => pos[c]);
+      if (!a || !b) return;
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      const dx = mx - cx, dy = my - cy, k = 0.22;
+      arcs.append('path')
+        .attr('d', `M${a.x},${a.y} Q${mx + dx * k},${my + dy * k} ${b.x},${b.y}`)
+        .attr('fill', 'none').attr('stroke', '#D97706')
+        .attr('stroke-width', INTENS_W[t.intensite] || 3).attr('stroke-opacity', 0.55)
+        .attr('stroke-dasharray', '2 4')
+        .style('cursor', 'pointer')
+        .on('mousemove', ev => showTip(`<b style="color:#e0a458">${esc(t.label)}</b> · ${esc(t.intensite || '')}<br>${esc(t.desc || '')}`, ev))
+        .on('mouseleave', hideTip);
+    });
+
+    svg.append('circle').attr('cx', cx).attr('cy', cy).attr('r', 46)
+      .attr('fill', '#1f3325').attr('stroke', '#3a5743').attr('stroke-width', 1).attr('opacity', 0.6);
+
+    const node = svg.append('g').selectAll('g.axis-node').data(AXES).join('g')
+      .attr('class', 'axis-node')
+      .attr('transform', d => `translate(${pos[d.code].x},${pos[d.code].y})`)
+      .style('cursor', 'pointer')
+      .on('mousemove', (ev, d) => showTip(`<b>${esc(String(d.label).replace('\n', ' '))}</b> · ${esc(d.resonance)}<br>${esc(d.note || '')}`, ev))
+      .on('mouseleave', hideTip);
+
+    node.append('circle')
+      .attr('r', d => d.fondateur ? 30 : (RES[d.resonance] || RES.sourdine).r)
+      .attr('fill', d => d.fondateur ? (d.resonance === 'tension' ? '#2a4031' : '#4A7C59') : (RES[d.resonance] || RES.sourdine).fill)
+      .attr('stroke', d => d.fondateur ? (d.resonance === 'tension' ? '#D97706' : '#8FB99A') : (RES[d.resonance] || RES.sourdine).stroke)
+      .attr('stroke-width', d => d.resonance === 'tension' ? 2.5 : 1.5);
+
+    node.each(function (d) {
+      const g = d3.select(this);
+      const lines = String(d.label).split('\n');
+      if (d.fondateur) {
+        g.append('text').attr('text-anchor', 'middle').attr('dy', '-1')
+          .attr('fill', d.resonance === 'tension' ? '#e0a458' : '#0f1a12')
+          .attr('font-weight', '700').attr('font-size', '12').attr('font-family', 'Lora, serif').text(lines[0]);
+        g.append('text').attr('text-anchor', 'middle').attr('dy', '13')
+          .attr('fill', d.resonance === 'tension' ? '#9bb7a3' : '#1f3325')
+          .attr('font-size', '9').text('le sol');
+        return;
       }
-    });
-    if (!n) return 0;
-    return Math.max(-0.05, Math.min(0.06, sum / n));
-  }
-
-  let AXES_CURRENT = [];
-  let SELECTED_KEY = 'territoire';
-
-  function renderConcept(axis) {
-    SELECTED_KEY = axis.key;
-    document.getElementById('concept-title').textContent = axis.label;
-    document.getElementById('concept-text').textContent = axis.concept;
-    if (axis.v != null) {
-      const pct = Math.round(axis.v * 100);
-      document.getElementById('concept-chip').textContent = pct + '% · ' + scoreToLevel(axis.v);
-      document.getElementById('concept-bar').style.width = pct + '%';
-    }
-    // Synchroniser les surlignages (carte + liste)
-    document.querySelectorAll('#constellation .axe-dot').forEach(el =>
-      el.classList.toggle('sel', el.dataset.key === axis.key));
-    document.querySelectorAll('#constellation text.axe-label').forEach(el =>
-      el.classList.toggle('sel', el.dataset.key === axis.key));
-    document.querySelectorAll('#axes-list .axis-row').forEach(el =>
-      el.classList.toggle('sel', el.dataset.key === axis.key));
-  }
-
-  function renderBars(axes) {
-    const zone = document.getElementById('axes-list');
-    zone.innerHTML = '';
-    axes.forEach(a => {
-      const pct = Math.round(a.v * 100);
-      const level = scoreToLevel(a.v);
-      const row = document.createElement('button');
-      row.type = 'button';
-      row.dataset.key = a.key;
-      row.className = 'axis-row text-left hover:border-forest transition-colors';
-      row.innerHTML = `
-        <div class="flex items-center justify-between gap-2">
-          <p class="text-sm font-semibold text-ink">${a.label}</p>
-          <span class="text-[11px] font-semibold uppercase tracking-wider text-muted">${pct}% · ${level}</span>
-        </div>
-        <div class="axis-track mt-2"><div class="axis-fill" style="width:${pct}%"></div></div>
-      `;
-      row.addEventListener('click', () => renderConcept(a));
-      zone.appendChild(row);
-    });
-  }
-
-  function drawConstellation(axes) {
-    const svg = document.getElementById('constellation');
-    const CX = 280, CY = 270, R = 180;
-    const n = axes.length;
-    const pos = i => {
-      const ang = (-Math.PI / 2) + (i * 2 * Math.PI / n);
-      return [CX + R * Math.cos(ang), CY + R * Math.sin(ang), ang];
-    };
-
-    // Liens centre → dimension, puis bulles + étiquettes (style « un seul chemin »)
-    let liens = '', bulles = '', labels = '';
-    axes.forEach((a, i) => {
-      const [x, y, ang] = pos(i);
-      const r = 8 + a.v * 18;
-      const col = a.v >= 0.65 ? '#2D6A4F' : a.v >= 0.45 ? '#4A7C59' : '#8FB99A';
-      liens += `<line class="grid-line" x1="${CX}" y1="${CY}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke-width="1.5"/>`;
-      bulles += `<circle class="axe-dot" data-key="${a.key}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${col}" opacity="${(0.55 + a.v * 0.45).toFixed(2)}"><title>${a.label} · ${Math.round(a.v * 100)}%</title></circle>`;
-      // Étiquette toujours à l'extérieur de la bulle, jamais rognée
-      const s = Math.sin(ang), c = Math.cos(ang);
-      const lx = x + c * (r + 12);
-      const ly = y + s * (r + 12) + (s > 0.35 ? 12 : s < -0.35 ? -4 : 4);
-      const anchor = Math.abs(c) < 0.3 ? 'middle' : (c > 0 ? 'start' : 'end');
-      labels += `<text class="axe-label" data-key="${a.key}" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" font-size="13" font-weight="600">${a.short || a.label}</text>`;
-    });
-
-    svg.innerHTML = liens +
-      `<circle cx="${CX}" cy="${CY}" r="26" fill="#2D6A4F"/>` +
-      `<text x="${CX}" y="${CY + 4}" text-anchor="middle" fill="white" font-size="11" font-weight="600">vous</text>` +
-      bulles + labels;
-
-    // Clic sur bulle ou étiquette → sélection
-    svg.querySelectorAll('.axe-dot, text.axe-label').forEach(el => {
-      el.addEventListener('click', () => {
-        const a = AXES_CURRENT.find(x => x.key === el.dataset.key);
-        if (a) renderConcept(a);
+      const p = pos[d.code];
+      const anchor = Math.abs(Math.cos(p.ang)) < 0.34 ? 'middle' : (Math.cos(p.ang) > 0 ? 'start' : 'end');
+      const rr = (RES[d.resonance] || RES.sourdine).r;
+      const ox = anchor === 'start' ? rr + 6 : anchor === 'end' ? -(rr + 6) : 0;
+      const oyBase = anchor === 'middle' ? (Math.sin(p.ang) > 0 ? rr + 14 : -(rr + 8)) : 0;
+      lines.forEach((ln, i) => {
+        g.append('text').attr('text-anchor', anchor)
+          .attr('x', ox).attr('y', oyBase + i * 12 + (anchor !== 'middle' ? (i * 12 - (lines.length - 1) * 6) : 0))
+          .attr('fill', d.resonance === 'tension' ? '#e0a458' : '#9bb7a3')
+          .attr('font-size', '11').attr('font-weight', '600').text(ln);
       });
     });
+  }
+  drawConstellation();
 
-    document.getElementById('legende').innerHTML =
-      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#2D6A4F;display:inline-block"></span>occupe de la place (≥ 65 %)</span>' +
-      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#4A7C59;display:inline-block"></span>présent (45-64 %)</span>' +
-      '<span class="inline-flex items-center gap-1.5"><span style="width:10px;height:10px;border-radius:50%;background:#8FB99A;display:inline-block"></span>ça respire (&lt; 45 %)</span>';
+  // ── Champs de tension (liste sous la constellation) ──────────────────────────
+  if (TENSIONS.length) {
+    document.getElementById('tensions-bloc').classList.remove('hidden');
+    const labelAxe = c => String((axesRef.find(a => a.code === c) || {}).label || c).replace('\n', ' ');
+    document.getElementById('tensions-list').innerHTML = TENSIONS.map(t => `
+      <div class="tension-card">
+        <p class="text-sm font-semibold text-[#e0a458]">${esc(t.label)}
+          <span class="text-[10px] font-normal text-[#6f8c78]">· ${esc(t.intensite || '')}</span></p>
+        <p class="text-[11px] text-[#9bb7a3] mt-0.5">${(t.entre || []).map(labelAxe).map(esc).join(' ⟷ ')}</p>
+        ${t.desc ? `<p class="text-xs text-[#cfe6d4] mt-1.5 leading-relaxed">${esc(t.desc)}</p>` : ''}
+      </div>`).join('');
   }
 
-  function parseArchiEntries(entries) {
-    return (entries || []).map(e => {
-      const s = journalStructured(e);
-      return s.kind === 'checkin' ? s.data : null;
-    }).filter(Boolean);
+  // ── Progression : 8 semaines × axes + moments d'analyse ─────────────────────
+  const SEMAINES = 8;
+  const weekStart = (d) => { const x = new Date(d); const wd = (x.getDay() + 6) % 7; x.setDate(x.getDate() - wd); x.setHours(0, 0, 0, 0); return x.getTime(); };
+  const weeks = [];
+  for (let i = SEMAINES - 1; i >= 0; i--) weeks.push(weekStart(Date.now() - i * 7 * 864e5));
+  const wIdx = (ts) => weeks.indexOf(weekStart(ts));
+
+  const grid = {};
+  axesRef.forEach(a => { grid[a.code] = new Array(SEMAINES).fill(0); });
+  entries.forEach(e => {
+    const i = wIdx(new Date(e.written_at).getTime());
+    if (i < 0) return;
+    (e.dimensions || []).forEach(a => { if (grid[a]) grid[a][i]++; });
+  });
+  const analyses = new Array(SEMAINES).fill(0);
+  const today = new Date().toISOString().slice(0, 10);
+  bookings.filter(b => b.status === 'confirmed' && b.slot_date < today).forEach(b => {
+    const i = wIdx(new Date(b.slot_date + 'T12:00').getTime()); if (i >= 0) analyses[i]++;
+  });
+  docs.forEach(d => { const i = wIdx(new Date(d.created_at).getTime()); if (i >= 0) analyses[i]++; });
+  reflets.forEach(r => { const i = wIdx(new Date(r.created_at).getTime()); if (i >= 0) analyses[i]++; });
+
+  const totalTraces = Object.values(grid).flat().reduce((s, n) => s + n, 0) + analyses.reduce((s, n) => s + n, 0);
+  if (!totalTraces) {
+    document.getElementById('heat-vide').classList.remove('hidden');
+  } else {
+    const teinte = (n) => n === 0 ? 'var(--surface)' : n === 1 ? '#C8E6D4' : n === 2 ? '#8FB99A' : '#2D6A4F';
+    const semaineLbl = (ts) => new Date(ts).toLocaleDateString('fr-CA', { day: 'numeric', month: 'short' });
+    let html = '<div class="grid gap-1" style="grid-template-columns: 110px repeat(' + SEMAINES + ', 1fr);">';
+    html += '<div></div>' + weeks.map(w => `<div class="text-[10px] text-muted text-center">${semaineLbl(w)}</div>`).join('');
+    axesRef.forEach(a => {
+      const label = String(a.label).replace('\n', ' ');
+      html += `<div class="text-[11px] text-muted truncate pr-1" title="${esc(label)}">${esc(label)}</div>`;
+      html += grid[a.code].map(n => `<div class="heat-cell" style="background:${teinte(n)}" title="${n} trace(s)"></div>`).join('');
+    });
+    html += `<div class="text-[11px] font-semibold text-forest-deep pr-1">Analyses ●</div>`;
+    html += analyses.map(n => `<div class="heat-cell flex items-center justify-center text-[10px] font-bold" style="background:${n ? '#E8F5EE' : 'var(--surface)'};color:#2D6A4F">${n ? '●'.repeat(Math.min(n, 3)) : ''}</div>`).join('');
+    html += '</div>';
+    document.getElementById('heat').innerHTML = html;
   }
 
-  // Bonus par axe issu des journaux structurés (énergie → métabolisme/corps,
-  // humeur → émotions/mental, HeartMath → corps, stresseurs → société/relations)
-  function archiAxisBoosts(archis) {
-    const boosts = {};
-    if (!archis.length) return boosts;
-    const avgEnergie = archis.reduce((s, a) => s + Number(a.energie || 0), 0) / archis.length;
-    const goodMood = archis.filter(a => a.humeur === 'coherence' || a.humeur === 'flow').length / archis.length;
-    const hmRate = archis.filter(a => (a.heartmath || []).length > 0).length / archis.length;
-    const stressRate = archis.filter(a => (a.stressors || []).length > 0).length / archis.length;
-    boosts.metabolisme = (avgEnergie - 5) * 0.02;
-    boosts.corps = (avgEnergie - 5) * 0.012 + hmRate * 0.05;
-    boosts.emotions = goodMood * 0.08 - stressRate * 0.02;
-    boosts.mental = goodMood * 0.05;
-    boosts.societe = -stressRate * 0.03;
-    return boosts;
+  // ── Ligne de vie ─────────────────────────────────────────────────────────────
+  const feed = [
+    ...bookings.filter(b => b.status === 'confirmed').map(b => ({
+      ts: b.slot_date + 'T12:00', label: 'Séance', text: b.slot_date < today ? 'Séance vécue' : 'Séance à venir',
+    })),
+    ...docs.map(d => ({ ts: d.created_at, label: 'Lecture reçue', text: d.title || 'Résumé de séance' })),
+    ...reflets.map(r => ({ ts: r.created_at, label: 'Miroir', text: (r.reflet || '').slice(0, 110) + '…' })),
+    ...entries.slice(0, 30).map(e => ({ ts: e.written_at, label: 'Journal', text: (e.body_text || '').slice(0, 110) })),
+  ].filter(x => x.ts).sort((a, b) => new Date(b.ts) - new Date(a.ts)).slice(0, 25);
+
+  const ldv = document.getElementById('ldv');
+  if (!feed.length) {
+    document.getElementById('ldv-vide').classList.remove('hidden');
+  } else {
+    ldv.innerHTML = feed.map(x => `
+      <div class="ldv-item">
+        <p class="text-[11px] text-muted">${new Date(x.ts).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })} · <span class="font-semibold text-forest-deep">${esc(x.label)}</span></p>
+        <p class="text-sm text-ink mt-0.5">${esc(x.text)}</p>
+      </div>`).join('');
   }
-
-  (async function initCarteVivant() {
-    let bookings = [], entries = [], docs = [], recs = [];
-    try { bookings = await getMyBookings(); } catch (e) {}
-    try { entries = await getMyJournal(); } catch (e) {}
-    try { docs = await getMyDocuments(); } catch (e) {}
-    try { recs = await getMyRecordings(); } catch (e) {}
-
-    const today = new Date().toISOString().slice(0, 10);
-    const confirmed = bookings.filter(b => b.status === 'confirmed');
-    const pastSessions = confirmed.filter(b => b.slot_date < today).length;
-    const upcomingSessions = confirmed.filter(b => b.slot_date >= today).length;
-    const journalCount = entries.length;
-    const repereCount = docs.length + recs.filter(r => !!r.transcript_ready).length;
-    const toneBoost = averageToneBoost(entries);
-    const volume = Math.min(1, (pastSessions * 0.12) + (journalCount * 0.04) + (repereCount * 0.06) + (upcomingSessions * 0.03));
-    const boosts = archiAxisBoosts(parseArchiEntries(entries));
-
-    const axes = AXES_META.map(a => ({
-      ...a,
-      v: clamp(a.base + (volume * a.w * 0.35) + toneBoost + (boosts[a.key] || 0)),
-    }));
-    AXES_CURRENT = axes;
-    const mean = axes.reduce((s, a) => s + a.v, 0) / axes.length;
-    const level = mean >= 0.7 ? 'Niveau ancré' : mean >= 0.52 ? 'Niveau émergent' : 'Niveau initial';
-    document.getElementById('level-chip').textContent = level;
-    document.getElementById('source-line').textContent =
-      `Sources : ${pastSessions} séance(s) vécue(s), ${journalCount} entrée(s) journal, ${repereCount} repère(s)`;
-
-    drawConstellation(axes);
-    renderBars(axes);
-    renderConcept(axes[0]);
-  })();
-
-  // ── Ligne de vie — resume reel ─────────────────────────────────────────────
-  (async function initLigneDeVieResume() {
-    const el = document.getElementById('ldv-resume-carte');
-    if (!el) return;
-    let bookings = [], entries = [], docs = [], recs = [];
-    try { bookings = await getMyBookings(); } catch (e) {}
-    try { entries = await getMyJournal(); } catch (e) {}
-    try { docs = await getMyDocuments(); } catch (e) {}
-    try { recs = await getMyRecordings(); } catch (e) {}
-    const today = new Date().toISOString().slice(0, 10);
-    const past = bookings.filter(b => b.status === 'confirmed' && b.slot_date < today).length;
-    const reperes = docs.length + recs.filter(r => !!r.transcript_ready).length;
-    if (!past && !entries.length && !reperes) {
-      el.textContent = 'Votre ligne de vie se dessinera à partir de vos séances, votre journal et vos repères.';
-      return;
-    }
-    el.textContent = past + ' séance(s) vécue(s) · ' + entries.length + ' entrée(s) au journal · ' + reperes + ' repère(s) disponible(s).';
-  })();</script>
+})();
+</script>
 </body>
 </html>
