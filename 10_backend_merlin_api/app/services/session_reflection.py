@@ -190,14 +190,10 @@ async def generate_seance_reflet(db: Session, record: SessionRecord) -> dict[str
     for attempt in range(3):
         if attempt == 2:
             prompt = prompt + (
-                "
-
-## CONSIGNE FINALE (verrou de fidélité)
-"
+                "\n\n## CONSIGNE FINALE (verrou de fidélité)\n"
                 "Tes citations restent inexactes. Reprends ta sortie SANS AUCUN "
                 "guillemet « » : reformule dans tes mots doux, ne cite RIEN "
-                "textuellement. Tout le reste des règles demeure.
-"
+                "textuellement. Tout le reste des règles demeure.\n"
             )
         raw, usage = await _call_claude(prompt, max_tokens=2048)
         _bump_daily()
