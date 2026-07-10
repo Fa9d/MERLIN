@@ -13,10 +13,10 @@
  */
 
 const IVIA_NAV = [
-  { id: 'aujourdhui', label: "Aujourd'hui",  href: '/client/dashboard.html' },
+  { id: 'aujourdhui', label: 'Mon espace',   href: '/client/dashboard.html' },
   { id: 'ecrire',     label: 'Journal',      href: '/client/journal.html' },
   { id: 'miroir',     label: 'Miroir',       href: '/client/mon-reflet.html', crumb: 'Miroir' },
-  { id: 'voir',       label: 'Carte de vie', href: '/client/carte-de-vie.html', crumb: 'Carte de vie' },
+  { id: 'voir',       label: 'Horizon',      href: '/client/carte-de-vie.html', crumb: 'Horizon' },
 ];
 
 const IVIA_ACCUEIL = 'https://ivia.quebec';
@@ -144,7 +144,7 @@ function renderLayout(active, pageLabel) {
               <hr class="ivia-menu-sep">
               <a href="/client/dashboard.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>
-                Aujourd'hui
+                Mon espace
               </a>
               <a href="/client/journal.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>
@@ -156,7 +156,7 @@ function renderLayout(active, pageLabel) {
               </a>
               <a href="/client/carte-de-vie.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><circle cx="5" cy="6" r="1.4"/><circle cx="19" cy="5" r="1.4"/><circle cx="20" cy="15" r="1.4"/><circle cx="7" cy="19" r="1.4"/><path stroke-linecap="round" d="M6.2 7l4.2 3.6M13.8 10.5L18 6M13.9 13.2l4.8 1.4M10.3 13.6L8 17.6"/></svg>
-                Carte de vie
+                Horizon
               </a>
               <hr class="ivia-menu-sep">
               <a href="/client/enregistrement.html" class="ivia-menu-item">
@@ -188,15 +188,42 @@ function renderLayout(active, pageLabel) {
 
   const footer = document.getElementById('ivia-footer');
   if (footer) {
-    // Décision fondateur 2026-07-10 (session client #1) : plus de menus en bas
-    // de page — la navigation vit dans le menu du compte (haut droite) et la
-    // barre mobile. Le pied de page se limite à l'identité et aux ressources.
+    // Footer contextuel ESPACE CLIENT (décision fondateur 2026-07-10) :
+    // les liens du menu client + Services / Ressources / Légal en _blank.
+    const lien = (i) => `<li><a href="${i.href}"${i.blank ? ' target="_blank" rel="noopener"' : ''}>${i.label}</a></li>`;
+    const col = (titre, items) =>
+      `<div class="ivia-footer-col"><p>${titre}</p><ul>${items.map(lien).join('')}</ul></div>`;
     footer.innerHTML = `
     <footer class="ivia-footer">
       <div class="ivia-footer-in">
+        <div class="ivia-footer-cols">
+          ${col('Espace client', [
+            { label: 'Mon espace', href: '/client/dashboard.html' },
+            { label: 'Journal', href: '/client/journal.html' },
+            { label: 'Miroir', href: '/client/mon-reflet.html' },
+            { label: 'Horizon', href: '/client/carte-de-vie.html' },
+            { label: 'Séance expresse', href: '/client/enregistrement.html' },
+            { label: 'Réservation', href: '/client/agenda.html' },
+            { label: 'Mon profil', href: '/client/mon-profil.html' },
+          ])}
+          ${col('Services', [
+            { label: 'Pourquoi IVIA', href: '/pourquoi.html', blank: true },
+            { label: 'Pour les praticiens', href: '/praticiens.html', blank: true },
+            { label: 'Réserver une séance', href: '/reserver.html', blank: true },
+          ])}
+          ${col('Ressources', [
+            { label: '9-8-8 — Ligne de crise (24/7)', href: 'https://988.ca/fr', blank: true },
+            { label: 'Info-Social 8-1-1', href: 'https://www.quebec.ca/sante/trouver-une-ressource/info-social-811', blank: true },
+            { label: 'Urgence : 9-1-1', href: 'tel:911' },
+          ])}
+          ${col('Légal', [
+            { label: 'Confidentialité', href: '/confidentialite.html', blank: true },
+            { label: 'Conditions (CGU)', href: '/cgu.html', blank: true },
+            { label: 'Mentions légales', href: '/mentions.html', blank: true },
+          ])}
+        </div>
         <div class="ivia-footer-base">
-          <p>IVIA — <em>In Vivo, In Actu</em> · Données hébergées au Canada (Loi 25)
-            · <a href="/confidentialite.html">Confidentialité</a> · <a href="/cgu.html">CGU</a></p>
+          <p>IVIA — <em>In Vivo, In Actu</em> · Données hébergées au Canada (Loi 25)</p>
           <p>Pas un service d'urgence · En crise : <strong><a href="tel:988">9-8-8</a></strong> · 811 option 2</p>
         </div>
       </div>

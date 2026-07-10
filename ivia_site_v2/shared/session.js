@@ -125,6 +125,50 @@ function _pIcon(name, cls) {
   return '<svg class="' + cls + '" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">' + (PRATICIEN_ICONS[name] || '') + '</svg>';
 }
 
+
+/**
+ * Footer contextuel (décision fondateur 2026-07-10) : les liens de l'espace
+ * courant + Services / Ressources / Légal en _blank. Injecté en fin de <main>
+ * par les chromes praticien et admin — chaque espace a SON footer.
+ */
+function renderEspaceFooter(kind) {
+  if (document.getElementById('espace-footer')) return;
+  const main = document.querySelector('main');
+  if (!main) return;
+  const nav = kind === 'admin' ? ADMIN_NAV
+    : PRATICIEN_NAV.filter(l => !l.spacer && !l.adminOnly);
+  const lien = (i) => '<li class="mb-1.5"><a class="hover:underline" href="' + i.href + '"'
+    + (i.blank ? ' target="_blank" rel="noopener"' : '') + '>' + i.label + '</a></li>';
+  const col = (titre, items) =>
+    '<div><p class="text-[11px] font-bold uppercase tracking-wider mb-2 opacity-70">' + titre + '</p>'
+    + '<ul class="text-sm">' + items.map(lien).join('') + '</ul></div>';
+  const foot = document.createElement('footer');
+  foot.id = 'espace-footer';
+  foot.className = 'mt-12 pt-8 border-t text-muted';
+  foot.style.borderColor = 'var(--bdr, #D4E8D0)';
+  foot.innerHTML =
+    '<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">'
+    + col(kind === 'admin' ? 'Espace admin' : 'Espace praticien', nav.map(l => ({ label: l.label, href: l.href })))
+    + col('Services', [
+        { label: 'Pourquoi IVIA', href: '/pourquoi.html', blank: true },
+        { label: 'Pour les praticiens', href: '/praticiens.html', blank: true },
+        { label: 'Réserver une séance', href: '/reserver.html', blank: true },
+      ])
+    + col('Ressources', [
+        { label: '9-8-8 — Ligne de crise (24/7)', href: 'https://988.ca/fr', blank: true },
+        { label: 'Info-Social 8-1-1', href: 'https://www.quebec.ca/sante/trouver-une-ressource/info-social-811', blank: true },
+        { label: 'Urgence : 9-1-1', href: 'tel:911' },
+      ])
+    + col('Légal', [
+        { label: 'Confidentialité', href: '/confidentialite.html', blank: true },
+        { label: 'Conditions (CGU)', href: '/cgu.html', blank: true },
+        { label: 'Mentions légales', href: '/mentions.html', blank: true },
+      ])
+    + '</div>'
+    + '<p class="text-xs mt-6 opacity-70">IVIA — <em>In Vivo, In Actu</em> · Données hébergées au Canada (Loi 25) · Pas un service d’urgence.</p>';
+  main.appendChild(foot);
+}
+
 function renderPraticienChrome() {
   // Style des liens injecté ici (source unique) — certaines pages ne le
   // définissaient pas, d'où des barres latérales incohérentes.
@@ -166,6 +210,7 @@ function renderPraticienChrome() {
   const logout = document.getElementById('sidebar-logout');
   if (logout && !logout.childElementCount && typeof renderLogoutButton === 'function') renderLogoutButton(logout);
   if (typeof applyAdminVisibility === 'function') applyAdminVisibility();
+  renderEspaceFooter('praticien');
 }
 
 const ADMIN_NAV = [
@@ -223,6 +268,7 @@ function enforceAdminPage() {
   if (document.getElementById('admin-sidebar') && !isAdminUser()) {
     location.replace('/praticien/dashboard.html');
   }
+  renderEspaceFooter('admin');
 }
 
 /**
