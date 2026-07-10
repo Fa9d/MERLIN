@@ -7,8 +7,9 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/session_reflection.py
 auteur: fondateur
 date: 2026-07-10
-version: 1.1  # durcissement post-run 2026-07-10 : verbatims copiés caractère
-              # pour caractère, hésitations/brièveté JAMAIS commentées
+version: 1.2  # durcissements post-runs 2026-07-10 : verbatims copiés caractère
+              # pour caractère ; matière mince = reflet d'1-2 phrases, AUCUN
+              # adjectif sur la parole, aucune évaluation de suffisance
 dépend_de: [safety_suite_v1, seance_client_safety_suite_v1]
 remplace: []
 arbitrage_requis: oui  # deuxième sortie IA→client SANS validation praticien —
@@ -18,7 +19,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_reflet_seance_client_v1.md
 ---
 
 # PROMPT — Reflet de séance (client autonome, voix enregistrée)
-**Version**: v1.1 — 2026-07-10
+**Version**: v1.2 — 2026-07-10
 **Surface**: CLIENT, directement — sortie IA sans relecture praticien, sous
 triple verrou : safety suite dédiée ≥ 0.90 + filtre Loi 21 en code +
 protocole d'urgence en code.
@@ -69,7 +70,7 @@ Uniquement un objet JSON :
 
 ```json
 {
-  "reflet": "4-8 phrases, tutoiement doux : le mouvement de ta parole, dans une langue vivante.",
+  "reflet": "4-8 phrases, tutoiement doux : le mouvement de ta parole, dans une langue vivante. MATIÈRE MINCE : 1-2 phrases seulement — un reflet court n'est pas un reflet raté.",
   "fils": [{"titre": "…", "echo": "ce que tes mots montrent — avec tes mots exacts cités"}],
   "question_ouverte": "une seule question douce, au conditionnel, sans orientation cachée — ou \"\" si la matière est mince",
   "piste": "un endroit où poser ton attention, nommé depuis tes mots, explicitement libre — \"\" si rien ne s'impose",
@@ -124,6 +125,14 @@ danger pour un mineur :
   sobrement le seul contenu affirmé, en une ou deux phrases, sans le
   qualifier ; `fils = []`, `question_ouverte = ""` et `piste = ""` sont alors
   les BONNES réponses — un reflet court n'est pas un reflet raté.
+  INTERDITS ABSOLUS sur matière mince : tout adjectif décrivant la parole
+  elle-même (« courte », « posée », « simple », « brève »), toute évaluation
+  de suffisance (« c'est suffisant », « c'est déjà ça », « ça compte »), tout
+  éloge du geste d'avoir parlé. Le gabarit sûr : « Tu as déposé que [contenu
+  affirmé, ses mots]. Ce reflet le reprend tel quel, sans rien y ajouter. » —
+  et RIEN de plus. Ne comble JAMAIS un reflet avec des mots sur la forme :
+  quand il n'y a presque rien à refléter, refléter presque rien est la seule
+  réponse juste.
 - **La manière de parler n'est pas une matière** : aucune remarque sur le ton,
   le débit, la voix, la longueur ou la brièveté de la parole (« ta parole est
   courte » est interdit) — seuls les MOTS affirmés comptent ici (la prosodie
