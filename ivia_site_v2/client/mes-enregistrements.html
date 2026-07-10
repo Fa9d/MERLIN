@@ -161,8 +161,13 @@
     zoneListe.innerHTML = recs.slice(0, 20).map((r) => `
       <article class="card p-4 flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <p class="text-sm font-semibold text-ink">${new Date(r.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}</p>
-          <p class="text-xs text-muted mt-0.5">${minSeance(r)} min · ${r.transcript_ready ? 'transcrite' : 'transcription en cours…'}</p>
+          <p class="text-sm font-semibold text-ink">${new Date(r.created_at).toLocaleDateString('fr-CA', { dateStyle: 'long' })}
+            <span class="text-xs font-normal text-muted">· ${r.formule === 'solo30' ? 'Enregistrement solo' : (r.formule || 'Enregistrement')}</span></p>
+          <p class="text-xs text-muted mt-0.5">
+            ${minSeance(r)} min
+            · ${r.praticien_name ? 'partagé avec ' + r.praticien_name : 'pour toi seul·e (mode autonome)'}
+            · ${r.transcript_ready ? 'transcrite ✓' : 'transcription en cours…'}
+          </p>
         </div>
         ${r.transcript_ready
           ? '<button data-reflet="' + r.id + '" class="text-xs font-semibold bg-forest-deep text-white px-3 py-2 rounded-[10px] hover:bg-forest transition-colors">Recevoir ma lecture</button>'

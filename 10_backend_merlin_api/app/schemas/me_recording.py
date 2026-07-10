@@ -31,3 +31,6 @@ class MyRecordingRead(MerlinSchema):
     duration_minutes: int | None = None
     status: str
     transcript_ready: bool
+    # Destinataire : le praticien attribué (nom affichable) — None si le client
+    # est son propre destinataire (mode autonome pur).
+    praticien_name: str | None = None

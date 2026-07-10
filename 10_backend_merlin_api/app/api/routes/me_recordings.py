@@ -138,7 +138,14 @@ def _resolve_practitioner(praticien_id: str | None, db: Session) -> AppUser | No
     return None
 
 
-def _to_read(record: SessionRecord) -> MyRecordingRead:
+def _to_read(record: SessionRecord, db: Session | None = None) -> MyRecordingRead:
+    praticien_name = None
+    if db is not None and record.operator_user_id:
+        op = db.get(AppUser, record.operator_user_id)
+        # Le destinataire n'est un praticien que si c'en est un — le client
+        # attribué à lui-même (mode autonome pur) reste sans destinataire.
+        if op is not None and op.role == AppRole.practitioner:
+            praticien_name = op.display_name
     return MyRecordingRead(
         id=record.id,
         formule=_formule_from_room_name(record.room_name),
@@ -147,6 +154,7 @@ def _to_read(record: SessionRecord) -> MyRecordingRead:
         duration_minutes=record.duration_minutes,
         status=record.session_status_code.value,
         transcript_ready=bool(record.transcript_text),
+        praticien_name=praticien_name,
     )
 
 
@@ -268,7 +276,7 @@ async def upload_my_recording(
         payload.formule,
         len(audio_bytes),
     )
-    return _to_read(record)
+    return _to_read(record, db)
 
 
 @router.get("/access")
@@ -314,4 +322,4 @@ def list_my_recordings(
         )
         .order_by(SessionRecord.created_at.desc())
     ).all()
-    return [_to_read(r) for r in records]
+    return [_to_read(r, db) for r in records]
