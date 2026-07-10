@@ -30,6 +30,19 @@
     .cal-label{position:absolute;inset:2px 3px;border-radius:5px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;pointer-events:none;}
     /* Légende */
     .legend-dot{width:12px;height:12px;border-radius:3px;display:inline-block;}
+    /* Vue mensuelle */
+    .cal-month{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+    .cal-dow{font-size:11px;font-weight:700;text-align:center;color:#4B6350;padding:6px 0;text-transform:uppercase;letter-spacing:.04em;}
+    .cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;font-size:13px;font-weight:500;color:#4B6350;position:relative;}
+    .cal-day.other-month{opacity:.3;}
+    .cal-day.today{background:#F0F7F2;font-weight:700;color:#1A2E1D;}
+    .cal-day.has-activity{cursor:pointer;}
+    .cal-day.has-activity:hover{background:#E8F5EE;}
+    .cal-day .jauges{display:flex;gap:2px;margin-top:3px;}
+    .jauge-dot{width:5px;height:5px;border-radius:50%;}
+    .vue-btn{padding:6px 14px;font-size:13px;font-weight:600;border:1.5px solid #D4E8D0;cursor:pointer;background:#fff;color:#4B6350;}
+    .vue-btn.active{background:#2D6A4F;color:#fff;border-color:#2D6A4F;}
+
   </style>
 </head>
 <body class="antialiased pb-20 lg:pb-0">
@@ -43,7 +56,13 @@
 
       <!-- En-tête + navigation semaine -->
       <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <h1 class="font-heading text-2xl font-bold text-ink">Agenda</h1>
+        <div class="flex items-center gap-4">
+          <h1 class="font-heading text-2xl font-bold text-ink">Agenda</h1>
+          <div class="flex rounded-[10px] overflow-hidden" role="tablist" aria-label="Vue">
+            <button id="vue-semaine-btn" class="vue-btn active rounded-l-[10px]" onclick="basculerVue('semaine')">Semaine</button>
+            <button id="vue-mois-btn" class="vue-btn rounded-r-[10px] border-l-0" onclick="basculerVue('mois')">Mois</button>
+          </div>
+        </div>
         <div class="flex items-center gap-3">
           <button id="btn-prev" onclick="changerSemaine(-1)"
                   class="w-8 h-8 flex items-center justify-center border border-bdr rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
@@ -78,9 +97,30 @@
       </div>
 
       <!-- Calendrier (scroll horizontal mobile) -->
-      <div class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
+      <div id="semaine-vue" class="bg-white border border-bdr rounded-[20px] overflow-x-auto">
         <div id="cal-grid" class="select-none">
           <!-- Généré par JS -->
+        </div>
+      </div>
+
+      <!-- Vue mensuelle (lecture d'ensemble — la gestion reste en semaine) -->
+      <div id="mois-vue" class="hidden">
+        <div class="bg-white border border-bdr rounded-[20px] p-5 max-w-2xl">
+          <div class="flex items-center justify-between mb-4">
+            <button onclick="changerMoisVue(-1)" class="w-8 h-8 flex items-center justify-center rounded-[8px] border border-bdr hover:bg-surface cursor-pointer" aria-label="Mois précédent">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <h3 class="font-heading font-semibold text-ink" id="mois-vue-label">—</h3>
+            <button onclick="changerMoisVue(1)" class="w-8 h-8 flex items-center justify-center rounded-[8px] border border-bdr hover:bg-surface cursor-pointer" aria-label="Mois suivant">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div id="mois-vue-grid" class="cal-month"></div>
+          <div class="flex items-center gap-4 mt-4 text-xs text-muted">
+            <span class="flex items-center gap-1.5"><span class="jauge-dot bg-[#4A7C59] inline-block"></span>Disponible</span>
+            <span class="flex items-center gap-1.5"><span class="jauge-dot bg-[#2D6A4F] inline-block" style="background:#1d4433"></span>Réservé</span>
+            <span class="ml-auto">Cliquer un jour ouvre sa semaine.</span>
+          </div>
         </div>
       </div>
 
@@ -347,6 +387,92 @@
     document.getElementById('modal-creneau').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) fermerModal();
     });
+
+    // ===== VUE MENSUELLE (lecture d'ensemble — la gestion reste en semaine) =====
+    let vueActive = 'semaine';
+    let moisVueDate = new Date(); // 1er du mois affiché
+
+    function basculerVue(vue) {
+      vueActive = vue;
+      document.getElementById('vue-semaine-btn').classList.toggle('active', vue === 'semaine');
+      document.getElementById('vue-mois-btn').classList.toggle('active', vue === 'mois');
+      document.getElementById('semaine-vue').classList.toggle('hidden', vue !== 'semaine');
+      document.getElementById('mois-vue').classList.toggle('hidden', vue !== 'mois');
+      if (vue === 'mois') chargerMoisVue();
+    }
+
+    function changerMoisVue(delta) {
+      moisVueDate = new Date(moisVueDate.getFullYear(), moisVueDate.getMonth() + delta, 1);
+      chargerMoisVue();
+    }
+
+    async function chargerMoisVue() {
+      const y = moisVueDate.getFullYear(), m = moisVueDate.getMonth();
+      const from = `${y}-${String(m + 1).padStart(2, '0')}-01`;
+      const to = isoDate(new Date(y, m + 1, 0));
+      document.getElementById('mois-vue-label').textContent =
+        moisVueDate.toLocaleDateString('fr-CA', { month: 'long', year: 'numeric' });
+
+      const user = getCurrentUser();
+      if (!user?.id) return;
+      // Mêmes sources réelles que la semaine, bornées au mois.
+      const parJour = {};
+      try {
+        const [dispos, resas] = await Promise.all([
+          getAvailableSlots(user.id, from, to),
+          getPractitionerAgenda(from, to),
+        ]);
+        dispos.forEach(sl => {
+          (parJour[sl.slot_date] ??= { dispo: 0, resa: 0 }).dispo++;
+        });
+        resas.forEach(r => {
+          (parJour[r.slot_date] ??= { dispo: 0, resa: 0 }).resa++;
+        });
+      } catch (err) {
+        console.warn('[IVIA] Vue mensuelle :', err.message);
+      }
+
+      const grid = document.getElementById('mois-vue-grid');
+      grid.innerHTML = DAYS.map(d => `<div class="cal-dow">${d}</div>`).join('');
+      const first = new Date(y, m, 1);
+      const lead = (first.getDay() + 6) % 7; // lundi = 0
+      const nbJours = new Date(y, m + 1, 0).getDate();
+      const todayIso = isoDate(new Date());
+      let cells = '';
+      for (let i = 0; i < lead; i++) cells += '<div class="cal-day other-month"></div>';
+      for (let j = 1; j <= nbJours; j++) {
+        const iso = `${y}-${String(m + 1).padStart(2, '0')}-${String(j).padStart(2, '0')}`;
+        const info = parJour[iso];
+        const cls = ['cal-day'];
+        if (iso === todayIso) cls.push('today');
+        if (info) cls.push('has-activity');
+        const jauges = info
+          ? '<span class="jauges">'
+            + (info.resa ? '<span class="jauge-dot" style="background:#1d4433"></span>'.repeat(Math.min(info.resa, 4)) : '')
+            + (info.dispo ? '<span class="jauge-dot" style="background:#8FB99A"></span>'.repeat(Math.min(info.dispo, 4)) : '')
+            + '</span>'
+          : '';
+        const title = info ? ` title="${info.resa} réservé(s) · ${info.dispo} disponible(s)"` : '';
+        cells += `<div class="${cls.join(' ')}"${title} data-iso="${iso}">${j}${jauges}</div>`;
+      }
+      grid.innerHTML += cells;
+      grid.querySelectorAll('.cal-day.has-activity').forEach(el => {
+        el.addEventListener('click', () => ouvrirSemaineDe(el.dataset.iso));
+      });
+    }
+
+    function ouvrirSemaineDe(iso) {
+      // offset de semaine entre le lundi courant et le lundi du jour cliqué
+      const cible = new Date(iso + 'T12:00:00');
+      const day = cible.getDay();
+      const lundiCible = new Date(cible);
+      lundiCible.setDate(cible.getDate() + (day === 0 ? -6 : 1 - day));
+      lundiCible.setHours(0, 0, 0, 0);
+      const lundiCourant = getMondayOfWeek(0);
+      currentWeekOffset = Math.round((lundiCible - lundiCourant) / (7 * 24 * 3600 * 1000));
+      basculerVue('semaine');
+      chargerCreneaux().then(() => buildCalendar());
+    }
 
     // Init : charger les créneaux réels PUIS dessiner (currentWeekOffset déjà déclaré ici).
     chargerCreneaux().then(() => buildCalendar());

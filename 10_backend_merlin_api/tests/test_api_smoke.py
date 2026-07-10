@@ -30,7 +30,7 @@ def test_core_flow_smoke() -> None:
         original_start_provider_recording = audio_recordings_routes._start_provider_recording
         original_stop_provider_recording = audio_recordings_routes._stop_provider_recording
         original_generate_session_note = sessions_routes.generate_session_note_from_transcript
-        original_create_livekit_room_for_session = sessions_routes.create_livekit_room_for_session
+        # (create_livekit_room_for_session : retirée de sessions.py — route /room dépréciée 410)
         audio_recordings_routes._start_provider_recording = AsyncMock(
             return_value=(None, "pending://audio-recordings/test-recording")
         )
@@ -116,17 +116,6 @@ def test_core_flow_smoke() -> None:
                     "validated_by_practitioner": False,
                     "practitioner_corrections": None,
                 },
-            }
-        )
-        sessions_routes.create_livekit_room_for_session = AsyncMock(
-            return_value={
-                "room_name": "merlin-session-test-room",
-                "room_sid": "RM_test_room_sid",
-                "livekit_url": "wss://livekit.example.test",
-                "practitioner_identity": "practitioner-test",
-                "practitioner_token": "jwt-practitioner-test-token",
-                "client_identity": "client-test",
-                "client_token": "jwt-client-test-token",
             }
         )
         try:
@@ -756,7 +745,6 @@ def test_core_flow_smoke() -> None:
             audio_recordings_routes._start_provider_recording = original_start_provider_recording
             audio_recordings_routes._stop_provider_recording = original_stop_provider_recording
             sessions_routes.generate_session_note_from_transcript = original_generate_session_note
-            sessions_routes.create_livekit_room_for_session = original_create_livekit_room_for_session
 
 
 @pytest.mark.integration
