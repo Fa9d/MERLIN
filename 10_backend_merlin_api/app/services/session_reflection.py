@@ -183,8 +183,22 @@ async def generate_seance_reflet(db: Session, record: SessionRecord) -> dict[str
     entree = json.dumps(entree_dict, ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## Entrée (ta parole enregistrée)\n```json\n{entree}\n```\n"
 
+    # Essai 1 : normal · essai 2 : retry informé (citations fautives nommées) ·
+    # essai 3 : SANS citation (sur un long transcript réel, le modèle invente
+    # des verbatims — un reflet reformulé sans guillemets vaut mieux qu'un échec).
     payload = None
-    for _attempt in range(2):  # 1 essai + 1 retry INFORMÉ si citations infidèles
+    for attempt in range(3):
+        if attempt == 2:
+            prompt = prompt + (
+                "
+
+## CONSIGNE FINALE (verrou de fidélité)
+"
+                "Tes citations restent inexactes. Reprends ta sortie SANS AUCUN "
+                "guillemet « » : reformule dans tes mots doux, ne cite RIEN "
+                "textuellement. Tout le reste des règles demeure.
+"
+            )
         raw, usage = await _call_claude(prompt, max_tokens=2048)
         _bump_daily()
         llm_ledger.record(
@@ -195,8 +209,9 @@ async def generate_seance_reflet(db: Session, record: SessionRecord) -> dict[str
         bad = unfaithful_quotes(payload, entree_dict["transcript"])
         if not bad:
             break
-        logger.info("seance_reflet retry citations infidèles (%d)", len(bad))
-        prompt = prompt + feedback_verbatims(bad)
+        logger.info("seance_reflet retry citations infidèles (%d, essai %d)", len(bad), attempt + 1)
+        if attempt == 0:
+            prompt = prompt + feedback_verbatims(bad)
     else:
         raise SeanceRefletError(
             "Citation non fidèle au transcript — reflet rejeté (réessaie)."
