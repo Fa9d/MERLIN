@@ -89,6 +89,15 @@
             <span class="flex items-center gap-1.5"><span class="legend-dot" style="background:#8FB99A"></span>actif</span>
             <span class="flex items-center gap-1.5"><span class="legend-dot" style="background:#D97706"></span>en tension</span>
           </div>
+          <!-- Progression : les états du client, d'analyse en analyse -->
+          <div id="progression-bloc" class="hidden mt-4 pt-3 border-t border-[#22372a]">
+            <div class="flex items-center justify-between gap-3 mb-1">
+              <p class="text-xs font-bold uppercase tracking-wider text-[#8FB99A]">Progression</p>
+              <span id="progression-date" class="text-xs font-semibold text-[#9bb7a3]"></span>
+            </div>
+            <input id="progression" type="range" min="0" max="0" value="0" step="1" class="w-full accent-[#8FB99A]">
+            <p id="progression-note" class="text-[11px] text-[#4B6350] mt-1">Chaque cran est une lecture datée — déplacez le curseur, la carte affiche l'état du client à ce moment-là.</p>
+          </div>
         </div>
         <div>
           <h3 class="text-sm font-semibold text-[#8FB99A] mb-1 uppercase tracking-wider">Champs de tension</h3>
@@ -370,10 +379,7 @@ function drawLifeline(events, annotations){
     document.getElementById('ref-source').textContent = 'référentiels : indisponibles';
   }
 
-  const carte = analyses.length ? analyses[0] : null;
-  const P = carte ? carte.payload : {};
-
-  // En-tête
+  // En-tête (fixe — la personne, pas la lecture)
   const nom = [client.first_name_or_alias, client.last_name].filter(Boolean).join(' ');
   const now = new Date().getFullYear();
   const age = client.birth_year ? (now - client.birth_year) : null;
@@ -382,62 +388,89 @@ function drawLifeline(events, annotations){
     client.birthplace ? 'Origine : ' + client.birthplace : null,
     client.territory_code || null,
   ].filter(Boolean).join(' · ');
-  if(P.fil) document.getElementById('p-fil').textContent = P.fil;
-  if(P.vigilance) document.getElementById('p-vigilance').textContent = 'Vigilance · ' + P.vigilance;
-  if(carte){
-    document.getElementById('lecture-date').textContent =
-      'lecture du ' + new Date(carte.created_at).toLocaleDateString('fr-CA', {year:'numeric',month:'long',day:'numeric'});
-  } else {
-    document.getElementById('lecture-date').textContent = 'aucune lecture enregistrée';
+
+  // ── Rendu d'UNE lecture (instantané) — piloté par la barre de progression ──
+  function afficherLecture(carte){
+    const P = carte ? carte.payload : {};
+    if(P.fil) document.getElementById('p-fil').textContent = P.fil;
+    if(P.vigilance) document.getElementById('p-vigilance').textContent = 'Vigilance · ' + P.vigilance;
+    document.getElementById('lecture-date').textContent = carte
+      ? 'lecture du ' + new Date(carte.created_at).toLocaleDateString('fr-CA', {year:'numeric',month:'long',day:'numeric'})
+      : 'aucune lecture enregistrée';
+
+    // Sol
+    const solGrid = document.getElementById('sol-grid');
+    solGrid.innerHTML = '';
+    (P.sol || []).forEach(sx => {
+      const d = document.createElement('div');
+      d.className = 'rounded-[12px] border border-[#2a4031] bg-[#0f1a12] px-4 py-3';
+      d.innerHTML = '<p class="text-[11px] uppercase tracking-wider text-[#4B6350]">' + esc(sx.titre) + '</p>' +
+                    '<p class="text-sm text-[#cfe6d4] mt-1">' + esc(sx.texte) + '</p>';
+      solGrid.appendChild(d);
+    });
+
+    // Axes : taxonomie vivante + lectures du payload
+    const lectures = P.axes || {};
+    let AXES;
+    if(axesRef){
+      AXES = [...axesRef.entrees].sort((a,b)=>a.ordre-b.ordre).map(e => ({
+        code: e.code, label: wrapLabel(e.libelle), fondateur: !!e.fondateur,
+        resonance: (lectures[e.code]||{}).resonance || 'sourdine',
+        note: (lectures[e.code]||{}).note || 'Axe non encore lu pour cette personne.',
+      }));
+    } else {
+      AXES = Object.entries(lectures).map(([code,l]) => ({
+        code, label: code, fondateur: code==='territoire', resonance: l.resonance||'sourdine', note: l.note||'',
+      }));
+    }
+
+    const libTensions = tensionsRef ? Object.fromEntries(tensionsRef.entrees.map(e=>[e.code,e.libelle])) : {};
+    const TENSIONS = (P.tensions || []).map(t => ({ ...t, label: libTensions[t.code] || t.label || t.code }));
+
+    document.getElementById('constellation-resume').innerHTML = esc(P.constellation_resume || '');
+    if(P.fil_a_tirer){
+      document.getElementById('fil-a-tirer').classList.remove('hidden');
+      document.getElementById('fil-a-tirer-texte').textContent = P.fil_a_tirer;
+    } else {
+      document.getElementById('fil-a-tirer').classList.add('hidden');
+    }
+
+    const tri = P.triade || {};
+    document.getElementById('t-observation').textContent = tri.observation || '— pas encore formulée.';
+    document.getElementById('t-hypothese').textContent = tri.hypothese || '— pas encore formulée.';
+    document.getElementById('t-orientation').textContent = tri.orientation || '— pas encore formulée.';
+
+    drawConstellation(AXES, TENSIONS);
+    renderTensions(AXES, TENSIONS);
+    drawLifeline(lifeEvents, P.evenements || {});
   }
 
-  // Sol
-  const solGrid = document.getElementById('sol-grid');
-  (P.sol || []).forEach(s => {
-    const d = document.createElement('div');
-    d.className = 'rounded-[12px] border border-[#2a4031] bg-[#0f1a12] px-4 py-3';
-    d.innerHTML = '<p class="text-[11px] uppercase tracking-wider text-[#4B6350]">' + esc(s.titre) + '</p>' +
-                  '<p class="text-sm text-[#cfe6d4] mt-1">' + esc(s.texte) + '</p>';
-    solGrid.appendChild(d);
-  });
-
-  // Axes : taxonomie vivante + lectures du payload
-  const lectures = P.axes || {};
-  let AXES;
-  if(axesRef){
-    AXES = [...axesRef.entrees].sort((a,b)=>a.ordre-b.ordre).map(e => ({
-      code: e.code, label: wrapLabel(e.libelle), fondateur: !!e.fondateur,
-      resonance: (lectures[e.code]||{}).resonance || 'sourdine',
-      note: (lectures[e.code]||{}).note || 'Axe non encore lu pour cette personne.',
-    }));
-  } else {
-    AXES = Object.entries(lectures).map(([code,l],i) => ({
-      code, label: code, fondateur: code==='territoire', resonance: l.resonance||'sourdine', note: l.note||'',
-    }));
+  // ── Barre de progression : de la première lecture à la plus récente ──
+  const lecturesTriees = [...analyses].sort((x, y) => new Date(x.created_at) - new Date(y.created_at));
+  const slider = document.getElementById('progression');
+  if (lecturesTriees.length) {
+    document.getElementById('progression-bloc').classList.remove('hidden');
+    slider.max = lecturesTriees.length - 1;
+    slider.value = lecturesTriees.length - 1;
+    slider.disabled = lecturesTriees.length === 1;
+    const majDate = () => {
+      const i = Number(slider.value);
+      document.getElementById('progression-date').textContent =
+        (i + 1) + ' / ' + lecturesTriees.length + ' — ' +
+        new Date(lecturesTriees[i].created_at).toLocaleDateString('fr-CA', {day:'numeric',month:'long',year:'numeric'});
+    };
+    if (lecturesTriees.length === 1) {
+      document.getElementById('progression-note').textContent =
+        'Une seule lecture pour l’instant — la barre prendra vie avec les prochaines analyses.';
+    }
+    slider.addEventListener('input', () => { majDate(); afficherLecture(lecturesTriees[Number(slider.value)]); });
+    majDate();
   }
-
-  // Tensions : payload + libellés vivants
-  const libTensions = tensionsRef ? Object.fromEntries(tensionsRef.entrees.map(e=>[e.code,e.libelle])) : {};
-  const TENSIONS = (P.tensions || []).map(t => ({ ...t, label: libTensions[t.code] || t.label || t.code }));
-
-  if(P.constellation_resume) document.getElementById('constellation-resume').innerHTML = esc(P.constellation_resume);
-  if(P.fil_a_tirer){
-    document.getElementById('fil-a-tirer').classList.remove('hidden');
-    document.getElementById('fil-a-tirer-texte').textContent = P.fil_a_tirer;
-  }
-
-  // Triade
-  const tri = P.triade || {};
-  document.getElementById('t-observation').textContent = tri.observation || '— pas encore formulée.';
-  document.getElementById('t-hypothese').textContent = tri.hypothese || '— pas encore formulée.';
-  document.getElementById('t-orientation').textContent = tri.orientation || '— pas encore formulée.';
 
   etat.classList.add('hidden');
   document.getElementById('contenu').classList.remove('hidden');
+  afficherLecture(lecturesTriees.length ? lecturesTriees[lecturesTriees.length - 1] : null);
 
-  drawConstellation(AXES, TENSIONS);
-  renderTensions(AXES, TENSIONS);
-  drawLifeline(lifeEvents, P.evenements || {});
 })();
 </script>
 </body>
