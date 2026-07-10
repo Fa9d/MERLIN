@@ -44,6 +44,7 @@ class CarteSnapshot(MerlinSchema):
     axes: dict
     tensions: list
     fil: str | None = None
+    fil_a_tirer: str | None = None
     constellation_resume: str | None = None
     vigilance: str | None = None
     created_at: datetime
@@ -95,6 +96,7 @@ def _snapshot(result: AnalysisResult) -> CarteSnapshot:
         axes=axes,
         tensions=tensions,
         fil=_texte_sur(p.get("fil")),
+        fil_a_tirer=_texte_sur(p.get("fil_a_tirer")),
         constellation_resume=_texte_sur(p.get("constellation_resume")),
         vigilance=p.get("vigilance"),
         created_at=result.created_at,

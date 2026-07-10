@@ -82,20 +82,14 @@
       <div id="tensions-list" class="grid sm:grid-cols-2 gap-3"></div>
       <p id="tensions-vide" class="hidden text-sm text-[#6f8c78] italic">Aucun champ de tension dans cette lecture — ils apparaîtront ici quand une carte d'analyse en relèvera.</p>
     </div>
-  </section>
 
-  <!-- Ligne de vie : les moments forts -->
-  <section class="card p-5 sm:p-7">
-    <h2 class="text-lg font-bold text-ink mb-1">Ligne de vie</h2>
-    <p class="text-xs text-muted mb-5">Les moments forts de votre vie — ce qui marque, ce qui a façonné. Pas le fil d'activité.</p>
-    <div id="ldv" class="space-y-4"></div>
-    <p id="ldv-vide" class="hidden text-sm text-muted">Vos moments forts se poseront ici au fil des séances.</p>
-
-    <div id="afaire-bloc" class="hidden mt-6 pt-5 border-t border-bdr">
-      <h3 class="text-base font-bold text-ink mb-3">À faire, éventuellement</h3>
-      <div id="afaire" class="space-y-2"></div>
+    <!-- Le fil à tirer -->
+    <div id="fil-a-tirer" class="hidden mt-6 rounded-[14px] border border-[#3a5743] bg-[#16281c] px-5 py-4" style="border-left:3px solid #8FB99A">
+      <h3 class="text-base font-bold text-[#e8f5eb] mb-1">Le fil à tirer</h3>
+      <p id="fil-a-tirer-texte" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
     </div>
   </section>
+
 </div>
 
 <div id="ivia-footer"></div>
@@ -119,7 +113,7 @@
   };
 
   // ── Données ─────────────────────────────────────────────────────────────────
-  let axesRef = [], data = null, entries = [], exos = [], bookings = [];
+  let axesRef = [], data = null, entries = [];
   try {
     const r = await fetch('https://api.ivia.quebec/api/v1/referentiels/axes');
     if (r.ok) {
@@ -133,8 +127,6 @@
   } catch (e) {}
   try { data = await getMyCarteDeVie(); } catch (e) { data = null; }
   try { entries = await getMyJournal(); } catch (e) {}
-  try { exos = await listMyExercises(); } catch (e) {}
-  try { bookings = await getMyBookings(); } catch (e) {}
 
   if (!axesRef.length) {
     axesRef = [
@@ -150,7 +142,6 @@
   const labelAxe = (c) => String((axesRef.find(a => a.code === c) || {}).label || c).replace('\n', ' ');
 
   const cartes = (data && data.cartes) || [];
-  const moments = (data && data.moments) || [];
 
   // ── La carte affichée (instantané courant) ──────────────────────────────────
   let AXES = [], TENSIONS = [];
@@ -164,6 +155,13 @@
       TENSIONS = snap.tensions || [];
       document.getElementById('constellation-resume').textContent = snap.constellation_resume || '';
       if (snap.fil) document.getElementById('constellation-mode').textContent = snap.fil;
+      const fat = document.getElementById('fil-a-tirer');
+      if (snap.fil_a_tirer) {
+        fat.classList.remove('hidden');
+        document.getElementById('fil-a-tirer-texte').textContent = snap.fil_a_tirer;
+      } else {
+        fat.classList.add('hidden');
+      }
     } else {
       // Repli : aucune carte d'analyse — la constellation reflète le journal.
       const cutoff = Date.now() - 30 * 864e5;
@@ -313,39 +311,6 @@
     chargerSnapshot(null);
   }
 
-  // ── Ligne de vie : les moments forts ────────────────────────────────────────
-  const CHARGES = { eleve: ['élevée', '#D97706'], moyen: ['moyenne', '#8FB99A'], faible: ['légère', '#4B6350'] };
-  const ldv = document.getElementById('ldv');
-  if (!moments.length) {
-    document.getElementById('ldv-vide').classList.remove('hidden');
-  } else {
-    ldv.innerHTML = moments.map(m => {
-      const ch = CHARGES[m.charge];
-      return '<div class="ldv-item">' +
-        '<p class="text-[11px] text-muted">' + (m.annee ? m.annee : '') +
-        (m.intergenerationnel ? ' · héritage familial' : '') +
-        (ch ? ' · <span style="color:' + ch[1] + '" class="font-semibold">charge ' + ch[0] + '</span>' : '') + '</p>' +
-        '<p class="text-sm text-ink mt-0.5">' + esc(m.titre) + '</p>' +
-        '</div>';
-    }).join('');
-  }
-
-  // ── À faire, éventuellement ─────────────────────────────────────────────────
-  const afaire = [];
-  const today = new Date().toISOString().slice(0, 10);
-  (bookings || []).filter(b => b.status === 'confirmed' && b.slot_date >= today)
-    .sort((a, b) => a.slot_date.localeCompare(b.slot_date)).slice(0, 1)
-    .forEach(b => afaire.push({ t: 'Séance à venir', d: fmtDate(b.slot_date + 'T12:00'), href: '/client/agenda.html' }));
-  (exos || []).filter(x => x.status === 'propose' || x.status === 'en_cours').slice(0, 4)
-    .forEach(x => afaire.push({ t: (x.exercise && x.exercise.title) || 'Exercice proposé', d: x.status === 'en_cours' ? 'en cours' : 'proposé — libre à vous', href: '/client/mes-exercices.html' }));
-  if (afaire.length) {
-    document.getElementById('afaire-bloc').classList.remove('hidden');
-    document.getElementById('afaire').innerHTML = afaire.map(x =>
-      '<a href="' + x.href + '" class="flex items-center justify-between gap-3 border border-bdr rounded-[12px] px-4 py-2.5 hover:bg-surface transition-colors">' +
-      '<span class="text-sm text-ink">' + esc(x.t) + '</span>' +
-      '<span class="text-xs text-muted shrink-0">' + esc(x.d) + '</span>' +
-      '</a>').join('');
-  }
 })();
 </script>
 </body>
