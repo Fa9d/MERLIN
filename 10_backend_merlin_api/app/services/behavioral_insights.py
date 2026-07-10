@@ -106,12 +106,14 @@ def _estimate_cost_cents(model: str, usage: dict) -> float:
 
 
 # ── Appel Anthropic (retry, sans fuite de secret) ─────────────────────────────
-async def _call_claude(prompt: str) -> tuple[str, dict]:
+async def _call_claude(prompt: str, max_tokens: int | None = None) -> tuple[str, dict]:
     if not settings.anthropic_api_key:
         raise BehavioralInsightsError("ANTHROPIC_API_KEY est absente.")
     body = {
         "model": settings.insights_model,
-        "max_tokens": settings.insights_max_tokens,
+        # Plafond par appel : les synthèses de séance/journal produisent bien plus
+        # que les insights de profil — 1100 tokens tronquaient les vraies séances.
+        "max_tokens": max_tokens or settings.insights_max_tokens,
         "temperature": 0.3,
         "messages": [{"role": "user", "content": prompt}],
     }

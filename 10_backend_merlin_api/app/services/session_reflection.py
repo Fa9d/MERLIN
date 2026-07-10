@@ -185,7 +185,7 @@ async def generate_seance_reflet(db: Session, record: SessionRecord) -> dict[str
 
     payload = None
     for _attempt in range(2):  # 1 essai + 1 retry INFORMÉ si citations infidèles
-        raw, usage = await _call_claude(prompt)
+        raw, usage = await _call_claude(prompt, max_tokens=2048)
         _bump_daily()
         llm_ledger.record(
             db, purpose="seance_reflet_client", usage=usage,

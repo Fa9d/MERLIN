@@ -144,7 +144,7 @@ async def generate_practice_reflet(db: Session, praticien_id: str) -> dict[str, 
     entree = json.dumps(entree_dict, ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## Entrée (tes retours de pratique)\n```json\n{entree}\n```\n"
 
-    raw, usage = await _call_claude(prompt)
+    raw, usage = await _call_claude(prompt, max_tokens=2048)
     _bump_daily()
     llm_ledger.record(db, purpose="praticien_reflet", usage=usage,
                       praticien_user_id=praticien_id, created_by_user_id=praticien_id)

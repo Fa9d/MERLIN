@@ -131,7 +131,7 @@ def _mock_claude(monkeypatch, sortie: dict):
 
     calls = {"n": 0}
 
-    async def _fake_call(prompt: str):
+    async def _fake_call(prompt: str, **kwargs):
         calls["n"] += 1
         assert "ta parole enregistrée" in prompt
         return json.dumps(sortie, ensure_ascii=False), {"input_tokens": 10, "output_tokens": 5}

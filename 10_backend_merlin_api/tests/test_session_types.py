@@ -132,7 +132,7 @@ def _auth(user_id: str, role: str) -> dict:
 def _mock_claude(monkeypatch, sortie: dict) -> None:
     import app.services.session_semantic as ss
 
-    async def _fake_call(prompt: str):
+    async def _fake_call(prompt: str, **kwargs):
         return json.dumps(sortie, ensure_ascii=False), {"input_tokens": 5, "output_tokens": 5}
 
     monkeypatch.setattr(ss, "_call_claude", _fake_call)

@@ -168,7 +168,7 @@ def _auth(user_id: str) -> dict:
 def _mock_claude(monkeypatch, sortie: dict) -> None:
     import app.services.journal_semantic as js
 
-    async def _fake_call(prompt: str):
+    async def _fake_call(prompt: str, **kwargs):
         assert "PROMPT — Synthèse sémantique du journal" in prompt
         return json.dumps(sortie, ensure_ascii=False), {"input_tokens": 10, "output_tokens": 5}
 

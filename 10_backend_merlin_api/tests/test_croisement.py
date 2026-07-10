@@ -164,7 +164,7 @@ def _auth(user_id: str) -> dict:
 def _mock_claude(monkeypatch, sortie: dict) -> None:
     import app.services.croisement as cr
 
-    async def _fake_call(prompt: str):
+    async def _fake_call(prompt: str, **kwargs):
         assert "Croisement prosodie" in prompt
         return json.dumps(sortie, ensure_ascii=False), {"input_tokens": 10, "output_tokens": 5}
 

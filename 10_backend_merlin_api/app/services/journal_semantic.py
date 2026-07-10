@@ -199,7 +199,7 @@ async def synthesize_journal(
     entree = json.dumps(build_input(db, record, entries), ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## Entrée (journal de la période)\n```json\n{entree}\n```\n"
 
-    raw, usage = await _call_claude(prompt)
+    raw, usage = await _call_claude(prompt, max_tokens=4096)
     _bump_daily()
     llm_ledger.record(db, purpose="journal_semantic", usage=usage,
                       session_id=record.id, client_id=record.client_id,

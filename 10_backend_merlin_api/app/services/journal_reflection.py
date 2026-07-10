@@ -182,7 +182,7 @@ async def generate_reflet(db: Session, client: Client) -> dict[str, Any]:
     entree = json.dumps(entree_dict, ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## Entrée (ta période d'écriture)\n```json\n{entree}\n```\n"
 
-    raw, usage = await _call_claude(prompt)
+    raw, usage = await _call_claude(prompt, max_tokens=2048)
     _bump_daily()
     llm_ledger.record(db, purpose="journal_reflet_client", usage=usage, client_id=client.id)
     payload = _apply_urgence_protocol(_post_filter(_validate(_extract_json_payload(raw))))

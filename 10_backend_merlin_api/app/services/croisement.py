@@ -115,7 +115,7 @@ async def croiser(db: Session, record: SessionRecord) -> dict[str, Any]:
     entree = json.dumps(entree_dict, ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## Entrée (les deux lectures)\n```json\n{entree}\n```\n"
 
-    raw, usage = await _call_claude(prompt)
+    raw, usage = await _call_claude(prompt, max_tokens=4096)
     _bump_daily()
     llm_ledger.record(db, purpose="croisement", usage=usage,
                       session_id=record.id, client_id=record.client_id,
