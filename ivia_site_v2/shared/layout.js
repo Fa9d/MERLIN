@@ -13,10 +13,10 @@
  */
 
 const IVIA_NAV = [
-  { id: 'aujourdhui', label: 'Mon espace',  href: '/client/dashboard.html' },
-  { id: 'ecrire',     label: 'Journal',     href: '/client/journal.html' },
-  { id: 'voir',       label: 'Vie',         href: '/client/carte-de-vie.html', crumb: 'Carte de vie' },
-  { id: 'agenda',     label: 'Réserver',    href: '/client/agenda.html', crumb: 'Réserver' },
+  { id: 'aujourdhui', label: "Aujourd'hui",  href: '/client/dashboard.html' },
+  { id: 'ecrire',     label: 'Journal',      href: '/client/journal.html' },
+  { id: 'voir',       label: 'Carte de vie', href: '/client/carte-de-vie.html', crumb: 'Carte de vie' },
+  { id: 'miroir',     label: 'Mon miroir',   href: '/client/mon-reflet.html', crumb: 'Mon miroir' },
 ];
 
 const IVIA_ACCUEIL = 'https://ivia.quebec';
@@ -67,6 +67,7 @@ const IVIA_ICON = {
   ecrire:     _ic('<path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/>'),
   voir:       _ic('<path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>'),
   agenda:     _ic('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'),
+  miroir:     _ic('<ellipse cx="12" cy="10" rx="6" ry="8"/><path stroke-linecap="round" d="M9 20h6M12 18v3"/>'),
 };
 
 function renderClientMobileNav(active) {
@@ -150,52 +151,32 @@ function renderLayout(active, pageLabel) {
                 Journal
               </a>
               <a href="/client/carte-de-vie.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="3"/></svg>
-                Vie
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><circle cx="5" cy="6" r="1.4"/><circle cx="19" cy="5" r="1.4"/><circle cx="20" cy="15" r="1.4"/><circle cx="7" cy="19" r="1.4"/><path stroke-linecap="round" d="M6.2 7l4.2 3.6M13.8 10.5L18 6M13.9 13.2l4.8 1.4M10.3 13.6L8 17.6"/></svg>
+                Carte de vie
               </a>
-              <a href="/client/agenda.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                Réserver
+              <a href="/client/mon-reflet.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="12" cy="10" rx="6" ry="8"/><path stroke-linecap="round" d="M9 20h6M12 18v3"/></svg>
+                Mon miroir
               </a>
               <hr class="ivia-menu-sep">
               <a href="/client/enregistrement.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
                 Séance expresse
               </a>
-              <a href="/client/seances.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Mes séances
+              <a href="/client/agenda.html" class="ivia-menu-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Réservation
               </a>
-              <a href="/client/mes-enregistrements.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Mes enregistrements
-              </a>
-              <a href="/client/mes-exercices.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                Mes exercices
-              </a>
-              <a href="/client/mon-reflet.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M8 12a4 4 0 018 0"/></svg>
-                Mon reflet
-              </a>
-              <a href="/client/mes-reperes.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                Mes repères
-              </a>
-              <a href="/client/mes-resumes.html" class="ivia-menu-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-                Mes résumés
-              </a>
-              <a href="/client/compte.html" class="ivia-menu-item">
+              <a href="/client/mon-profil.html" class="ivia-menu-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                Mon compte
+                Mon profil
               </a>
               <hr class="ivia-menu-sep">
               <button type="button" class="ivia-menu-item danger" onclick="localStorage.removeItem('ivia_session');localStorage.removeItem('ivia_user');location.href='/connexion.html'">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg>
                 Déconnexion
               </button>
-            </div>
+              </div>
           </div>
         </div>
       </div>
@@ -207,19 +188,16 @@ function renderLayout(active, pageLabel) {
 
   const footer = document.getElementById('ivia-footer');
   if (footer) {
-    const col = (titre, items) =>
-      `<div class="ivia-footer-col"><p>${titre}</p><ul>${items.map(i => `<li><a href="${i.href}">${i.label}</a></li>`).join('')}</ul></div>`;
+    // Décision fondateur 2026-07-10 (session client #1) : plus de menus en bas
+    // de page — la navigation vit dans le menu du compte (haut droite) et la
+    // barre mobile. Le pied de page se limite à l'identité et aux ressources.
     footer.innerHTML = `
     <footer class="ivia-footer">
       <div class="ivia-footer-in">
-        <div class="ivia-footer-cols">
-          ${col('Mon espace', IVIA_FOOTER.espace)}
-          ${col('Découvrir', IVIA_FOOTER.decouvrir)}
-          ${col('Cadre & confiance', IVIA_FOOTER.legal)}
-        </div>
         <div class="ivia-footer-base">
-          <p>IVIA — <em>In Vivo, In Actu</em> · Données hébergées au Canada (Loi 25)</p>
-          <p>Pas un service d'urgence · En crise : <strong><a href="tel:18662773553">1 866 APPELLE</a></strong> · 811 option 2</p>
+          <p>IVIA — <em>In Vivo, In Actu</em> · Données hébergées au Canada (Loi 25)
+            · <a href="/confidentialite.html">Confidentialité</a> · <a href="/cgu.html">CGU</a></p>
+          <p>Pas un service d'urgence · En crise : <strong><a href="tel:988">9-8-8</a></strong> · 811 option 2</p>
         </div>
       </div>
     </footer>`;

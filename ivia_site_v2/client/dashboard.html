@@ -29,123 +29,49 @@
 <script src="/shared/layout.js?v=20260709c"></script>
 <script>renderLayout('aujourdhui');</script>
 
-<div class="max-w-6xl mx-auto px-4 py-8 sm:py-10 space-y-6">
-  <section class="card p-6 sm:p-7">
-    <div class="flex items-start justify-between gap-4 flex-wrap">
-      <div>
-        <h1 class="font-heading text-2xl sm:text-3xl font-bold text-ink" id="bonjour">Mon espace</h1>
-        <p class="text-sm text-muted mt-1" id="today-line">Un point vivant de votre parcours, aujourd'hui.</p>
-      </div>
-      <a href="/reserver.html" class="inline-flex items-center gap-2 bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors">Réserver une séance</a>
-    </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
-      <a href="/client/seances.html?vue=a-venir" class="metric metric-link" aria-label="Voir les séances à venir">
-        <p class="text-xs uppercase tracking-wider font-semibold text-muted">Séances à venir</p>
-        <p class="metric-kpi mt-2" id="kpi-upcoming">0</p>
+<div class="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-6">
+
+  <!-- Salut + les deux gestes -->
+  <section class="card p-7 sm:p-9">
+    <h1 class="font-heading text-3xl sm:text-4xl font-bold text-ink" id="bonjour">Mon espace</h1>
+    <p class="text-sm text-muted mt-2 capitalize" id="today-line"></p>
+    <div class="flex gap-3 mt-7 flex-wrap">
+      <a href="/client/agenda.html"
+         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 bg-forest-deep text-white text-base font-semibold px-7 py-4 rounded-[16px] hover:bg-forest transition-colors min-w-[160px]">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Réserver
       </a>
-      <a href="/client/seances.html?vue=vecues" class="metric metric-link" aria-label="Voir les séances vécues">
-        <p class="text-xs uppercase tracking-wider font-semibold text-muted">Séances vécues</p>
-        <p class="metric-kpi mt-2" id="kpi-past">0</p>
-      </a>
-      <a href="/client/journal.html" class="metric metric-link" aria-label="Voir le journal">
-        <p class="text-xs uppercase tracking-wider font-semibold text-muted">Entrées journal</p>
-        <p class="metric-kpi mt-2" id="kpi-journal">0</p>
-      </a>
-      <a href="/client/carte-de-vie.html" class="metric metric-link" aria-label="Voir les repères partagés">
-        <p class="text-xs uppercase tracking-wider font-semibold text-muted">Repères partagés</p>
-        <p class="metric-kpi mt-2" id="kpi-reperes">0</p>
+      <a href="/client/enregistrement.html"
+         class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2.5 border-2 border-forest-deep text-forest-deep text-base font-semibold px-7 py-4 rounded-[16px] hover:bg-surface transition-colors min-w-[160px]">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-14 0m7 7v3m-3 0h6M12 14a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z"/></svg>
+        Séance expresse
       </a>
     </div>
   </section>
 
-  <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-3">
-    <a href="/client/journal.html" class="card p-4 hover:border-forest transition-colors">
-      <p class="text-xs uppercase tracking-wider font-semibold text-muted">Journal</p>
-      <p class="text-base font-semibold text-ink mt-1">Écrire aujourd'hui</p>
-      <p class="text-xs text-muted mt-1">Déposer votre état actuel, vos mots, votre tonalité.</p>
-    </a>
-    <a href="/client/ma-progression.html" class="card p-4 hover:border-forest transition-colors">
-      <p class="text-xs uppercase tracking-wider font-semibold text-muted">Ligne de vie</p>
-      <p class="text-base font-semibold text-ink mt-1">Suivre la progression</p>
-      <p class="text-xs text-muted mt-1">Lire votre trajectoire et l'équilibre vivant/société.</p>
-    </a>
-    <a href="/client/carte-de-vie.html" class="card p-4 hover:border-forest transition-colors">
-      <p class="text-xs uppercase tracking-wider font-semibold text-muted">Carte de vie</p>
-      <p class="text-base font-semibold text-ink mt-1">Voir les pôles d'équilibre</p>
-      <p class="text-xs text-muted mt-1">Explorer vos axes et repères du vivant.</p>
-    </a>
-    <a href="/client/mon-reflet.html" class="card p-4 hover:border-forest transition-colors">
-      <p class="text-xs uppercase tracking-wider font-semibold text-muted">Mon reflet</p>
-      <p class="text-base font-semibold text-ink mt-1">Recevoir un reflet</p>
-      <p class="text-xs text-muted mt-1">Une lecture douce de votre période d'écriture.</p>
-    </a>
-    <a href="/client/mes-reperes.html" class="card p-4 hover:border-forest transition-colors">
-      <p class="text-xs uppercase tracking-wider font-semibold text-muted">Mes repères</p>
-      <p class="text-base font-semibold text-ink mt-1">Relire ce qui a été livré</p>
-      <p class="text-xs text-muted mt-1">Les lectures validées par votre praticien·ne.</p>
-    </a>
-    <a href="/client/mes-exercices.html" class="card p-4 hover:border-forest transition-colors">
-      <p class="text-xs uppercase tracking-wider font-semibold text-muted">Mes exercices</p>
-      <p class="text-base font-semibold text-ink mt-1">Explorer les invitations</p>
-      <p class="text-xs text-muted mt-1">Des propositions libres — jamais des devoirs.</p>
-    </a>
-  </section>
-
-  <section class="card p-6">
-    <div class="flex items-center justify-between gap-2 flex-wrap mb-4">
-      <h2 class="font-heading text-lg font-bold text-ink">Mes intentions</h2>
-      <p class="text-xs text-muted">Un cap que vous vous donnez — vous choisissez, vous ajustez.</p>
-    </div>
-    <div id="intentions-list" class="flex flex-col gap-2 mb-4">
-      <p class="text-sm text-muted">Chargement…</p>
-    </div>
-    <div class="flex gap-2 items-start">
-      <input id="intention-input" type="text" maxlength="500"
-        placeholder="Ex. : marcher 20 minutes trois fois cette semaine"
-        class="flex-1 border border-bdr rounded-[12px] px-4 py-2.5 text-sm bg-surface focus:outline-none focus:border-forest" />
-      <button id="intention-add"
-        class="bg-forest-deep text-white text-sm font-semibold px-4 py-2.5 rounded-[12px] hover:bg-forest transition-colors shrink-0">Ajouter</button>
-    </div>
-    <p id="intention-error" class="text-xs text-red-600 mt-2 hidden"></p>
-  </section>
-
-  <section class="card p-6">
-    <div class="flex items-center justify-between gap-2 flex-wrap mb-5">
-      <h2 class="font-heading text-lg font-bold text-ink">Proposition du jour</h2>
-      <a href="/client/journal.html" class="text-xs font-semibold text-forest-deep hover:underline">Journal →</a>
-    </div>
-    <div class="grid md:grid-cols-2 gap-5">
-      <!-- Exercice -->
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Exercice</p>
-        <p id="exo-why" class="text-sm text-muted mb-3">Chargement de l'exercice adapté…</p>
-        <div class="bg-surface border border-bdr rounded-[14px] p-4">
-          <p id="exo-title" class="text-sm font-semibold text-ink">—</p>
-          <p id="exo-duration" class="text-xs text-muted mt-1">—</p>
-          <p id="exo-steps" class="text-sm text-ink leading-relaxed mt-2 whitespace-pre-wrap">—</p>
-        </div>
+  <!-- Les trois lieux de la maison -->
+  <section class="grid sm:grid-cols-3 gap-4">
+    <a href="/client/journal.html" class="card p-6 hover:border-forest transition-colors text-center group">
+      <div class="w-14 h-14 mx-auto rounded-full bg-surface border border-bdr flex items-center justify-center group-hover:border-forest transition-colors">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4H4v16h16v-7M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4z"/></svg>
       </div>
-      <!-- Lecture (dernières traces journal + séances) -->
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Journal</p>
-        <div id="journal-zone" class="flex flex-col gap-2">
-          <p class="text-sm text-muted">Chargement…</p>
-        </div>
+      <p class="font-heading text-lg font-bold text-ink mt-4">Journal</p>
+      <p class="text-xs text-muted mt-1.5 leading-relaxed">Votre journal intime, daté — écrire, relire, retrouver vos comptes rendus.</p>
+    </a>
+    <a href="/client/carte-de-vie.html" class="card p-6 hover:border-forest transition-colors text-center group">
+      <div class="w-14 h-14 mx-auto rounded-full bg-surface border border-bdr flex items-center justify-center group-hover:border-forest transition-colors">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><circle cx="5" cy="6" r="1.4"/><circle cx="19" cy="5" r="1.4"/><circle cx="20" cy="15" r="1.4"/><circle cx="7" cy="19" r="1.4"/><path stroke-linecap="round" d="M6.2 7l4.2 3.6M13.8 10.5L18 6M13.9 13.2l4.8 1.4M10.3 13.6L8 17.6"/></svg>
       </div>
-    </div>
-  </section>
-
-  <section class="card p-6">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
-      <div>
-        <h2 class="font-heading text-lg font-bold text-ink">Structurer vos données vivantes</h2>
-        <p class="text-sm text-muted mt-1">Votre espace se construit sur 3 couches : l'état du jour, la ligne de vie, puis la carte de vie.</p>
+      <p class="font-heading text-lg font-bold text-ink mt-4">Horizon</p>
+      <p class="text-xs text-muted mt-1.5 leading-relaxed">Orientation, pas destination — vos onze axes, votre ligne de vie, votre progression.</p>
+    </a>
+    <a href="/client/mon-reflet.html" class="card p-6 hover:border-forest transition-colors text-center group">
+      <div class="w-14 h-14 mx-auto rounded-full bg-surface border border-bdr flex items-center justify-center group-hover:border-forest transition-colors">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="1.8" aria-hidden="true"><ellipse cx="12" cy="10" rx="6" ry="8"/><path stroke-linecap="round" d="M9 20h6M12 18v3M9.5 6.5a4.5 6 0 000 7"/></svg>
       </div>
-      <div class="flex items-center gap-2 flex-wrap">
-        <a href="/client/ma-progression.html" class="inline-flex items-center border border-bdr text-ink text-xs font-semibold px-3 py-2 rounded-[10px] hover:bg-surface transition-colors">Ligne de vie</a>
-        <a href="/client/carte-de-vie.html" class="inline-flex items-center bg-forest-deep text-white text-xs font-semibold px-3 py-2 rounded-[10px] hover:bg-forest transition-colors">Carte de vie</a>
-      </div>
-    </div>
+      <p class="font-heading text-lg font-bold text-ink mt-4">Mon miroir</p>
+      <p class="text-xs text-muted mt-1.5 leading-relaxed">Vos schémas, vos repères, vos exercices — les voir ici plutôt que les subir ailleurs.</p>
+    </a>
   </section>
 </div>
 
@@ -154,216 +80,15 @@
 
 <script>
 (async function () {
-  function parseArchi(entry) {
-    const s = journalStructured(entry);
-    return s.kind === 'checkin' ? s.data : null;
-  }
-  function getExerciseRecommendation(latestArchi) {
-    const humeur = latestArchi?.humeur || 'neutre';
-    const energie = Number(latestArchi?.energie || 5);
-    const sommeil = latestArchi?.sommeil || 'moyen';
-    if (humeur === 'stress' || energie <= 4) {
-      return {
-        title: 'Cohérence cardiaque 4-7-8',
-        duration: '5 minutes',
-        why: 'Votre état du jour suggère une régulation rapide du stress.',
-        steps: 'Inspirez 4 sec · retenez 7 sec · expirez 8 sec · répétez 6 cycles.',
-      };
-    }
-    if (sommeil === 'mauvais') {
-      return {
-        title: 'Ancrage 5 sens + respiration lente',
-        duration: '7 à 10 minutes',
-        why: 'Le sommeil fragilisé appelle un ancrage corporel doux.',
-        steps: '5 choses vues · 4 choses touchées · 2 min respiration lente · marche douce.',
-      };
-    }
-    if (humeur === 'flow' || humeur === 'coherence') {
-      return {
-        title: 'Consolidation gratitude + intention',
-        duration: '8 minutes',
-        why: 'Votre état est favorable au renforcement des acquis.',
-        steps: '3 gratitudes concrètes + 1 intention pour demain, puis relecture à voix basse.',
-      };
-    }
-    return {
-      title: 'Respiration carrée 4-4-4-4',
-      duration: '4 minutes',
-      why: 'Exercice neutre pour stabiliser l’attention.',
-      steps: 'Inspirez 4 · retenez 4 · expirez 4 · retenez 4 · 8 cycles.',
-    };
-  }
-
-  function fmtDate(iso) {
-    if (!iso) return '';
-    return new Date(iso).toLocaleDateString('fr-CA', { weekday:'long', day:'numeric', month:'long' });
-  }
-  function safe(t) {
-    const d = document.createElement('div');
-    d.textContent = t == null ? '' : String(t);
-    return d.innerHTML;
-  }
-  function fmtDateTime(iso) {
-    if (!iso) return '';
-    return new Date(iso).toLocaleDateString('fr-CA', { weekday:'long', day:'numeric', month:'long' });
-  }
-
-  let bookings = [], entries = [], docs = [], recs = [];
-
+  document.getElementById('today-line').textContent =
+    new Date().toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   try {
     const me = await apiMe();
     localStorage.setItem('ivia_user', JSON.stringify(me));
     const prenom = (me.display_name || '').split(' ')[0];
-    if (prenom) document.getElementById('bonjour').textContent = `Bonjour, ${prenom}.`;
+    if (prenom) document.getElementById('bonjour').textContent = `Bonjour ${prenom}.`;
     renderLayout('aujourdhui');
   } catch (e) {}
-
-  try { bookings = await getMyBookings(); } catch (e) { bookings = []; }
-  try { entries = await getMyJournal(); } catch (e) { entries = []; }
-  try { docs = await getMyDocuments(); } catch (e) { docs = []; }
-  try { recs = await getMyRecordings(); } catch (e) { recs = []; }
-
-  const today = new Date().toISOString().slice(0, 10);
-  const confirmed = bookings.filter(b => b.status === 'confirmed');
-  const upcoming = confirmed.filter(b => b.slot_date >= today);
-  const past = confirmed.filter(b => b.slot_date < today);
-  const pastRepereCount = Math.max(past.length, docs.length);
-  const reperes = docs.length + recs.filter(r => !!r.transcript_ready).length;
-
-  document.getElementById('kpi-upcoming').textContent = upcoming.length;
-  document.getElementById('kpi-past').textContent = pastRepereCount;
-  document.getElementById('kpi-journal').textContent = entries.length;
-  document.getElementById('kpi-reperes').textContent = reperes;
-  document.getElementById('today-line').textContent =
-    `${upcoming.length} séance(s) à venir · ${entries.length} entrée(s) au journal · ${reperes} repère(s) disponible(s).`;
-
-  const jz = document.getElementById('journal-zone');
-  const HUMEURS = { stress:'🔴 Stress', neutre:'🟡 Neutre', coherence:'🟢 Cohérence', flow:'🔵 Flow' };
-  const SOMMEILS = { mauvais:'sommeil difficile', moyen:'sommeil moyen', excellent:'sommeil excellent' };
-  function humanize(en) {
-    const body = en.body_text || '';
-    const s = journalStructured(en);
-    if (s.kind === 'exercice' && s.data) {
-      const d = s.data;
-      return {
-        label: 'Exercice validé',
-        text: `${d.title || 'Exercice'} — état ${d.before ?? '–'} → ${d.after ?? '–'}${d.note ? ' · ' + d.note : ''}`,
-      };
-    }
-    if (s.kind === 'checkin' && s.data) {
-      const d = s.data;
-      const bits = [HUMEURS[d.humeur] || d.humeur, `énergie ${d.energie}/10`, SOMMEILS[d.sommeil] || d.sommeil];
-      if (d.score != null) bits.push(`score ${d.score}`);
-      return {
-        label: 'État du jour',
-        text: bits.join(' · ') + (d.note ? ' — ' + d.note : (d.grace ? ' — ' + d.grace : '')),
-      };
-    }
-    return { label: en.emotional_tone ? `Journal · ${en.emotional_tone}` : 'Journal', text: body };
-  }
-  const feed = [
-    ...entries.map(en => {
-      const h = humanize(en);
-      return {
-      kind: 'journal',
-      ts: en.written_at,
-      href: '/client/journal.html',
-      label: h.label,
-      text: h.text,
-    };
-    }),
-    ...docs.map(doc => ({
-      kind: 'session',
-      ts: doc.created_at,
-      href: '/client/journal.html#session-reperes',
-      label: 'Séance validée',
-      text: doc.title || 'Repère de séance',
-    })),
-  ].sort((a, b) => new Date(b.ts) - new Date(a.ts));
-
-  if (!feed.length) {
-    jz.innerHTML = `<p class="text-sm text-muted">Votre journal est prêt.</p>
-      <a href="/client/journal.html" class="inline-block border border-bdr text-ink text-sm font-medium px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors">Écrire une première entrée</a>`;
-  } else {
-    jz.innerHTML = '';
-    feed.slice(0, 4).forEach(item => {
-      const d = new Date(item.ts);
-      const el = document.createElement('a');
-      el.href = item.href;
-      el.className = 'block border border-bdr rounded-[14px] px-4 py-3 hover:bg-surface transition-colors';
-      el.innerHTML = `<p class="text-xs text-muted mb-1">${d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long'})} · ${safe(item.label)}</p>
-        <p class="text-sm text-ink line-clamp-2">${safe(item.text)}</p>`;
-      jz.appendChild(el);
-    });
-  }
-
-  const latestArchi = entries.map(e => parseArchi(e)).find(Boolean);
-  const rec = getExerciseRecommendation(latestArchi);
-  document.getElementById('exo-why').textContent = rec.why;
-  document.getElementById('exo-title').textContent = rec.title;
-  document.getElementById('exo-duration').textContent = 'Durée cible : ' + rec.duration;
-  document.getElementById('exo-steps').textContent = rec.steps;
-
-  // ── Mes intentions ─────────────────────────────────────────────────────────
-  const intList = document.getElementById('intentions-list');
-  const intErr = document.getElementById('intention-error');
-
-  function renderIntentions(items) {
-    intList.innerHTML = '';
-    if (!items.length) {
-      intList.innerHTML = '<p class="text-sm text-muted">Aucune intention en cours. Donnez-vous un cap simple — une phrase suffit.</p>';
-      return;
-    }
-    items.forEach(it => {
-      const row = document.createElement('div');
-      row.className = 'flex items-center gap-3 border border-bdr rounded-[14px] px-4 py-3';
-      const txt = document.createElement('p');
-      txt.className = 'flex-1 text-sm text-ink';
-      txt.textContent = it.text;
-      const done = document.createElement('button');
-      done.className = 'text-xs font-semibold text-forest-deep hover:underline shrink-0';
-      done.textContent = 'Réalisée ✓';
-      done.addEventListener('click', async () => {
-        done.disabled = true;
-        try { await updateMyIntention(it.id, { status: 'realisee' }); await loadIntentions(); }
-        catch (e) { done.disabled = false; }
-      });
-      const drop = document.createElement('button');
-      drop.className = 'text-xs text-muted hover:underline shrink-0';
-      drop.textContent = 'Laisser aller';
-      drop.addEventListener('click', async () => {
-        drop.disabled = true;
-        try { await updateMyIntention(it.id, { status: 'abandonnee' }); await loadIntentions(); }
-        catch (e) { drop.disabled = false; }
-      });
-      row.appendChild(txt); row.appendChild(done); row.appendChild(drop);
-      intList.appendChild(row);
-    });
-  }
-
-  async function loadIntentions() {
-    try { renderIntentions(await getMyIntentions()); }
-    catch (e) { intList.innerHTML = '<p class="text-sm text-muted">Intentions indisponibles pour le moment.</p>'; }
-  }
-
-  document.getElementById('intention-add').addEventListener('click', async () => {
-    const input = document.getElementById('intention-input');
-    const text = input.value.trim();
-    intErr.classList.add('hidden');
-    if (!text) return;
-    try {
-      await createMyIntention({ text });
-      input.value = '';
-      await loadIntentions();
-    } catch (e) {
-      intErr.textContent = e.message || 'Impossible d\'ajouter l\'intention.';
-      intErr.classList.remove('hidden');
-    }
-  });
-  document.getElementById('intention-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') document.getElementById('intention-add').click();
-  });
-  loadIntentions();
 })();
 </script>
 
