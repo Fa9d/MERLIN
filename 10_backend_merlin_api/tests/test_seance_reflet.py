@@ -41,8 +41,8 @@ from app.services.session_reflection import RESSOURCES_URGENCE
 init_models()
 
 REFLET_DOUX = {
-    "reflet": "Tu as parlé de tes samedis au bord de l'eau — « redevenir moi-même », c'est ton mot.",
-    "fils": [{"titre": "Le samedi qui t'appartient", "echo": "« la semaine appartenait aux autres »"}],
+    "reflet": "Tu as parlé de tes samedis au bord de l'eau — « je redeviens moi-même », c'est ton mot.",
+    "fils": [{"titre": "Le samedi qui t'appartient", "echo": "« j'ai dit oui à tout le monde »"}],
     "question_ouverte": "",
     "piste": "",
     "vigilance": {"niveau": "aucun", "raison": None},
@@ -151,7 +151,7 @@ def test_appartenance_et_idempotence(ctx, monkeypatch) -> None:
 
         r = http.post(url, headers=_auth(ctx["u1"]))
         assert r.status_code == 201, r.text
-        assert "redevenir moi-même" in r.json()["reflet"]
+        assert "je redeviens moi-même" in r.json()["reflet"]
         rid = r.json()["id"]
 
         # Idempotent : même reflet, AUCUN second appel LLM

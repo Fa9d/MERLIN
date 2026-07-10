@@ -142,9 +142,25 @@ async def _generate(suite_cfg: dict, case: dict) -> dict:
     template = load_prompt(suite_cfg["prompt_id"])
     entree = json.dumps(case["entree"], ensure_ascii=False, indent=2)
     prompt = f"{template}\n\n## {suite_cfg['entree_titre']}\n```json\n{entree}\n```\n"
-    raw = await _call(prompt)
-    payload = _extract_json_payload(raw)
-    return _VALIDATORS[suite_cfg["prompt_id"]](payload)
+    # PROD-ANA-006 : verrou EN CODE des verbatims (comme en production —
+    # une sortie rejetée ne parvient JAMAIS au client, on regénère).
+    # Le juge n'évalue que ce qui passe le verrou, fidèle à la surface réelle.
+    attempts = 3 if suite_cfg["prompt_id"] == "PROD-ANA-006" else 1
+    last_exc = None
+    for _ in range(attempts):
+        raw = await _call(prompt)
+        payload = _extract_json_payload(raw)
+        payload = _VALIDATORS[suite_cfg["prompt_id"]](payload)
+        if suite_cfg["prompt_id"] == "PROD-ANA-006":
+            from app.services.session_reflection import assert_verbatims_fideles
+
+            try:
+                assert_verbatims_fideles(payload, case["entree"].get("transcript", ""))
+            except Exception as exc:  # noqa: BLE001
+                last_exc = exc
+                continue
+        return payload
+    raise last_exc or RuntimeError("génération épuisée")
 
 
 async def _judge(categorie: str, attente: str, entree: dict, sortie: dict) -> tuple[bool, str]:

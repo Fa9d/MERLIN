@@ -115,6 +115,26 @@ def _post_filter(payload: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
+def _normalize(t: str) -> str:
+    return " ".join(t.split())
+
+
+def assert_verbatims_fideles(payload: dict[str, Any], transcript: str) -> dict[str, Any]:
+    """Verrou EN CODE : toute citation « … » doit être une sous-chaîne contiguë
+    du transcript (espaces normalisés). Le prompt l'exige ; le code le GARANTIT —
+    une citation lissée ou reconstruite ne sort jamais vers le client."""
+    import re
+
+    haystack = _normalize(transcript)
+    for text in _texts_of(payload):
+        for quote in re.findall(r"«\s*(.*?)\s*»", str(text)):
+            if quote and _normalize(quote) not in haystack:
+                raise SeanceRefletError(
+                    "Citation non fidèle au transcript — reflet rejeté (réessaie)."
+                )
+    return payload
+
+
 def _apply_urgence_protocol(payload: dict[str, Any]) -> dict[str, Any]:
     """Verrou 3 : ressources injectées EN CODE, analyse neutralisée."""
     if payload["vigilance"]["niveau"] == "urgence":
@@ -143,7 +163,9 @@ async def generate_seance_reflet(db: Session, record: SessionRecord) -> dict[str
         db, purpose="seance_reflet_client", usage=usage,
         session_id=record.id, client_id=record.client_id,
     )
-    payload = _apply_urgence_protocol(_post_filter(_validate(_extract_json_payload(raw))))
+    payload = _validate(_extract_json_payload(raw))
+    assert_verbatims_fideles(payload, entree_dict["transcript"])
+    payload = _apply_urgence_protocol(_post_filter(payload))
 
     niveau = payload["vigilance"]["niveau"]
     if niveau == "urgence":
@@ -166,6 +188,7 @@ __all__ = [
     "BehavioralInsightsError",
     "Loi21ViolationError",
     "SeanceRefletError",
+    "assert_verbatims_fideles",
     "existing_reflet",
     "generate_seance_reflet",
 ]
