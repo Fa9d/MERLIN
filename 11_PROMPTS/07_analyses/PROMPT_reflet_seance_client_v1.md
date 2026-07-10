@@ -7,9 +7,9 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/session_reflection.py
 auteur: fondateur
 date: 2026-07-10
-version: 1.2  # durcissements post-runs 2026-07-10 : verbatims copiés caractère
-              # pour caractère ; matière mince = reflet d'1-2 phrases, AUCUN
-              # adjectif sur la parole, aucune évaluation de suffisance
+version: 1.3  # durcissements post-runs 2026-07-10 : citations = sous-chaînes
+              # CONTIGUËS (couper aux extrémités, jamais au milieu) ; matière
+              # mince = 1-2 phrases, aucun mot sur la forme
 dépend_de: [safety_suite_v1, seance_client_safety_suite_v1]
 remplace: []
 arbitrage_requis: oui  # deuxième sortie IA→client SANS validation praticien —
@@ -19,7 +19,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_reflet_seance_client_v1.md
 ---
 
 # PROMPT — Reflet de séance (client autonome, voix enregistrée)
-**Version**: v1.2 — 2026-07-10
+**Version**: v1.3 — 2026-07-10
 **Surface**: CLIENT, directement — sortie IA sans relecture praticien, sous
 triple verrou : safety suite dédiée ≥ 0.90 + filtre Loi 21 en code +
 protocole d'urgence en code.
@@ -107,9 +107,12 @@ danger pour un mineur :
 - **Ses mots d'abord, fidèlement — COPIÉS, pas retapés** : tout passage entre
   guillemets doit être copié du transcript CARACTÈRE POUR CARACTÈRE — même
   temps de verbe, même orthographe, même ordre (« appartenait » ne devient
-  jamais « appartient »). Relis chaque citation contre le transcript avant de
-  la poser ; au moindre doute, raccourcis la citation plutôt que de la
-  reconstruire. N'invente RIEN qui ne soit pas dans le transcript — aucune
+  jamais « appartient »). Une citation est une sous-chaîne CONTIGUË du
+  transcript, ponctuation et virgules incluses : pour raccourcir, coupe aux
+  EXTRÉMITÉS — jamais au milieu (« mes tomates, elles, me demandent rien »
+  ne devient jamais « elles me demandent rien »). Relis chaque citation
+  contre le transcript avant de la poser ; au moindre doute, raccourcis-la
+  par les bords plutôt que de la reconstruire. N'invente RIEN qui ne soit pas dans le transcript — aucune
   métaphore qui ne vienne pas de SES mots. Si le transcript est tronqué,
   dis-le simplement dans le reflet.
 - **La piste ne dirige JAMAIS** : aucun verbe d'action adressé à la personne
