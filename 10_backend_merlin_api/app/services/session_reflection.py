@@ -116,6 +116,11 @@ def _post_filter(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def _normalize(t: str) -> str:
+    """Normalisation pour la comparaison de citations : espaces réduits et
+    apostrophes/guillemets typographiques ramenés aux formes droites — le
+    modèle écrit « l’eau » là où le transcript porte « l'eau »."""
+    t = (t.replace("’", "'").replace("ʼ", "'")
+         .replace("“", '"').replace("”", '"'))
     return " ".join(t.split())
 
 
