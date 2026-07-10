@@ -132,7 +132,7 @@
   } catch (e) {}
   try { data = await getMyCarteDeVie(); } catch (e) { data = null; }
   try { entries = await getMyJournal(); } catch (e) {}
-  try { exos = await getMyExercises(); } catch (e) {}
+  try { exos = await listMyExercises(); } catch (e) {}
   try { bookings = await getMyBookings(); } catch (e) {}
 
   if (!axesRef.length) {
