@@ -83,10 +83,35 @@
       <p id="tensions-vide" class="hidden text-sm text-[#6f8c78] italic">Aucun champ de tension dans cette lecture — ils apparaîtront ici quand une carte d'analyse en relèvera.</p>
     </div>
 
+    <!-- Le sol -->
+    <div id="sol-bloc" class="hidden mt-6">
+      <h3 class="text-base font-bold text-[#e8f5eb] mb-2">Le sol</h3>
+      <div id="sol-grid" class="grid sm:grid-cols-2 gap-3"></div>
+    </div>
+
     <!-- Le fil à tirer -->
     <div id="fil-a-tirer" class="hidden mt-6 rounded-[14px] border border-[#3a5743] bg-[#16281c] px-5 py-4" style="border-left:3px solid #8FB99A">
       <h3 class="text-base font-bold text-[#e8f5eb] mb-1">Le fil à tirer</h3>
       <p id="fil-a-tirer-texte" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
+    </div>
+
+    <!-- La lecture en trois temps -->
+    <div id="triade-bloc" class="hidden mt-6">
+      <h3 class="text-base font-bold text-[#e8f5eb] mb-2">La lecture, en trois temps</h3>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div class="rounded-[12px] border px-4 py-3 bg-[#16281c]" style="border-color:#8FB99A">
+          <p class="text-xs uppercase tracking-wider text-[#8FB99A] font-semibold mb-1">Ce qui s'observe</p>
+          <p id="t-observation" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
+        </div>
+        <div class="rounded-[12px] border px-4 py-3 bg-[#16281c]" style="border-color:#4A7C59">
+          <p class="text-xs uppercase tracking-wider text-[#9bb7a3] font-semibold mb-1">Une hypothèse, prudente</p>
+          <p id="t-hypothese" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
+        </div>
+        <div class="rounded-[12px] border px-4 py-3 bg-[#16281c]" style="border-color:#D97706">
+          <p class="text-xs uppercase tracking-wider text-[#e0a458] font-semibold mb-1">Une orientation, libre</p>
+          <p id="t-orientation" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -155,6 +180,25 @@
       TENSIONS = snap.tensions || [];
       document.getElementById('constellation-resume').textContent = snap.constellation_resume || '';
       if (snap.fil) document.getElementById('constellation-mode').textContent = snap.fil;
+      const solBloc = document.getElementById('sol-bloc');
+      const solOk = (snap.sol || []).filter(x => x.titre || x.texte);
+      if (solOk.length) {
+        solBloc.classList.remove('hidden');
+        document.getElementById('sol-grid').innerHTML = solOk.map(x =>
+          '<div class="rounded-[12px] border border-[#2a4031] bg-[#0f1a13] px-4 py-3">' +
+          '<p class="text-[11px] uppercase tracking-wider text-[#6f8c78]">' + esc(x.titre) + '</p>' +
+          '<p class="text-sm text-[#cfe6d4] mt-1">' + esc(x.texte) + '</p></div>').join('');
+      } else { solBloc.classList.add('hidden'); }
+
+      const tri = snap.triade || {};
+      const triOk = tri.observation || tri.hypothese || tri.orientation;
+      document.getElementById('triade-bloc').classList.toggle('hidden', !triOk);
+      if (triOk) {
+        document.getElementById('t-observation').textContent = tri.observation || '—';
+        document.getElementById('t-hypothese').textContent = tri.hypothese || '—';
+        document.getElementById('t-orientation').textContent = tri.orientation || '—';
+      }
+
       const fat = document.getElementById('fil-a-tirer');
       if (snap.fil_a_tirer) {
         fat.classList.remove('hidden');
@@ -176,6 +220,9 @@
         note: compte[a.code] ? compte[a.code] + ' trace(s) ce mois-ci' : 'aucune trace récente — et c’est correct',
       }));
       TENSIONS = [];
+      document.getElementById('sol-bloc').classList.add('hidden');
+      document.getElementById('triade-bloc').classList.add('hidden');
+      document.getElementById('fil-a-tirer').classList.add('hidden');
       document.getElementById('constellation-mode').textContent =
         'Votre carte se dessinera au fil des séances — en attendant, la constellation reflète vos traces de journal.';
     }

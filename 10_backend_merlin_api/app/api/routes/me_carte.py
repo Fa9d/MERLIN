@@ -11,7 +11,7 @@ Gardes :
 - SA carte seulement (client_id résolu depuis la session) ;
 - filtre Loi 21 EN CODE sur chaque texte exposé — un texte qui échoue est
   OMIS, la structure reste ;
-- la TRIADE praticien n'est PAS exposée (lecture professionnelle, voie validée).
+- triade et sol exposés au client (décision fondateur 2026-07-10), filtrés Loi 21.
 """
 from __future__ import annotations
 
@@ -45,6 +45,8 @@ class CarteSnapshot(MerlinSchema):
     tensions: list
     fil: str | None = None
     fil_a_tirer: str | None = None
+    sol: list = []
+    triade: dict = {}
     constellation_resume: str | None = None
     vigilance: str | None = None
     created_at: datetime
@@ -97,6 +99,14 @@ def _snapshot(result: AnalysisResult) -> CarteSnapshot:
         tensions=tensions,
         fil=_texte_sur(p.get("fil")),
         fil_a_tirer=_texte_sur(p.get("fil_a_tirer")),
+        sol=[
+            {"titre": _texte_sur(sx.get("titre")) or "", "texte": _texte_sur(sx.get("texte")) or ""}
+            for sx in (p.get("sol") or [])
+        ],
+        triade={
+            k: _texte_sur((p.get("triade") or {}).get(k)) or ""
+            for k in ("observation", "hypothese", "orientation")
+        },
         constellation_resume=_texte_sur(p.get("constellation_resume")),
         vigilance=p.get("vigilance"),
         created_at=result.created_at,
