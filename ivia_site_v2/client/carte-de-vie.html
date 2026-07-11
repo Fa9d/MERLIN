@@ -48,8 +48,6 @@
       <h2 class="text-lg font-bold text-[#e8f5eb]">Constellation des onze axes</h2>
       <span class="text-xs text-[#6f8c78]">le territoire est le sol central — les axes en rayonnent</span>
     </div>
-    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mb-1 max-w-2xl leading-relaxed"></p>
-    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
     <svg id="constellation" class="w-full" viewBox="0 0 560 520" role="img" aria-label="Constellation de vos onze axes"></svg>
     <div class="flex items-center gap-4 text-[11px] text-[#6f8c78] mt-2 flex-wrap">
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#8FB99A"></span>actif</span>
@@ -57,6 +55,9 @@
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#2a4031"></span>en sourdine</span>
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full border-2" style="background:#2a4031;border-color:#D97706"></span>en tension</span>
     </div>
+
+    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-4 mb-1 max-w-2xl leading-relaxed"></p>
+    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
 
     <!-- Barre de progression : la carte, d'analyse en analyse -->
     <div id="progression-bloc" class="mt-6">
@@ -194,8 +195,9 @@
     return last;
   };
 
-  // ── État des axes À UNE DATE : carte (socle) + activité du journal (vie) ────
-  const NIVEAUX = ['sourdine', 'présent', 'actif'];
+  // ── État des axes À UNE DATE : la RÉSONANCE de la carte en vigueur (même
+  // lecture que l'interface praticien) ; repli journal si aucune carte encore.
+  const RANG = { sourdine: 0, present: 1, actif: 2, tension: 3 };
   function etatAt(ts) {
     const ref = new Date(ts).getTime();
     const cutoff = ref - 30 * 864e5;
@@ -209,24 +211,26 @@
     const etat = {};
     axesRef.forEach(a => {
       const cx = snap ? (snap.axes[a.code] || {}) : {};
-      const carteLvl = { sourdine: 0, present: 1, actif: 2, tension: 2 }[cx.resonance] ?? 0;
-      const jLvl = (traces[a.code] || 0) >= 3 ? 2 : (traces[a.code] ? 1 : 0);
+      let resonance = cx.resonance;
+      if (!snap) {
+        resonance = (traces[a.code] || 0) >= 3 ? 'actif' : (traces[a.code] ? 'present' : 'sourdine');
+      }
       etat[a.code] = {
-        lvl: Math.max(carteLvl, jLvl),
-        tension: cx.resonance === 'tension',
+        resonance: resonance || 'sourdine',
         traces: traces[a.code] || 0,
-        note: cx.note || (traces[a.code] ? traces[a.code] + ' trace(s) au journal sur 30 jours' : 'en sourdine à ce moment-là'),
+        note: cx.note || (traces[a.code] ? traces[a.code] + ' trace(s) au journal sur 30 jours' : 'Axe non encore lu pour cette personne.'),
       };
     });
     return { etat, snap };
   }
 
-  // ── Constellation animée (d3, transitions douces + pulsation du changement) ─
-  const RES_LVL = [
-    { fill: '#2a4031', r: 11, stroke: '#3a5743' },   // sourdine
-    { fill: '#4A7C59', r: 15, stroke: '#5e9670' },   // présent
-    { fill: '#8FB99A', r: 19, stroke: '#b6d8bf' },   // actif
-  ];
+  // ── Constellation animée — MÊME rendu que l'interface praticien ────────────
+  const RES = {
+    sourdine: { fill: '#2a4031', r: 11, stroke: '#2a4031' },
+    present:  { fill: '#4A7C59', r: 15, stroke: '#5e9670' },
+    actif:    { fill: '#8FB99A', r: 19, stroke: '#b6d8bf' },
+    tension:  { fill: '#2a4031', r: 17, stroke: '#D97706' },
+  };
   const INTENS_W = { faible: 1.5, moderee: 3, marquee: 5 };
   const W = 560, cx0 = W / 2, cy0 = 520 / 2 + 6, R0 = 175;
   let positions = null, initDone = false;
@@ -297,21 +301,25 @@
     tous
       .on('mousemove', function (ev, d) {
         const x = etat[d.code];
-        showTip('<b>' + esc(labelAxe(d.code)) + '</b> · ' + (x.tension ? 'en tension' : NIVEAUX[x.lvl])
+        showTip('<b>' + esc(labelAxe(d.code)) + '</b> · ' + esc(x.resonance)
           + (x.traces ? ' · ' + x.traces + ' trace(s)' : '') + '<br>' + esc(x.note || ''), ev);
       })
       .on('mouseleave', hideTip)
       .on('click', function (ev, d) {
         const x = etat[d.code];
-        showDetail(labelAxe(d.code) + ' · ' + (x.tension ? 'en tension' : NIVEAUX[x.lvl]), x.note);
+        showDetail(labelAxe(d.code) + ' · ' + x.resonance, x.note);
       });
 
     tous.select('circle')
       .transition().duration(450)
-      .attr('r', d => d.fondateur ? 30 : RES_LVL[etat[d.code].lvl].r)
-      .attr('fill', d => d.fondateur ? (etat[d.code].tension ? '#2a4031' : '#4A7C59') : RES_LVL[etat[d.code].lvl].fill)
-      .attr('stroke', d => etat[d.code].tension ? '#D97706' : (d.fondateur ? '#8FB99A' : RES_LVL[etat[d.code].lvl].stroke))
-      .attr('stroke-width', d => etat[d.code].tension ? 2.5 : 1.5);
+      .attr('r', d => d.fondateur ? 30 : (RES[etat[d.code].resonance] || RES.sourdine).r)
+      .attr('fill', d => d.fondateur
+        ? (etat[d.code].resonance === 'tension' ? '#2a4031' : '#4A7C59')
+        : (RES[etat[d.code].resonance] || RES.sourdine).fill)
+      .attr('stroke', d => d.fondateur
+        ? (etat[d.code].resonance === 'tension' ? '#D97706' : '#8FB99A')
+        : (RES[etat[d.code].resonance] || RES.sourdine).stroke)
+      .attr('stroke-width', d => etat[d.code].resonance === 'tension' ? 2.5 : 1.5);
 
     // Étiquettes (une seule fois : positions fixes)
     tous.select('text.lbl').each(function (d) {
@@ -343,7 +351,7 @@
     (changed || []).forEach(code => {
       const g = svg.select('g.nodes').selectAll('g.axis-node').filter(d => d.code === code);
       const c = g.select('circle');
-      const rNow = (axesRef.find(a => a.code === code) || {}).fondateur ? 30 : RES_LVL[etat[code].lvl].r;
+      const rNow = (axesRef.find(a => a.code === code) || {}).fondateur ? 30 : (RES[etat[code].resonance] || RES.sourdine).r;
       c.transition().delay(460).duration(320).attr('r', rNow * 1.45)
         .transition().duration(420).attr('r', rNow);
       g.append('circle').attr('r', rNow).attr('fill', 'none')
@@ -425,10 +433,10 @@
     if (!diff || !diff.length) { bloc.classList.add('hidden'); return; }
     bloc.classList.remove('hidden');
     document.getElementById('bouge-liste').innerHTML = diff.map(d => {
-      const fleche = d.to > d.from ? '↑' : '↓';
-      const coul = d.to > d.from ? '#8FB99A' : '#6f8c78';
+      const monte = RANG[d.to] > RANG[d.from];
+      const coul = d.to === 'tension' ? '#e0a458' : (monte ? '#8FB99A' : '#6f8c78');
       return '<span class="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full border border-[#3a5743] bg-[#16281c] px-3 py-1" style="color:' + coul + '">'
-        + fleche + ' ' + esc(labelAxe(d.code)) + ' <span class="font-normal text-[#6f8c78]">' + NIVEAUX[d.from] + ' → ' + NIVEAUX[d.to] + '</span></span>';
+        + (monte ? '↑' : '↓') + ' ' + esc(labelAxe(d.code)) + ' <span class="font-normal text-[#6f8c78]">' + esc(d.from) + ' → ' + esc(d.to) + '</span></span>';
     }).join(' ');
   }
 
@@ -443,8 +451,8 @@
     const diff = [];
     if (prev) {
       axesRef.forEach(a => {
-        if (prev[a.code].lvl !== etat[a.code].lvl) {
-          diff.push({ code: a.code, from: prev[a.code].lvl, to: etat[a.code].lvl });
+        if (prev[a.code].resonance !== etat[a.code].resonance) {
+          diff.push({ code: a.code, from: prev[a.code].resonance, to: etat[a.code].resonance });
         }
       });
     }
