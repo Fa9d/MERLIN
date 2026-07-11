@@ -45,10 +45,10 @@
   <!-- Constellation des onze axes -->
   <section class="cosmos p-5 sm:p-7">
     <div class="flex items-center justify-between gap-3 flex-wrap mb-1">
-      <h2 class="text-lg font-bold text-[#e8f5eb]">Constellation des onze axes</h2>
+      <h2 class="text-lg font-bold text-[#e8f5eb]">Horizon émotionnel</h2>
       <span class="text-xs text-[#6f8c78]">le territoire est le sol central — les axes en rayonnent</span>
     </div>
-    <svg id="constellation" class="w-full" viewBox="0 0 560 520" role="img" aria-label="Constellation de vos onze axes"></svg>
+    <svg id="constellation" class="w-full" viewBox="0 0 560 520" role="img" aria-label="Horizon émotionnel — vos onze axes"></svg>
     <div class="flex items-center gap-4 text-[11px] text-[#6f8c78] mt-2 flex-wrap">
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#8FB99A"></span>actif</span>
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#4A7C59"></span>présent</span>
@@ -56,8 +56,6 @@
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full border-2" style="background:#2a4031;border-color:#D97706"></span>en tension</span>
     </div>
 
-    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-4 mb-1 max-w-2xl leading-relaxed"></p>
-    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
 
     <!-- Barre de progression : la carte, d'analyse en analyse -->
     <div id="progression-bloc" class="mt-6">
@@ -69,6 +67,8 @@
       <input id="progression" type="range" min="0" max="0" value="0" step="1" class="w-full accent-[#8FB99A]">
       <p id="progression-note" class="text-[11px] text-[#6f8c78] mt-1"></p>
     </div>
+    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-4 mb-1 max-w-2xl leading-relaxed"></p>
+    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
 
     <!-- Boîte de détail (au toucher/clic — le survol seul ne marche pas au téléphone) -->
     <div id="detail" class="hidden mt-4 tension-card" style="border-left-color:#8FB99A">
