@@ -91,7 +91,8 @@ def _snapshot(result: AnalysisResult) -> CarteSnapshot:
             "entre": t.get("entre") or [],
             "intensite": t.get("intensite"),
             "label": _texte_sur(t.get("label")) or "Champ de tension",
-            "desc": _texte_sur(t.get("desc")),
+            # Ton personnel bienveillant pour la surface client quand il existe
+            "desc": _texte_sur(t.get("desc_client")) or _texte_sur(t.get("desc")),
         })
     return CarteSnapshot(
         id=result.id,
