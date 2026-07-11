@@ -72,7 +72,24 @@ const IVIA_ICON = {
 
 
 function renderLayout(active, pageLabel) {
-  const header = document.getElementById('ivia-header');
+  // Auto-réparant (bug fondateur 2026-07-11 : Horizon sans footer, Miroir sans
+  // menu ni footer) : on attend que la page soit chargée, et on CRÉE les
+  // points de montage s'ils manquent — plus aucune page ne peut les oublier.
+  const run = () => _renderLayoutNow(active, pageLabel);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run, { once: true });
+  } else {
+    run();
+  }
+}
+
+function _renderLayoutNow(active, pageLabel) {
+  let header = document.getElementById('ivia-header');
+  if (!header) {
+    header = document.createElement('div');
+    header.id = 'ivia-header';
+    document.body.prepend(header);
+  }
   if (header) {
     const links = '';
 
@@ -171,7 +188,12 @@ function renderLayout(active, pageLabel) {
     iviaApplyTheme(iviaCurrentTheme());
   }
 
-  const footer = document.getElementById('ivia-footer');
+  let footer = document.getElementById('ivia-footer');
+  if (!footer) {
+    footer = document.createElement('div');
+    footer.id = 'ivia-footer';
+    document.body.appendChild(footer);
+  }
   if (footer) {
     // Footer contextuel ESPACE CLIENT (décision fondateur 2026-07-10) :
     // les liens du menu client + Services / Ressources / Légal en _blank.
