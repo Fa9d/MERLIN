@@ -30,6 +30,14 @@
     .ldv-item::before{content:'';position:absolute;left:6px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--forest);}
     .ldv-item::after{content:'';position:absolute;left:9.5px;top:20px;bottom:-8px;width:1.5px;background:var(--bdr);}
     .ldv-item:last-child::after{display:none;}
+    /* Curseur de progression : lisible et manipulable sur tous écrans */
+    input.prog{-webkit-appearance:none;appearance:none;height:6px;border-radius:9999px;
+      background:#22372a;outline:none;cursor:pointer;}
+    input.prog::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;
+      border-radius:50%;background:#8FB99A;border:3px solid #0f1a13;box-shadow:0 0 0 1.5px #8FB99A;}
+    input.prog::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#8FB99A;
+      border:3px solid #0f1a13;box-shadow:0 0 0 1.5px #8FB99A;}
+    input.prog:disabled{opacity:.45;cursor:default;}
   </style>
 </head>
 <body class="antialiased">
@@ -44,58 +52,56 @@
   </header>
 
   <!-- Constellation des onze axes -->
-  <section class="cosmos p-5 sm:p-7">
-    <div class="flex items-center justify-between gap-3 flex-wrap -mb-2">
+  <section class="cosmos p-4 sm:p-6 lg:p-7">
+    <!-- En-tête compact -->
+    <div class="flex items-baseline justify-between gap-3 flex-wrap">
       <h2 class="text-lg font-bold text-[#e8f5eb]">Horizon émotionnel</h2>
-      <span class="text-xs text-[#6f8c78]">le territoire est le sol central — les axes en rayonnent</span>
+      <span class="hidden sm:inline text-xs text-[#6f8c78]">le territoire est le sol central — les axes en rayonnent</span>
     </div>
-    <div class="max-w-[560px] mx-auto">
-    <svg id="constellation" class="w-full" viewBox="0 40 560 450" role="img" aria-label="Horizon émotionnel — vos onze axes"></svg>
+
+    <!-- ═══ L'INSTRUMENT : carte + barre + légende — calibré pour tenir à l'écran ═══ -->
+    <div class="flex justify-center">
+      <svg id="constellation" viewBox="0 40 560 450" role="img" aria-label="Horizon émotionnel — vos onze axes"
+           style="width:100%;max-width:min(600px, calc((100vh - 300px) * 1.24));height:auto;display:block"></svg>
     </div>
-    <div id="progression-bloc" class="mt-7 max-w-[460px] mx-auto">
+
+    <div id="progression-bloc" class="w-full max-w-[440px] mx-auto mt-5">
       <div class="flex items-center justify-between gap-3 mb-1">
-        <h3 class="text-base font-bold text-[#e8f5eb]">Progression</h3>
-        <span id="progression-date" class="text-xs font-semibold text-[#9bb7a3]"></span>
+        <p class="text-xs font-bold uppercase tracking-wider text-[#8FB99A]">Progression</p>
+        <span id="progression-date" class="text-xs font-semibold text-[#9bb7a3] text-right"></span>
       </div>
-    <div class="flex items-center gap-4 text-[11px] text-[#6f8c78] mt-3 flex-wrap">
+      <input id="progression" type="range" min="0" max="0" value="0" step="1" class="prog w-full">
+      <p id="progression-note" class="text-[11px] text-[#6f8c78] mt-1 text-center"></p>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-[#6f8c78] mt-3">
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#8FB99A"></span>actif</span>
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#4A7C59"></span>présent</span>
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:#2a4031"></span>en sourdine</span>
       <span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full border-2" style="background:#2a4031;border-color:#D97706"></span>en tension</span>
     </div>
-    <div id="bouge-bloc" class="hidden mt-4">
-      <p class="text-xs font-bold uppercase tracking-wider text-[#8FB99A] mb-2">Ce qui a bougé</p>
-      <div id="bouge-liste" class="flex flex-wrap gap-1.5"></div>
-    </div>
-    <div id="moment-bloc" class="hidden mt-4 rounded-[14px] border border-[#3a5743] bg-[#16281c] px-5 py-4">
-      <p id="moment-etiquette" class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-1.5"></p>
-      <div id="moment-corps" class="space-y-1.5"></div>
-    </div>
-    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-4 mb-1 max-w-2xl leading-relaxed"></p>
-    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez chaque astre.</p>
 
-
+    <!-- ═══ Contexte du cran : côte à côte sur grand écran, empilé sur mobile ═══ -->
+    <div class="grid lg:grid-cols-2 gap-4 mt-6 items-start">
+      <div id="moment-bloc" class="hidden rounded-[14px] border border-[#3a5743] bg-[#16281c] px-4 py-3.5">
+        <p id="moment-etiquette" class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-1.5"></p>
+        <div id="moment-corps" class="space-y-1.5"></div>
+      </div>
+      <div id="bouge-bloc" class="hidden rounded-[14px] border border-[#2a4031] bg-[#0f1a13] px-4 py-3.5">
+        <p class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-2">Ce qui a bougé</p>
+        <div id="bouge-liste" class="flex flex-wrap gap-1.5"></div>
       </div>
     </div>
 
-
-
-    <!-- Barre de progression : la carte, d'analyse en analyse -->
-      <p class="text-xs text-[#6f8c78] mb-2">Chaque cran est une analyse datée — déplacez le curseur, la carte se redessine à ce moment-là.</p>
-      <input id="progression" type="range" min="0" max="0" value="0" step="1" class="w-full accent-[#8FB99A]">
-      <p id="progression-note" class="text-[11px] text-[#6f8c78] mt-1"></p>
-    </div>
-
-    <!-- Ce qui a bougé (diff entre crans) -->
-
-    <!-- Le moment (contenu de l'événement du cran) -->
+    <!-- ═══ Lecture ═══ -->
+    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-6 mb-1 max-w-2xl leading-relaxed"></p>
+    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez ou touchez chaque astre.</p>
 
     <!-- Champs de tension -->
     <div id="tensions-bloc" class="mt-6">
       <h3 class="text-base font-bold text-[#e8f5eb] mb-1">Champs de tension</h3>
       <p class="text-xs text-[#6f8c78] mb-3">Là où ça tire — deux axes qui se tendent l'un l'autre, pas deux problèmes séparés.</p>
       <div id="tensions-list" class="grid sm:grid-cols-2 gap-3"></div>
-      <p id="tensions-vide" class="hidden text-sm text-[#6f8c78] italic">Aucun champ de tension dans cette lecture — ils apparaîtront ici quand une carte d'analyse en relèvera.</p>
     </div>
 
     <!-- Le sol -->
