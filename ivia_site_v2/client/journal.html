@@ -234,7 +234,8 @@
   }
 
   function buildPayload() {
-    const date = document.getElementById('entry-date').value || new Date().toISOString().slice(0,10);
+    // Le champ date a été retiré (une entrée = aujourd'hui) — bug latent depuis juin.
+    const date = (document.getElementById('entry-date') || {}).value || new Date().toISOString().slice(0,10);
     const humeur = document.getElementById('humeur').value;
     const energie = Number(document.getElementById('energie').value || 1);
     const sommeil = document.getElementById('sommeil').value;
@@ -643,7 +644,6 @@
   function showTodayResult(todayEntries) {
     document.getElementById('journal-form-card').classList.add('hidden');
     document.getElementById('architecte-fold').classList.add('hidden');
-    document.getElementById('exercise-fold').classList.add('hidden');
 
     const resultSection = document.getElementById('today-result');
     resultSection.classList.remove('hidden');
