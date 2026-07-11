@@ -70,23 +70,8 @@ const IVIA_ICON = {
   miroir:     _ic('<ellipse cx="12" cy="10" rx="6" ry="8"/><path stroke-linecap="round" d="M9 20h6M12 18v3"/>'),
 };
 
-function renderClientMobileNav(active) {
-  if (document.getElementById('ivia-mobile-nav')) return;
-  const items = IVIA_NAV.map(n => {
-    const on = n.id === active;
-    return `<a href="${n.href}" class="ivia-mob-link${on ? ' active' : ''}">${IVIA_ICON[n.id] || ''}<span>${n.label}</span></a>`;
-  }).join('');
-  const nav = document.createElement('nav');
-  nav.id = 'ivia-mobile-nav';
-  nav.className = 'ivia-mobile-nav';
-  nav.setAttribute('aria-label', 'Navigation principale');
-  nav.innerHTML = items;
-  document.body.appendChild(nav);
-  document.body.classList.add('has-ivia-mobile-nav');
-}
 
 function renderLayout(active, pageLabel) {
-  renderClientMobileNav(active);
   const header = document.getElementById('ivia-header');
   if (header) {
     const links = '';

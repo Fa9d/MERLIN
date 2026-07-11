@@ -197,15 +197,41 @@ function renderPraticienChrome() {
       + '<p class="text-xs text-muted px-2 mb-6 font-semibold uppercase tracking-wider">Espace praticien·ne</p>'
       + '<nav class="flex flex-col gap-1 flex-1">' + links + '<div id="sidebar-logout" class="mt-2"></div></nav>';
   }
+  // Mobile : rien en bas de l'écran (décision fondateur 2026-07-10) — un
+  // bandeau haut avec menu déroulant à droite, comme côté client.
   const mobile = document.getElementById('praticien-mobile-nav');
-  if (mobile) {
-    mobile.className = 'lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-bdr flex items-center justify-around px-2 py-2 z-20';
-    mobile.innerHTML = PRATICIEN_NAV.filter(l => l.court).map(l => {
-      const active = path === l.href;
-      return '<a href="' + l.href + '" class="flex flex-col items-center gap-0.5 text-xs font-medium '
-        + (active ? 'text-forest-deep' : 'text-muted') + ' px-3 py-1">'
-        + _pIcon(l.icon, 'w-5 h-5') + l.court + '</a>';
-    }).join('');
+  if (mobile) { mobile.innerHTML = ''; mobile.className = 'hidden'; }
+  if (!document.getElementById('praticien-topbar')) {
+    const bar = document.createElement('header');
+    bar.id = 'praticien-topbar';
+    bar.className = 'lg:hidden sticky top-0 z-30 bg-white/95 border-b border-bdr flex items-center justify-between px-4 py-2.5';
+    bar.style.backdropFilter = 'blur(8px)';
+    bar.innerHTML = '<a href="/praticien/dashboard.html" class="font-heading text-lg font-bold text-forest-deep">IVIA · Praticien</a>'
+      + '<button id="praticien-menu-btn" type="button" aria-haspopup="true" aria-expanded="false"'
+      + ' class="flex items-center gap-1.5 border border-bdr rounded-[10px] px-3 py-1.5 text-sm font-semibold text-ink">'
+      + 'Menu <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></button>';
+    document.body.prepend(bar);
+    const panel = document.createElement('div');
+    panel.id = 'praticien-menu-panel';
+    panel.className = 'lg:hidden hidden fixed top-12 right-3 z-40 bg-white border border-bdr rounded-[14px] shadow-lg py-2 w-60';
+    panel.innerHTML = PRATICIEN_NAV.map(l => {
+      if (l.spacer) return '<hr class="my-1 border-bdr">';
+      const extra = l.adminOnly ? ' data-admin-only="1"' : '';
+      return '<a href="' + l.href + '"' + extra + ' class="flex items-center gap-2.5 px-4 py-2 text-sm '
+        + (path === l.href ? 'font-bold text-forest-deep' : 'text-ink') + '">'
+        + _pIcon(l.icon, 'w-4 h-4') + l.label + '</a>';
+    }).join('')
+      + '<hr class="my-1 border-bdr">'
+      + '<button type="button" class="flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 w-full text-left" '
+      + 'onclick="logout()">Déconnexion</button>';
+    document.body.appendChild(panel);
+    document.getElementById('praticien-menu-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.classList.toggle('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      if (!panel.contains(e.target)) panel.classList.add('hidden');
+    });
   }
   const logout = document.getElementById('sidebar-logout');
   if (logout && !logout.childElementCount && typeof renderLogoutButton === 'function') renderLogoutButton(logout);
