@@ -44,8 +44,10 @@ from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
 logger = logging.getLogger("merlin.journal_reflection")
 
 REFLET_PROMPT_ID = "PROD-ANA-004"
-ENGINE_VERSION = "journal-reflet-v1.0"
-WINDOW_DAYS = 21
+ENGINE_VERSION = "journal-reflet-v1.1"
+# Analyses par période (fondateur 2026-07-11) : jour / semaine / mois —
+# même prompt, mêmes verrous ; seule la fenêtre de matière change.
+PERIODES = {"jour": 1, "semaine": 7, "mois": 31}
 COOLDOWN_HOURS = 20
 
 # Ressources de crise — INJECTÉES EN CODE quand vigilance=urgence, pour ne
@@ -69,19 +71,28 @@ class RefletCooldownError(JournalRefletError):
     pass
 
 
-def _last_reflet(db: Session, client_id: str) -> AnalysisResult | None:
-    return db.scalar(
+def _last_reflet(db: Session, client_id: str, periode: str) -> AnalysisResult | None:
+    """Dernier reflet DE CETTE PÉRIODE (cooldown indépendant jour/semaine/mois)."""
+    rows = db.execute(
         select(AnalysisResult)
         .where(
             AnalysisResult.client_id == client_id,
             AnalysisResult.capability == "journal_reflet_client",
         )
         .order_by(AnalysisResult.created_at.desc())
-    )
+        .limit(12)
+    ).scalars()
+    for r in rows:
+        try:
+            if json.loads(r.payload_json).get("periode_type", "semaine") == periode:
+                return r
+        except Exception:  # noqa: BLE001
+            continue
+    return None
 
 
-def build_input(db: Session, client: Client) -> dict[str, Any]:
-    cutoff = datetime.now(timezone.utc) - timedelta(days=WINDOW_DAYS)
+def build_input(db: Session, client: Client, periode: str = "semaine") -> dict[str, Any]:
+    cutoff = datetime.now(timezone.utc) - timedelta(days=PERIODES.get(periode, 7))
     entries = list(
         db.execute(
             select(ClientJournalEntry)
@@ -109,9 +120,31 @@ def build_input(db: Session, client: Client) -> dict[str, Any]:
             .limit(10)
         ).scalars()
     )
+    # Lectures DÉJÀ livrées au client dans la fenêtre (documents visibles) —
+    # matière client-safe uniquement : rien de praticien-seulement n'entre ici.
+    from app.models.derived_document import DerivedDocument
+
+    lectures = list(
+        db.execute(
+            select(DerivedDocument)
+            .where(
+                DerivedDocument.client_id == client.id,
+                DerivedDocument.client_visible == True,  # noqa: E712
+                DerivedDocument.created_at >= cutoff,
+            )
+            .order_by(DerivedDocument.created_at.asc())
+            .limit(6)
+        ).scalars()
+    )
     dates = [e.created_at for e in entries]
     return {
+        "periode_type": periode,
         "periode": {"de": min(dates).isoformat(), "a": max(dates).isoformat()},
+        "lectures_recues": [
+            {"date": d.created_at.isoformat(), "titre": d.title,
+             "extrait": (d.body_text or "")[:600]}
+            for d in lectures
+        ],
         "entrees": [
             {
                 "date": e.created_at.isoformat(),
@@ -165,9 +198,11 @@ def _apply_urgence_protocol(payload: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
-async def generate_reflet(db: Session, client: Client) -> dict[str, Any]:
+async def generate_reflet(db: Session, client: Client, periode: str = "semaine") -> dict[str, Any]:
     """Produit le reflet validé + filtré + protocole appliqué. La route stocke."""
-    last = _last_reflet(db, client.id)
+    if periode not in PERIODES:
+        raise JournalRefletError("Période inconnue (jour, semaine ou mois).")
+    last = _last_reflet(db, client.id, periode)
     if last is not None:
         age = datetime.now(timezone.utc) - last.created_at.replace(tzinfo=timezone.utc)
         if age < timedelta(hours=COOLDOWN_HOURS):
@@ -176,7 +211,7 @@ async def generate_reflet(db: Session, client: Client) -> dict[str, Any]:
                 "reviens demain."
             )
 
-    entree_dict = build_input(db, client)
+    entree_dict = build_input(db, client, periode)
     _check_daily_cap()
     template = load_prompt(REFLET_PROMPT_ID)
     entree = json.dumps(entree_dict, ensure_ascii=False, indent=2)
@@ -186,6 +221,7 @@ async def generate_reflet(db: Session, client: Client) -> dict[str, Any]:
     _bump_daily()
     llm_ledger.record(db, purpose="journal_reflet_client", usage=usage, client_id=client.id)
     payload = _apply_urgence_protocol(_post_filter(_validate(_extract_json_payload(raw))))
+    payload["periode_type"] = periode
 
     niveau = payload["vigilance"]["niveau"]
     if niveau == "urgence":
@@ -199,6 +235,7 @@ async def generate_reflet(db: Session, client: Client) -> dict[str, Any]:
 
 __all__ = [
     "COOLDOWN_HOURS",
+    "PERIODES",
     "ENGINE_VERSION",
     "RESSOURCES_URGENCE",
     "BehavioralInsightsError",

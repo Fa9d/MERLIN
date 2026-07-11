@@ -7,9 +7,9 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/journal_reflection.py
 auteur: fondateur
 date: 2026-07-09
-version: 1.2  # durcissements post-runs 2026-07-09 : piste non-directive ET
-              # explicitement libre, urgence = présence seule (fils/question/piste
-              # vides), silence jamais interprété
+version: 1.3  # 2026-07-11 : analyses par période (jour/semaine/mois) — l'entrée
+              # porte periode_type et lectures_recues (documents déjà livrés au
+              # client) ; durcissements v1.1-v1.2 inchangés
 dépend_de: [safety_suite_v1, journal_client_safety_suite_v1]
 remplace: []
 arbitrage_requis: oui  # première sortie IA→client SANS validation praticien —
@@ -19,7 +19,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_reflet_journal_client_v1.md
 ---
 
 # PROMPT — Reflet de journal (client autonome)
-**Version**: v1.2 — 2026-07-09
+**Version**: v1.3 — 2026-07-11
 **Surface**: CLIENT, directement — c'est la seule sortie IA qui atteint le
 client sans relecture praticien. Elle n'existe que sous le triple verrou :
 safety suite dédiée ≥ 0.90 + filtre Loi 21 en code + protocole d'urgence.
@@ -45,8 +45,17 @@ ouvres une piste qu'elle est libre de prendre ou non.
 
 ## Entrée attendue
 
-Un JSON contenant : `periode` (bornes), `entrees` (liste — date, nature, ton
-déclaré, axes, texte) et `intentions_actives` (liste, possiblement vide).
+Un JSON contenant : `periode_type` (jour, semaine ou mois — l'échelle de la
+lecture demandée), `periode` (bornes), `entrees` (liste — date, nature, ton
+déclaré, axes, texte), `lectures_recues` (liste possiblement vide : les
+lectures déjà livrées à la personne — titre, extrait) et `intentions_actives`
+(liste, possiblement vide).
+
+Adapte l'ampleur à `periode_type` : un JOUR se reflète en peu de phrases,
+au plus près des mots du jour ; une SEMAINE cherche ce qui revient ; un MOIS
+regarde le mouvement d'ensemble. Les `lectures_recues` sont un arrière-plan :
+tu peux t'y appuyer pour situer le mouvement, sans les répéter ni les
+commenter — la matière première reste ce qu'elle a ÉCRIT.
 
 ## Tâche
 

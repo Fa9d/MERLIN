@@ -36,8 +36,13 @@ logger = logging.getLogger("merlin.me_reflets")
 router = APIRouter(prefix="/me", tags=["reflets"])
 
 
+class RefletDemande(MerlinSchema):
+    periode: str = "semaine"  # jour | semaine | mois
+
+
 class RefletRead(MerlinSchema):
     id: str
+    periode_type: str | None = None
     reflet: str
     fils: list
     question_ouverte: str
@@ -61,6 +66,7 @@ def _to_read(r: AnalysisResult) -> RefletRead:
     p = json.loads(r.payload_json)
     return RefletRead(
         id=r.id,
+        periode_type=p.get("periode_type"),
         reflet=p.get("reflet", ""),
         fils=p.get("fils") or [],
         question_ouverte=p.get("question_ouverte", ""),
@@ -73,6 +79,7 @@ def _to_read(r: AnalysisResult) -> RefletRead:
 
 @router.post("/journal/reflet", response_model=RefletRead, status_code=status.HTTP_201_CREATED)
 async def create_my_reflet(
+    payload_in: RefletDemande | None = None,
     db: Session = Depends(get_db),
     current_user: AppUser = Depends(get_current_user),
 ) -> RefletRead:
@@ -91,7 +98,8 @@ async def create_my_reflet(
     client = _get_my_client(current_user, db)
 
     try:
-        payload = await journal_reflection.generate_reflet(db, client)
+        periode = (payload_in.periode if payload_in else "semaine")
+        payload = await journal_reflection.generate_reflet(db, client, periode)
     except journal_reflection.RefletCooldownError as exc:
         raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS, str(exc)) from exc
     except journal_reflection.JournalRefletError as exc:
