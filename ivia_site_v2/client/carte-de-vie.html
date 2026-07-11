@@ -37,6 +37,15 @@
     input.prog::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#8FB99A;
       border:3px solid #0f1a13;box-shadow:0 0 0 1.5px #8FB99A;}
     input.prog:disabled{opacity:.45;cursor:default;}
+    /* Volet « Lecture complète » — tout le regard, replié, rien de perdu */
+    details.lecture{background:#0f1a13;border:1px solid #2a4031;border-radius:14px;overflow:hidden;}
+    details.lecture > summary{list-style:none;cursor:pointer;padding:12px 16px;display:flex;
+      align-items:center;justify-content:space-between;gap:12px;color:#cfe6d4;
+      font-size:.9rem;font-weight:600;transition:background .15s;}
+    details.lecture > summary:hover{background:#16281c;}
+    details.lecture > summary::-webkit-details-marker{display:none;}
+    details.lecture[open] .chevL{transform:rotate(180deg);}
+    .chevL{transition:transform .15s;flex-shrink:0;color:#6f8c78;}
   </style>
 </head>
 <body class="antialiased">
@@ -85,34 +94,40 @@
     <!-- Note du curseur, hors du bloc d'affichage -->
     <p id="progression-note" class="text-[11px] text-[#6f8c78] mt-4"></p>
 
-    <!-- Contexte du cran -->
-    <div class="grid lg:grid-cols-2 gap-4 mt-4 items-start">
-      <div id="moment-bloc" class="hidden rounded-[14px] border border-[#3a5743] bg-[#16281c] px-4 py-3.5">
-        <p id="moment-etiquette" class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-1.5"></p>
-        <div id="moment-corps" class="space-y-1.5"></div>
-      </div>
+    <!-- Ce qui a bougé (suit le curseur) -->
+    <div class="mt-4">
       <div id="bouge-bloc" class="hidden rounded-[14px] border border-[#2a4031] bg-[#0f1a13] px-4 py-3.5">
         <p class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-2">Ce qui a bougé</p>
         <div id="bouge-liste" class="flex flex-wrap gap-1.5"></div>
       </div>
     </div>
 
-    <!-- Lecture -->
-    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-6 mb-1 max-w-2xl leading-relaxed"></p>
-    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3">Taille &amp; teinte = état de résonance · les arcs ambrés relient les axes qui se tendent ensemble · survolez ou touchez chaque astre.</p>
 
+
+
+
+    <!-- ═══ Lecture complète : tout le regard, replié — rien de perdu ═══ -->
+    <details class="lecture mt-4">
+      <summary>Lecture complète — le regard posé sur ce moment
+        <svg class="chevL" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="px-4 pb-4 pt-1 border-t border-[#2a4031]">
+      <div id="moment-bloc" class="hidden rounded-[14px] border border-[#3a5743] bg-[#16281c] px-4 py-3.5">
+        <p id="moment-etiquette" class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-1.5"></p>
+        <div id="moment-corps" class="space-y-1.5"></div>
+      </div>
+    <p id="constellation-resume" class="text-sm text-[#9bb7a3] mt-1 mb-1 max-w-2xl leading-relaxed"></p>
+    <p id="constellation-mode" class="text-xs text-[#6f8c78] mb-3"></p>
     <!-- Le sol -->
     <div id="sol-bloc" class="hidden mt-6">
       <h3 class="text-base font-bold text-[#e8f5eb] mb-2">Le sol</h3>
       <div id="sol-grid" class="grid sm:grid-cols-2 gap-3"></div>
     </div>
-
     <!-- Le fil à tirer -->
     <div id="fil-a-tirer" class="hidden mt-6 rounded-[14px] border border-[#3a5743] bg-[#16281c] px-5 py-4" style="border-left:3px solid #8FB99A">
       <h3 class="text-base font-bold text-[#e8f5eb] mb-1">Le fil à tirer</h3>
       <p id="fil-a-tirer-texte" class="text-sm text-[#cfe6d4] leading-relaxed"></p>
     </div>
-
     <!-- La lecture en trois temps -->
     <div id="triade-bloc" class="hidden mt-6">
       <h3 class="text-base font-bold text-[#e8f5eb] mb-2">La lecture, en trois temps</h3>
@@ -131,6 +146,8 @@
         </div>
       </div>
     </div>
+      </div>
+    </details>
   </section>
 
 </div>
@@ -419,7 +436,7 @@
     slider.disabled = chronologie.length === 1;
     document.getElementById('progression-note').textContent = chronologie.length === 1
       ? 'Un premier moment d’analyse — la barre s’allongera avec les prochains.'
-      : 'Chaque cran est un moment — la carte, les tensions et la lecture se redessinent.';
+      : '';
     slider.addEventListener('input', () => afficherCran(Number(slider.value)));
     afficherCran(chronologie.length - 1);
   } else {
