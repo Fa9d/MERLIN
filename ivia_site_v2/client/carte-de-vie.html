@@ -75,6 +75,18 @@
       <p id="detail-texte" class="text-xs text-[#cfe6d4] mt-1.5 leading-relaxed"></p>
     </div>
 
+    <!-- Ce qui a bougé (diff entre crans) -->
+    <div id="bouge-bloc" class="hidden mt-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-[#8FB99A] mb-2">Ce qui a bougé</p>
+      <div id="bouge-liste" class="flex flex-wrap gap-1.5"></div>
+    </div>
+
+    <!-- Le moment (contenu de l'événement du cran) -->
+    <div id="moment-bloc" class="hidden mt-4 rounded-[14px] border border-[#3a5743] bg-[#16281c] px-5 py-4">
+      <p id="moment-etiquette" class="text-[10px] font-bold uppercase tracking-wider text-[#8FB99A] mb-1.5"></p>
+      <div id="moment-corps" class="space-y-1.5"></div>
+    </div>
+
     <!-- Champs de tension -->
     <div id="tensions-bloc" class="mt-6">
       <h3 class="text-base font-bold text-[#e8f5eb] mb-1">Champs de tension</h3>
@@ -136,6 +148,7 @@
     document.getElementById('detail-titre').textContent = titre;
     document.getElementById('detail-texte').textContent = texte || '';
   };
+  const fmtDate = (iso) => new Date(iso).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' });
 
   // ── Données ─────────────────────────────────────────────────────────────────
   let axesRef = [], data = null, entries = [], reflets = [], docs = [];
@@ -146,7 +159,6 @@
       axesRef = (d.entrees || []).map(a => ({
         code: a.code, fondateur: !!a.fondateur,
         label: String(a.libelle || a.code).replace(' / ', ' /\n'),
-        description: a.description || '',
       }));
     }
   } catch (e) {}
@@ -167,187 +179,13 @@
     ];
   }
   const labelAxe = (c) => String((axesRef.find(a => a.code === c) || {}).label || c).replace('\n', ' ');
-
   const cartes = (data && data.cartes) || [];
 
-  // ── La carte affichée (instantané courant) ──────────────────────────────────
-  let AXES = [], TENSIONS = [];
-  function chargerSnapshot(snap) {
-    if (snap) {
-      AXES = axesRef.map(a => ({
-        ...a,
-        resonance: (snap.axes[a.code] || {}).resonance || 'sourdine',
-        note: (snap.axes[a.code] || {}).note || '',
-      }));
-      TENSIONS = snap.tensions || [];
-      document.getElementById('constellation-resume').textContent = snap.constellation_resume || '';
-      if (snap.fil) document.getElementById('constellation-mode').textContent = snap.fil;
-      const solBloc = document.getElementById('sol-bloc');
-      const solOk = (snap.sol || []).filter(x => x.titre || x.texte);
-      if (solOk.length) {
-        solBloc.classList.remove('hidden');
-        document.getElementById('sol-grid').innerHTML = solOk.map(x =>
-          '<div class="rounded-[12px] border border-[#2a4031] bg-[#0f1a13] px-4 py-3">' +
-          '<p class="text-[11px] uppercase tracking-wider text-[#6f8c78]">' + esc(x.titre) + '</p>' +
-          '<p class="text-sm text-[#cfe6d4] mt-1">' + esc(x.texte) + '</p></div>').join('');
-      } else { solBloc.classList.add('hidden'); }
-
-      const tri = snap.triade || {};
-      const triOk = tri.observation || tri.hypothese || tri.orientation;
-      document.getElementById('triade-bloc').classList.toggle('hidden', !triOk);
-      if (triOk) {
-        document.getElementById('t-observation').textContent = tri.observation || '—';
-        document.getElementById('t-hypothese').textContent = tri.hypothese || '—';
-        document.getElementById('t-orientation').textContent = tri.orientation || '—';
-      }
-
-      const fat = document.getElementById('fil-a-tirer');
-      if (snap.fil_a_tirer) {
-        fat.classList.remove('hidden');
-        document.getElementById('fil-a-tirer-texte').textContent = snap.fil_a_tirer;
-      } else {
-        fat.classList.add('hidden');
-      }
-    } else {
-      // Repli : pas de carte à cette date — la constellation reflète le
-      // journal des 30 jours PRÉCÉDANT le moment choisi sur la progression.
-      const ref = arguments.length > 1 && arguments[1] ? new Date(arguments[1]).getTime() : Date.now();
-      const cutoff = ref - 30 * 864e5;
-      const compte = {};
-      entries.forEach(e => {
-        const t = new Date(e.written_at).getTime();
-        if (t < cutoff || t > ref) return;
-        (e.dimensions || []).forEach(a => { compte[a] = (compte[a] || 0) + 1; });
-      });
-      AXES = axesRef.map(a => ({
-        ...a,
-        resonance: (compte[a.code] || 0) >= 3 ? 'actif' : (compte[a.code] ? 'present' : 'sourdine'),
-        note: compte[a.code] ? compte[a.code] + ' trace(s) ce mois-ci' : 'aucune trace récente — et c’est correct',
-      }));
-      TENSIONS = [];
-      document.getElementById('sol-bloc').classList.add('hidden');
-      document.getElementById('triade-bloc').classList.add('hidden');
-      document.getElementById('fil-a-tirer').classList.add('hidden');
-      document.getElementById('constellation-mode').textContent =
-        'Votre carte se dessinera au fil des séances — en attendant, la constellation reflète vos traces de journal.';
-    }
-    drawConstellation();
-    renderTensions();
-  }
-
-  // ── Constellation (représentation praticien intégrale) ─────────────────────
-  const RES = {
-    sourdine: { fill: '#2a4031', r: 11, stroke: '#3a5743' },
-    present:  { fill: '#4A7C59', r: 15, stroke: '#5e9670' },
-    actif:    { fill: '#8FB99A', r: 19, stroke: '#b6d8bf' },
-    tension:  { fill: '#2a4031', r: 17, stroke: '#D97706' },
-  };
-  const INTENS_W = { faible: 1.5, moderee: 3, marquee: 5 };
-
-  function drawConstellation() {
-    const svg = d3.select('#constellation');
-    svg.selectAll('*').remove();
-    const W = 560, cx = W / 2, cy = 520 / 2 + 6, R = 175;
-    const ring = AXES.filter(a => !a.fondateur);
-    const center = AXES.find(a => a.fondateur) || AXES[0];
-    const pos = {};
-    ring.forEach((a, i) => {
-      const ang = (-Math.PI / 2) + i * (2 * Math.PI / ring.length);
-      pos[a.code] = { x: cx + R * Math.cos(ang), y: cy + R * Math.sin(ang), ang };
-    });
-    pos[center.code] = { x: cx, y: cy };
-
-    svg.append('g').selectAll('line').data(ring).join('line')
-      .attr('x1', cx).attr('y1', cy)
-      .attr('x2', d => pos[d.code].x).attr('y2', d => pos[d.code].y)
-      .attr('stroke', '#22372a').attr('stroke-width', 1);
-
-    const arcs = svg.append('g');
-    TENSIONS.forEach(t => {
-      const [a, b] = (t.entre || []).map(c => pos[c]);
-      if (!a || !b) return;
-      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-      const dx = mx - cx, dy = my - cy, k = 0.22;
-      arcs.append('path')
-        .attr('d', 'M' + a.x + ',' + a.y + ' Q' + (mx + dx * k) + ',' + (my + dy * k) + ' ' + b.x + ',' + b.y)
-        .attr('fill', 'none').attr('stroke', '#D97706')
-        .attr('stroke-width', INTENS_W[t.intensite] || 3).attr('stroke-opacity', 0.55)
-        .attr('stroke-dasharray', '2 4')
-        .style('cursor', 'pointer')
-        .on('mousemove', ev => showTip('<b style="color:#e0a458">' + esc(t.label) + '</b> · ' + esc(t.intensite || '') + '<br>' + esc(t.desc || ''), ev))
-        .on('mouseleave', hideTip)
-        .on('click', () => showDetail(t.label + ' — ' + (t.entre || []).map(labelAxe).join(' ⟷ '), t.desc));
-    });
-
-    svg.append('circle').attr('cx', cx).attr('cy', cy).attr('r', 46)
-      .attr('fill', '#1f3325').attr('stroke', '#3a5743').attr('stroke-width', 1).attr('opacity', 0.6);
-
-    const node = svg.append('g').selectAll('g.axis-node').data(AXES).join('g')
-      .attr('class', 'axis-node')
-      .attr('transform', d => 'translate(' + pos[d.code].x + ',' + pos[d.code].y + ')')
-      .style('cursor', 'pointer')
-      .on('mousemove', (ev, d) => showTip('<b>' + esc(String(d.label).replace('\n', ' ')) + '</b> · ' + esc(d.resonance) + '<br>' + esc(d.note || ''), ev))
-      .on('mouseleave', hideTip)
-      .on('click', (ev, d) => showDetail(String(d.label).replace('\n', ' ') + ' · ' + d.resonance, d.note));
-
-    node.append('circle')
-      .attr('r', d => d.fondateur ? 30 : (RES[d.resonance] || RES.sourdine).r)
-      .attr('fill', d => d.fondateur ? (d.resonance === 'tension' ? '#2a4031' : '#4A7C59') : (RES[d.resonance] || RES.sourdine).fill)
-      .attr('stroke', d => d.fondateur ? (d.resonance === 'tension' ? '#D97706' : '#8FB99A') : (RES[d.resonance] || RES.sourdine).stroke)
-      .attr('stroke-width', d => d.resonance === 'tension' ? 2.5 : 1.5);
-
-    node.each(function (d) {
-      const g = d3.select(this);
-      const lines = String(d.label).split('\n');
-      if (d.fondateur) {
-        g.append('text').attr('text-anchor', 'middle').attr('dy', '-1')
-          .attr('fill', d.resonance === 'tension' ? '#e0a458' : '#0f1a12')
-          .attr('font-weight', '700').attr('font-size', '12').attr('font-family', 'Lora, serif').text(lines[0]);
-        g.append('text').attr('text-anchor', 'middle').attr('dy', '13')
-          .attr('fill', d.resonance === 'tension' ? '#9bb7a3' : '#1f3325')
-          .attr('font-size', '9').text('le sol');
-        return;
-      }
-      const p = pos[d.code];
-      const anchor = Math.abs(Math.cos(p.ang)) < 0.34 ? 'middle' : (Math.cos(p.ang) > 0 ? 'start' : 'end');
-      const rr = (RES[d.resonance] || RES.sourdine).r;
-      const ox = anchor === 'start' ? rr + 6 : anchor === 'end' ? -(rr + 6) : 0;
-      const oyBase = anchor === 'middle' ? (Math.sin(p.ang) > 0 ? rr + 14 : -(rr + 8)) : 0;
-      lines.forEach((ln, i) => {
-        g.append('text').attr('text-anchor', anchor)
-          .attr('x', ox).attr('y', oyBase + i * 12 + (anchor !== 'middle' ? (i * 12 - (lines.length - 1) * 6) : 0))
-          .attr('fill', d.resonance === 'tension' ? '#e0a458' : '#9bb7a3')
-          .attr('font-size', '11').attr('font-weight', '600').text(ln);
-      });
-    });
-  }
-
-  function renderTensions() {
-    document.getElementById('tensions-vide').classList.toggle('hidden', TENSIONS.length > 0);
-    if (!TENSIONS.length) { document.getElementById('tensions-list').innerHTML = ''; return; }
-    document.getElementById('tensions-list').innerHTML = TENSIONS.map(t => (
-      '<div class="tension-card">' +
-      '<p class="text-sm font-semibold text-[#e0a458]">' + esc(t.label) +
-      ' <span class="text-[10px] font-normal text-[#6f8c78]">· ' + esc(t.intensite || '') + '</span></p>' +
-      '<p class="text-[11px] text-[#9bb7a3] mt-0.5">' + (t.entre || []).map(labelAxe).map(esc).join(' ⟷ ') + '</p>' +
-      (t.desc ? '<p class="text-xs text-[#cfe6d4] mt-1.5 leading-relaxed">' + esc(t.desc) + '</p>' : '') +
-      '</div>')).join('');
-  }
-
-  // ── Barre de progression : d'analyse en analyse ─────────────────────────────
-  const slider = document.getElementById('progression');
-  const fmtDate = (iso) => new Date(iso).toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' });
-  // La barre est TOUJOURS visible (décision fondateur : même présentation que
-  // l'interface praticien, pour tous les clients) — inactive tant qu'il n'y a
-  // pas au moins deux lectures.
-  // Chronologie INTÉGRALE (fondateur 2026-07-11) : chaque cran = un moment
-  // d'analyse de l'historique — carte de vie, miroir reçu, lecture livrée.
-  // La constellation se redessine à ce moment (carte la plus récente à cette
-  // date, sinon les traces de journal d'alors).
+  // ── Chronologie : chaque moment d'analyse est un cran ───────────────────────
   const chronologie = [
-    ...cartes.map(c => ({ ts: c.created_at, label: 'Carte de vie', carte: c })),
-    ...reflets.map(r => ({ ts: r.created_at, label: 'Miroir reçu', carte: null })),
-    ...docs.map(d => ({ ts: d.created_at, label: 'Lecture livrée', carte: null })),
+    ...cartes.map(c => ({ ts: c.created_at, type: 'carte', label: 'Carte de vie', ev: c })),
+    ...reflets.map(r => ({ ts: r.created_at, type: 'miroir', label: 'Miroir reçu', ev: r })),
+    ...docs.map(d => ({ ts: d.created_at, type: 'lecture', label: 'Lecture livrée', ev: d })),
   ].filter(x => x.ts).sort((x, y) => new Date(x.ts) - new Date(y.ts));
 
   const carteAsOf = (ts) => {
@@ -356,30 +194,289 @@
     return last;
   };
 
+  // ── État des axes À UNE DATE : carte (socle) + activité du journal (vie) ────
+  const NIVEAUX = ['sourdine', 'présent', 'actif'];
+  function etatAt(ts) {
+    const ref = new Date(ts).getTime();
+    const cutoff = ref - 30 * 864e5;
+    const traces = {};
+    entries.forEach(e => {
+      const t = new Date(e.written_at).getTime();
+      if (t < cutoff || t > ref) return;
+      (e.dimensions || []).forEach(a => { traces[a] = (traces[a] || 0) + 1; });
+    });
+    const snap = carteAsOf(ts);
+    const etat = {};
+    axesRef.forEach(a => {
+      const cx = snap ? (snap.axes[a.code] || {}) : {};
+      const carteLvl = { sourdine: 0, present: 1, actif: 2, tension: 2 }[cx.resonance] ?? 0;
+      const jLvl = (traces[a.code] || 0) >= 3 ? 2 : (traces[a.code] ? 1 : 0);
+      etat[a.code] = {
+        lvl: Math.max(carteLvl, jLvl),
+        tension: cx.resonance === 'tension',
+        traces: traces[a.code] || 0,
+        note: cx.note || (traces[a.code] ? traces[a.code] + ' trace(s) au journal sur 30 jours' : 'en sourdine à ce moment-là'),
+      };
+    });
+    return { etat, snap };
+  }
+
+  // ── Constellation animée (d3, transitions douces + pulsation du changement) ─
+  const RES_LVL = [
+    { fill: '#2a4031', r: 11, stroke: '#3a5743' },   // sourdine
+    { fill: '#4A7C59', r: 15, stroke: '#5e9670' },   // présent
+    { fill: '#8FB99A', r: 19, stroke: '#b6d8bf' },   // actif
+  ];
+  const INTENS_W = { faible: 1.5, moderee: 3, marquee: 5 };
+  const W = 560, cx0 = W / 2, cy0 = 520 / 2 + 6, R0 = 175;
+  let positions = null, initDone = false;
+
+  function calcPositions() {
+    positions = {};
+    const ring = axesRef.filter(a => !a.fondateur);
+    const center = axesRef.find(a => a.fondateur) || axesRef[0];
+    ring.forEach((a, i) => {
+      const ang = (-Math.PI / 2) + i * (2 * Math.PI / ring.length);
+      positions[a.code] = { x: cx0 + R0 * Math.cos(ang), y: cy0 + R0 * Math.sin(ang), ang };
+    });
+    positions[center.code] = { x: cx0, y: cy0 };
+  }
+
+  function drawBase() {
+    const svg = d3.select('#constellation');
+    svg.selectAll('*').remove();
+    const ring = axesRef.filter(a => !a.fondateur);
+    svg.append('g').attr('class', 'rayons').selectAll('line').data(ring).join('line')
+      .attr('x1', cx0).attr('y1', cy0)
+      .attr('x2', d => positions[d.code].x).attr('y2', d => positions[d.code].y)
+      .attr('stroke', '#22372a').attr('stroke-width', 1);
+    svg.append('g').attr('class', 'arcs');
+    svg.append('circle').attr('cx', cx0).attr('cy', cy0).attr('r', 46)
+      .attr('fill', '#1f3325').attr('stroke', '#3a5743').attr('stroke-width', 1).attr('opacity', 0.6);
+    svg.append('g').attr('class', 'nodes');
+    initDone = true;
+  }
+
+  function drawEtat(etat, snap, changed) {
+    if (!initDone) drawBase();
+    const svg = d3.select('#constellation');
+
+    // Arcs de tension (de la carte en vigueur à ce cran)
+    const tensions = (snap && snap.tensions) || [];
+    const arcs = svg.select('g.arcs').selectAll('path').data(tensions, t => t.code || t.label);
+    arcs.exit().transition().duration(400).attr('stroke-opacity', 0).remove();
+    arcs.enter().append('path')
+      .attr('fill', 'none').attr('stroke', '#D97706').attr('stroke-dasharray', '2 4')
+      .attr('stroke-opacity', 0)
+      .style('cursor', 'pointer')
+      .merge(arcs)
+      .each(function (t) {
+        const [a, b] = (t.entre || []).map(c => positions[c]);
+        if (!a || !b) return;
+        const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+        const dx = mx - cx0, dy = my - cy0, k = 0.22;
+        d3.select(this).attr('d', 'M' + a.x + ',' + a.y + ' Q' + (mx + dx * k) + ',' + (my + dy * k) + ' ' + b.x + ',' + b.y);
+      })
+      .on('mousemove', (ev, t) => showTip('<b style="color:#e0a458">' + esc(t.label) + '</b> · ' + esc(t.intensite || '') + '<br>' + esc(t.desc || ''), ev))
+      .on('mouseleave', hideTip)
+      .on('click', (ev, t) => showDetail(t.label + ' — ' + (t.entre || []).map(labelAxe).join(' ⟷ '), t.desc))
+      .transition().duration(450)
+      .attr('stroke-width', t => INTENS_W[t.intensite] || 3)
+      .attr('stroke-opacity', 0.55);
+
+    // Astres
+    const nodes = svg.select('g.nodes').selectAll('g.axis-node').data(axesRef, d => d.code);
+    const entree = nodes.enter().append('g')
+      .attr('class', 'axis-node')
+      .attr('transform', d => 'translate(' + positions[d.code].x + ',' + positions[d.code].y + ')')
+      .style('cursor', 'pointer');
+    entree.append('circle');
+    entree.append('text').attr('class', 'lbl');
+
+    const tous = entree.merge(nodes);
+    tous
+      .on('mousemove', function (ev, d) {
+        const x = etat[d.code];
+        showTip('<b>' + esc(labelAxe(d.code)) + '</b> · ' + (x.tension ? 'en tension' : NIVEAUX[x.lvl])
+          + (x.traces ? ' · ' + x.traces + ' trace(s)' : '') + '<br>' + esc(x.note || ''), ev);
+      })
+      .on('mouseleave', hideTip)
+      .on('click', function (ev, d) {
+        const x = etat[d.code];
+        showDetail(labelAxe(d.code) + ' · ' + (x.tension ? 'en tension' : NIVEAUX[x.lvl]), x.note);
+      });
+
+    tous.select('circle')
+      .transition().duration(450)
+      .attr('r', d => d.fondateur ? 30 : RES_LVL[etat[d.code].lvl].r)
+      .attr('fill', d => d.fondateur ? (etat[d.code].tension ? '#2a4031' : '#4A7C59') : RES_LVL[etat[d.code].lvl].fill)
+      .attr('stroke', d => etat[d.code].tension ? '#D97706' : (d.fondateur ? '#8FB99A' : RES_LVL[etat[d.code].lvl].stroke))
+      .attr('stroke-width', d => etat[d.code].tension ? 2.5 : 1.5);
+
+    // Étiquettes (une seule fois : positions fixes)
+    tous.select('text.lbl').each(function (d) {
+      const t = d3.select(this);
+      if (t.attr('data-fait')) return;
+      t.attr('data-fait', '1');
+      if (d.fondateur) {
+        t.attr('text-anchor', 'middle').attr('dy', '-1').attr('fill', '#0f1a12')
+          .attr('font-weight', '700').attr('font-size', '12').attr('font-family', 'Lora, serif')
+          .text(String(d.label).split('\n')[0]);
+        d3.select(this.parentNode).append('text').attr('text-anchor', 'middle').attr('dy', '13')
+          .attr('fill', '#1f3325').attr('font-size', '9').text('le sol');
+        return;
+      }
+      const p = positions[d.code];
+      const anchor = Math.abs(Math.cos(p.ang)) < 0.34 ? 'middle' : (Math.cos(p.ang) > 0 ? 'start' : 'end');
+      const ox = anchor === 'start' ? 25 : anchor === 'end' ? -25 : 0;
+      const oyBase = anchor === 'middle' ? (Math.sin(p.ang) > 0 ? 33 : -27) : 0;
+      const lines = String(d.label).split('\n');
+      lines.forEach((ln, i) => {
+        d3.select(this.parentNode).append('text').attr('text-anchor', anchor)
+          .attr('x', ox).attr('y', oyBase + i * 12 + (anchor !== 'middle' ? (i * 12 - (lines.length - 1) * 6) : 0))
+          .attr('fill', '#9bb7a3').attr('font-size', '11').attr('font-weight', '600').text(ln);
+      });
+      t.remove();
+    });
+
+    // Pulsation des axes qui viennent de changer
+    (changed || []).forEach(code => {
+      const g = svg.select('g.nodes').selectAll('g.axis-node').filter(d => d.code === code);
+      const c = g.select('circle');
+      const rNow = (axesRef.find(a => a.code === code) || {}).fondateur ? 30 : RES_LVL[etat[code].lvl].r;
+      c.transition().delay(460).duration(320).attr('r', rNow * 1.45)
+        .transition().duration(420).attr('r', rNow);
+      g.append('circle').attr('r', rNow).attr('fill', 'none')
+        .attr('stroke', '#e0a458').attr('stroke-width', 2).attr('opacity', 0.9)
+        .transition().delay(460).duration(900)
+        .attr('r', rNow + 26).attr('opacity', 0)
+        .remove();
+    });
+  }
+
+  // ── Sections sous la carte (sol, fil, triade, tensions, résumé) ─────────────
+  function renderSections(snap) {
+    document.getElementById('constellation-resume').textContent = (snap && snap.constellation_resume) || '';
+    if (snap && snap.fil) document.getElementById('constellation-mode').textContent = snap.fil;
+
+    const tensions = (snap && snap.tensions) || [];
+    document.getElementById('tensions-vide').classList.toggle('hidden', tensions.length > 0);
+    document.getElementById('tensions-list').innerHTML = tensions.map(t => (
+      '<div class="tension-card">' +
+      '<p class="text-sm font-semibold text-[#e0a458]">' + esc(t.label) +
+      ' <span class="text-[10px] font-normal text-[#6f8c78]">· ' + esc(t.intensite || '') + '</span></p>' +
+      '<p class="text-[11px] text-[#9bb7a3] mt-0.5">' + (t.entre || []).map(labelAxe).map(esc).join(' ⟷ ') + '</p>' +
+      (t.desc ? '<p class="text-xs text-[#cfe6d4] mt-1.5 leading-relaxed">' + esc(t.desc) + '</p>' : '') +
+      '</div>')).join('');
+
+    const solBloc = document.getElementById('sol-bloc');
+    const solOk = ((snap && snap.sol) || []).filter(x => x.titre || x.texte);
+    if (solOk.length) {
+      solBloc.classList.remove('hidden');
+      document.getElementById('sol-grid').innerHTML = solOk.map(x =>
+        '<div class="rounded-[12px] border border-[#2a4031] bg-[#0f1a13] px-4 py-3">' +
+        '<p class="text-[11px] uppercase tracking-wider text-[#6f8c78]">' + esc(x.titre) + '</p>' +
+        '<p class="text-sm text-[#cfe6d4] mt-1">' + esc(x.texte) + '</p></div>').join('');
+    } else { solBloc.classList.add('hidden'); }
+
+    const fat = document.getElementById('fil-a-tirer');
+    if (snap && snap.fil_a_tirer) {
+      fat.classList.remove('hidden');
+      document.getElementById('fil-a-tirer-texte').textContent = snap.fil_a_tirer;
+    } else { fat.classList.add('hidden'); }
+
+    const tri = (snap && snap.triade) || {};
+    const triOk = tri.observation || tri.hypothese || tri.orientation;
+    document.getElementById('triade-bloc').classList.toggle('hidden', !triOk);
+    if (triOk) {
+      document.getElementById('t-observation').textContent = tri.observation || '—';
+      document.getElementById('t-hypothese').textContent = tri.hypothese || '—';
+      document.getElementById('t-orientation').textContent = tri.orientation || '—';
+    }
+  }
+
+  // ── Le moment (contenu de l'événement du cran) + Ce qui a bougé ─────────────
+  function renderMoment(cran) {
+    const bloc = document.getElementById('moment-bloc');
+    if (!cran) { bloc.classList.add('hidden'); return; }
+    bloc.classList.remove('hidden');
+    document.getElementById('moment-etiquette').textContent = cran.label + ' · ' + fmtDate(cran.ts);
+    let html = '';
+    if (cran.type === 'miroir') {
+      const r = cran.ev;
+      const fils = (r.fils || []).map(f => f.titre).filter(Boolean);
+      html = (fils.length ? '<p class="text-xs text-[#9bb7a3] mb-1.5">Fils : ' + fils.map(esc).join(' · ') + '</p>' : '')
+        + '<p class="text-sm text-[#cfe6d4] leading-relaxed">' + esc((r.reflet || '').slice(0, 260)) + ((r.reflet || '').length > 260 ? '…' : '') + '</p>'
+        + '<a href="/client/mon-reflet.html" class="text-xs font-semibold text-[#8FB99A] hover:underline">Lire dans le Miroir →</a>';
+    } else if (cran.type === 'lecture') {
+      const d = cran.ev;
+      html = '<p class="text-sm font-semibold text-[#e8f5eb]">' + esc(d.title || 'Lecture de séance') + '</p>'
+        + '<p class="text-sm text-[#cfe6d4] leading-relaxed mt-1">' + esc((d.body_text || '').slice(0, 260)) + ((d.body_text || '').length > 260 ? '…' : '') + '</p>'
+        + '<a href="/client/journal.html" class="text-xs font-semibold text-[#8FB99A] hover:underline">Retrouver au journal →</a>';
+    } else {
+      const c = cran.ev;
+      html = '<p class="text-sm text-[#cfe6d4] leading-relaxed">' + esc(c.fil || 'Nouvelle lecture complète de votre constellation.') + '</p>';
+    }
+    document.getElementById('moment-corps').innerHTML = html;
+  }
+
+  function renderBouge(diff) {
+    const bloc = document.getElementById('bouge-bloc');
+    if (!diff || !diff.length) { bloc.classList.add('hidden'); return; }
+    bloc.classList.remove('hidden');
+    document.getElementById('bouge-liste').innerHTML = diff.map(d => {
+      const fleche = d.to > d.from ? '↑' : '↓';
+      const coul = d.to > d.from ? '#8FB99A' : '#6f8c78';
+      return '<span class="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full border border-[#3a5743] bg-[#16281c] px-3 py-1" style="color:' + coul + '">'
+        + fleche + ' ' + esc(labelAxe(d.code)) + ' <span class="font-normal text-[#6f8c78]">' + NIVEAUX[d.from] + ' → ' + NIVEAUX[d.to] + '</span></span>';
+    }).join(' ');
+  }
+
+  // ── La barre : chaque cran anime la carte et les panneaux ───────────────────
+  calcPositions();
+  const slider = document.getElementById('progression');
+  const etats = chronologie.map(c => ({ cran: c, ...etatAt(c.ts) }));
+
+  function afficherCran(i, animer) {
+    const { cran, etat, snap } = etats[i];
+    const prev = i > 0 ? etats[i - 1].etat : null;
+    const diff = [];
+    if (prev) {
+      axesRef.forEach(a => {
+        if (prev[a.code].lvl !== etat[a.code].lvl) {
+          diff.push({ code: a.code, from: prev[a.code].lvl, to: etat[a.code].lvl });
+        }
+      });
+    }
+    document.getElementById('progression-date').textContent =
+      (i + 1) + ' / ' + chronologie.length + ' — ' + fmtDate(cran.ts) + ' · ' + cran.label;
+    drawEtat(etat, snap, animer ? diff.map(d => d.code) : []);
+    renderSections(snap);
+    renderMoment(cran);
+    renderBouge(diff);
+  }
+
   if (chronologie.length) {
     slider.max = chronologie.length - 1;
     slider.value = chronologie.length - 1;
     slider.disabled = chronologie.length === 1;
-    const afficherCran = () => {
-      const i = Number(slider.value);
-      const ev = chronologie[i];
-      document.getElementById('progression-date').textContent =
-        (i + 1) + ' / ' + chronologie.length + ' — ' + fmtDate(ev.ts) + ' · ' + ev.label;
-      chargerSnapshot(ev.carte || carteAsOf(ev.ts), ev.ts);
-    };
     document.getElementById('progression-note').textContent = chronologie.length === 1
       ? 'Un premier moment d’analyse — la barre s’allongera avec les prochains.'
-      : 'Chaque cran est un moment d’analyse — déplacez le curseur, la carte se redessine à ce moment-là.';
-    slider.addEventListener('input', afficherCran);
-    afficherCran();
+      : 'Chaque cran est un moment — la carte s’anime, les axes qui changent pulsent.';
+    slider.addEventListener('input', () => afficherCran(Number(slider.value), true));
+    afficherCran(chronologie.length - 1, false);
   } else {
     slider.disabled = true;
     document.getElementById('progression-date').textContent = '0 moment d’analyse';
     document.getElementById('progression-note').textContent =
       'Vos moments d’analyse (cartes, miroirs, lectures) se poseront ici au fil des séances.';
-    chargerSnapshot(null);
+    const now = new Date().toISOString();
+    const { etat, snap } = etatAt(now);
+    drawEtat(etat, snap, []);
+    renderSections(snap);
+    document.getElementById('constellation-mode').textContent =
+      'Votre carte se dessinera au fil des séances — en attendant, la constellation reflète vos traces de journal.';
   }
-
 })();
 </script>
 </body>
