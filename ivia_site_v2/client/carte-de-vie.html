@@ -138,7 +138,7 @@
   };
 
   // ── Données ─────────────────────────────────────────────────────────────────
-  let axesRef = [], data = null, entries = [];
+  let axesRef = [], data = null, entries = [], reflets = [], docs = [];
   try {
     const r = await fetch('https://api.ivia.quebec/api/v1/referentiels/axes');
     if (r.ok) {
@@ -152,6 +152,8 @@
   } catch (e) {}
   try { data = await getMyCarteDeVie(); } catch (e) { data = null; }
   try { entries = await getMyJournal(); } catch (e) {}
+  try { reflets = await listMyReflets(); } catch (e) {}
+  try { docs = await getMyDocuments(); } catch (e) {}
 
   if (!axesRef.length) {
     axesRef = [
@@ -207,11 +209,14 @@
         fat.classList.add('hidden');
       }
     } else {
-      // Repli : aucune carte d'analyse — la constellation reflète le journal.
-      const cutoff = Date.now() - 30 * 864e5;
+      // Repli : pas de carte à cette date — la constellation reflète le
+      // journal des 30 jours PRÉCÉDANT le moment choisi sur la progression.
+      const ref = arguments.length > 1 && arguments[1] ? new Date(arguments[1]).getTime() : Date.now();
+      const cutoff = ref - 30 * 864e5;
       const compte = {};
       entries.forEach(e => {
-        if (new Date(e.written_at).getTime() < cutoff) return;
+        const t = new Date(e.written_at).getTime();
+        if (t < cutoff || t > ref) return;
         (e.dimensions || []).forEach(a => { compte[a] = (compte[a] || 0) + 1; });
       });
       AXES = axesRef.map(a => ({
@@ -335,26 +340,43 @@
   // La barre est TOUJOURS visible (décision fondateur : même présentation que
   // l'interface praticien, pour tous les clients) — inactive tant qu'il n'y a
   // pas au moins deux lectures.
-  if (cartes.length) {
-    slider.max = cartes.length - 1;
-    slider.value = cartes.length - 1;
-    slider.disabled = cartes.length === 1;
-    const majDate = () => {
+  // Chronologie INTÉGRALE (fondateur 2026-07-11) : chaque cran = un moment
+  // d'analyse de l'historique — carte de vie, miroir reçu, lecture livrée.
+  // La constellation se redessine à ce moment (carte la plus récente à cette
+  // date, sinon les traces de journal d'alors).
+  const chronologie = [
+    ...cartes.map(c => ({ ts: c.created_at, label: 'Carte de vie', carte: c })),
+    ...reflets.map(r => ({ ts: r.created_at, label: 'Miroir reçu', carte: null })),
+    ...docs.map(d => ({ ts: d.created_at, label: 'Lecture livrée', carte: null })),
+  ].filter(x => x.ts).sort((x, y) => new Date(x.ts) - new Date(y.ts));
+
+  const carteAsOf = (ts) => {
+    let last = null;
+    for (const c of cartes) if (new Date(c.created_at) <= new Date(ts)) last = c;
+    return last;
+  };
+
+  if (chronologie.length) {
+    slider.max = chronologie.length - 1;
+    slider.value = chronologie.length - 1;
+    slider.disabled = chronologie.length === 1;
+    const afficherCran = () => {
       const i = Number(slider.value);
+      const ev = chronologie[i];
       document.getElementById('progression-date').textContent =
-        (i + 1) + ' / ' + cartes.length + ' — ' + fmtDate(cartes[i].created_at);
+        (i + 1) + ' / ' + chronologie.length + ' — ' + fmtDate(ev.ts) + ' · ' + ev.label;
+      chargerSnapshot(ev.carte || carteAsOf(ev.ts), ev.ts);
     };
-    document.getElementById('progression-note').textContent = cartes.length === 1
-      ? 'Une seule lecture pour l’instant — la barre prendra vie avec les prochaines analyses.'
-      : 'Chaque cran est une lecture datée — déplacez le curseur, la carte se redessine à ce moment-là.';
-    slider.addEventListener('input', () => { majDate(); chargerSnapshot(cartes[Number(slider.value)]); });
-    majDate();
-    chargerSnapshot(cartes[cartes.length - 1]);
+    document.getElementById('progression-note').textContent = chronologie.length === 1
+      ? 'Un premier moment d’analyse — la barre s’allongera avec les prochains.'
+      : 'Chaque cran est un moment d’analyse — déplacez le curseur, la carte se redessine à ce moment-là.';
+    slider.addEventListener('input', afficherCran);
+    afficherCran();
   } else {
     slider.disabled = true;
-    document.getElementById('progression-date').textContent = '0 lecture';
+    document.getElementById('progression-date').textContent = '0 moment d’analyse';
     document.getElementById('progression-note').textContent =
-      'Aucune lecture encore — votre carte et sa progression se dessineront au fil des séances.';
+      'Vos moments d’analyse (cartes, miroirs, lectures) se poseront ici au fil des séances.';
     chargerSnapshot(null);
   }
 
