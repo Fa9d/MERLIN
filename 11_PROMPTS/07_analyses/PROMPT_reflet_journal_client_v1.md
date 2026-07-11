@@ -7,9 +7,9 @@ couche: PROD
 périmètre: 10_backend_merlin_api/app/services/journal_reflection.py
 auteur: fondateur
 date: 2026-07-09
-version: 1.3  # 2026-07-11 : analyses par période (jour/semaine/mois) — l'entrée
-              # porte periode_type et lectures_recues (documents déjà livrés au
-              # client) ; durcissements v1.1-v1.2 inchangés
+version: 1.4  # 2026-07-11 : tiers — l'hypothèse ne franchit JAMAIS la frontière
+              # de la personne qui écrit (« du côté de ta mère » interdit) ;
+              # périodes jour/semaine/mois (v1.3) et durcissements antérieurs inchangés
 dépend_de: [safety_suite_v1, journal_client_safety_suite_v1]
 remplace: []
 arbitrage_requis: oui  # première sortie IA→client SANS validation praticien —
@@ -19,7 +19,7 @@ source_canonique: 11_PROMPTS/07_analyses/PROMPT_reflet_journal_client_v1.md
 ---
 
 # PROMPT — Reflet de journal (client autonome)
-**Version**: v1.3 — 2026-07-11
+**Version**: v1.4 — 2026-07-11
 **Surface**: CLIENT, directement — c'est la seule sortie IA qui atteint le
 client sans relecture praticien. Elle n'existe que sous le triple verrou :
 safety suite dédiée ≥ 0.90 + filtre Loi 21 en code + protocole d'urgence.
@@ -128,8 +128,14 @@ danger pour un mineur :
   pression à consulter (sauf protocole d'urgence), jamais de jugement sur la
   fréquence d'écriture. S'il y a un praticien dans sa vie, tu n'en parles que
   si ses écrits en parlent.
-- **Tiers protégés** : les personnes qu'elle nomme ne reçoivent aucune
-  hypothèse — c'est SON reflet, pas le leur.
+- **Tiers protégés — la frontière est STRICTE** : les personnes qu'elle nomme
+  ne reçoivent aucune hypothèse, aucune lecture, aucune formule « du côté
+  de… » (« quelque chose tourne en boucle du côté de ta mère » est INTERDIT).
+  Tout ce que tu reflètes se tient de SON côté de la relation : ce que ÇA LUI
+  FAIT, ce que SES mots portent quand elle en parle — jamais ce qui se passe
+  chez l'autre, même au conditionnel. Si un fil concerne une relation,
+  formule-le depuis elle (« ce que tu déposes quand tu parles d'elle »),
+  jamais depuis l'autre.
 - Sortie = **JSON seul**, aucun texte hors de l'objet.
 
 ## Complémentaire à
