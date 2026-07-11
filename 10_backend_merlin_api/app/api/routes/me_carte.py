@@ -28,8 +28,6 @@ from app.db.session import get_db
 from app.models.analysis import AnalysisResult
 from app.models.app_user import AppUser
 from app.models.client import Client
-from app.models.client_life_event import ClientLifeEvent
-from app.models.enums import RecordStatus
 from app.schemas.common import MerlinSchema
 from app.services import capability_gate
 from app.services.loi21_filter import Loi21ViolationError, assert_client_safe
@@ -62,7 +60,7 @@ class MomentFort(MerlinSchema):
 
 class MaCarteRead(MerlinSchema):
     cartes: list[CarteSnapshot]  # du plus ancien au plus récent (barre de progression)
-    moments: list[MomentFort]    # moments forts de la vie — pas le fil d'activité
+    moments: list[MomentFort] = []  # conservé pour compat — plus alimenté
 
 
 def _texte_sur(t: str | None) -> str | None:
@@ -140,36 +138,6 @@ def ma_carte_de_vie(
     )
     cartes = [_snapshot(r) for r in results]
 
-    # Charges par événement, depuis la carte la plus récente qui en porte.
-    charges: dict[str, str] = {}
-    for r in reversed(results):
-        ev = json.loads(r.payload_json).get("evenements") or {}
-        if ev:
-            charges = {k: (v or {}).get("charge") for k, v in ev.items()}
-            break
-
-    events = list(
-        db.execute(
-            select(ClientLifeEvent)
-            .where(
-                ClientLifeEvent.client_id == client.id,
-                ClientLifeEvent.record_status != RecordStatus.archived,
-            )
-            .order_by(ClientLifeEvent.event_year_approx.desc().nullslast())
-            .limit(30)
-        ).scalars()
-    )
-    moments = []
-    for e in events:
-        titre = _texte_sur(e.title)
-        if not titre:
-            continue
-        moments.append(MomentFort(
-            titre=titre,
-            annee=e.event_year_approx,
-            type=getattr(e.event_type, "value", None),
-            charge=charges.get(e.id),
-            intergenerationnel=bool(e.is_intergenerational),
-        ))
-
-    return MaCarteRead(cartes=cartes, moments=moments)
+    # Moments forts retirés (fondateur 2026-07-11 : la Ligne de vie a quitté
+    # Horizon) — et une donnée legacy event_type invalide faisait 500 ici.
+    return MaCarteRead(cartes=cartes)
