@@ -78,7 +78,8 @@ html, body { transition: background-color .4s ease, color .4s ease; }
 .ivia-footer{margin-top:4rem;border-top:1px solid var(--bdr);background:var(--footer-bg);}
 .ivia-footer-in{max-width:64rem;margin:0 auto;padding:40px 20px;}
 .ivia-footer-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin-bottom:32px;}
-@media (min-width:640px){.ivia-footer-cols{grid-template-columns:repeat(3,1fr);}}
+@media (min-width:560px){.ivia-footer-cols{grid-template-columns:repeat(2,1fr);}}
+@media (min-width:900px){.ivia-footer-cols{grid-template-columns:repeat(4,1fr);}}
 .ivia-footer-col p{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--forest-deep);margin-bottom:12px;}
 .ivia-footer-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;}
 .ivia-footer-col a{font-size:14px;color:var(--muted);text-decoration:none;}

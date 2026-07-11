@@ -294,7 +294,9 @@ function enforceAdminPage() {
   if (document.getElementById('admin-sidebar') && !isAdminUser()) {
     location.replace('/praticien/dashboard.html');
   }
-  renderEspaceFooter('admin');
+  // Footer d'espace UNIQUEMENT sur les pages admin (bug fondateur 2026-07-11 :
+  // il s'injectait sur toutes les pages, footer admin visible chez le client).
+  if (document.getElementById('admin-sidebar')) renderEspaceFooter('admin');
 }
 
 /**
