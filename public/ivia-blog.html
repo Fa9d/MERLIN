@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogue IVIA — Santé mentale au Québec</title>
+  <meta name="description" content="Articles, ressources et outils fondés en science pour prendre soin de votre santé mentale au Québec. Burnout, anxiété, méthode RGNR, accès aux soins.">
+  <meta property="og:title" content="Blogue IVIA — Santé mentale au Québec">
+  <meta property="og:description" content="Articles et ressources en santé mentale pour les Québécois.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..400&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --bg:            #0d1117;
+      --bg-card:       #131920;
+      --bg-card-hover: #171f28;
+      --border:        rgba(255,255,255,0.07);
+      --border-hover:  rgba(255,255,255,0.14);
+      --text:          #e8edf2;
+      --text-2:        #8b9aaa;
+      --text-3:        #5a6a7a;
+      --accent:        #3ecf8e;
+      --accent-glow:   rgba(62,207,142,0.15);
+      --tag-bg:        rgba(62,207,142,0.10);
+      --tag-border:    rgba(62,207,142,0.25);
+      --tag-active-bg: rgba(62,207,142,0.20);
+      --radius:        14px;
+      --radius-sm:     8px;
+      --font-display:  'DM Serif Display', Georgia, serif;
+      --font-body:     'DM Sans', system-ui, sans-serif;
+      --ease:          cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ─── Layout ─── */
+    .page-wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── Header ─── */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      background: rgba(13,17,23,0.88);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .logo {
+      font-family: var(--font-display); font-size: 1.35rem;
+      color: var(--text); text-decoration: none; letter-spacing: -0.01em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); box-shadow: 0 0 10px var(--accent);
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 6px var(--accent); }
+      50%      { box-shadow: 0 0 18px var(--accent), 0 0 32px var(--accent-glow); }
+    }
+    .nav-cta {
+      font-size: 0.875rem; font-weight: 600; color: var(--accent);
+      text-decoration: none; border: 1px solid var(--tag-border);
+      padding: 6px 18px; border-radius: 99px; transition: background 0.2s var(--ease);
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--tag-active-bg); }
+
+    /* ─── Hero ─── */
+    .hero { padding: 72px 0 52px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    }
+    .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--text); max-width: 620px; margin-bottom: 16px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent), #7fffd4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1rem; color: var(--text-2); max-width: 520px; line-height: 1.65; }
+
+    /* ─── Stats band ─── */
+    .stats-band {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 36px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px; margin-bottom: 52px;
+    }
+    .stat-item { text-align: center; }
+    .stat-value {
+      font-family: var(--font-display); font-size: 1.9rem;
+      color: var(--accent); line-height: 1; margin-bottom: 6px;
+      text-shadow: 0 0 28px var(--accent-glow);
+    }
+    .stat-label { font-size: 0.75rem; color: var(--text-3); line-height: 1.45; }
+
+    /* ─── Filter bar ─── */
+    .filter-bar {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
+    .search-icon {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%); color: var(--text-3); pointer-events: none;
+    }
+    #search {
+      width: 100%;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text);
+      font-family: var(--font-body); font-size: 0.9rem;
+      padding: 10px 14px 10px 38px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #search::placeholder { color: var(--text-3); }
+    #search:focus {
+      border-color: rgba(62,207,142,0.4);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tag {
+      font-size: 0.8rem; font-weight: 500; padding: 6px 14px;
+      border-radius: 99px; border: 1px solid var(--tag-border);
+      background: var(--tag-bg); color: var(--text-2);
+      cursor: pointer; transition: all 0.18s var(--ease);
+      user-select: none; white-space: nowrap;
+    }
+    .tag:hover { color: var(--text); border-color: rgba(62,207,142,0.5); }
+    .tag.active { background: var(--tag-active-bg); color: var(--accent); border-color: var(--accent); }
+
+    /* ─── Results line ─── */
+    .results-line { font-size: 0.82rem; color: var(--text-3); margin-bottom: 28px; height: 20px; }
+    .results-line span { color: var(--accent); font-weight: 600; }
+
+    /* ─── Grid ─── */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px; margin-bottom: 80px;
+    }
+
+    /* ─── Card ─── */
+    .article-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; cursor: pointer;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
+      display: flex; flex-direction: column; animation: fadeUp 0.38s ease both;
+    }
+    .article-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 10px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(62,207,142,0.07);
+      transform: translateY(-4px);
+    }
+    .article-card.hidden { display: none; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+    /* Featured card */
+    .article-card.featured { grid-column: 1 / -1; flex-direction: row; }
+    .article-card.featured .card-body { flex: 1; }
+    .article-card.featured .card-visual {
+      width: 360px; flex-shrink: 0; border-radius: 0;
+      border-left: 1px solid var(--border); height: auto;
+    }
+
+    /* Card visual */
+    .card-visual { height: 196px; position: relative; overflow: hidden; flex-shrink: 0; }
+    .card-visual-inner {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-emoji { font-size: 3.2rem; position: relative; z-index: 2; filter: drop-shadow(0 0 20px rgba(0,0,0,0.55)); }
+    .card-bg-blob {
+      position: absolute; inset: -30px;
+      opacity: 0.35; filter: blur(50px); border-radius: 50%;
+    }
+
+    /* Card body */
+    .card-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+    .card-meta {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .card-cat {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .card-dot { color: var(--text-3); font-size: 0.55rem; }
+    .card-time { font-size: 0.75rem; color: var(--text-3); }
+    .card-title {
+      font-family: var(--font-display); font-size: 1.18rem; font-weight: 400;
+      line-height: 1.3; color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .article-card.featured .card-title { font-size: 1.65rem; }
+    .card-excerpt {
+      font-size: 0.875rem; color: var(--text-2); line-height: 1.62; flex: 1;
+      margin-bottom: 20px; display: -webkit-box;
+      -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .article-card.featured .card-excerpt { -webkit-line-clamp: 4; }
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 16px; border-top: 1px solid var(--border); gap: 12px;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .card-tag {
+      font-size: 0.7rem; padding: 3px 10px; border-radius: 99px;
+      border: 1px solid var(--border); color: var(--text-3);
+      background: transparent; cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .card-tag:hover { color: var(--accent); border-color: var(--tag-border); }
+    .card-arrow {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); transition: all 0.18s var(--ease); flex-shrink: 0;
+    }
+    .article-card:hover .card-arrow {
+      background: var(--tag-active-bg); border-color: var(--accent); color: var(--accent);
+    }
+
+    /* No results */
+    .no-results {
+      display: none; grid-column: 1 / -1;
+      text-align: center; padding: 80px 0; color: var(--text-3);
+    }
+    .no-results.visible { display: block; }
+    .no-results p { font-size: 0.9rem; margin-top: 8px; }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0; text-align: center;
+      font-size: 0.78rem; color: var(--text-3);
+    }
+    .site-footer a { color: var(--text-2); text-decoration: none; }
+    .site-footer a:hover { color: var(--accent); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 780px) {
+      .article-card.featured { flex-direction: column; }
+      .article-card.featured .card-visual { width: 100%; height: 200px; border-left: none; border-top: 1px solid var(--border); order: -1; }
+      .stats-band { padding: 20px; }
+      .search-wrap { max-width: 100%; width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .articles-grid { grid-template-columns: 1fr; }
+      .hero { padding: 44px 0 32px; }
+      .filter-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <span class="logo-dot"></span>
+      IVIA
+    </a>
+    <a href="#checkin" class="nav-cta">Faire mon check-in →</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-wrap">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-eyebrow">Ressources</div>
+      <h1>Prendre soin de soi,<br><em>c'est possible.</em></h1>
+      <p class="hero-sub">Articles fondés en science, adaptés au contexte québécois. Pour comprendre, agir et tenir bon entre les séances.</p>
+    </section>
+
+    <!-- Stats Québec -->
+    <div class="stats-band">
+      <div class="stat-item">
+        <div class="stat-value">39 %</div>
+        <div class="stat-label">des employés canadiens en épuisement professionnel (2025)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24 mois</div>
+        <div class="stat-label">délai d'attente max pour un psy dans le réseau public québécois</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">+71 %</div>
+        <div class="stat-label">de lésions psychosociales au travail depuis 2020 (CNESST)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">22 %</div>
+        <div class="stat-label">des Québécois trouvent leurs journées extrêmement stressantes</div>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="search" type="search" placeholder="Rechercher par mot-clé…" autocomplete="off" aria-label="Rechercher un article">
+      </div>
+      <div class="tags-wrap" id="tags-wrap" role="group" aria-label="Filtrer par catégorie">
+        <button class="tag active" data-tag="tous">Tous</button>
+        <button class="tag" data-tag="burnout">Burnout &amp; travail</button>
+        <button class="tag" data-tag="rgnr">Méthode RGNR</button>
+        <button class="tag" data-tag="acces">Système de santé</button>
+        <button class="tag" data-tag="routine">Bien-être quotidien</button>
+        <button class="tag" data-tag="soins">Accès aux soins</button>
+      </div>
+    </div>
+
+    <!-- Results count -->
+    <div class="results-line" id="results-line" aria-live="polite">
+      <span id="count">5</span> articles
+    </div>
+
+    <!-- Grid -->
+    <div class="articles-grid" id="grid">
+
+      <!-- Article 01 — Featured -->
+      <article class="article-card featured"
+        data-tags="burnout"
+        data-search="burnout épuisement professionnel signaux symptômes québec travail fatigue cortisol cynisme anhédonie cnesst burnout symptômes se remettre arrêt travail"
+        onclick="navigate('content/articles/article-01-burnout-signaux.md')">
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat">Burnout &amp; travail</span>
+            <span class="card-dot">●</span>
+            <span class="card-time">7 min de lecture</span>
+          </div>
+          <h2 class="card-title">Les 7 signaux d'alarme du burnout que les Québécois ignorent</h2>
+          <p class="card-excerpt">39 % des employés canadiens sont épuisés en 2025. Les lésions psychosociales ont bondi de 71,4 % depuis 2020. Pourtant, la plupart attendent d'être à bout avant d'agir. Voici les signaux précoces que votre culture du dépassement vous a appris à ignorer — et quoi faire maintenant.</p>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">épuisement professionnel</span>
+              <span class="card-tag">burnout symptômes</span>
+              <span class="card-tag">CNESST</span>
+            </div>
+            <div class="card-arrow" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="card-visual">
+          <div class="card-visual-inner">
+            <div class="card-bg-blob" style="background:radial-gradient(circle, #ff6b6b 0%, #c0392b 100%)"></div>
+            <span class="card-emoji" role="img" aria-label="Feu">🔥</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 02 -->
+      <article class="article-card"
+        data-tags="rgnr"
+        data-search="rgnr méthode régénération mentale corps émotions pensées environnement score check-in bien-être axe équilibre mental thriving mind"
+        onclick="navigate('content/articles/article-02-rgnr-explique.md')">
+        <div class="card-visual">
+          <div class="card-visual-inner">
+            <div class="card-bg-blob" style="background:radial-gradient(circle, #3ecf8e 0%, #1a7f5a 100%)"></div>
+            <span class="card-emoji" role="img" aria-label="Plante">🌿</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat">Méthode RGNR</span>
+            <span class="card-dot">●</span>
+            <span class="card-time">6 min de lecture</span>
+          </div>
+          <h2 class="card-title">C'est quoi le RGNR ? La méthode de régénération mentale qui change tout</h2>
+          <p class="card-excerpt">Corps, Émotions, Pensées, Environnement — les 4 axes qui mesurent votre capacité réelle à récupérer. Découvrez comment ce modèle fondé en science transforme le suivi de santé mentale.</p>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">RGNR</span>
+              <span class="card-tag">régénération mentale</span>
+              <span class="card-tag">équilibre mental</span>
+            </div>
+            <div class="card-arrow" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 03 -->
+      <article class="article-card"
+        data-tags="acces"
+        data-search="liste attente psychologue québec délai 24 mois alternatives accès psy clsc ramq réseau public options thérapie en ligne PAE travailleur social"
+        onclick="navigate('content/articles/article-03-attente-psy-alternatives.md')">
+        <div class="card-visual">
+          <div class="card-visual-inner">
+            <div class="card-bg-blob" style="background:radial-gradient(circle, #f39c12 0%, #e67e22 100%)"></div>
+            <span class="card-emoji" role="img" aria-label="Sablier">⏳</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat">Système de santé</span>
+            <span class="card-dot">●</span>
+            <span class="card-time">8 min de lecture</span>
+          </div>
+          <h2 class="card-title">Liste d'attente de 24 mois pour un psy au Québec : vos options réelles</h2>
+          <p class="card-excerpt">~8 600 Québécois sur liste d'attente. Délai moyen : 7 à 8 mois pour Accès Psy, jusqu'à 390 jours pour les mineurs en région. Voici vos vraies alternatives pendant l'attente.</p>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">délai attente</span>
+              <span class="card-tag">Accès Psy</span>
+              <span class="card-tag">alternatives</span>
+            </div>
+            <div class="card-arrow" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 04 -->
+      <article class="article-card"
+        data-tags="routine"
+        data-search="check-in mental quotidien routine 3 minutes bien-être stress anxiété respiration habitudes prévenir burnout gestion stress québec pleine conscience journaling"
+        onclick="navigate('content/articles/article-04-checkin-mental-routine.md')">
+        <div class="card-visual">
+          <div class="card-visual-inner">
+            <div class="card-bg-blob" style="background:radial-gradient(circle, #9b59b6 0%, #6c3483 100%)"></div>
+            <span class="card-emoji" role="img" aria-label="Méditation">🧘</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat">Bien-être quotidien</span>
+            <span class="card-dot">●</span>
+            <span class="card-time">7 min de lecture</span>
+          </div>
+          <h2 class="card-title">Le check-in mental de 3 minutes qui prévient le burnout</h2>
+          <p class="card-excerpt">22 % des Québécois trouvent leurs journées extrêmement stressantes. Une micro-routine structurée quotidienne suffit à changer ça — voici la méthode RGNR appliquée au quotidien.</p>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">routine santé mentale</span>
+              <span class="card-tag">check-in</span>
+              <span class="card-tag">stress quotidien</span>
+            </div>
+            <div class="card-arrow" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 05 -->
+      <article class="article-card"
+        data-tags="soins"
+        data-search="thérapie coaching psychologue psychothérapeute travailleur social coach différence québec tarif remboursement opq choisir thérapie en ligne coaching santé mentale"
+        onclick="navigate('content/articles/article-05-therapie-vs-coaching.md')">
+        <div class="card-visual">
+          <div class="card-visual-inner">
+            <div class="card-bg-blob" style="background:radial-gradient(circle, #3498db 0%, #1a5276 100%)"></div>
+            <span class="card-emoji" role="img" aria-label="Loupe">🔎</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat">Accès aux soins</span>
+            <span class="card-dot">●</span>
+            <span class="card-time">7 min de lecture</span>
+          </div>
+          <h2 class="card-title">Thérapie ou coaching en santé mentale ? La vraie différence</h2>
+          <p class="card-excerpt">Psychologue, psychothérapeute, T.S., coach — au Québec, les titres se multiplient et la confusion aussi. Voici la grille claire : qui peut faire quoi, combien ça coûte, et comment choisir selon votre situation.</p>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">psychologie vs coaching</span>
+              <span class="card-tag">OPQ</span>
+              <span class="card-tag">thérapie en ligne</span>
+            </div>
+            <div class="card-arrow" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- No results -->
+      <div class="no-results" id="no-results" role="status">
+        <div style="font-size:2.5rem;margin-bottom:12px">🔍</div>
+        <strong style="color:var(--text-2)">Aucun article trouvé</strong>
+        <p>Essayez un autre mot-clé ou explorez toutes les catégories.</p>
+      </div>
+
+    </div><!-- /grid -->
+  </div><!-- /page-wrap -->
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="page-wrap">
+    <p>© 2025 IVIA — Contenu informatif uniquement. Ne remplace pas un professionnel de la santé mentale.<br>
+    Sources : <a href="https://www.inspq.qc.ca" target="_blank" rel="noopener">INSPQ</a> · <a href="https://www.ordrepsy.qc.ca" target="_blank" rel="noopener">OPQ</a> · <a href="https://www.cnesst.gouv.qc.ca" target="_blank" rel="noopener">CNESST</a> · <a href="https://www.msss.gouv.qc.ca" target="_blank" rel="noopener">MSSS Québec</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* ─── Navigate helper ─── */
+  function navigate(path) {
+    // In a real app this would route to the article page
+    console.log('Navigate to:', path);
+  }
+
+  /* ─── Filter engine ─── */
+  const cards       = Array.from(document.querySelectorAll('.article-card'));
+  const searchInput = document.getElementById('search');
+  const tagButtons  = document.querySelectorAll('.tag');
+  const countEl     = document.getElementById('count');
+  const noResults   = document.getElementById('no-results');
+  const featured    = document.querySelector('.article-card.featured');
+
+  let activeTag = 'tous';
+  let searchVal = '';
+
+  /* Strip diacritics for accent-insensitive search */
+  function norm(s) {
+    return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function filter() {
+    let visible = 0;
+    const q = norm(searchVal.trim());
+
+    cards.forEach((card, i) => {
+      const tags    = card.dataset.tags || '';
+      const haystack = norm([
+        card.dataset.search,
+        card.querySelector('.card-title')?.textContent,
+        card.querySelector('.card-excerpt')?.textContent
+      ].join(' '));
+
+      const matchTag  = activeTag === 'tous' || tags.includes(activeTag);
+      const matchText = q === '' || haystack.includes(q);
+
+      if (matchTag && matchText) {
+        card.classList.remove('hidden');
+        card.style.animationDelay = (visible * 0.055) + 's';
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    countEl.textContent = visible;
+    noResults.classList.toggle('visible', visible === 0);
+
+    /* Featured spans full width only when visible + grid has multiple visible cards */
+    if (featured) {
+      const multi = visible > 1 && !featured.classList.contains('hidden');
+      featured.style.gridColumn = multi ? '1 / -1' : '';
+    }
+  }
+
+  /* Search input */
+  searchInput.addEventListener('input', e => {
+    searchVal = e.target.value;
+    if (searchVal.trim() !== '') {
+      activeTag = 'tous';
+      tagButtons.forEach(b => b.classList.toggle('active', b.dataset.tag === 'tous'));
+    }
+    filter();
+  });
+
+  /* Category tags */
+  tagButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeTag = btn.dataset.tag;
+      tagButtons.forEach(b => b.classList.toggle('active', b === btn));
+      searchInput.value = '';
+      searchVal = '';
+      filter();
+    });
+  });
+
+  /* Card inline tags → inject into search */
+  document.querySelectorAll('.card-tag').forEach(ct => {
+    ct.addEventListener('click', e => {
+      e.stopPropagation();
+      searchInput.value = ct.textContent.trim();
+      searchVal = ct.textContent.trim();
+      activeTag = 'tous';
+      tagButtons.forEach(b => b.classList.toggle('active', b.dataset.tag === 'tous'));
+      filter();
+    });
+  });
+
+  /* Init */
+  filter();
+</script>
+</body>
+</html>
