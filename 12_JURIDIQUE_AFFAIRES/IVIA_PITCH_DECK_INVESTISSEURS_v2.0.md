@@ -452,8 +452,20 @@ T3-T4 2026  Conseiller juridique + praticiens partenaires
 2029        ML engineer + opérations multi-strates
 ```
 
+**Portage juridique (trajectoire assumée — BP §2.1.0)** :
+```
+Aujourd'hui   Entreprise individuelle (NEQ en cours d'obtention)
+Moyen terme   IVIA OBNL — mission, financements publics/philanthropiques
+Ensuite       Entité commerciale — MERLIN, B2B Loi 27, capital privé, RS&DE/CRIC
+```
+
 **Notes du conférencier** :
-"Le risque fondateur existe et reste lucide. Mais l'exécution récente réduit une incertitude majeure : une seule personne a construit et mis en production une plateforme complète, en quasi-autofinancement, avec assistance IA. La priorité n'est pas de grossir vite : c'est d'ajouter les bonnes personnes aux bons gates, sans diluer la doctrine."
+"Le portage juridique suit la même logique que les recrutements : par gates,
+sans précipitation. Aujourd'hui l'exploitation est portée par le fondateur en
+entreprise individuelle — l'immatriculation est en cours. L'OBNL vient porter
+la mission et ouvrir les financements publics ; l'entité commerciale vient
+ensuite porter la technologie, les revenus et le capital. Rien n'est
+revendiqué avant d'exister. Le risque fondateur existe et reste lucide. Mais l'exécution récente réduit une incertitude majeure : une seule personne a construit et mis en production une plateforme complète, en quasi-autofinancement, avec assistance IA. La priorité n'est pas de grossir vite : c'est d'ajouter les bonnes personnes aux bons gates, sans diluer la doctrine."
 
 ---
 
@@ -502,6 +514,7 @@ Dérive analytique IA            Faible  Vannes, audit, validation humaine
 - **54,5 % non-dilutif d'abord** : subventions + crédits d'impôt avant tout capital
 - Programmes publics cartographiés : RS&DE · CRIC · Fondaction · Filaction · FAQDD · Investissement Québec · CDAE · PARI-CNRC · Mitacs
 - Capital patient aligné doctrine (dilutif ≤ 25 % du capital)
+- Portage par étapes : indépendant (NEQ en cours) → OBNL → entité commerciale — chaque demande déposée par le véhicule admissible
 
 **Structure cible 36 mois (BP v2.4)** :
 ```
@@ -585,6 +598,8 @@ Notre logique de financement repose sur une articulation simple :
 - Les capitaux privés renforcent la continuité d'exploitation, la capacité d'accueil, la consolidation des équipes et la montée en charge.
 
 Cette articulation est cohérente avec la nature même d'IVIA : un projet qui doit à la fois innover, démontrer, protéger les renseignements personnels, et tenir dans le temps comme infrastructure d'accompagnement.
+
+Elle s'incarne dans une trajectoire de portage assumée : l'exploitation actuelle est portée par le fondateur en entreprise individuelle (immatriculation en cours) ; l'OBNL IVIA viendra porter la mission et les financements publics ; une entité commerciale dédiée portera ensuite MERLIN, les contrats B2B et le capital privé. L'investisseur entre dans une séquence claire, pas dans une structure improvisée.
 
 **Conclusion investisseur** :
 
