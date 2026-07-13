@@ -221,6 +221,8 @@ async def upload_my_recording(
     duration_minutes = (
         max(1, round(payload.duration_seconds / 60)) if payload.duration_seconds else None
     )
+    # Attribution : praticien choisi par le client > défaut serveur > client lui-même.
+    attribue = _resolve_practitioner(payload.praticien_id, db) or _default_practitioner(db)
     record = SessionRecord(
         id=str(uuid4()),
         client_id=client.id,
@@ -230,12 +232,10 @@ async def upload_my_recording(
         actual_start_at=now,
         duration_minutes=duration_minutes,
         room_name=f"{_ROOM_PREFIX}:{payload.formule}",
-        # Attribution : praticien choisi par le client > défaut serveur > client lui-même.
-        operator_user_id=(
-            _resolve_practitioner(payload.praticien_id, db)
-            or _default_practitioner(db)
-            or current_user
-        ).id,
+        operator_user_id=(attribue or current_user).id,
+        # Sans praticien_id, la note reste INVISIBLE dans sa liste (bug
+        # fondateur 2026-07-13 : impossible de valider l'analyse d'Alexandra).
+        praticien_id=attribue.id if attribue else None,
         session_status_code=SessionStatusCode.in_progress,
     )
     db.add(record)
