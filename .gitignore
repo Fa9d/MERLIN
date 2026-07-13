@@ -62,3 +62,10 @@ docs/stripe_backup_code.txt
 
 # Graphify knowledge graph (artefact local, regenerable)
 graphify-out/
+
+# Artefacts locaux AppFlowy / bureautique (non canoniques)
+docs/audios/
+docs/factures/
+
+# Intrants importes contenant un sous-repo Git local
+_archives/intrants/2026-07/IVIA_map/
