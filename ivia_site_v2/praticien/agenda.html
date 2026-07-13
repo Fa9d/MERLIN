@@ -192,6 +192,8 @@
           const key = `${r.slot_date}_${t}`;
           slotStates[key] = 'reserve';
           slotStates[key + '_client'] = r.client_name || (r.status === 'hold' ? 'En attente' : 'Réservé');
+          slotStates[key + '_statut'] = r.status;
+          slotStates[key + '_notes'] = r.notes || '';
           if (r.session_id) slotStates[key + '_session'] = r.session_id;
         });
 
@@ -292,15 +294,10 @@
               label.className = 'cal-label';
               label.textContent = slotStates[key + '_client'] || 'Réservé';
               cell.appendChild(label);
-              // Clic sur un créneau réservé → dossier de préparation d'entretien
-              const sid = slotStates[key + '_session'];
-              if (sid) {
-                cell.style.cursor = 'pointer';
-                cell.title = 'Préparer l\'entretien';
-                cell.addEventListener('click', () => {
-                  location.href = '/praticien/preparation.html?session=' + encodeURIComponent(sid);
-                });
-              }
+              // Clic → fiche rendez-vous (toujours), préparation si séance liée
+              cell.style.cursor = 'pointer';
+              cell.title = 'Voir le rendez-vous';
+              cell.addEventListener('click', () => ouvrirModalRdv(key));
             }
 
             if (state !== 'reserve') {
@@ -381,6 +378,31 @@
         fermerModal();
         await chargerCreneaux(); buildCalendar();
       } catch (err) { alert('Impossible d\u2019ouvrir ce créneau : ' + err.message); }
+    }
+
+    function ouvrirModalRdv(key) {
+      const [date, time] = key.split('_');
+      const d = new Date(date + 'T' + time);
+      const quand = d.toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' + time;
+      const nom = slotStates[key + '_client'] || 'Réservé';
+      const statut = slotStates[key + '_statut'] === 'hold' ? 'en attente de paiement' : 'confirmé';
+      const notes = slotStates[key + '_notes'];
+      const sid = slotStates[key + '_session'];
+      document.getElementById('modal-title').textContent = nom;
+      document.getElementById('modal-desc').innerHTML =
+        '<span class="block font-semibold text-ink capitalize">' + quand + '</span>'
+        + '<span class="block mt-1">Rendez-vous ' + statut + '.</span>'
+        + (notes ? '<span class="block mt-2 border-l-2 pl-3" style="border-color:#8FB99A">« ' + notes.replace(/</g, '&lt;') + ' »</span>' : '')
+        + (!sid ? '<span class="block mt-2 text-xs">La préparation d’entretien s’ouvrira ici dès la première matière du client (séance ou enregistrement).</span>' : '');
+      const btn = document.getElementById('modal-action-btn');
+      if (sid) {
+        btn.textContent = 'Préparer l’entretien';
+        btn.onclick = () => { location.href = '/praticien/preparation.html?session=' + encodeURIComponent(sid); };
+      } else {
+        btn.textContent = 'Voir mes clients';
+        btn.onclick = () => { location.href = '/praticien/clients-journal.html'; };
+      }
+      document.getElementById('modal-creneau').classList.remove('hidden');
     }
 
     function fermerModal() { document.getElementById('modal-creneau').classList.add('hidden'); }
