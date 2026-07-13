@@ -144,9 +144,76 @@ async def lifespan(_: FastAPI):
         pass
 
 
+# ── Vue OpenAPI : description et ordre des groupes dans /docs ────────────────
+API_DESCRIPTION = """API MERLIN — cœur d'analyse et de gouvernance d'IVIA (ivia.quebec).
+
+**Posture non médicale (constitution MERLIN)** : aucune sortie ne pose de
+diagnostic ni de prescription — triade Observation / Hypothèse / Orientation,
+validation humaine sur les notes, données hébergées au Québec (Loi 25).
+
+Authentification : `Authorization: Bearer <JWT>` (obtenu via `POST /auth/login`).
+Collection de tests : `docs/api/merlin_postman_collection.json` dans le dépôt.
+"""
+
+OPENAPI_TAGS = [
+    # Entrée & comptes
+    {"name": "health", "description": "Sonde de vie de l'API."},
+    {"name": "auth", "description": "Inscription, connexion (JWT), mot de passe."},
+    {"name": "register", "description": "Parcours public d'entrée (intake orchestré + magic link)."},
+    {"name": "consents", "description": "Consentements du client (N1/N2/N3)."},
+    # Séances & enregistrements
+    {"name": "sessions", "description": "Séances : création, démarrage, clôture (note générée), livraison."},
+    {"name": "audio-sessions", "description": "Salles LiveKit : provision, jetons praticien/client."},
+    {"name": "audio-recordings", "description": "Enregistrements de séance : démarrage, arrêt, transcription."},
+    {"name": "enregistrements-client", "description": "Enregistrements solo du client (voix, transcription locale)."},
+    {"name": "seance-express", "description": "Séance express par lien (praticien → client)."},
+    {"name": "bookings", "description": "Réservation de créneaux : hold 10 min, confirmation, agenda praticien."},
+    {"name": "schedules", "description": "Disponibilités du praticien (gabarits, exceptions)."},
+    {"name": "calendar", "description": "Vues calendaires."},
+    # Notes & restitutions
+    {"name": "session-notes", "description": "Notes de séance — VALIDATION HUMAINE obligatoire avant toute diffusion."},
+    {"name": "derived-documents", "description": "Documents dérivés d'une note (reformulation client)."},
+    {"name": "documents-client", "description": "Lectures livrées, visibles par le client."},
+    {"name": "restitutions", "description": "Restitutions praticien→client (triade relue, éditée, livrée)."},
+    # Analyses (moteur plein, vannes par profil)
+    {"name": "analyses", "description": "Moteur d'analyse : prosodie locale, sémantique, croisement — filtré par capability_gate."},
+    {"name": "reflets", "description": "Mode autonome : miroirs directs au client (journal, séance) sous triple verrou."},
+    {"name": "carte-de-vie", "description": "Horizon / Carte de Vie : constellation des onze axes, historique daté."},
+    {"name": "profilage", "description": "Profilage comportemental (6 couches) — hypothèses, jamais diagnostics."},
+    {"name": "matching", "description": "Appariement client-praticien (similarité/complémentarité)."},
+    # Espace client
+    {"name": "journal-client", "description": "Journal intime du client (entrées datées, axes MERLIN)."},
+    {"name": "journal", "description": "Journal structuré (check-ins, exercices validés)."},
+    {"name": "intentions-client", "description": "Intentions actives du client."},
+    {"name": "exercices", "description": "Exercices : invitations praticien, jamais des devoirs."},
+    {"name": "clients", "description": "Fiche et profil du client connecté."},
+    {"name": "client-entitlements", "description": "Crédits et droits d'usage du client."},
+    {"name": "life-events", "description": "Événements de vie (ligne de vie praticien)."},
+    {"name": "era-contexts", "description": "Contextes d'époque."},
+    {"name": "temporal-anchors", "description": "Ancrages temporels de séance."},
+    {"name": "timeline", "description": "Chronologies agrégées."},
+    # Praticien
+    {"name": "praticiens", "description": "Praticiens publiés (profils publics)."},
+    {"name": "pratique", "description": "Journal de pratique du praticien — strictement personnel, analyse franc jeu."},
+    # Paiements & référentiels
+    {"name": "payments", "description": "Stripe : checkout, confirmation test, entitlements."},
+    {"name": "referentiels", "description": "Taxonomies vivantes (axes, tensions) — source doctrine."},
+    # Console admin
+    {"name": "admin-vue", "description": "Vue d'ensemble + vigilances [admin]."},
+    {"name": "admin-dossiers", "description": "Dossiers clients [admin]."},
+    {"name": "admin-comptes", "description": "Comptes & accès [admin]."},
+    {"name": "admin-comptabilite", "description": "Grand livre comptable [admin]."},
+    {"name": "admin-economie", "description": "Économie IA : coûts LLM réels, bénéfices par séance [admin]."},
+    {"name": "admin-facturation", "description": "Interrupteurs payant/gratuit par offre [admin]."},
+    {"name": "admin-analyse", "description": "Vannes capacités × profils, credentials, types de séance [admin]."},
+]
+
 app = FastAPI(
     title=settings.app_name,
-    version="0.1.0",
+    version="2026.07",
+    description=API_DESCRIPTION,
+    openapi_tags=OPENAPI_TAGS,
+    contact={"name": "IVIA — fondateur", "url": "https://ivia.quebec"},
     lifespan=lifespan,
 )
 

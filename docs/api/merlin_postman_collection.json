@@ -1,0 +1,208 @@
+{
+  "info": {
+    "name": "MERLIN API — flux critiques",
+    "description": "Collection de test des traitements MERLIN (api.ivia.quebec).\n\nMODE D'EMPLOI :\n1. Choisir l'environnement via la variable `base_url` (prod par défaut ; local = http://localhost:8000/api/v1).\n2. Lancer « Auth / Login » : le jeton est capturé automatiquement dans `{{token}}` (script de test).\n3. Les autres requêtes héritent du Bearer.\n\nRÈGLE : données FICTIVES uniquement — jamais de contenu clinique réel dans les tests (constitution MERLIN).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://api.ivia.quebec/api/v1", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "client_id", "value": "", "type": "string" },
+    { "key": "session_id", "value": "", "type": "string" },
+    { "key": "audio_session_id", "value": "", "type": "string" },
+    { "key": "recording_id", "value": "", "type": "string" },
+    { "key": "note_id", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "0 · Santé",
+      "item": [
+        {
+          "name": "GET /health — sonde de vie",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/../../api/health", "host": ["{{base_url}}"], "path": ["..", "..", "api", "health"] },
+            "description": "Traitement attendu : 200 {status:'ok'} — l'API et la BDD répondent."
+          }
+        }
+      ]
+    },
+    {
+      "name": "1 · Comptes",
+      "item": [
+        {
+          "name": "POST /auth/register — créer un compte",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"test-postman@example.com\",\n  \"password\": \"MotDePasse-Fictif-2026!\"\n}" },
+            "description": "Traitement : crée l'AppUser (email non vérifié) + envoie le courriel de vérification. 201 UserRead. Erreurs : 409 si l'email existe."
+          }
+        },
+        {
+          "name": "POST /auth/login — connexion (capture le JWT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const j = pm.response.json();",
+                  "  pm.collectionVariables.set('token', j.access_token);",
+                  "  pm.test('JWT capturé dans {{token}}', () => pm.expect(j.access_token).to.be.a('string'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"test-postman@example.com\",\n  \"password\": \"MotDePasse-Fictif-2026!\"\n}" },
+            "description": "Traitement : vérifie identifiants → 200 {access_token, token_type}. Le script de test range le jeton dans {{token}} pour toute la collection. Erreurs : 401 identifiants invalides, 403 email non vérifié."
+          }
+        },
+        {
+          "name": "POST /auth/set-password — définir/changer le mot de passe",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/set-password", "host": ["{{base_url}}"], "path": ["auth", "set-password"] },
+            "body": { "mode": "raw", "raw": "{\n  \"new_password\": \"NouveauMotDePasse-2026!\",\n  \"current_password\": null\n}" },
+            "description": "Traitement : pose un mot de passe (compte magic-link) ou le change (current_password requis alors). Authentifié."
+          }
+        },
+        {
+          "name": "POST /public/intake/start — parcours public d'entrée (orchestrateur)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/public/intake/start", "host": ["{{base_url}}"], "path": ["public", "intake", "start"] },
+            "body": { "mode": "raw", "raw": "{\n  \"first_name_or_alias\": \"Test Fictif\",\n  \"email\": \"intake-fictif@example.com\",\n  \"request_text\": \"Je veux essayer le parcours (donnée fictive).\",\n  \"consent_session\": true,\n  \"consent_session_note\": true,\n  \"consent_history\": true\n}" },
+            "description": "Traitement : crée Client + IntakeRequest + 3 consentements publics + AppUser lié, envoie le magic link (7 jours). UN SEUL appel depuis le frontend — jamais de cascade. Voir CLAUDE.md §16."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 · Séance praticien (création → salle → enregistrement → clôture)",
+      "item": [
+        {
+          "name": "POST /sessions — créer une séance",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/sessions", "host": ["{{base_url}}"], "path": ["sessions"] },
+            "body": { "mode": "raw", "raw": "{\n  \"client_id\": \"{{client_id}}\",\n  \"session_mode_code\": \"standard\",\n  \"session_channel_code\": \"audio_live\"\n}" },
+            "description": "Traitement : crée le SessionRecord (séquence auto). 201 SessionRead → copier `id` dans {{session_id}}. Rôles internes uniquement."
+          }
+        },
+        {
+          "name": "POST /audio-sessions/sessions/{{session_id}}/provision — salle LiveKit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/audio-sessions/sessions/{{session_id}}/provision", "host": ["{{base_url}}"], "path": ["audio-sessions", "sessions", "{{session_id}}", "provision"] },
+            "body": { "mode": "raw", "raw": "{}" },
+            "description": "Traitement : provisionne la salle LiveKit de la séance (room + jetons via /operator-join et /client-join). 201 AudioSessionRead → {{audio_session_id}}. NOTE : POST /sessions/{id}/room est DÉPRÉCIÉE (410) — c'est ici la vraie voie."
+          }
+        },
+        {
+          "name": "POST /audio-recordings/audio-sessions/{{audio_session_id}}/start — démarrer l'enregistrement",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/audio-recordings/audio-sessions/{{audio_session_id}}/start", "host": ["{{base_url}}"], "path": ["audio-recordings", "audio-sessions", "{{audio_session_id}}", "start"] },
+            "body": { "mode": "raw", "raw": "{}" },
+            "description": "Traitement : démarre la captation (consentements consent_recording + consent_transcription requis). 201 AudioRecordingRead → {{recording_id}}."
+          }
+        },
+        {
+          "name": "POST /audio-recordings/{{recording_id}}/stop — arrêter l'enregistrement",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/audio-recordings/{{recording_id}}/stop", "host": ["{{base_url}}"], "path": ["audio-recordings", "{{recording_id}}", "stop"] },
+            "body": { "mode": "raw", "raw": "{}" },
+            "description": "Traitement : arrête la captation puis lance le pipeline post-enregistrement (transcription faster-whisper locale → note de séance générée → prosodie locale, + analyses auto selon le type de séance)."
+          }
+        },
+        {
+          "name": "POST /sessions/{{session_id}}/close — clôturer (note générée)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/sessions/{{session_id}}/close", "host": ["{{base_url}}"], "path": ["sessions", "{{session_id}}", "close"] },
+            "body": { "mode": "raw", "raw": "{\n  \"session_status_code\": \"completed\",\n  \"transcript_text\": \"Transcript FICTIF de test — aucune donnée clinique réelle.\"\n}" },
+            "description": "Traitement : clôt la séance et génère la note IA (pipeline Cercle) depuis le transcript fourni. La note reste NON VALIDÉE tant que le praticien ne l'a pas relue."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 · Notes de séance (validation humaine)",
+      "item": [
+        {
+          "name": "GET /session-notes — mes notes (praticien)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/session-notes", "host": ["{{base_url}}"], "path": ["session-notes"] },
+            "description": "Traitement : liste les notes des séances DU praticien connecté (filtre sessions.praticien_id — corrigé 2026-07-13). Copier un `id` dans {{note_id}}."
+          }
+        },
+        {
+          "name": "PATCH /session-notes/{{note_id}}/validate — VALIDER la note",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/session-notes/{{note_id}}/validate", "host": ["{{base_url}}"], "path": ["session-notes", "{{note_id}}", "validate"] },
+            "body": { "mode": "raw", "raw": "{\n  \"validated\": true,\n  \"corrections\": null\n}" },
+            "description": "Traitement : validation humaine constitutionnelle. Marque la note validée + publie les documents dérivés visibles client (Mes résumés / journal). `corrections` = texte libre des retouches du praticien."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 · Client solo & miroirs (mode autonome)",
+      "item": [
+        {
+          "name": "POST /me/recordings — envoyer un enregistrement solo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/me/recordings", "host": ["{{base_url}}"], "path": ["me", "recordings"] },
+            "body": { "mode": "raw", "raw": "{\n  \"audio_data\": \"<BASE64_DU_FICHIER_AUDIO>\",\n  \"filename\": \"test-fictif.webm\",\n  \"formule\": \"solo30\",\n  \"duration_seconds\": 60\n}" },
+            "description": "Traitement : reçoit l'audio (base64), crée la séance solo (praticien attribué → sessions.praticien_id) et lance la transcription en tâche de fond. 202 → {{recording_id}} ; transcript_ready bascule à true quand c'est prêt."
+          }
+        },
+        {
+          "name": "POST /me/recordings/{{recording_id}}/reflet — lecture de MA séance",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/me/recordings/{{recording_id}}/reflet", "host": ["{{base_url}}"], "path": ["me", "recordings", "{{recording_id}}", "reflet"] },
+            "body": { "mode": "raw", "raw": "{}" },
+            "description": "Traitement : reflet de séance direct au client (PROD-ANA-006) — quadruple verrou : safety suite passée, filtre Loi 21 EN CODE, protocole d'urgence EN CODE, verrou de fidélité des citations. Idempotent (1 reflet/enregistrement)."
+          }
+        },
+        {
+          "name": "POST /me/journal/reflet — miroir du journal (jour/semaine/mois)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/me/journal/reflet", "host": ["{{base_url}}"], "path": ["me", "journal", "reflet"] },
+            "body": { "mode": "raw", "raw": "{\n  \"periode\": \"semaine\"\n}" },
+            "description": "Traitement : miroir du journal (PROD-ANA-004) sur la période choisie (jour|semaine|mois), cooldown 20 h PAR période. Triple verrou. 429 si trop tôt, 409 si journal vide."
+          }
+        }
+      ]
+    }
+  ]
+}
