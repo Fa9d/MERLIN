@@ -536,10 +536,11 @@ FINANCEMENT_PUBLIC_PROGRAMMES_2026.md et le BP v2.4.
 
 - Dilution indicative : **14–18 %**
 - Mix : subventions + capital patient + revenus
-- Besoins : intégration praticiens, conformité, recherche universitaire, offre employeurs Loi 27
+- **Programmes publics** : amorce et innovation (R&D, conformité, démonstrations)
+- **Capitaux privés** : stabilisation et déploiement (intégration, équipes, montée en charge)
 
 <!--
-On ne demande pas au capital de financer une preuve abstraite : la preuve technique existe. Le capital sert à accélérer l'intégration, sécuriser la conformité, soutenir le fondateur, structurer l'offre employeurs, et transformer un produit en production en organisation durable.
+On ne demande pas au capital de financer une preuve abstraite : la preuve technique existe. Les programmes publics soutiennent l'amorce et l'innovation ; les capitaux privés soutiennent la continuité, la consolidation et le déploiement. Le capital sert à accélérer l'intégration, sécuriser la conformité, soutenir le fondateur, structurer l'offre employeurs, et transformer un produit en production en organisation durable.
 -->
 
 ---
