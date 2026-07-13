@@ -62,10 +62,10 @@ Prérequis transverses : constitution IVIA inc. (Palier 1), statut SPCC (pour RS
 
 | # | Cible | Programmes | Fourchette | Véhicule | Horizon |
 |---|---|---|---:|---|---|
-| 1 | Crédits R&D | RS&DE + CRIC | 120–180 K$ | SPA (SPCC) | post‑constitution |
-| 2 | Finance solidaire | Fondaction · Filaction · FAQDD | 40–90 K$ | SPA/OBNL | Palier 1‑2 |
-| 3 | Innovation PME | Investissement Québec · CDAE | 30–70 K$ | SPA | Palier 1‑2 |
-| 4 | Fédéral innovation | PARI‑CNRC · Mitacs | 30–60 K$ | SPA | Palier 1‑3 |
+| 1 | Crédits R&D | RS&DE + CRIC | 120–180 K$ | entité comm. (SPCC) | post‑constitution |
+| 2 | Finance solidaire | Fondaction · Filaction · FAQDD | 40–90 K$ | ent. comm./OBNL | Palier 1‑2 |
+| 3 | Innovation PME | Investissement Québec · CDAE | 30–70 K$ | ent. comm. | Palier 1‑2 |
+| 4 | Fédéral innovation | PARI‑CNRC · Mitacs | 30–60 K$ | ent. comm. | Palier 1‑3 |
 | 5 | Mission / impact | Fondations · MSSS · RPS Loi 27 | 30–80 K$ | OBNL | Palier 2 |
 | | **Total** | | **250–480 K$** | | |
 
