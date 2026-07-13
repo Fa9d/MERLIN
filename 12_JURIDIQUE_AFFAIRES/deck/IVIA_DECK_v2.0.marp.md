@@ -516,6 +516,9 @@ RS&DE · CRIC · Fondaction · Filaction · FAQDD · Investissement Québec · C
 - Les investisseurs accompagnent la **stabilisation et la montée en puissance**  
    Capacité d'accueil, consolidation des équipes, industrialisation des cadres.
 
+**Portage par étapes (BP §2.1.0)**
+Entreprise individuelle *(NEQ en cours)* → **IVIA OBNL** *(mission, fonds publics)* → **entité commerciale** *(MERLIN, B2B Loi 27, capital, RS&DE/CRIC)* — chaque demande déposée par le véhicule admissible.
+
 > Le BP décrit les montants et les scénarios.
 > Ce deck montre comment les apports publics et privés s'emboîtent dans une architecture unique.
 

@@ -15,14 +15,13 @@ structure ; MÉSANGES, voix d'accompagnement, oriente — sans jamais poser de
 diagnostic ni prescrire : toute sortie suit la triade Observation / Hypothèse /
 Orientation, sous validation humaine.
 
-L'écosystème est porté par deux entités articulées :
-
-- **IVIA inc.** — société par actions à mission (LSAQ), maison-mère
-  commerciale détenue à 100 % par David Phaneuf, fondateur. Elle développe et
-  opère les produits, réalise les revenus et finance la redistribution.
-- **IVIA OBNL** — satellite de redistribution (LCQ Partie III, statut de
-  bienfaisance ARC visé au Palier 3), lié par une convention de licence
-  sociale : accès gratuit ou à coût réduit pour les publics vulnérables.
+L'écosystème suit une trajectoire de portage en trois temps (BP §2.1.0) :
+l'exploitation actuelle est assurée par le fondateur en **entreprise
+individuelle** (NEQ en cours d'obtention) ; **IVIA OBNL** viendra porter la
+mission et les financements publics et philanthropiques ; une **entité
+commerciale dédiée** (cible : société par actions à mission, LSAQ) portera
+ensuite MERLIN, les revenus marchands, les contrats B2B et le capital privé,
+liée à l'OBNL par une convention de licence sociale.
 
 Le projet répond à une réalité documentée : détresse massive, première ligne
 saturée, et une obligation légale nouvelle (Loi 27) qui transforme la santé
@@ -99,12 +98,23 @@ Palier 3 = 1 227 K$ · marge = 303 K$) :
 - **Palier 3** (→ mai 2029) : 200-350 praticiens, ARR ~1 850 K$,
   équilibre courant visé M28-M30.
 
-## 5. Coordonnées et identifiants administratifs
+## 5. Statut juridique et plan d'immatriculation
+
+| Temps | Véhicule | Rôle | État |
+|---|---|---|---|
+| Court terme (2026) | Entreprise individuelle — David Phaneuf | Exploitation actuelle, premiers revenus | **NEQ en cours d'obtention** |
+| Moyen terme | IVIA OBNL (LCQ Partie III) | Mission, partenariats publics, fonds philanthropiques | À constituer |
+| Structuration | Entité commerciale (cible : SPA à mission, LSAQ) | MERLIN, B2B Loi 27, capital privé, RS&DE/CRIC | À constituer |
+
+Chaque demande de financement est déposée par le véhicule admissible au
+moment du dépôt ; aucun numéro ni forme n'est revendiqué avant son existence.
+
+## 6. Coordonnées et identifiants administratifs
 
 | Champ | Valeur |
 |---|---|
-| Organisation | IVIA inc. (société par actions à mission, LSAQ) — **À compléter : NEQ** (immatriculation REQ en cours, action Palier 0) |
-| Satellite | IVIA OBNL (LCQ Partie III) — **À compléter : NEQ OBNL** |
+| Porteur actuel | David Phaneuf, entreprise individuelle — **À compléter : NEQ** (immatriculation REQ en cours) |
+| Entités à venir | IVIA OBNL puis entité commerciale — NEQ respectifs à leur constitution |
 | Fondateur et contact principal | David Phaneuf — david@ivia.quebec |
 | Contact général | bonjour@ivia.quebec |
 | Responsable protection des renseignements personnels | confidentialite@ivia.quebec |
