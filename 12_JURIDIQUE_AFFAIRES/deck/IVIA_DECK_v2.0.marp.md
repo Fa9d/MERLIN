@@ -529,13 +529,12 @@ FINANCEMENT_PUBLIC_PROGRAMMES_2026.md et le BP v2.4.
 # Financer l'accélération, pas l'existence
 
 <div class="kpi">
-<div><span class="v">2,25 M$</span><span class="l">besoin total 36 mois</span></div>
-<div><span class="v">100 K$</span><span class="l">première tranche</span></div>
-<div><span class="v">600 K$</span><span class="l">pré-money</span></div>
+<div><span class="v">2,2 M$</span><span class="l">besoin total 36 mois</span></div>
+<div><span class="v">54,5 %</span><span class="l">non-dilutif d'abord</span></div>
+<div><span class="v">600 K$</span><span class="l">capital patient (dilutif ≤ 25 %)</span></div>
 </div>
 
-- Dilution indicative : **14–18 %**
-- Mix : subventions + capital patient + revenus
+- Mix (BP v2.4 §1.2) : **920 K$** subventions · **280 K$** crédits d'impôt · **600 K$** capital patient · **200 K$** prêts · **200 K$** auto-financement
 - **Programmes publics** : amorce et innovation (R&D, conformité, démonstrations)
 - **Capitaux privés** : stabilisation et déploiement (intégration, équipes, montée en charge)
 
@@ -547,18 +546,18 @@ On ne demande pas au capital de financer une preuve abstraite : la preuve techni
 
 # Chaque dollar rattaché à un jalon
 
-| Poste | Montant |
-|---|---:|
-| R&D et sécurité produit | 520 000 $ |
-| Rémunération fondateur | 495 000 $ |
-| Recrutements équipe | 540 000 $ |
-| Marketing et commercial | 185 000 $ |
-| Offre employeurs Loi 27 et partenariats | 60 000 $ |
-| Recherche universitaire | 57 500 $ |
-| Juridique, conformité, assurance | 130 000 $ |
-| Infrastructure et sauvegardes | 70 000 $ |
-| Charges structurelles | 242 500 $ |
-| **TOTAL** | **2 300 000 $ max** |
+| Poste (BP v2.4 §6.1.2) | Montant | % |
+|---|---:|---:|
+| Recrutements salariés (dès Palier 2) | 540 000 $ | 24,5 % |
+| R&D pipeline et modèles propriétaires | 500 000 $ | 22,7 % |
+| Rémunération fondateur (75-90 K$/an) | 300 000 $ | 13,6 % |
+| Charges structurelles | 300 000 $ | 13,6 % |
+| Marketing, contenu, partenariats | 220 000 $ | 10,0 % |
+| Investissement actifs | 130 000 $ | 5,9 % |
+| Frais bancaires, assurances, divers | 100 000 $ | 4,5 % |
+| Réserve doctrinale (audits, fiducie de mission) | 60 000 $ | 2,7 % |
+| Constitution juridique et fiscale | 50 000 $ | 2,3 % |
+| **TOTAL** | **2 200 000 $** | **100 %** |
 
 <!--
 Le palier technique ayant été construit à coût très réduit, une part plus importante va vers la sécurité, la conformité, l'intégration et la qualité. Montants indicatifs, pilotés par jalons, pas par calendrier rigide.
