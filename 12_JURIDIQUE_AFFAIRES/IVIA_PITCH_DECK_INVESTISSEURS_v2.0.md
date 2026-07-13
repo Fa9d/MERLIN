@@ -574,14 +574,30 @@ Doctrine : rapport annuel public
 
 ## SLIDE 26 — CONTACT
 
-**Titre** : Prochaines étapes
+**Titre** : Ce que signifie investir dans IVIA
 
-**Bullets** :
-- Démo produit disponible
-- Due diligence sous NDA
-- Onboarding partenaires T3 2026
-- Première tranche : automne 2026
-- Partenaires patients recherchés
+**Transition avant conclusion** :
+
+Notre logique de financement repose sur une articulation simple :
+
+- Les dispositifs publics appuient les briques d'innovation, de R-D, de structuration et d'expérimentation.
+- Les capitaux privés renforcent la continuité d'exploitation, la capacité d'accueil, la consolidation des équipes et la montée en charge.
+
+Cette articulation est cohérente avec la nature même d'IVIA : un projet qui doit à la fois innover, démontrer, protéger les renseignements personnels, et tenir dans le temps comme infrastructure d'accompagnement.
+
+**Conclusion investisseur** :
+
+Investir dans IVIA ne revient pas à financer une application isolée. Il s'agit de rendre possible une architecture complète et durable :
+
+- **IVIA** comme maison du vivant, seuil public d'accueil, de retour et de continuité ;
+- **MERLIN** comme coeur d'analyse, de gouvernance et de conformité, dans un cadre aligné avec la Loi 25 et une gestion rigoureuse des renseignements personnels au Québec ;
+- **MÉSANGES** comme voix d'accompagnement subtile, opérant dans une logique constante de **Observation / Hypothèse / Orientation**.
+
+L'investissement privé n'est pas pensé en silo. Les programmes publics soutiennent l'amorce, l'innovation, la structuration et la démonstration. L'investissement privé permet de stabiliser, consolider et déployer cette architecture à l'échelle pertinente.
+
+Enfin, IVIA ne propose pas une boîte noire d'IA. Les usages, les coûts et les finalités des capacités d'analyse sont instrumentés, suivis et gouvernés, afin que l'intelligence artificielle reste lisible économiquement, maîtrisable opérationnellement et responsable dans la pratique.
+
+**Message final** : Être investisseur dans IVIA, c'est rendre possible un lieu durable, habitable et responsable pour la santé mentale.
 
 **Contact** :
 David Phaneuf, fondateur  
@@ -594,7 +610,7 @@ Au sein de l'être — En actes.
 Pour le peuple, par le peuple.
 
 **Notes du conférencier** :
-"Je ne cherche pas des actionnaires qui pousseront IVIA à grandir plus vite que sa doctrine. Je cherche des partenaires patients qui comprennent que la confiance est l'actif principal. La prochaine étape est simple : voir le produit, examiner les documents, valider les risques, puis financer l'accélération responsable."
+"La conclusion du pitch doit être nette : l'investissement porte sur une architecture complète, pas sur un outil isolé. Les programmes publics soutiennent l'amorce et l'innovation, les capitaux privés soutiennent la continuité, la consolidation et le déploiement. IVIA garde une posture de gouvernance claire : conformité, lisibilité des coûts IA, et progression par paliers. La prochaine étape est simple : voir le produit, examiner les documents, valider les risques, puis financer l'accélération responsable."
 
 ---
 
