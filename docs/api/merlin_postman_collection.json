@@ -9,7 +9,8 @@
     "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
   },
   "variable": [
-    { "key": "base_url", "value": "https://api.ivia.quebec/api/v1", "type": "string" },
+    { "key": "api_root", "value": "https://api.ivia.quebec/api", "type": "string" },
+    { "key": "base_url", "value": "{{api_root}}/v1", "type": "string" },
     { "key": "token", "value": "", "type": "string" },
     { "key": "client_id", "value": "", "type": "string" },
     { "key": "session_id", "value": "", "type": "string" },
@@ -25,7 +26,7 @@
           "name": "GET /health — sonde de vie",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{base_url}}/../../api/health", "host": ["{{base_url}}"], "path": ["..", "..", "api", "health"] },
+            "url": { "raw": "{{api_root}}/health", "host": ["{{api_root}}"], "path": ["health"] },
             "description": "Traitement attendu : 200 {status:'ok'} — l'API et la BDD répondent."
           }
         }

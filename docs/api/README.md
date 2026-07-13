@@ -7,7 +7,7 @@
 
 | Où | URL |
 |---|---|
-| Prod | https://api.ivia.quebec/docs · https://api.ivia.quebec/redoc |
+| Prod | https://api.ivia.quebec/api/docs · https://api.ivia.quebec/api/redoc |
 | Local | http://localhost:8000/docs · http://localhost:8000/redoc |
 
 Lancer en local (PowerShell) :

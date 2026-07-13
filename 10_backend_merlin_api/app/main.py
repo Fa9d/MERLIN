@@ -1,4 +1,5 @@
-﻿from contextlib import asynccontextmanager
+﻿import os
+from contextlib import asynccontextmanager
 import asyncio
 import logging
 
@@ -211,6 +212,9 @@ OPENAPI_TAGS = [
 app = FastAPI(
     title=settings.app_name,
     version="2026.07",
+    # Derrière nginx le préfixe /api est retiré avant le proxy : root_path
+    # permet à /api/docs de charger /api/openapi.json (vide en local).
+    root_path=os.getenv("MERLIN_ROOT_PATH", ""),
     description=API_DESCRIPTION,
     openapi_tags=OPENAPI_TAGS,
     contact={"name": "IVIA — fondateur", "url": "https://ivia.quebec"},

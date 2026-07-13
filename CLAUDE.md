@@ -348,6 +348,7 @@ ASSEMBLYAI_API_KEY=          # legacy — voir MERLIN_TRANSCRIPTION_PROVIDER
 MERLIN_ADMIN_EMAILS=         # liste blanche admin (courriels, séparés par virgule) — droits admin sans changer de rôle
 MERLIN_PAYMENTS_TEST_MODE=   # true = page de paiement simulée (aucun débit) ; auto-actif si pas de clé Stripe. false au lancement.
 MERLIN_USD_CAD_RATE=         # taux USD→CAD pour l'affichage des coûts LLM (console Économie IA) — défaut 1.40
+MERLIN_ROOT_PATH=            # préfixe proxy pour /docs (prod compose: /api ; vide en local)
 # Sauvegarde chiffrée hors-site (Loi 25) — voir docs/ops-sauvegarde.md & deploy/backup.sh
 MERLIN_BACKUP_PASSPHRASE=    # secret de chiffrement AES-256 des sauvegardes (à conserver HORS VPS)
 OVH_S3_ENDPOINT=             # ex. https://s3.bhs.io.cloud.ovh.net (OVH Object Storage, région Québec BHS)

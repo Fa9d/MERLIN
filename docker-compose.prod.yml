@@ -55,6 +55,7 @@ services:
       livekit:
         condition: service_started
     environment:
+      MERLIN_ROOT_PATH: /api
       TZ: ${TZ}
       MERLIN_ENV: ${MERLIN_ENV}
       MERLIN_APP_NAME: ${MERLIN_APP_NAME}
