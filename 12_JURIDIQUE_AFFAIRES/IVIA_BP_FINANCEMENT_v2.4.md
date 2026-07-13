@@ -90,6 +90,16 @@ L'écosystème est porté par deux entités juridiques articulées :
 
 - **IVIA OBNL** (Organisme à but non lucratif satellite, *Loi sur les compagnies du Québec* Partie III, statut bienfaisance ARC visé en Palier 3) — Reçoit une licence sociale d'IVIA inc. pour redistribuer gratuitement ou à coût réduit les produits IVIA aux publics vulnérables (jeunesse, aînés isolés, communautés autochtones, populations à faible revenu). Accède aux subventions, dons défiscalisés et fonds gouvernementaux réservés aux OBNL.
 
+### 1.1.1 Architecture IVIA/MERLIN/MÉSANGE et financement
+
+Le financement d'IVIA ne porte pas seulement sur une application : il soutient une architecture complète.
+
+- **IVIA** — maison du vivant, seuil public. C'est ici que la personne arrive, revient, se situe dans son vécu. Le financement couvre l'accueil, l'expérience, les contenus et la capacité à maintenir un lieu habité (et non une simple interface de service).
+- **MERLIN** — coeur d'analyse et de gouvernance. Il structure des données sensibles, soutient la conformité (Loi 25, LPRPDE, données au Québec) et encadre les capacités d'IA par une constitution interne, des safety suites et des validations humaines.
+- **MÉSANGE** — voix d'accompagnement subtile. Elle incarne la manière d'offrir des reflets, des miroirs et des lectures prudentes, dans la triade Observation / Hypothèse / Orientation, sans posture de décision clinique.
+
+Ce BP décrit comment les ressources financières (publiques et privées) sont réparties pour que cette architecture soit stable, durable et responsable dans le temps.
+
 ## 1.2 La demande de financement
 
 **Besoin total sur 36 mois (Palier 0 → fin Palier 3 / début Palier 4) : 2 200 000 $ CAD**
@@ -484,6 +494,19 @@ Fine-tuning d'un modèle open-source (Llama, Mistral, Qwen) sur le corpus doctri
 
 **Condition préalable Phase 3** : dataset synthétique de 3 000+ cas (atteint au plus tôt en M24-M30 selon adoption).
 
+### 4.1.8 bis Économie IA (coûts instrumentés et traçabilité)
+
+Une partie significative du financement est consacrée aux capacités d'analyse assistées par IA. Ces coûts ne sont pas traités comme une boîte noire : ils sont instrumentés, tracés et rattachés à des finalités explicites.
+
+- Chaque appel aux modèles Anthropic (Claude) écrit un événement d'usage (`LlmUsageEvent`) avec le modèle, le nombre de tokens, le coût en USD au tarif du moment et une conversion en CAD via `MERLIN_USD_CAD_RATE`.
+- Les événements sont reliés à des contextes précis (note de séance, synthèse de journal, reflet client, reflet praticien, insights comportementaux). Aucun contenu sensible n'est stocké dans ces événements, seulement des métriques de coûts.
+- Une console d'économie IA (`admin/economie.html`) permet de visualiser les coûts par finalité, par modèle et par séance, et de les croiser avec les revenus hors mode test.
+
+Pour le financement, cela signifie :
+
+- la capacité de prévoir et d'ajuster les coûts IA dans le temps ;
+- la possibilité de documenter précisément, pour un programme ou un investisseur, la part du financement consacrée aux analyses et à leurs garde-fous.
+
 ### 4.1.9 Ligne B2B employeurs — Pivot Loi 27 (nouveau en v2.2)
 
 **Contexte légal structurant**
@@ -779,6 +802,18 @@ Si le financement réuni est inférieur à 1,5 M$ : focus exclusif sur MERLIN, l
 | **TOTAL GÉNÉRAL** | **2 200 K$** | **100 %** | | |
 
 **Principe directeur** : **59,5 % du financement est non-dilutif** (subventions + crédits d'impôt) avec le recalibrage CRIC nouveau régime. Le capital patient n'est sollicité que pour combler le delta restant. **Cette stratégie est rendue possible par l'architecture SPA-mère + OBNL satellite**, qui ouvre l'accès simultané aux deux écosystèmes de financement.
+
+### 6.2.1 bis Articulation programmes publics et investisseurs
+
+Les cibles publiques 2026 incluent notamment : RS&DE, CRIC, Fondaction, Filaction, FAQDD, Investissement Québec, CDAE, PARI-CNRC et Mitacs.
+
+Le détail par programme et par enveloppe est structuré dans `FINANCEMENT_PUBLIC_PROGRAMMES_2026.md`. Le présent BP se concentre sur la logique d'ensemble :
+
+- les programmes publics soutiennent prioritairement la phase d'amorçage et d'innovation (R&D, structuration des analyses, conformité, démonstrations) ;
+- les investisseurs accompagnent la stabilisation et la montée en puissance de la maison du vivant (capacité d'accueil, déploiement, consolidation des équipes, industrialisation des cadres de gouvernance) ;
+- la combinaison des deux crée un effet de levier : les montants privés ne financent pas une simple application, ils renforcent une infrastructure déjà cofinancée et validée par des dispositifs publics.
+
+Chaque bloc de coûts du BP est ainsi conçu pour pouvoir être partiellement pris en charge par des programmes, puis prolongé par les apports investisseurs.
 
 ### 6.2.2 Sources ciblées — détail (subventions et crédits)
 
@@ -1315,6 +1350,17 @@ Si No-Go → itération pilote 3 mois supplémentaires + déclenchement Plan B (
 **Annexe 18** — `02_NATIONS_QC/LETTRE_INVITATION_COCONSTRUCTION_v1.0.md` : Lettre invitation co-construction nations autochtones. (Nouveau en v2.4 — 25 juin 2026)
 
 **Annexe 19** — `12_JURIDIQUE_AFFAIRES/FINANCEMENT_PUBLIC_PROGRAMMES_2026.md` : Programmes financement public — 5 cibles, 250-430 K$. (Nouveau en v2.4 — 25 juin 2026)
+
+### 13.1.1 Cohérence avec le pitch investisseur et le deck
+
+Le présent BP (`IVIA_BP_FINANCEMENT_v2.4.md`) constitue le socle chiffré pour :
+
+- `IVIA_PITCH_DECK_INVESTISSEURS_v2.0.md` (narration investisseur : problème, solution, architecture, rôle de l'investisseur) ;
+- `12_JURIDIQUE_AFFAIRES/deck/IVIA_DECK_v2.0.marp.md` (rendu de présentation, structuré autour de la maison du vivant, de MERLIN comme coeur d'analyse et des axes de vie).
+
+Les montants, hypothèses et ventilations décrits ici sont la source canonique. Toute adaptation destinée à un programme public ou à un investisseur spécifique (version courte, fiche synthèse, lettre) est un document dérivé qui référence ce BP et n'introduit pas de logique parallèle.
+
+Cette section vise à aligner explicitement les formulations du BP avec celles du pitch et du deck, sans modifier les chiffres.
 
 ## 13.2 Pièces complémentaires fournies sur demande à l'investisseur sérieux
 
