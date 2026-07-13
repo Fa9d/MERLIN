@@ -497,23 +497,24 @@ Dérive analytique IA            Faible  Vannes, audit, validation humaine
 **Titre** : Financer l'accélération, pas l'existence
 
 **Bullets** :
-- Palier 1 construit frugalement
-- Besoin : onboarding et conformité
-- Recherche universitaire à amorcer
-- B2B Loi 27 à structurer
-- Capital patient aligné doctrine
+- Palier 1 construit frugalement — la preuve technique existe
+- Besoin total 36 mois : **2 200 000 $ CAD** (BP v2.4, §1.2)
+- **54,5 % non-dilutif d'abord** : subventions + crédits d'impôt avant tout capital
+- Programmes publics cartographiés : RS&DE · CRIC · Fondaction · Filaction · FAQDD · Investissement Québec · CDAE · PARI-CNRC · Mitacs
+- Capital patient aligné doctrine (dilutif ≤ 25 % du capital)
 
-**Structure cible 36 mois** :
+**Structure cible 36 mois (BP v2.4)** :
 ```
-Besoin total cible      2 250 000 $ CAD
-Première tranche        100 000 $ CAD
-Valorisation pré-money  600 000 $ CAD
-Dilution indicative     14-18 %
-Mix                     Subventions + capital patient + revenus
+Subventions et fonds publics non-dilutifs        920 000 $   41,8 %
+Crédits d'impôt remboursables (RS&DE, CRIC)      280 000 $   12,7 %
+Capital patient / capital de risque à mission    600 000 $   27,3 %
+Prêts patients / BDC (à partir Palier 2)         200 000 $    9,1 %
+Auto-financement (revenus opérationnels nets)    200 000 $    9,1 %
+TOTAL                                          2 200 000 $  100,0 %
 ```
 
 **Notes du conférencier** :
-"Le besoin de financement se lit différemment depuis la mise en production. On ne demande pas au capital de financer une preuve abstraite : la preuve technique existe. Le capital sert à accélérer l'onboarding, sécuriser la conformité, soutenir le fondateur, structurer le B2B Loi 27, amorcer les partenariats universitaires, et transformer un produit live en organisation durable."
+"Le besoin de financement se lit différemment depuis la mise en production. On ne demande pas au capital de financer une preuve abstraite : la preuve technique existe. L'emboîtement est explicite : les programmes publics financent l'amorce et l'innovation — R&D, conformité, structuration des analyses — pendant que le capital patient finance ce que le non-dilutif ne couvre pas : rémunération du fondateur, capital de roulement, accélération de la mise en marché. Plus de la moitié du besoin est non-dilutive par conception."
 
 ---
 
@@ -521,29 +522,29 @@ Mix                     Subventions + capital patient + revenus
 
 **Titre** : Chaque dollar rattaché à un gate
 
-**Tableau** :
+**Tableau (BP v2.4, §6.1.2)** :
 ```
-R&D et sécurité produit          520 000 $
-Rémunération fondateur           495 000 $
-Recrutements équipe              540 000 $
-Marketing et commercial          185 000 $
-B2B Loi 27 et partenariats        60 000 $
-Recherche universitaire           57 500 $
-Juridique, conformité, assurance 130 000 $
-Infrastructure et sauvegardes     70 000 $
-Charges structurelles            242 500 $
-TOTAL                          2 300 000 $ max
+Rémunération fondateur (75-90 K$/an)      300 000 $   13,6 %
+Recrutements salariés (dès Palier 2)      540 000 $   24,5 %
+R&D pipeline et modèles propriétaires     500 000 $   22,7 %
+Marketing, contenu, partenariats          220 000 $   10,0 %
+Charges structurelles                     300 000 $   13,6 %
+Investissement actifs                     130 000 $    5,9 %
+Frais bancaires, assurances, divers       100 000 $    4,5 %
+Constitution juridique et fiscale          50 000 $    2,3 %
+Réserve doctrinale                         60 000 $    2,7 %
+TOTAL                                   2 200 000 $  100,0 %
 ```
 
 **Bullets** :
-- Priorité : sécurité et opérations
-- Support fondateur explicite
-- Recherche liée aux données gouvernées
-- B2B après preuve S1
-- Ajustable par gates réels
+- Priorité : sécurité, conformité, opérations
+- Support fondateur explicite (300 K$ / 36 mois)
+- Réserve doctrinale : audits + fiducie de mission
+- B2B Loi 27 après preuve S1
+- Ajustable par gates réels, pas par calendrier
 
 **Notes du conférencier** :
-"L'usage des fonds doit suivre la réalité. Le palier technique ayant été construit à coût très réduit, une part plus importante peut être orientée vers la sécurité, la conformité, l'onboarding, le support opérationnel et la qualité. Les montants demeurent indicatifs et doivent être pilotés par gates, pas par calendrier rigide."
+"L'usage des fonds doit suivre la réalité. Le palier technique ayant été construit à coût très réduit, la part principale va aux personnes — fondateur et recrutements — et à la R&D gouvernée. La réserve doctrinale est assumée comme une ligne budgétaire à part entière : audits doctrinaux, comité consultatif, fiducie de mission. Les montants sont pilotés par gates, pas par calendrier rigide."
 
 ---
 
