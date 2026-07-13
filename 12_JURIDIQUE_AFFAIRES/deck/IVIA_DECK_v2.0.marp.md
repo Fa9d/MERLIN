@@ -61,6 +61,29 @@ Le parcours bout en bout fonctionne aujourd'hui : une personne arrive sur ivia.q
 
 ---
 
+# IVIA · MERLIN · MÉSANGES
+
+## Ce que les investisseurs financent
+
+- **IVIA — Maison du vivant**
+   Lieu public où les personnes arrivent, reviennent, se situent dans leurs axes de vie.
+   On finance : l'accueil, l'expérience, la capacité à tenir ce lieu dans le temps.
+
+- **MERLIN — Coeur d'analyse et de gouvernance**
+   Structure les données, encadre les capacités d'IA, garantit la conformité (Loi 25, données au Québec).
+   On finance : l'infrastructure, les moteurs d'analyse encadrés, les cadres de sécurité.
+
+- **MÉSANGES — Voix d'accompagnement subtile**
+   Reflets, miroirs, lectures prudentes, toujours en **Observation / Hypothèse / Orientation**.
+   On finance : la manière dont IVIA reste présent dans le temps auprès des personnes.
+
+<!--
+Slide d'alignement BP/pitch : la demande d'investissement porte sur une architecture complète,
+pas sur une simple fonctionnalité applicative.
+-->
+
+---
+
 # Gouvernée par principes, pas seulement KPIs
 
 - Le **vivant d'abord** — autonomie émotionnelle comme horizon
@@ -259,6 +282,29 @@ En v1.3, l'infrastructure était une fondation prévue. En v2.0, elle existe. La
 
 ---
 
+# Économie IA
+
+## Coûts mesurés, pas une boîte noire
+
+- Chaque appel IA (Claude) est tracé :
+   modèle · tokens · coût USD · conversion CAD.
+
+- Les coûts sont **rattachés à des finalités claires** :
+   note de séance, synthèse de journal, reflet client, reflet praticien, insights.
+
+- Une console d'**économie IA** montre :
+   coûts par modèle, par usage, par séance, croisés avec les revenus.
+
+> Pour l'investisseur : une IA utile, encadrée, dont les coûts sont lisibles,
+> intégrés au BP et aux décisions de financement.
+
+<!--
+Les coûts d'IA ne sont pas estimés au doigt mouillé : ils sont instrumentés et pilotables.
+Cela sécurise la marge et la trajectoire de financement.
+-->
+
+---
+
 # Modèle économique pilote : coût fortement réduit
 
 | Service | Tarif |
@@ -417,6 +463,29 @@ Le risque principal n'est plus « peut-on construire la plateforme ? » — la r
 
 ---
 
+# Financement 2026
+
+## Programmes publics + investisseurs
+
+**Programmes publics ciblés (déjà cartographiés)**
+RS&DE · CRIC · Fondaction · Filaction · FAQDD · Investissement Québec · CDAE · PARI-CNRC · Mitacs
+
+- Les programmes publics soutiennent l'**amorce et l'innovation**
+   R&D, structuration des analyses, conformité, démonstrations.
+
+- Les investisseurs accompagnent la **stabilisation et la montée en puissance**
+   Capacité d'accueil, consolidation des équipes, industrialisation des cadres.
+
+> Le BP décrit les montants et les scénarios.
+> Ce deck montre comment les apports publics et privés s'emboîtent dans une architecture unique.
+
+<!--
+Slide charnière de financement : articulation public/privé cohérente avec
+FINANCEMENT_PUBLIC_PROGRAMMES_2026.md et le BP v2.4.
+-->
+
+---
+
 # Financer l'accélération, pas l'existence
 
 <div class="kpi">
@@ -480,14 +549,28 @@ En 2029, l'objectif n'est pas seulement une taille de revenus : c'est une infras
 
 # Prochaines étapes
 
-## Au sein de l'être — En actes.
+## Investir dans IVIA
 
-- **Démo produit disponible** · vérification diligente sous entente de confidentialité
-- Intégration de partenaires T3 2026 · première tranche automne 2026
-- Partenaires **patients** recherchés
+- **On ne finance pas une app.**
+   On finance une maison du vivant qui tient dans le temps, articulée entre IVIA (accueil), MERLIN (coeur d'analyse, Loi 25, données au Québec) et MÉSANGES (accompagnement subtil).
 
-David Phaneuf, fondateur
-**david@ivia.quebec** · invest@ivia.quebec · ivia.quebec
+- **On ne finance pas en silo.**
+   Les programmes publics soutiennent l'amorce et l'innovation.
+   L'investissement privé stabilise, consolide et déploie cette architecture.
+
+- **On ne finance pas une boîte noire d'IA.**
+   Les usages, les coûts et les garde-fous de l'IA sont instrumentés, lisibles, et intégrés à la gouvernance.
+
+> Être investisseur dans IVIA, c'est rendre possible un lieu durable, habitable et responsable pour la santé mentale.
+
+---
+
+# Q&A — version courte
+
+IVIA transforme un besoin social massif en infrastructure durable et gouvernée.
+
+- Public + privé : même architecture, même cap.
+- IA instrumentée : coûts lisibles, pilotage continu.
 
 <!--
 Je ne cherche pas des actionnaires qui pousseront IVIA à grandir plus vite que sa doctrine. Je cherche des partenaires patients qui comprennent que la confiance est l'actif principal. Prochaine étape : voir le produit, examiner les documents, valider les risques, financer l'accélération responsable.
