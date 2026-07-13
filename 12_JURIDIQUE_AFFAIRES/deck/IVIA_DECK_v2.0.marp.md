@@ -7,6 +7,46 @@ title: IVIA — Pitch investisseurs v2.0
 description: Plateforme québécoise de santé mentale — produit en production
 ---
 
+<!--
+SCRIPT ORAL 7 MIN (VERSION RESSERREE)
+
+0:00-0:30  Cover (IVIA)
+- Message: produit en production, on parle d'acceleration, pas d'idee.
+
+0:30-1:00  Detresse massive
+- Message: besoin structurel + acces limite = fenetre concrete.
+
+1:00-1:30  Solution infrastructure
+- Message: parcours complet operationnel, validation humaine integree.
+
+1:30-2:00  IVIA · MERLIN · MESANGES
+- Message: investissement sur une architecture complete, pas un module isole.
+
+2:00-2:30  Infrastructure de production
+- Message: actif verifiable en ligne, fondation technique deja en place.
+
+2:30-3:00  Economie IA
+- Message: couts traces, lisibles, pilotables; pas de zone opaque.
+
+3:00-3:30  Financement 2026
+- Message: articulation public/prive coherente et complementaire.
+
+3:30-4:15  Financer l'acceleration
+- Message: capital oriente execution, equipe, conformite et deploiement.
+
+4:15-5:00  Chaque dollar -> jalon
+- Message: allocation disciplinee, logique par etapes et preuves.
+
+5:00-5:40  Etat cible 2029
+- Message: scenario median ambitieux mais realiste, trajectoire durable.
+
+5:40-6:20  Slide conclusion "Investir dans IVIA"
+- Message: lieu habitable, gouvernance claire, impact concret.
+
+6:20-7:00  Q&A courte
+- Message: ouvrir sur 3 questions: allocation, risques, cadence execution.
+-->
+
 <!-- _class: cover -->
 <!-- _paginate: false -->
 <!-- _footer: '' -->
