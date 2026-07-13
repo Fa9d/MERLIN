@@ -84,9 +84,24 @@ XIII. Changelog v2.2 → v2.3
 
 **IVIA est un écosystème civique québécois d'innovation sociale qui développe, opère et redistribue des outils numériques d'utilité collective.**
 
-L'écosystème est porté par deux entités juridiques articulées :
+L'écosystème suit une **trajectoire de portage en trois temps**, assumée et
+racontée telle quelle aux partenaires financiers :
 
-- **IVIA inc.** — Société par actions à mission (LSAQ, *Loi sur les sociétés par actions du Québec*), maison-mère commerciale détenue à 100 % par David Phaneuf, fondateur. Elle développe et opère les produits (MERLIN, MÉSANGE, et autres à venir), réalise les revenus, optimise sa fiscalité (RS&DE, CRIC), et finance la redistribution.
+1. **Aujourd'hui — entreprise individuelle.** Le projet est porté par David
+   Phaneuf, entrepreneur indépendant (immatriculation REQ et NEQ en cours
+   d'obtention). La plateforme est en production sous ce portage.
+2. **Moyen terme — IVIA OBNL.** Un organisme à but non lucratif porte la
+   mission (maison du vivant, santé mentale, partenariats publics) et ouvre
+   l'accès aux financements publics et philanthropiques réservés aux OBNL.
+3. **Structuration commerciale — entité dédiée.** Une entité commerciale
+   (société par actions ou forme adaptée) porte MERLIN et la couche
+   technologique, les revenus marchands, les contrats B2B (Loi 27) et le
+   capital privé. C'est à elle que se rattachent les crédits R&D bonifiés
+   (RS&DE société, CRIC).
+
+L'architecture cible articule ainsi deux entités :
+
+- **Entité commerciale IVIA** (cible : société par actions à mission, LSAQ) — développe et opère les produits (MERLIN, MÉSANGE, et autres à venir), réalise les revenus, optimise sa fiscalité (RS&DE, CRIC), et finance la redistribution. Détention fondateur au démarrage ; dilution ≤25 % cumulée.
 
 - **IVIA OBNL** (Organisme à but non lucratif satellite, *Loi sur les compagnies du Québec* Partie III, statut bienfaisance ARC visé en Palier 3) — Reçoit une licence sociale d'IVIA inc. pour redistribuer gratuitement ou à coût réduit les produits IVIA aux publics vulnérables (jeunesse, aînés isolés, communautés autochtones, populations à faible revenu). Accède aux subventions, dons défiscalisés et fonds gouvernementaux réservés aux OBNL.
 
@@ -227,12 +242,24 @@ L'investisseur sérieux comprendra que cette architecture est un choix lucide et
 
 ## 2.1 Vue d'ensemble juridique et institutionnelle
 
-### 2.1.1 IVIA inc. — Société par actions à mission (LSAQ)
+### 2.1.0 Trajectoire de portage — état réel et séquence
+
+| Temps | Véhicule | Rôle | État |
+|---|---|---|---|
+| Court terme (2026) | **Entreprise individuelle — David Phaneuf** | Exploitation actuelle de la plateforme, premiers revenus, immatriculation | NEQ en cours d'obtention (jours) |
+| Moyen terme | **IVIA OBNL** (LCQ Partie III) | Mission, santé mentale, partenariats publics, financements publics et philanthropiques | À constituer |
+| Structuration | **Entité commerciale IVIA** (cible : SPA à mission, LSAQ) | MERLIN / couche techno, revenus marchands, B2B Loi 27, capital privé, RS&DE/CRIC | À constituer |
+
+Aucun numéro ni forme n'est revendiqué avant son existence : les demandes de
+financement sont déposées par le véhicule admissible au moment du dépôt, et
+les sections 2.1.1 et 2.1.2 décrivent **l'architecture cible**.
+
+### 2.1.1 Entité commerciale IVIA — cible : Société par actions à mission (LSAQ)
 
 | Élément | Valeur |
 |---|---|
 | Forme juridique | Société par actions, *Loi sur les sociétés par actions du Québec* (LSAQ), avec mention statutaire de mission |
-| Date de constitution prévue | Palier 1 (M7-M9, automne 2026) |
+| Date de constitution prévue | après l'OBNL — cible Palier 1-2 (voir 2.1.0) |
 | Détention | 100 % David Phaneuf au démarrage ; option de dilution ≤25 % cumulé Palier 1-3 |
 | Siège | Montréal, Québec |
 | Mission inscrite (statuts) | Développer, opérer et redistribuer des outils numériques d'utilité collective au service du peuple québécois et de ses publics vulnérables |
