@@ -2,7 +2,7 @@
 
 **Créé** : 2026-07-06
 **Pourquoi** : mesure d'audience hébergée sur notre VPS (données Québec, Loi 25) au lieu de
-Google Analytics. Prérequis du plan de mise en marché (`12_JURIDIQUE_AFFAIRES/IVIA_PLAN_MISE_EN_MARCHE_v1.0.md` §4.2)
+Google Analytics. Prérequis du plan de mise en marché (`12_JURIDIQUE_AFFAIRES/IVIA_PLAN_MISE_EN_MARCHE_v1.1.md` §4.2)
 avant toute publicité payante.
 
 ---

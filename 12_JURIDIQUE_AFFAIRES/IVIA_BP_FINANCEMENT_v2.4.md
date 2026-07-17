@@ -6,7 +6,7 @@
 **Date** : 25 juin 2026
 **Statut** : Document confidentiel — investisseurs, conseillers, partenaires institutionnels
 **Auteur** : David Phaneuf (fondateur) + Perplexity Computer
-**Remplace** : BP_FINANCEMENT_v2.2 (archivé sous `IVIA_BP_FINANCEMENT_v2.2.md`)
+**Remplace** : BP_FINANCEMENT_v2.3 (archivé sous `ARCHIVES/IVIA_BP_FINANCEMENT_v2.3_archive.md`)
 **Devise** : CAD ($) sauf indication contraire
 
 > *Au sein de l'être — En actes.*
@@ -88,8 +88,8 @@ L'écosystème suit une **trajectoire de portage en trois temps**, assumée et
 racontée telle quelle aux partenaires financiers :
 
 1. **Aujourd'hui — entreprise individuelle.** Le projet est porté par David
-   Phaneuf, entrepreneur indépendant (immatriculation REQ et NEQ en cours
-   d'obtention). La plateforme est en production sous ce portage.
+   Phaneuf, entrepreneur indépendant (immatriculation REQ et NEQ prévues
+   d'ici fin juillet 2026). La plateforme est en production sous ce portage.
 2. **Moyen terme — IVIA OBNL.** Un organisme à but non lucratif porte la
    mission (maison du vivant, santé mentale, partenariats publics) et ouvre
    l'accès aux financements publics et philanthropiques réservés aux OBNL.
@@ -246,7 +246,7 @@ L'investisseur sérieux comprendra que cette architecture est un choix lucide et
 
 | Temps | Véhicule | Rôle | État |
 |---|---|---|---|
-| Court terme (2026) | **Entreprise individuelle — David Phaneuf** | Exploitation actuelle de la plateforme, premiers revenus, immatriculation | NEQ en cours d'obtention (jours) |
+| Court terme (2026) | **Entreprise individuelle — David Phaneuf** | Exploitation actuelle de la plateforme, premiers revenus, immatriculation | Immatriculation REQ prévue d'ici fin juillet 2026 |
 | Moyen terme | **IVIA OBNL** (LCQ Partie III) | Mission, santé mentale, partenariats publics, financements publics et philanthropiques | À constituer |
 | Structuration | **Entité commerciale IVIA** (cible : SPA à mission, LSAQ) | MERLIN / couche techno, revenus marchands, B2B Loi 27, capital privé, RS&DE/CRIC | À constituer |
 

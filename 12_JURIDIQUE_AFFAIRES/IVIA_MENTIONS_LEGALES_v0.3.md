@@ -1,7 +1,7 @@
 ---
 titre: Mentions légales — IVIA
 id: JURIDIQUE-DIFF-003-A
-version: 0.2
+version: 0.3
 statut: draft (à valider par David + cabinet juridique avant publication)
 auteur: Perplexity (rédaction initiale) — David Phaneuf (validation)
 date_creation: 2026-05-07
@@ -13,24 +13,24 @@ publication_cible: https://ivia.quebec/mentions-legales
 
 # Mentions légales
 
-**Dernière mise à jour : 8 mai 2026**
+**Dernière mise à jour : 17 juillet 2026**
 
-> **Note de transition v0.2 (DÉC-V3-15)** : les présentes mentions légales sont applicables au produit MERLIN dès son déploiement opérationnel sous la responsabilité de **David Phaneuf, travailleur autonome**. À l'incorporation d'**IVIA inc.** (société par actions à mission constituée selon la *Loi sur les sociétés par actions* du Québec — LSAQ — automne 2026, M7-M9), la qualité d'éditeur du site et de propriétaire des marques est transférée à IVIA inc. par roulement fiscal art. 85 LIR. Les présentes mentions seront mises à jour en v1.0 à cette occasion (NEQ d'IVIA inc., adresse de siège social, etc.). MERLIN demeure une **sous-marque produit** d'IVIA, pas une personne morale.
+> **Note de transition v0.3 (trajectoire de portage BP v2.4 §2.1.0)** : les présentes mentions légales sont applicables au produit MERLIN dès son déploiement opérationnel sous la responsabilité de **David Phaneuf, travailleur autonome** (immatriculation REQ prévue d'ici fin juillet 2026). La structuration suit la séquence entreprise individuelle → **IVIA OBNL** → **entité commerciale IVIA** (société par actions à mission, LSAQ). À la constitution de l'entité commerciale, la qualité d'éditeur du site et de propriétaire des marques lui est transférée par roulement fiscal art. 85 LIR ; les présentes mentions seront mises à jour en v1.0 à cette occasion (NEQ, adresse de siège social, etc.). MERLIN demeure une **sous-marque produit** d'IVIA, pas une personne morale.
 
 ## 1. Éditeur du site
 
 Le site **ivia.quebec** et l'application **MERLIN** sont édités par :
 
 **David Phaneuf**, travailleur autonome
-*(en cours d'immatriculation au Registre des entreprises du Québec — NEQ à venir)*
+*(immatriculation au Registre des entreprises du Québec prévue d'ici fin juillet 2026 — NEQ à venir)*
 
-À compter de l'incorporation d'**IVIA inc.** (SPA à mission LSAQ, automne 2026), la qualité d'éditeur sera transférée à IVIA inc. avec mise à jour du présent document (NEQ, siège social, dirigeants).
+À compter de la constitution de l'**entité commerciale IVIA** (SPA à mission, LSAQ — après l'OBNL, cf. trajectoire de portage BP v2.4 §2.1.0), la qualité d'éditeur lui sera transférée avec mise à jour du présent document (NEQ, siège social, dirigeants).
 
 - Adresse postale : *[À compléter par David]*
 - Adresse courriel de contact : bonjour@ivia.quebec
 - Adresse courriel de la personne responsable de la protection des renseignements personnels : confidentialite@ivia.quebec
 
-> **Note** : dès l'immatriculation au REQ effectuée (action #5 du plan Vague 6), remplacer la mention « en cours d'immatriculation » par le numéro NEQ obtenu. Une mise à jour ultérieure interviendra à l'incorporation d'IVIA inc.
+> **Note** : dès l'immatriculation au REQ effectuée (prévue d'ici fin juillet 2026), remplacer la mention « immatriculation prévue » par le numéro NEQ obtenu. Une mise à jour ultérieure interviendra à la constitution de l'entité commerciale.
 
 ## 2. Hébergement
 
@@ -107,8 +107,9 @@ Pour toute question relative aux présentes mentions légales :
 | Version | Date | Changements | Référence |
 |---|---|---|---|
 | 0.1 | 2026-05-07 | Rédaction initiale, éditeur = David Phaneuf TA, en cours immatriculation REQ | Pré-DÉC-V3-15 |
-| **0.2** | **2026-05-08** | **Alignement DÉC-V3-15 : note transition vers IVIA inc. à l'incorporation, mention transfert PI au roulement art. 85 LIR, rappel dépôts OPIC avant M6.** | **AUDIT_COHERENCE_POST_DEC-V3-15 §I1** |
+| 0.2 | 2026-05-08 | Alignement DÉC-V3-15 : note transition vers IVIA inc. à l'incorporation, mention transfert PI au roulement art. 85 LIR, rappel dépôts OPIC avant M6. | AUDIT_COHERENCE_POST_DEC-V3-15 §I1 |
+| **0.3** | **2026-07-17** | **Trajectoire de portage alignée BP v2.4 §2.1.0 (EI → OBNL → entité commerciale) ; immatriculation REQ prévue d'ici fin juillet 2026 (décision fondateur).** | **JOURNAL_consolidation-dossier-financement_20260717** |
 
 ---
 
-*Document interne · Version 0.2 · 2026-05-08 · À valider par cabinet juridique spécialisé avant publication. Référence : DIFF-003 du backlog MERLIN_GOUV_BACKLOG_MAITRE_V2.*
+*Document interne · Version 0.3 · 2026-07-17 · À valider par cabinet juridique spécialisé avant publication. Référence : DIFF-003 du backlog MERLIN_GOUV_BACKLOG_MAITRE_V2.*

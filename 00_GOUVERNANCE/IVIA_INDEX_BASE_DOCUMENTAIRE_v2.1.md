@@ -156,10 +156,10 @@ Les documents de cette catégorie définissent l'architecture légale d'IVIA et 
 
 ### V1-08 — PITCH_DECK_INVESTISSEURS.md
 
-**Chemin** : [`12_JURIDIQUE_AFFAIRES/IVIA_PITCH_DECK_INVESTISSEURS_v1.0.md`](../12_JURIDIQUE_AFFAIRES/IVIA_PITCH_DECK_INVESTISSEURS_v1.0.md)
-**Vague** : 1 | **Lignes** : 457 | **Priorité lecture** : 8
+**Chemin** : [`12_JURIDIQUE_AFFAIRES/IVIA_PITCH_DECK_INVESTISSEURS_v2.0.md`](../12_JURIDIQUE_AFFAIRES/IVIA_PITCH_DECK_INVESTISSEURS_v2.0.md)
+**Vague** : 1 | **Priorité lecture** : 8
 
-**Résumé** : Pitch deck complet en 20 diapositives avec titres, contenus et notes de conférencier — structure narrative pour présentation investisseurs et partenaires institutionnels, instructions de mise en forme PowerPoint incluses.
+**Résumé** : Pitch deck investisseurs — version courante v2.0 (26 diapositives, traction production, rendus PDF/HTML dans `12_JURIDIQUE_AFFAIRES/deck/`). Versions v1.0-v1.3 archivées sous `12_JURIDIQUE_AFFAIRES/ARCHIVES/` (2026-07-17).
 
 **Liens croisés** : V1-07 (note investisseurs), V3-06 (valorisation), V3-03 (marque)
 

@@ -1,5 +1,5 @@
 # ÉCHÉANCIER FONDATEUR — Lancement, financement, structuration
-**Version** : 1.0 — 6 juillet 2026
+**Version** : 1.1 — 17 juillet 2026 *(v1.1 : séquence de structuration alignée sur la trajectoire de portage BP v2.4 §2.1.0 — entreprise individuelle → IVIA OBNL → entité commerciale)*
 **Pour** : David Phaneuf
 **Principe** : chaque phase déverrouille la suivante. Le pilote payant est la clé de tout.
 
@@ -10,9 +10,10 @@
 ```
 Juillet 2026        Août-Sept           Automne 2026         Hiver 2026-27       Printemps 2027
 ─────────────       ─────────────       ─────────────        ─────────────       ─────────────
-Pilote réel    →    PME MTL déposé  →   PIVOT: IVIA inc. →   IVIA OBNL       →   Dépôts fondations
-2 clés (S3/CI)      Preuve d'usage      RS&DE/CRIC           Licence sociale     Tranche A1 anges
-Cohorte visée       Lettres d'appui     Avocat+comptable     2 admins indép.     (150-200 K$)
+Pilote réel    →    PME MTL déposé  →   Préparation      →   IVIA OBNL       →   Entité commerciale
+2 clés (S3/CI)      Preuve d'usage      structuration        (LCQ III)           (SPA à mission)
+Cohorte visée       Lettres d'appui     Avocat+comptable     2 admins indép.     RS&DE/CRIC
+                                        Admins pressentis    Dépôts sociaux      Fondations + anges
 ```
 
 ---
@@ -28,6 +29,7 @@ Cohorte visée       Lettres d'appui     Avocat+comptable     2 admins indép.  
 | 1.3 | Basculer `MERLIN_PAYMENTS_TEST_MODE=false` et encaisser une **première séance payée réelle** | Toi | Semaine 2 |
 | 1.4 | Recruter 2-3 premiers clients réels (réseau personnel, bouche-à-oreille) | Toi | Semaines 2-4 |
 | 1.5 | Captures d'écran de la plateforme pour le deck et les dossiers | Moi (liste) + toi | Semaine 2 |
+| 1.6 | **Immatriculation REQ** (entreprise individuelle sous « IVIA », ~40 $, en ligne) — décision fondateur 2026-07-17 : d'ici fin juillet, avant le dépôt PME MTL | Toi | Fin juillet |
 
 **Jalon de sortie** : ≥ 5 séances réelles tenues, ≥ 1 payée. → déclenche Phase 2.
 
@@ -39,7 +41,7 @@ Cohorte visée       Lettres d'appui     Avocat+comptable     2 admins indép.  
 
 | # | Action | Qui | Échéance |
 |---|---|---|---|
-| 2.1 | Dossier **PME MTL Démarrage** déposé (préfiguration acceptée — 25-75 K$) | Toi, avec dossier `IVIA_DOSSIER_VOLET_COMMERCIAL_v1.0.md` | Mi-août |
+| 2.1 | Dossier **PME MTL Démarrage** déposé (entreprise individuelle admissible — 25-75 K$) | Toi, avec dossier `IVIA_DOSSIER_VOLET_COMMERCIAL_v1.1.md` + `IVIA_TROUSSE_PME_MTL_v1.1.md` | Mi-août |
 | 2.2 | Identifier comptable + avocat (shortlist : `IVIA_CABINETS_MONTREAL_SHORTLIST_v1.0.md`) — premier appel exploratoire, pas encore de mandat | Toi | Fin août |
 | 2.3 | **Traçabilité RS&DE dès maintenant** : journal des heures et dépenses R&D (rétroactivité possible après incorporation) | Toi (15 min/sem.) | Continu |
 | 2.4 | Recueillir 2-3 **lettres d'appui** d'organismes communautaires (pour futur volet OBNL) | Toi | Septembre |
@@ -49,47 +51,51 @@ Cohorte visée       Lettres d'appui     Avocat+comptable     2 admins indép.  
 
 ---
 
-## PHASE 3 — Automne 2026 (oct.-déc.) : PIVOT — incorporation IVIA inc.
+## PHASE 3 — Automne 2026 (oct.-déc.) : préparation de la structuration
 
-**Déclencheur (le premier atteint)** :
+**Objectif : préparer les deux entités sans en revendiquer aucune avant son existence
+(séquence BP v2.4 §2.1.0 : OBNL d'abord, entité commerciale ensuite).**
+
+| # | Action | Qui | Durée |
+|---|---|---|---|
+| 3.1 | Mandater avocat + comptable (appels exploratoires → mandat au premier déclencheur atteint, cf. pivot ci-dessous) | Toi | Oct. |
+| 3.2 | Recruter 2 administrateurs indépendants + 1 représentant communautaire (pressentis pour le CA de l'OBNL) | Toi | Oct.-nov. |
+| 3.3 | Compléter les lettres d'appui d'organismes communautaires (dossier OBNL) | Toi | Nov. |
+| 3.4 | Politiques internes : rémunération fondateur, journal R&D (RS&DE), signatures, dépenses | Toi + comptable | 2 sem. |
+| 3.5 | Chiffrer le budget de programme « séances subventionnées » (coût/séance × volume) | Toi + moi | 1 sem. |
+
+**Pivot documenté (déclencheur de la structuration, le premier atteint)** :
+
 - revenus mensuels récurrents 5 000–8 000 $ pendant 2 mois consécutifs ; **ou**
 - subvention ≥ 25 K$ obtenue (PME MTL) ; **ou**
 - partenariat commercial en vue de signature.
 
-| # | Action | Qui | Durée |
-|---|---|---|---|
-| 3.1 | Mandater avocat : statuts IVIA inc. (LSAQ, clause de mission, supermajorité, clause de retour de PI) | Toi + avocat | 2-3 sem. |
-| 3.2 | Transfert d'actifs par roulement fiscal (art. 85 LIR — formulaire T2057) | Comptable | 1-2 sem. |
-| 3.3 | Dépôt REQ, NEQ, TPS/TVQ, compte bancaire, comptabilité | Toi | 2-3 sem. |
-| 3.4 | Politiques internes : rémunération fondateur, R&D (RS&DE), signatures, dépenses | Toi + comptable | 2 sem. |
-| 3.5 | Contrats praticiens signés par IVIA inc. (travailleuses autonomes) | Toi + avocat | Avec 3.1 |
-
-**Budget** : 4 850–8 850 $. **Jalon de sortie** : IVIA inc. constituée, actifs transférés.
+**Jalon de sortie** : avocat mandaté, CA pressenti, lettres d'appui en main.
 
 ---
 
-## PHASE 4 — Hiver 2026-2027 (janv.-mars) : IVIA OBNL
+## PHASE 4 — Hiver 2026-2027 (janv.-mars) : constitution IVIA OBNL (LCQ III)
 
-**Déclencheur** : IVIA inc. active + subventions sociales ciblées identifiées.
+**Déclencheur** : pivot atteint + CA pressenti (phase 3).
 
 | # | Action | Qui | Durée |
 |---|---|---|---|
-| 4.1 | Recruter 2 administrateurs indépendants + 1 représentant communautaire | Toi | Dès déc. |
-| 4.2 | Statuts OBNL (LCQ III) + règlements | Avocat | 2-3 sem. |
-| 4.3 | **Convention de licence sociale** inc. ↔ OBNL (1 $/an, reddition trimestrielle, clause de retour de PI) | Avocat | 2 sem. |
-| 4.4 | Dépôt REQ, NEQ, compte bancaire OBNL, première AGA | Toi | 3-4 sem. |
-| 4.5 | Budget de programme « séances subventionnées » chiffré (coût/séance × volume) | Toi + moi | 1 sem. |
+| 4.1 | Statuts OBNL (LCQ III) + règlements | Avocat | 2-3 sem. |
+| 4.2 | Dépôt REQ, NEQ, compte bancaire OBNL, première AGA | Toi | 3-4 sem. |
+| 4.3 | Entente provisoire d'usage de la marque avec l'entreprise individuelle (remplacée par la convention de licence sociale à la constitution de l'entité commerciale, cf. BP v2.4 §2.1.3) | Avocat | 1 sem. |
+| 4.4 | Premiers dépôts du volet social (PME MTL économie sociale, programmes identifiés) | Toi | Dès la constitution |
 
-**Budget** : 5 700–10 200 $. **Jalon de sortie** : OBNL constituée, licence signée.
+**Budget** : 5 700–10 200 $. **Jalon de sortie** : OBNL constituée, premiers dépôts sociaux partis.
 
 ---
 
-## PHASE 5 — Printemps 2027 : financement des deux volets
+## PHASE 5 — Printemps 2027 : entité commerciale + financement des deux volets
 
 | # | Action | Volet | Montant visé |
 |---|---|---|---|
-| 5.1 | Premières demandes RS&DE + CRIC (année fiscale 1 d'IVIA inc.) | Commercial | 70–140 K$/an |
-| 5.2 | Dépôts fondations : Chagnon, Saputo, McConnell + PME MTL économie sociale | Social | 100–300 K$ cumulés |
+| 5.0 | **Constitution de l'entité commerciale IVIA** (SPA à mission, LSAQ) : statuts (clause de mission, supermajorité, retour de PI), transfert d'actifs par roulement fiscal (art. 85 LIR — T2057), TPS/TVQ, contrats praticiens repris par l'entité, **convention de licence sociale** signée avec l'OBNL (1 $/an, reddition trimestrielle) — budget 4 850–8 850 $ | Commercial | — |
+| 5.1 | Premières demandes RS&DE + CRIC (année fiscale 1 de l'entité commerciale ; rétroactivité sur dépenses admissibles documentées au journal R&D) | Commercial | 70–140 K$/an |
+| 5.2 | Dépôts fondations : Chagnon, Saputo, McConnell | Social | 100–300 K$ cumulés |
 | 5.3 | **Tranche A1 anges québécois** (si trajectoire de revenus au rendez-vous) — pré-money 800 K$–1,3 M$ | Commercial | 150–200 K$ |
 | 5.4 | Investissement Québec (volet innovation) | Commercial | 50–150 K$ |
 
@@ -115,7 +121,7 @@ finance produit et commerce, l'OBNL finance la redistribution.
 
 ## Ce qu'il ne faut PAS faire
 
-- Ne pas constituer l'OBNL avant l'inc. (elle n'aurait rien à licencier, aucune activité à montrer)
-- Ne pas solliciter les anges avant l'incorporation ET les premiers revenus
+- Ne pas revendiquer une forme juridique avant son existence — chaque dépôt est fait par le véhicule admissible au moment du dépôt (BP v2.4 §2.1.0)
+- Ne pas solliciter les anges avant la constitution de l'entité commerciale ET les premiers revenus
 - Ne pas déposer aux fondations sans lettres d'appui ni preuve d'usage
 - Ne pas engager d'avocat au forfait complet avant le pivot (appels exploratoires seulement)

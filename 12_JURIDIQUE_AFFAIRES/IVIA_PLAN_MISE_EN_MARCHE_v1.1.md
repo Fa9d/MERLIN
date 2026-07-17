@@ -1,9 +1,9 @@
-# IVIA — Plan de mise en marché et de publicité v1.0
+# IVIA — Plan de mise en marché et de publicité v1.1
 
-**Version** : v1.0 — 2026-07-06
+**Version** : v1.1 — 2026-07-17 *(v1.1 : références BP v2.4 ; état de réalisation du pilier organique ajouté — corpus de contenu produit, blogue en déploiement)*
 **Horizon** : 12 mois (juillet 2026 → juin 2027)
 **Périmètre** : acquisition clients d'écoute + notoriété de marque + soutien recrutement praticiens
-**Sources chiffrées** : `IVIA_BP_FINANCEMENT_v2.3.md` (§2 marché, §5 scénarios), tarifs plateforme en vigueur
+**Sources chiffrées** : `IVIA_BP_FINANCEMENT_v2.4.md` (§2 marché, §5 scénarios), tarifs plateforme en vigueur
 **Documents liés** : `IVIA_STRATEGIE_ACQUISITION_CLIENTS_v1.0.md` (volet organique — devient le pilier 1 du présent plan), `IVIA_PUBLICATIONS_RESEAUX_S1-3_v1.0.md` (créatifs organiques)
 
 ---
@@ -19,7 +19,19 @@ Trois piliers, activés en séquence, chacun déclenché par un jalon de validat
 | **3. Partenariats & relations publiques** | Organismes, médias, employeurs Loi 27 | M3+ | 2 000 – 5 000 $ |
 
 **Objectif M12** : 30–40 praticiens actifs · 300–500 clients inscrits · 16,5 K$ de revenus
-mensuels récurrents (scénario médian BP v2.3).
+mensuels récurrents (scénario médian BP v2.4).
+
+**État de réalisation — 17 juillet 2026 (pilier 1, organique)** : le corpus de contenu
+est produit et prêt à diffuser — 28 articles de fond (+ 2 tutoriels d'application)
+intégrés au blogue, 20 scripts vidéo courts
+(TikTok/Reels/Shorts), séquences courriel d'accueil clients et praticiens, plan SEO
+120+ mots-clés Québec, balises meta par page (source brute : intrant `ivia-map/content/`,
+dépôt externe consommé). Le blogue est intégré au site (`public/ivia-blog.html`,
+branche `feat/ivia-blog-deploy`) — mise en ligne à la fusion en production.
+**Garde-fou avant toute publication** : chaque contenu passe le filtre de vocabulaire
+Loi 21 (`.claude/rules/safety.md`) — l'intrant brut contient des termes réservés
+(« thérapie », « thérapeute ») à retirer ou à ne conserver que pour désigner les
+professions réglementées tierces, jamais l'offre IVIA.
 
 ---
 
@@ -194,7 +206,7 @@ sans état d'âme et on réalloue.
 | Réserve tests | 200 $ | 1 500 $ | 3 700 $ |
 | **Total 12 mois** | **7 000 $** | **18 000 $** | **34 000 $** |
 
-Aligné sur le BP v2.3 (poste G : budget ≥ 10 % création/diffusion contenu, 15–30 K$).
+Aligné sur le BP v2.4 (poste G : budget ≥ 10 % création/diffusion contenu, 15–30 K$).
 Le scénario médian est celui à inscrire dans la demande PME MTL (poste « mise en marché »).
 
 ### Rendement attendu (scénario médian, hypothèses prudentes)
