@@ -69,3 +69,8 @@ docs/factures/
 
 # Intrants importes contenant un sous-repo Git local
 _archives/intrants/2026-07/IVIA_map/
+
+# Blogue Next.js (09_blog_app) — artefacts de build
+09_blog_app/node_modules/
+09_blog_app/.next/
+09_blog_app/out/

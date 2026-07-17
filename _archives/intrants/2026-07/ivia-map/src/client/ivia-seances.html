@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVIA — Mes Séances</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f4f7f4;--color-surface:#ffffff;--color-surface-2:#f0f4f0;
+  --color-surface-offset:#e8efe8;--color-border:rgba(30,80,40,.1);
+  --color-text:#1a2e1a;--color-text-muted:#5a7a5a;--color-text-faint:#9ab09a;
+  --color-primary:#1a6b3a;--color-primary-hover:#145430;--color-primary-hl:#d4eadc;
+  --color-gold:#c8860a;--color-gold-hl:#fdf0d4;
+  --color-rgnr-corps:#2e7d5c;--color-rgnr-emotions:#8b4a9c;
+  --color-rgnr-pensees:#1a6b8a;--color-rgnr-env:#c8860a;
+  --shadow-sm:0 1px 3px rgba(20,60,20,.08);--shadow-md:0 4px 16px rgba(20,60,20,.10);
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --font-display:'DM Serif Display',Georgia,serif;--font-body:'DM Sans','Helvetica Neue',sans-serif;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#0f1a0f;--color-surface:#152015;--color-surface-2:#1a281a;
+  --color-surface-offset:#1f301f;--color-border:rgba(100,200,100,.1);
+  --color-text:#d4e8d4;--color-text-muted:#7a9a7a;--color-text-faint:#4a6a4a;
+  --color-primary:#5ab878;--color-primary-hover:#3da05e;--color-primary-hl:#1a3a22;
+  --color-gold:#e8a830;--color-gold-hl:#3a2a08;
+  --color-rgnr-corps:#4db88a;--color-rgnr-emotions:#c47ad8;
+  --color-rgnr-pensees:#4aa8c8;--color-rgnr-env:#e8a830;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.6}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+a{text-decoration:none;color:inherit}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100dvh}
+@media(max-width:768px){.app{grid-template-columns:1fr}}
+.sidebar{background:var(--color-surface);border-right:1px solid var(--color-border);padding:var(--space-6) var(--space-4);display:flex;flex-direction:column;gap:var(--space-6);position:sticky;top:0;height:100dvh;overflow-y:auto}
+@media(max-width:768px){.sidebar{display:none}}
+.logo{display:flex;align-items:center;gap:var(--space-3)}
+.logo-name{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-primary);font-style:italic}
+.user-card{background:var(--color-surface-2);border-radius:var(--radius-lg);padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2)}
+.user-avatar{width:48px;height:48px;border-radius:var(--radius-full);background:var(--color-primary-hl);display:flex;align-items:center;justify-content:center;font-size:var(--text-lg);color:var(--color-primary);font-weight:600}
+.user-name{font-weight:600;font-size:var(--text-sm)}
+.user-since{font-size:var(--text-xs);color:var(--color-text-muted)}
+.nav-section{display:flex;flex-direction:column;gap:var(--space-1)}
+.nav-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-faint);padding:var(--space-2) var(--space-3);font-weight:600}
+.nav-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);font-size:var(--text-sm);transition:all var(--transition);color:var(--color-text-muted);cursor:pointer}
+.nav-item:hover{background:var(--color-surface-2);color:var(--color-text)}
+.nav-item.active{background:var(--color-primary-hl);color:var(--color-primary);font-weight:600}
+.nav-icon{width:18px;height:18px;opacity:.7}
+.nav-item.active .nav-icon{opacity:1}
+.theme-toggle{width:32px;height:32px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);border:1px solid var(--color-border);transition:all var(--transition)}
+.theme-toggle:hover{background:var(--color-surface-2)}
+.main{padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-8)}
+@media(max-width:768px){.main{padding:var(--space-4)}}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:var(--space-4)}
+.page-title{font-family:var(--font-display);font-size:var(--text-xl);line-height:1.2;font-style:italic}
+.page-subtitle{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-1)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;transition:all var(--transition);cursor:pointer;border:none}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-ghost{background:transparent;border:1.5px solid var(--color-border);color:var(--color-text-muted)}
+.btn-ghost:hover{background:var(--color-surface-2);color:var(--color-text)}
+
+/* ── PROCHAINE SÉANCE ── */
+.next-seance{background:linear-gradient(135deg,var(--color-primary-hl),var(--color-surface));
+  border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);
+  display:flex;align-items:center;gap:var(--space-8);flex-wrap:wrap}
+.next-date-block{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--color-primary);color:#fff;border-radius:var(--radius-lg);
+  min-width:80px;padding:var(--space-4) var(--space-5);text-align:center}
+.next-day-num{font-family:var(--font-display);font-size:var(--text-xl);line-height:1}
+.next-day-name{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;opacity:.85}
+.next-info{flex:1}
+.next-title{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;margin-bottom:var(--space-1)}
+.next-meta{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-3)}
+.next-prat{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4)}
+.prat-avatar{width:36px;height:36px;border-radius:var(--radius-full);background:var(--color-primary-hl);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--text-xs);color:var(--color-primary)}
+.prat-name{font-size:var(--text-sm);font-weight:600}
+.prat-role{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+/* ── SÉANCES LIST ── */
+.seances-list{display:flex;flex-direction:column;gap:var(--space-3)}
+.seance-item{background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);
+  display:flex;gap:var(--space-5);align-items:flex-start;flex-wrap:wrap;
+  transition:box-shadow var(--transition)}
+.seance-item:hover{box-shadow:var(--shadow-md)}
+.seance-date-col{min-width:70px;text-align:center;flex-shrink:0}
+.seance-date-num{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;color:var(--color-primary);line-height:1}
+.seance-date-name{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint)}
+.seance-content{flex:1}
+.seance-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1)}
+.seance-meta{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-3)}
+.seance-rgnr-row{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-3)}
+.rgnr-chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--radius-full)}
+.seance-insight{font-size:var(--text-xs);color:var(--color-text-muted);font-style:italic;
+  border-left:2px solid var(--color-gold);padding-left:var(--space-3);line-height:1.5}
+.seance-actions{display:flex;gap:var(--space-2);margin-top:var(--space-3)}
+.seance-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;
+  padding:3px 8px;border-radius:var(--radius-full)}
+.badge-done{background:var(--color-primary-hl);color:var(--color-primary)}
+.badge-upcoming{background:var(--color-gold-hl);color:var(--color-gold)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="18" fill="var(--color-primary-hl)"/><path d="M18 8c0 0-8 6-8 12a8 8 0 0016 0c0-6-8-12-8-12z" fill="var(--color-primary)" opacity=".5"/><circle cx="18" cy="20" r="4" fill="var(--color-primary)"/></svg>
+      <span class="logo-name">ivia</span>
+    </div>
+    <div class="user-card">
+      <div class="user-avatar">S</div>
+      <div class="user-name">Sophie Martin</div>
+      <div class="user-since">Parcours depuis Jan 2026</div>
+    </div>
+    <nav class="nav-section">
+      <div class="nav-label">Espace personnel</div>
+      <a href="ivia-client-dashboard.html" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Tableau de bord
+      </a>
+      <a href="ivia-checkin.html" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 11-10 10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Check-in RGNR
+      </a>
+      <a href="ivia-ressources.html" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Ressources
+      </a>
+    </nav>
+    <nav class="nav-section">
+      <div class="nav-label">Suivi</div>
+      <a href="ivia-seances.html" class="nav-item active">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Mes séances
+      </a>
+      <a href="ivia-progression.html" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Ma progression
+      </a>
+    </nav>
+    <div style="margin-top:auto">
+      <button class="theme-toggle" data-theme-toggle aria-label="Thème">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Mes séances</h1>
+        <p class="page-subtitle">8 séances effectuées · Parcours de 24 semaines</p>
+      </div>
+    </div>
+
+    <!-- Prochaine séance -->
+    <div class="next-seance">
+      <div class="next-date-block">
+        <div class="next-day-num">14</div>
+        <div class="next-day-name">Juil</div>
+      </div>
+      <div class="next-info">
+        <div class="next-title">Séance individuelle — Semaine 13</div>
+        <div class="next-meta">Lundi 14 juillet 2026 · 14h00 – 15h00 · Visioconférence</div>
+        <div class="next-prat">
+          <div class="prat-avatar">AF</div>
+          <div><div class="prat-name">Dr. Amélie Fortin</div><div class="prat-role">Psychologue clinicienne</div></div>
+        </div>
+        <div style="display:flex;gap:var(--space-3)">
+          <a href="ivia-preparation-seance.html" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Préparer ma séance
+          </a>
+          <button class="btn btn-ghost">Rejoindre le lien visio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historique -->
+    <div>
+      <h2 style="font-size:var(--text-sm);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);margin-bottom:var(--space-4)">Séances passées</h2>
+      <div class="seances-list">
+
+        <div class="seance-item">
+          <div class="seance-date-col"><div class="seance-date-num">7</div><div class="seance-date-name">Juil</div></div>
+          <div class="seance-content">
+            <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1)">
+              <span class="seance-badge badge-done">✓ Effectuée</span>
+            </div>
+            <div class="seance-title">Séance individuelle — Semaine 12</div>
+            <div class="seance-meta">Lundi 7 juillet · 14h00 – 15h00 · Visioconférence · Dr. Fortin</div>
+            <div class="seance-rgnr-row">
+              <span class="rgnr-chip" style="background:rgba(46,125,92,.1);color:var(--color-rgnr-corps)">Corps 72</span>
+              <span class="rgnr-chip" style="background:rgba(139,74,156,.1);color:var(--color-rgnr-emotions)">Émotions 58</span>
+              <span class="rgnr-chip" style="background:rgba(26,107,138,.1);color:var(--color-rgnr-pensees)">Pensées 65</span>
+              <span class="rgnr-chip" style="background:rgba(200,134,10,.1);color:var(--color-rgnr-env)">Env. 81</span>
+            </div>
+            <div class="seance-insight">« Fatigue décisionnelle identifiée. Corps en progression. Rumination du soir = signal principal. »</div>
+            <div class="seance-actions">
+              <button class="btn btn-ghost" style="font-size:var(--text-xs);padding:var(--space-1) var(--space-3)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Voir analyse MERLIN
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="seance-item">
+          <div class="seance-date-col"><div class="seance-date-num">23</div><div class="seance-date-name">Jun</div></div>
+          <div class="seance-content">
+            <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1)"><span class="seance-badge badge-done">✓ Effectuée</span></div>
+            <div class="seance-title">Séance individuelle — Semaine 11</div>
+            <div class="seance-meta">Lundi 23 juin · 14h00 – 15h00 · Visioconférence · Dr. Fortin</div>
+            <div class="seance-rgnr-row">
+              <span class="rgnr-chip" style="background:rgba(46,125,92,.1);color:var(--color-rgnr-corps)">Corps 64</span>
+              <span class="rgnr-chip" style="background:rgba(139,74,156,.1);color:var(--color-rgnr-emotions)">Émotions 55</span>
+              <span class="rgnr-chip" style="background:rgba(26,107,138,.1);color:var(--color-rgnr-pensees)">Pensées 53</span>
+              <span class="rgnr-chip" style="background:rgba(200,134,10,.1);color:var(--color-rgnr-env)">Env. 76</span>
+            </div>
+            <div class="seance-insight">« Période de stress professionnel notable. Axe Pensées en difficulté. Travail sur la défusion cognitive recommandé. »</div>
+          </div>
+        </div>
+
+        <div class="seance-item">
+          <div class="seance-date-col"><div class="seance-date-num">9</div><div class="seance-date-name">Jun</div></div>
+          <div class="seance-content">
+            <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1)"><span class="seance-badge badge-done">✓ Effectuée</span></div>
+            <div class="seance-title">Séance individuelle — Semaine 10</div>
+            <div class="seance-meta">Lundi 9 juin · 14h00 – 15h00 · Visioconférence · Dr. Fortin</div>
+            <div class="seance-rgnr-row">
+              <span class="rgnr-chip" style="background:rgba(46,125,92,.1);color:var(--color-rgnr-corps)">Corps 68</span>
+              <span class="rgnr-chip" style="background:rgba(139,74,156,.1);color:var(--color-rgnr-emotions)">Émotions 60</span>
+              <span class="rgnr-chip" style="background:rgba(26,107,138,.1);color:var(--color-rgnr-pensees)">Pensées 62</span>
+              <span class="rgnr-chip" style="background:rgba(200,134,10,.1);color:var(--color-rgnr-env)">Env. 79</span>
+            </div>
+            <div class="seance-insight">« Progression visible sur l'axe Environnement. Introduction des techniques de régulation corporelle. »</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+document.querySelectorAll('[data-theme-toggle]').forEach(btn =>{
+  btn.addEventListener('click', () =>{
+    const html = document.documentElement;
+    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+});
+</script>
+</body>
+</html>

@@ -25,6 +25,7 @@ source_canonique: 11_PROMPTS/06_CSUITE/_circulation.md
 | ARCH | spec technique · ticket · note de migration | `instances/ivia/produit/` + QA | actif |
 | FIN | modèle financier · revue · reco de prix | STRAT + fondateur | actif |
 | COMM | contenu éditorial · dossier de financement | instance + fondateur | actif |
+| COMM | blogue (canon : `09_blog_app/`, articles + app Next.js) | export statique dérivé → `ivia_site_v2/ressources/blog/` (gate Loi 21 avant prod) | actif |
 | UX | spec de parcours · maquette · règle d'affichage | ARCH + QA | actif |
 | QA | rapport de revue · validation/refus · ticket incident | ARCH + fondateur (gate merge) | actif |
 | GROWTH | plan d'acquisition · protocole d'expérience · plan de mise en marché | FIN + COMM + instance | actif |
@@ -52,3 +53,4 @@ source_canonique: 11_PROMPTS/06_CSUITE/_circulation.md
 | Version | Date | Auteur | Nature |
 |---|---|---|---|
 | 1.0 | 2026-06-30 | fondateur | Création initiale — circulation (ADR-0008) |
+| 1.1 | 2026-07-17 | COS | Unification dépôts : blogue rapatrié dans `09_blog_app/`, destination déclarée |
