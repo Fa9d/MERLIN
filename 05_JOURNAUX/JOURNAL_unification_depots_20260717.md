@@ -49,10 +49,12 @@ sont archivés — ne plus rien y pousser. Tout nouveau contenu blogue se fait d
 
 ## Garde-fous et points ouverts
 
-1. ⚠️ **Gate Loi 21 avant prod** : les articles contiennent du vocabulaire réservé —
-   `diagnostic` ×7, `psychothérapie` ×3, `soins psychologiques` ×2, `thérapie` ×1
-   (comptés dans `app/articles.ts`). Décision fondateur requise avant de merger
-   `feat/ivia-blog-deploy` → `refonte-ivia-site-unifie`.
+1. ✅ **Gate Loi 21 levée (décision fondateur, 2026-07-17)** : audit des 14
+   occurrences (`diagnostic` ×7, `psychothérapie` ×3, `soins psychologiques` ×2,
+   `thérapie` ×1) — toutes en contexte admis : faits et statistiques cités,
+   description du système réglementé externe, titre de source, ou démarcation
+   explicite de ce qu'IVIA n'offre pas. Aucune ne décrit l'offre IVIA. Critère
+   consigné dans `09_blog_app/deploy/README-deploiement.md` pour les articles futurs.
 2. La traction réelle du blogue (29 articles + 2 tutos) doit remplacer « 5 articles »
    dans les pièces du dossier de financement consolidé le 17 juillet.
 3. La consolidation financement du 17 juillet (20 fichiers) reste **non commitée** —

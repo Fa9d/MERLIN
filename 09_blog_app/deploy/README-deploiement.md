@@ -58,7 +58,13 @@ curl -I https://ivia.quebec/ressources/                                        #
   `index.html`, ce qui fonctionne avec n'importe quel service de fichiers statiques.
 - Pour changer le sous-chemin un jour : modifier `basePath` dans
   `next.config.ts`, rebuild, recopier dans le dossier correspondant.
-- ⚠️ **Gate Loi 21 avant mise en prod** : les articles contiennent encore du
-  vocabulaire réservé (diagnostic ×7, psychothérapie ×3, soins psychologiques ×2,
-  thérapie ×1 dans `app/articles.ts`). Décision fondateur requise avant de merger
-  vers `refonte-ivia-site-unifie` (cf. `.claude/rules/safety.md`).
+- ✅ **Gate Loi 21 levée (décision fondateur, 2026-07-17)** : les 14 occurrences
+  de vocabulaire réservé dans `app/articles.ts` ont été auditées une à une. Toutes
+  relèvent de contextes admis : statistiques et faits publiés (diagnostics dans les
+  données de l'INSPQ/ISQ), description du système réglementé externe (coût de la
+  psychothérapie, PQPTM cité entre guillemets), titre d'un rapport cité (IRIS), ou
+  démarcation explicite (« Ce n'est pas… une thérapie de groupe », « Jamais un
+  diagnostic : un miroir »). Aucune ne décrit un service offert par IVIA.
+  **Règle pour tout nouvel article** : ces termes ne sont admis qu'en citation de
+  faits ou de sources, ou pour désigner les services réglementés externes — jamais
+  pour décrire l'offre IVIA (cf. `.claude/rules/safety.md`).
