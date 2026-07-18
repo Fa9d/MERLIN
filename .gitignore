@@ -74,3 +74,7 @@ _archives/intrants/2026-07/IVIA_map/
 09_blog_app/node_modules/
 09_blog_app/.next/
 09_blog_app/out/
+
+# Projet distinct (climat-quebec-refonte) déployé sous ivia.quebec/climat sur le VPS —
+# jamais suivi ici, jamais nettoyé par git clean.
+ivia_site_v2/climat/
