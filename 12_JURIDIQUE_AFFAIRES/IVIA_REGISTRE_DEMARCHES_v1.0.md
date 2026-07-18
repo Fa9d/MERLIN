@@ -33,16 +33,21 @@
 
 ## Fiches par organisme
 
-### Mila — Institut québécois d'IA (porte : Mila Ventures)
+### Mila — Institut québécois d'IA (4 portes identifiées, 2026-07-18)
 
-**Statut** : prêt · **Contact** : à identifier (formulaire Ventures / réseau)
-**Pièce maîtresse** : `deck/IVIA_PRESENTATION_MILA_v1.0.pdf` (9 slides, angle recherche appliquée)
+**Statut** : prêt · **Pièce maîtresse** : `deck/IVIA_PRESENTATION_MILA_v1.0.pdf`
+**Cibles** (ordre recommandé) :
+1. **Mila Ventures — Launchpad** (candidature en continu, fondateurs jusqu'à 3 ans, idée→commercialisation) — canal : mila.quebec/en/mila-ventures. Angle : produit en production, fondateur solo, marché Loi 27, souveraineté.
+2. **Mirco Ravanelli** (Concordia, membre associé Mila, fondateur SpeechBrain) — angle : ASR français québécois local + prosodie sur audio compressé (RD-01, RD-03) ; proposer échange 30 min, puis stage/Mitacs Accélération.
+3. **Guillaume Dumas** (UdeM/CHU Ste-Justine, membre Mila, chaire IVADO « IA en santé mentale ») — angle : corpus d'accompagnement non clinique consenti, indicateur de temporalité décalée (RD-05), complémentarité première ligne.
+4. **Catherine Régis** (UdeM droit/santé, membre associée Mila, école d'été IA responsable) — angle : cas d'étude gouvernance — Loi 25/21 appliquées « dans le code » (RD-02, RD-04).
 
 | Date | Geste | Pièce / réponse |
 |---|---|---|
+| 2026-07-18 | Analyse des portes d'entrée Mila — 4 cibles priorisées (Ventures, Ravanelli, Dumas, Régis) | ce registre |
 | 2026-07-18 | Deck de présentation produit et validé (contact : david@ivia.quebec, porte Ventures en tête) | `deck/IVIA_PRESENTATION_MILA_v1.0.pdf` |
 
-**Prochaine action** : identifier le canal d'entrée Ventures et envoyer le deck avec un mot d'approche court.
+**Prochaine action** : candidature Launchpad + courriel Ravanelli (messages à rédiger).
 
 ---
 
