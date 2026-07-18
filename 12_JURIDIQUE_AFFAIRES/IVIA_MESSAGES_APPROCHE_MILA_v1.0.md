@@ -128,6 +128,50 @@
 
 ---
 
+## 5. Abundant Intelligences — Jason Edward Lewis (Concordia / partenaire Mila)
+
+> ⚠️ **Note de posture (interne, à lire avant envoi)** — conforme à `02_NATIONS_QC/LETTRE_INVITATION_COCONSTRUCTION_v1.0.md` :
+> on ne sollicite **pas** des savoirs autochtones et on ne présente pas IVIA comme
+> « basée sur » ces savoirs — ce serait de l'appropriation, contraire à la constitution
+> (citer, ne jamais s'approprier, ne pas parler à la place des nations). On demande
+> un **regard critique sur notre posture** et on offre ce qu'on a : une infrastructure
+> où les données ne quittent pas le territoire, et une gouvernance prête à se
+> subordonner aux communautés pour tout ce qui les concerne. Ce message est un
+> brouillon — validation du fondateur requise, et le rythme de la relation appartient
+> aux interlocuteurs.
+
+**Objet** : Demande de conseil — la posture d'une plateforme québécoise d'écoute envers les nations
+
+> Bonjour Professeur Lewis,
+>
+> Je suis le fondateur d'IVIA (ivia.quebec), une plateforme québécoise d'écoute
+> non clinique, en production. Je ne vous écris pas pour proposer un partenariat —
+> je vous écris pour demander conseil.
+>
+> Notre constitution nous impose une règle envers les savoirs des Premières
+> Nations et du peuple Inuit : citer, ne jamais s'approprier, ne jamais parler à
+> leur place. Nous avons rédigé un cadre de co-construction — invitation où la
+> gouvernance, le consentement et le droit de retrait appartiennent entièrement
+> aux nations — mais nous refusons de l'envoyer avant qu'il ait été relu par des
+> personnes autochtones. Nous cherchons ce regard.
+>
+> Ce que nous avons à offrir est technique et concret : une infrastructure où
+> aucune parole ne quitte le territoire (transcription locale, données hébergées
+> au Québec), une analyse dont l'exposition est contrôlée par consentement — une
+> architecture qui nous semble compatible avec les principes de souveraineté des
+> données autochtones, mais c'est précisément le genre de jugement qui ne nous
+> appartient pas.
+>
+> Si vous, ou une personne de votre réseau que vous jugeriez plus appropriée,
+> acceptiez de porter un regard critique sur notre posture — au rythme qui vous
+> convient — nous le recevrions comme un service, et nous sommes ouverts à ce que
+> cela reste sans suite.
+>
+> David Phaneuf — fondateur, IVIA
+> ivia.quebec · david@ivia.quebec · Montréal (Tiohtià:ke)
+
+---
+
 ## Séquence d'envoi recommandée
 
 | Ordre | Cible | Quand |

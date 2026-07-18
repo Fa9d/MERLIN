@@ -41,6 +41,7 @@
 2. **Mirco Ravanelli** (Concordia, membre associé Mila, fondateur SpeechBrain) — angle : ASR français québécois local + prosodie sur audio compressé (RD-01, RD-03) ; proposer échange 30 min, puis stage/Mitacs Accélération.
 3. **Guillaume Dumas** (UdeM/CHU Ste-Justine, membre Mila, chaire IVADO « IA en santé mentale ») — angle : corpus d'accompagnement non clinique consenti, indicateur de temporalité décalée (RD-05), complémentarité première ligne.
 4. **Catherine Régis** (UdeM droit/santé, membre associée Mila, école d'été IA responsable) — angle : cas d'étude gouvernance — Loi 25/21 appliquées « dans le code » (RD-02, RD-04).
+5. **Abundant Intelligences — Jason Edward Lewis** (Concordia, programme dirigé par des Autochtones, Mila partenaire) — angle : **demande de conseil sur notre posture** (cadre de co-construction 02_NATIONS_QC à faire relire), souveraineté des données compatible OCAP. ⚠️ Jamais une « sollicitation de savoirs » ; validation fondateur requise avant envoi ; rythme appartient aux interlocuteurs.
 
 | Date | Geste | Pièce / réponse |
 |---|---|---|
