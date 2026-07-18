@@ -45,7 +45,8 @@
 
 | Date | Geste | Pièce / réponse |
 |---|---|---|
-| 2026-07-18 | Messages d'approche rédigés pour les 4 cibles (FR + EN Launchpad) | `IVIA_MESSAGES_APPROCHE_MILA_v1.0.md` |
+| 2026-07-18 | Dossiers d'envoi structurés — un dossier par cible, courriels + adresses vérifiées (Ravanelli, Régis ; Dumas et Lewis à confirmer), en attente de relecture fondateur | `demarches/mila/` |
+| 2026-07-18 | Messages d'approche rédigés pour les 5 cibles (FR + EN Launchpad) | `demarches/mila/` *(remplace le doc combiné, supprimé)* |
 | 2026-07-18 | Analyse des portes d'entrée Mila — 4 cibles priorisées (Ventures, Ravanelli, Dumas, Régis) | ce registre |
 | 2026-07-18 | Deck de présentation produit et validé (contact : david@ivia.quebec, porte Ventures en tête) | `deck/IVIA_PRESENTATION_MILA_v1.0.pdf` |
 
