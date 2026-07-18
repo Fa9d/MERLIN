@@ -7,11 +7,13 @@ from app.core.deps import (
     get_optional_current_user,
     require_internal_clinical_roles,
 )
+from app.core.config import settings
 from app.db.session import get_db
 from app.models.app_user import AppUser
 from app.models.client import Client
 from app.models.enums import DataSensitivityClass, RecordStatus
-from app.schemas.client import ClientCreate, ClientRead, MyClientUpdate
+from app.schemas.client import ClientCreate, ClientEmailSend, ClientRead, MyClientUpdate
+from app.services.email import make_practitioner_direct_email, send_email
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
@@ -136,6 +138,59 @@ def update_my_client(
     db.commit()
     db.refresh(client)
     return client
+
+
+@router.post("/{client_id}/email", status_code=status.HTTP_202_ACCEPTED)
+async def send_client_email(
+    client_id: str,
+    payload: ClientEmailSend,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
+) -> dict:
+    """Envoie un courriel libre du praticien au client, depuis la fiche client.
+
+    Paramètres : client_id (chemin), payload {subject, message}.
+    Sortie : {"sent": true, "to": adresse} en cas de succès ; 404 si client
+    introuvable, 422 si le client n'a aucune adresse courriel, 502 si l'envoi
+    SMTP échoue.
+    Le message part tel que rédigé par le praticien (échappé dans le gabarit) ;
+    le gabarit ajoute le lien de connexion à l'espace et le rappel d'urgence.
+    """
+    client = db.get(Client, client_id)
+    if client is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Client introuvable.")
+
+    account = db.get(AppUser, client.app_user_id) if client.app_user_id else None
+    to_email = (account.email if account else None) or client.email
+    if not to_email:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Ce client n'a aucune adresse courriel au dossier.",
+        )
+
+    display = (account.display_name if account else None) or client.first_name_or_alias or "vous"
+    practitioner_name = current_user.display_name or "Votre praticien·ne"
+    login_url = settings.frontend_url.rstrip("/") + "/connexion.html"
+
+    html, text = make_practitioner_direct_email(
+        display_name=display,
+        practitioner_name=practitioner_name,
+        message=payload.message,
+        login_url=login_url,
+    )
+    sent = await send_email(
+        to_email=to_email,
+        subject=payload.subject,
+        html_body=html,
+        text_body=text,
+        audience="client",
+    )
+    if not sent:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="L'envoi du courriel a échoué — réessayez ou vérifiez la configuration SMTP.",
+        )
+    return {"sent": True, "to": to_email}
 
 
 @router.get("/{client_id}", response_model=ClientRead)

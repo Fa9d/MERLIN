@@ -27,7 +27,7 @@ Le présent modèle est rédigé à des fins de gouvernance interne. Avant toute
 IVIA inc.
 Société par actions à mission constituée selon la *Loi sur les sociétés par actions* du Québec (LSAQ)
 Siège social : Montréal, Québec
-Numéro d'entreprise (NEQ) : à inscrire à l'incorporation
+Numéro d'entreprise (NEQ) : à inscrire dès l'immatriculation REQ (entreprise individuelle) ; mise à jour à la constitution de l'entité commerciale
 Courriel : praticiens@ivia.quebec
 Représentée par : David Phaneuf, président, fondateur et dirigeant
 Ci-après désignée « IVIA inc. », « IVIA » ou « la Société »

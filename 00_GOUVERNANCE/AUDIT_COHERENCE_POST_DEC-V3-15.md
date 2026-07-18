@@ -220,7 +220,7 @@ Trois axes de criticité, **distincts de la sévérité éditoriale ci-dessus** 
 | **C1** | Date DÉC-V3-15 uniformisée sur 8 mai 2026 (BILAN_COHERENCE + PLAN_INTEGRATION) | — |
 | **C2** | Note d'avertissement terminologique en tête du GLOSSAIRE | [`IVIA_GLOSSAIRE_v1.0.md`](IVIA_GLOSSAIRE_v1.0.md) |
 | **C4** | Note coexistence DEC-XXX vs DÉC-V3-X intégrée dans l'INDEX v2.1 | (cf. B1) |
-| **I1** | Mentions légales v0.2 (note transition + transfert PI roulement art. 85 LIR + rappel dépôts OPIC) | [`../12_JURIDIQUE_AFFAIRES/IVIA_MENTIONS_LEGALES_v0.2.md`](../12_JURIDIQUE_AFFAIRES/IVIA_MENTIONS_LEGALES_v0.2.md) |
+| **I1** | Mentions légales v0.2 (note transition + transfert PI roulement art. 85 LIR + rappel dépôts OPIC) — depuis révisées en v0.3 (2026-07-17) | [`../12_JURIDIQUE_AFFAIRES/IVIA_MENTIONS_LEGALES_v0.3.md`](../12_JURIDIQUE_AFFAIRES/IVIA_MENTIONS_LEGALES_v0.3.md) |
 | **I2, I3, C3** | Notes terminologiques en tête des 3 politiques opérationnelles (Cartographie risques, Tarification, Bien-être praticiens) | (cf. fichiers respectifs) |
 | **Bonus** | Création du journal de bord pilote MERLIN (angle mort levé) | [`JOURNAUX/JOURNAL_PILOTE_MERLIN.md`](JOURNAUX/JOURNAL_PILOTE_MERLIN.md) |
 

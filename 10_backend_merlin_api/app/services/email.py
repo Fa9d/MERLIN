@@ -432,6 +432,54 @@ def make_followup_reminder_email(
     return html, text
 
 
+def make_practitioner_direct_email(
+    display_name: str,
+    practitioner_name: str,
+    message: str,
+    login_url: str,
+) -> tuple[str, str]:
+    """Courriel libre rédigé par un praticien pour son client, depuis la fiche client.
+
+    Paramètres : nom d'affichage du client, nom du praticien, message libre
+    (échappé — texte saisi par le praticien), URL de connexion à l'espace.
+    Sortie : tuple (html, text).
+    Le message est celui du praticien ; le gabarit n'ajoute aucun vocabulaire
+    clinique (Loi 21) et rappelle que l'espace sécurisé reste le lieu des contenus
+    sensibles (Loi 25).
+    """
+    from html import escape
+
+    message_html = escape(message).replace("\n", "<br>")
+
+    html = f"""<!DOCTYPE html><html><head>{_BASE_STYLE}</head><body>
+<div class="wrap">
+  <div class="header"><h1>IVI<span>A</span></h1></div>
+  <div class="body">
+    <p>Bonjour <strong>{escape(display_name)}</strong>,</p>
+    <p><strong>{escape(practitioner_name)}</strong>, votre praticien·ne d'écoute IVIA,
+       vous a écrit :</p>
+    <p style="background:#f8f8f8;border-left:3px solid #4a4a4a;padding:12px;border-radius:4px;">{message_html}</p>
+    <a class="btn" href="{login_url}">Ouvrir mon espace</a>
+    <p style="color:#888;font-size:13px;">Pour votre confidentialité, les documents et
+       contenus de séance restent dans votre espace sécurisé, hébergé au Québec.
+       En cas de détresse, appelez le 811 option 2, ou le 988 (24/7).</p>
+  </div>
+  <div class="footer">IVIA · Maison du vivant · ivia.quebec</div>
+</div>
+</body></html>"""
+
+    text = (
+        f"Bonjour {display_name},\n\n"
+        f"{practitioner_name}, votre praticien·ne d'écoute IVIA, vous a écrit :\n\n"
+        f"{message}\n\n"
+        f"Ouvrir mon espace : {login_url}\n\n"
+        "Pour votre confidentialité, les documents et contenus de séance restent "
+        "dans votre espace sécurisé.\n"
+        "En cas de détresse : 811 option 2, ou 988 (24/7).\n\n— IVIA"
+    )
+    return html, text
+
+
 def make_reprise_lien_email(display_name: str, reserve_url: str) -> tuple[str, str]:
     """Courriel de reprise de lien 48 h après une demande d'entrée restée sans suite.
 

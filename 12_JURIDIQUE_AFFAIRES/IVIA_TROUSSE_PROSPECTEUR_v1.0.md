@@ -113,7 +113,7 @@ accroché ? », « reviendrais-tu ? » → consigner dans `05_JOURNAUX/`.
 ## C.5 Objections et réponses
 | Objection | Réponse |
 |---|---|
-| « Pas encore incorporé » | « Immatriculé au REQ [fait cette semaine]. L'incorporation est planifiée à l'automne avec un déclencheur documenté — voici l'échéancier. » |
+| « Pas encore incorporé » | « L'immatriculation REQ est prévue d'ici fin juillet 2026. La structuration (OBNL puis société par actions à mission) suit des déclencheurs documentés — voici l'échéancier. » |
 | « Revenus encore faibles » | « Le produit est construit — le risque technique est derrière. Le prêt finance l'acquisition, pas la construction. Voici le prévisionnel 24 mois. » |
 | « Secteur santé = réglementé » | « Justement : nous sommes non cliniques par conception, avec une charte opposable — pas de diagnostic, pas de traitement. Notre conformité Loi 25 est documentée, c'est notre différenciateur. » |
 | « Une seule personne, c'est risqué » | « C'est vrai, et c'est précisément ce que le financement corrige : les premiers postes sont budgétés. En attendant, une personne seule a livré une plateforme complète — c'est la preuve d'exécution. » |

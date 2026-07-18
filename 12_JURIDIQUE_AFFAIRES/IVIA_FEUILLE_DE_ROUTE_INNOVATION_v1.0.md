@@ -4,7 +4,7 @@
 **Version** : 1.1 — 30 juin 2026 *(v1.1 : ajout des avenues 3.7 équicoaching en présence + 3.8 groupe/séminaire/B2B comme pistes de croissance non exploitées ; le produit actuel reste l'accompagnement EN LIGNE)*
 **Statut** : Document confidentiel — Usage interne, gouvernance, plan d'affaires, investisseurs
 **Auteur** : David Phaneuf (fondateur) + Claude Code
-**Cohérence** : Aligné avec la page publique `ivia_site_v2/praticiens.html`, `00_DOCTRINE/correspondances-vivantes.md`, `managed_agents/evals.registry.yaml`, `IVIA_BP_FINANCEMENT_v2.3.md`, `IVIA_MODELE_VALORISATION_v2.0.md`, `00_DOCTRINE/IVIA_DOCTRINE_CARTE_ABSTRAITE_v1.0.md`
+**Cohérence** : Aligné avec la page publique `ivia_site_v2/praticiens.html`, `00_DOCTRINE/correspondances-vivantes.md`, `managed_agents/evals.registry.yaml`, `IVIA_BP_FINANCEMENT_v2.4.md`, `IVIA_MODELE_VALORISATION_v2.0.md`, `00_DOCTRINE/IVIA_DOCTRINE_CARTE_ABSTRAITE_v1.0.md`
 
 > *IVIA accueille. MERLIN structure. MÉSANGES accompagne.*
 > *On optimise la matière pour libérer l'humain. L'authenticité, ça ne s'achète pas — ça se libère.*
@@ -205,5 +205,5 @@ cohérence d'une nouvelle fonction.
 - Correspondances vivantes : `00_DOCTRINE/correspondances-vivantes.md` + `00_DOCTRINE/ivia_living_lexicon.yaml`
 - Registre d'évaluations : `managed_agents/evals.registry.yaml` + `managed_agents/evals/safety_suite_v1.yaml`
 - Hub ressources : `ivia_site_v2/ressources/`
-- Valorisation / BP : `IVIA_MODELE_VALORISATION_v2.0.md`, `IVIA_BP_FINANCEMENT_v2.3.md`
+- Valorisation / BP : `IVIA_MODELE_VALORISATION_v2.0.md`, `IVIA_BP_FINANCEMENT_v2.4.md`
 - Doctrine : `00_DOCTRINE/IVIA_DOCTRINE_CARTE_ABSTRAITE_v1.0.md`

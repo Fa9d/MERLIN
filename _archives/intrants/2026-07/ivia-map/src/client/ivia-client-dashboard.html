@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVIA — Mon Espace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root,[data-theme="light"]{
+  --color-bg:#f4f7f4;--color-surface:#ffffff;--color-surface-2:#f0f4f0;
+  --color-surface-offset:#e8efe8;--color-border:rgba(30,80,40,.1);
+  --color-text:#1a2e1a;--color-text-muted:#5a7a5a;--color-text-faint:#9ab09a;
+  --color-primary:#1a6b3a;--color-primary-hover:#145430;--color-primary-hl:#d4eadc;
+  --color-gold:#c8860a;--color-gold-hl:#fdf0d4;
+  --color-rgnr-corps:#2e7d5c;--color-rgnr-emotions:#8b4a9c;
+  --color-rgnr-pensees:#1a6b8a;--color-rgnr-env:#c8860a;
+  --shadow-sm:0 1px 3px rgba(20,60,20,.08);--shadow-md:0 4px 16px rgba(20,60,20,.10);
+  --shadow-lg:0 12px 40px rgba(20,60,20,.14);
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --font-display:'DM Serif Display',Georgia,serif;--font-body:'DM Sans','Helvetica Neue',sans-serif;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#0f1a0f;--color-surface:#152015;--color-surface-2:#1a281a;
+  --color-surface-offset:#1f301f;--color-border:rgba(100,200,100,.1);
+  --color-text:#d4e8d4;--color-text-muted:#7a9a7a;--color-text-faint:#4a6a4a;
+  --color-primary:#5ab878;--color-primary-hover:#3da05e;--color-primary-hl:#1a3a22;
+  --color-gold:#e8a830;--color-gold-hl:#3a2a08;
+  --color-rgnr-corps:#4db88a;--color-rgnr-emotions:#c47ad8;
+  --color-rgnr-pensees:#4aa8c8;--color-rgnr-env:#e8a830;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);
+  color:var(--color-text);background:var(--color-bg);line-height:1.6}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+a{text-decoration:none;color:inherit;transition:color var(--transition)}
+img{display:block;max-width:100%}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100dvh}
+@media(max-width:768px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--color-surface);border-right:1px solid var(--color-border);
+  padding:var(--space-6) var(--space-4);display:flex;flex-direction:column;gap:var(--space-6);
+  position:sticky;top:0;height:100dvh;overflow-y:auto}
+@media(max-width:768px){.sidebar{display:none}}
+
+.logo{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0}
+.logo-mark{width:36px;height:36px}
+.logo-name{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-primary);font-style:italic}
+
+.user-card{background:var(--color-surface-2);border-radius:var(--radius-lg);
+  padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2)}
+.user-avatar{width:48px;height:48px;border-radius:var(--radius-full);
+  background:var(--color-primary-hl);display:flex;align-items:center;justify-content:center;
+  font-size:var(--text-lg);color:var(--color-primary);font-weight:600}
+.user-name{font-weight:600;font-size:var(--text-sm)}
+.user-since{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+.nav-section{display:flex;flex-direction:column;gap:var(--space-1)}
+.nav-label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;
+  color:var(--color-text-faint);padding:var(--space-2) var(--space-3);font-weight:600}
+.nav-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);
+  border-radius:var(--radius-md);font-size:var(--text-sm);transition:all var(--transition);
+  color:var(--color-text-muted);cursor:pointer}
+.nav-item:hover{background:var(--color-surface-2);color:var(--color-text)}
+.nav-item.active{background:var(--color-primary-hl);color:var(--color-primary);font-weight:600}
+.nav-icon{width:18px;height:18px;opacity:.7}
+.nav-item.active .nav-icon{opacity:1}
+
+/* ── MAIN ── */
+.main{padding:var(--space-8) var(--space-8);overflow-y:auto;display:flex;flex-direction:column;gap:var(--space-8)}
+@media(max-width:768px){.main{padding:var(--space-4)}}
+
+/* ── HEADER ── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:var(--space-4)}
+.page-title{font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-text);line-height:1.2}
+.page-subtitle{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-1)}
+.header-actions{display:flex;align-items:center;gap:var(--space-3)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);
+  border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;transition:all var(--transition);cursor:pointer;border:none}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-ghost{background:transparent;border:1px solid var(--color-border);color:var(--color-text-muted)}
+.btn-ghost:hover{background:var(--color-surface-2);color:var(--color-text)}
+
+/* ── RGNR GAUGE ── */
+.rgnr-section{}
+.rgnr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-5)}
+.section-title{font-size:var(--text-lg);font-weight:700;color:var(--color-text)}
+.rgnr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4)}
+@media(max-width:900px){.rgnr-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.rgnr-grid{grid-template-columns:1fr}}
+
+.rgnr-card{background:var(--color-surface);border-radius:var(--radius-xl);padding:var(--space-5);
+  border:1px solid var(--color-border);box-shadow:var(--shadow-sm);transition:box-shadow var(--transition)}
+.rgnr-card:hover{box-shadow:var(--shadow-md)}
+.rgnr-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
+.rgnr-axis-name{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.rgnr-score{font-size:var(--text-xl);font-family:var(--font-display);font-weight:400;line-height:1}
+.rgnr-bar-track{height:6px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;margin-bottom:var(--space-3)}
+.rgnr-bar-fill{height:100%;border-radius:var(--radius-full);transition:width .8s cubic-bezier(.16,1,.3,1)}
+.rgnr-trend{font-size:var(--text-xs);color:var(--color-text-muted)}
+.rgnr-trend span{font-weight:600}
+
+.rgnr-corps .rgnr-axis-name{color:var(--color-rgnr-corps)}
+.rgnr-corps .rgnr-score{color:var(--color-rgnr-corps)}
+.rgnr-corps .rgnr-bar-fill{background:var(--color-rgnr-corps)}
+
+.rgnr-emotions .rgnr-axis-name{color:var(--color-rgnr-emotions)}
+.rgnr-emotions .rgnr-score{color:var(--color-rgnr-emotions)}
+.rgnr-emotions .rgnr-bar-fill{background:var(--color-rgnr-emotions)}
+
+.rgnr-pensees .rgnr-axis-name{color:var(--color-rgnr-pensees)}
+.rgnr-pensees .rgnr-score{color:var(--color-rgnr-pensees)}
+.rgnr-pensees .rgnr-bar-fill{background:var(--color-rgnr-pensees)}
+
+.rgnr-env .rgnr-axis-name{color:var(--color-rgnr-env)}
+.rgnr-env .rgnr-score{color:var(--color-rgnr-env)}
+.rgnr-env .rgnr-bar-fill{background:var(--color-rgnr-env)}
+
+/* ── CHECK-IN ── */
+.checkin-card{background:linear-gradient(135deg,var(--color-primary-hl),var(--color-surface));
+  border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);
+  display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);flex-wrap:wrap}
+.checkin-text h3{font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-2);font-style:italic}
+.checkin-text p{font-size:var(--text-sm);color:var(--color-text-muted);max-width:42ch}
+.checkin-streak{display:flex;flex-direction:column;align-items:center;gap:var(--space-1)}
+.streak-number{font-family:var(--font-display);font-size:var(--text-2xl);color:var(--color-primary);line-height:1;font-style:italic}
+.streak-label{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.06em}
+
+/* ── BENTO GRID ── */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--space-4)}
+@media(max-width:768px){.bento{grid-template-columns:1fr}}
+.bento-card{background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);
+  transition:box-shadow var(--transition)}
+.bento-card:hover{box-shadow:var(--shadow-md)}
+.col-5{grid-column:span 5}
+.col-7{grid-column:span 7}
+.col-4{grid-column:span 4}
+.col-8{grid-column:span 8}
+.col-6{grid-column:span 6}
+@media(max-width:900px){.col-5,.col-7,.col-4,.col-8,.col-6{grid-column:span 1}}
+.card-title{font-size:var(--text-sm);font-weight:700;color:var(--color-text-muted);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--space-4)}
+
+/* ── RESSOURCES ── */
+.resource-list{display:flex;flex-direction:column;gap:var(--space-3)}
+.resource-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);
+  border-radius:var(--radius-lg);background:var(--color-surface-2);transition:all var(--transition);cursor:pointer}
+.resource-item:hover{background:var(--color-surface-offset);transform:translateX(4px)}
+.resource-tag{padding:var(--space-1) var(--space-2);border-radius:var(--radius-full);
+  font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.tag-tcc{background:var(--color-primary-hl);color:var(--color-primary)}
+.tag-dbt{background:var(--color-gold-hl);color:var(--color-gold)}
+.tag-act{background:rgba(139,74,156,.12);color:var(--color-rgnr-emotions)}
+.resource-title{font-size:var(--text-sm);font-weight:600;flex:1}
+.resource-arrow{color:var(--color-text-faint);transition:transform var(--transition)}
+.resource-item:hover .resource-arrow{transform:translateX(4px);color:var(--color-primary)}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:var(--space-3);position:relative}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;
+  width:2px;background:var(--color-border)}
+.timeline-item{display:flex;gap:var(--space-4);padding-left:var(--space-6);position:relative}
+.timeline-dot{position:absolute;left:0;top:4px;width:16px;height:16px;
+  border-radius:var(--radius-full);background:var(--color-surface);
+  border:2px solid var(--color-border);z-index:1;transition:all var(--transition)}
+.timeline-item.done .timeline-dot{background:var(--color-primary);border-color:var(--color-primary)}
+.timeline-content{}
+.timeline-label{font-size:var(--text-xs);font-weight:700;color:var(--color-text-muted);
+  text-transform:uppercase;letter-spacing:.06em}
+.timeline-text{font-size:var(--text-sm);color:var(--color-text);margin-top:var(--space-1)}
+.timeline-time{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-1)}
+
+/* ── CHART PLACEHOLDER ── */
+.chart-wrap{position:relative;height:160px;margin-top:var(--space-2)}
+.chart-bars{display:flex;align-items:flex-end;gap:4px;height:100%;padding-bottom:24px}
+.chart-bar{flex:1;border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+  background:var(--color-primary-hl);transition:height .6s cubic-bezier(.16,1,.3,1);min-width:8px;cursor:pointer}
+.chart-bar:hover{background:var(--color-primary);opacity:.8}
+.chart-bar.today{background:var(--color-primary)}
+.chart-axis{display:flex;justify-content:space-between;position:absolute;bottom:0;left:0;right:0}
+.chart-axis span{font-size:var(--text-xs);color:var(--color-text-faint)}
+
+/* ── PROCHAIN RDV ── */
+.rdv-card{display:flex;flex-direction:column;gap:var(--space-3)}
+.rdv-date{display:flex;align-items:center;gap:var(--space-3);
+  background:var(--color-surface-2);border-radius:var(--radius-lg);padding:var(--space-3)}
+.rdv-day-block{background:var(--color-primary);color:#fff;border-radius:var(--radius-md);
+  padding:var(--space-2) var(--space-3);text-align:center;min-width:52px}
+.rdv-day-num{font-family:var(--font-display);font-size:var(--text-xl);line-height:1;font-style:italic}
+.rdv-day-name{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;opacity:.85}
+.rdv-details{flex:1}
+.rdv-title{font-size:var(--text-sm);font-weight:700}
+.rdv-meta{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px}
+.rdv-praticien{font-size:var(--text-xs);color:var(--color-text-muted);
+  display:flex;align-items:center;gap:var(--space-2);padding-top:var(--space-2);
+  border-top:1px solid var(--color-border)}
+.prat-avatar{width:24px;height:24px;border-radius:var(--radius-full);
+  background:var(--color-gold-hl);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--color-gold)}
+
+/* ── MOBILE NAV ── */
+.mobile-nav{display:none;background:var(--color-surface);border-top:1px solid var(--color-border);
+  padding:var(--space-2) var(--space-4);justify-content:space-around;align-items:center;
+  position:sticky;bottom:0;z-index:100}
+@media(max-width:768px){.mobile-nav{display:flex}}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);
+  font-size:10px;color:var(--color-text-muted);transition:all var(--transition)}
+.mobile-nav-item.active{color:var(--color-primary)}
+.mobile-nav-item svg{width:22px;height:22px}
+
+/* ── MOBILE HEADER ── */
+.mobile-header{display:none;background:var(--color-surface);border-bottom:1px solid var(--color-border);
+  padding:var(--space-3) var(--space-4);align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100}
+@media(max-width:768px){.mobile-header{display:flex}}
+.mobile-logo{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-primary);font-style:italic}
+
+/* ── THEME TOGGLE ── */
+.theme-toggle{width:36px;height:36px;border-radius:var(--radius-full);display:flex;
+  align-items:center;justify-content:center;color:var(--color-text-muted);
+  transition:all var(--transition);border:1px solid var(--color-border)}
+.theme-toggle:hover{background:var(--color-surface-2);color:var(--color-text)}
+
+/* ── INSIGHT CARD ── */
+.insight{background:var(--color-gold-hl);border:1px solid rgba(200,134,10,.2);
+  border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5)}
+.insight-header{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)}
+.insight-badge{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--color-gold)}
+.insight-text{font-size:var(--text-sm);color:var(--color-text);line-height:1.6;
+  font-style:italic;font-family:var(--font-display)}
+.insight-merlin{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 36 36" fill="none" aria-label="IVIA">
+        <circle cx="18" cy="18" r="17" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <path d="M18 8 C18 8, 26 14, 26 20 C26 25.5 22.5 28 18 28 C13.5 28 10 25.5 10 20 C10 14 18 8 18 8Z"
+              fill="var(--color-primary)" opacity=".15"/>
+        <path d="M18 12 C18 12, 23 16.5, 23 20.5 C23 23.5 20.8 25.5 18 25.5 C15.2 25.5 13 23.5 13 20.5 C13 16.5 18 12 18 12Z"
+              fill="var(--color-primary)" opacity=".4"/>
+        <circle cx="18" cy="20" r="3" fill="var(--color-primary)"/>
+      </svg>
+      <span class="logo-name">ivia</span>
+    </div>
+
+    <div class="user-card">
+      <div class="user-avatar">S</div>
+      <div>
+        <div class="user-name">Sophie M.</div>
+        <div class="user-since">Avec vous depuis 3 mois</div>
+      </div>
+    </div>
+
+    <nav class="nav-section">
+      <div class="nav-label">Mon espace</div>
+      <div class="nav-item active">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Tableau de bord
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
+        Check-in RGNR
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Journal
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Ressources
+      </div>
+    </nav>
+
+    <nav class="nav-section">
+      <div class="nav-label">Suivi</div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Mes séances
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Ma progression
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <button class="theme-toggle" data-theme-toggle aria-label="Changer le thème">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="display:flex;flex-direction:column;min-height:100dvh">
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <span class="mobile-logo">ivia</span>
+      <div style="display:flex;gap:var(--space-2)">
+        <button class="theme-toggle" data-theme-toggle aria-label="Thème">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- En-tête -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Bonjour, Sophie 🌿</h1>
+          <p class="page-subtitle">Jeudi 9 juillet 2026 · Semaine 12 de votre parcours</p>
+        </div>
+        <button class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Faire mon check-in
+        </button>
+      </div>
+
+      <!-- Check-in banner -->
+      <div class="checkin-card">
+        <div class="checkin-text">
+          <h3>Votre moment du jour</h3>
+          <p>Prendre soin de vous n'est pas un luxe — c'est une nécessité. 3 minutes suffisent pour calibrer votre journée.</p>
+          <button class="btn btn-primary" style="margin-top:var(--space-4)">Commencer le check-in RGNR</button>
+        </div>
+        <div class="checkin-streak">
+          <div class="streak-number">12</div>
+          <div class="streak-label">jours consécutifs</div>
+        </div>
+      </div>
+
+      <!-- RGNR Jauges -->
+      <section class="rgnr-section">
+        <div class="rgnr-header">
+          <h2 class="section-title">Votre équilibre RGNR</h2>
+          <span style="font-size:var(--text-xs);color:var(--color-text-muted)">Mis à jour aujourd'hui</span>
+        </div>
+        <div class="rgnr-grid">
+          <div class="rgnr-card rgnr-corps">
+            <div class="rgnr-card-header">
+              <span class="rgnr-axis-name">Corps</span>
+              <span class="rgnr-score">72</span>
+            </div>
+            <div class="rgnr-bar-track"><div class="rgnr-bar-fill" style="width:72%"></div></div>
+            <div class="rgnr-trend">Sommeil · Énergie · Mouvement<br><span>↑ +8 pts cette semaine</span></div>
+          </div>
+          <div class="rgnr-card rgnr-emotions">
+            <div class="rgnr-card-header">
+              <span class="rgnr-axis-name">Émotions</span>
+              <span class="rgnr-score">58</span>
+            </div>
+            <div class="rgnr-bar-track"><div class="rgnr-bar-fill" style="width:58%"></div></div>
+            <div class="rgnr-trend">Régulation · Sécurité · Joie<br><span style="color:var(--color-rgnr-emotions)">→ Stable</span></div>
+          </div>
+          <div class="rgnr-card rgnr-pensees">
+            <div class="rgnr-card-header">
+              <span class="rgnr-axis-name">Pensées</span>
+              <span class="rgnr-score">65</span>
+            </div>
+            <div class="rgnr-bar-track"><div class="rgnr-bar-fill" style="width:65%"></div></div>
+            <div class="rgnr-trend">Clarté · Focus · Ruminations<br><span>↑ +12 pts ce mois</span></div>
+          </div>
+          <div class="rgnr-card rgnr-env">
+            <div class="rgnr-card-header">
+              <span class="rgnr-axis-name">Environnement</span>
+              <span class="rgnr-score">81</span>
+            </div>
+            <div class="rgnr-bar-track"><div class="rgnr-bar-fill" style="width:81%"></div></div>
+            <div class="rgnr-trend">Relations · Espace · Limites<br><span>↑ Meilleur axe</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bento Grid -->
+      <div class="bento">
+
+        <!-- Insight MERLIN -->
+        <div class="bento-card col-8">
+          <div class="card-title">Insight MERLIN</div>
+          <div class="insight">
+            <div class="insight-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="insight-badge">MERLIN · Analyse de séance</span>
+            </div>
+            <p class="insight-text">« Lors de votre dernière séance, vous avez mentionné une fatigue décisionnelle. Votre axe Corps a progressé — votre cerveau suit le même chemin que votre corps. La rumination du soir est votre principal signal d'alarme cette semaine. »</p>
+            <p class="insight-merlin">Généré après la séance du 7 juillet · Praticien : Dr. A. Fortin</p>
+          </div>
+        </div>
+
+        <!-- Prochain RDV -->
+        <div class="bento-card col-4">
+          <div class="card-title">Prochain rendez-vous</div>
+          <div class="rdv-card">
+            <div class="rdv-date">
+              <div class="rdv-day-block">
+                <div class="rdv-day-num">14</div>
+                <div class="rdv-day-name">Juil</div>
+              </div>
+              <div class="rdv-details">
+                <div class="rdv-title">Séance individuelle</div>
+                <div class="rdv-meta">14h00 – 15h00 · Visio</div>
+              </div>
+            </div>
+            <div class="rdv-praticien">
+              <div class="prat-avatar">AF</div>
+              Dr. Amélie Fortin, Psychologue
+            </div>
+            <button class="btn btn-ghost" style="width:100%;justify-content:center">Préparer ma séance</button>
+          </div>
+        </div>
+
+        <!-- Évolution 7 jours -->
+        <div class="bento-card col-6">
+          <div class="card-title">Évolution sur 7 jours</div>
+          <div class="chart-wrap">
+            <div class="chart-bars" id="chart-bars"></div>
+            <div class="chart-axis" id="chart-axis"></div>
+          </div>
+        </div>
+
+        <!-- Ressources recommandées -->
+        <div class="bento-card col-6">
+          <div class="card-title">Ressources recommandées par MERLIN</div>
+          <div class="resource-list">
+            <div class="resource-item">
+              <span class="resource-tag tag-tcc">TCC</span>
+              <span class="resource-title">Identifier les pensées automatiques</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="resource-item">
+              <span class="resource-tag tag-dbt">DBT</span>
+              <span class="resource-title">Tolérance à la détresse · Fiche pratique</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="resource-item">
+              <span class="resource-tag tag-act">ACT</span>
+              <span class="resource-title">Défusion cognitive — 5 exercices</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parcours RGNR -->
+        <div class="bento-card col-5">
+          <div class="card-title">Mon parcours cette semaine</div>
+          <div class="timeline">
+            <div class="timeline-item done">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Lundi</div>
+                <div class="timeline-text">Check-in RGNR complété</div>
+                <div class="timeline-time">Score global : 69/100</div>
+              </div>
+            </div>
+            <div class="timeline-item done">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Mercredi</div>
+                <div class="timeline-text">Séance avec Dr. Fortin</div>
+                <div class="timeline-time">Analyse MERLIN disponible</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Aujourd'hui</div>
+                <div class="timeline-text">Check-in du soir recommandé</div>
+                <div class="timeline-time">Durée estimée : 3 min</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-label">Lundi prochain</div>
+                <div class="timeline-text">Exercice : Hygiène du sommeil</div>
+                <div class="timeline-time">Ressource DBT pré-chargée</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Micro-pratique -->
+        <div class="bento-card col-7" style="background:var(--color-primary-hl);border-color:rgba(26,107,58,.2)">
+          <div class="card-title" style="color:var(--color-primary)">Micro-pratique du jour</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap">
+            <div>
+              <h3 style="font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;margin-bottom:var(--space-2)">Respiration 4-7-8</h3>
+              <p style="font-size:var(--text-sm);color:var(--color-text-muted);max-width:36ch">Inspirez 4s · Retenez 7s · Expirez 8s. Répétez 4 fois. Réduit l'activation du système nerveux en moins de 3 minutes.</p>
+              <div style="display:flex;gap:var(--space-2);margin-top:var(--space-3)">
+                <span style="font-size:var(--text-xs);background:var(--color-surface);padding:2px 8px;border-radius:var(--radius-full);color:var(--color-text-muted)">Corps</span>
+                <span style="font-size:var(--text-xs);background:var(--color-surface);padding:2px 8px;border-radius:var(--radius-full);color:var(--color-text-muted)">3 min</span>
+                <span style="font-size:var(--text-xs);background:var(--color-surface);padding:2px 8px;border-radius:var(--radius-full);color:var(--color-text-muted)">Anxiété</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="flex-shrink:0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Démarrer
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Mobile nav -->
+    <nav class="mobile-nav">
+      <div class="mobile-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Accueil
+      </div>
+      <div class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3s9 4.03 9 9z"/></svg>
+        Check-in
+      </div>
+      <div class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Ressources
+      </div>
+      <div class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Séances
+      </div>
+      <div class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0114 0v2"/></svg>
+        Profil
+      </div>
+    </nav>
+  </div>
+</div>
+
+<script>
+(function(){
+  const toggles=document.querySelectorAll('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  toggles.forEach(t=>t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);
+  }));
+})();
+
+// Chart
+const days=['L','M','M','J','V','S','D'];
+const vals=[62,0,75,0,69,72,68];
+const today=6;
+const bars=document.getElementById('chart-bars');
+const axis=document.getElementById('chart-axis');
+days.forEach((day,i)=>{
+  const bar=document.createElement('div');
+  bar.className='chart-bar'+(i===today?' today':'');
+  bar.style.height=(vals[i]||8)+'%';
+  if(!vals[i])bar.style.opacity='.2';
+  bars.appendChild(bar);
+  const lbl=document.createElement('span');
+  lbl.textContent=day;axis.appendChild(lbl);
+});
+
+// Animate bars on load
+setTimeout(()=>{
+  document.querySelectorAll('.rgnr-bar-fill').forEach(b=>{
+    const w=b.style.width;b.style.width='0';
+    setTimeout(()=>{b.style.width=w;},100);
+  });
+},200);
+</script>
+</body>
+</html>

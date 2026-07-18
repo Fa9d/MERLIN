@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import EmailStr
+from pydantic import EmailStr, Field
 
 from app.models.enums import DataSensitivityClass, RecordStatus
 from app.schemas.common import MerlinSchema, TimestampedReadSchema
@@ -31,6 +31,13 @@ class MyClientUpdate(MerlinSchema):
     birth_year: int | None = None
     gender_identity: str | None = None
     birthplace: str | None = None
+
+
+class ClientEmailSend(MerlinSchema):
+    """Courriel libre envoyé par un praticien à son client depuis la fiche."""
+
+    subject: str = Field(min_length=1, max_length=150)
+    message: str = Field(min_length=1, max_length=4000)
 
 
 class ClientRead(TimestampedReadSchema):

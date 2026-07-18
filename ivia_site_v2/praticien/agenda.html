@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <script src="/shared/session.js?v=20260711a"></script>
+  <script src="/shared/session.js?v=20260718a"></script>
   <script>requireAuth();</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,6 +18,8 @@
     .sidebar-link.active{font-weight:700;}
     /* Grille calendrier */
     #cal-grid{display:grid;grid-template-columns:48px repeat(7,1fr);min-width:620px;}
+    /* Vue jour : une seule colonne, aucune largeur minimale — pensée téléphone */
+    #cal-grid.vue-jour{grid-template-columns:48px 1fr;min-width:0;}
     .cal-header{font-size:12px;font-weight:700;text-align:center;padding:6px 2px;color:#4B6350;border-bottom:1.5px solid #D4E8D0;}
     .cal-time{font-size:11px;color:#8FB99A;text-align:right;padding-right:8px;height:40px;line-height:40px;border-bottom:1px solid #F0F7F2;}
     .cal-cell{height:40px;border-bottom:1px solid #F0F7F2;border-left:1px solid #F0F7F2;cursor:pointer;position:relative;transition:background .1s;}
@@ -59,16 +62,17 @@
         <div class="flex items-center gap-4">
           <h1 class="font-heading text-2xl font-bold text-ink">Agenda</h1>
           <div class="flex rounded-[10px] overflow-hidden" role="tablist" aria-label="Vue">
-            <button id="vue-semaine-btn" class="vue-btn active rounded-l-[10px]" onclick="basculerVue('semaine')">Semaine</button>
+            <button id="vue-jour-btn" class="vue-btn rounded-l-[10px]" onclick="basculerVue('jour')">Jour</button>
+            <button id="vue-semaine-btn" class="vue-btn active border-l-0" onclick="basculerVue('semaine')">Semaine</button>
             <button id="vue-mois-btn" class="vue-btn rounded-r-[10px] border-l-0" onclick="basculerVue('mois')">Mois</button>
           </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
           <button id="btn-prev" onclick="changerSemaine(-1)"
                   class="w-8 h-8 flex items-center justify-center border border-bdr rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
           </button>
-          <span id="semaine-label" class="text-sm font-semibold text-ink min-w-[180px] text-center"></span>
+          <span id="semaine-label" class="text-sm font-semibold text-ink min-w-[140px] sm:min-w-[180px] text-center"></span>
           <button id="btn-next" onclick="changerSemaine(1)"
                   class="w-8 h-8 flex items-center justify-center border border-bdr rounded-[8px] hover:bg-surface transition-colors cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
@@ -119,7 +123,7 @@
           <div class="flex items-center gap-4 mt-4 text-xs text-muted">
             <span class="flex items-center gap-1.5"><span class="jauge-dot bg-[#4A7C59] inline-block"></span>Disponible</span>
             <span class="flex items-center gap-1.5"><span class="jauge-dot bg-[#2D6A4F] inline-block" style="background:#1d4433"></span>Réservé</span>
-            <span class="ml-auto">Cliquer un jour ouvre sa semaine.</span>
+            <span class="ml-auto">Cliquer un jour ouvre son horaire.</span>
           </div>
         </div>
       </div>
@@ -161,7 +165,10 @@
     async function chargerCreneaux() {
       slotStates = {};
       exceptionByKey = {};
-      const { from, to } = getWeekBounds(currentWeekOffset);
+      // Bornes selon la vue : un seul jour en vue Jour, la semaine sinon.
+      const { from, to } = (vueActive === 'jour')
+        ? (() => { const d = isoDate(getJourCourant()); return { from: d, to: d }; })()
+        : getWeekBounds(currentWeekOffset);
       const user = getCurrentUser();
       const praticienId = user?.id;
 
@@ -223,7 +230,15 @@
 
     renderPraticienChrome();
     let currentWeekOffset = 0;
+    let currentDayOffset = 0;
     let activeCell = null;
+
+    function getJourCourant() {
+      const d = new Date();
+      d.setDate(d.getDate() + currentDayOffset);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
 
     function getMondayOfWeek(offset = 0) {
       const now = new Date();
@@ -240,30 +255,44 @@
     }
 
     function buildCalendar() {
-      const monday = getMondayOfWeek(currentWeekOffset);
-      const weekDays = Array.from({length:7}, (_,i) => {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
-        return d;
-      });
+      // Vue Jour : une seule colonne ; vue Semaine : lundi → dimanche.
+      let jours;
+      if (vueActive === 'jour') {
+        jours = [getJourCourant()];
+      } else {
+        const monday = getMondayOfWeek(currentWeekOffset);
+        jours = Array.from({length:7}, (_,i) => {
+          const d = new Date(monday);
+          d.setDate(monday.getDate() + i);
+          return d;
+        });
+      }
 
-      // Label semaine
-      const fmt = (d) => d.toLocaleDateString('fr-CA', {day:'numeric', month:'short'});
-      document.getElementById('semaine-label').textContent = `${fmt(weekDays[0])} — ${fmt(weekDays[6])} 2026`;
+      // Label de navigation
+      if (vueActive === 'jour') {
+        const lbl = jours[0].toLocaleDateString('fr-CA', { weekday: 'long', day: 'numeric', month: 'long' });
+        document.getElementById('semaine-label').textContent = lbl.charAt(0).toUpperCase() + lbl.slice(1);
+      } else {
+        const fmt = (d) => d.toLocaleDateString('fr-CA', {day:'numeric', month:'short'});
+        document.getElementById('semaine-label').textContent =
+          `${fmt(jours[0])} — ${fmt(jours[6])} ${jours[6].getFullYear()}`;
+      }
 
       const grid = document.getElementById('cal-grid');
+      grid.classList.toggle('vue-jour', vueActive === 'jour');
       grid.innerHTML = '';
 
       // Header row
       const cornerCell = document.createElement('div');
       cornerCell.className = 'cal-header';
       grid.appendChild(cornerCell);
-      weekDays.forEach((d, i) => {
+      const nomJour = (d) => DAYS[(d.getDay() + 6) % 7];
+      jours.forEach((d) => {
         const h = document.createElement('div');
         h.className = 'cal-header';
         const today = new Date(); today.setHours(0,0,0,0);
         const isToday = d.getTime() === today.getTime();
-        h.innerHTML = `<span class="${isToday ? 'text-forest-deep font-bold' : ''}">${DAYS[i]}<br><span class="font-normal">${d.getDate()}</span></span>`;
+        h.innerHTML = `<span class="${isToday ? 'text-forest-deep font-bold' : ''}">${nomJour(d)}<br><span class="font-normal">${d.getDate()}</span></span>`;
         grid.appendChild(h);
       });
 
@@ -280,7 +309,7 @@
           grid.appendChild(timeCell);
 
           // Colonnes jours
-          weekDays.forEach(day => {
+          jours.forEach(day => {
             const key = `${isoDate(day)}_${timeStr}`;
             const state = slotStates[key] || 'libre';
             const cell = document.createElement('div');
@@ -310,11 +339,25 @@
 
     }
 
-    function changerSemaine(delta) {
-      currentWeekOffset += delta;
-      chargerCreneaux().then(() => buildCalendar());
+    // Redessine tout de suite (la grille répond au doigt), puis rafraîchit les
+    // créneaux ; le jeton évite qu'une réponse lente écrase une navigation plus récente.
+    let _chargementSeq = 0;
+    function rafraichirGrille() {
+      buildCalendar();
+      const seq = ++_chargementSeq;
+      chargerCreneaux().then(() => { if (seq === _chargementSeq) buildCalendar(); });
     }
-    function allerAujourdhui() { currentWeekOffset = 0; chargerCreneaux().then(() => buildCalendar()); }
+
+    function changerSemaine(delta) {
+      if (vueActive === 'jour') currentDayOffset += delta;
+      else currentWeekOffset += delta;
+      rafraichirGrille();
+    }
+    function allerAujourdhui() {
+      currentWeekOffset = 0;
+      currentDayOffset = 0;
+      rafraichirGrille();
+    }
 
     function ouvrirModal(cell, currentState) {
       activeCell = cell;
@@ -410,17 +453,24 @@
       if (e.target === e.currentTarget) fermerModal();
     });
 
-    // ===== VUE MENSUELLE (lecture d'ensemble — la gestion reste en semaine) =====
-    let vueActive = 'semaine';
+    // ===== VUES : Jour / Semaine / Mois (comme le journal côté client) =====
+    // Défaut : Jour sur téléphone (la grille de 7 jours y est trop dense), Semaine sinon.
+    let vueActive = window.matchMedia('(max-width: 639px)').matches ? 'jour' : 'semaine';
     let moisVueDate = new Date(); // 1er du mois affiché
 
     function basculerVue(vue) {
       vueActive = vue;
+      document.getElementById('vue-jour-btn').classList.toggle('active', vue === 'jour');
       document.getElementById('vue-semaine-btn').classList.toggle('active', vue === 'semaine');
       document.getElementById('vue-mois-btn').classList.toggle('active', vue === 'mois');
-      document.getElementById('semaine-vue').classList.toggle('hidden', vue !== 'semaine');
+      // Jour et Semaine partagent la même grille de créneaux (#semaine-vue).
+      document.getElementById('semaine-vue').classList.toggle('hidden', vue === 'mois');
       document.getElementById('mois-vue').classList.toggle('hidden', vue !== 'mois');
+      document.getElementById('btn-prev').classList.toggle('hidden', vue === 'mois');
+      document.getElementById('btn-next').classList.toggle('hidden', vue === 'mois');
+      document.getElementById('semaine-label').classList.toggle('hidden', vue === 'mois');
       if (vue === 'mois') chargerMoisVue();
+      else rafraichirGrille();
     }
 
     function changerMoisVue(delta) {
@@ -484,8 +534,15 @@
     }
 
     function ouvrirSemaineDe(iso) {
-      // offset de semaine entre le lundi courant et le lundi du jour cliqué
       const cible = new Date(iso + 'T12:00:00');
+      // Sur téléphone, un jour cliqué dans le mois ouvre sa vue Jour ; sinon sa semaine.
+      if (window.matchMedia('(max-width: 639px)').matches) {
+        const aujourdhui = new Date(); aujourdhui.setHours(12, 0, 0, 0);
+        currentDayOffset = Math.round((cible - aujourdhui) / (24 * 3600 * 1000));
+        basculerVue('jour');
+        return;
+      }
+      // offset de semaine entre le lundi courant et le lundi du jour cliqué
       const day = cible.getDay();
       const lundiCible = new Date(cible);
       lundiCible.setDate(cible.getDate() + (day === 0 ? -6 : 1 - day));
@@ -493,11 +550,11 @@
       const lundiCourant = getMondayOfWeek(0);
       currentWeekOffset = Math.round((lundiCible - lundiCourant) / (7 * 24 * 3600 * 1000));
       basculerVue('semaine');
-      chargerCreneaux().then(() => buildCalendar());
     }
 
-    // Init : charger les créneaux réels PUIS dessiner (currentWeekOffset déjà déclaré ici).
-    chargerCreneaux().then(() => buildCalendar());
+    // Init : pose la vue par défaut (Jour sur téléphone, Semaine sinon),
+    // charge les créneaux réels puis dessine.
+    basculerVue(vueActive);
   </script>
 
 </body>

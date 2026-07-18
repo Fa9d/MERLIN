@@ -86,5 +86,5 @@ partenaires · mise en marché pilote Montréal · dossier RS&DE.
 
 ---
 
-*Documents disponibles sur demande : plan d'affaires complet (BP v2.3), pitch deck,
+*Documents disponibles sur demande : plan d'affaires complet (BP v2.4), pitch deck,
 modèle de valorisation, cadre de propriété intellectuelle, plan d'intégration 36 mois.*

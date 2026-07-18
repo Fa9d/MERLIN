@@ -3,7 +3,7 @@
 **Version** : v1.0 — 2026-06-18
 **Statut** : DRAFT à valider (chiffres = estimations à confirmer avec le fournisseur retenu)
 **Périmètre** : sauvegarde chiffrée · portabilité · droit à l'effacement
-**Rattachement** : complète `IVIA_BP_FINANCEMENT_v2.3` et le modèle de ventilation
+**Rattachement** : complète `IVIA_BP_FINANCEMENT_v2.4` et le modèle de ventilation
 comptable (`admin_accounting.py` : HT/TPS/TVQ/frais_stripe/cout_ia/part_praticien/marge).
 
 ---

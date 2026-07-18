@@ -213,7 +213,10 @@ function renderPraticienChrome() {
     document.body.prepend(bar);
     const panel = document.createElement('div');
     panel.id = 'praticien-menu-panel';
-    panel.className = 'lg:hidden hidden fixed top-12 right-3 z-40 bg-white border border-bdr rounded-[14px] shadow-lg py-2 w-60';
+    // max-height + défilement : en paysage téléphone, le menu dépassait l'écran
+    // et les derniers liens (profil, compte, déconnexion) étaient inatteignables.
+    panel.className = 'lg:hidden hidden fixed top-12 right-3 z-40 bg-white border border-bdr rounded-[14px] shadow-lg py-2 w-60 overflow-y-auto';
+    panel.style.maxHeight = 'calc(100dvh - 4rem)';
     panel.innerHTML = PRATICIEN_NAV.map(l => {
       if (l.spacer) return '<hr class="my-1 border-bdr">';
       const extra = l.adminOnly ? ' data-admin-only="1"' : '';

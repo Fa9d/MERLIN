@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVIA — Espace Praticien · MERLIN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f2f4f7;--color-surface:#ffffff;--color-surface-2:#f5f7fa;
+  --color-surface-offset:#eceef3;--color-border:rgba(20,40,80,.1);
+  --color-text:#1a2030;--color-text-muted:#5a6880;--color-text-faint:#9aaaba;
+  --color-primary:#1a4a8a;--color-primary-hover:#123870;--color-primary-hl:#dce8f8;
+  --color-gold:#c87a0a;--color-gold-hl:#fdf0d4;
+  --color-alert:#c8380a;--color-alert-hl:#fde8e0;
+  --color-ok:#1a7a3a;--color-ok-hl:#d8f0e0;
+  --color-warn:#b87a00;--color-warn-hl:#fdf4d0;
+  --color-rgnr-corps:#2e7d5c;--color-rgnr-emotions:#8b4a9c;
+  --color-rgnr-pensees:#1a6b8a;--color-rgnr-env:#c8860a;
+  --shadow-sm:0 1px 3px rgba(10,20,60,.06);--shadow-md:0 4px 16px rgba(10,20,60,.08);
+  --shadow-lg:0 12px 40px rgba(10,20,60,.12);
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --font-display:'DM Serif Display',Georgia,serif;--font-body:'DM Sans','Helvetica Neue',sans-serif;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#0d1220;--color-surface:#131925;--color-surface-2:#18202e;
+  --color-surface-offset:#1e2838;--color-border:rgba(80,120,200,.1);
+  --color-text:#c8d4e8;--color-text-muted:#6880a8;--color-text-faint:#3a4a68;
+  --color-primary:#5a88d8;--color-primary-hover:#4070c0;--color-primary-hl:#1a2840;
+  --color-gold:#e8a030;--color-gold-hl:#2a1e08;
+  --color-alert:#e86040;--color-alert-hl:#2a1208;
+  --color-ok:#40c870;--color-ok-hl:#0a2018;
+  --color-warn:#d8a020;--color-warn-hl:#201808;
+  --color-rgnr-corps:#4db88a;--color-rgnr-emotions:#c47ad8;
+  --color-rgnr-pensees:#4aa8c8;--color-rgnr-env:#e8a830;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 12px 40px rgba(0,0,0,.5);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);
+  color:var(--color-text);background:var(--color-bg);line-height:1.6}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+a,button,[role="button"]{transition:all var(--transition)}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100dvh}
+@media(max-width:900px){.app{grid-template-columns:1fr}}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--color-surface);border-right:1px solid var(--color-border);
+  padding:var(--space-5) var(--space-4);display:flex;flex-direction:column;gap:var(--space-5);
+  position:sticky;top:0;height:100dvh;overflow-y:auto}
+@media(max-width:900px){.sidebar{display:none}}
+
+.logo{display:flex;align-items:center;gap:var(--space-2)}
+.logo-name{font-family:var(--font-display);font-size:var(--text-base);color:var(--color-primary);font-style:italic}
+.logo-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  background:var(--color-primary-hl);color:var(--color-primary);
+  padding:2px 6px;border-radius:var(--radius-full);margin-left:var(--space-1)}
+
+.prat-card{background:var(--color-surface-2);border-radius:var(--radius-lg);
+  padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3)}
+.prat-avatar{width:40px;height:40px;border-radius:var(--radius-full);
+  background:var(--color-primary-hl);display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:var(--text-sm);color:var(--color-primary);flex-shrink:0}
+.prat-name{font-size:var(--text-sm);font-weight:700;line-height:1.2}
+.prat-role{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+.nav-section{display:flex;flex-direction:column;gap:var(--space-1)}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--color-text-faint);padding:var(--space-2) var(--space-3);font-weight:700}
+.nav-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);
+  border-radius:var(--radius-md);font-size:var(--text-sm);color:var(--color-text-muted);cursor:pointer}
+.nav-item:hover{background:var(--color-surface-2);color:var(--color-text)}
+.nav-item.active{background:var(--color-primary-hl);color:var(--color-primary);font-weight:600}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--color-alert);color:#fff;
+  font-size:10px;font-weight:700;padding:1px 6px;border-radius:var(--radius-full)}
+
+.theme-toggle{width:32px;height:32px;border-radius:var(--radius-full);display:flex;
+  align-items:center;justify-content:center;color:var(--color-text-muted);
+  border:1px solid var(--color-border)}
+.theme-toggle:hover{background:var(--color-surface-2)}
+
+/* ── MAIN ── */
+.main{display:flex;flex-direction:column;min-height:100dvh;overflow:hidden}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--color-surface);border-bottom:1px solid var(--color-border);
+  padding:var(--space-3) var(--space-6);display:flex;align-items:center;
+  justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;flex-shrink:0}
+.topbar-title{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic}
+.topbar-actions{display:flex;align-items:center;gap:var(--space-3)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);
+  border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;cursor:pointer;border:none}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md)}
+.btn-ghost{background:transparent;border:1px solid var(--color-border);color:var(--color-text-muted)}
+.btn-ghost:hover{background:var(--color-surface-2);color:var(--color-text)}
+.btn-alert{background:var(--color-alert-hl);color:var(--color-alert);border:1px solid rgba(200,56,10,.2)}
+.btn-alert:hover{background:var(--color-alert);color:#fff}
+
+/* ── CONTENT AREA ── */
+.content{padding:var(--space-6) var(--space-6);flex:1;overflow-y:auto;
+  display:flex;flex-direction:column;gap:var(--space-6)}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4)}
+@media(max-width:1100px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}}
+.kpi-card{background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm)}
+.kpi-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--color-text-muted);margin-bottom:var(--space-2)}
+.kpi-value{font-family:var(--font-display);font-size:var(--text-xl);font-style:italic;line-height:1}
+.kpi-delta{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-1)}
+.kpi-delta.up{color:var(--color-ok)}
+.kpi-delta.down{color:var(--color-alert)}
+.kpi-dot{width:8px;height:8px;border-radius:var(--radius-full);display:inline-block;margin-right:4px}
+
+/* ── BENTO ── */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--space-4)}
+@media(max-width:900px){.bento{grid-template-columns:1fr}}
+.card{background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm)}
+.card:hover{box-shadow:var(--shadow-md);transition:box-shadow var(--transition)}
+.col-4{grid-column:span 4}.col-5{grid-column:span 5}.col-6{grid-column:span 6}
+.col-7{grid-column:span 7}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+@media(max-width:900px){.col-4,.col-5,.col-6,.col-7,.col-8,.col-12{grid-column:span 1}}
+.card-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--color-text-muted);margin-bottom:var(--space-4)}
+.card-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)}
+
+/* ── CLIENT LIST ── */
+.client-list{display:flex;flex-direction:column;gap:var(--space-2)}
+.client-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);
+  border-radius:var(--radius-lg);cursor:pointer;transition:all var(--transition)}
+.client-row:hover{background:var(--color-surface-2)}
+.client-row.selected{background:var(--color-primary-hl)}
+.client-avatar{width:36px;height:36px;border-radius:var(--radius-full);
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+  font-size:var(--text-sm);flex-shrink:0}
+.client-info{flex:1;min-width:0}
+.client-name{font-size:var(--text-sm);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.client-meta{font-size:var(--text-xs);color:var(--color-text-muted)}
+.client-score{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;flex-shrink:0}
+.alert-dot{width:8px;height:8px;border-radius:var(--radius-full);background:var(--color-alert);flex-shrink:0}
+.ok-dot{width:8px;height:8px;border-radius:var(--radius-full);background:var(--color-ok);flex-shrink:0}
+.warn-dot{width:8px;height:8px;border-radius:var(--radius-full);background:var(--color-warn);flex-shrink:0}
+
+/* ── CLIENT DETAIL ── */
+.client-detail-header{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-5)}
+.client-detail-avatar{width:52px;height:52px;border-radius:var(--radius-full);
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+  font-size:var(--text-lg);background:var(--color-primary-hl);color:var(--color-primary)}
+.client-detail-name{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;margin-bottom:4px}
+.client-detail-meta{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+.rgnr-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);margin-bottom:var(--space-4)}
+.rgnr-mini{padding:var(--space-3);border-radius:var(--radius-md);background:var(--color-surface-2)}
+.rgnr-mini-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.rgnr-mini-bar{height:4px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;margin-bottom:4px}
+.rgnr-mini-fill{height:100%;border-radius:var(--radius-full)}
+.rgnr-mini-score{font-size:var(--text-sm);font-weight:700}
+
+/* ── MERLIN ANALYSIS ── */
+.merlin-block{background:var(--color-gold-hl);border:1px solid rgba(200,122,10,.15);
+  border-radius:var(--radius-lg);padding:var(--space-4)}
+.merlin-header{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-3)}
+.merlin-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--color-gold)}
+.merlin-text{font-size:var(--text-sm);color:var(--color-text);line-height:1.7;
+  font-family:var(--font-display);font-style:italic;margin-bottom:var(--space-3)}
+.merlin-tags{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.merlin-tag{padding:2px 8px;border-radius:var(--radius-full);font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;background:var(--color-surface);color:var(--color-text-muted)}
+
+/* ── ALERT ── */
+.alert-card{background:var(--color-alert-hl);border:1px solid rgba(200,56,10,.2);
+  border-radius:var(--radius-lg);padding:var(--space-4);display:flex;gap:var(--space-3);align-items:flex-start}
+.alert-icon{color:var(--color-alert);flex-shrink:0;margin-top:2px}
+.alert-title{font-size:var(--text-sm);font-weight:700;color:var(--color-alert);margin-bottom:2px}
+.alert-desc{font-size:var(--text-xs);color:var(--color-text-muted)}
+
+/* ── SÉANCE NOTES ── */
+.session-list{display:flex;flex-direction:column;gap:var(--space-3)}
+.session-item{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3);
+  border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface-2)}
+.session-date{text-align:center;min-width:40px;flex-shrink:0}
+.session-day{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;line-height:1;color:var(--color-primary)}
+.session-month{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted)}
+.session-content{flex:1}
+.session-title{font-size:var(--text-sm);font-weight:700}
+.session-excerpt{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.session-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:var(--space-2)}
+.s-tag{padding:1px 6px;border-radius:var(--radius-full);font-size:10px;font-weight:700;
+  background:var(--color-surface);color:var(--color-text-muted)}
+
+/* ── PIPELINE STATUS ── */
+.pipeline-row{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.pipeline-step{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);
+  flex:1;min-width:80px}
+.pipeline-node{width:44px;height:44px;border-radius:var(--radius-full);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--text-sm)}
+.pipeline-node.done{background:var(--color-ok-hl);color:var(--color-ok);border:2px solid var(--color-ok)}
+.pipeline-node.active{background:var(--color-primary-hl);color:var(--color-primary);
+  border:2px solid var(--color-primary);animation:pulse 2s infinite}
+.pipeline-node.pending{background:var(--color-surface-2);color:var(--color-text-faint);border:2px solid var(--color-border)}
+.pipeline-label{font-size:10px;text-align:center;color:var(--color-text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.pipeline-arrow{color:var(--color-text-faint);flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(26,74,138,.3)}50%{box-shadow:0 0 0 8px rgba(26,74,138,0)}}
+
+/* ── CALENDAR MINI ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
+.cal-month{font-weight:700;font-size:var(--text-sm)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-size:var(--text-xs)}
+.cal-day-label{text-align:center;color:var(--color-text-faint);font-weight:600;text-transform:uppercase;font-size:10px;padding-bottom:var(--space-2)}
+.cal-day{text-align:center;padding:4px;border-radius:var(--radius-sm);cursor:pointer;color:var(--color-text-muted)}
+.cal-day:hover{background:var(--color-surface-2)}
+.cal-day.has-session{background:var(--color-primary-hl);color:var(--color-primary);font-weight:700}
+.cal-day.today{background:var(--color-primary);color:#fff;font-weight:700}
+.cal-day.empty{opacity:0}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="17" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <path d="M18 8 C18 8, 26 14, 26 20 C26 25.5 22.5 28 18 28 C13.5 28 10 25.5 10 20 C10 14 18 8 18 8Z" fill="var(--color-primary)" opacity=".15"/>
+        <path d="M18 12 C18 12, 23 16.5, 23 20.5 C23 23.5 20.8 25.5 18 25.5 C15.2 25.5 13 23.5 13 20.5 C13 16.5 18 12 18 12Z" fill="var(--color-primary)" opacity=".4"/>
+        <circle cx="18" cy="20" r="3" fill="var(--color-primary)"/>
+      </svg>
+      <span class="logo-name">ivia</span>
+      <span class="logo-badge">Praticien</span>
+    </div>
+
+    <div class="prat-card">
+      <div class="prat-avatar">AF</div>
+      <div>
+        <div class="prat-name">Dr. A. Fortin</div>
+        <div class="prat-role">Psychologue clinicienne</div>
+      </div>
+    </div>
+
+    <nav class="nav-section">
+      <div class="nav-label">Tableau de bord</div>
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Vue globale
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Mes clients
+        <span class="nav-badge" style="background:var(--color-alert)">1</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Agenda
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Alertes MERLIN
+        <span class="nav-badge">2</span>
+      </div>
+    </nav>
+
+    <nav class="nav-section">
+      <div class="nav-label">MERLIN</div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Pipeline audio
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Ressources cliniques
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <button class="theme-toggle" data-theme-toggle aria-label="Thème">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-title">Bonjour Dr. Fortin — Jeudi 9 juillet</div>
+      <div class="topbar-actions">
+        <button class="btn btn-alert">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          1 alerte client
+        </button>
+        <button class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Nouvelle séance
+        </button>
+        <button class="theme-toggle" data-theme-toggle aria-label="Thème">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Clients actifs</div>
+          <div class="kpi-value" style="color:var(--color-primary)">12</div>
+          <div class="kpi-delta up">↑ 2 ce mois</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Séances ce mois</div>
+          <div class="kpi-value" style="color:var(--color-primary)">28</div>
+          <div class="kpi-delta">Prochain : 14 juillet 14h</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Score RGNR moyen</div>
+          <div class="kpi-value" style="color:var(--color-ok)">68.4</div>
+          <div class="kpi-delta up">↑ +4.2 vs mois passé</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Alertes actives</div>
+          <div class="kpi-value" style="color:var(--color-alert)">1</div>
+          <div class="kpi-delta down">Chute axe Émotions — M. Tremblay</div>
+        </div>
+      </div>
+
+      <!-- Alerte -->
+      <div class="alert-card">
+        <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>
+          <div class="alert-title">MERLIN · Alerte axe Émotions — Marc T.</div>
+          <div class="alert-desc">Chute de 18 points sur 5 jours (72 → 54). Dernier check-in : absence de check-in depuis 4 jours. Recommandation : contact préventif avant la prochaine séance du 15 juillet.</div>
+          <div style="display:flex;gap:var(--space-2);margin-top:var(--space-3)">
+            <button class="btn btn-alert" style="font-size:var(--text-xs);padding:4px 12px">Contacter Marc</button>
+            <button class="btn btn-ghost" style="font-size:var(--text-xs);padding:4px 12px">Voir profil</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento principale -->
+      <div class="bento">
+
+        <!-- Liste clients -->
+        <div class="card col-4">
+          <div class="card-title-row">
+            <div class="card-title">Clients</div>
+            <button class="btn btn-ghost" style="font-size:var(--text-xs);padding:2px 10px">Tous voir</button>
+          </div>
+          <div class="client-list">
+            <div class="client-row selected">
+              <div class="client-avatar" style="background:var(--color-primary-hl);color:var(--color-primary)">SM</div>
+              <div class="client-info">
+                <div class="client-name">Sophie M.</div>
+                <div class="client-meta">RDV 14 juil · 14h</div>
+              </div>
+              <div class="client-score" style="color:var(--color-primary)">69</div>
+              <div class="ok-dot"></div>
+            </div>
+            <div class="client-row">
+              <div class="client-avatar" style="background:var(--color-alert-hl);color:var(--color-alert)">MT</div>
+              <div class="client-info">
+                <div class="client-name">Marc T.</div>
+                <div class="client-meta">Alerte émotions</div>
+              </div>
+              <div class="client-score" style="color:var(--color-alert)">54</div>
+              <div class="alert-dot"></div>
+            </div>
+            <div class="client-row">
+              <div class="client-avatar" style="background:var(--color-gold-hl);color:var(--color-gold)">JL</div>
+              <div class="client-info">
+                <div class="client-name">Julie L.</div>
+                <div class="client-meta">RDV 17 juil · 10h</div>
+              </div>
+              <div class="client-score" style="color:var(--color-warn)">61</div>
+              <div class="warn-dot"></div>
+            </div>
+            <div class="client-row">
+              <div class="client-avatar" style="background:var(--color-ok-hl);color:var(--color-ok)">PD</div>
+              <div class="client-info">
+                <div class="client-name">Paul D.</div>
+                <div class="client-meta">RDV 21 juil · 9h</div>
+              </div>
+              <div class="client-score" style="color:var(--color-ok)">78</div>
+              <div class="ok-dot"></div>
+            </div>
+            <div class="client-row">
+              <div class="client-avatar" style="background:var(--color-primary-hl);color:var(--color-primary)">LB</div>
+              <div class="client-info">
+                <div class="client-name">Lena B.</div>
+                <div class="client-meta">RDV 22 juil · 15h</div>
+              </div>
+              <div class="client-score" style="color:var(--color-primary)">73</div>
+              <div class="ok-dot"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profil client sélectionné -->
+        <div class="card col-8">
+          <div class="client-detail-header">
+            <div style="display:flex;align-items:center;gap:var(--space-4)">
+              <div class="client-detail-avatar">SM</div>
+              <div>
+                <div class="client-detail-name">Sophie Marchand</div>
+                <div class="client-detail-meta">35 ans · Suivi depuis avril 2026 · 12 séances · Prochain RDV : 14 juillet</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:var(--space-2)">
+              <button class="btn btn-primary" style="font-size:var(--text-xs)">Préparer la séance</button>
+              <button class="btn btn-ghost" style="font-size:var(--text-xs)">Notes</button>
+            </div>
+          </div>
+
+          <!-- RGNR mini -->
+          <div class="rgnr-mini-grid">
+            <div class="rgnr-mini">
+              <div class="rgnr-mini-label" style="color:var(--color-rgnr-corps)">Corps</div>
+              <div class="rgnr-mini-bar"><div class="rgnr-mini-fill" style="width:72%;background:var(--color-rgnr-corps)"></div></div>
+              <div class="rgnr-mini-score" style="color:var(--color-rgnr-corps)">72 <span style="font-size:10px;color:var(--color-ok)">↑+8</span></div>
+            </div>
+            <div class="rgnr-mini">
+              <div class="rgnr-mini-label" style="color:var(--color-rgnr-emotions)">Émotions</div>
+              <div class="rgnr-mini-bar"><div class="rgnr-mini-fill" style="width:58%;background:var(--color-rgnr-emotions)"></div></div>
+              <div class="rgnr-mini-score" style="color:var(--color-rgnr-emotions)">58 <span style="font-size:10px;color:var(--color-text-faint)">→</span></div>
+            </div>
+            <div class="rgnr-mini">
+              <div class="rgnr-mini-label" style="color:var(--color-rgnr-pensees)">Pensées</div>
+              <div class="rgnr-mini-bar"><div class="rgnr-mini-fill" style="width:65%;background:var(--color-rgnr-pensees)"></div></div>
+              <div class="rgnr-mini-score" style="color:var(--color-rgnr-pensees)">65 <span style="font-size:10px;color:var(--color-ok)">↑+12</span></div>
+            </div>
+            <div class="rgnr-mini">
+              <div class="rgnr-mini-label" style="color:var(--color-rgnr-env)">Environnement</div>
+              <div class="rgnr-mini-bar"><div class="rgnr-mini-fill" style="width:81%;background:var(--color-rgnr-env)"></div></div>
+              <div class="rgnr-mini-score" style="color:var(--color-rgnr-env)">81 <span style="font-size:10px;color:var(--color-ok)">↑ Meilleur</span></div>
+            </div>
+          </div>
+
+          <!-- Analyse MERLIN -->
+          <div class="merlin-block">
+            <div class="merlin-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span class="merlin-label">MERLIN · Analyse post-séance 7 juillet</span>
+            </div>
+            <p class="merlin-text">« Sophie mentionne une fatigue décisionnelle persistante liée à des responsabilités professionnelles élargies. Patterns récurrents : perfectionnisme, auto-critique post-décision. Point de progression notable : elle a utilisé la technique de défusion cognitive entre les séances. Axe Pensées en amélioration. Signal à surveiller : rumination le soir, rapportée 4/5 soirs cette semaine. »</p>
+            <div class="merlin-tags">
+              <span class="merlin-tag">Perfectionnisme</span>
+              <span class="merlin-tag">ACT — Défusion</span>
+              <span class="merlin-tag">Rumination soir</span>
+              <span class="merlin-tag">TCC — Pensées auto.</span>
+              <span class="merlin-tag">Burn-out prévention</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline audio -->
+        <div class="card col-12">
+          <div class="card-title">ivia-audio-pipeline · Dernière séance analysée — Sophie M. · 7 juillet</div>
+          <div class="pipeline-row">
+            <div class="pipeline-step">
+              <div class="pipeline-node done">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="pipeline-label">Upload Audio</div>
+            </div>
+            <div class="pipeline-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-node done">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="pipeline-label">Whisper ASR</div>
+            </div>
+            <div class="pipeline-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-node done">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="pipeline-label">SpeechBrain Diarisation</div>
+            </div>
+            <div class="pipeline-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-node done">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="pipeline-label">MERLIN Analyse RGNR</div>
+            </div>
+            <div class="pipeline-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-node done">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="pipeline-label">Dashboard Praticien</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:var(--space-4);margin-top:var(--space-4);flex-wrap:wrap;font-size:var(--text-xs);color:var(--color-text-muted)">
+            <span>⏱ Durée séance : 52 min 14s</span>
+            <span>🎙 Transcription : 100%</span>
+            <span>👥 Locuteurs : 2 identifiés (praticien + client)</span>
+            <span>⚡ Traitement : 3 min 42s</span>
+            <button class="btn btn-ghost" style="font-size:var(--text-xs);padding:2px 10px;margin-left:auto">Voir transcription</button>
+          </div>
+        </div>
+
+        <!-- Séances récentes -->
+        <div class="card col-6">
+          <div class="card-title">Séances récentes — Sophie M.</div>
+          <div class="session-list">
+            <div class="session-item">
+              <div class="session-date"><div class="session-day">07</div><div class="session-month">Juil</div></div>
+              <div class="session-content">
+                <div class="session-title">Séance 12 · Individuel · 52 min</div>
+                <div class="session-excerpt">Fatigue décisionnelle, perfectionnisme, exercice ACT de défusion effectué entre les séances. Score RGNR pré-séance : 66. Post : 69.</div>
+                <div class="session-tags"><span class="s-tag">ACT</span><span class="s-tag">Perfectionnisme</span><span class="s-tag">✓ MERLIN</span></div>
+              </div>
+            </div>
+            <div class="session-item">
+              <div class="session-date"><div class="session-day">23</div><div class="session-month">Juin</div></div>
+              <div class="session-content">
+                <div class="session-title">Séance 11 · Individuel · 48 min</div>
+                <div class="session-excerpt">Introduction à la restructuration cognitive. Travail sur les pensées automatiques liées au travail. Exercice TCC assigné pour la semaine.</div>
+                <div class="session-tags"><span class="s-tag">TCC</span><span class="s-tag">Pensées auto.</span><span class="s-tag">✓ MERLIN</span></div>
+              </div>
+            </div>
+            <div class="session-item">
+              <div class="session-date"><div class="session-day">09</div><div class="session-month">Juin</div></div>
+              <div class="session-content">
+                <div class="session-title">Séance 10 · Individuel · 55 min</div>
+                <div class="session-excerpt">Axe Corps en baisse (58). Discussion sur le sommeil. Introduction à l'hygiène du sommeil DBT. Score global : 61.</div>
+                <div class="session-tags"><span class="s-tag">DBT</span><span class="s-tag">Sommeil</span><span class="s-tag">✓ MERLIN</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendrier -->
+        <div class="card col-6">
+          <div class="card-title">Agenda · Juillet 2026</div>
+          <div class="cal-header">
+            <span class="cal-month">Juillet 2026</span>
+            <div style="display:flex;gap:var(--space-2)">
+              <button class="btn btn-ghost" style="padding:2px 8px;font-size:var(--text-xs)">‹</button>
+              <button class="btn btn-ghost" style="padding:2px 8px;font-size:var(--text-xs)">›</button>
+            </div>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-day-label">L</div><div class="cal-day-label">M</div>
+            <div class="cal-day-label">M</div><div class="cal-day-label">J</div>
+            <div class="cal-day-label">V</div><div class="cal-day-label">S</div>
+            <div class="cal-day-label">D</div>
+            <div class="cal-day empty"></div><div class="cal-day">1</div>
+            <div class="cal-day">2</div><div class="cal-day">3</div>
+            <div class="cal-day has-session">4</div><div class="cal-day">5</div><div class="cal-day">6</div>
+            <div class="cal-day">7</div><div class="cal-day has-session">8</div>
+            <div class="cal-day today">9</div><div class="cal-day">10</div>
+            <div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div>
+            <div class="cal-day has-session">14</div><div class="cal-day has-session">15</div>
+            <div class="cal-day">16</div><div class="cal-day has-session">17</div>
+            <div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+            <div class="cal-day has-session">21</div><div class="cal-day has-session">22</div>
+            <div class="cal-day">23</div><div class="cal-day">24</div>
+            <div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div>
+            <div class="cal-day">28</div><div class="cal-day">29</div>
+            <div class="cal-day">30</div><div class="cal-day">31</div>
+          </div>
+          <div style="display:flex;gap:var(--space-4);margin-top:var(--space-4);font-size:var(--text-xs);color:var(--color-text-muted)">
+            <span><span style="display:inline-block;width:8px;height:8px;background:var(--color-primary);border-radius:2px;margin-right:4px"></span>Séance planifiée</span>
+            <span><span style="display:inline-block;width:8px;height:8px;background:var(--color-primary-hl);border-radius:2px;margin-right:4px"></span>Séance effectuée</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const toggles=document.querySelectorAll('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  toggles.forEach(t=>t.addEventListener('click',()=>{d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);}));
+})();
+
+// Client row click
+document.querySelectorAll('.client-row').forEach(row=>{
+  row.addEventListener('click',()=>{
+    document.querySelectorAll('.client-row').forEach(r=>r.classList.remove('selected'));
+    row.classList.add('selected');
+  });
+});
+
+// Animate pipeline on load
+setTimeout(()=>{
+  document.querySelectorAll('.rgnr-mini-fill').forEach(b=>{
+    const w=b.style.width;b.style.width='0';
+    setTimeout(()=>{b.style.width=w;},150);
+  });
+},200);
+</script>
+</body>
+</html>

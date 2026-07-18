@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <script src="/shared/session.js?v=20260711a"></script>
+  <script src="/shared/session.js?v=20260718a"></script>
   <script>requireAuth();</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -60,6 +61,22 @@
           <textarea id="fiche-notes" rows="3" placeholder="Observations personnelles… (non visible par le client)" class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest resize-none"></textarea>
           <button onclick="saveFicheNotes()" class="mt-2 text-xs font-semibold bg-forest-deep text-white px-4 py-2 rounded-[10px] hover:bg-forest transition-colors cursor-pointer">Sauvegarder les notes</button>
         </div>
+        <div class="border-t border-bdr pt-4">
+          <p class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Écrire au client·e</p>
+          <div id="fiche-email-form" class="space-y-2">
+            <input id="fiche-email-sujet" type="text" maxlength="150" placeholder="Objet du courriel"
+                   class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest">
+            <textarea id="fiche-email-message" rows="4" maxlength="4000"
+                      placeholder="Votre message… Il sera envoyé tel quel, signé de votre nom. Les contenus de séance restent dans l'espace sécurisé."
+                      class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-forest resize-none"></textarea>
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-xs text-muted">Envoyé à <span id="fiche-email-dest" class="font-medium"></span></p>
+              <button id="fiche-email-btn" onclick="sendFicheEmail()"
+                      class="text-xs font-semibold bg-forest-deep text-white px-4 py-2 rounded-[10px] hover:bg-forest transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">Envoyer le courriel</button>
+            </div>
+          </div>
+          <p id="fiche-email-absent" class="hidden text-sm text-muted italic">Aucune adresse courriel au dossier pour ce client.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -67,7 +84,7 @@
   <!-- MODAL : Préparer la séance — retirée (contenu maquette). -->
 
   <!-- Toast -->
-  <div id="toast" class="fixed bottom-24 lg:bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white text-sm font-medium px-5 py-2.5 rounded-[12px] shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
 
   <script>
     // ── Données réelles — clients + journal + séances ──────────────────────
@@ -206,7 +223,39 @@
       document.getElementById('fiche-registre').textContent = top ? top[0] : '—';
       document.getElementById('fiche-journal').innerHTML =
         f.entries.slice(0, 8).map(ligneEntree).join('') || '<p class="text-sm text-muted italic">Aucune entrée.</p>';
+      // Bloc courriel : visible seulement si le client a une adresse au dossier.
+      ficheClientId = id;
+      const hasEmail = !!f.client.email;
+      document.getElementById('fiche-email-form').classList.toggle('hidden', !hasEmail);
+      document.getElementById('fiche-email-absent').classList.toggle('hidden', hasEmail);
+      document.getElementById('fiche-email-dest').textContent = f.client.email || '';
+      document.getElementById('fiche-email-sujet').value = '';
+      document.getElementById('fiche-email-message').value = '';
       openModal('fiche');
+    }
+
+    let ficheClientId = null;
+
+    async function sendFicheEmail() {
+      const subject = document.getElementById('fiche-email-sujet').value.trim();
+      const message = document.getElementById('fiche-email-message').value.trim();
+      if (!ficheClientId) return;
+      if (!subject || !message) { showToast('Objet et message sont requis'); return; }
+      const btn = document.getElementById('fiche-email-btn');
+      btn.disabled = true;
+      btn.textContent = 'Envoi…';
+      try {
+        await _req('/api/v1/clients/' + encodeURIComponent(ficheClientId) + '/email',
+                   { method: 'POST', body: { subject, message } });
+        document.getElementById('fiche-email-sujet').value = '';
+        document.getElementById('fiche-email-message').value = '';
+        showToast('Courriel envoyé');
+      } catch (e) {
+        showToast('Échec de l\'envoi : ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer le courriel';
+      }
     }
 
     function saveFicheNotes() { showToast('Notes sauvegardées'); }

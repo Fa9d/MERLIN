@@ -87,6 +87,6 @@ sur 36 mois — en sus des ~350 K$ de subventions innovation côté inc.
 | M18-M30 | Demande de statut de bienfaisance ARC (après 12-18 mois d'activité documentée) |
 
 ---
-*Ce dossier est complémentaire au volet commercial (`IVIA_DOSSIER_VOLET_COMMERCIAL_v1.0.md`).
+*Ce dossier est complémentaire au volet commercial (`IVIA_DOSSIER_VOLET_COMMERCIAL_v1.1.md`).
 Les deux démarches sont dissociées, cumulables et étanches — c'est la force de
-l'architecture SPA-mère + OBNL satellite (BP v2.3, partie II).*
+l'architecture SPA-mère + OBNL satellite (BP v2.4, partie II).*

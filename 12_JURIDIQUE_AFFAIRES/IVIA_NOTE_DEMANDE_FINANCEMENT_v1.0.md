@@ -17,7 +17,7 @@ Orientation, sous validation humaine.
 
 L'écosystème suit une trajectoire de portage en trois temps (BP §2.1.0) :
 l'exploitation actuelle est assurée par le fondateur en **entreprise
-individuelle** (NEQ en cours d'obtention) ; **IVIA OBNL** viendra porter la
+individuelle** (immatriculation REQ prévue d'ici fin juillet 2026) ; **IVIA OBNL** viendra porter la
 mission et les financements publics et philanthropiques ; une **entité
 commerciale dédiée** (cible : société par actions à mission, LSAQ) portera
 ensuite MERLIN, les revenus marchands, les contrats B2B et le capital privé,
@@ -52,6 +52,14 @@ Le financement porte sur l'accélération de quatre volets :
 4. **Conformité et structuration** — constitution juridique et fiscale,
    sécurité, onboarding praticiens, offre employeurs Loi 27, amorce de
    recherche universitaire.
+
+**Mise en marché amorcée (juillet 2026)** : un blogue intégré au site est en
+cours de déploiement avec vingt-huit articles de fond (et deux tutoriels
+d'application), et un corpus d'acquisition est prêt à diffuser —
+vingt scripts vidéo courts, deux séquences courriel
+d'accueil (clients, praticiens), plan SEO de 120+ mots-clés Québec
+(`IVIA_PLAN_MISE_EN_MARCHE_v1.1.md`, pilier organique). Tout contenu public
+passe le filtre de vocabulaire Loi 21 avant publication.
 
 ## 3. Programmes publics visés en 2026
 
@@ -102,7 +110,7 @@ Palier 3 = 1 227 K$ · marge = 303 K$) :
 
 | Temps | Véhicule | Rôle | État |
 |---|---|---|---|
-| Court terme (2026) | Entreprise individuelle — David Phaneuf | Exploitation actuelle, premiers revenus | **NEQ en cours d'obtention** |
+| Court terme (2026) | Entreprise individuelle — David Phaneuf | Exploitation actuelle, premiers revenus | **Immatriculation REQ prévue d'ici fin juillet 2026** |
 | Moyen terme | IVIA OBNL (LCQ Partie III) | Mission, partenariats publics, fonds philanthropiques | À constituer |
 | Structuration | Entité commerciale (cible : SPA à mission, LSAQ) | MERLIN, B2B Loi 27, capital privé, RS&DE/CRIC | À constituer |
 
@@ -113,7 +121,7 @@ moment du dépôt ; aucun numéro ni forme n'est revendiqué avant son existence
 
 | Champ | Valeur |
 |---|---|
-| Porteur actuel | David Phaneuf, entreprise individuelle — **À compléter : NEQ** (immatriculation REQ en cours) |
+| Porteur actuel | David Phaneuf, entreprise individuelle — **À compléter : NEQ** (immatriculation REQ prévue d'ici fin juillet 2026) |
 | Entités à venir | IVIA OBNL puis entité commerciale — NEQ respectifs à leur constitution |
 | Fondateur et contact principal | David Phaneuf — david@ivia.quebec |
 | Contact général | bonjour@ivia.quebec |

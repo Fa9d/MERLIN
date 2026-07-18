@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IVIA — Check-in RGNR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root,[data-theme="light"]{
+  --color-bg:#f4f7f4;--color-surface:#ffffff;--color-surface-2:#f0f4f0;
+  --color-surface-offset:#e8efe8;--color-border:rgba(30,80,40,.1);
+  --color-text:#1a2e1a;--color-text-muted:#5a7a5a;--color-text-faint:#9ab09a;
+  --color-primary:#1a6b3a;--color-primary-hover:#145430;--color-primary-hl:#d4eadc;
+  --color-gold:#c8860a;--color-gold-hl:#fdf0d4;
+  --color-rgnr-corps:#2e7d5c;--color-rgnr-emotions:#8b4a9c;
+  --color-rgnr-pensees:#1a6b8a;--color-rgnr-env:#c8860a;
+  --shadow-sm:0 1px 3px rgba(20,60,20,.08);--shadow-md:0 4px 16px rgba(20,60,20,.10);
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --font-display:'DM Serif Display',Georgia,serif;--font-body:'DM Sans','Helvetica Neue',sans-serif;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;
+  --transition:180ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+  --color-bg:#0f1a0f;--color-surface:#152015;--color-surface-2:#1a281a;
+  --color-surface-offset:#1f301f;--color-border:rgba(100,200,100,.1);
+  --color-text:#d4e8d4;--color-text-muted:#7a9a7a;--color-text-faint:#4a6a4a;
+  --color-primary:#5ab878;--color-primary-hover:#3da05e;--color-primary-hl:#1a3a22;
+  --color-gold:#e8a830;--color-gold-hl:#3a2a08;
+  --color-rgnr-corps:#4db88a;--color-rgnr-emotions:#c47ad8;
+  --color-rgnr-pensees:#4aa8c8;--color-rgnr-env:#e8a830;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);
+  color:var(--color-text);background:var(--color-bg);line-height:1.6}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+
+/* ── LAYOUT ── */
+.page{min-height:100dvh;display:flex;flex-direction:column}
+.topbar{background:var(--color-surface);border-bottom:1px solid var(--color-border);
+  padding:var(--space-4) var(--space-6);display:flex;align-items:center;
+  justify-content:space-between;gap:var(--space-4)}
+.topbar-left{display:flex;align-items:center;gap:var(--space-4)}
+.back-btn{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);
+  color:var(--color-text-muted);padding:var(--space-2) var(--space-3);
+  border-radius:var(--radius-md);transition:all var(--transition)}
+.back-btn:hover{background:var(--color-surface-2);color:var(--color-text)}
+.logo-name{font-family:var(--font-display);font-size:var(--text-base);color:var(--color-primary);font-style:italic}
+.theme-toggle{width:32px;height:32px;border-radius:var(--radius-full);display:flex;
+  align-items:center;justify-content:center;color:var(--color-text-muted);
+  border:1px solid var(--color-border);transition:all var(--transition)}
+.theme-toggle:hover{background:var(--color-surface-2)}
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap{background:var(--color-surface);border-bottom:1px solid var(--color-border);
+  padding:var(--space-3) var(--space-6)}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:var(--space-2);font-size:var(--text-xs);color:var(--color-text-muted)}
+.progress-track{height:4px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden}
+.progress-fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);
+  transition:width .5s cubic-bezier(.16,1,.3,1)}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:var(--space-8) var(--space-4)}
+.checkin-container{width:100%;max-width:560px}
+
+/* ── STEP ── */
+.step{display:none}
+.step.active{display:flex;flex-direction:column;gap:var(--space-6);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.step-axis-tag{display:inline-flex;align-items:center;gap:var(--space-2);
+  font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);
+  background:var(--color-surface-offset)}
+
+.step-question{font-family:var(--font-display);font-size:var(--text-xl);line-height:1.3;
+  font-style:italic;color:var(--color-text)}
+.step-sub{font-size:var(--text-sm);color:var(--color-text-muted)}
+
+/* ── SLIDER ── */
+.slider-block{display:flex;flex-direction:column;gap:var(--space-4)}
+.slider-labels{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-faint)}
+.slider-value{text-align:center;font-family:var(--font-display);font-size:var(--text-xl);
+  font-style:italic;line-height:1}
+.slider-sub{text-align:center;font-size:var(--text-xs);color:var(--color-text-muted)}
+input[type=range]{width:100%;-webkit-appearance:none;height:6px;
+  background:var(--color-surface-offset);border-radius:var(--radius-full);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;
+  border-radius:50%;background:var(--color-primary);cursor:pointer;
+  box-shadow:0 0 0 4px var(--color-primary-hl);transition:box-shadow var(--transition)}
+input[type=range]::-webkit-slider-thumb:hover{box-shadow:0 0 0 6px var(--color-primary-hl)}
+
+/* ── MULTISELECT OPTIONS ── */
+.options-grid{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.opt{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);
+  border:1.5px solid var(--color-border);border-radius:var(--radius-full);
+  font-size:var(--text-sm);cursor:pointer;transition:all var(--transition);background:var(--color-surface)}
+.opt:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.opt.selected{background:var(--color-primary-hl);border-color:var(--color-primary);color:var(--color-primary);font-weight:600}
+
+/* ── TEXTAREA ── */
+.note-area{width:100%;min-height:120px;resize:vertical;padding:var(--space-4);
+  border:1.5px solid var(--color-border);border-radius:var(--radius-lg);
+  font-family:var(--font-body);font-size:var(--text-sm);background:var(--color-surface);
+  color:var(--color-text);outline:none;transition:border-color var(--transition);line-height:1.6}
+.note-area:focus{border-color:var(--color-primary)}
+
+/* ── NAV BUTTONS ── */
+.step-nav{display:flex;justify-content:space-between;align-items:center;gap:var(--space-4)}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-5);
+  border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;
+  transition:all var(--transition);cursor:pointer;border:none}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-ghost{background:transparent;border:1.5px solid var(--color-border);color:var(--color-text-muted)}
+.btn-ghost:hover{background:var(--color-surface-2);color:var(--color-text)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none !important;box-shadow:none !important}
+
+/* ── SUMMARY SCREEN ── */
+.summary-card{background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-sm)}
+.summary-title{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;
+  margin-bottom:var(--space-4)}
+.summary-axis-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;
+  border-bottom:1px solid var(--color-border)}
+.summary-axis-row:last-child{border-bottom:none}
+.summary-axis-name{font-size:var(--text-sm);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;width:120px;flex-shrink:0}
+.summary-bar-track{flex:1;height:6px;background:var(--color-surface-offset);
+  border-radius:var(--radius-full);overflow:hidden}
+.summary-bar-fill{height:100%;border-radius:var(--radius-full);transition:width .8s cubic-bezier(.16,1,.3,1)}
+.summary-score{font-size:var(--text-sm);font-weight:700;width:36px;text-align:right;flex-shrink:0}
+.corps .summary-axis-name,.corps .summary-score{color:var(--color-rgnr-corps)}
+.corps .summary-bar-fill{background:var(--color-rgnr-corps)}
+.emotions .summary-axis-name,.emotions .summary-score{color:var(--color-rgnr-emotions)}
+.emotions .summary-bar-fill{background:var(--color-rgnr-emotions)}
+.pensees .summary-axis-name,.pensees .summary-score{color:var(--color-rgnr-pensees)}
+.pensees .summary-bar-fill{background:var(--color-rgnr-pensees)}
+.env .summary-axis-name,.env .summary-score{color:var(--color-rgnr-env)}
+.env .summary-bar-fill{background:var(--color-rgnr-env)}
+
+/* ── SUCCESS ── */
+.success-screen{text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-5)}
+.success-icon{width:72px;height:72px;border-radius:50%;background:var(--color-primary-hl);
+  display:flex;align-items:center;justify-content:center;font-size:2rem}
+.success-title{font-family:var(--font-display);font-size:var(--text-xl);font-style:italic}
+.success-sub{font-size:var(--text-sm);color:var(--color-text-muted);max-width:36ch}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="ivia-client-dashboard.html" class="back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour
+      </a>
+      <span class="logo-name">ivia</span>
+    </div>
+    <button class="theme-toggle" data-theme-toggle aria-label="Thème">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap">
+    <div class="progress-meta">
+      <span id="step-label">Étape 1 sur 8</span>
+      <span id="step-pct">12 %</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:12%"></div></div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="checkin-container">
+
+      <!-- STEP 1 — Humeur générale -->
+      <div class="step active" data-step="1">
+        <div>
+          <div class="step-question">Comment vous sentez-vous en ce moment ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Prenez un instant. Il n'y a pas de bonne réponse.</p>
+        </div>
+        <div class="slider-block">
+          <div class="slider-labels"><span>Très mal</span><span>Neutre</span><span>Excellent</span></div>
+          <input type="range" min="0" max="100" value="50" id="s-humeur" oninput="updateSlider(this,'humeur-val','humeur-lbl')">
+          <div class="slider-value" id="humeur-val">50</div>
+          <div class="slider-sub" id="humeur-lbl">Neutre</div>
+        </div>
+        <div class="step-nav">
+          <span></span>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 2 — Corps -->
+      <div class="step" data-step="2">
+        <div>
+          <div class="step-axis-tag" style="color:var(--color-rgnr-corps);background:rgba(46,125,92,.1)">Corps</div>
+          <div class="step-question" style="margin-top:var(--space-3)">Comment est votre corps aujourd'hui ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Sommeil, énergie physique, tensions, douleurs.</p>
+        </div>
+        <div class="slider-block">
+          <div class="slider-labels"><span>Épuisé</span><span>Moyen</span><span>Vif</span></div>
+          <input type="range" min="0" max="100" value="50" id="s-corps" oninput="updateSlider(this,'corps-val','corps-lbl')" style="accent-color:var(--color-rgnr-corps)">
+          <div class="slider-value" id="corps-val" style="color:var(--color-rgnr-corps)">50</div>
+          <div class="slider-sub" id="corps-lbl">Dans la moyenne</div>
+        </div>
+        <div>
+          <p style="font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-3)">Ce qui se passe dans votre corps :</p>
+          <div class="options-grid" id="opts-corps"
+            data-opts="Fatigue,Tensions musculaires,Maux de tête,Difficultés de sommeil,Bonne énergie,Légèreté,Douleurs chroniques,Appétit perturbé"></div>
+        </div>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 3 — Émotions -->
+      <div class="step" data-step="3">
+        <div>
+          <div class="step-axis-tag" style="color:var(--color-rgnr-emotions);background:rgba(139,74,156,.1)">Émotions</div>
+          <div class="step-question" style="margin-top:var(--space-3)">Quelles émotions habitent votre journée ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Sécurité, régulation, joie, anxiété.</p>
+        </div>
+        <div class="slider-block">
+          <div class="slider-labels"><span>Instable</span><span>Moyen</span><span>Stable</span></div>
+          <input type="range" min="0" max="100" value="50" id="s-emotions" oninput="updateSlider(this,'emotions-val','emotions-lbl')" style="accent-color:var(--color-rgnr-emotions)">
+          <div class="slider-value" id="emotions-val" style="color:var(--color-rgnr-emotions)">50</div>
+          <div class="slider-sub" id="emotions-lbl">Dans la moyenne</div>
+        </div>
+        <div>
+          <p style="font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-3)">Émotions présentes :</p>
+          <div class="options-grid" id="opts-emotions"
+            data-opts="Anxiété,Tristesse,Colère,Frustration,Joie,Sérénité,Espoir,Gratitude,Vide,Confusion,Enthousiasme,Peur"></div>
+        </div>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 4 — Pensées -->
+      <div class="step" data-step="4">
+        <div>
+          <div class="step-axis-tag" style="color:var(--color-rgnr-pensees);background:rgba(26,107,138,.1)">Pensées</div>
+          <div class="step-question" style="margin-top:var(--space-3)">Comment est votre espace mental ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Clarté, focus, ruminations, pensées intrusives.</p>
+        </div>
+        <div class="slider-block">
+          <div class="slider-labels"><span>Brouillard</span><span>Moyen</span><span>Clarté</span></div>
+          <input type="range" min="0" max="100" value="50" id="s-pensees" oninput="updateSlider(this,'pensees-val','pensees-lbl')" style="accent-color:var(--color-rgnr-pensees)">
+          <div class="slider-value" id="pensees-val" style="color:var(--color-rgnr-pensees)">50</div>
+          <div class="slider-sub" id="pensees-lbl">Dans la moyenne</div>
+        </div>
+        <div>
+          <p style="font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-3)">Patterns de pensée présents :</p>
+          <div class="options-grid" id="opts-pensees"
+            data-opts="Ruminations,Pensées catastrophistes,Auto-critique,Doutes,Concentration difficile,Clarté mentale,Pensées positives,Créativité,Fatigue décisionnelle,Brouillard cognitif"></div>
+        </div>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 5 — Environnement -->
+      <div class="step" data-step="5">
+        <div>
+          <div class="step-axis-tag" style="color:var(--color-rgnr-env);background:rgba(200,134,10,.1)">Environnement</div>
+          <div class="step-question" style="margin-top:var(--space-3)">Comment est votre environnement aujourd'hui ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Relations, espace de vie, limites, soutien social.</p>
+        </div>
+        <div class="slider-block">
+          <div class="slider-labels"><span>Hostile</span><span>Neutre</span><span>Soutenant</span></div>
+          <input type="range" min="0" max="100" value="50" id="s-env" oninput="updateSlider(this,'env-val','env-lbl')" style="accent-color:var(--color-rgnr-env)">
+          <div class="slider-value" id="env-val" style="color:var(--color-rgnr-env)">50</div>
+          <div class="slider-sub" id="env-lbl">Dans la moyenne</div>
+        </div>
+        <div>
+          <p style="font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-3)">Ce qui influence votre environnement :</p>
+          <div class="options-grid" id="opts-env"
+            data-opts="Conflits relationnels,Isolement,Manque de soutien,Soutien solide,Relations nourrissantes,Espace calme,Surcharge extérieure,Bruit / désordre,Obligations envahissantes,Limites claires"></div>
+        </div>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 6 — Événement marquant -->
+      <div class="step" data-step="6">
+        <div>
+          <div class="step-question">Y a-t-il un événement qui a marqué votre journée ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Optionnel — partagez si vous le souhaitez.</p>
+        </div>
+        <textarea class="note-area" id="note-event" placeholder="Ex : J'ai eu une conversation difficile avec mon manager ce matin…"></textarea>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 7 — Intention du jour -->
+      <div class="step" data-step="7">
+        <div>
+          <div class="step-question">Quelle est votre intention pour aujourd'hui ?</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Une phrase suffit. Quelque chose de simple et ancré.</p>
+        </div>
+        <textarea class="note-area" id="note-intention" placeholder="Ex : Aujourd'hui je veux prendre soin de mon rythme et poser des limites douces…"></textarea>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continuer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 8 — Récapitulatif -->
+      <div class="step" data-step="8">
+        <div>
+          <div class="step-question">Votre check-in du jour</div>
+          <p class="step-sub" style="margin-top:var(--space-2)">Vérifiez et confirmez. Ces données seront partagées avec votre praticien.</p>
+        </div>
+        <div class="summary-card">
+          <div class="summary-title">Équilibre RGNR — <span id="summary-date"></span></div>
+          <div class="summary-axis-row corps">
+            <div class="summary-axis-name">Corps</div>
+            <div class="summary-bar-track"><div class="summary-bar-fill" id="sum-corps" style="width:0%"></div></div>
+            <div class="summary-score" id="sum-corps-val">—</div>
+          </div>
+          <div class="summary-axis-row emotions">
+            <div class="summary-axis-name">Émotions</div>
+            <div class="summary-bar-track"><div class="summary-bar-fill" id="sum-emotions" style="width:0%"></div></div>
+            <div class="summary-score" id="sum-emotions-val">—</div>
+          </div>
+          <div class="summary-axis-row pensees">
+            <div class="summary-axis-name">Pensées</div>
+            <div class="summary-bar-track"><div class="summary-bar-fill" id="sum-pensees" style="width:0%"></div></div>
+            <div class="summary-score" id="sum-pensees-val">—</div>
+          </div>
+          <div class="summary-axis-row env">
+            <div class="summary-axis-name">Environnement</div>
+            <div class="summary-bar-track"><div class="summary-bar-fill" id="sum-env" style="width:0%"></div></div>
+            <div class="summary-score" id="sum-env-val">—</div>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">Retour</button>
+          <button class="btn btn-primary" onclick="submitCheckin()">Envoyer à mon praticien
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 9 — Succès -->
+      <div class="step" data-step="9">
+        <div class="success-screen">
+          <div class="success-icon">🌿</div>
+          <div class="success-title">Check-in complété</div>
+          <p class="success-sub">Votre praticien a été notifié. Prendre soin de vous est un acte de courage.</p>
+          <a href="ivia-client-dashboard.html" class="btn btn-primary">Retour au tableau de bord</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const TOTAL = 8;
+  let current = 1;
+  const scores = { corps: 50, emotions: 50, pensees: 50, env: 50 };
+
+  const sliderLabels = {
+    default: ['Très bas','Bas','Sous la moyenne','Dans la moyenne','Bien','Très bien','Excellent'],
+    corps:   ['Épuisé','Très fatigué','Fatigué','Dans la moyenne','En forme','Très bien','Plein d\'énergie'],
+    emotions:['Très instable','Instable','Fragile','Dans la moyenne','Stable','Bien ancré','Très stable'],
+    pensees: ['Brouillard total','Très confus','Confus','Dans la moyenne','Clair','Très clair','Cristallin'],
+    env:     ['Très hostile','Hostile','Difficile','Neutre','Soutenant','Très soutenant','Excellent soutien'],
+  };
+
+  function getLabel(type, val){
+    const arr = sliderLabels[type] || sliderLabels.default;
+    const idx = Math.floor((val / 100) * (arr.length - 1));
+    return arr[Math.min(idx, arr.length - 1)];
+  }
+
+  function updateSlider(el, valId, lblId){
+    const val = parseInt(el.value);
+    const type = el.id.replace('s-','');
+    if(scores[type] !== undefined) scores[type] = val;
+    document.getElementById(valId).textContent = val;
+    document.getElementById(lblId).textContent = getLabel(type, val);
+  }
+
+  function buildOptions(containerId){
+    const el = document.getElementById(containerId);
+    if(!el) return;
+    const opts = el.dataset.opts.split(',');
+    el.innerHTML = opts.map(o =>
+      `<button class="opt" onclick="toggleOpt(this)">${o}</button>`
+    ).join('');
+  }
+
+  function toggleOpt(btn){ btn.classList.toggle('selected'); }
+
+  function goTo(n){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector(`.step[data-step="${n}"]`);
+    if(target){ target.classList.add('active'); current = n; }
+    if(n <= TOTAL){
+      const pct = Math.round((n / TOTAL) * 100);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('step-label').textContent = `Étape ${n} sur ${TOTAL}`;
+      document.getElementById('step-pct').textContent = pct + ' %';
+    } else {
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-bar-wrap') && (document.querySelector('.progress-bar-wrap').style.display = 'none');
+    }
+  }
+
+  function nextStep(){
+    if(current === 7){ buildSummary(); }
+    goTo(current + 1);
+    window.scrollTo(0,0);
+  }
+
+  function prevStep(){ goTo(current - 1); window.scrollTo(0,0); }
+
+  function buildSummary(){
+    const d = new Date();
+    document.getElementById('summary-date').textContent =
+      d.toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    ['corps','emotions','pensees','env'].forEach(axis => {
+      const s = scores[axis];
+      document.getElementById('sum-' + axis).style.width = s + '%';
+      document.getElementById('sum-' + axis + '-val').textContent = s;
+    });
+  }
+
+  function submitCheckin(){
+    // TODO: POST vers IVIA API
+    console.log('Check-in data:', scores);
+    goTo(9);
+    window.scrollTo(0,0);
+  }
+
+  // Build option chips
+  ['opts-corps','opts-emotions','opts-pensees','opts-env'].forEach(buildOptions);
+
+  // Theme toggle
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn =>{
+    btn.addEventListener('click', () =>{
+      const html = document.documentElement;
+      html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+  });
+</script>
+</body>
+</html>
