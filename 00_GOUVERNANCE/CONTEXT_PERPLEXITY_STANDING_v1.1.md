@@ -1,8 +1,8 @@
 # CONTEXT PERPLEXITY — IVIA / MERLIN / MÉSANGES
 ## Standing instruction — à transmettre en premier à chaque session Perplexity
 
-**Version** : v1.0 — 21 mai 2026  
-**Auteur** : Copilot / David Phaneuf  
+**Version** : v1.1 — 18 juillet 2026 *(v1.1 : trajectoire de portage actualisée (BP v2.4 §2.1.0), état du site et tâches rafraîchis, documents clés mis à jour ; v1.0 : 21 mai 2026)*  
+**Auteur** : Copilot / David Phaneuf + Claude Code  
 **Usage** : Ce document est le point d'entrée permanent pour toute session Perplexity travaillant sur IVIA. Tu le lis EN PREMIER, avant toute question ou tâche spécifique.  
 **Connexion GitHub** : `https://github.com/Fa9d/MERLIN` — branche active : `refonte-ivia-site-unifie`
 
@@ -19,7 +19,18 @@ Tu connais déjà ce projet. Tu as contribué à plusieurs phases : discours mar
 
 ## 2. ARCHITECTURE DU PROJET
 
-### Structure juridique et économique (DÉC-V3-15, 8 mai 2026)
+### Structure juridique et économique — trajectoire de portage (BP v2.4 §2.1.0, actée 13 juillet 2026)
+
+**Séquence réelle en trois temps** (elle prime sur tout document antérieur) :
+1. **Aujourd'hui** : exploitation par le fondateur en **entreprise individuelle**
+   (immatriculation REQ « IVIA » prévue d'ici fin juillet 2026) ;
+2. **Hiver 2026-27** : constitution d'**IVIA OBNL** (mission, financements publics
+   et philanthropiques) ;
+3. **Printemps 2027** : **entité commerciale** (cible : société par actions à
+   mission, LSAQ) qui porte MERLIN, les revenus et le capital — liée à l'OBNL
+   par une convention de licence sociale.
+
+**Architecture cible à terme** (issue de DÉC-V3-15) :
 
 ```
 IVIA inc. (SPA-mère)  ←  structure économique et juridique (David Phaneuf 100%)
@@ -130,21 +141,18 @@ IVIA / MÉSANGES opère dans la zone de compétence **non réservée** (art. 187
 
 ---
 
-## 5. ÉTAT DU SITE ACTUEL — PROBLÈMES IDENTIFIÉS
+## 5. ÉTAT DU SITE ACTUEL (juillet 2026)
 
-*Voir l'audit complet : `00_GOUVERNANCE/IVIA_AUDIT_DISCOURS_MARKETING_v1.0.md`*
+Le site en production est le **statique `ivia_site_v2/`** (ivia.quebec), servi par
+nginx — parcours complet client/praticien/admin, paiements intégrés, **blogue en
+ligne** sous `/ressources/blog/` (28 articles + 2 tutoriels, source Next.js dans
+`09_blog_app/`). L'audit de discours de mai (`IVIA_AUDIT_DISCOURS_MARKETING_v1.0.md`)
+reste la référence méthodologique ; l'état courant du site fait foi — vérifier en
+ligne avant d'affirmer qu'un problème de mai existe encore.
 
-**Problèmes prioritaires (résumé)** :
-
-| Code | Problème | Urgence |
-|------|----------|---------|
-| P0-LEGAL | "reconnaître les troubles" dans section 2 du site | 🔴 Corriger maintenant |
-| P0-MARQUE | IVIA vs MÉSANGES : confusion dans le header et le hero | 🔴 Corriger maintenant |
-| P1-HERO | Stats QC absentes du hero — la réalité du marché est invisible | 🟠 Court terme |
-| P1-PROMESSE | La promesse mère n'apparaît pas dans le hero | 🟠 Court terme |
-| P2-CTA | 3 CTAs pour la même action : "M'inscrire", "Prendre RDV", "Faire le Parcours" | 🟡 Court terme |
-| P2-MERLIN | "MERLIN structure" exposé dans le processus client (étape 02) | 🟡 Court terme |
-| P3-SECTION | Section "numérique" hors positionnement marché santé QC | 🟢 Moyen terme |
+**Règle inchangée** : tout contenu public passe la grille Loi 21 (vocabulaire
+réservé uniquement en citation de faits/sources ou pour désigner les services
+réglementés externes — jamais pour décrire l'offre IVIA).
 
 ---
 
@@ -161,13 +169,20 @@ Tous ces fichiers sont dans le repo `Fa9d/MERLIN`, branche `refonte-ivia-site-un
 ├── MERLIN_GOUV_PAGE_SITE_CLIENT_IVIA_QUEBEC_V1.md
 └── MERLIN_GOUV_TABLEAU_FRONTIERES_DISCOURS_CAPACITES_IVIA_MERLIN_V1.md
 
-05_PREUVES_SOURCES/
-└── Rapport_MESANGE_Soins_Quebec_2026-05.pdf  ← rapport marché 32 pages (données QC)
+12_JURIDIQUE_AFFAIRES/
+├── IVIA_BP_FINANCEMENT_v2.4.md               ← plan d'affaires de référence (§2.1.0 : trajectoire)
+├── IVIA_NOTE_DEMANDE_FINANCEMENT_v1.0.md     ← demande de financement canonique
+├── IVIA_ONE_PAGER_v1.0.md                    ← sommaire une page (traction, différenciateurs)
+├── IVIA_REGISTRE_RD_RSDE.md                  ← 5 projets R&D (RD-01 → RD-05)
+├── IVIA_REGISTRE_DEMARCHES_v1.0.md           ← suivi des contacts externes (source du statut)
+├── demarches/mila/                           ← dossiers d'envoi Mila (5 cibles)
+└── deck/IVIA_PRESENTATION_MILA_v1.0.marp.md  ← deck Mila (source)
 
-09_app_ivia_merlin/src/app/
-├── page.tsx                                  ← page d'accueil actuelle
-└── rendez-vous/page.tsx                      ← page RDV
+ivia_site_v2/                                 ← site statique EN PRODUCTION (ivia.quebec)
+09_blog_app/                                  ← source Next.js du blogue (/ressources/blog/)
 ```
+
+*(`09_app_ivia_merlin/` est un vestige — ne pas s'y fier pour l'état du site.)*
 
 ---
 
@@ -200,60 +215,30 @@ Tout fragment de discours que tu produis doit passer ce filtre avant d'être pro
 3. Recommandation tranchée avec rationale
 4. Next steps exécutables pour Claude Code (Copilot)
 
-### Mode repositionnement MÉSANGES (session actuelle)
+### Mode recherche externe (veille, financement, partenariats)
 
-Nous sommes en repositionnement actif. L'objectif prioritaire est que le visiteur du site comprenne immédiatement :
-1. **Qui** est concerné (Québécois sans accès au soin, en détresse de première ligne)
-2. **Ce que MÉSANGES fait** (écoute + accompagnement + orientation vers l'autonomie — pas une appli, pas un thérapeute, pas un annuaire)
-3. **Ce que ce n'est pas** (rassurant sur le cadre légal, non clinique, non stigmatisant)
-4. **Comment commencer** (un seul CTA, une seule porte d'entrée)
+1. Lire d'abord ce standing + les documents indiqués par le prompt de mission
+   (registres, dossiers d'envoi) — le dépôt donne le contexte interne.
+2. Chercher **à l'extérieur** ; chaque affirmation sourcée (URL) et datée ;
+   signaler explicitement ce qui est introuvable ou incertain.
+3. Signaler toute contradiction entre le dépôt et ce qui est trouvé en ligne.
 
-### Tâche active — Processus 6 étapes (session 21 mai 2026)
-
-Le hero section a déjà été reécrit et committé (variante B retenue). Le P0-LÉGAL est corrigé ("reconnaître les troubles" → "nommer ce que vous vivez"). MERLIN retiré côté client.
-
-**Tâche en cours : réécriture du processus 6 étapes.**
-
-État actuel des 6 étapes sur le site :
-1. Vous déposez
-2. ~~MERLIN structure~~ → "MÉSANGES analyse" (proposé, mais contesté — voir ci-dessous)
-3. Les possibles — VOS SOLUTIONS
-4. MÉSANGES accompagne
-5. Vous agissez
-6. Nous suivons l'évolution
-
-**Problème à résoudre :**
-L'étape 02 n'a pas encore de formulation satisfaisante :
-- "MÉSANGES analyse" = trop froid, connotation clinique/diagnostic
-- "MÉSANGES accompagne" = déjà utilisé à l'étape 04, crée une confusion de progression
-
-**Ce que tu dois produire :**
-1. Une analyse des options pour l'étape 02 — qu'est-ce qui se passe réellement à ce moment du parcours client ? Quelle formulation est la plus juste, la plus chaleureuse, et la plus cohérente avec la trajectoire (écoute → clarification → orientation → autonomie) ?
-2. Une réécriture complète des 6 étapes — titres + corps de paragraphe — entièrement du point de vue de la personne accompagnée, sans vocabulaire interne (pas de MERLIN, pas d'"analyse", pas de "diagnostic"), en alternant idéalement le sujet (vous / MÉSANGES) pour créer un rythme dialogique.
-3. Une version "courte" (titres seuls, 3-5 mots chacun) et une version "longue" (titre + 2 phrases corps).
-
-**Contraintes** :
-- Maximum 6 étapes, idéalement 5
-- La trajectoire autonomie doit être lisible dans la progression des titres
-- Le dernier pas doit laisser la personne dans une posture d'action, pas de dépendance
+*(Les tâches ponctuelles arrivent par un prompt de mission dédié — ce standing
+ne contient plus de tâche active ; l'état courant vit dans la section 8.)*
 
 ---
 
-## 8. TÂCHES EN COURS AU 21 MAI 2026
+## 8. TÂCHES EN COURS (juillet 2026)
 
-**Immédiat :**
-- [ ] Corriger "reconnaître les troubles" dans le site (fichier : `09_app_ivia_merlin/src/app/page.tsx` ou composant correspondant)
-- [ ] Réécrire le hero section (H1 + 2 sous-titres + 1 CTA) avec ancrage stats QC + promesse mère
-- [ ] Clarifier la relation IVIA / MÉSANGES dans header et footer
+La source vivante des démarches est `12_JURIDIQUE_AFFAIRES/IVIA_REGISTRE_DEMARCHES_v1.0.md`
+— la consulter avant toute recherche liée aux contacts externes. En résumé :
 
-**Court terme :**
-- [ ] Réécrire le processus 6 étapes → expérience centrée client (supprimer "MERLIN structure")
-- [ ] Proposition de 3 variantes de tagline pour tests A/B
-- [ ] Définir la hiérarchie des CTAs (1 principal, 2 secondaire)
-
-**Moyen terme :**
-- [ ] Décision sur la section "numérique" : supprimer ou recentrer sur l'isolement QC
-- [ ] Calendrier éditorial 30 jours pour la diffusion post-pilote
+- **REQ** : immatriculation entreprise individuelle « IVIA » d'ici fin juillet 2026 ;
+- **Mila** : candidature Ventures Launchpad + 4 courriels ciblés (dossiers d'envoi
+  prêts dans `demarches/mila/`, en relecture fondateur) ;
+- **PME MTL** : dépôt du dossier de prêt 50 K$ mi-août (trousse v1.1) ;
+- **Automne 2026** : mandats avocat + fiscaliste (briefs prêts) ;
+- Pilote praticiens en cours ; blogue lancé ; corpus d'acquisition à diffuser.
 
 ---
 

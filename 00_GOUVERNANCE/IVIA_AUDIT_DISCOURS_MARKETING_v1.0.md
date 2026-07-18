@@ -190,7 +190,7 @@ Ce que le client ne peut pas acheter et que le discours ne doit jamais promettre
 
 ## VI. RECOMMANDATIONS POUR PERPLEXITY
 
-Voir `07_EXPORTS/CONTEXT_PERPLEXITY_STANDING_v1.0.md` — brief permanent à transmettre à Perplexity en début de chaque session marketing.
+Voir `07_EXPORTS/CONTEXT_PERPLEXITY_STANDING_v1.1.md` — brief permanent à transmettre à Perplexity en début de chaque session marketing.
 
 **Tâches immédiates à confier à Perplexity :**
 1. Réécriture du hero section (H1 + sous-titre + CTA) selon les données et la promesse mère
