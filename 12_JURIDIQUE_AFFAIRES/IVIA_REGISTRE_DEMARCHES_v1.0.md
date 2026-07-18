@@ -44,10 +44,11 @@
 
 | Date | Geste | Pièce / réponse |
 |---|---|---|
+| 2026-07-18 | Messages d'approche rédigés pour les 4 cibles (FR + EN Launchpad) | `IVIA_MESSAGES_APPROCHE_MILA_v1.0.md` |
 | 2026-07-18 | Analyse des portes d'entrée Mila — 4 cibles priorisées (Ventures, Ravanelli, Dumas, Régis) | ce registre |
 | 2026-07-18 | Deck de présentation produit et validé (contact : david@ivia.quebec, porte Ventures en tête) | `deck/IVIA_PRESENTATION_MILA_v1.0.pdf` |
 
-**Prochaine action** : candidature Launchpad + courriel Ravanelli (messages à rédiger).
+**Prochaine action** : envoyer — 1) candidature Launchpad, 2) courriel Ravanelli (même semaine), 3) Dumas (semaine suivante), 4) Régis. Relance J+10.
 
 ---
 
