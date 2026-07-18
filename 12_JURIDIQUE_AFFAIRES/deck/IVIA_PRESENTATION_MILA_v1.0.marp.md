@@ -106,9 +106,9 @@ pour être **valorisable en recherche** — éthiquement, sans vente de données
 
 <br>
 
+- **Mila Ventures** — un accompagnement startup pour un produit déjà en production
 - **Encadrement scientifique** — co-supervision étudiante sur la temporalité décalée et la prosodie
 - **IA responsable, appliquée** — un terrain réel : l'IA prudente en contexte non clinique
-- **Une porte d'entrée** — recherche appliquée ou accompagnement Mila
 
 <br>
 
@@ -125,4 +125,4 @@ pour être **valorisable en recherche** — éthiquement, sans vente de données
 ## De l'IA pour le bénéfice de tous — ici, maintenant.
 
 **David Phaneuf** — fondateur
-ivia.quebec · davidphaneuf@gmail.com · Montréal
+ivia.quebec · david@ivia.quebec · Montréal
