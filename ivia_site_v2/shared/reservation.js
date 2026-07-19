@@ -369,7 +369,7 @@ async function _reservationLogic() {
     const btn = document.getElementById('btn-confirmer');
     const errDiv = document.getElementById('conf-error');
     btn.disabled = true;
-    btn.textContent = 'Préparation du paiement…';
+    btn.textContent = window._iviaOffreGratuite ? 'Confirmation…' : 'Préparation du paiement…';
     errDiv.classList.add('hidden');
     const notes = document.getElementById('conf-note').value || null;
 
@@ -390,12 +390,28 @@ async function _reservationLogic() {
       errDiv.textContent = err.message || 'Impossible de finaliser. Réessayez.';
       errDiv.classList.remove('hidden');
       btn.disabled = false;
-      btn.textContent = 'Confirmer et payer →';
+      btn.textContent = window._iviaOffreGratuite ? 'Confirmer ma séance →' : 'Confirmer et payer →';
     }
   });
 
   // Init
   setStep('prat');
 
+  // ── Mode bêta : si l'offre est « offerte » (interrupteur admin), le discours
+  // s'adapte — la mécanique de réservation ne change pas (le serveur fixe tout).
+  try {
+    const cat = await getPublicOffers();
+    const offre = (cat.offers || []).find(o => o.code === 'seance_live');
+    if (offre && !offre.payant) {
+      const note = document.getElementById('paiement-note');
+      if (note) note.innerHTML =
+        '<svg class="w-3.5 h-3.5 text-forest shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">'
+        + '<path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z" clip-rule="evenodd"/></svg>'
+        + '<span><strong>Version bêta — cette séance vous est offerte.</strong> En échange, votre retour d\'expérience nous aide à améliorer l\'écoute.</span>';
+      const btn = document.getElementById('btn-confirmer');
+      if (btn) btn.textContent = 'Confirmer ma séance →';
+      window._iviaOffreGratuite = true;
+    }
+  } catch (_) { /* catalogue indisponible → discours payant par défaut, sans casser le flux */ }
 
 }

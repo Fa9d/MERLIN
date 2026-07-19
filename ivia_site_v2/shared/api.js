@@ -391,6 +391,11 @@ async function updateSessionNote(id, payload) {
   return _req('/api/v1/session-notes/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
 }
 
+/** Catalogue public des offres (prix + payant/offert) — pilote le discours bêta. */
+async function getPublicOffers() {
+  return _req('/api/v1/payments/offers', { publicEndpoint: true });
+}
+
 /* ── Circuit de relecture de la transcription ─────────────────────────────── */
 
 /** Corriger la transcription d'une séance (statut → corrected, original conservé). */

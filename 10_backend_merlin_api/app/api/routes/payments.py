@@ -609,6 +609,28 @@ async def _create_interac_order(
         instructions_text=instructions_text,
         instructions_emailed=instructions_emailed,
     )
+@router.get("/offers", summary="Catalogue public des offres — prix et interrupteur payant/offert")
+def list_public_offers(db: Session = Depends(get_db)) -> dict:
+    """Expose le catalogue des offres et leur état payant/offert (mode bêta).
+
+    Paramètres : aucun (route publique, lecture seule — aucun renseignement personnel).
+    Sortie : {"offers": [{code, label, amount_ttc_cents, payant}]}.
+    Le frontend s'en sert pour adapter le discours (« Confirmer et payer » vs
+    « séance offerte — version bêta ») sans dupliquer la vérité du serveur.
+    """
+    return {
+        "offers": [
+            {
+                "code": offer.code,
+                "label": offer.label,
+                "amount_ttc_cents": offer.amount_ttc_cents,
+                "payant": billing.is_offer_payant(db, offer.code),
+            }
+            for offer in billing.OFFERS.values()
+        ]
+    }
+
+
 @router.post(
     "/stripe/checkout",
     response_model=StripeCheckoutSessionRead,

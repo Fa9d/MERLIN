@@ -96,10 +96,59 @@
       <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Est-ce que ça répond à nos obligations Loi 27 ?</summary><p class="text-sm text-muted mt-2">IVIA constitue une mesure concrète de prise en charge des risques psychosociaux, documentée et attestée. Elle s'intègre à votre programme de prévention — votre conseiller SST ou juridique confirme l'articulation exacte avec vos autres mesures.</p></details>
       <details class="border border-bdr rounded-[12px] bg-white p-4"><summary class="font-semibold text-ink cursor-pointer">Combien de temps pour déployer ?</summary><p class="text-sm text-muted mt-2">Moins d'une semaine : signature, matériel de communication interne fourni, et vos employés réservent dès le premier jour. Aucune intégration technique requise de votre côté.</p></details>
     </div>
-    <div class="text-center mt-10">
-      <a href="mailto:david@ivia.quebec?subject=IVIA%20—%20Offre%20employeurs%20Loi%2027" class="inline-block bg-forest-deep text-white font-semibold px-8 py-4 rounded-[14px] hover:bg-forest transition-colors">Écrire à david@ivia.quebec</a>
-      <p class="text-xs text-muted mt-3">Réponse en moins de 24&nbsp;h · démonstration en direct de 20 minutes</p>
+    <!-- Formulaire de contact organisation (organization-leads) -->
+    <div class="max-w-md mx-auto mt-10 bg-white border border-bdr rounded-[20px] p-6">
+      <h3 class="font-heading text-lg font-bold text-ink mb-1">Parlons de votre organisation</h3>
+      <p class="text-xs text-muted mb-4">Réponse en moins de 24&nbsp;h · démonstration en direct de 20 minutes.</p>
+      <form id="lead-form" class="space-y-3">
+        <input id="lead-nom" type="text" required maxlength="200" placeholder="Votre nom" title="Votre nom"
+               class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest">
+        <input id="lead-org" type="text" required maxlength="240" placeholder="Nom de l'organisation" title="Nom de l'organisation"
+               class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest">
+        <input id="lead-email" type="email" required placeholder="Courriel professionnel" title="Courriel professionnel"
+               class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest">
+        <select id="lead-type" title="Type d'organisation"
+                class="w-full border border-bdr rounded-[12px] px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-forest text-muted">
+          <option value="">Type d'organisation (facultatif)</option>
+          <option value="pme">PME (moins de 100 employés)</option>
+          <option value="moyenne">Moyenne entreprise (100-500)</option>
+          <option value="grande">Grande entreprise (500+)</option>
+          <option value="obnl">OBNL / organisme communautaire</option>
+          <option value="public">Secteur public / parapublic</option>
+        </select>
+        <button type="submit" class="w-full bg-forest-deep text-white font-semibold py-3 rounded-[14px] hover:bg-forest transition-colors cursor-pointer">
+          Planifier une démonstration →
+        </button>
+        <p id="lead-msg" class="hidden text-sm text-center"></p>
+      </form>
+      <p class="text-xs text-muted mt-3 text-center">Ou par courriel : <a href="mailto:david@ivia.quebec?subject=IVIA%20—%20Offre%20employeurs%20Loi%2027" class="underline text-forest-deep">david@ivia.quebec</a></p>
     </div>
+    <script src="/shared/api.js?v=20260718b"></script>
+    <script>
+      document.getElementById('lead-form').addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const msg = document.getElementById('lead-msg');
+        const btn = ev.target.querySelector('button[type="submit"]');
+        btn.disabled = true; btn.textContent = 'Envoi…';
+        try {
+          await _req('/api/v1/organization-leads', { method: 'POST', publicEndpoint: true, body: {
+            display_name: document.getElementById('lead-nom').value.trim(),
+            organization_name: document.getElementById('lead-org').value.trim(),
+            email: document.getElementById('lead-email').value.trim(),
+            organization_type: document.getElementById('lead-type').value || null,
+          }});
+          if (window.iviaTrackDemande) window.iviaTrackDemande('lead_employeur');
+          msg.textContent = 'Reçu ✓ — vous aurez une réponse en moins de 24 h.';
+          msg.className = 'text-sm text-center text-forest-deep';
+          btn.textContent = 'Demande envoyée ✓';
+        } catch (e) {
+          msg.textContent = 'Envoi impossible (' + (e.message || 'erreur') + ') — écrivez-nous directement.';
+          msg.className = 'text-sm text-center text-red-600';
+          btn.disabled = false; btn.textContent = 'Planifier une démonstration →';
+        }
+        msg.classList.remove('hidden');
+      });
+    </script>
   </section>
 
   <!-- FOOTER -->
