@@ -19,6 +19,7 @@ from app.models.session_note import SessionNote
 from app.schemas.session_note import (
     SessionNoteCreate,
     SessionNoteRead,
+    SessionNoteUpdate,
     SessionNoteValidationPayload,
 )
 
@@ -117,6 +118,43 @@ def get_session_note(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Note de seance introuvable.",
             )
+    return session_note
+
+
+@router.patch("/{session_note_id}", response_model=SessionNoteRead)
+def update_session_note(
+    session_note_id: str,
+    payload: SessionNoteUpdate,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_internal_clinical_roles()),
+) -> SessionNote:
+    """Rédige/corrige la note de séance avant sa validation.
+
+    Paramètres : session_note_id (chemin), payload — champs textuels de la note
+    (résumé, triade, axes, reformulation client), tous optionnels.
+    Sortie : la note mise à jour ; 404 si introuvable ou hors périmètre
+    opérateur ; 409 si la note est déjà validée (une note validée est figée —
+    la corriger exige d'en régénérer ou créer une nouvelle).
+    """
+    session_note = db.get(SessionNote, session_note_id)
+    if session_note is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note de seance introuvable.")
+    if is_operator_user(current_user):
+        session_record = db.get(SessionRecord, session_note.session_id)
+        if session_record is None or session_record.operator_user_id != current_user.id:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Note de seance introuvable.")
+    if session_note.validated_by_practitioner:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Note déjà validée — elle est figée. Régénérez une nouvelle lecture pour repartir.",
+        )
+
+    modifications = payload.model_dump(exclude_unset=True)
+    for champ, valeur in modifications.items():
+        setattr(session_note, champ, valeur)
+    db.add(session_note)
+    db.commit()
+    db.refresh(session_note)
     return session_note
 
 

@@ -52,6 +52,10 @@ class SessionRead(TimestampedReadSchema):
     egress_id: str | None = None
     audio_file_path: str | None = None
     transcript_text: str | None = None
+    transcript_status: str = "auto"
+    transcript_original_text: str | None = None
+    transcript_validated_at: datetime | None = None
+    transcript_validated_by_user_id: str | None = None
     operator_user_id: str
     praticien_id: str | None = None
     session_status_code: SessionStatusCode
@@ -83,6 +87,12 @@ class SessionClose(MerlinSchema):
     follow_up_actions_text: str | None = None
     next_session_focus_text: str | None = None
     client_visible: bool = False
+
+
+class SessionTranscriptUpdate(MerlinSchema):
+    """Correction de la transcription par le praticien (avant validation)."""
+
+    transcript_text: str
 
 
 class SessionDeliver(MerlinSchema):

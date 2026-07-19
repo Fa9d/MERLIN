@@ -7,7 +7,7 @@
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Compte-rendu de séance</title>
-  <script src="/shared/api.js?v=20260709b"></script>
+  <script src="/shared/api.js?v=20260718b"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>tailwind.config={theme:{extend:{colors:{forest:'#4A7C59',sage:'#8FB99A','forest-deep':'#2D6A4F',cream:'#FAFDF8',surface:'#F0F7F2',ink:'#1A2E1D',muted:'#4B6350',bdr:'#D4E8D0',trust:'#2563EB'},fontFamily:{heading:['"Lora"','Georgia','serif']}}}}</script>
@@ -16,6 +16,12 @@
     h1,h2,h3{font-family:'Lora',Georgia,serif;}
     .card{background:#fff;border:1.5px solid #D4E8D0;border-radius:20px;padding:24px;}
     .axe{background:#F0F7F2;border:1px solid #D4E8D0;border-radius:12px;padding:14px 16px;}
+    .champ{width:100%;border:1px solid #D4E8D0;border-radius:12px;padding:10px 14px;font-size:14px;line-height:1.6;background:#fff;outline:none;resize:vertical;}
+    .champ:focus{box-shadow:0 0 0 2px #4A7C59;}
+    .champ[readonly]{background:#F0F7F2;color:#1A2E1D;border-color:transparent;resize:none;}
+    .etape{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#4B6350;margin-bottom:10px;}
+    .etape .num{width:22px;height:22px;border-radius:9999px;background:#2D6A4F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;}
+    .badge{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-radius:9999px;padding:4px 10px;border:1px solid;}
   </style>
 </head>
 <body class="antialiased min-h-screen bg-cream">
@@ -47,43 +53,76 @@
         <p class="text-sm text-muted" id="meta">—</p>
       </div>
 
-      <!-- Résumé -->
-      <section class="card">
-        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Résumé</h2>
-        <p class="text-sm text-ink leading-relaxed" id="c-summary"></p>
+      <!-- ÉTAPE 1 — Transcription : corriger puis valider -->
+      <section id="s-transcript" class="card">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <div class="etape"><span class="num">1</span> Transcription <span id="badge-transcript"></span></div>
+        </div>
+        <p class="text-xs text-muted mb-3">La transcription automatique est un brouillon. Corrigez-la si nécessaire, puis
+          validez-la : c'est sur cette version que l'analyse se finalise. L'original machine est conservé.</p>
+        <textarea id="t-texte" rows="8" class="champ" placeholder="Aucune transcription disponible pour cette séance."></textarea>
+        <div class="flex flex-wrap items-center gap-3 mt-3">
+          <button type="button" id="btn-t-corriger" class="border border-bdr text-ink text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Enregistrer la correction
+          </button>
+          <button type="button" id="btn-t-valider" class="bg-forest-deep text-white text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
+            Valider la transcription
+          </button>
+          <button type="button" id="btn-regenerer" class="hidden border border-forest-deep text-forest-deep text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Régénérer l'analyse sur cette version
+          </button>
+          <p id="t-msg" class="hidden text-sm w-full"></p>
+        </div>
+        <details id="t-original-wrap" class="hidden mt-3">
+          <summary class="text-xs font-semibold text-muted cursor-pointer hover:underline">Voir l'original machine (conservé)</summary>
+          <p class="text-xs text-muted leading-relaxed whitespace-pre-wrap mt-2 border-t border-bdr pt-2" id="t-original"></p>
+        </details>
       </section>
 
-      <!-- Lecture (triade) -->
+      <!-- ÉTAPE 2 — La note : relire, rédiger, ajuster -->
       <section class="card space-y-4">
-        <div id="c-observations" class="hidden">
+        <div class="etape"><span class="num">2</span> La note — votre rédaction</div>
+
+        <div>
+          <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Résumé</h2>
+          <textarea id="n-summary" rows="3" class="champ" title="Résumé de la séance" placeholder="Résumé de la séance…"></textarea>
+        </div>
+        <div>
           <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Observation</h2>
-          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" data-field></p>
+          <textarea id="n-observations" rows="3" class="champ" title="Observation" placeholder="Ce qui s'observe, sans jugement…"></textarea>
         </div>
-        <div id="c-followup" class="hidden">
+        <div>
           <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Pistes de suivi</h2>
-          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" data-field></p>
+          <textarea id="n-followup" rows="2" class="champ" title="Pistes de suivi" placeholder="Pistes de suivi…"></textarea>
         </div>
-        <div id="c-nextfocus" class="hidden">
+        <div>
           <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Axe de la prochaine séance</h2>
-          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap" data-field></p>
+          <textarea id="n-nextfocus" rows="2" class="champ" title="Axe de la prochaine séance" placeholder="Axe proposé pour la prochaine séance…"></textarea>
+        </div>
+
+        <!-- Axes (lecture multidimensionnelle) -->
+        <div id="c-axes-wrap" class="hidden">
+          <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Lecture multidimensionnelle</h2>
+          <div id="c-axes" class="grid sm:grid-cols-2 gap-2.5"></div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 pt-1" id="n-actions">
+          <button type="button" id="btn-n-enregistrer" class="border border-bdr text-ink text-sm font-semibold px-5 py-2.5 rounded-[12px] hover:bg-surface transition-colors cursor-pointer">
+            Enregistrer la note
+          </button>
+          <p id="n-msg" class="hidden text-sm"></p>
         </div>
       </section>
 
-      <!-- Axes -->
-      <section id="c-axes-wrap" class="hidden">
-        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-2">Lecture multidimensionnelle</h2>
-        <div id="c-axes" class="grid sm:grid-cols-2 gap-2.5"></div>
-      </section>
-
-      <!-- Reformulation client (éditable + livraison) -->
+      <!-- ÉTAPE 3 — Reformulation client (éditable + livraison) -->
       <section id="c-client-wrap" class="card bg-surface/60">
-        <h2 class="text-[10px] font-semibold uppercase tracking-wider text-muted mb-1">Reformulation pour le client</h2>
+        <div class="etape"><span class="num">3</span> Reformulation pour le client</div>
         <p class="text-xs text-muted mb-2">Relisez et ajustez avant d'envoyer. Le texte ci-dessous est ce que la personne verra dans son espace.</p>
         <textarea id="c-client" rows="6"
                   class="w-full border border-bdr rounded-[12px] px-4 py-3 text-sm text-ink leading-relaxed bg-white outline-none focus:ring-2 focus:ring-forest resize-y"
                   placeholder="Aucune reformulation générée — écrivez ici le message destiné à la personne."></textarea>
         <div class="flex flex-wrap items-center gap-3 mt-3">
-          <button id="btn-livrer"
+          <button type="button" id="btn-livrer"
                   class="bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
             Valider et livrer au client
           </button>
@@ -91,22 +130,17 @@
         </div>
       </section>
 
-      <!-- Transcription -->
-      <section id="c-transcript-wrap" class="card">
-        <details>
-          <summary class="text-sm font-semibold text-forest-deep cursor-pointer hover:underline">Voir la transcription de la séance</summary>
-          <p class="text-sm text-ink leading-relaxed whitespace-pre-wrap mt-3 border-t border-bdr pt-3" id="c-transcript">—</p>
-        </details>
-      </section>
-
-      <!-- Validation -->
+      <!-- ÉTAPE 4 — Validation -->
       <section class="card">
-        <h2 class="font-heading text-base font-bold text-ink mb-2">Validation humaine</h2>
-        <p class="text-sm text-muted leading-relaxed mb-4">
+        <div class="etape"><span class="num">4</span> Validation humaine</div>
+        <p class="text-sm text-muted leading-relaxed mb-2">
           Cette lecture est une aide, pas un verdict. En la validant, vous en assumez la relecture
-          avant tout partage avec la personne.
+          avant tout partage avec la personne. Une note validée est figée.
         </p>
-        <button id="btn-valider"
+        <p id="garde-transcript" class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-[10px] px-3 py-2 mb-3">
+          La transcription n'est pas encore validée — validez-la d'abord (étape 1) pour que l'analyse repose sur une version que vous attestez.
+        </p>
+        <button type="button" id="btn-valider"
                 class="bg-forest-deep text-white text-sm font-semibold px-6 py-2.5 rounded-[12px] hover:bg-forest transition-colors cursor-pointer">
           Valider cette analyse
         </button>
@@ -122,15 +156,13 @@
     function show(id){['etat-chargement','etat-erreur','contenu'].forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));}
     function vigilanceElevee(c){c=(c||'').toLowerCase();return c.includes('urgent')||c.includes('eleve')||c.includes('élevé')||c.includes('high');}
     function dateLisible(iso){return iso?new Date(iso).toLocaleDateString('fr-CA',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';}
-
-    function remplirChamp(wrapId, texte) {
-      const wrap = document.getElementById(wrapId);
-      if (!texte) return;
-      wrap.querySelector('[data-field]').textContent = texte;
-      wrap.classList.remove('hidden');
-    }
+    function flash(id, texte, ok){const m=document.getElementById(id);m.textContent=texte;m.className=(m.className.replace(/text-(red|forest)[\w-]*/g,'').trim())+' '+(ok?'text-forest-deep':'text-red-600');m.classList.remove('hidden');}
 
     let note = null;
+    let seance = null;
+
+    const CHAMPS_NOTE = { 'n-summary':'summary_text', 'n-observations':'observations_text',
+                          'n-followup':'follow_up_actions_text', 'n-nextfocus':'next_session_focus_text' };
 
     (async function () {
       if (!noteId) { show('etat-erreur'); return; }
@@ -141,18 +173,16 @@
       document.getElementById('meta').textContent =
         dateLisible(note.created_at) + (note.note_sequence_number ? ' · analyse n°' + note.note_sequence_number : '');
 
-      // Badges
       const vig = note.vigilance_level_code;
       document.getElementById('badge-vigilance').innerHTML =
-        `<span class="text-[10px] font-semibold uppercase tracking-wider border rounded-full px-2.5 py-1 ${vigilanceElevee(vig)?'bg-red-50 text-red-700 border-red-200':'bg-surface text-forest-deep border-bdr'}">Vigilance : ${esc(vig||'non précisée')}</span>`;
-      majBadgeValidation();
+        `<span class="badge ${vigilanceElevee(vig)?'bg-red-50 text-red-700 border-red-200':'bg-surface text-forest-deep border-bdr'}">Vigilance : ${esc(vig||'non précisée')}</span>`;
 
-      document.getElementById('c-summary').textContent = note.summary_text || '—';
-      remplirChamp('c-observations', note.observations_text);
-      remplirChamp('c-followup', note.follow_up_actions_text);
-      remplirChamp('c-nextfocus', note.next_session_focus_text);
+      // Note — champs rédigeables tant qu'elle n'est pas validée
+      Object.entries(CHAMPS_NOTE).forEach(([id, champ]) => {
+        document.getElementById(id).value = note[champ] || '';
+      });
+      document.getElementById('c-client').value = note.client_facing_summary_text || '';
 
-      // Axes
       const axes = [['Cœur', note.coeur_summary_text], ['Corps', note.corps_summary_text],
                     ['Esprit', note.esprit_summary_text], ['Être', note.etre_summary_text]].filter(a => a[1]);
       if (axes.length) {
@@ -161,37 +191,120 @@
         document.getElementById('c-axes-wrap').classList.remove('hidden');
       }
 
-      document.getElementById('c-client').value = note.client_facing_summary_text || '';
-
       document.getElementById('c-modele').textContent =
-        'IVIA / MERLIN — Transcription et analyse structurée en temps réel. © IVIA / MERLIN 2026, tous droits réservés.';
+        'IVIA / MERLIN — Transcription et analyse structurée sous validation humaine. © IVIA / MERLIN 2026, tous droits réservés.';
 
+      majBadgeValidation();
       show('contenu');
 
-      // Transcription (depuis la séance liée)
+      // Séance liée → transcription + statut du circuit
       try {
-        const s = await getSession(note.session_id);
-        document.getElementById('c-transcript').textContent = s.transcript_text || 'Transcription non disponible.';
-      } catch (e) {
-        document.getElementById('c-transcript').textContent = 'Transcription non accessible.';
-      }
+        seance = await getSession(note.session_id);
+      } catch (e) { seance = null; }
+      majTranscription();
     })();
+
+    // ── Étape 1 : transcription ────────────────────────────────────────────
+    function majTranscription() {
+      const zone = document.getElementById('t-texte');
+      const badge = document.getElementById('badge-transcript');
+      const corriger = document.getElementById('btn-t-corriger');
+      const valider = document.getElementById('btn-t-valider');
+      const regenerer = document.getElementById('btn-regenerer');
+      const garde = document.getElementById('garde-transcript');
+
+      if (!seance || !(seance.transcript_text || '').trim()) {
+        zone.value = ''; zone.setAttribute('readonly', '');
+        corriger.classList.add('hidden'); valider.classList.add('hidden'); regenerer.classList.add('hidden');
+        badge.innerHTML = '<span class="badge bg-surface text-muted border-bdr">aucune</span>';
+        garde.classList.add('hidden');
+        return;
+      }
+      zone.value = seance.transcript_text;
+      const st = seance.transcript_status || 'auto';
+      const labels = { auto: ['brouillon machine', 'bg-amber-50 text-amber-700 border-amber-200'],
+                       corrected: ['corrigée — à valider', 'bg-amber-50 text-amber-700 border-amber-200'],
+                       validated: ['validée ✓', 'bg-surface text-forest-deep border-bdr'] };
+      const [lbl, cls] = labels[st] || labels.auto;
+      badge.innerHTML = `<span class="badge ${cls}">${lbl}</span>`;
+
+      const figee = st === 'validated';
+      zone.toggleAttribute('readonly', figee);
+      corriger.classList.toggle('hidden', figee);
+      valider.classList.toggle('hidden', figee);
+      regenerer.classList.toggle('hidden', !figee || !!(note && note.validated_by_practitioner));
+      garde.classList.toggle('hidden', figee);
+
+      if (seance.transcript_original_text) {
+        document.getElementById('t-original').textContent = seance.transcript_original_text;
+        document.getElementById('t-original-wrap').classList.remove('hidden');
+      }
+    }
+
+    document.getElementById('btn-t-corriger').addEventListener('click', async () => {
+      try {
+        seance = await updateSessionTranscript(note.session_id, document.getElementById('t-texte').value);
+        majTranscription();
+        flash('t-msg', 'Correction enregistrée — validez la transcription quand elle vous semble juste.', true);
+      } catch (e) { flash('t-msg', 'Enregistrement impossible : ' + (e.message || 'erreur'), false); }
+    });
+
+    document.getElementById('btn-t-valider').addEventListener('click', async () => {
+      try {
+        // Si le texte affiché diffère de ce qui est en base, on sauve d'abord.
+        if (document.getElementById('t-texte').value !== seance.transcript_text) {
+          seance = await updateSessionTranscript(note.session_id, document.getElementById('t-texte').value);
+        }
+        seance = await validateSessionTranscript(note.session_id);
+        majTranscription();
+        flash('t-msg', 'Transcription validée ✓ — vous pouvez régénérer l\'analyse sur cette version.', true);
+      } catch (e) { flash('t-msg', 'Validation impossible : ' + (e.message || 'erreur'), false); }
+    });
+
+    document.getElementById('btn-regenerer').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-regenerer');
+      btn.textContent = 'Analyse en cours…'; btn.style.pointerEvents = 'none';
+      try {
+        const res = await regenerateSessionNote(note.session_id);
+        // Nouvelle note (brouillon) : on ouvre son compte-rendu.
+        location.href = '/praticien/compte-rendu-seance.html?note=' + encodeURIComponent(res.generated_note.id);
+      } catch (e) {
+        flash('t-msg', 'Régénération impossible : ' + (e.message || 'erreur'), false);
+        btn.textContent = 'Régénérer l\'analyse sur cette version'; btn.style.pointerEvents = '';
+      }
+    });
+
+    // ── Étape 2 : rédaction de la note ─────────────────────────────────────
+    document.getElementById('btn-n-enregistrer').addEventListener('click', async () => {
+      const payload = {};
+      Object.entries(CHAMPS_NOTE).forEach(([id, champ]) => { payload[champ] = document.getElementById(id).value.trim() || null; });
+      payload.client_facing_summary_text = document.getElementById('c-client').value.trim() || null;
+      try {
+        note = await updateSessionNote(noteId, payload);
+        flash('n-msg', 'Note enregistrée ✓', true);
+      } catch (e) { flash('n-msg', 'Enregistrement impossible : ' + (e.message || 'erreur'), false); }
+    });
 
     function majBadgeValidation() {
       const v = note && note.validated_by_practitioner;
       document.getElementById('badge-validation').innerHTML = v
-        ? '<span class="text-[10px] font-semibold uppercase tracking-wider text-forest-deep bg-surface border border-bdr rounded-full px-2.5 py-1">validée</span>'
-        : '<span class="text-[10px] font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">à valider</span>';
+        ? '<span class="badge text-forest-deep bg-surface border-bdr">validée</span>'
+        : '<span class="badge text-amber-700 bg-amber-50 border-amber-200">à valider</span>';
       const btn = document.getElementById('btn-valider');
       if (v) { btn.textContent = 'Analyse validée ✓'; btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; }
+      // Note validée = figée : rédaction désactivée.
+      Object.keys(CHAMPS_NOTE).forEach(id => document.getElementById(id).toggleAttribute('readonly', !!v));
+      document.getElementById('n-actions').classList.toggle('hidden', !!v);
     }
 
+    // ── Étape 4 : validation de l'analyse ─────────────────────────────────
     document.getElementById('btn-valider').addEventListener('click', async () => {
       const btn = document.getElementById('btn-valider'), msg = document.getElementById('valider-msg');
       btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Validation…';
       try {
         note = await validateSessionNote(noteId, { validated: true });
         majBadgeValidation();
+        majTranscription();
         msg.textContent = 'Analyse validée — elle peut maintenant être partagée selon votre décision.';
         msg.className = 'text-sm mt-3 text-forest-deep';
         msg.classList.remove('hidden');
@@ -203,7 +316,7 @@
       }
     });
 
-    // Valider la note ET déposer la reformulation dans l'espace du client.
+    // ── Étape 3 : valider la note ET déposer la reformulation client ──────
     document.getElementById('btn-livrer').addEventListener('click', async () => {
       const btn = document.getElementById('btn-livrer'), msg = document.getElementById('livrer-msg');
       const texte = document.getElementById('c-client').value.trim();
@@ -220,7 +333,12 @@
       }
       btn.style.pointerEvents = 'none'; btn.style.opacity = '.6'; btn.textContent = 'Livraison…';
       try {
-        // 1) valider la note (relecture humaine) ; 2) déposer le document visible au client.
+        // 1) sauver la rédaction ; 2) valider la note ; 3) déposer le document visible au client.
+        if (!note.validated_by_practitioner) {
+          const payload = { client_facing_summary_text: texte };
+          Object.entries(CHAMPS_NOTE).forEach(([id, champ]) => { payload[champ] = document.getElementById(id).value.trim() || null; });
+          note = await updateSessionNote(noteId, payload);
+        }
         note = await validateSessionNote(noteId, { validated: true });
         majBadgeValidation();
         await createDerivedDocument({

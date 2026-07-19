@@ -80,3 +80,17 @@ class SessionNoteRead(TimestampedReadSchema):
 class SessionNoteValidationPayload(MerlinSchema):
     validated: bool
     corrections: dict | None = None
+
+
+class SessionNoteUpdate(MerlinSchema):
+    """Rédaction de la note par le praticien — permise tant qu'elle n'est pas validée."""
+
+    summary_text: str | None = None
+    observations_text: str | None = None
+    follow_up_actions_text: str | None = None
+    next_session_focus_text: str | None = None
+    coeur_summary_text: str | None = None
+    corps_summary_text: str | None = None
+    esprit_summary_text: str | None = None
+    etre_summary_text: str | None = None
+    client_facing_summary_text: str | None = None

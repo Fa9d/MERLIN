@@ -10,7 +10,7 @@ paths:
 - Chaque migration Alembic : un seul fichier, révision séquentielle, format `YYYYMMDD_NNNN_<slug>.py`.
 - Après `alembic upgrade head`, vérifier avec `make prod-ps` que le conteneur DB est sain.
 - Aucune clé API ni secret dans le code — toujours via `config.py` / `.env`.
-- HEAD courant des migrations : `20260709_0056`. Avant toute nouvelle migration, `alembic current`
+- HEAD courant des migrations : `20260718_0057`. Avant toute nouvelle migration, `alembic current`
   (ne pas se fier à une valeur écrite en dur — celle-ci dérive vite ; la vérité est `alembic heads`).
 - Schémas Pydantic : `app/schemas/` — distinguer `Create`, `Read`, `Update`.
 - Enums métier dans `app/models/enums.py` — ne pas dupliquer ailleurs.

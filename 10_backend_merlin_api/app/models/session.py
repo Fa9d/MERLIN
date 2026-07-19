@@ -51,6 +51,12 @@ class SessionRecord(Base):
     audio_file_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
     # Transcription persistée (faster-whisper / AssemblyAI) — relisible par le client.
     transcript_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Circuit de relecture praticien : 'auto' (brouillon machine) → 'corrected' → 'validated'.
+    # L'original automatique est conservé à la première correction (traçabilité opposable).
+    transcript_status: Mapped[str] = mapped_column(String(16), nullable=False, default="auto", server_default="auto")
+    transcript_original_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    transcript_validated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    transcript_validated_by_user_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
     # Séance express : lien partageable (token hashé), statut de paiement, notes privées praticien.
     express_token_hash: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     payment_status: Mapped[PaymentStatusCode | None] = mapped_column(

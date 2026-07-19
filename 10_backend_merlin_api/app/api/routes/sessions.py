@@ -51,6 +51,7 @@ from app.schemas.session import (
     SessionRecordingRead,
     SessionRead,
     SessionStart,
+    SessionTranscriptUpdate,
 )
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
@@ -740,6 +741,197 @@ async def send_followup_to_client(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail="Impossible d'envoyer le courriel (SMTP non configuré ou erreur réseau).",
         )
+
+
+# ── Circuit de relecture de la transcription (validation humaine bout en bout) ──
+# La transcription automatique est un brouillon : le praticien la corrige, la
+# valide, puis peut régénérer l'analyse sur la version validée. L'original
+# machine est conservé à la première correction (traçabilité opposable).
+
+
+def _get_owned_session_or_404(session_id: str, db: Session, current_user: AppUser) -> SessionRecord:
+    """Retourne la séance si elle appartient au praticien/opérateur courant (ou admin), sinon 404."""
+    from app.core.deps import is_admin
+
+    session_record = db.get(SessionRecord, session_id)
+    if session_record is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    owns = session_record.operator_user_id == current_user.id or session_record.praticien_id == current_user.id
+    if not owns and not is_admin(current_user):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seance introuvable.")
+    return session_record
+
+
+@router.patch("/{session_id}/transcript", response_model=SessionRead)
+def update_session_transcript(
+    session_id: str,
+    payload: SessionTranscriptUpdate,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> SessionRecord:
+    """Corrige la transcription d'une séance (praticien assigné ou opérateur).
+
+    Paramètres : session_id (chemin), payload {transcript_text}.
+    Sortie : la séance mise à jour (statut « corrected ») ; 404 hors périmètre,
+    409 si la transcription est déjà validée (figée), 422 si texte vide.
+    L'original automatique est conservé à la première correction.
+    """
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
+    if session_record.transcript_status == "validated":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Transcription déjà validée — elle est figée.",
+        )
+    texte = payload.transcript_text.strip()
+    if not texte:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="La transcription corrigée ne peut pas être vide.",
+        )
+    if session_record.transcript_original_text is None and session_record.transcript_text:
+        session_record.transcript_original_text = session_record.transcript_text
+    session_record.transcript_text = texte
+    session_record.transcript_status = "corrected"
+    db.add(session_record)
+    db.commit()
+    db.refresh(session_record)
+    return session_record
+
+
+@router.post("/{session_id}/transcript/validate", response_model=SessionRead)
+def validate_session_transcript(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> SessionRecord:
+    """Valide la transcription : le praticien atteste qu'elle reflète la séance.
+
+    Sortie : la séance (statut « validated », horodatée et signée) ;
+    404 hors périmètre, 422 si aucune transcription à valider.
+    """
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
+    if not (session_record.transcript_text or "").strip():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Aucune transcription à valider pour cette séance.",
+        )
+    session_record.transcript_status = "validated"
+    session_record.transcript_validated_at = datetime.now(timezone.utc)
+    session_record.transcript_validated_by_user_id = current_user.id
+    db.add(session_record)
+    db.commit()
+    db.refresh(session_record)
+    return session_record
+
+
+@router.post("/{session_id}/regenerate-note", response_model=SessionCloseResult)
+async def regenerate_note_from_validated_transcript(
+    session_id: str,
+    db: Session = Depends(get_db),
+    current_user: AppUser = Depends(require_production_roles()),
+) -> SessionCloseResult:
+    """Régénère l'analyse à partir de la transcription validée.
+
+    Crée une NOUVELLE note (séquence suivante, brouillon à valider) — la
+    précédente est conservée (traçabilité, pas d'écrasement).
+    Sortie : séance + note générée + document dérivé ; 404 hors périmètre,
+    409 si la transcription n'est pas validée ou si la dernière note est déjà
+    validée, 502 si la génération IA échoue.
+    """
+    session_record = _get_owned_session_or_404(session_id, db, current_user)
+    if session_record.transcript_status != "validated":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Validez d'abord la transcription — l'analyse se finalise sur une transcription validée.",
+        )
+    derniere_note = db.scalar(
+        select(SessionNote)
+        .where(SessionNote.session_id == session_id)
+        .order_by(SessionNote.note_sequence_number.desc())
+    )
+    if derniere_note is not None and derniere_note.validated_by_practitioner:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="La dernière analyse est déjà validée — elle est figée.",
+        )
+
+    try:
+        ai_payload = await generate_session_note_from_transcript(
+            session_record.transcript_text or "",
+            session_context={
+                "session_id": session_record.id,
+                "client_id": session_record.client_id,
+                "session_sequence_number": session_record.session_sequence_number,
+                "session_mode_code": session_record.session_mode_code.value,
+                "session_channel_code": session_record.session_channel_code.value,
+                "source": "regenerate_after_transcript_validation",
+            },
+        )
+    except AnthropicSessionNoteError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Génération IA de la note impossible : {exc}",
+        ) from exc
+
+    llm_ledger.record(
+        db, purpose="session_note",
+        usage=(ai_payload.get("metadata") or {}).get("usage"),
+        model=(ai_payload.get("metadata") or {}).get("model_used"),
+        session_id=session_record.id, client_id=session_record.client_id,
+        praticien_user_id=session_record.praticien_id,
+    )
+
+    production_note = ai_payload.get("production_note", {})
+    client_delivery = ai_payload.get("client_delivery", {})
+    supervision_block = ai_payload.get("supervision", {})
+    research_block = ai_payload.get("research", {})
+    metadata = ai_payload.get("metadata", {})
+    latest_seq = db.scalar(
+        select(func.max(SessionNote.note_sequence_number)).where(SessionNote.session_id == session_id)
+    )
+    generated_note = SessionNote(
+        session_id=session_record.id,
+        client_id=session_record.client_id,
+        note_sequence_number=(latest_seq or 0) + 1,
+        summary_text=production_note.get("summary_text")
+        or "Analyse régénérée à partir de la transcription validée par le praticien.",
+        observations_text=production_note.get("observations_text"),
+        follow_up_actions_text=production_note.get("follow_up_actions_text"),
+        next_session_focus_text=production_note.get("next_session_focus_text"),
+        coeur_summary_text=production_note.get("coeur_summary_text"),
+        corps_summary_text=production_note.get("corps_summary_text"),
+        esprit_summary_text=production_note.get("esprit_summary_text"),
+        etre_summary_text=production_note.get("etre_summary_text"),
+        immediate_context_text=production_note.get("immediate_context_text"),
+        context_factors_json=production_note.get("context_factors_json"),
+        context_hypotheses_json=production_note.get("context_hypotheses_json"),
+        identified_tensions_json=_normalize_tensions_json(production_note.get("identified_tensions_json")),
+        vigilance_level_code=_coerce_vigilance_level(production_note.get("vigilance_level_code")),
+        next_step_type_code=_coerce_next_step_type(production_note.get("next_step_type_code")),
+        client_facing_summary_text=client_delivery.get("client_facing_summary_text"),
+        supervision_summary_text=supervision_block.get("supervision_summary_text"),
+        research_notes_text=research_block.get("research_notes_text"),
+        model_used=metadata.get("model_used"),
+        prompt_version=metadata.get("prompt_version"),
+        complexity_score=metadata.get("complexity_score"),
+        validated_by_practitioner=False,
+        client_visible=False,
+        record_status=session_record.record_status,
+        data_sensitivity_class=session_record.data_sensitivity_class,
+        retention_class=session_record.retention_class,
+    )
+    db.add(generated_note)
+    db.flush()
+    generated_document = ensure_session_derived_document(db, session_record, generated_note)
+    db.commit()
+    db.refresh(session_record)
+    db.refresh(generated_note)
+    db.refresh(generated_document)
+    return SessionCloseResult(
+        session=session_record,
+        generated_note=generated_note,
+        generated_document=generated_document,
+    )
 
 
 @router.post(

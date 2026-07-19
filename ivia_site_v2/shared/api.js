@@ -386,6 +386,29 @@ async function validateSessionNote(id, { validated = true, corrections = null } 
     { method: 'PATCH', body: { validated, corrections } });
 }
 
+/** Rédiger/corriger la note avant validation (champs textuels, tous optionnels). */
+async function updateSessionNote(id, payload) {
+  return _req('/api/v1/session-notes/' + encodeURIComponent(id), { method: 'PATCH', body: payload });
+}
+
+/* ── Circuit de relecture de la transcription ─────────────────────────────── */
+
+/** Corriger la transcription d'une séance (statut → corrected, original conservé). */
+async function updateSessionTranscript(sessionId, transcriptText) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/transcript',
+    { method: 'PATCH', body: { transcript_text: transcriptText } });
+}
+
+/** Valider la transcription (statut → validated, horodaté et signé). */
+async function validateSessionTranscript(sessionId) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/transcript/validate', { method: 'POST' });
+}
+
+/** Régénérer l'analyse sur la transcription validée (nouvelle note, brouillon). */
+async function regenerateSessionNote(sessionId) {
+  return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/regenerate-note', { method: 'POST' });
+}
+
 /** Archive (soft-delete) une séance sans valeur. Accessible au praticien ou admin. */
 async function archiveSession(sessionId) {
   return _req('/api/v1/sessions/' + encodeURIComponent(sessionId) + '/archive', { method: 'PATCH' });
