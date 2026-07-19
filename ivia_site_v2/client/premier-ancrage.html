@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <script src="/shared/session.js?v=20260718a"></script>
+  <script src="/shared/api.js?v=20260709b"></script>
   <script>requireAuth();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IVIA — Premier ancrage</title>
@@ -501,7 +502,7 @@
     });
 
     // ═══ SOUMISSION ══════════════════════════════════════════════════════════
-    document.getElementById('btn-terminer').addEventListener('click', () => {
+    document.getElementById('btn-terminer').addEventListener('click', async () => {
       answers.q1  = document.getElementById('q1-input').value.trim();
       answers.q8a = document.getElementById('q8a-input').value.trim();
       answers.q8b = document.getElementById('q8b-input').value.trim();
@@ -520,22 +521,28 @@
         canal:        answers.q8c,
       };
 
-      // ── Mock save (remplacé par POST /api/v1/client/ancrage) ──
+      // Sauvegarde réelle : entrée de journal structurée (motif ARCHI_*:: canonique).
+      // Le localStorage reste un cache local d'affichage, plus la source.
       localStorage.setItem('ivia_ancrage', JSON.stringify(ancrage));
-      try {
-        const u = JSON.parse(localStorage.getItem('ivia_user') || '{}');
-        u.ancrage_complete = true;
-        localStorage.setItem('ivia_user', JSON.stringify(u));
-      } catch (_) {}
 
       const btn = document.getElementById('btn-terminer');
       btn.textContent = 'Enregistrement…';
       btn.disabled = true;
 
-      setTimeout(() => {
+      try {
+        await createMyJournalEntry({ body_text: 'ARCHI_ANCRAGE::' + JSON.stringify(ancrage) });
+        try {
+          const u = JSON.parse(localStorage.getItem('ivia_user') || '{}');
+          u.ancrage_complete = true;
+          localStorage.setItem('ivia_user', JSON.stringify(u));
+        } catch (_) {}
         document.getElementById('step-confirm').style.removeProperty('display');
         document.getElementById('step-confirm').style.display = 'flex';
-      }, 600);
+      } catch (e) {
+        btn.textContent = 'Réessayer — enregistrement impossible';
+        btn.disabled = false;
+        alert('Votre ancrage n\'a pas pu être enregistré (' + (e.message || 'erreur réseau') + '). Vos réponses sont conservées sur cet appareil — réessayez.');
+      }
     });
 
     // ═══ INIT ═════════════════════════════════════════════════════════════════

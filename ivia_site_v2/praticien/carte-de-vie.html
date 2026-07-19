@@ -121,6 +121,37 @@
       <p class="text-xs text-[#4B6350] mb-4">Double narration (Ricœur) — <span class="text-[#9bb7a3]">comme c'était vécu</span> alors vs <span class="text-[#9bb7a3]">comme c'est raconté</span> aujourd'hui.</p>
       <svg id="lifeline" class="w-full" viewBox="0 0 1100 300" role="img" aria-label="Ligne de vie de la personne"></svg>
       <p id="lifeline-vide" class="text-sm text-[#4B6350] italic hidden">Aucun événement de vie enregistré pour cette personne.</p>
+
+      <!-- Ancrage temporel : consigner un événement entendu en séance -->
+      <details class="mt-4 border-t border-[#22432F] pt-3">
+        <summary class="text-sm font-semibold text-[#9bb7a3] cursor-pointer hover:underline">+ Consigner un ancrage temporel</summary>
+        <form id="ancrage-form" class="mt-3 grid sm:grid-cols-2 gap-3 text-sm">
+          <input id="anc-titre" type="text" required maxlength="160" placeholder="Titre (ex. déménagement à Québec)"
+                 class="sm:col-span-2 bg-transparent border border-[#22432F] rounded-[10px] px-3 py-2 text-[#e8f5eb] placeholder-[#4B6350] outline-none focus:border-[#9bb7a3]">
+          <input id="anc-annee" type="number" min="1920" max="2030" placeholder="Année (approx.)"
+                 class="bg-transparent border border-[#22432F] rounded-[10px] px-3 py-2 text-[#e8f5eb] placeholder-[#4B6350] outline-none focus:border-[#9bb7a3]">
+          <select id="anc-type" title="Type d'événement" aria-label="Type d'événement"
+                  class="bg-transparent border border-[#22432F] rounded-[10px] px-3 py-2 text-[#e8f5eb] outline-none focus:border-[#9bb7a3]">
+            <option value="autre" class="text-ink">Type — autre</option>
+            <option value="naissance" class="text-ink">Naissance</option>
+            <option value="deces" class="text-ink">Décès</option>
+            <option value="rupture" class="text-ink">Rupture</option>
+            <option value="separation_parentale" class="text-ink">Séparation parentale</option>
+            <option value="migration" class="text-ink">Migration</option>
+            <option value="perte_emploi" class="text-ink">Perte d'emploi</option>
+            <option value="maladie" class="text-ink">Maladie</option>
+            <option value="relation_significative" class="text-ink">Relation significative</option>
+            <option value="reussite" class="text-ink">Réussite</option>
+            <option value="transition" class="text-ink">Transition</option>
+          </select>
+          <textarea id="anc-narratif" rows="2" placeholder="Comme c'était vécu alors… (facultatif)"
+                    class="sm:col-span-2 bg-transparent border border-[#22432F] rounded-[10px] px-3 py-2 text-[#e8f5eb] placeholder-[#4B6350] outline-none focus:border-[#9bb7a3] resize-none"></textarea>
+          <div class="sm:col-span-2 flex items-center gap-3">
+            <button type="submit" class="bg-[#2D6A4F] text-white text-sm font-semibold px-5 py-2 rounded-[10px] hover:bg-[#4A7C59] transition-colors cursor-pointer">Consigner</button>
+            <p id="anc-msg" class="text-xs hidden"></p>
+          </div>
+        </form>
+      </details>
     </section>
 
     <!-- Strate 4 : Horizon — triade -->
@@ -444,6 +475,36 @@ function drawLifeline(events, annotations){
     drawConstellation(AXES, TENSIONS);
     renderTensions(AXES, TENSIONS);
     drawLifeline(lifeEvents, P.evenements || {});
+
+    // Consigner un ancrage temporel entendu en séance (création réelle).
+    const form = document.getElementById('ancrage-form');
+    if (form && !form.dataset.wired) {
+      form.dataset.wired = '1';
+      form.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const msg = document.getElementById('anc-msg');
+        msg.classList.add('hidden');
+        const annee = document.getElementById('anc-annee').value;
+        try {
+          await createClientLifeEvent(clientId, {
+            client_id: clientId,
+            title: document.getElementById('anc-titre').value.trim(),
+            event_year_approx: annee ? Number(annee) : null,
+            event_type: document.getElementById('anc-type').value,
+            narrative_then: document.getElementById('anc-narratif').value.trim() || null,
+          });
+          msg.textContent = 'Ancrage consigné ✓ — la ligne de vie se met à jour.';
+          msg.className = 'text-xs text-[#9bb7a3]';
+          form.reset();
+          const evts = await getClientLifeEvents(clientId).catch(() => null);
+          if (evts) drawLifeline(evts, P.evenements || {});
+        } catch (e) {
+          msg.textContent = 'Impossible de consigner : ' + (e.message || 'erreur');
+          msg.className = 'text-xs text-red-400';
+        }
+        msg.classList.remove('hidden');
+      });
+    }
   }
 
   // ── Barre de progression : de la première lecture à la plus récente ──

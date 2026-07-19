@@ -30,8 +30,8 @@ const IVIA_FOOTER = {
     { label: 'Réserver une séance',  href: '/client/agenda.html' },
     { label: 'Mes séances',          href: '/client/seances.html' },
     { label: 'Mes enregistrements',  href: '/client/mes-enregistrements.html' },
-    { label: 'Mes exercices',        href: '/client/mes-exercices.html' },
-    { label: 'Mes repères',          href: '/client/mes-reperes.html' },
+    // Repères et exercices vivent dans « Mon reflet » (écran branché) —
+    // les anciennes pages dédiées étaient des maquettes en doublon.
     { label: 'Mes résumés',          href: '/client/mes-resumes.html' },
     { label: 'Séance expresse',      href: '/client/enregistrement.html' },
     { label: 'Mon compte',           href: '/client/compte.html' },
